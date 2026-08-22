@@ -186,11 +186,11 @@ Note:
   təkrarlamır (bax NoDuplication prinsipi yuxarıda) — sadəcə
   PROJECT_MODEL komponenti kimi ona referans verir.
 
-  `project/architecture.sdd` özü hələ köhnə `protocol/symbols.sdd`,
-  `protocol/rules.sdd` ifadələrinə istinad edir (bax .sdd/PROJECT.sdd ->
-  Note, "məlum, hələ təmizlənməmiş qalıq") — bu fayl həmin problemi HƏLL
-  ETMİR, çünki fərqli bir sənəddir və next-gated qaydaya görə yalnız
-  uyğun bir "next" gələndə düzələcək.
+  (prompt/new/21.md, STEP 4 — HƏLL OLUNUB) `project/architecture.sdd`-in
+  əvvəllər istinad etdiyi köhnə `protocol/symbols.sdd`, `protocol/rules.sdd`
+  ifadələri STEP 4-ün "Tam sıfırla" reset-i ilə silinib; həmin fayl indi
+  sxem-yalnız formadadır və heç bir köhnə `protocol/`-a istinad qalmayıb
+  (bax .sdd/project/architecture.sdd -> Note, .sdd/PROJECT.sdd -> Note).
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
