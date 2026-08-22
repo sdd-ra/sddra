@@ -1,14 +1,24 @@
 Spec: Payment
 
-Path:
-  ./backend/payment
-  ./frontend/payment
-  ./mobile/payment
+Purpose:
+  Tələbə ödənişlərini müəllimlə kurs arasında escrow məntiqi ilə idarə edir:
+  ödənişi tutur, kurs tamamlanana qədər saxlayır, tamamlandıqda müəllimə
+  buraxır (bax cases.sdd -> Spec: EscrowCalculation).
+
+Owns:
+  BE: ./backend/payment
+  FE: ./frontend/payment
+  MD: ./mobile/payment
+  QA: ./qa/payment
+  DO: ./devops (shared infra, no dedicated payment-only stage yet)
+
+Architecture:
+  ModularMonolith
 
 Flow:
   @flow
 
-DB:
+Database:
   @db
 
 API:
@@ -17,14 +27,33 @@ API:
 Cases:
   @cases
 
-Dependencies:
-  Payment
-    <- Course
-    <- User
-    -> PaymentGateway   (external, see project/integrations.sdd)
+DependsOn:
+  Course   (course completion triggers escrow release)
+  User     (payer/payee identity)
+
+UsedBy:
+  (none internal yet — top-level feature)
+
+Produces:
+  PaymentCompleted event   (see api.sdd -> Services: PaymentService)
+
+ConsumedBy:
+  PaymentGateway   (external, see project/integrations.sdd)
+
+State:
+  ~
+
+Rules:
+  Module-specific knowledge MUST remain inside this directory.
+  Source code MUST be resolved through Owns.
+  Flow MUST be resolved through @flow.
+  Database information MUST be resolved through @db.
+  API information MUST be resolved through @api.
+  Business/test cases MUST be resolved through @cases.
 
 Note:
   @flow / @db / @api / @cases are references to the sibling files in this
   folder (flow.sdd, db.sdd, api.sdd, cases.sdd). AI opens them only when the
-  current stage actually needs them — this is the module-inheritance /
-  lazy-load pattern from prompt/new/9.md.
+  current stage actually needs them — the module-inheritance / lazy-load
+  pattern from prompt/new/9.md. This file follows the universal <module>.sdd
+  template finalized in prompt/new/13.md (STEP 3).

@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/8.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/13.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -41,7 +41,7 @@ deyil — canlı, artan bir sənəddir.
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/12.md-ə qədər)
+## Status (prompt/new/13.md-ə qədər)
 
 - `+` PROJECT.sdd — chunk 12-nin verdiyi TAM, finallaşmış konstitusiya mətni ilə
   əvəz olundu (Purpose/Model/Disciplines/ProjectMap/ModuleModel/SkillModel/Flow/
@@ -50,8 +50,14 @@ deyil — canlı, artan bir sənəddir.
   saxlanılır (R2-ə görə təkrarlanmır). Chunk 10-un aralıq versiyası bununla
   üstələnib.
 - `+` project/map.sdd — router contract-ı tamamlandı: Rules + Resolve bölmələri (chunk 11)
+- `+` project/<module>/<module>.sdd — chunk 13-ün universal STEP-3 şablonuna
+  görə üç faylın hamısı (payment/course/user) yenidən yazıldı: Purpose/Owns
+  (BE/FE/MD/QA/DO)/Architecture/Flow/Database/API/Cases/DependsOn/UsedBy/
+  Produces/ConsumedBy/State/Rules. Köhnə `Path:`/`Dependencies:` sərbəst
+  formatı bu kanonik quruluşla əvəz olundu.
 - `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
-- `~` project/course/, project/user/ — yalnız stub, chat hələ bunları detallandırmayıb
+- `~` project/course/, project/user/ — yalnız stub (course.sdd/user.sdd chunk-13
+  şablonuna görə yeniləndi, amma flow/db/api/cases hələ detallandırılmayıb)
 - `+` protocol/symbols.sdd, protocol/stages.sdd, protocol/rules.sdd
 - `+` backend/frontend/mobile/qa/devops/ qovluqları düz `.sdd/` altında (əvvəlki `skills/` wrapper-i
   chunk 9-a görə düzəldildi — mənbə heç vaxt bu wrapper-i istifadə etmir)

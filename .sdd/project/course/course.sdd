@@ -1,25 +1,57 @@
 Spec: Course
 
-Path:
-  ./backend/course
-  ./frontend/course
+Purpose:
+  Kurs yaratma, alqı-satqı və tamamlanma izlənməsini idarə edir. (Detallı
+  təsvir hələ replay-də verilməyib — stub.)
+
+Owns:
+  BE: ./backend/course
+  FE: ./frontend/course
+  MD: (not yet detailed)
+  QA: ./qa/course
+  DO: ./devops (shared)
+
+Architecture:
+  ModularMonolith
 
 Flow:
   @flow    (not yet detailed in this replay)
 
-DB:
+Database:
   @db      (not yet detailed in this replay)
 
 API:
   @api     (not yet detailed in this replay)
 
-Dependencies:
-  Course
-    <- User
-    -> (consumed by Payment)
+Cases:
+  @cases   (not yet detailed in this replay)
+
+DependsOn:
+  User
+
+UsedBy:
+  Payment   (course completion triggers escrow release)
+
+Produces:
+  CourseCompleted event   (referenced by project/integrations.sdd ->
+  @CourseCompletionTracker)
+
+ConsumedBy:
+  Payment
+
+State:
+  ~
+
+Rules:
+  Module-specific knowledge MUST remain inside this directory.
+  Source code MUST be resolved through Owns.
+  Flow MUST be resolved through @flow.
+  Database information MUST be resolved through @db.
+  API information MUST be resolved through @api.
+  Business/test cases MUST be resolved through @cases.
 
 Note:
-  Stub — follows the same payment/ pattern (payment.sdd + flow.sdd + db.sdd
-  + api.sdd + cases.sdd). Only `payment/` has been fully worked through the
-  replay so far (prompt/new/9.md); flesh this out when a later chunk covers
-  course specifically.
+  Stub — follows the universal <module>.sdd template (prompt/new/13.md,
+  STEP 3). Only payment/ has been fully worked through the replay so far
+  (prompt/new/9.md); flesh this out (flow.sdd/db.sdd/api.sdd/cases.sdd) when
+  a later chunk covers Course specifically.
