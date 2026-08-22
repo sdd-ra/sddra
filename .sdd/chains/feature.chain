@@ -1,0 +1,47 @@
+Chain: Feature
+
+Purpose:
+  Yeni funksionallıq inkişaf etdirilərkən keçilən tam mərhələ ardıcıllığı.
+  Digər chain-lər (bax bugfix.chain, change.chain) bu faylın stage
+  adlarına istinad edir — təkrar tərif etmirlər (bax architecture/
+  architecture.sdd -> NoDuplication).
+
+Sequence:
+  AN>AR>DB>BE>API>FE>MD>QA>DO>VR
+
+Stages:
+
+  AN:
+    name: Analysis
+  AR:
+    name: Architecture
+  DB:
+    name: Database
+  BE:
+    name: Backend
+  API:
+    name: API Contract
+  FE:
+    name: Frontend
+  MD:
+    name: Mobile
+  QA:
+    name: Quality Assurance
+  DO:
+    name: Deployment/Ops
+  VR:
+    name: Verification/Review
+
+Rules:
+  Hər stage öz sələfinin tamamlanmasını tələb edir (bax chains.sdd -> [C3]),
+  MD/DO kimi bəzi stage-lər bütün task-lar üçün məcburi olmaya bilər
+  (bax chains.sdd -> [C7]) — konkret aktivasiya şərti bu faylda TƏYİN
+  OLUNMUR, gələcək chain execution mexanizmi (hələ tərif olunmayıb) bunu
+  həll edəcək.
+
+Note:
+  (prompt/new/22.md, STEP 5) Skill-lərin bu stage-lərə bağlanması
+  bilərəkdən indi edilmir (bax chains.sdd -> [C9]) — `.sdd/skills/`
+  qurulanda görüləcək iş. Bu fayl əvvəlki `_TEMPLATE.feature.sdd`-in
+  per-feature instansiasiya modelini (hər feature üçün ayrıca fayl,
+  discipline-bazlı skill yolları) əvəz edir — bax chains.sdd -> Note.

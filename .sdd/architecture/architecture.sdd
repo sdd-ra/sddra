@@ -26,7 +26,7 @@ Components:
 
   CHAINS:
     path: ../chains
-    role: Execution chains (feature-per-chain, STEP 8)
+    role: Execution chains (chain-tipi modeli — feature/bugfix/change, STEP 5)
 
   SKILLS:
     path: ../skills
@@ -191,6 +191,11 @@ Note:
   ifadələri STEP 4-ün "Tam sıfırla" reset-i ilə silinib; həmin fayl indi
   sxem-yalnız formadadır və heç bir köhnə `protocol/`-a istinad qalmayıb
   (bax .sdd/project/architecture.sdd -> Note, .sdd/PROJECT.sdd -> Note).
+
+  (prompt/new/22.md, STEP 5 — HƏLL OLUNUB) Yuxarıdakı CHAINS komponentinin
+  "feature-per-chain" rolu köhnəlmişdi — STEP 5-in "Tam sıfırla" reset-i
+  ilə `chains/_TEMPLATE.feature.sdd` silinib, chain-tipi modeli (router +
+  feature/bugfix/change.chain) qurulub (bax .sdd/chains/chains.sdd -> Note).
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
