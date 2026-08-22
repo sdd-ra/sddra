@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/19.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/20.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -87,6 +87,30 @@ aiddir, bura yox; "DDD necə tətbiq olunur?" → `skills/`-ə aiddir, bura yox)
 bu, `PROJECT.sdd`-də bir Note kimi qeyd olunub, lakin fayllar özləri toxunulmayıb; yalnız
 uyğun bir gələcək "next" bunu həll edəcək.
 
+## STEP 3 — `.sdd/architecture/architecture.sdd` (prompt/new/20.md)
+
+`.sdd`-in **öz komponentlərinin** arxitekturası yaradıldı — bu, layihənin texniki
+arxitekturasından (`project/architecture.sdd`: stack, ModuleIsolation, LayerArchitecture)
+**tamamilə ayrıdır**, yalnız adı bənzəyir. Yeni fayl:
+
+- **`Components:`** — 9 SDD komponenti (PROJECT, PROJECT_MODEL, ARCHITECTURE, CHAINS,
+  SKILLS, PROMPTS, TASKS, DECISIONS, STATE), hər biri üçün path + rol.
+- **`Relationships:`** — komponentlər arası əsas axın (PROJECT → PROJECT_MODEL/ARCHITECTURE,
+  PROJECT_MODEL → CHAINS → SKILLS, PROMPTS → TASKS → STATE, DECISIONS → ARCHITECTURE/
+  PROJECT_MODEL/CHAINS).
+- **`Allowed:`** / **`Forbidden:`** — hansı komponent hansına referans verə bilər, hansı
+  komponent nəyi "redefine" etməməlidir (məs. `SKILLS` PROJECT architecture-ı redefine edə
+  bilməz, `PROJECT_MODEL` skill təlimatı saxlaya bilməz).
+- **`Principles:`** — SeparationOfConcerns, SingleSourceOfTruth, ExplicitReference, Locality,
+  NoDuplication, Traceability, HumanControl.
+- Mənbə template demək olar ki, olduğu kimi saxlanıldı (strukturu artıq tam idi); əlavə
+  edilən best-practice hissələr: `HumanControl` prinsipinin `PROJECT.sdd`-in `[R9]/[R11]`-inə
+  açıq istinadı (təkrar tərif deyil), fayl sonunda `State: +` sətri (`[R10]`-a uyğun) və
+  adların toqquşmasını (`architecture/architecture.sdd` vs `project/architecture.sdd`)
+  aydınlaşdıran bir `Note`.
+- `architecture/.gitkeep` silindi (artıq real fayl var); `PROJECT.sdd`-də `architecture:`
+  girişinin `state:` sətri "boş (STEP 1)"-dən "STEP 3 tamamlandı"-ya yeniləndi.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -107,7 +131,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/19.md-ə qədər)
+## Status (prompt/new/20.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -125,8 +149,11 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   payment/{payment,db,api,cases}.sdd, course/course.sdd stub, user/user.sdd stub) qüvvədədir.
 - `+` `chains/_TEMPLATE.feature.sdd`, `prompts/README.md`, `tasks/README.md`,
   `decisions/README.md` — toxunulmadı.
-- `!` `architecture/`, `skills/`, `state/` — boş (yalnız `.gitkeep`), məzmun növbəti
-  "next"-lərdə müəyyənləşəcək.
+- `+` **`architecture/architecture.sdd` (prompt/new/20.md):** `.sdd`-in öz komponent
+  qrafı (Components/Relationships/Allowed/Forbidden/Principles) yaradıldı; `.gitkeep`
+  silindi.
+- `!` `skills/`, `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə
+  müəyyənləşəcək.
 - `?` Əvvəlki `protocol/` (symbols/stages/rules) və silinmiş skill-HOW qovluqlarının
   yeni skeletdə hara "köçəcəyi" hələ mənbə tərəfindən deyilməyib — qabaqlanmır.
 
