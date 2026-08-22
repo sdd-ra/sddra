@@ -1,34 +1,24 @@
 Spec: Project/Modules
 
 Purpose:
-  Declares each domain module: what it owns, its public surface, and its
-  direct dependencies. This is the boundary contract ExtractCheck
-  (architecture.sdd) validates against.
+  Declare each domain module: what it owns, its public surface, and its
+  direct dependencies — schema only. Concrete module declarations (e.g.
+  payment, course, user) are added once those domains are rebuilt.
 
-M {
-  user {
-    r:   user-management
-    owns: user
-    api: public
-  }
+Rules:
+  A module MUST declare what it owns.
+  A module MUST declare its public API surface.
+  A module MUST explicitly declare its dependencies (`deps`).
+  A module MUST NOT depend on any module not listed in its declared deps
+  (undeclared dependency = architecture violation, bax architecture.sdd).
 
-  course {
-    r:    course-management
-    owns: course
-    api:  public
-    deps: user
-  }
+Note:
+  (prompt/new/21.md, STEP 4) Bu fayl chunk 21-in adlandırdığı 5 fayla
+  (map/architecture/dependencies/domains/indexes) daxil deyil, amma yaradılması
+  zəruri idi: map.sdd-nin öz `Resolution:` bölməsi `@modules`-a istinad edir,
+  bu fayl olmadan həmin istinad boşluqda qalardı (bax map.sdd -> Resolution).
 
-  payment {
-    r:    payment-processing
-    owns: payment
-    api:  public
-    deps: course, user
-    ext:  PaymentGateway        # external integration, see integrations.sdd
-  }
-}
-
-Rule:
-  A module MAY depend on modules listed in `deps`.
-  A module MUST NOT depend on any module not listed in `deps`
-  (undeclared dependency = architecture violation, see architecture.sdd).
+  Əvvəlki konkret M{} bloku (user/course/payment, öz owns/api/deps
+  siyahıları ilə) sxem-yalnız formaya sıfırlanıb — bax git tarixçəsi bu
+  commit-dən əvvəl. Konkret modul bəyanatları müvafiq domenlər yenidən
+  qurulanda bu sxemə uyğun əlavə olunacaq.

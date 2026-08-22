@@ -1,0 +1,23 @@
+Spec: Project/Domains
+
+Purpose:
+  Layihədə təmsil olunan biznes domenlərini müəyyən edir — sxem yalnız,
+  konkret domen siyahısı deyil.
+
+Rules:
+  Each domain MUST have an identifiable owner.
+  Domain knowledge MUST remain within its own domain model.
+  Cross-domain dependencies MUST be explicit (bax dependencies.sdd).
+
+Note:
+  Bu, map.sdd-dəki modul-səviyyəli anlayışdan fərqlidir: `modules.sdd`
+  texniki/kod-boundary kontraktını (owns/api/deps) təsvir edir, bu fayl isə
+  biznes-domen modelinin sxemidir — praktikada çox vaxt 1-ə-1 uyğun gəlir
+  (məs. "payment" həm modul, həm domen ola bilər), amma konseptual olaraq
+  ayrıdır və qarışdırılmamalıdır.
+
+  (prompt/new/21.md, STEP 4) Köhnə `map.sdd` versiyası bu iki anlayışı
+  "Domains:" bölməsində modul siyahısını təkrarlayaraq qarışdırmışdı
+  (bax map.sdd -> Note). Bu fayl həmin qarışıqlığı ayırd etmək üçün
+  yaradılıb. Konkret domenlər (payment, course, user və s.) gələcək bir
+  "next"lə bu sxemə uyğun yenidən quruluacaq.

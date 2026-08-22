@@ -1,30 +1,21 @@
 Spec: Project/Map
 
 Purpose:
-  Routing/index only — answers "where do I go?", nothing more. Detailed
-  knowledge (flow, DB, API, cases) lives inside each module's own folder,
-  never here (per prompt/new/9.md correction: a global file must not grow
-  into "the entire system's map in one file").
+  Routing/index only — resolves "hara getməliyəm?", heç nə artıq. Detallı
+  bilgi (module/domain/feature modeli) heç vaxt burda saxlanmır, yalnız
+  resolve edilən modelin öz qovluğunda yaşayır (bax Rules aşağıda).
 
-Project: EduNexus
+Rules:
+  Module -> module model (bax modules.sdd)
+  Domain -> domain model (bax domains.sdd)
+  Feature -> feature model (domen daxilində, hələ mövcud deyil)
+  Global map MUST contain routing information only.
+  Do not duplicate module/domain details here.
 
-ProjectMap:
-
-Modules:
-  payment -> ./project/payment
-  course  -> ./project/course
-  user    -> ./project/user
-
-Domains:
-  # NOTE: the source (prompt/new/11.md) repeats the same module list under
-  # both "Modules:" and "Domains:" here — this is module-level "Domains"
-  # (business domain = same thing as Modules in this router's context), NOT
-  # the discipline-level "Domains:" (Backend/Frontend/Mobile/QA/DevOps)
-  # used in PROJECT.sdd. Kept as the source states it rather than silently
-  # merged, to avoid inventing a resolution the chat itself hasn't made yet.
-  payment -> ./project/payment
-  course  -> ./project/course
-  user    -> ./project/user
+Resolution:
+  module:  @modules
+  domain:  @domains
+  feature: @features   # gələcək — domenlər konkretləşəndə əlavə olunacaq
 
 Paths:
   BE -> ./backend
@@ -32,42 +23,28 @@ Paths:
   MD -> ./mobile
   QA -> ./qa
   DO -> ./devops
-  # NOTE (prompt/new/14.md): these are lookup references for where AI
-  # should find real project code once it exists — NOT an instruction to
-  # scaffold these folders now. .sdd/ is built by hand (this repo); the
-  # real project (backend/, frontend/, ...) is built later by a separate
-  # prompt engine, driven by this model. Do not create these folders here.
-
-Rules:
-  A module MUST have its own project model.
-  Module knowledge MUST stay inside its module directory.
-  Global map MUST contain routing information only.
-  Do not duplicate module details here.
-
-Resolve:
-  payment -> ./project/payment/payment.sdd
-  course  -> ./project/course/course.sdd
-  user    -> ./project/user/user.sdd
-
-Flow:
-  feature -> module/flow.sdd
+  # (prompt/new/14.md-dən qalan, hələ qüvvədə olan qeyd) bunlar gələcək real
+  # layihə kodu üçün lookup referanslarıdır — bu qovluqları indi yaratmaq
+  # göstərişi deyil. .sdd/ bu repoda əl ilə tikilən yeganə şeydir.
 
 Navigation:
   USER INPUT
     -> PROJECT.sdd
     -> map.sdd
-    -> IDENTIFY MODULE
-    -> Resolve[module]  (module/*.sdd)
-    -> IDENTIFY REQUIRED FLOW -> module/flow.sdd
-    -> CURRENT STAGE -> LOAD STAGE SKILLS
-    -> LOAD ONLY WHAT'S NEEDED: db.sdd? api.sdd? cases.sdd?
-    -> WORK -> VALIDATE -> UPDATE STATE -> NEXT FLOW NODE
+    -> Resolution[module|domain|feature]
+    -> yalnız resolve edilmiş modeli yüklə
+    -> icra ardıcıllığı üçün chains/*.chain (STEP 8, hələ qurulmayıb)
 
-Status:
-  payment/, course/, user/ module folders and their payment.sdd/flow.sdd/
-  db.sdd/api.sdd/cases.sdd already exist (built ahead, in prompt/new/9.md's
-  step) — course/ and user/ are still stubs. This is further along than
-  prompt/new/11.md's own pacing ("STEP 2 is map.sdd only, don't create the
-  module folders yet"), which is fine: this repo applies accumulated
-  knowledge as it's read, not a strict re-enactment of the original chat's
-  step-by-step reveal order.
+Note:
+  (prompt/new/21.md, STEP 4) Əvvəlki versiya "Domains:" bölməsində modul
+  siyahısını (payment/course/user) təkrarlayırdı — mənbənin öz
+  uyğunsuzluğu idi (module-level "domain" ilə əsl biznes-domen anlayışı
+  qarışmışdı). Bu, indi ayrı bir sxem faylına (domains.sdd) bölünərək həll
+  olunub. Həmçinin köhnəlmiş `Flow: feature -> module/flow.sdd` sətri
+  silinib (chunk 16-da artıq ləğv edilmiş konsepsiya, bax
+  sddra-next-gated-sdd-build memory).
+
+  İstifadəçinin açıq təsdiqi ilə ("Tam sıfırla", STEP 4) konkret
+  payment/course/user modul qovluqları və onların bu fayldakı Modules:/
+  Resolve: qeydləri silinib (bax git tarixçəsi, bu commit-dən əvvəl) —
+  gələcək bir "next" onları bu təzə sxemə uyğun yenidən quracaq.

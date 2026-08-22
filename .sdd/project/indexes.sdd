@@ -1,0 +1,30 @@
+Spec: Project/Indexes
+
+Purpose:
+  Layihə bilgisinin sürətli resolve edilməsi üçün kateqoriya-səviyyəli
+  indeks siyahısı.
+
+Indexes:
+  module
+  domain
+  feature
+  api
+  database
+  dependency
+  test
+  deployment
+
+Rules:
+  Indexes are routing metadata.
+  Indexes MUST NOT become the source of truth.
+  Indexes MUST reference authoritative SDD files, not duplicate them.
+
+Note:
+  Bu fayl map.sdd-dən fərqlidir: map.sdd "hara getməliyəm?" sualına konkret
+  Resolution (@modules, @domains) ilə cavab verir; bu fayl isə daha geniş,
+  kateqoriya-səviyyəli bir indeks bəyanatıdır (məs. gələcəkdə `api`,
+  `database`, `test`, `deployment` kimi kateqoriyalar üzrə axtarış üçün).
+  Təkrarçılığın qarşısını almaq üçün (bax architecture/architecture.sdd ->
+  NoDuplication) bu fayl konkret yol siyahısı saxlamır, yalnız hansı
+  kateqoriyaların indeksləşdiyini bəyan edir — konkret indeks məzmunu
+  müvafiq domenlər/modullar yenidən qurulanda əlavə olunacaq.

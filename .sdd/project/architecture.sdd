@@ -1,116 +1,55 @@
 Spec: Project/Architecture
 
 Purpose:
-  Compact, token-efficient description of the project's technical shape,
-  using the symbol vocabulary defined in protocol/symbols.sdd for state
-  only — these P{} / M{} blocks are a separate, project-level shorthand
-  for stack/module facts, not stage state.
+  Layihənin ÖZ komponentlərinin (layers, modules, stack) necə qurulduğunu
+  və əlaqələndiyini təsvir edir — bu, layihənin texniki arxitekturasıdır,
+  YOX .sdd sisteminin öz meta-arxitekturası (bax architecture/architecture.sdd
+  — fərqli, ayrı sənəddir, STEP 3).
 
-P {
-  n:  EduNexus
-  a:  MM        # MM = Modular Monolith
-  be: GO        # GO = Golang
-  db: PG        # PG = PostgreSQL
-  fe: RX        # RX = React
-  md: RN        # RN = React Native
-  dp: DK        # DK = Docker
-}
+Layers:
+  DB
+  BE
+  API
+  FE
+  MD
+  QA
+  DO
 
-ModuleIsolation:
-  Purpose:
-    Keep the modular monolith extraction-ready (microservice-ready) by
-    enforcing boundaries between modules before they become entangled.
+Rules:
+  Architecture relationships MUST be explicit.
+  Forbidden dependencies MUST be declared.
+  Architecture violations MUST be detectable.
+  Architecture changes require human decision (bax PROJECT.sdd -> [R9]/[R11]).
 
-  ExtractCheck verifies, per module boundary:
-    DB isolation
-    dependency isolation
-    domain isolation
-    API contract
-    infrastructure isolation
-    shared state
-    circular dependency
+Validation:
+  implemented_structure MUST conform to declared architecture.
 
-  Example violation:
-    orders -> users DB      # cross-module-db, FORBIDDEN
+State:
+  + = compliant
+  ! = violation
+  ? = architecture decision required
+  ~ = architecture change in progress
 
-  On violation:
-    result: -
-    reason: cross-module-db
-    chain returns: EXTRACT-CHECK -> MODULE -> DESIGN -> CODE
-    (i.e. the chain does not just report the error — it routes back to the
-    stage responsible for fixing it; see protocol/rules.sdd)
+ViolationVsDecision:
+  AI MUST NOT silently resolve which of these iki hal baş verib:
+    A) mistake                 -> state: ! (Architecture Violation)
+    B) deliberate new decision -> state: ? (Architecture Decision Required,
+                                   insan təsdiqi, bax PROJECT.sdd HumanDecision)
+  AI `?` qaldırır və dayanır — nə `!` işarələyib "düzəltmir", nə də sükutla
+  yeni norma kimi qəbul edir.
 
-Must:
-  Every module declared in project/modules.sdd MUST pass ExtractCheck
-  before its chain is allowed to reach QA.
+Note:
+  (prompt/new/21.md, STEP 4) Bu sənəd hazırda yalnız SXEMdir — konkret layer
+  əlaqələri (məs. BE -> DB, FE -> API) hələ yazılmır, çünki layihənin
+  konkret stack/modul faktları hələ mövcud deyil. Onlar konkret domenlər
+  (payment/course/user və s.) yenidən qurulan bir gələcək "next"lə əlavə
+  olunacaq.
 
-Forbids:
-  Direct cross-module database access.
-  Circular module dependencies.
-
-LayerArchitecture (prompt/new/16.md):
-  # ModuleIsolation above answers "can module X touch module Y's DB?".
-  # This section answers a different question: "inside one module, which
-  # layer is allowed to call which?" — a structural dependency graph, not
-  # a work-order. It MUST NOT be confused with a module's execution chain
-  # (AN>AR>DB>BE>API>FE>MD>QA>DO>VR, see protocol/stages.sdd) — that is
-  # "what order do I implement in", this is "what may call what at
-  # runtime". Conflating the two was STEP 4's original mistake and is why
-  # project/<module>/flow.sdd was retracted (see Note at the bottom).
-
-  DefaultAllowed:
-    FE  -> API
-    MD  -> API
-    BE  -> DB
-    BE  -> ExternalGateway   # e.g. PaymentGateway, see project/integrations.sdd
-    QA  -> API
-    QA  -> Application
-
-  DefaultForbidden:
-    FE  -> DB
-    MD  -> DB
-    FE  -> Repository        # any module's persistence layer
-    MD  -> Repository
-
-  # Module-local overrides/extensions of this default (e.g. Payment's own
-  # allowed/forbidden edges) live in project/<module>/architecture.sdd —
-  # not yet built (planned STEP 5, prompt/new/16.md's own roadmap). Do not
-  # anticipate that file's content here (R2/R3 — don't duplicate module
-  # knowledge at the global level ahead of it actually being resolved).
-
-  State:
-    + = compliant
-    ! = violation
-    ? = architecture decision required
-    ~ = architecture change in progress
-
-  ViolationVsDecision:
-    # AI MUST NOT silently resolve which of these two it's looking at.
-    # Same observed edge (e.g. FE -> DB), two different causes:
-    #   A) developer/AI mistake            -> state: !  (Architecture Violation)
-    #   B) a deliberate new architecture   -> state: ?  (Architecture Decision
-    #      decision was made, this file          Required — human decision,
-    #      just hasn't been updated yet          per PROJECT.sdd -> HumanDecision,
-    #                                            "architecture changes")
-    # AI raises `?` and stops; it does not silently mark `!` and "fix" the
-    # edge, and it does not silently accept the edge as the new normal.
-
-Note (prompt/new/16.md, retracts prompt/new/15.md's STEP 4):
-  The source chat caught its own mistake: project/<module>/flow.sdd, built
-  in the previous step as "AN > AR > DB > BE > API > FE > MD > QA > DO >
-  VR", conflated two unrelated things — architecture (what may call what)
-  and execution order (what gets implemented in what order). It has been
-  removed (see project/payment/ — flow.sdd deleted).
-
-  Corrected 3-layer split going forward:
-    Architecture  -> what is allowed to depend on what      (this file /
-                      project/<module>/architecture.sdd, STEP 5)
-    Chain         -> what happens next, work order           (.sdd/chains/
-                      *.chain, STEP 8 — NOT module/flow.sdd)
-    Skill Chain   -> how a single stage's work gets done      (STEP 9)
-
-  This file (project/architecture.sdd) is the new STEP 4 target: the
-  global architecture model + violation rules. Remaining roadmap per
-  prompt/new/16.md: STEP 5 module architecture, STEP 6 DB model, STEP 7
-  API model, STEP 8 execution chains, STEP 9 skill chains — read one at a
-  time, only on "next" (see sddra-next-gated-sdd-build).
+  İstifadəçinin açıq təsdiqi ilə ("Tam sıfırla") bu fayl əvvəllər saxladığı
+  konkret P{} stack shorthand (EduNexus/MM/GO/PG/RX/RN/DK), ModuleIsolation/
+  ExtractCheck və DefaultAllowed/DefaultForbidden kənarları ilə birlikdə
+  sıfırlanıb — bu məzmun git tarixçəsində qalır (bu commit-dən əvvəl).
+  Eyni zamanda köhnəlmiş `protocol/symbols.sdd`/`protocol/rules.sdd`
+  istinadları (bax .sdd/PROJECT.sdd -> Note, "məlum, hələ təmizlənməmiş
+  qalıq" — indi HƏLL OLUNUB) və köhnə "bu fayl STEP 4-ün hədəfidir" özü-
+  referanslı qeydi (fərqli, köhnə nömrələmə sxemindən qalma) də silinib.

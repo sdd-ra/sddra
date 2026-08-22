@@ -1,28 +1,27 @@
 Spec: Project/Dependencies
 
 Purpose:
-  Explicit dependency graph, separate from the workflow order (flows.sdd)
-  and from the skill order (chains/*). Three distinct relations exist and
-  must not be conflated:
+  Layihə komponentləri arasındakı əlaqələri təsvir edir — sxem/lüğət
+  yalnız. Konkret asılılıq qrafları (hansı modul hansına asılıdır) hər
+  domenin öz modelində yaşayacaq, domenlər yenidən qurulanda.
 
-  Dependency:  BE -> API -> FE
-  Skill:       BE -> DDD -> Clean Code -> Security -> Test
-  Workflow:    BE -> FE -> MD -> QA -> DO -> VERIFY
+RelationTypes:
+  depends_on
+  produces
+  consumes
+  calls
+  owns
+  tested_by
+  deployed_by
 
-Graph:
+Rules:
+  Dependencies MUST have an explicit owner.
+  Circular dependencies MUST be detectable.
+  New dependencies MUST be evaluated against architecture.sdd.
 
-  Payment
-   depends -> User
-   depends -> Course
-   depends -> PaymentGateway (external, see integrations.sdd)
-
-  Course
-   depends -> User
-
-  User
-   depends -> (none)
-
-Rule:
-  No cycles allowed. If a change to module A requires a change to module B,
-  and B already depends on A, this is a circular-dependency violation
-  (architecture.sdd -> ExtractCheck) and MUST be raised, not implemented.
+Note:
+  (prompt/new/21.md, STEP 4) Əvvəlki konkret Payment/Course/User asılılıq
+  qrafı (Payment -> User, Course, PaymentGateway; Course -> User) sıfırlanıb
+  — bax git tarixçəsi (bu commit-dən əvvəl). Gələcək bir "next" konkret
+  domenləri yenidən qurduqda yuxarıdakı RelationTypes lüğəti əsasında
+  konkret qraf yenidən yaradılacaq.
