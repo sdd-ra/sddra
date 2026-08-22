@@ -41,9 +41,12 @@ deyil — canlı, artan bir sənəddir.
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/9.md-ə qədər)
+## Status (prompt/new/10.md-ə qədər)
 
-- `+` PROJECT.sdd, project/map.sdd — router səviyyəsində, kiçik saxlanılır (chunk 9 qaydası)
+- `+` PROJECT.sdd — chunk 10-un kanonik bölmə sırasına (Project/Root/Architecture/
+  Modules/Domains/Paths/ProjectModel/Flow/Skills/Prompts/Tasks/StateSymbols/Rules)
+  görə yenidən strukturlaşdırıldı; Modules (biznes) və Domains (fənn) ayrıldı
+- `+` project/map.sdd — router səviyyəsində, kiçik saxlanılır (chunk 9 qaydası)
 - `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
 - `~` project/course/, project/user/ — yalnız stub, chat hələ bunları detallandırmayıb
 - `+` protocol/symbols.sdd, protocol/stages.sdd, protocol/rules.sdd

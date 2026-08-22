@@ -6,15 +6,19 @@ Root:
 Architecture:
   ModularMonolith
 
+Modules:
+  # Business modules — see project/map.sdd for the full routing index.
+  payment -> ./.sdd/project/payment
+  course  -> ./.sdd/project/course
+  user    -> ./.sdd/project/user
+
 Domains:
+  # Engineering disciplines, not business modules — see Skills below.
   Backend
   Frontend
   Mobile
   QA
   DevOps
-
-Flow:
-  BE -> FE -> MD -> QA -> DO -> VERIFY
 
 Paths:
   BE: ./backend
@@ -23,9 +27,34 @@ Paths:
   QA: ./qa
   DO: ./devops
 
-Specs:
-  ./.sdd/project
-  (per-module: ./.sdd/project/<module>/ — see project/map.sdd)
+ProjectModel:
+  # WHAT / WHY / WHERE — "source of truth", never line-by-line code.
+  root: ./.sdd/project
+  map: ./.sdd/project/map.sdd
+  modules: ./.sdd/project/modules.sdd
+  dependencies: ./.sdd/project/dependencies.sdd
+  architecture: ./.sdd/project/architecture.sdd
+  integrations: ./.sdd/project/integrations.sdd
+  proposals: ./.sdd/project/proposals
+  per-module: ./.sdd/project/<module>/  (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
+
+Flow:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+  AN  = Analyze
+  AR  = Architecture
+  DB  = Database        (optional — see per-module flow.sdd condition)
+  BE  = Backend
+  API = API
+  FE  = Frontend
+  MD  = Mobile
+  QA  = Quality Assurance
+  DO  = DevOps
+  VR  = Verify
+
+  Full abbreviation table + optional-stage mechanism: ./.sdd/protocol/stages.sdd
+  Per-feature execution chain lives in project/<module>/flow.sdd, not here
+  (global files stay routing-only — see project/map.sdd).
 
 Skills:
   BE: ./.sdd/backend
@@ -36,10 +65,6 @@ Skills:
 
 Chains:
   ./.sdd/chains
-
-Protocol:
-  ./.sdd/protocol/symbols.sdd
-  ./.sdd/protocol/rules.sdd
 
 Prompts:
   root: ./.sdd/system/MASTER.md
@@ -54,35 +79,16 @@ Tasks:
 Decisions:
   ./.sdd/decisions
 
-Workflow:
-  1. ANALYZE
-  2. PROPOSE
-  3. HUMAN_APPROVAL
-  4. PLAN
-  5. BACKEND
-  6. FRONTEND
-  7. MOBILE
-  8. QA
-  9. DEVOPS
-  10. VERIFY
-
-DefaultExecutionChain:
-  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
-
-  AN  = Analysis
-  AR  = Architecture
-  DB  = Database        (optional — see per-module flow.sdd condition)
-  BE  = Backend
-  API = API
-  FE  = Frontend
-  MD  = Mobile
-  QA  = Quality Assurance
-  DO  = DevOps
-  VR  = Verify
-
-  Full abbreviation table + optional-stage mechanism: protocol/stages.sdd
-  Per-feature execution chain lives in project/<module>/flow.sdd, not here
-  (global files stay routing-only — see project/map.sdd).
+StateSymbols:
+  # Status vocabulary — see ./.sdd/protocol/symbols.sdd for the full spec.
+  +  = DONE / PASS
+  -  = FAIL
+  ~  = IN_PROGRESS / ACTIVE
+  !  = BLOCKED
+  ?  = NEED_INPUT / DECISION
+  >  = NEXT
+  @  = REFERENCE
+  #  = RULE
 
 Rules:
   Human approval required before implementation.
@@ -95,20 +101,22 @@ Rules:
   See protocol/rules.sdd -> RULE: CHAIN_INTEGRITY for the full enforcement contract.
 
 AdaptivePipeline:
-  Default pipeline above is not mandatory for every task.
+  Default Flow above is not mandatory for every task.
   Each task/feature declares its own "Required stages" subset in its chain file.
 
   Example — backend-only bugfix:
-    BE -> QA -> VERIFY
+    BE -> QA -> VR
 
   Example — UI-only change:
-    FE -> MD -> QA -> VERIFY
+    FE -> MD -> QA -> VR
 
   Example — infrastructure-only change:
-    DO -> VERIFY
+    DO -> VR
 
 Note:
   This is a template/example instance derived from the EduNexus illustration
-  used in the source conversation (prompt/new/1.md..8.md). When applied to a
-  real project, this file and ./project/* MUST be regenerated from evidence
-  per project/architecture.sdd -> ProjectInstantiation, not copied as-is.
+  used in the source conversation (prompt/new/1.md..10.md). When applied to
+  a real project, this file and ./project/* MUST be regenerated from
+  evidence per project/architecture.sdd -> ProjectInstantiation, not copied
+  as-is. PROJECT.sdd itself never holds project knowledge — it only routes
+  to where that knowledge lives (see ProjectModel above).
