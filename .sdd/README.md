@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/20.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/22.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -82,10 +82,10 @@ aiddir, bura yox; "DDD necə tətbiq olunur?" → `skills/`-ə aiddir, bura yox)
   silindi — bunlar artıq mövcud olmayan qovluqlara işarə edirdi və chunk 16-nın flow
   qərarı ilə ziddiyyət təşkil edirdi.
 
-**Aşkarlanmış, hələ düzəldilməmiş qalıq (qabaqlanmır):** `project/architecture.sdd` və
-`project/map.sdd` hələ köhnə `protocol/*.sdd`, `module/flow.sdd` ifadələrinə istinad edir —
-bu, `PROJECT.sdd`-də bir Note kimi qeyd olunub, lakin fayllar özləri toxunulmayıb; yalnız
-uyğun bir gələcək "next" bunu həll edəcək.
+**Aşkarlanmış qalıq — HƏLL OLUNUB (STEP 4, bax aşağıda):** o zaman `project/architecture.sdd`
+və `project/map.sdd` hələ köhnə `protocol/*.sdd`, `module/flow.sdd` ifadələrinə istinad
+edirdi. STEP 4-ün "Tam sıfırla" reset-i bu qalığı silib, hər iki fayl sxem-yalnız formada
+yenidən yazılıb (bax .sdd/project/*.sdd -> hər faylın öz Note-u).
 
 ## STEP 3 — `.sdd/architecture/architecture.sdd` (prompt/new/20.md)
 
@@ -111,6 +111,44 @@ arxitekturasından (`project/architecture.sdd`: stack, ModuleIsolation, LayerArc
 - `architecture/.gitkeep` silindi (artıq real fayl var); `PROJECT.sdd`-də `architecture:`
   girişinin `state:` sətri "boş (STEP 1)"-dən "STEP 3 tamamlandı"-ya yeniləndi.
 
+## STEP 4 — `.sdd/project/` sxem qatı (prompt/new/21.md)
+
+`project/` alt-ağacında qalan köhnə, konkret EduNexus/Payment məzmunu (map.sdd,
+architecture.sdd, dependencies.sdd) ilə chunk 21-in tələb etdiyi sxem-yalnız model arasında
+ziddiyyət aşkarlandı — istifadəçidən **"Tam sıfırla"** təsdiqi alındı (eyni STEP 1 pattern-i):
+
+- **Silindi (git tarixçəsində qalır):** köhnə `map.sdd`/`architecture.sdd`/
+  `dependencies.sdd`-in konkret EduNexus/Payment/Course/User məzmunu, `payment/`, `course/`,
+  `user/`, `proposals/`, `integrations.sdd` — hamısı köhnə `protocol/*.sdd`, `module/flow.sdd`
+  ifadələrinə istinad edirdi.
+- **Sxem-yalnız yenidən yazıldı:** `map.sdd`, `architecture.sdd`, `dependencies.sdd`.
+- **Yeni yaradıldı (sxem-yalnız):** `domains.sdd`, `indexes.sdd`, hər ikisi chunk 21-in
+  adlandırdığı 5 fayldan olmasa da `map.sdd`-nin `Resolution:`-unda istinad edildiyi üçün
+  zəruri idi (bax `modules.sdd` -> Note).
+- Heç bir köhnə `protocol/`-a istinad qalmadı (bax hər faylın öz Note-u, `PROJECT.sdd` -> Note).
+
+## STEP 5 — `.sdd/chains/` chain-tipi modeli (prompt/new/22.md)
+
+Əvvəllər mövcud olan `chains/_TEMPLATE.feature.sdd` (hər feature üçün ayrıca fayl
+instansiasiya edən model, retired `protocol/stages.sdd`/`protocol/rules.sdd`-a istinad edən,
+discipline-bazlı `.sdd/backend/...` skill yolları olan) chunk 22-nin daha sadə chain-tipi
+modeli ilə ziddiyyət təşkil etdi — istifadəçidən **"Tam sıfırla"** təsdiqi alındı:
+
+- **Silindi (git tarixçəsində qalır):** `chains/_TEMPLATE.feature.sdd`.
+- **Yeni yaradıldı:** `chains.sdd` (router — `ChainTypes: feature/bugfix/change`,
+  `Rules: [C1]-[C11]`, `Resolution:` hər tipi öz `.chain` faylına yönləndirir),
+  `feature.chain` (`Sequence: AN>AR>DB>BE>API>FE>MD>QA>DO>VR`, tam `Stages:` siyahısı),
+  `bugfix.chain` (`Sequence: AN>IMPACT>FIX>QA>VR`, yalnız IMPACT/FIX-i tərif edir, AN/QA/VR-i
+  `feature.chain`-ə istinad edir — NoDuplication), `change.chain` (`Sequence:
+  AN>IMPACT>AR>DB>BE>API>FE>MD>QA>DO>VR`, feature.chain + IMPACT-ı təkrar istifadə edir).
+- **Prinsipial ayrım (chunk 22-nin öz sözü ilə):** Architecture = "sistem necə qurulub?",
+  Chain = "iş hansı ardıcıllıqla görülür?" — ikisi fərqli suallara cavab verir.
+- Skill-lərin chain stage-lərinə bağlanması **bilərəkdən indi edilmir** (`chains.sdd -> [C9]`)
+  — `.sdd/skills/` qurulanda görüləcək iş (növbəti "next").
+- `PROJECT.sdd`-nin `chains:` girişinin `purpose:`/`state:` sətirləri yeniləndi;
+  `architecture/architecture.sdd`-nin `CHAINS` komponentinin köhnə "feature-per-chain, STEP 8"
+  rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -118,7 +156,7 @@ arxitekturasından (`project/architecture.sdd`: stack, ModuleIsolation, LayerArc
 ├── PROJECT.sdd     — .sdd sisteminin ana entry point-i
 ├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE)
 ├── architecture/   — .sdd sisteminin və project architecture qaydalarının modeli (boş, STEP 1)
-├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (feature-per-chain şablonu)
+├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (boş, STEP 1)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence
 ├── tasks/          — aktiv / planlanmış / tamamlanmış işlərin vəziyyəti
@@ -131,7 +169,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/20.md-ə qədər)
+## Status (prompt/new/22.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -142,19 +180,20 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
 - `+` **`PROJECT.sdd` STEP-2 rewrite (prompt/new/19.md):** router/constitution roluna
   uyğunlaşdırıldı — `Directories:`/`Navigation:`/`NavigationFlow:`/`Rules: [R1]-[R11]` əlavə
   olundu, köhnə `Reference:/Disciplines:/SkillModel:/Flow:/FlowRules:` bloku silindi.
-- `?` `project/architecture.sdd` və `project/map.sdd`-də `protocol/*.sdd`, `module/flow.sdd`-ə
-  dangling istinadlar qalır — bilinən, təxirə salınmış qalıq (bax yuxarıda).
-- `+` `project/` alt-ağacı — toxunulmadı, əvvəlki bütün iş (map.sdd, modules.sdd,
-  dependencies.sdd, architecture.sdd + LayerArchitecture, integrations.sdd,
-  payment/{payment,db,api,cases}.sdd, course/course.sdd stub, user/user.sdd stub) qüvvədədir.
-- `+` `chains/_TEMPLATE.feature.sdd`, `prompts/README.md`, `tasks/README.md`,
-  `decisions/README.md` — toxunulmadı.
 - `+` **`architecture/architecture.sdd` (prompt/new/20.md):** `.sdd`-in öz komponent
   qrafı (Components/Relationships/Allowed/Forbidden/Principles) yaradıldı; `.gitkeep`
   silindi.
+- `+` **`project/` STEP-4 "Tam sıfırla" (prompt/new/21.md):** köhnə konkret EduNexus/
+  Payment/Course/User məzmunu (`payment/`, `course/`, `user/`, `proposals/`,
+  `integrations.sdd`) silindi (git tarixçəsində qalır); `map.sdd`/`architecture.sdd`/
+  `dependencies.sdd` sxem-yalnız yenidən yazıldı, `domains.sdd`/`indexes.sdd` yeni yaradıldı.
+  Əvvəlki `protocol/*.sdd`, `module/flow.sdd` dangling istinadları HƏLL OLUNUB.
+- `+` **`chains/` STEP-5 "Tam sıfırla" (prompt/new/22.md):** köhnə `_TEMPLATE.feature.sdd`
+  (per-feature instansiasiya modeli) silindi (git tarixçəsində qalır); `chains.sdd` router +
+  `feature.chain`/`bugfix.chain`/`change.chain` yaradıldı (chain-tipi modeli). Skill-bağlama
+  bilərəkdən indi edilmir.
+- `+` `prompts/README.md`, `tasks/README.md`, `decisions/README.md` — toxunulmadı.
 - `!` `skills/`, `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə
-  müəyyənləşəcək.
-- `?` Əvvəlki `protocol/` (symbols/stages/rules) və silinmiş skill-HOW qovluqlarının
-  yeni skeletdə hara "köçəcəyi" hələ mənbə tərəfindən deyilməyib — qabaqlanmır.
+  müəyyənləşəcək. `skills/` növbəti addımın (STEP 6) mövzusudur.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
