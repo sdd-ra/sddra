@@ -14,6 +14,30 @@ deyil — canlı, artan bir sənəddir.
   bağlananda `.sdd/project/*` real modul strukturuna görə yenidən generasiya olunmalıdır
   (bax `project/architecture.sdd` → `ProjectInstantiation` prinsipi).
 
+## ⚠️ Kritik ayrım (prompt/new/14.md)
+
+Mənbə chat özü bu nöqtədə öz səhvini düzəldir, və bu, bundan sonra
+pozulmayacaq bir qayda kimi qəbul edilir:
+
+```
+.sdd/            — MEN (bu repo-nu quran AI) tikirəm: model + rules +
+                   skills + flow + state.
+                        ↓
+                   PROMPT ENGINE  (.sdd-in özü yox, ayrıca mexanizm)
+                        ↓
+real project/    — backend/, frontend/, mobile/, tests/, infrastructure/...
+                   BUNU MƏN ƏL İLƏ YARATMIRAM. Bunu prompt engine, .sdd
+                   modelinə əsaslanaraq, gələcəkdə yaradır/idarə edir.
+```
+
+Deməli, `.sdd/*.sdd` fayllarında görünən `BE: ./backend/payment` kimi
+sətirlər **"real `./backend/payment` qovluğunu indi yarat" demək deyil** —
+sadəcə "gələcəkdə AI real kodu harada axtarmalıdır" göstəricisidir
+(reference, indeks — icra əmri deyil). Bu repoda `git ls-files` yoxlanılıb:
+heç bir real `backend/`, `frontend/`, `mobile/`, `qa/`, `devops/` qovluğu
+kök səviyyəsində yaradılmayıb, yalnız `.sdd/backend/` və s. (skill/HOW
+qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunacaq.
+
 ## Struktur
 
 ```
@@ -41,9 +65,15 @@ deyil — canlı, artan bir sənəddir.
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/13.md-ə qədər)
+## Status (prompt/new/14.md-ə qədər)
 
-- `+` PROJECT.sdd — chunk 12-nin verdiyi TAM, finallaşmış konstitusiya mətni ilə
+- `+` README — chunk 14-ün kritik ayrımı (`.sdd` mən qururam / real project
+  path-ləri prompt engine üçün referansdır, indi əl ilə yaradılmır) ayrıca
+  bölmə kimi sənədləşdirildi. Struktur dəyişikliyi tələb olunmadı — bu repo
+  artıq bu qaydaya uyğun idi (yoxlanıldı: heç bir real backend/frontend/...
+  qovluğu yaradılmamışdı).
+
+- `+` (prompt/new/13.md-ə qədər idi, hələ də doğrudur) PROJECT.sdd — chunk 12-nin verdiyi TAM, finallaşmış konstitusiya mətni ilə
   əvəz olundu (Purpose/Model/Disciplines/ProjectMap/ModuleModel/SkillModel/Flow/
   State/R1-R15 Rules/Navigation/FlowRules/Failure/Completion/PromptProcessing/
   HumanDecision). Real disk path-lər (BE/FE/MD/QA/DO) artıq yalnız map.sdd-də

@@ -32,6 +32,11 @@ Paths:
   MD -> ./mobile
   QA -> ./qa
   DO -> ./devops
+  # NOTE (prompt/new/14.md): these are lookup references for where AI
+  # should find real project code once it exists — NOT an instruction to
+  # scaffold these folders now. .sdd/ is built by hand (this repo); the
+  # real project (backend/, frontend/, ...) is built later by a separate
+  # prompt engine, driven by this model. Do not create these folders here.
 
 Rules:
   A module MUST have its own project model.

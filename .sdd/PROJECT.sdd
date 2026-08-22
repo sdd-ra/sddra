@@ -172,6 +172,15 @@ Reference:
   protocol:  .sdd/protocol/{symbols,stages,rules}.sdd
 
 Note:
+  (prompt/new/14.md) .sdd/ itself is the only thing built directly, by
+  hand, in this repo. Real project paths referenced anywhere in .sdd/
+  (project/map.sdd -> Paths:, module Owns: entries) are lookup references
+  for a separate prompt engine to act on later — never an instruction to
+  scaffold backend/, frontend/, mobile/, qa/, devops/ folders now.
+  .sdd = engineering brain; Prompt = the mechanism executing its decisions
+  in the real project; Real project = source of truth. This separation is
+  not to be violated in any future step.
+
   PROJECT.sdd is a constitution, not an encyclopedia (prompt/new/12.md).
   It never states which table Payment uses (-> .sdd/project/payment/) or
   what DDD requires (-> .sdd/backend/ddd/skill.md) — only where to find
