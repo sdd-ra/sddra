@@ -1,0 +1,164 @@
+Prompts: SDD
+
+Purpose:
+  Manage, analyze, classify and preserve project prompts before they
+  become executable work. Bu fayl `.sdd`-in "giriş filtri"dir — yeni
+  gələn hər prompt birbaşa `tasks/`-a düşmür, əvvəlcə bu modeldən keçir
+  (bax Lifecycle aşağıda).
+
+  Fərqləndirmə (əvvəlki qatlarla): `chains/` işin NƏ VAXT/HANSI SIRAYLA
+  görüləcəyini (WHEN/ORDER), `skills/` NECƏ icra olunacağını (HOW) təyin
+  edir — `prompts/` isə bunlardan əvvəl gəlir: yeni bir mətn parçasının
+  ÜMUMİYYƏTLƏ nəyə aid olduğunu (tapşırıq? bilgi? qərar tələbi?
+  ziddiyyət?) həll edir. Nəticədə iş `tasks/`-a, layihə bilgisi
+  `project/`-ə, mühəndislik qaydası `skills/`-ə, arxitektura qərarı isə
+  `decisions/`-ə köçürülür (bax Comparison/Decision aşağıda).
+
+Directories:
+
+  inbox:
+    path: ./inbox
+    purpose: Newly received prompts, not yet analyzed
+    state: boş (STEP 7)
+
+  active:
+    path: ./active
+    purpose: Prompts currently affecting active work
+    state: boş (STEP 7)
+
+  archive:
+    path: ./archive
+    purpose: Processed prompts with no further actionable value (rədd
+      olunanlar da daxil, bax [P19])
+    state: boş (STEP 7)
+
+  extracted:
+    path: ./extracted
+    purpose: Useful knowledge extracted from prompts, pending routing to
+      project/skills/decisions (bax KnowledgeExtraction aşağıda)
+    state: boş (STEP 7)
+
+  conflicts:
+    path: ./conflicts
+    purpose: Prompt conflicts requiring human resolution (bax [P11]/[P20])
+    state: boş (STEP 7)
+
+
+Lifecycle:
+
+  RECEIVE > ANALYZE > CLASSIFY > COMPARE > IMPACT > DECIDE > EXECUTE / BACKLOG / ARCHIVE
+
+
+PromptTypes:
+  requirement, feature, bug, architecture, improvement, constraint, skill,
+  process, decision, knowledge
+
+
+Rules:
+
+  [P1] Every new prompt MUST be analyzed before execution.
+  [P2] AI MUST check existing prompt knowledge before processing a new prompt.
+  [P3] A prompt MUST be compared against existing project knowledge, active
+       tasks, chains, skills and decisions when relevant (bax Comparison).
+  [P4] AI MUST determine whether the prompt is: new / duplicate / update /
+       conflict / obsolete / related / higher_priority.
+  [P5] Useful new knowledge MUST NOT be copied blindly into skills (bax
+       skills/skills.sdd -> [S3] — eyni sərhəd, bu tərəfdən: prompt xam
+       mətn kimi deyil, KnowledgeExtraction zənciri ilə skill-ə çevrilir).
+  [P6] Project-specific knowledge belongs to project/.
+  [P7] Engineering knowledge belongs to skills/.
+  [P8] Architecture decisions belong to decisions/.
+  [P9] Executable work belongs to tasks/.
+  [P10] A prompt MUST NOT silently change global SDD rules (bax
+        architecture/architecture.sdd -> Forbidden: PROMPTS).
+  [P11] Conflicting information MUST be preserved until resolved — bax
+        `conflicts/` qovluğu; heç vaxt sadəcə silinmir.
+  [P12] AI MUST identify whether the prompt affects the current task.
+  [P13] AI MUST identify whether the prompt creates future work.
+  [P14] AI MAY create backlog work from a prompt.
+  [P15] AI MAY identify parallel work when dependencies allow it.
+  [P16] AI MUST identify higher-priority work that should be completed
+        before the current task.
+  [P17] Processed prompts MUST remain traceable (bax Traceability aşağıda).
+  [P18] Archived prompts MUST NOT be treated as active instructions unless
+        explicitly reactivated.
+  [P19] (best-practice əlavə) Rədd edilmiş ("rejected") bir prompt ayrıca
+        qovluq deyil, ARCHIVE nəticəsinin bir alt-halıdır — rədd səbəbi
+        `Traceability.final_action` sahəsində saxlanılır, fayl özü
+        `archive/`-ə köçür (bax Note aşağıda, "Tam sıfırla" qərarı).
+  [P20] (best-practice əlavə) ESCALATE nəticəsi (bax Decision) `decisions/`
+        altında açıq, insan qərarı gözləyən bir item yaratmalıdır — bax
+        PROJECT.sdd -> HumanDecision / [R9]/[R11]; bu fayl həmin qaydanı
+        təkrar tərif etmir, yalnız prompt axınına tətbiq edir.
+
+
+Comparison:
+  NewPrompt > ExistingPrompts > ProjectModel > Architecture > Skills >
+  Chains > Tasks > Decisions
+
+
+Impact:
+  current: affects active work
+  dependency: blocks or changes another task
+  parallel: can be executed independently
+  future: creates future work
+  global: affects project-wide rules
+  none: no actionable impact
+
+
+Decision:
+  EXECUTE: new work can start
+  UPDATE: existing knowledge/task must be updated
+  BACKLOG: useful but not currently executable
+  PARALLEL: independent work can be scheduled
+  ESCALATE: human decision required (bax [P20])
+  ARCHIVE: no actionable value (rədd edilənlər daxil, bax [P19])
+
+
+KnowledgeExtraction:
+  (best-practice əlavə, [P5]-in "necə" sualına cavabı) Xam prompt mətni
+  birbaşa skill-ə çevrilmir, sabit zəncirdən keçir:
+
+    prompt (inbox/) > extracted knowledge (extracted/) > skill proposal
+    > human approval > skill (skills/<domain>/)
+
+  Zəncir qırılmadan heç bir prompt mətni birbaşa `skills/` altına
+  düşməməlidir — bu, `.sdd/prompts/`-un "bilgi zibilliyinə" çevrilməsinin
+  qarşısını alır.
+
+
+Traceability:
+  Every processed prompt MUST preserve:
+    source, received_at, classification, affected_area, related_task,
+    related_decision, extracted_knowledge, final_action
+
+
+State: +
+  (STEP 7 tamamlandı — skelet: prompts.sdd router + 5 qovluq (inbox/
+  active/archive/extracted/conflicts) yaradıldı. Konkret prompt fayl
+  formatı və nümunə instansiya hələ yazılmayıb.)
+
+Note:
+  (prompt/new/24.md, STEP 7) Bu fayl mənbə template-ə əsasən yazılıb, bir
+  neçə best-practice əlavəsi ilə: (1) Purpose bölməsinə `prompts/`-un
+  digər üç qatdan (project/architecture/chains/skills) necə fərqləndiyi
+  izah edildi; (2) hər Directory-ə `state:` sahəsi əlavə olundu (bax
+  PROJECT.sdd -> [R10]); (3) [P19]/[P20] əlavə olundu — "rejected"
+  anlayışının ARCHIVE-in bir alt-halı kimi formallaşdırılması və
+  ESCALATE-in `decisions/`-ə necə bağlandığının aydınlaşdırılması üçün;
+  (4) `KnowledgeExtraction` bölməsi əlavə olundu — [P5] mənbədə yalnız
+  bir cümləlik qadağa idi, burda konkret zəncir kimi ifadə olunub.
+
+  Struktur ("Tam sıfırla" — istifadəçi təsdiqi ilə həll olundu): STEP 1-
+  dən əvvəl mövcud olan köhnə `.sdd/prompts/` (dörd qovluq: inbox/active/
+  archive/rejected + `system/MASTER.md`-ə istinad edən köhnəlmiş
+  README.md) bu addımla sıfırlanıb. `rejected/` qovluğu silinib (git
+  tarixçəsində qalır) və [P19] ilə ARCHIVE-in alt-halı kimi əvəz olunub;
+  `extracted/` və `conflicts/` yeni yaradılıb (mənbə spesifikasiyasında
+  var idi, köhnə struktur onları saxlamırdı); README.md-dəki dangling
+  `system/MASTER.md` istinadı silinib (bax .sdd/prompts/README.md).
+
+  Konkret prompt instansiyaları (real `inbox/*.md` faylları, real
+  `extracted/*.sdd` bilgiləri) BİLƏRƏKDƏN bu addımda yaradılmır — bu,
+  yalnız skelet + qayda mühərriki addımıdır, eynilə STEP 5/STEP 6-da
+  olduğu kimi.

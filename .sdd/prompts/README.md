@@ -1,15 +1,20 @@
 # .sdd/prompts/ — Prompt Intelligence Layer
 
-Not the same as `.sdd/system/` (the engine's own operating instructions).
-This is the inbox for *new* incoming instructions/prompts that must be
-triaged before they're applied — see `system/MASTER.md` ->
-"Prompt Intelligence Layer".
+Bax `prompts.sdd` — bu qovluğun tam qayda mühərriki (Purpose, Directories,
+Lifecycle, PromptTypes, Rules `[P1]-[P20]`, Comparison, Impact, Decision,
+KnowledgeExtraction, Traceability) orda tərif olunub. Bu README yalnız
+qısa bir naviqasiya xülasəsidir.
 
-- `inbox/`    — newly dropped prompts, not yet analyzed
-- `active/`   — analyzed, applies to current work
-- `archive/`  — analyzed, no effect on current or future work
-- `rejected/` — analyzed and explicitly rejected (with reason)
+Prompt-lar `RECEIVE > ANALYZE > CLASSIFY > COMPARE > IMPACT > DECIDE >
+EXECUTE / BACKLOG / ARCHIVE` axınından keçir və qərara görə aşağıdakı
+qovluqlardan birinə düşür:
 
-(A `backlog` case — future-relevant but no current impact — is planned but
-does not yet have a dedicated folder in this replay; revisit once a later
-chunk specifies its storage shape.)
+- `inbox/`      — yeni gələn, hələ analiz olunmamış prompt-lar
+- `active/`     — analiz olunub, cari işə təsir edir
+- `archive/`    — analiz olunub, aktiv təsiri yoxdur (rədd edilənlər də
+  daxil — ayrıca `rejected/` qovluğu yoxdur, bax `prompts.sdd` -> `[P19]`)
+- `extracted/`  — prompt-dan çıxarılmış faydalı bilgi, hələ `project/` /
+  `skills/` / `decisions/`-ə köçürülməyib (bax `prompts.sdd` ->
+  `KnowledgeExtraction`)
+- `conflicts/`  — həll olunmamış prompt ziddiyyətləri, insan qərarı
+  gözləyir (bax `prompts.sdd` -> `[P11]`/`[P20]`)
