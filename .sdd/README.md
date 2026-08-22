@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/22.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/23.md`-ə qədər oxunub (93 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -149,6 +149,34 @@ modeli ilə ziddiyyət təşkil etdi — istifadəçidən **"Tam sıfırla"** t�
   `architecture/architecture.sdd`-nin `CHAINS` komponentinin köhnə "feature-per-chain, STEP 8"
   rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
 
+## STEP 6 — `.sdd/skills/` Skill Architecture (prompt/new/23.md)
+
+`.sdd/skills/` əvvəllər tam boş idi (yalnız `.gitkeep`) — heç bir ziddiyyət olmadığı üçün
+bu addım "Tam sıfırla" tələb etmədi, sırf əlavə (additive) tikinti oldu:
+
+- **Yeni yaradıldı:** `skills.sdd` (router — `SkillDomains: global/backend/api/frontend/
+  mobile/database/qa/devops`, `Rules: [S1]-[S16]`, `SkillContract` şablonu, `Execution:`
+  axını) + 8 boş `SkillDomain` qovluğu (yuxarıdakı domenlərin hər biri, hələ heç bir
+  konkret skill faylı olmadan). Kök səviyyəli `skills/.gitkeep` artıq lazımsız olduğu
+  üçün silindi (qovluqda real fayl — `skills.sdd` — var).
+- **Dörd qatlı bilgi modeli** (`skills.sdd -> Purpose`-də tərif olunub): `project/` =
+  WHAT/WHERE, `architecture/` = RULES, `chains/` = WHEN/ORDER, `skills/` = HOW.
+- **Ən vacib sərhəd ([S3]):** skill faylları heç vaxt project-specific bilgi (məsələn
+  "Payment table", "PaymentService", "./backend/payment") saxlamayacaq — bu yalnız
+  `.sdd/project/`-də yaşayır. Skill yalnız "Repository Pattern necə tətbiq olunur?"
+  səviyyəsində ümumi mühəndislik qaydası saxlayır.
+- **Best-practice əlavə [S16]:** boş domain qovluğu elan olunmuş placeholder-dir, unudulmuş
+  qovluqdan fərqlidir; elan olunmamış domendə skill yaratmaq qadağandır (bax `chains.sdd
+  -> [C1]` ilə eyni orphan-qadağası prinsipi).
+- Skill-lərin real yazılması (`backend/ddd/skill.md`, `backend/security/skill.md` və s.)
+  və onların `requires:` zənciri ilə bağlanması **bilərəkdən indi edilmir** — mənbə özü
+  "Hələ bunların içində konkret skill yaratmırıq" deyir.
+- Chain stage-lərinə skill bağlanması (`chains.sdd -> [C9]`) də hələ edilmir — konkret
+  skill-lər olmadan mənasız olardı (bax `skills.sdd -> Execution -> Qeyd`).
+- `PROJECT.sdd`-nin `skills:` girişinin `purpose:`/`state:` sətirləri yeniləndi;
+  `architecture/architecture.sdd`-nin `SKILLS` komponentinin köhnə/yanlış "STEP 9" işarəsi
+  "STEP 6"-ya düzəldildi (bax architecture/architecture.sdd -> Note).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -157,7 +185,7 @@ modeli ilə ziddiyyət təşkil etdi — istifadəçidən **"Tam sıfırla"** t�
 ├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE)
 ├── architecture/   — .sdd sisteminin və project architecture qaydalarının modeli (boş, STEP 1)
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
-├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (boş, STEP 1)
+├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence
 ├── tasks/          — aktiv / planlanmış / tamamlanmış işlərin vəziyyəti
 ├── decisions/       — human decision və architecture qərarları
@@ -169,7 +197,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/22.md-ə qədər)
+## Status (prompt/new/23.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -192,8 +220,12 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   (per-feature instansiasiya modeli) silindi (git tarixçəsində qalır); `chains.sdd` router +
   `feature.chain`/`bugfix.chain`/`change.chain` yaradıldı (chain-tipi modeli). Skill-bağlama
   bilərəkdən indi edilmir.
+- `+` **`skills/` STEP-6 additive tikinti (prompt/new/23.md):** `.sdd/skills/` tam boş idi,
+  ziddiyyət yox idi — `skills.sdd` router (`SkillDomains` ×8, `Rules: [S1]-[S16]`,
+  `SkillContract`, `Execution:`) + 8 boş `SkillDomain` qovluğu yaradıldı. Kök `.gitkeep`
+  silindi. Konkret skill-lər və `requires:` zənciri, eləcə də chain-skill bağlanması
+  (`chains.sdd -> [C9]`) bilərəkdən hələ edilmədi.
 - `+` `prompts/README.md`, `tasks/README.md`, `decisions/README.md` — toxunulmadı.
-- `!` `skills/`, `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə
-  müəyyənləşəcək. `skills/` növbəti addımın (STEP 6) mövzusudur.
+- `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
