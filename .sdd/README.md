@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/13.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/15.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -65,8 +65,20 @@ qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunaca
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/14.md-ə qədər)
+## Status (prompt/new/15.md-ə qədər)
 
+- `+` protocol/stages.sdd — chunk 15-in verdiyi TransitionRules [T1]-[T10],
+  DefaultFailureRouting və DefaultDependencyRules əlavə olundu. Bunlar
+  hərfi olaraq hər modulun flow.sdd-inə köçürülmədi (mənbə belə edir) —
+  R2-ə görə bir dəfə burada, qlobal səviyyədə saxlanılır; module/flow.sdd
+  yalnız özünə aid fərqi (input/output/skip) yazır və `@protocol/stages.sdd`
+  ilə bağlanır. Bu, [[sddra-apply-not-copy]] qaydasına görə şüurlu bir
+  arxitektur qərarıdır, mənbənin öz strukturunun mexaniki təkrarı deyil.
+- `+` project/payment/flow.sdd — chunk 15-in `StageContract` şablonuna görə
+  hər 10 mərhələ üçün `input/output/next/skip/fail` Payment-ə xas
+  dəyərlərlə dolduruldu (məs. DB stage-i escrow_transaction/ledger modelinə,
+  BE stage-i PaymentService-ə istinad edir). Köhnə `State:` legend bloku
+  silindi (artıq `protocol/symbols.sdd`-də var, təkrar deyildi).
 - `+` README — chunk 14-ün kritik ayrımı (`.sdd` mən qururam / real project
   path-ləri prompt engine üçün referansdır, indi əl ilə yaradılmır) ayrıca
   bölmə kimi sənədləşdirildi. Struktur dəyişikliyi tələb olunmadı — bu repo
