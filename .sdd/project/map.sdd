@@ -8,16 +8,41 @@ Purpose:
 
 Project: EduNexus
 
+ProjectMap:
+
 Modules:
   payment -> ./project/payment
   course  -> ./project/course
   user    -> ./project/user
 
-BE -> ./backend
-FE -> ./frontend
-MD -> ./mobile
-QA -> ./qa
-DO -> ./devops
+Domains:
+  # NOTE: the source (prompt/new/11.md) repeats the same module list under
+  # both "Modules:" and "Domains:" here — this is module-level "Domains"
+  # (business domain = same thing as Modules in this router's context), NOT
+  # the discipline-level "Domains:" (Backend/Frontend/Mobile/QA/DevOps)
+  # used in PROJECT.sdd. Kept as the source states it rather than silently
+  # merged, to avoid inventing a resolution the chat itself hasn't made yet.
+  payment -> ./project/payment
+  course  -> ./project/course
+  user    -> ./project/user
+
+Paths:
+  BE -> ./backend
+  FE -> ./frontend
+  MD -> ./mobile
+  QA -> ./qa
+  DO -> ./devops
+
+Rules:
+  A module MUST have its own project model.
+  Module knowledge MUST stay inside its module directory.
+  Global map MUST contain routing information only.
+  Do not duplicate module details here.
+
+Resolve:
+  payment -> ./project/payment/payment.sdd
+  course  -> ./project/course/course.sdd
+  user    -> ./project/user/user.sdd
 
 Flow:
   feature -> module/flow.sdd
@@ -27,8 +52,17 @@ Navigation:
     -> PROJECT.sdd
     -> map.sdd
     -> IDENTIFY MODULE
-    -> module/*.sdd
+    -> Resolve[module]  (module/*.sdd)
     -> IDENTIFY REQUIRED FLOW -> module/flow.sdd
     -> CURRENT STAGE -> LOAD STAGE SKILLS
     -> LOAD ONLY WHAT'S NEEDED: db.sdd? api.sdd? cases.sdd?
     -> WORK -> VALIDATE -> UPDATE STATE -> NEXT FLOW NODE
+
+Status:
+  payment/, course/, user/ module folders and their payment.sdd/flow.sdd/
+  db.sdd/api.sdd/cases.sdd already exist (built ahead, in prompt/new/9.md's
+  step) — course/ and user/ are still stubs. This is further along than
+  prompt/new/11.md's own pacing ("STEP 2 is map.sdd only, don't create the
+  module folders yet"), which is fine: this repo applies accumulated
+  knowledge as it's read, not a strict re-enactment of the original chat's
+  step-by-step reveal order.
