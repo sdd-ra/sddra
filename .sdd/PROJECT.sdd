@@ -19,8 +19,8 @@ Directories:
 
   architecture:
     path: ./architecture
-    purpose: .sdd sisteminin və layihənin architecture tərifləri/qaydaları
-    state: boş (STEP 1) — layihə-səviyyəli architecture hələ project/architecture.sdd-də
+    purpose: .sdd sisteminin öz komponent arxitekturası (bax architecture/architecture.sdd)
+    state: STEP 3 tamamlandı — layihə-səviyyəli architecture ayrıca project/architecture.sdd-də qalır
 
   chains:
     path: ./chains

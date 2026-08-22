@@ -1,0 +1,199 @@
+Architecture: SDD
+
+Purpose:
+  Define the internal architecture of the .sdd system itself — which
+  components exist inside .sdd/, how they relate, and which relationships
+  are allowed. This is NOT the project's technical architecture (stack,
+  module isolation, layers) — that lives in project/architecture.sdd
+  (bax Note aşağıda, adı bənzər olsa da miqyası fərqlidir).
+
+Owns:
+  .sdd/
+
+Components:
+
+  PROJECT:
+    path: ../PROJECT.sdd
+    role: Root entry point / router (bax PROJECT.sdd -> Rules R1-R3)
+
+  PROJECT_MODEL:
+    path: ../project
+    role: Project knowledge model (WHAT/WHY/WHERE)
+
+  ARCHITECTURE:
+    path: ../architecture
+    role: SDD system architecture definitions (this file)
+
+  CHAINS:
+    path: ../chains
+    role: Execution chains (feature-per-chain, STEP 8)
+
+  SKILLS:
+    path: ../skills
+    role: Engineering skills (HOW, STEP 9)
+
+  PROMPTS:
+    path: ../prompts
+    role: Prompt intelligence (inbox, analysis)
+
+  TASKS:
+    path: ../tasks
+    role: Work management (active/planned/completed)
+
+  DECISIONS:
+    path: ../decisions
+    role: Human decisions
+
+  STATE:
+    path: ../state
+    role: System state
+
+
+Relationships:
+
+  PROJECT
+    -> PROJECT_MODEL
+
+  PROJECT
+    -> ARCHITECTURE
+
+  PROJECT_MODEL
+    -> CHAINS
+
+  CHAINS
+    -> SKILLS
+
+  PROMPTS
+    -> TASKS
+
+  TASKS
+    -> STATE
+
+  DECISIONS
+    -> ARCHITECTURE
+    -> PROJECT_MODEL
+    -> CHAINS
+
+
+Allowed:
+
+  PROJECT:
+    may_reference:
+      PROJECT_MODEL
+      ARCHITECTURE
+      CHAINS
+      SKILLS
+      PROMPTS
+      TASKS
+      DECISIONS
+      STATE
+
+  PROJECT_MODEL:
+    may_reference:
+      ARCHITECTURE
+      CHAINS
+      SKILLS
+      TASKS
+      DECISIONS
+
+  CHAINS:
+    may_reference:
+      SKILLS
+      TASKS
+      STATE
+      DECISIONS
+
+  TASKS:
+    may_reference:
+      PROJECT_MODEL
+      CHAINS
+      SKILLS
+      DECISIONS
+      STATE
+
+  PROMPTS:
+    may_reference:
+      PROJECT_MODEL
+      ARCHITECTURE
+      CHAINS
+      SKILLS
+      TASKS
+      DECISIONS
+
+
+Forbidden:
+
+  SKILLS:
+    MUST NOT redefine PROJECT architecture.
+
+  TASKS:
+    MUST NOT redefine global SDD architecture.
+
+  PROMPTS:
+    MUST NOT silently modify architecture or global rules.
+
+  STATE:
+    MUST NOT define architecture.
+
+  PROJECT_MODEL:
+    MUST NOT contain engineering skill instructions.
+
+  ARCHITECTURE:
+    MUST NOT contain implementation code.
+
+
+Principles:
+
+  SeparationOfConcerns:
+    Each SDD component MUST own one responsibility.
+
+  SingleSourceOfTruth:
+    A fact MUST have one authoritative SDD owner.
+
+  ExplicitReference:
+    Cross-component knowledge MUST use references.
+
+  Locality:
+    Detailed knowledge MUST live as close as possible to
+    the component that owns it.
+
+  NoDuplication:
+    The same knowledge MUST NOT be copied across multiple SDD files.
+
+  Traceability:
+    Every task MUST be traceable to a project element,
+    chain stage or decision.
+
+  HumanControl:
+    Global architecture changes require human approval — this is the
+    same rule as PROJECT.sdd -> Rules [R9]/[R11], not a separate
+    definition; this file does not restate it as new authority, it just
+    applies it to the SDD component graph above.
+
+State: +
+  (STEP 3 tamamlandı — bax PROJECT.sdd -> Rules [R10]: mərhələ bitəndə
+  state işarələnməlidir.)
+
+Note:
+  (prompt/new/20.md) Bu fayl `.sdd`-in ÖZ komponentlərinin (PROJECT,
+  PROJECT_MODEL, ARCHITECTURE, CHAINS, SKILLS, PROMPTS, TASKS, DECISIONS,
+  STATE) bir-biri ilə necə əlaqələndiyini təsvir edir — "meta" səviyyədədir.
+
+  Fərqləndirmə (adı toqquşduğu üçün vacib): `project/architecture.sdd`
+  layihənin öz texniki arxitekturasıdır (stack, ModuleIsolation,
+  LayerArchitecture — FE/BE/DB necə çağırır) və bu fayldan TAMAMILƏ
+  ayrıdır. Bu fayl heç vaxt `project/architecture.sdd`-in məzmununu
+  təkrarlamır (bax NoDuplication prinsipi yuxarıda) — sadəcə
+  PROJECT_MODEL komponenti kimi ona referans verir.
+
+  `project/architecture.sdd` özü hələ köhnə `protocol/symbols.sdd`,
+  `protocol/rules.sdd` ifadələrinə istinad edir (bax .sdd/PROJECT.sdd ->
+  Note, "məlum, hələ təmizlənməmiş qalıq") — bu fayl həmin problemi HƏLL
+  ETMİR, çünki fərqli bir sənəddir və next-gated qaydaya görə yalnız
+  uyğun bir "next" gələndə düzələcək.
+
+  Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
+  saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
+  strukturu artıq özü aydın və tam idi; əlavə edilən yeganə best-practice
+  hissələr bu Note və `HumanControl`-un R9/R11-ə açıq istinadı, həmçinin
+  `State:` sətridir (R10-a uyğun).
