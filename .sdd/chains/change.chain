@@ -1,0 +1,32 @@
+Chain: Change
+
+Purpose:
+  Artıq tamamlanmış işin arxitektura və ya davranış baxımından fərqli
+  edilməli olduğu hallar üçün mərhələ ardıcıllığı — "sonrakı bir prompt
+  göstərdi ki, bu iş fərqli edilməli imiş" ssenarisi. AN/AR/DB/BE/API/FE/
+  MD/QA/DO/VR burada TƏKRAR TƏRİF OLUNMUR — bax feature.chain -> Stages;
+  IMPACT bax bugfix.chain -> Stages (eyni ad, bu kontekstdə fərqli
+  məzmun, aşağıda izah olunur).
+
+Sequence:
+  AN>IMPACT>AR>DB>BE>API>FE>MD>QA>DO>VR
+
+Rules:
+  Bu chain həqiqətən feature.chain-in özüdür, sadəcə AN-dan sonra bir
+  IMPACT stage-i əlavə olunub (bax Sequence yuxarıda feature.chain-in
+  Sequence-i ilə müqayisə et).
+
+  IMPACT stage-i burada bugfix.chain-dəkindən fərqli məna daşıyır: xətanın
+  təsirini deyil, DƏYIŞIKLIYIN artıq tamamlanmış hansı stage-lərin
+  nəticəsini etibarsız etdiyini müəyyən edir (bax chains.sdd -> [C5],
+  reopen-on-invalidation).
+
+  IMPACT-ın müəyyən etdiyi hər tamamlanmış stage yenidən AÇILMALIDIR
+  (state → yenidən aktiv, bax PROJECT.sdd -> State işarələri) — səssizcə
+  ötürülə bilməz (bax chains.sdd -> [C6]).
+
+Note:
+  (prompt/new/22.md, STEP 5) Fərq feature.chain ilə: change.chain onsuz
+  da mövcud, tamamlanmış bir işin üzərindən keçir və əvvəlki nəticələri
+  şərti olaraq etibarsız edə bilər; feature.chain sıfırdan başlayır və
+  belə reopen-invalidation məntiqinə ehtiyac duymur.

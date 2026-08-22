@@ -1,0 +1,74 @@
+Chains: SDD
+
+Purpose:
+  Define and route execution chains — the ordered sequence of stages a
+  unit of work moves through. This is NOT the system's structural
+  architecture (bax project/architecture.sdd, architecture/architecture.sdd
+  -> Note): chains answer "bu iş hansı ardıcıllıqla görülməlidir?",
+  architecture isə "sistem necə qurulub?" sualına cavab verir.
+
+ChainTypes:
+  feature
+  bugfix
+  change
+
+Rules:
+
+  [C1]
+  Every task MUST belong to a chain.
+
+  [C2]
+  Every chain MUST define an ordered sequence.
+
+  [C3]
+  A stage MUST NOT start before its required predecessor is complete.
+
+  [C4]
+  A failed stage MUST route to its declared recovery stage.
+
+  [C5]
+  A completed stage MUST be reopened when a later change invalidates
+  its output.
+
+  [C6]
+  A chain MUST NOT silently skip a required stage.
+
+  [C7]
+  Optional stages MUST declare their activation condition.
+
+  [C8]
+  Chain definitions MUST NOT contain engineering implementation rules
+  (bax architecture/architecture.sdd -> SeparationOfConcerns: eyni prinsip
+  burada da tətbiq olunur — HOW skills/-ə aiddir, bura yox).
+
+  [C9]
+  Chain stages MAY reference skills (bağlama hələ edilmir, bax Note).
+
+  [C10]
+  Chain stages MAY reference project models.
+
+  [C11]
+  Global chain changes require human approval (bax PROJECT.sdd -> Rules
+  [R9]/[R11] — eyni HumanControl prinsipi, təkrar tərif deyil).
+
+Resolution:
+
+  feature -> ./feature.chain
+  bugfix  -> ./bugfix.chain
+  change  -> ./change.chain
+
+State: +
+
+Note:
+  (prompt/new/22.md, STEP 5 — "Tam sıfırla", istifadəçi təsdiqi ilə) Bu
+  qovluqda əvvəllər mövcud olan `_TEMPLATE.feature.sdd` (hər feature üçün
+  ayrıca fayl instansiasiya edən model, retired `protocol/stages.sdd` və
+  `protocol/rules.sdd`-a istinad edən, BE/FE/MD/QA/DO node-larında
+  discipline-bazlı `.sdd/backend/...` skill yolları olan) silindi (git
+  tarixçəsində qalır). Bu fayl onun yerinə gəlir: konkret task-lar üçün
+  ayrıca fayl yaratmaq əvəzinə, hər task bu 3 ÜMUMİ chain TİPİNDƏN birinə
+  aid olur (C1) — task-ın öz irəliləmə vəziyyəti gələcəkdə `.sdd/tasks/`-da
+  izlənəcək, bu fayllarda deyil (bax NoDuplication).
+
+  Skill-lərin chain stage-lərinə bağlanması bilərəkdən indi edilmir (C9) —
+  `.sdd/skills/` qurulanda (növbəti "next") görüləcək iş.

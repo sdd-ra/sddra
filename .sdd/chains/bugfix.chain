@@ -1,0 +1,36 @@
+Chain: Bugfix
+
+Purpose:
+  Mövcud funksionallıqda aşkarlanmış xətanın həlli üçün mərhələ
+  ardıcıllığı. AN/QA/VR stage-ləri burada TƏKRAR TƏRİF OLUNMUR — bax
+  feature.chain -> Stages (eyni adlar, eyni məna, bax architecture/
+  architecture.sdd -> NoDuplication).
+
+Sequence:
+  AN>IMPACT>FIX>QA>VR
+
+Stages:
+
+  IMPACT:
+    name: Impact Analysis
+  FIX:
+    name: Fix Implementation
+
+Rules:
+  IMPACT stage FIX-dən ƏVVƏL tamamlanmalıdır (bax chains.sdd -> [C3]) —
+  xətanın görünən simptomu ilə onun real təsir dairəsi eyni olmaya bilər.
+
+  Misal: "Mobil app-də payment error var" bildirişi birbaşa FIX-ə
+  keçməməlidir — IMPACT stage-i xətanın API/BE/DB/FE/MD arasında hansı
+  qatlara toxunduğunu müəyyən etməlidir, əks halda görünən simptom
+  düzəldilir, kök səbəb qalır.
+
+  FIX yalnız IMPACT-ın müəyyən etdiyi əhatə dairəsi daxilində dəyişiklik
+  edə bilər — IMPACT-da qeyd olunmayan qatlara toxunma FIX stage-i üçün
+  scope-dan kənar sayılır (bax chains.sdd -> [C6], no-silent-skip prinsipi
+  əksinə: burada "no-silent-expand").
+
+Note:
+  (prompt/new/22.md, STEP 5) Bu chain `change.chain`-dən fərqlidir: bugfix
+  arxitekturanı DƏYİŞMİR, yalnız mövcud davranışı bəyan edilmiş kimi
+  bərpa edir. Davranışın özü dəyişməlidirsə, bax change.chain.

@@ -25,7 +25,8 @@ Directories:
 
   chains:
     path: ./chains
-    purpose: Execution chain-lər və mərhələ keçidləri (feature-per-chain)
+    purpose: Execution chain-lər və mərhələ keçidləri (chain-tipi modeli — feature/bugfix/change, bax chains/chains.sdd)
+    state: STEP 5 tamamlandı — chains.sdd router + feature/bugfix/change.chain yazıldı, skill-bağlama hələ edilmir
 
   skills:
     path: ./skills
@@ -187,3 +188,9 @@ Note:
   Bu, mənbə söhbətdəki EduNexus illüstrasiyasından alınan template/nümunə
   instansiyadır; real layihəyə tətbiq ediləndə sübutdan (evidence) yenidən
   generasiya edilməlidir.
+
+  (prompt/new/22.md, STEP 5 — "Tam sıfırla") `chains/_TEMPLATE.feature.sdd`
+  (per-feature instansiasiya modeli, retired `protocol/`-a istinad edən)
+  istifadəçi təsdiqi ilə silinib (git tarixçəsində qalır); yerinə
+  `chains.sdd` router + `feature.chain`/`bugfix.chain`/`change.chain`
+  yazılıb — bax .sdd/chains/chains.sdd -> Note.
