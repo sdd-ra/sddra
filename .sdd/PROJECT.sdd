@@ -1,43 +1,112 @@
 Project: EduNexus
 
 Purpose:
-  Tələbə və müəllimləri bir araya gətirən modular monolit təhsil
-  platforması; kurs alqı-satqısı, kurs tamamlama izlənməsi və müəllim
-  ödənişlərinin (escrow) idarə olunmasını təmin edir.
+  .sdd sisteminin əsas giriş nöqtəsi (root router) — necə işlədiyini və
+  məlumatı haradan tapmaq lazım olduğunu göstərir. Bu fayl özü detallı
+  layihə bilgisini saxlamır (bax R2/R3 aşağıda).
 
 Root:
   ./
 
 Architecture:
-  ModularMonolith
+  Modular
 
-Model:
-  .sdd/project
+Directories:
 
-Disciplines:
-  BE:  Backend
-  API: API
-  FE:  Frontend
-  MD:  Mobile
-  DB:  Database
-  QA:  Quality Assurance
-  DO:  DevOps
-  VR:  Verify
+  project:
+    path: ./project
+    purpose: Layihənin .sdd modeli və layihəyə xas bilgi (WHAT/WHY/WHERE)
 
-ProjectMap:
-  .sdd/project/map.sdd
+  architecture:
+    path: ./architecture
+    purpose: .sdd sisteminin və layihənin architecture tərifləri/qaydaları
+    state: boş (STEP 1) — layihə-səviyyəli architecture hələ project/architecture.sdd-də
 
-ModuleModel:
-  .sdd/project/<module>/
+  chains:
+    path: ./chains
+    purpose: Execution chain-lər və mərhələ keçidləri (feature-per-chain)
 
-SkillModel:
-  .sdd/<discipline>/   (e.g. .sdd/backend, .sdd/qa — lowercase discipline name)
+  skills:
+    path: ./skills
+    purpose: Engineering skill-lər — AI-nin işi HOW səviyyəsində necə görəcəyi
+    state: boş (STEP 1)
 
-Flow:
-  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+  prompts:
+    path: ./prompts
+    purpose: Prompt qəbulu (inbox), analizi və prompt intelligence
+
+  tasks:
+    path: ./tasks
+    purpose: Task/subtask-ların aktiv/planlanmış/tamamlanmış vəziyyəti
+
+  decisions:
+    path: ./decisions
+    purpose: İnsan qərarları və təsdiqlənmiş dəyişikliklər
+
+  state:
+    path: ./state
+    purpose: Qlobal .sdd vəziyyəti və kompakt state işarələri
+    state: boş (STEP 1)
+
+Navigation:
+  project: @project
+  architecture: @architecture
+  chains: @chains
+  skills: @skills
+  prompts: @prompts
+  tasks: @tasks
+  decisions: @decisions
+  state: @state
+
+NavigationFlow:
+  USER REQUEST
+    -> PROJECT.sdd
+    -> project? / architecture? / chain? / skill? / prompt? / task? / decision? / state?
+    -> resolve responsible directory
+    -> only then read its content (R5/R6)
+
+Rules:
+
+  [R1]
+  PROJECT.sdd is the root entry point of the .sdd system.
+
+  [R2]
+  PROJECT.sdd MUST NOT contain detailed project knowledge.
+
+  [R3]
+  Detailed knowledge MUST live in the directory responsible for it.
+
+  [R4]
+  AI MUST resolve the responsible .sdd directory before starting work.
+
+  [R5]
+  AI MUST NOT scan the entire .sdd directory when a direct reference exists.
+
+  [R6]
+  AI MUST follow references before performing broad discovery.
+
+  [R7]
+  AI MUST preserve declared relationships between .sdd components.
+
+  [R8]
+  AI MUST NOT silently modify global .sdd rules.
+
+  [R9]
+  Changes to global .sdd architecture require human approval.
+
+  [R10]
+  (best-practice əlavə) AI MUST update the relevant .sdd state marker after
+  completing a stage — a stage that finishes without its state being
+  updated is indistinguishable from one that never ran.
+
+  [R11]
+  (best-practice əlavə) Human approval is also required for destructive
+  changes and unresolved conflicting requirements, not only architecture
+  changes (bax HumanDecision aşağıda — R9-un təbii davamı).
 
 State:
-  + = done
+
+  + = completed
   ~ = active
   - = failed
   ! = blocked
@@ -45,100 +114,11 @@ State:
   > = next
   @ = reference
 
-Rules:
-  [R1]  .sdd/project is the project's lightweight engineering model.
-  [R2]  Global files MUST contain routing information, not duplicated module knowledge.
-  [R3]  Module-specific knowledge MUST live inside its module directory.
-  [R4]  Every module MUST be resolvable from ProjectMap.
-  [R5]  AI MUST resolve the module before searching source code.
-  [R6]  AI MUST resolve the current flow before starting implementation.
-  [R7]  AI MUST load only the skills required by the current flow stage.
-  [R8]  AI MUST NOT break the declared flow.
-  [R9]  A failed stage MUST return to its declared recovery stage.
-  [R10] A completed stage MUST be reopened if a later change invalidates its output.
-  [R11] Human approval is required for architectural or global rule changes.
-  [R12] .sdd files describe WHAT, WHY, WHERE, STATE and RELATIONSHIPS.
-  [R13] Skills describe HOW.
-  [R14] Source code remains the implementation source of truth.
-  [R15] AI MUST update the relevant .sdd state after completing a stage.
-
-Navigation:
-  Start:
-    .sdd/project/map.sdd
-
-  Then:
-    resolve module
-    -> open module model
-    -> resolve flow
-    -> resolve dependencies
-    -> resolve required skills
-    -> execute current stage
-
-FlowRules:
-  AN:
-    output: analysis
-    next: AR
-
-  AR:
-    output: architecture decision
-    next: DB or BE
-
-  DB:
-    condition: database-impact
-    output: database model/change
-    next: BE
-
-  BE:
-    output: backend implementation + tests
-    next: API
-
-  API:
-    condition: api-impact
-    output: API contract
-    next: FE
-
-  FE:
-    output: frontend implementation + tests
-    next: MD
-
-  MD:
-    condition: mobile-impact
-    output: mobile implementation + tests
-    next: QA
-
-  QA:
-    output: validation result
-    next: DO
-
-  DO:
-    condition: infrastructure-impact
-    output: deployment/infrastructure result
-    next: VR
-
-  VR:
-    output: final verification
-    next: DONE
-
-Failure:
-  Every failed stage MUST declare:
-    reason
-    affected_stage
-    recovery_stage
-
-  AI MUST NOT continue to the next dependent stage after failure.
-
-Completion:
-  A feature is complete only when:
-    required stages = +
-    required validation = +
-    VR = +
-    no unresolved critical issue exists
-
 PromptProcessing:
   Before starting work:
     1. Read root project prompt.
-    2. Read .sdd prompt instructions.
-    3. Check .sdd/prompts/inbox.
+    2. Read .sdd/PROJECT.sdd navigation.
+    3. Check .sdd/prompts inbox.
     4. Analyze new prompts against current work.
     5. Determine whether they affect current work, future work, or global rules.
     6. Do not silently change global rules.
@@ -160,33 +140,47 @@ HumanDecision:
     destructive changes
     unresolved conflicting requirements
 
-Reference:
-  # Not part of the canonical STEP-1 spec (prompt/new/12.md) — appended so
-  # real repo folders stay discoverable from the constitution, without
-  # duplicating their contents here (R2).
-  chains:    .sdd/chains
-  tasks:     .sdd/tasks
-  decisions: .sdd/decisions
-  prompts:   .sdd/prompts/{inbox,active,archive,rejected}
-  system:    .sdd/system/MASTER.md
-  protocol:  .sdd/protocol/{symbols,stages,rules}.sdd
+Entry:
+  Read:
+    PROJECT.sdd
+
+  Resolve:
+    project
+    architecture
+    chains
+    skills
+    prompts
+    tasks
+    decisions
+    state
 
 Note:
-  (prompt/new/14.md) .sdd/ itself is the only thing built directly, by
-  hand, in this repo. Real project paths referenced anywhere in .sdd/
-  (project/map.sdd -> Paths:, module Owns: entries) are lookup references
-  for a separate prompt engine to act on later — never an instruction to
-  scaffold backend/, frontend/, mobile/, qa/, devops/ folders now.
-  .sdd = engineering brain; Prompt = the mechanism executing its decisions
-  in the real project; Real project = source of truth. This separation is
-  not to be violated in any future step.
+  (prompt/new/19.md) PROJECT.sdd is a router/constitution, not a knowledge
+  base. Məsələn "Payment PostgreSQL istifadə edir" -> .sdd/project/payment/,
+  "DDD necə tətbiq olunur" -> .sdd/skills/ (hələ boş) — heç biri bura
+  yazılmır (R2/R3).
 
-  PROJECT.sdd is a constitution, not an encyclopedia (prompt/new/12.md).
-  It never states which table Payment uses (-> .sdd/project/payment/) or
-  what DDD requires (-> .sdd/backend/ddd/skill.md) — only where to find
-  them. Real disk paths for BE/FE/MD/QA/DO code roots live in
-  project/map.sdd (per R2, not duplicated here). This is a template/example
-  instance derived from the EduNexus illustration used in the source
-  conversation; regenerate from evidence when applied to a real project
-  (see project/architecture.sdd -> ModuleIsolation and the wider
-  ProjectInstantiation principle this system converges toward).
+  (prompt/new/17.md) Bu fayl STEP 1 reset-dən (bax .sdd/README.md) sonra
+  yenidən yazılıb: köhnə `Disciplines:`, `SkillModel: .sdd/<discipline>/`,
+  `Flow: AN>AR>DB>BE>API>FE>MD>QA>DO>VR` və `Reference: system:/protocol:`
+  bölmələri silinib, çünki bunlar artıq mövcud olmayan qovluqlara
+  (`system/`, `protocol/`, discipline-bazlı `.sdd/<discipline>/`) işarə
+  edirdi və chunk 16-nın flow-u module-dən çıxarma qərarı ilə də ziddiyyət
+  təşkil edirdi. Köhnə məzmun git tarixçəsində qalır (bax commit `abd38de`
+  öncəsi).
+
+  (məlum, hələ təmizlənməmiş qalıq) `.sdd/project/map.sdd` (Flow:,
+  Navigation:) və `.sdd/project/architecture.sdd` (Purpose:, LayerArchitecture
+  şərhləri) hələ köhnə `protocol/symbols.sdd`, `protocol/rules.sdd`,
+  `module/flow.sdd` ifadələrinə istinad edir. Bu, next-gated qaydaya görə
+  qabaqlanmır — yalnız bu fayllara aid bir "next" gələndə düzəldiləcək.
+
+  (prompt/new/14.md, hələ qüvvədədir) .sdd/ özü bu repoda əl ilə tikilən
+  yeganə şeydir. .sdd/ daxilində hər hansı yerdə (project/map.sdd -> Paths:,
+  modul Owns: qeydləri) referans edilən real layihə yolları gələcək ayrı
+  bir prompt engine üçün lookup referanslarıdır — backend/, frontend/,
+  mobile/, qa/, devops/ qovluqlarını indi yaratmaq göstərişi deyil.
+
+  Bu, mənbə söhbətdəki EduNexus illüstrasiyasından alınan template/nümunə
+  instansiyadır; real layihəyə tətbiq ediləndə sübutdan (evidence) yenidən
+  generasiya edilməlidir.
