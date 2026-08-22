@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/23.md`-ə qədər oxunub (93 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/24.md`-ə qədər oxunub (93 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -177,6 +177,37 @@ bu addım "Tam sıfırla" tələb etmədi, sırf əlavə (additive) tikinti oldu
   `architecture/architecture.sdd`-nin `SKILLS` komponentinin köhnə/yanlış "STEP 9" işarəsi
   "STEP 6"-ya düzəldildi (bax architecture/architecture.sdd -> Note).
 
+## STEP 7 — `.sdd/prompts/` Prompt Intelligence Layer (prompt/new/24.md)
+
+`.sdd/prompts/` əvvəllər köhnə (STEP 1-dən qabaqkı nəsildən qalma) dörd qovluqlu bir
+struktur idi — `inbox/active/archive/rejected` + artıq mövcud olmayan `system/MASTER.md`-ə
+istinad edən köhnəlmiş `README.md`. Bu, chunk 24-ün tələb etdiyi 5-qovluqlu modellə
+(`inbox/active/archive/extracted/conflicts`) ziddiyyət təşkil etdi — istifadəçidən
+**"Tam sıfırla"** təsdiqi alındı (eyni STEP 1/4/5 pattern-i):
+
+- **Silindi (git tarixçəsində qalır):** `rejected/` qovluğu və köhnə `README.md`-dəki
+  dangling `system/MASTER.md` istinadı.
+- **Yeni yaradıldı:** `prompts.sdd` (router — `Lifecycle: RECEIVE>ANALYZE>CLASSIFY>
+  COMPARE>IMPACT>DECIDE>EXECUTE/BACKLOG/ARCHIVE`, `PromptTypes:`, `Rules: [P1]-[P20]`,
+  `Comparison:`, `Impact:`, `Decision:`, `KnowledgeExtraction:`, `Traceability:`) +
+  `extracted/`, `conflicts/` qovluqları (`.gitkeep` ilə).
+- **Prinsipial reframe ([P19]):** "rejected" ayrıca qovluq deyil, **ARCHIVE** nəticəsinin
+  bir alt-halı kimi formallaşdırıldı — rədd səbəbi faylın öz `Traceability.final_action`
+  sahəsində saxlanılır, fayl `archive/`-ə köçür.
+  `ESCALATE` nəticəsi (`[P20]`) `decisions/`-də açıq item yaratmalıdır — bax
+  `PROJECT.sdd -> HumanDecision`/`[R9]`/`[R11]`, təkrar tərif deyil, tətbiqdir.
+- **Best-practice əlavə `KnowledgeExtraction`:** `[P5]`-in mənbədə yalnız bir cümləlik
+  qadağa olan "necə" sualına cavab — sabit zəncir: `prompt (inbox/) > extracted knowledge
+  (extracted/) > skill proposal > human approval > skill (skills/<domain>/)`. Bu, xam
+  prompt mətninin birbaşa `skills/`-ə düşməsinin (`.sdd/prompts/`-un "bilgi zibilliyinə"
+  çevrilməsinin) qarşısını alır.
+- Konkret prompt instansiyaları (real `inbox/*.md` faylları, real `extracted/*.sdd`
+  bilgiləri) **bilərəkdən indi edilmir** — bu, yalnız skelet + qayda mühərriki addımıdır,
+  eynilə STEP 5/STEP 6-da olduğu kimi.
+- `PROJECT.sdd`-nin `prompts:` girişinin `state:` sətri yeniləndi;
+  `architecture/architecture.sdd`-nin `PROMPTS` komponentinin `role:` sahəsinə "STEP 7"
+  işarəsi əlavə olundu (bax architecture/architecture.sdd -> Note).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -186,7 +217,7 @@ bu addım "Tam sıfırla" tələb etmədi, sırf əlavə (additive) tikinti oldu
 ├── architecture/   — .sdd sisteminin və project architecture qaydalarının modeli (boş, STEP 1)
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
-├── prompts/        — daxil olan və saxlanılan prompt intelligence
+├── prompts/        — daxil olan və saxlanılan prompt intelligence (prompts.sdd router + 5 qovluq, STEP 7)
 ├── tasks/          — aktiv / planlanmış / tamamlanmış işlərin vəziyyəti
 ├── decisions/       — human decision və architecture qərarları
 └── state/          — .sdd sisteminin ümumi vəziyyət məlumatları (boş, STEP 1)
@@ -197,7 +228,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/23.md-ə qədər)
+## Status (prompt/new/24.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -225,7 +256,13 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `SkillContract`, `Execution:`) + 8 boş `SkillDomain` qovluğu yaradıldı. Kök `.gitkeep`
   silindi. Konkret skill-lər və `requires:` zənciri, eləcə də chain-skill bağlanması
   (`chains.sdd -> [C9]`) bilərəkdən hələ edilmədi.
-- `+` `prompts/README.md`, `tasks/README.md`, `decisions/README.md` — toxunulmadı.
+- `+` **`prompts/` STEP-7 "Tam sıfırla" (prompt/new/24.md):** köhnə `rejected/` qovluğu və
+  `system/MASTER.md`-ə istinad edən köhnəlmiş `README.md` sıfırlanıb; `prompts.sdd` router
+  (`Lifecycle`, `PromptTypes`, `Rules: [P1]-[P20]`, `Comparison`, `Impact`, `Decision`,
+  `KnowledgeExtraction`, `Traceability`) + `extracted/`/`conflicts/` yeni yaradıldı.
+  "Rejected" `[P19]` ilə ARCHIVE-in alt-halına çevrildi. Konkret prompt instansiyaları
+  bilərəkdən hələ edilmədi.
+- `+` `tasks/README.md`, `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
