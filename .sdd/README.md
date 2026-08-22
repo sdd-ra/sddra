@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/17.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/18.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -38,7 +38,33 @@ mobile/qa/devops/` skill-HOW qatı gec-tez `skills/` altında yenidən doğula b
 `.sdd` faylının öz `State:` sətri gec-tez `state/`-ə mərkəzləşə bilər. Bunların heç biri
 indi qabaqlanmır (R2/R3, next-gated qayda) — yalnız chunk özü bunu deyəndə ediləcək.
 
-## Struktur (prompt/new/17.md, STEP 1 skeleton)
+## STEP 1 təsdiqi (prompt/new/18.md)
+
+Mənbə chat `.sdd`-in öz arxitekturasını **yenidən, sıfırdan** izah etməyə başlayır və STEP 1
+üçün eyni 9-item kök siyahısını verir — bu, chunk 17-də artıq tətbiq etdiyimiz reset ilə
+**tam üst-üstə düşür**, deməli struktur dəyişmir, yalnız təsdiqlənir. Əlavə olaraq hər
+qovluğun məsuliyyəti bir cümləylə dəqiqləşdirilir (aşağıdakı struktur diaqramındakı
+şərhlər bu cədvələ uyğunlaşdırılıb) və `.sdd`-in ümumi rolunu təyin edən bir prinsip verilir:
+
+```text
+.sdd = Engineering Intelligence Layer
+
+.sdd
+ ├── understands the project
+ ├── understands architecture
+ ├── knows how work must be done
+ ├── knows where work belongs
+ ├── knows what depends on what
+ ├── tracks state
+ └── preserves the execution chain
+```
+
+Bu, `.sdd`-in nəyə xidmət etdiyinin qısa tərifidir: sadəcə sənədləşmə deyil, layihəni,
+arxitekturanı, iş qaydalarını və vəziyyəti birlikdə "anlayan" bir qat. Chunk özü aydın
+şəkildə deyir ki, STEP 1 yalnız struktur ayırmaqdır — heç bir qovluğun içinə hələ real
+qayda yazılmır (`architecture/`, `skills/`, `state/` boş qalmağa davam edir).
+
+## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
 .sdd/
@@ -58,11 +84,14 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/17.md-ə qədər)
+## Status (prompt/new/18.md-ə qədər)
 
-- `~` **STEP 1 skeleton reset (prompt/new/17.md):** kök quruluş yuxarıdakı 9 elementə
-  endirildi. `architecture/`, `skills/`, `state/` boş yaradıldı. Əvvəlki `protocol/`,
-  `system/`, `backend/frontend/mobile/qa/devops/` silindi (git tarixçəsində qalır).
+- `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
+  yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
+  `skills/`, `state/` boş yaradıldı. Əvvəlki `protocol/`, `system/`,
+  `backend/frontend/mobile/qa/devops/` silindi (git tarixçəsində qalır).
+- `+` "Engineering Intelligence Layer" prinsipi (prompt/new/18.md) — `.sdd`-in ümumi rolunun
+  qısa tərifi olaraq README-yə əlavə olundu, real qayda faylı deyil.
 - `+` `project/` alt-ağacı — toxunulmadı, əvvəlki bütün iş (map.sdd, modules.sdd,
   dependencies.sdd, architecture.sdd + LayerArchitecture, integrations.sdd,
   payment/{payment,db,api,cases}.sdd, course/course.sdd stub, user/user.sdd stub) qüvvədədir.
