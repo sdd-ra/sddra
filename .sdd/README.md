@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/18.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/19.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -64,6 +64,29 @@ arxitekturanı, iş qaydalarını və vəziyyəti birlikdə "anlayan" bir qat. C
 şəkildə deyir ki, STEP 1 yalnız struktur ayırmaqdır — heç bir qovluğun içinə hələ real
 qayda yazılmır (`architecture/`, `skills/`, `state/` boş qalmağa davam edir).
 
+## STEP 2 — `PROJECT.sdd` root router (prompt/new/19.md)
+
+`PROJECT.sdd` bu addımda **router/constitution** kimi yenidən yazıldı — detallı layihə
+bilgisi saxlayan bir fayl deyil (misal: "Payment PostgreSQL istifadə edir" → `project/`-ə
+aiddir, bura yox; "DDD necə tətbiq olunur?" → `skills/`-ə aiddir, bura yox). Yeni fayl:
+
+- **`Directories:`** — 8 alt-qovluğun hər biri üçün path + bir cümləlik purpose.
+- **`Navigation:`** + **`NavigationFlow:`** — `@`-referanslar və "request → resolve → read"
+  axını (əvvəlcə responsible directory tapılır, sonra oxunur — bütün `.sdd` skan edilmir).
+- **`Rules: [R1]–[R9]`** — mənbə template-dən (router rolu, detallı bilgi saxlamamaq,
+  oxumadan əvvəl resolve, qlobal qaydaları səssizcə dəyişməmək, architecture dəyişikliyi
+  üçün insan təsdiqi) + **`[R10]/[R11]`** best-practice əlavəsi (hər mərhələdən sonra
+  `state:` yenilənməlidir; destructive/ziddiyyətli tələblər üçün də insan qərarı lazımdır).
+- Köhnə (chunk-17 reset-dən əvvəlki nəsil) `Reference: system:/protocol:`,
+  `Disciplines:`/`SkillModel:`, `Flow: AN>AR>DB>BE>API>FE>MD>QA>DO>VR`/`FlowRules:` blokları
+  silindi — bunlar artıq mövcud olmayan qovluqlara işarə edirdi və chunk 16-nın flow
+  qərarı ilə ziddiyyət təşkil edirdi.
+
+**Aşkarlanmış, hələ düzəldilməmiş qalıq (qabaqlanmır):** `project/architecture.sdd` və
+`project/map.sdd` hələ köhnə `protocol/*.sdd`, `module/flow.sdd` ifadələrinə istinad edir —
+bu, `PROJECT.sdd`-də bir Note kimi qeyd olunub, lakin fayllar özləri toxunulmayıb; yalnız
+uyğun bir gələcək "next" bunu həll edəcək.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -84,7 +107,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/18.md-ə qədər)
+## Status (prompt/new/19.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -92,6 +115,11 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `backend/frontend/mobile/qa/devops/` silindi (git tarixçəsində qalır).
 - `+` "Engineering Intelligence Layer" prinsipi (prompt/new/18.md) — `.sdd`-in ümumi rolunun
   qısa tərifi olaraq README-yə əlavə olundu, real qayda faylı deyil.
+- `+` **`PROJECT.sdd` STEP-2 rewrite (prompt/new/19.md):** router/constitution roluna
+  uyğunlaşdırıldı — `Directories:`/`Navigation:`/`NavigationFlow:`/`Rules: [R1]-[R11]` əlavə
+  olundu, köhnə `Reference:/Disciplines:/SkillModel:/Flow:/FlowRules:` bloku silindi.
+- `?` `project/architecture.sdd` və `project/map.sdd`-də `protocol/*.sdd`, `module/flow.sdd`-ə
+  dangling istinadlar qalır — bilinən, təxirə salınmış qalıq (bax yuxarıda).
 - `+` `project/` alt-ağacı — toxunulmadı, əvvəlki bütün iş (map.sdd, modules.sdd,
   dependencies.sdd, architecture.sdd + LayerArchitecture, integrations.sdd,
   payment/{payment,db,api,cases}.sdd, course/course.sdd stub, user/user.sdd stub) qüvvədədir.
