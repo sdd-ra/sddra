@@ -34,7 +34,7 @@ Components:
 
   PROMPTS:
     path: ../prompts
-    role: Prompt intelligence (inbox, analysis)
+    role: Prompt intelligence (inbox, analysis, STEP 7)
 
   TASKS:
     path: ../tasks
@@ -204,6 +204,13 @@ Note:
   münasibəti (bax Relationships: CHAINS -> SKILLS yuxarıda) indi real
   faylla təmin olunur: `skills/skills.sdd` (bax onun Purpose bölməsi —
   4 qatın: project/architecture/chains/skills tam müqayisəli xəritəsi).
+
+  (prompt/new/24.md, STEP 7 — HƏLL OLUNUB) PROMPTS komponentinin `role:`
+  sahəsinə "STEP 7" işarəsi əlavə olundu (digər komponentlərlə eyni
+  konvensiya). Forbidden bölməsindəki "PROMPTS: MUST NOT silently modify
+  architecture or global rules" qaydası dəyişməyib — `.sdd/prompts/`-un
+  STEP 7 reset-i (bax .sdd/prompts/prompts.sdd -> Note) yalnız PROMPTS-un
+  öz daxili strukturunu qurdu, bu Forbidden qaydasını pozmadı.
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles

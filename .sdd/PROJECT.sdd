@@ -35,7 +35,8 @@ Directories:
 
   prompts:
     path: ./prompts
-    purpose: Prompt qəbulu (inbox), analizi və prompt intelligence
+    purpose: Prompt qəbulu (inbox), analizi və prompt intelligence (bax prompts/prompts.sdd)
+    state: STEP 7 tamamlandı — prompts.sdd router (Rules [P1]-[P20]) + 5 qovluq (inbox/active/archive/extracted/conflicts) yaradıldı, konkret prompt instansiyaları hələ yoxdur
 
   tasks:
     path: ./tasks
@@ -200,3 +201,11 @@ Note:
   skill bağlanması (bax chains/chains.sdd -> [C9]) bu addımda hələ
   edilmədi — konkret skill-lər yazılmadan bağlama mənasız olardı (bax
   .sdd/skills/skills.sdd -> Note).
+
+  (prompt/new/24.md, STEP 7 — "Tam sıfırla") STEP 1-dən əvvəl mövcud olan
+  köhnə `.sdd/prompts/` (dörd qovluq: inbox/active/archive/rejected,
+  artıq mövcud olmayan `system/MASTER.md`-ə istinad edən README.md)
+  istifadəçi təsdiqi ilə sıfırlanıb: `prompts.sdd` router (Rules
+  [P1]-[P20]) yazıldı, `rejected/` silindi ([P19] ilə ARCHIVE-in
+  alt-halına çevrildi), `extracted/` və `conflicts/` yeni yaradıldı (bax
+  .sdd/prompts/prompts.sdd -> Note).
