@@ -4,117 +4,73 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/16.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/17.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
-- **Nümunə domen:** aşağıdakı `project/` faylları izahat üçün chat-də istifadə olunan
+- **Nümunə domen:** `project/` altındakı fayllar izahat üçün chat-də istifadə olunan
   `EduNexus` (learning platform) + `Payment` domeni nümunəsini əsas götürür — real kod
-  bu repoda olmadığı üçün bu fayllar **illüstrativ template** rolundadır, real layihəyə
-  bağlananda `.sdd/project/*` real modul strukturuna görə yenidən generasiya olunmalıdır
-  (bax `project/architecture.sdd` → `ProjectInstantiation` prinsipi).
+  bu repoda olmadığı üçün bu fayllar **illüstrativ template** rolundadır.
 
-## ⚠️ Kritik ayrım (prompt/new/14.md)
+## ⚠️ STEP 1 reset (prompt/new/17.md)
 
-Mənbə chat özü bu nöqtədə öz səhvini düzəldir, və bu, bundan sonra
-pozulmayacaq bir qayda kimi qəbul edilir:
+Mənbə chat bu nöqtədə **`.sdd`-in öz kök arxitekturasını "ilk formada" yenidən qurmağa**
+başlayır — feature/Payment/Backend məzmunundan ayrı, yalnız `.sdd`-in özünün skeleti.
+İstifadəçinin öz seçimi ilə (görüş: "Tam sıfırla, literal skeletə keç") bu addım
+**tam sıfırlama** kimi tətbiq olundu:
 
-```
-.sdd/            — MEN (bu repo-nu quran AI) tikirəm: model + rules +
-                   skills + flow + state.
-                        ↓
-                   PROMPT ENGINE  (.sdd-in özü yox, ayrıca mexanizm)
-                        ↓
-real project/    — backend/, frontend/, mobile/, tests/, infrastructure/...
-                   BUNU MƏN ƏL İLƏ YARATMIRAM. Bunu prompt engine, .sdd
-                   modelinə əsaslanaraq, gələcəkdə yaradır/idarə edir.
-```
+- **Silindi (git tarixçəsində qalır, itmir):** `protocol/` (symbols.sdd, stages.sdd,
+  rules.sdd), `system/` (MASTER.md qaralaması), `backend/`, `frontend/`, `mobile/`,
+  `qa/`, `devops/` — yeni STEP 1 kök siyahısında bunlar yoxdur. Bu, əvvəlki chunk-ların
+  (9, 15) işini "səhv idi" demək deyil — sadəcə mənbə chat kök modelini təmizdən
+  qurmağı seçib; həmin məzmun lazım olsa git tarixçəsindən bərpa oluna bilər.
+- **Saxlanıldı (toxunulmadı):** `PROJECT.sdd`, `project/` (bütün alt-məzmunu ilə:
+  map.sdd, modules.sdd, dependencies.sdd, architecture.sdd, integrations.sdd,
+  proposals/, payment/, course/, user/), `chains/`, `prompts/`, `tasks/`, `decisions/`
+  — bunlar yeni STEP 1 siyahısında da var, dəyişməz qalıb.
+- **Yeni yaradıldı (boş skelet, `.gitkeep` ilə):** `architecture/`, `skills/`, `state/`.
+  Chunk 17 açıq deyir: *"hələ bu qovluqların içinə heç nə qoymuruq"* — ona görə bu üç
+  qovluq hazırda tamamilə boşdur, yalnız git-in izləməsi üçün `.gitkeep` var.
 
-Deməli, `.sdd/*.sdd` fayllarında görünən `BE: ./backend/payment` kimi
-sətirlər **"real `./backend/payment` qovluğunu indi yarat" demək deyil** —
-sadəcə "gələcəkdə AI real kodu harada axtarmalıdır" göstəricisidir
-(reference, indeks — icra əmri deyil). Bu repoda `git ls-files` yoxlanılıb:
-heç bir real `backend/`, `frontend/`, `mobile/`, `qa/`, `devops/` qovluğu
-kök səviyyəsində yaradılmayıb, yalnız `.sdd/backend/` və s. (skill/HOW
-qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunacaq.
+**Gözlənilən uzlaşdırma (hələ edilməyib, gələcək "next"-lərin işi):** `project/architecture.sdd`
+faylının məzmunu gec-tez `architecture/` qovluğuna keçə bilər; silinmiş `backend/frontend/
+mobile/qa/devops/` skill-HOW qatı gec-tez `skills/` altında yenidən doğula bilər; hər
+`.sdd` faylının öz `State:` sətri gec-tez `state/`-ə mərkəzləşə bilər. Bunların heç biri
+indi qabaqlanmır (R2/R3, next-gated qayda) — yalnız chunk özü bunu deyəndə ediləcək.
 
-## Struktur
+## Struktur (prompt/new/17.md, STEP 1 skeleton)
 
 ```
 .sdd/
-├── PROJECT.sdd          — ana router: domenlər, path-lər, default execution chain
-├── project/             — layihə modeli (WHAT / WHY / WHERE, "source of truth")
-│   ├── map.sdd          — YALNIZ routing/index ("hara getməliyəm?")
-│   ├── modules.sdd      — hansı modul var, kim kimdən asılı ola bilər
-│   ├── dependencies.sdd — qlobal dependency graph
-│   ├── architecture.sdd — stack (P{}) + ModuleIsolation/ExtractCheck + LayerArchitecture (allowed/forbidden)
-│   ├── integrations.sdd — xarici sistemlər (@PaymentGateway və s.)
-│   ├── proposals/       — insan təsdiqi gözləyən dəyişiklik təklifləri
-│   ├── payment/         — modul-lokal detal: payment.sdd, db.sdd, api.sdd, cases.sdd
-│   ├── course/          — stub, eyni pattern (bax status)
-│   └── user/            — stub, eyni pattern (bax status)
-├── protocol/            — .sdd-in öz "dili"
-│   ├── symbols.sdd      — +/-/~/!/?/>/@/# status vokabulyarı
-│   ├── stages.sdd        — AN/AR/DB/BE/API/FE/MD/QA/DO/VR + optional-stage qaydası
-│   └── rules.sdd         — RULE: CHAIN_INTEGRITY + failure routing
-├── system/               — mühərrikin özünü idarə edən master prompt
-├── chains/               — feature-per-chain şablonu (stage kontraktları)
-├── backend/frontend/mobile/qa/devops/  — HOW qatı, birbaşa .sdd/ altında (skills/ wrapper YOXDUR)
-├── prompts/{inbox,active,archive,rejected}/ — daxil olan yeni prompt-ların analiz zənciri
-├── tasks/                — generasiya olunmuş task/subtask-lar
-└── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
+├── PROJECT.sdd     — .sdd sisteminin ana entry point-i
+├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE)
+├── architecture/   — .sdd sisteminin və project architecture qaydalarının modeli (boş, STEP 1)
+├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (feature-per-chain şablonu)
+├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (boş, STEP 1)
+├── prompts/        — daxil olan və saxlanılan prompt intelligence
+├── tasks/          — aktiv / planlanmış / tamamlanmış işlərin vəziyyəti
+├── decisions/       — human decision və architecture qərarları
+└── state/          — .sdd sisteminin ümumi vəziyyət məlumatları (boş, STEP 1)
 ```
 
-## Status (prompt/new/16.md-ə qədər)
+Çox vacib ayrım (chunk 17-nin öz sözü ilə): `.sdd/project/` **real project deyil** —
+bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyil,
+sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
+əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-- `!` **RETRACTED (prompt/new/16.md):** chunk 15-in bütün STEP 4-ü (module-per
-  `flow.sdd`, "AN>AR>DB>BE>API>FE>MD>QA>DO>VR" iş ardıcıllığı) mənbə chat-in
-  özü tərəfindən ləğv edildi — architecture (nə nəyi çağıra bilər) ilə
-  execution order (iş hansı sırayla görülür) qarışdırılmışdı. Nəticədə:
-  - `project/payment/flow.sdd` silindi.
-  - `payment.sdd`-in `Flow: @flow` sahəsi `TBD` olaraq işarələndi, `Architecture:`
-    sahəsi `@architecture`-a bağlandı (bax `project/architecture.sdd`).
-  - `protocol/stages.sdd`-ə əlavə olunmuş `TransitionRules [T1]-[T10]` /
-    `DefaultFailureRouting` / `DefaultDependencyRules` **silinmədi** — bunlar
-    hələ də doğru generic mexanikadır, sadəcə evi dəyişəcək: gələcəkdə
-    module/flow.sdd yox, `.sdd/chains/*.chain` (STEP 8) onlara bağlanacaq.
-  - Yeni STEP 4 = `project/architecture.sdd` — `LayerArchitecture` bölməsi
-    əlavə olundu (`DefaultAllowed`/`DefaultForbidden` layer edge-ləri, `State`
-    (+/!/?/~), `ViolationVsDecision` — AI özbaşına "səhv" ilə "yeni qərar"ı
-    qarışdırmır, `?`-lə insan qərarına yönləndirir).
-  - Qalan yol xəritəsi (mənbənin öz sıralaması): STEP 5 module architecture,
-    STEP 6 DB model, STEP 7 API model, STEP 8 execution chains, STEP 9 skill
-    chains — hər biri yalnız növbəti "next"-də oxunacaq.
-- `+` README — chunk 14-ün kritik ayrımı (`.sdd` mən qururam / real project
-  path-ləri prompt engine üçün referansdır, indi əl ilə yaradılmır) ayrıca
-  bölmə kimi sənədləşdirildi. Struktur dəyişikliyi tələb olunmadı — bu repo
-  artıq bu qaydaya uyğun idi (yoxlanıldı: heç bir real backend/frontend/...
-  qovluğu yaradılmamışdı).
+## Status (prompt/new/17.md-ə qədər)
 
-- `+` (prompt/new/13.md-ə qədər idi, hələ də doğrudur) PROJECT.sdd — chunk 12-nin verdiyi TAM, finallaşmış konstitusiya mətni ilə
-  əvəz olundu (Purpose/Model/Disciplines/ProjectMap/ModuleModel/SkillModel/Flow/
-  State/R1-R15 Rules/Navigation/FlowRules/Failure/Completion/PromptProcessing/
-  HumanDecision). Real disk path-lər (BE/FE/MD/QA/DO) artıq yalnız map.sdd-də
-  saxlanılır (R2-ə görə təkrarlanmır). Chunk 10-un aralıq versiyası bununla
-  üstələnib.
-- `+` project/map.sdd — router contract-ı tamamlandı: Rules + Resolve bölmələri (chunk 11)
-- `+` project/<module>/<module>.sdd — chunk 13-ün universal STEP-3 şablonuna
-  görə üç faylın hamısı (payment/course/user) yenidən yazıldı: Purpose/Owns
-  (BE/FE/MD/QA/DO)/Architecture/Flow/Database/API/Cases/DependsOn/UsedBy/
-  Produces/ConsumedBy/State/Rules. Köhnə `Path:`/`Dependencies:` sərbəst
-  formatı bu kanonik quruluşla əvəz olundu.
-- `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, db.sdd, api.sdd, cases.sdd —
-  flow.sdd chunk 16-da silindi, bax yuxarı RETRACTED bəndi)
-- `~` project/course/, project/user/ — yalnız stub (course.sdd/user.sdd chunk-13
-  şablonuna görə yeniləndi, amma flow/db/api/cases hələ detallandırılmayıb)
-- `+` protocol/symbols.sdd, protocol/stages.sdd, protocol/rules.sdd
-- `+` backend/frontend/mobile/qa/devops/ qovluqları düz `.sdd/` altında (əvvəlki `skills/` wrapper-i
-  chunk 9-a görə düzəldildi — mənbə heç vaxt bu wrapper-i istifadə etmir)
-- `~` system/MASTER.md — qaralama (chunk 4-də "..." ilə bitir, tam deyil)
-- `!` backend/*, frontend/* və s. daxili skill fayl(lar)ı hələ boşdur — chat özü də deyir:
-  "skill-lərə hələ keçmirik"
-- `!` chains/*, yalnız template — real feature chain-i (məs. payment) hələ yazılmayıb;
-  bu STEP 8-in işidir (prompt/new/16.md-in yol xəritəsi), hələ oxunmayıb
-- `?` prompts/* intelligence-layer məntiqi hələ fayl formatına düşməyib (yalnız konsepsiya)
+- `~` **STEP 1 skeleton reset (prompt/new/17.md):** kök quruluş yuxarıdakı 9 elementə
+  endirildi. `architecture/`, `skills/`, `state/` boş yaradıldı. Əvvəlki `protocol/`,
+  `system/`, `backend/frontend/mobile/qa/devops/` silindi (git tarixçəsində qalır).
+- `+` `project/` alt-ağacı — toxunulmadı, əvvəlki bütün iş (map.sdd, modules.sdd,
+  dependencies.sdd, architecture.sdd + LayerArchitecture, integrations.sdd,
+  payment/{payment,db,api,cases}.sdd, course/course.sdd stub, user/user.sdd stub) qüvvədədir.
+- `+` `chains/_TEMPLATE.feature.sdd`, `prompts/README.md`, `tasks/README.md`,
+  `decisions/README.md` — toxunulmadı.
+- `!` `architecture/`, `skills/`, `state/` — boş (yalnız `.gitkeep`), məzmun növbəti
+  "next"-lərdə müəyyənləşəcək.
+- `?` Əvvəlki `protocol/` (symbols/stages/rules) və silinmiş skill-HOW qovluqlarının
+  yeni skeletdə hara "köçəcəyi" hələ mənbə tərəfindən deyilməyib — qabaqlanmır.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
