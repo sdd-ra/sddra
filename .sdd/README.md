@@ -208,6 +208,38 @@ istinad edən köhnəlmiş `README.md`. Bu, chunk 24-ün tələb etdiyi 5-qovluq
   `architecture/architecture.sdd`-nin `PROMPTS` komponentinin `role:` sahəsinə "STEP 7"
   işarəsi əlavə olundu (bax architecture/architecture.sdd -> Note).
 
+## STEP 8 — `.sdd/tasks/` Task Execution Layer (prompt/new/25.md)
+
+`.sdd/tasks/` əvvəllər yalnız bir `README.md`-dən ibarət idi — artıq mövcud olmayan
+`system/MASTER.md`-ə istinad edən, `.sdd/project/proposals/<ID>.md` approve-gated modelinə
+əsaslanan, `PAY-001.N` dot-nömrələnmiş subtask formatlı. Bu, chunk 25-in tələb etdiyi
+`TaskLifecycle` + 6-qovluqlu state modeli ilə ziddiyyət təşkil etdi — istifadəçidən
+**"Tam sıfırla"** təsdiqi alındı (eyni STEP 1/4/5/7 pattern-i):
+
+- **Silindi (git tarixçəsində qalır):** köhnə `README.md` (dangling `system/MASTER.md`
+  istinadı, `proposals/`-gated model, `PAY-001.N` formatı).
+- **Yeni yaradıldı:** `tasks.sdd` (router — `TaskLifecycle: CREATED>ANALYZED>READY>ACTIVE>
+  REVIEW>VERIFIED>DONE`, `Failure:` bərpa zəncirləri, `TaskTypes:`, `TaskContract:`,
+  `Rules: [T1]-[T17]`, `Dependency:`, `Review:`, `Verification:`, `Parallel:`) + 6 boş qovluq
+  (`active/backlog/blocked/review/done/failed`, `.gitkeep` ilə) + qısa `README.md`.
+- **Best-practice əlavə `StateToDirectory`:** mənbə template-də 7 lifecycle state və 6 qovluq
+  ayrı-ayrı verilmişdi, aralarında birbaşa xəritə yox idi — bu boşluq doldurulub. Aydınlaşdırma:
+  `BLOCKED` ayrıca lifecycle state deyil, `READY`/`ACTIVE` üzərində bir overlay-vəziyyətdir —
+  asılılıq açılan kimi task öz əvvəlki state-inə qayıdır.
+- **Best-practice əlavə `[T16]`/`[T17]`:** `[T1]` (source vacibdir) və `[T2]` (chain-ə aid
+  olmalıdır) qaydalarını konkret yoxlanıla bilən edir — `source` real `prompts/`/`decisions/`
+  item-inə, `chain` isə `chains.sdd -> ChainTypes`-də tərif olunmuş dəyərə resolve olunmalıdır.
+- **Failure heç vaxt birbaşa DONE-a keçmir:** `ACTIVE>FAILED>RECOVER>ACTIVE` və
+  `REVIEW>FAILED>RECOVER>ACTIVE` — bərpa yalnız məsul mərhələyə qayıdır (bax `[T7]`/`[T8]`).
+- Mənbədəki illüstrativ nümunələr (TASK-001 Payment Refund, BE-001/API-001/FE-001/MD-001/
+  QA-001 subtask-ları, fork-join paralel nümunəsi) hərfi köçürülmədi (bax "apply, don't copy"
+  qaydası) — konseptual nəticələri `Failure`/`Parallel`/`Verification` bölmələrinə köçürüldü,
+  konkret task instansiyaları isə bilərəkdən indi yaradılmır — bu, yalnız skelet + qayda
+  mühərriki addımıdır, eynilə STEP 5/6/7-də olduğu kimi.
+- `PROJECT.sdd`-nin `tasks:` girişinin `purpose:`/`state:` sətirləri yeniləndi;
+  `architecture/architecture.sdd`-nin `TASKS` komponentinin köhnə "active/planned/completed"
+  rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -218,7 +250,7 @@ istinad edən köhnəlmiş `README.md`. Bu, chunk 24-ün tələb etdiyi 5-qovluq
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence (prompts.sdd router + 5 qovluq, STEP 7)
-├── tasks/          — aktiv / planlanmış / tamamlanmış işlərin vəziyyəti
+├── tasks/          — task/subtask icra vəziyyəti (tasks.sdd router + 6 qovluq, STEP 8)
 ├── decisions/       — human decision və architecture qərarları
 └── state/          — .sdd sisteminin ümumi vəziyyət məlumatları (boş, STEP 1)
 ```
@@ -228,7 +260,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/24.md-ə qədər)
+## Status (prompt/new/25.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -262,7 +294,13 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `KnowledgeExtraction`, `Traceability`) + `extracted/`/`conflicts/` yeni yaradıldı.
   "Rejected" `[P19]` ilə ARCHIVE-in alt-halına çevrildi. Konkret prompt instansiyaları
   bilərəkdən hələ edilmədi.
-- `+` `tasks/README.md`, `decisions/README.md` — toxunulmadı.
+- `+` **`tasks/` STEP-8 "Tam sıfırla" (prompt/new/25.md):** köhnə `README.md` (dangling
+  `system/MASTER.md` istinadı, `proposals/`-gated model, `PAY-001.N` formatı) sıfırlanıb;
+  `tasks.sdd` router (`TaskLifecycle`, `StateToDirectory`, `Failure`, `TaskTypes`,
+  `TaskContract`, `Rules: [T1]-[T17]`, `Dependency`, `Review`, `Verification`, `Parallel`) +
+  6 qovluq (`active/backlog/blocked/review/done/failed`) + qısa `README.md` yaradıldı.
+  Konkret task instansiyaları bilərəkdən hələ edilmədi.
+- `+` `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
