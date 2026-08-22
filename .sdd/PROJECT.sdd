@@ -1,122 +1,183 @@
 Project: EduNexus
 
+Purpose:
+  Tələbə və müəllimləri bir araya gətirən modular monolit təhsil
+  platforması; kurs alqı-satqısı, kurs tamamlama izlənməsi və müəllim
+  ödənişlərinin (escrow) idarə olunmasını təmin edir.
+
 Root:
   ./
 
 Architecture:
   ModularMonolith
 
-Modules:
-  # Business modules — see project/map.sdd for the full routing index.
-  payment -> ./.sdd/project/payment
-  course  -> ./.sdd/project/course
-  user    -> ./.sdd/project/user
+Model:
+  .sdd/project
 
-Domains:
-  # Engineering disciplines, not business modules — see Skills below.
-  Backend
-  Frontend
-  Mobile
-  QA
-  DevOps
+Disciplines:
+  BE:  Backend
+  API: API
+  FE:  Frontend
+  MD:  Mobile
+  DB:  Database
+  QA:  Quality Assurance
+  DO:  DevOps
+  VR:  Verify
 
-Paths:
-  BE: ./backend
-  FE: ./frontend
-  MD: ./mobile
-  QA: ./qa
-  DO: ./devops
+ProjectMap:
+  .sdd/project/map.sdd
 
-ProjectModel:
-  # WHAT / WHY / WHERE — "source of truth", never line-by-line code.
-  root: ./.sdd/project
-  map: ./.sdd/project/map.sdd
-  modules: ./.sdd/project/modules.sdd
-  dependencies: ./.sdd/project/dependencies.sdd
-  architecture: ./.sdd/project/architecture.sdd
-  integrations: ./.sdd/project/integrations.sdd
-  proposals: ./.sdd/project/proposals
-  per-module: ./.sdd/project/<module>/  (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
+ModuleModel:
+  .sdd/project/<module>/
+
+SkillModel:
+  .sdd/<discipline>/   (e.g. .sdd/backend, .sdd/qa — lowercase discipline name)
 
 Flow:
   AN > AR > DB > BE > API > FE > MD > QA > DO > VR
 
-  AN  = Analyze
-  AR  = Architecture
-  DB  = Database        (optional — see per-module flow.sdd condition)
-  BE  = Backend
-  API = API
-  FE  = Frontend
-  MD  = Mobile
-  QA  = Quality Assurance
-  DO  = DevOps
-  VR  = Verify
-
-  Full abbreviation table + optional-stage mechanism: ./.sdd/protocol/stages.sdd
-  Per-feature execution chain lives in project/<module>/flow.sdd, not here
-  (global files stay routing-only — see project/map.sdd).
-
-Skills:
-  BE: ./.sdd/backend
-  FE: ./.sdd/frontend
-  MD: ./.sdd/mobile
-  QA: ./.sdd/qa
-  DO: ./.sdd/devops
-
-Chains:
-  ./.sdd/chains
-
-Prompts:
-  root: ./.sdd/system/MASTER.md
-  inbox: ./.sdd/prompts/inbox
-  active: ./.sdd/prompts/active
-  archive: ./.sdd/prompts/archive
-  rejected: ./.sdd/prompts/rejected
-
-Tasks:
-  ./.sdd/tasks
-
-Decisions:
-  ./.sdd/decisions
-
-StateSymbols:
-  # Status vocabulary — see ./.sdd/protocol/symbols.sdd for the full spec.
-  +  = DONE / PASS
-  -  = FAIL
-  ~  = IN_PROGRESS / ACTIVE
-  !  = BLOCKED
-  ?  = NEED_INPUT / DECISION
-  >  = NEXT
-  @  = REFERENCE
-  #  = RULE
+State:
+  + = done
+  ~ = active
+  - = failed
+  ! = blocked
+  ? = decision required
+  > = next
+  @ = reference
 
 Rules:
-  Human approval required before implementation.
-  Failed task must return to the responsible stage (see protocol/rules.sdd).
-  Failed review must not automatically skip to next stage.
-  QA failure returns to implementation/review according to failure reason.
-  DevOps failure returns to DevOps.
-  Verification failure creates corrective task.
-  Completed stages cannot be silently skipped.
-  See protocol/rules.sdd -> RULE: CHAIN_INTEGRITY for the full enforcement contract.
+  [R1]  .sdd/project is the project's lightweight engineering model.
+  [R2]  Global files MUST contain routing information, not duplicated module knowledge.
+  [R3]  Module-specific knowledge MUST live inside its module directory.
+  [R4]  Every module MUST be resolvable from ProjectMap.
+  [R5]  AI MUST resolve the module before searching source code.
+  [R6]  AI MUST resolve the current flow before starting implementation.
+  [R7]  AI MUST load only the skills required by the current flow stage.
+  [R8]  AI MUST NOT break the declared flow.
+  [R9]  A failed stage MUST return to its declared recovery stage.
+  [R10] A completed stage MUST be reopened if a later change invalidates its output.
+  [R11] Human approval is required for architectural or global rule changes.
+  [R12] .sdd files describe WHAT, WHY, WHERE, STATE and RELATIONSHIPS.
+  [R13] Skills describe HOW.
+  [R14] Source code remains the implementation source of truth.
+  [R15] AI MUST update the relevant .sdd state after completing a stage.
 
-AdaptivePipeline:
-  Default Flow above is not mandatory for every task.
-  Each task/feature declares its own "Required stages" subset in its chain file.
+Navigation:
+  Start:
+    .sdd/project/map.sdd
 
-  Example — backend-only bugfix:
-    BE -> QA -> VR
+  Then:
+    resolve module
+    -> open module model
+    -> resolve flow
+    -> resolve dependencies
+    -> resolve required skills
+    -> execute current stage
 
-  Example — UI-only change:
-    FE -> MD -> QA -> VR
+FlowRules:
+  AN:
+    output: analysis
+    next: AR
 
-  Example — infrastructure-only change:
-    DO -> VR
+  AR:
+    output: architecture decision
+    next: DB or BE
+
+  DB:
+    condition: database-impact
+    output: database model/change
+    next: BE
+
+  BE:
+    output: backend implementation + tests
+    next: API
+
+  API:
+    condition: api-impact
+    output: API contract
+    next: FE
+
+  FE:
+    output: frontend implementation + tests
+    next: MD
+
+  MD:
+    condition: mobile-impact
+    output: mobile implementation + tests
+    next: QA
+
+  QA:
+    output: validation result
+    next: DO
+
+  DO:
+    condition: infrastructure-impact
+    output: deployment/infrastructure result
+    next: VR
+
+  VR:
+    output: final verification
+    next: DONE
+
+Failure:
+  Every failed stage MUST declare:
+    reason
+    affected_stage
+    recovery_stage
+
+  AI MUST NOT continue to the next dependent stage after failure.
+
+Completion:
+  A feature is complete only when:
+    required stages = +
+    required validation = +
+    VR = +
+    no unresolved critical issue exists
+
+PromptProcessing:
+  Before starting work:
+    1. Read root project prompt.
+    2. Read .sdd prompt instructions.
+    3. Check .sdd/prompts/inbox.
+    4. Analyze new prompts against current work.
+    5. Determine whether they affect current work, future work, or global rules.
+    6. Do not silently change global rules.
+
+HumanDecision:
+  AI MAY:
+    analyze
+    propose
+    plan
+    implement
+    test
+    review
+    route
+
+  AI MUST request human decision for:
+    architecture changes
+    global skill changes
+    global project rule changes
+    destructive changes
+    unresolved conflicting requirements
+
+Reference:
+  # Not part of the canonical STEP-1 spec (prompt/new/12.md) — appended so
+  # real repo folders stay discoverable from the constitution, without
+  # duplicating their contents here (R2).
+  chains:    .sdd/chains
+  tasks:     .sdd/tasks
+  decisions: .sdd/decisions
+  prompts:   .sdd/prompts/{inbox,active,archive,rejected}
+  system:    .sdd/system/MASTER.md
+  protocol:  .sdd/protocol/{symbols,stages,rules}.sdd
 
 Note:
-  This is a template/example instance derived from the EduNexus illustration
-  used in the source conversation (prompt/new/1.md..10.md). When applied to
-  a real project, this file and ./project/* MUST be regenerated from
-  evidence per project/architecture.sdd -> ProjectInstantiation, not copied
-  as-is. PROJECT.sdd itself never holds project knowledge — it only routes
-  to where that knowledge lives (see ProjectModel above).
+  PROJECT.sdd is a constitution, not an encyclopedia (prompt/new/12.md).
+  It never states which table Payment uses (-> .sdd/project/payment/) or
+  what DDD requires (-> .sdd/backend/ddd/skill.md) — only where to find
+  them. Real disk paths for BE/FE/MD/QA/DO code roots live in
+  project/map.sdd (per R2, not duplicated here). This is a template/example
+  instance derived from the EduNexus illustration used in the source
+  conversation; regenerate from evidence when applied to a real project
+  (see project/architecture.sdd -> ModuleIsolation and the wider
+  ProjectInstantiation principle this system converges toward).

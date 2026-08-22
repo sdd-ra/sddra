@@ -41,11 +41,14 @@ deyil — canlı, artan bir sənəddir.
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/11.md-ə qədər)
+## Status (prompt/new/12.md-ə qədər)
 
-- `+` PROJECT.sdd — chunk 10-un kanonik bölmə sırasına (Project/Root/Architecture/
-  Modules/Domains/Paths/ProjectModel/Flow/Skills/Prompts/Tasks/StateSymbols/Rules)
-  görə yenidən strukturlaşdırıldı; Modules (biznes) və Domains (fənn) ayrıldı
+- `+` PROJECT.sdd — chunk 12-nin verdiyi TAM, finallaşmış konstitusiya mətni ilə
+  əvəz olundu (Purpose/Model/Disciplines/ProjectMap/ModuleModel/SkillModel/Flow/
+  State/R1-R15 Rules/Navigation/FlowRules/Failure/Completion/PromptProcessing/
+  HumanDecision). Real disk path-lər (BE/FE/MD/QA/DO) artıq yalnız map.sdd-də
+  saxlanılır (R2-ə görə təkrarlanmır). Chunk 10-un aralıq versiyası bununla
+  üstələnib.
 - `+` project/map.sdd — router contract-ı tamamlandı: Rules + Resolve bölmələri (chunk 11)
 - `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
 - `~` project/course/, project/user/ — yalnız stub, chat hələ bunları detallandırmayıb
