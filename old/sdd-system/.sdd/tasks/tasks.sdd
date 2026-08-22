@@ -1,0 +1,15 @@
+Spec: TaskRegistry
+Purpose: Root-level registry of project work and current state.
+Rules:
+  Tasks live in .sdd/tasks and are not copied into project semantic folders.
+  Project folders MAY reference task IDs but MUST NOT own task lifecycle data.
+CompactTask:
+  #ID
+  @project/domain/component
+  #skills
+  origin: ORIGIN
+  chain: STAGES
+  state: STATE
+  attempts: N/3
+  -> dependency
+  A: acceptance_key

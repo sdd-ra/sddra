@@ -1,0 +1,31 @@
+Feature: Payment
+
+Flow:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+Stages:
+  DB:
+    optional
+    condition: database-impact = true
+    # AI does not decide on its own to skip DB — this file declares the
+    # condition explicitly (see prompt/new/9.md point 4).
+
+Note — two separate relationships, do not conflate:
+
+  Execution Chain (this file — what order to work in):
+    AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+  Dependency Graph (see project/dependencies.sdd, and payment.sdd's own
+  Dependencies block — what depends on what):
+    DB -> BE -> API -> (FE, MD) -> QA -> DO -> VR
+
+Skills (third layer — which skill runs at each execution-chain stage):
+  BE:  .sdd/backend/architecture, .sdd/backend/ddd, .sdd/backend/clean-code,
+       .sdd/backend/security, .sdd/backend/testing
+  FE:  .sdd/frontend/architecture, .sdd/frontend/components, .sdd/frontend/accessibility
+  MD:  .sdd/mobile/architecture, .sdd/mobile/api, .sdd/mobile/testing
+  QA:  .sdd/qa/bdd, .sdd/qa/integration, .sdd/qa/regression
+  DO:  .sdd/devops/docker, .sdd/devops/ci-cd, .sdd/devops/observability
+
+State:
+  AN +, AR +, DB ?, BE ?, API ?, FE ?, MD ?, QA ?, DO ?, VR ?

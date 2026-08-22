@@ -1,0 +1,23 @@
+Spec: User
+
+Path:
+  ./backend/user
+  ./frontend/user
+
+Flow:
+  @flow    (not yet detailed in this replay)
+
+DB:
+  @db      (not yet detailed in this replay)
+
+API:
+  @api     (not yet detailed in this replay)
+
+Dependencies:
+  User
+    <- (none)
+    -> (consumed by Course, Payment)
+
+Note:
+  Stub — same status as project/course/course.sdd. Root dependency of the
+  module graph (project/dependencies.sdd).

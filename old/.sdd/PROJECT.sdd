@@ -1,0 +1,298 @@
+Spec: ProjectInstantiation
+
+Purpose:
+  Define how the SDD system understands customer input
+  and creates a project-specific SDD instance.
+
+Principle:
+
+  Project structure MUST be derived from the actual project.
+
+  No project structure is mandatory unless required by
+  an applicable SDD rule.
+
+Input:
+
+  customer_prompt
+  project_prompts
+  existing_project
+  constraints
+  decisions
+  applicable_skills
+
+
+Process:
+
+  INPUT
+    >
+  INTERPRET
+    >
+  EXTRACT_REQUIREMENTS
+    >
+  ANALYZE_SCOPE
+    >
+  ANALYZE_SCALE
+    >
+  SELECT_APPLICABLE_SKILLS
+    >
+  ARCHITECTURE_ANALYSIS
+    >
+  IDENTIFY_DOMAINS
+    >
+  IDENTIFY_DEPENDENCIES
+    >
+  BUILD_PROJECT_MODEL
+    >
+  HUMAN_REVIEW
+
+
+ProjectModel:
+
+  MUST contain only information required
+  to understand and navigate the actual project.
+
+  MAY contain:
+
+    project
+    domains
+    modules
+    features
+    components
+    flows
+    dependencies
+    architecture
+    decisions
+    tasks
+    code mappings
+
+
+Rules:
+
+  [P1]
+  Project structure MUST be generated from evidence.
+
+  [P2]
+  AI MUST NOT create unnecessary project structures.
+
+  [P3]
+  AI MUST NOT apply skills merely because they exist.
+
+  [P4]
+  AI MUST select skills based on project context.
+
+  [P5]
+  Architecture MUST be proportional to project complexity.
+
+  [P6]
+  Small projects MUST NOT receive unnecessary
+  distributed-system complexity.
+
+  [P7]
+  Project model MUST evolve when the project evolves.
+
+  [P8]
+  Existing project information MUST be preserved unless
+  explicitly superseded.
+
+  [P9]
+  Human decisions MUST influence project generation.
+
+  [P10]
+  Project model MUST remain navigable by AI without
+  requiring full source-code inspection.
+
+
+Scale:
+
+  AI MUST evaluate project scale before selecting
+  architecture and engineering practices.
+
+  Scale MAY be:
+
+    XS
+    S
+    M
+    L
+    XL
+
+  Scale is contextual and MUST NOT be determined only
+  by source-code size.
+
+
+ArchitectureSelection:
+
+  AI MUST compare applicable architectural approaches.
+
+  AI MUST prefer the simplest architecture that satisfies
+  known requirements and constraints.
+
+  Microservices MUST NOT be introduced without justification.
+
+  DDD MUST NOT be introduced without sufficient domain
+  complexity or benefit.
+
+  Event-driven architecture MUST NOT be introduced
+  without a relevant requirement.
+
+  Modular architecture SHOULD be preferred when it provides
+  meaningful boundary or future extraction benefits.
+
+
+HumanApproval:
+
+  AI MUST present the generated project understanding,
+  architecture recommendation and major assumptions
+  before irreversible implementation.
+
+
+Evolution:
+
+  New customer prompts MAY:
+
+    modify project model
+    add domain
+    remove domain
+    change architecture
+    add dependency
+    create decision
+    create task
+    create chain
+    update existing knowledge
+
+
+Portability:
+
+  .sdd/ MUST remain reusable.
+
+  .sdd/project/ MUST represent only the current
+  project instance.
+
+Operation: ANALYZE_PROJECT
+
+Trigger:
+
+  User explicitly requests project analysis.
+
+  Examples:
+
+    "Analyze project"
+    "Analyze this project"
+    "Projecti analiz et"
+    "Layihəni araşdır"
+
+
+Mode:
+
+  PROJECT_DISCOVERY
+
+
+Priority:
+
+  ANALYZE_PROJECT MUST take priority over
+  implementation requests until discovery is complete.
+
+
+Behavior:
+
+  AI MUST temporarily stop implementation.
+
+  AI MUST inspect the existing project and determine:
+
+    project structure
+    architecture
+    domains
+    modules
+    features
+    backend
+    frontend
+    mobile
+    database
+    API
+    tests
+    DevOps
+    dependencies
+    flows
+    external integrations
+    configuration
+    security boundaries
+
+
+SourceOfTruth:
+
+  During discovery:
+
+    source code
+    database schema
+    API definitions
+    tests
+    configuration
+    deployment configuration
+    existing documentation
+
+  MUST be treated as evidence.
+
+
+PromptRelationship:
+
+  Project analysis MUST NOT depend on
+  customer prompts.
+
+  Existing source code is the primary evidence
+  when analyzing an existing project.
+
+
+Output:
+
+  AI MUST generate or update:
+
+    .sdd/project/
+
+
+  The generated project model MUST represent
+  the discovered system.
+
+
+Rules:
+
+  [PA1]
+  Do not modify source code during discovery.
+
+  [PA2]
+  Do not create implementation tasks before
+  discovery is sufficiently complete.
+
+  [PA3]
+  Do not assume architecture from project names.
+
+  [PA4]
+  Existing code behavior MUST be analyzed.
+
+  [PA5]
+  Existing implementation MAY differ from
+  recommended best practices.
+
+  [PA6]
+  Discovered reality MUST be separated from
+  recommended improvements.
+
+  [PA7]
+  Uncertain findings MUST be marked as uncertain.
+
+  [PA8]
+  Existing architecture MUST NOT be silently rewritten
+  in the project model.
+
+  [PA9]
+  Recommendations MUST be recorded separately
+  from discovered facts.
+
+
+Result:
+
+  DISCOVERED
+    +
+  RECOMMENDATIONS
+    +
+  RISKS
+    +
+  UNKNOWN

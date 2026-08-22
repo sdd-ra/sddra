@@ -1,0 +1,71 @@
+Spec: SDDStages
+
+Stage: AN
+Meaning: Analysis
+
+Stage: AR
+Meaning: Architecture Review
+
+Stage: DB
+Meaning: Database Engineering
+
+Stage: BE
+Meaning: Backend Engineering
+
+Stage: API
+Meaning: API Engineering
+
+Stage: FE
+Meaning: Frontend Engineering
+
+Stage: MD
+Meaning: Mobile Engineering
+
+Stage: QA
+Meaning: Quality Assurance
+
+Stage: DO
+Meaning: DevOps Engineering
+
+Stage: VR
+Meaning: Verification
+
+
+Rules:
+
+  AN MUST occur before implementation when analysis is required.
+
+  AR MUST validate architecture before implementation
+  when architecture decisions are involved.
+
+  DB MUST be included when persistent data changes.
+
+  BE MUST be included when backend behavior changes.
+
+  API MUST be included when an API contract changes.
+
+  FE MUST be included when frontend behavior changes.
+
+  MD MUST be included when mobile behavior changes.
+
+  QA MUST be included when behavior requires verification.
+
+  DO MUST be included when build, deployment,
+  infrastructure or runtime configuration changes.
+
+  VR MUST be the final verification stage.
+
+
+Important:
+
+  Stages are NOT automatically executed.
+
+  AI MUST determine required stages from:
+
+    task
+    project
+    dependencies
+    affected components
+    skills
+    architecture
+    acceptance criteria

@@ -1,0 +1,6 @@
+Spec: SkillRegistry
+Purpose: Canonical engineering knowledge index.
+Rules:
+  Each skill has identifier, levels, applicability, dependencies, conflicts, checks, outputs, references.
+  AI loads only skills selected by project facts and task context.
+  Skills MUST favor the simplest valid solution.

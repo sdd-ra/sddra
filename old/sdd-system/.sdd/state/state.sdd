@@ -1,0 +1,9 @@
+Spec: SystemState
+Purpose: Current SDD execution state.
+Fields:
+  active_task: ?
+  active_stage: ?
+  blocked: ?
+  pending_human_action: ?
+  last_verified: ?
+Rule: Stable decisions belong in project decision records; this file tracks operational state.

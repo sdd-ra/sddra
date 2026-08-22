@@ -1,0 +1,26 @@
+Spec: SDDStates
++: READY
+~: IN_PROGRESS
+>: REVIEW
+?: BLOCKED
+!: FAILED
+@: HUMAN_ACTION
+✓: DONE
+-: CANCELLED
+Transitions:
+  + -> ~
+  ~ -> >
+  > -> ✓
+  > -> !
+  ! -> ~
+  ! -> @
+  ? -> +
+  @ -> +
+  @ -> -
+  + -> -
+  ~ -> ?
+Rules:
+  AI MUST preserve failure reason and attempts.
+  AI MUST NOT mark DONE without VR.
+  Equivalent repeated failures MUST NOT create infinite retry loops.
+  HUMAN_ACTION requires an explicit human decision.

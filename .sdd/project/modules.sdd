@@ -1,0 +1,34 @@
+Spec: Project/Modules
+
+Purpose:
+  Declares each domain module: what it owns, its public surface, and its
+  direct dependencies. This is the boundary contract ExtractCheck
+  (architecture.sdd) validates against.
+
+M {
+  user {
+    r:   user-management
+    owns: user
+    api: public
+  }
+
+  course {
+    r:    course-management
+    owns: course
+    api:  public
+    deps: user
+  }
+
+  payment {
+    r:    payment-processing
+    owns: payment
+    api:  public
+    deps: course, user
+    ext:  PaymentGateway        # external integration, see integrations.sdd
+  }
+}
+
+Rule:
+  A module MAY depend on modules listed in `deps`.
+  A module MUST NOT depend on any module not listed in `deps`
+  (undeclared dependency = architecture violation, see architecture.sdd).

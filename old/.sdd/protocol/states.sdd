@@ -1,0 +1,74 @@
+Spec: SDDStates
+
+State: +
+Meaning: READY
+
+State: ~
+Meaning: IN_PROGRESS
+
+State: >
+Meaning: REVIEW
+
+State: ?
+Meaning: BLOCKED
+
+State: !
+Meaning: FAILED
+
+State: @
+Meaning: HUMAN_ACTION
+
+State: ✓
+Meaning: DONE
+
+State: -
+Meaning: CANCELLED
+
+
+Transitions:
+
+  + → ~
+
+  ~ → >
+
+  > → ✓
+
+  > → !
+
+  ! → ~
+
+  ! → @
+
+  ? → +
+
+  @ → +
+
+  @ → -
+
+  + → -
+
+  ~ → ?
+
+  ? → @
+
+
+Rules:
+
+  [S1]
+  State changes MUST be traceable.
+
+  [S2]
+  AI MUST NOT mark a task DONE without verification.
+
+  [S3]
+  FAILED MUST preserve failure information.
+
+  [S4]
+  Repeated equivalent failures MUST NOT create
+  an infinite retry loop.
+
+  [S5]
+  HUMAN_ACTION MUST require an explicit human decision.
+
+  [S6]
+  VR MUST be passed before final DONE.

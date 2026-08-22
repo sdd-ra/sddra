@@ -1,0 +1,49 @@
+Spec: Project/Architecture
+
+Purpose:
+  Compact, token-efficient description of the project's technical shape,
+  using the symbol vocabulary defined in protocol/symbols.sdd for state
+  only — these P{} / M{} blocks are a separate, project-level shorthand
+  for stack/module facts, not stage state.
+
+P {
+  n:  EduNexus
+  a:  MM        # MM = Modular Monolith
+  be: GO        # GO = Golang
+  db: PG        # PG = PostgreSQL
+  fe: RX        # RX = React
+  md: RN        # RN = React Native
+  dp: DK        # DK = Docker
+}
+
+ModuleIsolation:
+  Purpose:
+    Keep the modular monolith extraction-ready (microservice-ready) by
+    enforcing boundaries between modules before they become entangled.
+
+  ExtractCheck verifies, per module boundary:
+    DB isolation
+    dependency isolation
+    domain isolation
+    API contract
+    infrastructure isolation
+    shared state
+    circular dependency
+
+  Example violation:
+    orders -> users DB      # cross-module-db, FORBIDDEN
+
+  On violation:
+    result: -
+    reason: cross-module-db
+    chain returns: EXTRACT-CHECK -> MODULE -> DESIGN -> CODE
+    (i.e. the chain does not just report the error — it routes back to the
+    stage responsible for fixing it; see protocol/rules.sdd)
+
+Must:
+  Every module declared in project/modules.sdd MUST pass ExtractCheck
+  before its chain is allowed to reach QA.
+
+Forbids:
+  Direct cross-module database access.
+  Circular module dependencies.

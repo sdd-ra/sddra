@@ -1,0 +1,46 @@
+Spec: Protocol/Stages
+
+Purpose:
+  Canonical abbreviation table for execution-chain stages, and the rule for
+  marking a stage optional/conditional (per prompt/new/9.md).
+
+Abbreviations:
+  AN  = Analysis
+  AR  = Architecture
+  DB  = Database
+  BE  = Backend
+  API = API
+  FE  = Frontend
+  MD  = Mobile
+  QA  = Quality Assurance
+  DO  = DevOps
+  VR  = Verify
+
+DefaultChain:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+OptionalStage:
+  A stage MAY be declared optional in a module's flow.sdd, e.g.:
+
+    DB:
+      optional
+      condition: database-impact = true
+
+  The AI MUST NOT decide on its own to skip a stage. It may only skip a
+  stage whose condition is declared false in the module's own flow.sdd.
+
+ThreeRelations:
+  Do not conflate these — they answer different questions and are stored
+  in different places:
+
+  Execution Chain   "what order do I work in?"       -> module/flow.sdd
+  Dependency Graph  "what depends on what?"           -> project/dependencies.sdd
+  Skill Chain       "which skill runs at this stage?" -> module/flow.sdd -> Skills
+
+Example — Execution Chain vs Dependency Graph for Payment:
+
+  Execution Chain:
+    AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+  Dependency Graph:
+    DB -> BE -> API -> (FE, MD) -> QA -> DO -> VR

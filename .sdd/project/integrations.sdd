@@ -1,0 +1,20 @@
+Spec: Project/Integrations
+
+Purpose:
+  External systems the project depends on, referenced by @Name from
+  feature specs (see chains/_TEMPLATE.feature.sdd -> Depends on).
+
+Integrations:
+
+  @PaymentGateway
+    kind: external-api
+    used-by: payment
+
+  @CourseCompletionTracker
+    kind: internal-service
+    used-by: payment, course
+
+Note:
+  Illustrative — matches the EscrowCalculation example encountered in the
+  source conversation (prompt/new/5.md). Populate with real integrations
+  once applied to an actual project.

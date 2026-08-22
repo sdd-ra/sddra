@@ -1,0 +1,39 @@
+Spec: Protocol/Symbols
+
+Purpose:
+  Token-efficient, machine-readable status vocabulary for .sdd files.
+  Symbols replace verbose state words (e.g. PROCESS_DONE -> +).
+
+Forbids:
+  Using these symbols inside actual source code comments.
+  (They are AI-oriented metadata for .sdd files only — a developer reading
+  source code gains nothing from "// +" the way they would from a real
+  comment; keep source code comments normal.)
+
+Vocabulary:
+  +  = DONE / PASS
+  -  = FAIL
+  ~  = IN_PROGRESS / ACTIVE
+  !  = BLOCKED
+  ?  = NEED_INPUT / DECISION
+  >  = NEXT
+  @  = REFERENCE
+  #  = RULE
+
+ProgressNotation:
+  Fractional form (N of M subtasks done):
+    ~ 2/5
+
+  Stage form (which stage is currently active, others pending/done):
+    + BE, ~ FE, ? QA
+
+Example:
+  backend.module.design ~     (in progress)
+  backend.module.design +     (done)
+  backend.module.design -     (failed)
+  > backend.ddd                (next skill/stage to run)
+
+Reference:
+  Stage abbreviations used alongside these symbols (AN, AR, DB, BE, API,
+  FE, MD, QA, DO, VR) are defined in protocol/stages.sdd, not here — this
+  file is the state/status vocabulary only.

@@ -1,0 +1,15 @@
+Spec: SDDRelations
+→: next stage / execution transition
+->: dependency
+=>: produces
+<-: produced by
+@: reference
+!: finding/failure marker by context
+?: unknown marker by context
+Rules:
+  Relations are directional.
+  → is execution order.
+  -> is dependency.
+  => is produced output.
+  @ resolves an SDD entity.
+  ? MUST NOT be silently converted to a known value.

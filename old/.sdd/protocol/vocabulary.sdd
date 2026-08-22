@@ -1,0 +1,59 @@
+Spec: SDDVocabulary
+
+Architecture:
+
+  #ARCH
+  #DDD
+  #MOD
+  #SOLID
+
+Engineering:
+
+  #CC
+  #DRY
+  #KISS
+  #YAGNI
+
+Backend:
+
+  #IDP
+  #TX
+  #ERR
+  #OBS
+
+Database:
+
+  #DBD
+  #IDX
+  #MIG
+
+API:
+
+  #APID
+  #AUTH
+  #RATE
+
+Testing:
+
+  #BDD
+  #UNIT
+  #INT
+  #E2E
+
+Security:
+
+  #SEC
+  #THREAT
+
+Performance:
+
+  #PERF
+  #CACHE
+
+DevOps:
+
+  #CI
+  #CD
+  #DOCKER
+  #K8S
+  #OBS

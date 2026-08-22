@@ -1,0 +1,15 @@
+Spec: ProjectModel
+Purpose: Semantic mirror of the real project.
+SourceRoot: ..
+Structure:
+  BE: backend source tree
+  FE: frontend source tree
+  MD: mobile source tree
+  DB: database assets/schema
+  DO: infrastructure/deployment assets
+Rules:
+  This tree mirrors source paths semantically.
+  It MUST NOT contain implementation code.
+  It MUST NOT become a second runtime source of truth.
+  Each map node points to real source location and dependencies.
+  AI navigates this model before broad source search.

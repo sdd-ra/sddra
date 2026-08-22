@@ -1,0 +1,352 @@
+Spec: SkillSystem
+
+Purpose:
+  Define how reusable engineering skills are discovered,
+  evaluated, selected, chained and applied by the SDD system.
+
+
+Owns:
+  Skill definition
+  Skill discovery
+  Skill applicability
+  Skill selection
+  Skill dependencies
+  Skill chaining
+  Skill priority
+  Skill conflicts
+  Skill validation
+
+
+DoesNotOwn:
+  Project-specific implementation
+  Project-specific tasks
+  Project-specific architecture
+  Project-specific decisions
+
+
+Principle:
+
+  A skill is reusable engineering knowledge.
+
+  A skill MUST define how a specific engineering concern
+  should be analyzed, implemented or validated.
+
+  A skill MUST NOT assume a specific project.
+
+
+SkillStructure:
+
+  Every skill SHOULD define:
+
+    name
+    purpose
+    scope
+    applies_when
+    prerequisites
+    rules
+    forbids
+    checks
+    outputs
+    depends_on
+    conflicts_with
+    severity
+
+
+SkillSelection:
+
+  AvailableSkills
+      >
+  ProjectContext
+      >
+  RequirementContext
+      >
+  ArchitectureContext
+      >
+  RiskContext
+      >
+  ApplicableSkills
+      >
+  RequiredSkills
+
+
+Applicability:
+
+  A skill MAY be:
+
+    applicable
+    optional
+    unnecessary
+    blocked
+    conflicting
+
+
+Rules:
+
+  [SK1]
+  AI MUST discover relevant skills before implementation.
+
+  [SK2]
+  AI MUST NOT apply every available skill automatically.
+
+  [SK3]
+  Skill selection MUST be based on project context.
+
+  [SK4]
+  Skill selection MUST consider project scale.
+
+  [SK5]
+  Skill selection MUST consider architecture.
+
+  [SK6]
+  Skill selection MUST consider the current task.
+
+  [SK7]
+  Skill selection MUST consider dependencies.
+
+  [SK8]
+  Skill selection MUST consider risk.
+
+  [SK9]
+  A skill MUST NOT introduce unnecessary complexity
+  when the project does not require it.
+
+  [SK10]
+  Higher-level architecture skills MAY determine whether
+  lower-level skills are applicable.
+
+  [SK11]
+  Conflicting skills MUST be detected before execution.
+
+  [SK12]
+  Required skill dependencies MUST be resolved before
+  executing the dependent skill.
+
+  [SK13]
+  Skill execution MUST be traceable.
+
+  [SK14]
+  Skill results MAY create:
+
+    task
+    decision
+    constraint
+    review
+    chain stage
+    project knowledge
+
+
+SkillChain:
+
+  Skills MAY depend on other skills.
+
+  Example:
+
+    architecture
+      >
+    modularity
+      >
+    clean-code
+      >
+    testing
+
+
+  AI MUST resolve skill dependencies before execution.
+
+
+SkillDependency:
+
+  requires:
+    required skill MUST execute first
+
+  supports:
+    supporting skill MAY provide additional validation
+
+  conflicts:
+    skills MUST NOT be applied together without resolution
+
+  enhances:
+    skill improves the result of another skill
+
+
+SkillPriority:
+
+  critical
+  high
+  normal
+  low
+
+
+PriorityRule:
+
+  critical
+    >
+  high
+    >
+  normal
+    >
+  low
+
+
+But:
+
+  Priority MUST NOT override applicability.
+
+  A high-priority irrelevant skill MUST NOT be applied.
+
+
+SkillConflict:
+
+  If:
+
+    Skill A
+      conflicts_with
+    Skill B
+
+  AI MUST:
+
+    identify conflict
+      >
+    analyze context
+      >
+    select applicable approach OR
+    request human decision
+
+
+SkillOutput:
+
+  A skill SHOULD produce structured findings.
+
+  Example:
+
+    status
+    findings
+    risks
+    recommendations
+    affected
+    required_actions
+
+
+SkillToTask:
+
+  A finding requiring implementation MAY create a task.
+
+  A finding requiring human choice MUST create a decision.
+
+  A finding requiring validation MUST create a review.
+
+
+SkillToChain:
+
+  Skills MAY determine which engineering stages
+  are required.
+
+  Example:
+
+    database skill
+      >
+    DB stage
+
+    API skill
+      >
+    API stage
+
+    frontend skill
+      >
+    FE stage
+
+    mobile skill
+      >
+    MD stage
+
+    testing skill
+      >
+    QA stage
+
+    deployment skill
+      >
+    DO stage
+
+
+SkillLifecycle:
+
+  DISCOVER
+    >
+  ANALYZE
+    >
+  SELECT
+    >
+  RESOLVE_DEPENDENCIES
+    >
+  APPLY
+    >
+  VALIDATE
+    >
+  RECORD
+
+
+Reuse:
+
+  Skills MUST be reusable across projects.
+
+  Project-specific rules MUST NOT be embedded inside
+  reusable skills.
+
+  Project-specific decisions MUST remain inside
+  .sdd/project/.
+
+
+Evolution:
+
+  A new skill MAY:
+
+    improve an existing skill
+    complement an existing skill
+    conflict with an existing skill
+    replace an existing skill
+
+  Before replacing a skill AI MUST compare:
+
+    scope
+    rules
+    applicability
+    dependencies
+    conflicts
+    project impact
+
+
+SkillDiscovery:
+
+  AI SHOULD use indexes or metadata to identify
+  candidate skills before reading full skill content.
+
+  Full skill content SHOULD be loaded only when relevant.
+
+
+ComplexityControl:
+
+  Skills MUST NOT increase project complexity
+  without measurable benefit.
+
+  Example:
+
+    Small project
+      >
+    simple modularity
+
+  MUST NOT automatically become:
+
+    DDD
+      +
+    CQRS
+      +
+    Event Sourcing
+      +
+    Microservices
+
+
+Portability:
+
+  Skills MUST remain project-independent.
+
+  The same skill MAY be used by multiple projects
+  with different architecture and scale.

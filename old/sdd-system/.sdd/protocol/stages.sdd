@@ -1,0 +1,21 @@
+Spec: SDDStages
+AN: Analysis
+AR: Architecture Review
+DB: Database Engineering
+BE: Backend Engineering
+API: API Engineering
+FE: Frontend Engineering
+MD: Mobile Engineering
+QA: Quality Assurance
+DO: DevOps Engineering
+VR: Verification
+Rules:
+  DB applies when persistent data/schema/query behavior changes.
+  API applies when an API contract changes.
+  BE applies when backend behavior changes.
+  FE applies when frontend behavior changes.
+  MD applies when mobile behavior changes.
+  DO applies when build/deploy/runtime/infrastructure changes.
+  QA applies when behavior requires verification.
+  VR is the final verification stage.
+  Stages are selected from task/project/dependencies/skills, not blindly fixed.

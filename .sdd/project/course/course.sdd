@@ -1,0 +1,25 @@
+Spec: Course
+
+Path:
+  ./backend/course
+  ./frontend/course
+
+Flow:
+  @flow    (not yet detailed in this replay)
+
+DB:
+  @db      (not yet detailed in this replay)
+
+API:
+  @api     (not yet detailed in this replay)
+
+Dependencies:
+  Course
+    <- User
+    -> (consumed by Payment)
+
+Note:
+  Stub — follows the same payment/ pattern (payment.sdd + flow.sdd + db.sdd
+  + api.sdd + cases.sdd). Only `payment/` has been fully worked through the
+  replay so far (prompt/new/9.md); flesh this out when a later chunk covers
+  course specifically.

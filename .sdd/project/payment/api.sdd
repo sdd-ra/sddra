@@ -1,0 +1,52 @@
+Payment API
+
+Channels:
+
+  REST:
+    base: /api/v1/payments
+
+  Internal:
+    PaymentService
+
+  Events:
+    payment.created
+    payment.completed
+    payment.refunded
+
+Endpoints:
+
+  POST   /payments
+  GET    /payments/:id
+  POST   /payments/:id/refund
+
+Ownership:
+
+  POST /payments
+    -> BE.Payment.Create
+
+  GET /payments/:id
+    -> BE.Payment.Get
+
+  POST /payments/:id/refund
+    -> BE.Payment.Refund
+
+Services:
+
+  PaymentService
+    BE:  ./backend/payment/service.go
+    Produces:    Payment API
+    ConsumedBy:  FE.PaymentScreen, MD.PaymentScreen, QA.PaymentFlow
+
+Errors:
+
+  PAY-REF-001
+    Channel:    POST /payments/:id/refund
+    Backend:    Payment.Refund
+    DB:         payment_transactions
+    Consumers:  FE.PaymentDetails, MD.PaymentDetails
+    QA:         payment/refund
+
+Note:
+  A user report like "Refund düyməsində error çıxır" resolves directly to
+  an error code's affected graph (channel -> BE -> DB -> FE/MD -> QA)
+  instead of the AI guessing where to look (prompt/new/9.md, point 7).

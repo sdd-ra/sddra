@@ -1,0 +1,45 @@
+Spec: SDDOrigins
+
+Origin: PROMPT
+Meaning: customer/user prompt
+
+Origin: ANALYSIS
+Meaning: project analysis finding
+
+Origin: SKILL
+Meaning: skill-generated finding
+
+Origin: ARCH
+Meaning: architecture finding
+
+Origin: QA
+Meaning: QA finding
+
+Origin: SEC
+Meaning: security finding
+
+Origin: PERF
+Meaning: performance finding
+
+Origin: VR
+Meaning: verification finding
+
+Origin: HUMAN
+Meaning: human-created work
+
+Origin: SYSTEM
+Meaning: system-generated work
+
+
+Rules:
+
+  Every task SHOULD preserve its origin.
+
+  Multiple origins MAY exist.
+
+  Example:
+
+    Origin:
+      PROMPT
+      SEC
+      VR

@@ -1,0 +1,6 @@
+Spec: BackendProjectMirror
+SourceRoot: BE/
+Rules:
+  Mirror the real BE tree semantically.
+  Do not duplicate source code.
+  Add a .sdd node only when a source component needs semantic metadata.

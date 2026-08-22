@@ -1,0 +1,30 @@
+Spec: Payment
+
+Path:
+  ./backend/payment
+  ./frontend/payment
+  ./mobile/payment
+
+Flow:
+  @flow
+
+DB:
+  @db
+
+API:
+  @api
+
+Cases:
+  @cases
+
+Dependencies:
+  Payment
+    <- Course
+    <- User
+    -> PaymentGateway   (external, see project/integrations.sdd)
+
+Note:
+  @flow / @db / @api / @cases are references to the sibling files in this
+  folder (flow.sdd, db.sdd, api.sdd, cases.sdd). AI opens them only when the
+  current stage actually needs them — this is the module-inheritance /
+  lazy-load pattern from prompt/new/9.md.

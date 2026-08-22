@@ -1,0 +1,34 @@
+Spec: Project/Map
+
+Purpose:
+  Routing/index only — answers "where do I go?", nothing more. Detailed
+  knowledge (flow, DB, API, cases) lives inside each module's own folder,
+  never here (per prompt/new/9.md correction: a global file must not grow
+  into "the entire system's map in one file").
+
+Project: EduNexus
+
+Modules:
+  payment -> ./project/payment
+  course  -> ./project/course
+  user    -> ./project/user
+
+BE -> ./backend
+FE -> ./frontend
+MD -> ./mobile
+QA -> ./qa
+DO -> ./devops
+
+Flow:
+  feature -> module/flow.sdd
+
+Navigation:
+  USER INPUT
+    -> PROJECT.sdd
+    -> map.sdd
+    -> IDENTIFY MODULE
+    -> module/*.sdd
+    -> IDENTIFY REQUIRED FLOW -> module/flow.sdd
+    -> CURRENT STAGE -> LOAD STAGE SKILLS
+    -> LOAD ONLY WHAT'S NEEDED: db.sdd? api.sdd? cases.sdd?
+    -> WORK -> VALIDATE -> UPDATE STATE -> NEXT FLOW NODE

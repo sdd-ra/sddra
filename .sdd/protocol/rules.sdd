@@ -1,0 +1,50 @@
+Spec: Protocol/ChainIntegrity
+
+Purpose:
+  Guarantee that chains (feature/task pipelines defined in .sdd/chains/*)
+  cannot be silently broken, reordered, or skipped by an AI agent.
+  Without this rule the system degrades into an ordinary AI coding agent.
+
+Rule: CHAIN_INTEGRITY
+
+  AI MUST NOT:
+    skip a required stage
+    reorder dependent stages
+    modify a completed stage without reopening its dependents
+    create work outside the project model (project/map.sdd, project/modules.sdd)
+    modify code without resolving its .sdd ownership first
+    continue after a failed required gate
+
+  AI MUST:
+    resolve the target module from the project model
+    resolve applicable skills for the current stage
+    resolve current chain position
+    validate stage output before advancing
+    update .sdd state (see protocol/symbols.sdd)
+    follow the declared next transition
+    route failures to the declared recovery stage
+    propagate changes to dependent stages
+
+FailureRouting:
+  Failures are not blindly looped back to implementation — they are routed
+  by classified reason:
+
+  Requirement problem   -> ANALYSIS
+  Architecture problem  -> ARCHITECTURE
+  Design problem        -> DESIGN
+  Code problem           -> IMPLEMENTATION
+  Test problem           -> TEST
+  Environment problem    -> DEVOPS
+
+StageContract:
+  Every chain node (see chains/_TEMPLATE.feature.sdd) MUST declare:
+    input:     what it requires before starting
+    output:    what it produces
+    validate:  how its output is checked
+    next:      the stage to advance to on pass
+    fail:      the stage to return to on failure
+
+Done when:
+  A chain cannot advance past a stage whose validation has not passed (+).
+  A chain node without input/output/validate/next/fail is considered invalid
+  and MUST NOT be executed.

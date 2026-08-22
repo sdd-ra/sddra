@@ -1,0 +1,114 @@
+Project: EduNexus
+
+Root:
+  ./
+
+Architecture:
+  ModularMonolith
+
+Domains:
+  Backend
+  Frontend
+  Mobile
+  QA
+  DevOps
+
+Flow:
+  BE -> FE -> MD -> QA -> DO -> VERIFY
+
+Paths:
+  BE: ./backend
+  FE: ./frontend
+  MD: ./mobile
+  QA: ./qa
+  DO: ./devops
+
+Specs:
+  ./.sdd/project
+  (per-module: ./.sdd/project/<module>/ — see project/map.sdd)
+
+Skills:
+  BE: ./.sdd/backend
+  FE: ./.sdd/frontend
+  MD: ./.sdd/mobile
+  QA: ./.sdd/qa
+  DO: ./.sdd/devops
+
+Chains:
+  ./.sdd/chains
+
+Protocol:
+  ./.sdd/protocol/symbols.sdd
+  ./.sdd/protocol/rules.sdd
+
+Prompts:
+  root: ./.sdd/system/MASTER.md
+  inbox: ./.sdd/prompts/inbox
+  active: ./.sdd/prompts/active
+  archive: ./.sdd/prompts/archive
+  rejected: ./.sdd/prompts/rejected
+
+Tasks:
+  ./.sdd/tasks
+
+Decisions:
+  ./.sdd/decisions
+
+Workflow:
+  1. ANALYZE
+  2. PROPOSE
+  3. HUMAN_APPROVAL
+  4. PLAN
+  5. BACKEND
+  6. FRONTEND
+  7. MOBILE
+  8. QA
+  9. DEVOPS
+  10. VERIFY
+
+DefaultExecutionChain:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+  AN  = Analysis
+  AR  = Architecture
+  DB  = Database        (optional — see per-module flow.sdd condition)
+  BE  = Backend
+  API = API
+  FE  = Frontend
+  MD  = Mobile
+  QA  = Quality Assurance
+  DO  = DevOps
+  VR  = Verify
+
+  Full abbreviation table + optional-stage mechanism: protocol/stages.sdd
+  Per-feature execution chain lives in project/<module>/flow.sdd, not here
+  (global files stay routing-only — see project/map.sdd).
+
+Rules:
+  Human approval required before implementation.
+  Failed task must return to the responsible stage (see protocol/rules.sdd).
+  Failed review must not automatically skip to next stage.
+  QA failure returns to implementation/review according to failure reason.
+  DevOps failure returns to DevOps.
+  Verification failure creates corrective task.
+  Completed stages cannot be silently skipped.
+  See protocol/rules.sdd -> RULE: CHAIN_INTEGRITY for the full enforcement contract.
+
+AdaptivePipeline:
+  Default pipeline above is not mandatory for every task.
+  Each task/feature declares its own "Required stages" subset in its chain file.
+
+  Example — backend-only bugfix:
+    BE -> QA -> VERIFY
+
+  Example — UI-only change:
+    FE -> MD -> QA -> VERIFY
+
+  Example — infrastructure-only change:
+    DO -> VERIFY
+
+Note:
+  This is a template/example instance derived from the EduNexus illustration
+  used in the source conversation (prompt/new/1.md..8.md). When applied to a
+  real project, this file and ./project/* MUST be regenerated from evidence
+  per project/architecture.sdd -> ProjectInstantiation, not copied as-is.

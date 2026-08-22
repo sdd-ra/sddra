@@ -1,0 +1,4 @@
+Spec: StageTransitions
+Standard: AN → AR → DB → BE → API → FE → MD → QA → DO → VR
+Important: Canonical ordering model, not a mandatory full path.
+Rule: Any non-standard path MUST record a reason.

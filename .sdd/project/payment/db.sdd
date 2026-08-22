@@ -1,0 +1,36 @@
+Payment DB
+
+Engine:
+  PostgreSQL
+
+Tables:
+
+  payments
+    owns:
+      payment state
+      amount
+      currency
+      user_id
+
+  payment_transactions
+    owns:
+      transaction state
+      provider reference
+
+Relations:
+
+  payments.user_id -> users.id
+  payment_transactions.payment_id -> payments.id
+
+Read:
+  payments
+  payment_transactions
+
+Write:
+  payments
+  payment_transactions
+
+Note:
+  Purpose: "Payment status səhv gəlir" kimi bir report gələndə AI birbaşa
+  payment -> db.sdd -> payments -> status yolunu izləyir, bütün kodu
+  scan etmək əvəzinə (prompt/new/9.md, point 5).

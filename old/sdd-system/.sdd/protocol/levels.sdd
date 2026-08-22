@@ -1,0 +1,10 @@
+Spec: EngineeringLevels
+L1: simple / small-scale
+L2: modular / growing
+L3: distributed / higher reliability
+L4: large-scale / multi-region or high availability
+L5: extreme-scale / complex distributed systems
+SelectionInputs: users DAU MAU QPS latency availability regions data_volume compliance security team_size deployment business_criticality
+Rules:
+  AI MUST select the lowest level that satisfies explicit requirements.
+  AI MUST NOT introduce microservices, Kubernetes, Kafka, sharding, multi-region, or similar complexity without evidence.

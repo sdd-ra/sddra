@@ -1,0 +1,259 @@
+Spec: DecisionSystem
+
+Purpose:
+  Define how decisions are requested, analyzed, recorded,
+  approved, rejected, superseded and consumed by the SDD system.
+
+Owns:
+  Decision lifecycle
+  Decision structure
+  Decision states
+  Decision resolution
+  Decision traceability
+  Decision impact rules
+
+DoesNotOwn:
+  Project-specific decisions
+  Domain-specific decisions
+  Module-specific decisions
+  Architecture implementations
+  Tasks
+  Skills
+  Chains
+
+
+Storage:
+
+  Project-specific decisions MUST be stored inside
+  the owning project model.
+
+  Example:
+
+    .sdd/project/payments/decisions/
+    .sdd/project/users/decisions/
+
+  The SDD root MUST NOT contain project-specific decisions.
+
+
+DecisionOwnership:
+
+  Every decision MUST have an owner.
+
+  Owner MAY be:
+
+    project
+    domain
+    module
+    feature
+
+  The decision MUST be stored under its owner.
+
+
+DecisionTypes:
+
+  architecture
+  requirement
+  security
+  dependency
+  technology
+  scope
+  process
+  exception
+
+
+DecisionLifecycle:
+
+  CREATED
+    >
+  ANALYZED
+    >
+  PENDING
+    >
+  APPROVED
+
+  CREATED
+    >
+  ANALYZED
+    >
+  PENDING
+    >
+  REJECTED
+
+  APPROVED
+    >
+  SUPERSEDED
+
+
+DecisionContract:
+
+  Every decision MUST define:
+
+    id
+    type
+    question
+    reason
+    context
+    alternatives
+    impact
+    affected
+    requested_by
+    state
+    resolution
+
+
+Rules:
+
+  [D1]
+  AI MUST request a decision when an unresolved human choice
+  affects architecture, scope, security or critical behavior.
+
+  [D2]
+  AI MUST NOT silently convert an unresolved conflict
+  into an implementation decision.
+
+  [D3]
+  AI MUST provide enough context for a human to make
+  an informed decision.
+
+  [D4]
+  AI SHOULD provide known alternatives.
+
+  [D5]
+  Every decision MUST have a traceable source.
+
+  [D6]
+  Every approved decision MUST be traceable to the
+  project element affected by the decision.
+
+  [D7]
+  Rejected decisions MUST preserve their history.
+
+  [D8]
+  Superseded decisions MUST remain available for history
+  but MUST NOT remain active.
+
+  [D9]
+  A decision MAY affect:
+
+    project
+    domain
+    module
+    feature
+    architecture
+    chain
+    task
+
+  [D10]
+  Decision impact MUST be analyzed before implementation.
+
+  [D11]
+  AI MUST NOT modify unrelated project areas without
+  impact analysis.
+
+  [D12]
+  Approved decisions MUST be treated as immutable.
+
+  [D13]
+  A changed decision MUST create a new decision that
+  supersedes the previous decision.
+
+  [D14]
+  Project decisions MUST remain inside their owning
+  project model.
+
+  [D15]
+  Decision rules defined here MUST NOT contain
+  project-specific knowledge.
+
+
+DecisionImpact:
+
+  local:
+    affects one feature or module
+
+  domain:
+    affects one business domain
+
+  project:
+    affects project-wide behavior or architecture
+
+  global:
+    affects the SDD system itself
+
+
+Resolution:
+
+  APPROVED:
+    Related work MAY continue.
+
+  REJECTED:
+    Related work MUST follow the rejection result.
+
+  SUPERSEDED:
+    Previous decision MUST NOT be used as active authority.
+
+  PENDING:
+    Dependent work MAY be blocked when the decision
+    is required for execution.
+
+
+State:
+
+  + = APPROVED
+  - = REJECTED
+  ? = PENDING
+  ~ = ANALYZING
+  ^ = SUPERSEDED
+  ! = BLOCKED
+  @ = REFERENCE
+
+
+Traceability:
+
+  Prompt
+    >
+  Analysis
+    >
+  Decision
+    >
+  Task
+    >
+  Chain
+    >
+  Implementation
+    >
+  Review
+    >
+  VR
+
+
+Navigation:
+
+  Project model:
+    @../project/
+
+  Project decisions:
+    @../project/*/decisions/
+
+  Tasks:
+    @../tasks/
+
+  Chains:
+    @../chains/
+
+  Skills:
+    @../skills/
+
+  Architecture:
+    @../architecture/
+
+
+Portability:
+
+  This decision system MUST be reusable across projects.
+
+  Project-specific decision data MUST NOT be embedded
+  into this specification.
+
+  Moving .sdd to another project MUST NOT require changes
+  to this decision system.
