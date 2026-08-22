@@ -38,7 +38,8 @@ Components:
 
   TASKS:
     path: ../tasks
-    role: Work management (active/planned/completed)
+    role: Work management (TaskLifecycle üzrə active/backlog/blocked/
+      review/done/failed, STEP 8)
 
   DECISIONS:
     path: ../decisions
@@ -211,6 +212,14 @@ Note:
   architecture or global rules" qaydası dəyişməyib — `.sdd/prompts/`-un
   STEP 7 reset-i (bax .sdd/prompts/prompts.sdd -> Note) yalnız PROMPTS-un
   öz daxili strukturunu qurdu, bu Forbidden qaydasını pozmadı.
+
+  (prompt/new/25.md, STEP 8 — HƏLL OLUNUB) TASKS komponentinin `role:`
+  sahəsindəki köhnə "active/planned/completed" ifadəsi əvəz olundu —
+  `.sdd/tasks/`-un real strukturu (6 qovluq: active/backlog/blocked/
+  review/done/failed, bax .sdd/tasks/tasks.sdd -> StateToDirectory) daha
+  dəqiq əks olunur. Forbidden bölməsindəki "TASKS: MUST NOT redefine
+  global SDD architecture" qaydası dəyişməyib — STEP 8 reset-i yalnız
+  TASKS-ın öz daxili strukturunu qurdu.
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles

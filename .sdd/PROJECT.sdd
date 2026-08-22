@@ -40,7 +40,8 @@ Directories:
 
   tasks:
     path: ./tasks
-    purpose: Task/subtask-ların aktiv/planlanmış/tamamlanmış vəziyyəti
+    purpose: Task/subtask-ların icra vəziyyəti — TaskLifecycle üzrə 6 qovluq (active/backlog/blocked/review/done/failed, bax tasks/tasks.sdd)
+    state: STEP 8 tamamlandı — tasks.sdd router (Rules [T1]-[T17]) + 6 qovluq (active/backlog/blocked/review/done/failed) yaradıldı, konkret task instansiyaları hələ yoxdur
 
   decisions:
     path: ./decisions
@@ -209,3 +210,10 @@ Note:
   [P1]-[P20]) yazıldı, `rejected/` silindi ([P19] ilə ARCHIVE-in
   alt-halına çevrildi), `extracted/` və `conflicts/` yeni yaradıldı (bax
   .sdd/prompts/prompts.sdd -> Note).
+
+  (prompt/new/25.md, STEP 8 — "Tam sıfırla") Köhnə `.sdd/tasks/README.md`
+  (artıq mövcud olmayan `system/MASTER.md`-ə istinad edən, `proposals/`-
+  gated approve modelinə əsaslanan, `PAY-001.N` dot-nömrələnmiş subtask
+  formatlı) istifadəçi təsdiqi ilə sıfırlanıb: `tasks.sdd` router (Rules
+  [T1]-[T17]) yazıldı, 6 qovluq (active/backlog/blocked/review/done/
+  failed) yeni yaradıldı (bax .sdd/tasks/tasks.sdd -> Note).

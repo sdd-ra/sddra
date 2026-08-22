@@ -1,0 +1,190 @@
+Tasks: SDD
+
+Purpose:
+  Track and manage executable work — the point where a decision becomes an
+  actively worked, verifiable unit. Bu qat özü qərar vermir və prioritetləri
+  icad etmir: `prompts/` bir promptun NƏYƏ aid olduğunu həll edir, `chains/`
+  bu işin hansı SIRAYLA gedəcəyini, `skills/` işin NECƏ görüləcəyini təyin
+  edir — `tasks/` bunların hamısından sonra gəlir və konkret bir iş
+  vahidinin canlı vəziyyətini (state) izləyir (bax NoDuplication: tapşırığın
+  qaydaları burda TƏKRAR yazılmır, yalnız referans olunur).
+
+  Zəncir: Prompt > Analysis > Decision > Chain > Task > Subtask > Review > VR
+  — task, bu zəncirin sərbəst addımı deyil, prompt/decision/chain-in icra
+  davamıdır (bax Traceability, architecture/architecture.sdd -> Principles).
+
+Directories:
+
+  active:
+    path: ./active
+    purpose: Currently in-progress tasks (ACTIVE state)
+    state: boş (STEP 8)
+
+  backlog:
+    path: ./backlog
+    purpose: Created/analyzed/ready tasks not yet started (CREATED,
+      ANALYZED, READY states)
+    state: boş (STEP 8)
+
+  blocked:
+    path: ./blocked
+    purpose: Tasks waiting on an unmet dependency (bax Dependency ->
+      requires/blocks)
+    state: boş (STEP 8)
+
+  review:
+    path: ./review
+    purpose: Tasks awaiting or undergoing review (REVIEW state, bax Review)
+    state: boş (STEP 8)
+
+  done:
+    path: ./done
+    purpose: Tasks that reached VERIFIED and were closed (VERIFIED, DONE
+      states)
+    state: boş (STEP 8)
+
+  failed:
+    path: ./failed
+    purpose: Tasks in a failure/recovery cycle, not yet returned to ACTIVE
+      (bax Failure)
+    state: boş (STEP 8)
+
+
+TaskLifecycle:
+
+  CREATED > ANALYZED > READY > ACTIVE > REVIEW > VERIFIED > DONE
+
+
+StateToDirectory:
+  (best-practice əlavə — mənbə template-də 6 qovluq və 7 lifecycle state-i
+  ayrı-ayrı verilmişdi, aralarında birbaşa xəritə yox idi; boşluğu doldurur)
+
+  CREATED, ANALYZED, READY -> backlog/  (hələ başlanmayıb)
+  ACTIVE                   -> active/
+  REVIEW                   -> review/
+  VERIFIED, DONE           -> done/
+  FAILED (bax Failure)     -> failed/
+  blocked dependency       -> blocked/  (bax [T5], Dependency -> blocks)
+
+  Qeyd: BLOCKED bir lifecycle state-i deyil, ACTIVE/READY üzərində bir
+  overlay-dir — asılılıq açılan kimi task öz əvvəlki state-inə (adətən
+  READY və ya ACTIVE) qayıdır, blocked/-dan çıxıb müvafiq qovluğa köçür.
+
+
+Failure:
+
+  ACTIVE > FAILED > RECOVER > ACTIVE
+  REVIEW > FAILED > RECOVER > ACTIVE
+
+  Failure heç vaxt birbaşa DONE-a keçmir — recovery məsul mərhələyə (ACTIVE
+  və ya REVIEW-un yaratdığı iş) qayıdır, heç vaxt irəli sıçramır (bax [T7],
+  [T8]).
+
+
+TaskTypes:
+  feature, bug, change, refactor, security, performance, infrastructure,
+  research
+
+
+TaskContract:
+  Every task MUST define:
+    id, type, purpose, source, scope, chain, owner, dependencies, subtasks,
+    related_tasks, affected_project, affected_architecture, affected_skills,
+    done_when, state
+
+
+Rules:
+
+  [T1] Every task MUST declare a source (bax Traceability — hansı
+       prompt/decision/chain-dən yarandığı).
+  [T2] Every task MUST belong to a chain (bax chains/chains.sdd -> [C1] —
+       eyni qayda, burda TƏKRAR tərif olunmur, TaskContract.chain sahəsi
+       vasitəsilə tətbiq olunur).
+  [T3] Every task MUST declare its scope.
+  [T4] Every task MUST declare its dependencies when they exist.
+  [T5] A blocked dependency MUST prevent execution.
+  [T6] DONE MUST require verification (bax Verification).
+  [T7] Failed tasks MUST enter recovery (bax Failure).
+  [T8] Recovery MUST return to the responsible stage — heç vaxt irəli
+       sıçramır.
+  [T9] A task MAY have multiple subtasks.
+  [T10] Subtasks MUST NOT break the parent chain.
+  [T11] Related tasks MUST be explicitly linked (bax
+        TaskContract.related_tasks).
+  [T12] Parallel execution is allowed ONLY when the dependency graph
+        explicitly allows it — AI MUST NOT unilaterally decide to
+        parallelize (bax Parallel).
+  [T13] Review failure MUST reopen the responsible work, not just the
+        review step.
+  [T14] Changes to completed work MUST trigger impact analysis (bax
+        prompts/prompts.sdd -> Impact — eyni anlayış, burda tətbiqi).
+  [T15] AI MUST NOT silently close an unresolved task.
+  [T16] (best-practice əlavə) Every task's `source` MUST resolve to a real
+        `prompts/` və ya `decisions/` item — mücərrəd/qeyri-müəyyən mənbə
+        qəbul edilmir (bax [T1]-in "necə" sualına cavab, Traceability).
+  [T17] (best-practice əlavə) TaskContract.chain sahəsi yalnız
+        `chains/chains.sdd -> ChainTypes`-də tərif olunmuş bir dəyər ola
+        bilər (feature/bugfix/change) — naməlum chain adı ilə task
+        yaradıla bilməz.
+
+
+Dependency:
+  requires:   must wait for another task to complete
+  blocks:     prevents another task's execution
+  related:    informational link, no execution effect
+  invalidates: a change requires the linked task to be reevaluated
+  supersedes: this task replaces another task
+
+
+Review:
+  code-review, architecture-review, security-review, qa-review,
+  deployment-review, ultra-review
+
+
+Verification:
+  A task is VERIFIED only when:
+    implementation satisfies specification
+    required tests pass
+    required reviews pass
+    architecture remains valid
+    dependencies remain valid
+
+  "Kod bitdi, sağ ol" VERIFIED demək deyil — yuxarıdakı 5 şərt yoxlanmadan
+  task DONE-a keçə bilməz (bax [T6], [T15]).
+
+
+Parallel:
+  Paralel icra AI-nin öz seçimi deyil, yalnız asılılıq qrafının (bax
+  Dependency) buna icazə verdiyi hallarda baş verir (bax [T12]). Məsələn
+  BE və DB tapşırıqları bir-birindən asılı olmadıqda paralel gedə bilər,
+  amma hər ikisi API tapşırığının `requires` şərti olduğu üçün API onlar
+  bitmədən başlaya bilməz (fork-join).
+
+
+State: +
+  (STEP 8 tamamlandı — skelet: tasks.sdd router + 6 qovluq (active/backlog/
+  blocked/review/done/failed) yaradıldı. Konkret task instansiyaları hələ
+  yazılmayıb.)
+
+Note:
+  (prompt/new/25.md, STEP 8 — "Tam sıfırla", istifadəçi təsdiqi ilə) Bu
+  qovluqda əvvəllər mövcud olan köhnə README.md (artıq mövcud olmayan
+  `system/MASTER.md`-ə istinad edən, `.sdd/project/proposals/<ID>.md`
+  approve-gated modelinə əsaslanan, `PAY-001.N` dot-nömrələnmiş subtask
+  formatlı) silindi (git tarixçəsində qalır). Bu fayl onun yerinə gəlir:
+  mənbə template-ə əsasən yazılıb, bir neçə best-practice əlavəsi ilə:
+  (1) hər Directory-ə `state:` sahəsi əlavə olundu (bax PROJECT.sdd ->
+  [R10], eyni konvensiya prompts.sdd-də də var); (2) `StateToDirectory`
+  bölməsi əlavə olundu — mənbədə 6 qovluq və 7 lifecycle state ayrı-ayrı
+  verilmişdi, aralarında birbaşa xəritə yox idi, bu boşluq doldurulub;
+  (3) [T16]/[T17] əlavə olundu — [T1]/[T2]-nin "necə yoxlanır" sualına
+  konkret cavab (source `prompts/`/`decisions/`-ə, chain isə
+  `chains.sdd -> ChainTypes`-ə həqiqətən resolve olunmalıdır).
+
+  Mənbədəki illüstrativ nümunələr (TASK-001 Payment Refund, BE-001/API-001/
+  FE-001/MD-001/QA-001 subtask-ları, fork-join paralel nümunəsi, VR-dən
+  sonrakı impact-analysis nümunəsi) hərfi köçürülmədi (bax "apply, don't
+  copy" qaydası) — onların konseptual nəticələri yuxarıdakı Failure/
+  Parallel/Verification bölmələrinə köçürüldü, konkret PAY-*/BE-*/API-*
+  fayl instansiyaları isə BİLƏRƏKDƏN bu addımda yaradılmır — bu, yalnız
+  skelet + qayda mühərriki addımıdır, eynilə STEP 5/6/7-də olduğu kimi.
