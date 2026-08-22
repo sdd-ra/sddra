@@ -47,3 +47,70 @@ Must:
 Forbids:
   Direct cross-module database access.
   Circular module dependencies.
+
+LayerArchitecture (prompt/new/16.md):
+  # ModuleIsolation above answers "can module X touch module Y's DB?".
+  # This section answers a different question: "inside one module, which
+  # layer is allowed to call which?" — a structural dependency graph, not
+  # a work-order. It MUST NOT be confused with a module's execution chain
+  # (AN>AR>DB>BE>API>FE>MD>QA>DO>VR, see protocol/stages.sdd) — that is
+  # "what order do I implement in", this is "what may call what at
+  # runtime". Conflating the two was STEP 4's original mistake and is why
+  # project/<module>/flow.sdd was retracted (see Note at the bottom).
+
+  DefaultAllowed:
+    FE  -> API
+    MD  -> API
+    BE  -> DB
+    BE  -> ExternalGateway   # e.g. PaymentGateway, see project/integrations.sdd
+    QA  -> API
+    QA  -> Application
+
+  DefaultForbidden:
+    FE  -> DB
+    MD  -> DB
+    FE  -> Repository        # any module's persistence layer
+    MD  -> Repository
+
+  # Module-local overrides/extensions of this default (e.g. Payment's own
+  # allowed/forbidden edges) live in project/<module>/architecture.sdd —
+  # not yet built (planned STEP 5, prompt/new/16.md's own roadmap). Do not
+  # anticipate that file's content here (R2/R3 — don't duplicate module
+  # knowledge at the global level ahead of it actually being resolved).
+
+  State:
+    + = compliant
+    ! = violation
+    ? = architecture decision required
+    ~ = architecture change in progress
+
+  ViolationVsDecision:
+    # AI MUST NOT silently resolve which of these two it's looking at.
+    # Same observed edge (e.g. FE -> DB), two different causes:
+    #   A) developer/AI mistake            -> state: !  (Architecture Violation)
+    #   B) a deliberate new architecture   -> state: ?  (Architecture Decision
+    #      decision was made, this file          Required — human decision,
+    #      just hasn't been updated yet          per PROJECT.sdd -> HumanDecision,
+    #                                            "architecture changes")
+    # AI raises `?` and stops; it does not silently mark `!` and "fix" the
+    # edge, and it does not silently accept the edge as the new normal.
+
+Note (prompt/new/16.md, retracts prompt/new/15.md's STEP 4):
+  The source chat caught its own mistake: project/<module>/flow.sdd, built
+  in the previous step as "AN > AR > DB > BE > API > FE > MD > QA > DO >
+  VR", conflated two unrelated things — architecture (what may call what)
+  and execution order (what gets implemented in what order). It has been
+  removed (see project/payment/ — flow.sdd deleted).
+
+  Corrected 3-layer split going forward:
+    Architecture  -> what is allowed to depend on what      (this file /
+                      project/<module>/architecture.sdd, STEP 5)
+    Chain         -> what happens next, work order           (.sdd/chains/
+                      *.chain, STEP 8 — NOT module/flow.sdd)
+    Skill Chain   -> how a single stage's work gets done      (STEP 9)
+
+  This file (project/architecture.sdd) is the new STEP 4 target: the
+  global architecture model + violation rules. Remaining roadmap per
+  prompt/new/16.md: STEP 5 module architecture, STEP 6 DB model, STEP 7
+  API model, STEP 8 execution chains, STEP 9 skill chains — read one at a
+  time, only on "next" (see sddra-next-gated-sdd-build).

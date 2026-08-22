@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/15.md`-ə qədər oxunub (89 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/16.md`-ə qədər oxunub (89 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -47,10 +47,10 @@ qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunaca
 │   ├── map.sdd          — YALNIZ routing/index ("hara getməliyəm?")
 │   ├── modules.sdd      — hansı modul var, kim kimdən asılı ola bilər
 │   ├── dependencies.sdd — qlobal dependency graph
-│   ├── architecture.sdd — stack (P{}) + ModuleIsolation/ExtractCheck
+│   ├── architecture.sdd — stack (P{}) + ModuleIsolation/ExtractCheck + LayerArchitecture (allowed/forbidden)
 │   ├── integrations.sdd — xarici sistemlər (@PaymentGateway və s.)
 │   ├── proposals/       — insan təsdiqi gözləyən dəyişiklik təklifləri
-│   ├── payment/         — modul-lokal detal: payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd
+│   ├── payment/         — modul-lokal detal: payment.sdd, db.sdd, api.sdd, cases.sdd
 │   ├── course/          — stub, eyni pattern (bax status)
 │   └── user/            — stub, eyni pattern (bax status)
 ├── protocol/            — .sdd-in öz "dili"
@@ -65,20 +65,26 @@ qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunaca
 └── decisions/            — qəbul olunmuş arxitektura qərarları (ADR-bənzər)
 ```
 
-## Status (prompt/new/15.md-ə qədər)
+## Status (prompt/new/16.md-ə qədər)
 
-- `+` protocol/stages.sdd — chunk 15-in verdiyi TransitionRules [T1]-[T10],
-  DefaultFailureRouting və DefaultDependencyRules əlavə olundu. Bunlar
-  hərfi olaraq hər modulun flow.sdd-inə köçürülmədi (mənbə belə edir) —
-  R2-ə görə bir dəfə burada, qlobal səviyyədə saxlanılır; module/flow.sdd
-  yalnız özünə aid fərqi (input/output/skip) yazır və `@protocol/stages.sdd`
-  ilə bağlanır. Bu, [[sddra-apply-not-copy]] qaydasına görə şüurlu bir
-  arxitektur qərarıdır, mənbənin öz strukturunun mexaniki təkrarı deyil.
-- `+` project/payment/flow.sdd — chunk 15-in `StageContract` şablonuna görə
-  hər 10 mərhələ üçün `input/output/next/skip/fail` Payment-ə xas
-  dəyərlərlə dolduruldu (məs. DB stage-i escrow_transaction/ledger modelinə,
-  BE stage-i PaymentService-ə istinad edir). Köhnə `State:` legend bloku
-  silindi (artıq `protocol/symbols.sdd`-də var, təkrar deyildi).
+- `!` **RETRACTED (prompt/new/16.md):** chunk 15-in bütün STEP 4-ü (module-per
+  `flow.sdd`, "AN>AR>DB>BE>API>FE>MD>QA>DO>VR" iş ardıcıllığı) mənbə chat-in
+  özü tərəfindən ləğv edildi — architecture (nə nəyi çağıra bilər) ilə
+  execution order (iş hansı sırayla görülür) qarışdırılmışdı. Nəticədə:
+  - `project/payment/flow.sdd` silindi.
+  - `payment.sdd`-in `Flow: @flow` sahəsi `TBD` olaraq işarələndi, `Architecture:`
+    sahəsi `@architecture`-a bağlandı (bax `project/architecture.sdd`).
+  - `protocol/stages.sdd`-ə əlavə olunmuş `TransitionRules [T1]-[T10]` /
+    `DefaultFailureRouting` / `DefaultDependencyRules` **silinmədi** — bunlar
+    hələ də doğru generic mexanikadır, sadəcə evi dəyişəcək: gələcəkdə
+    module/flow.sdd yox, `.sdd/chains/*.chain` (STEP 8) onlara bağlanacaq.
+  - Yeni STEP 4 = `project/architecture.sdd` — `LayerArchitecture` bölməsi
+    əlavə olundu (`DefaultAllowed`/`DefaultForbidden` layer edge-ləri, `State`
+    (+/!/?/~), `ViolationVsDecision` — AI özbaşına "səhv" ilə "yeni qərar"ı
+    qarışdırmır, `?`-lə insan qərarına yönləndirir).
+  - Qalan yol xəritəsi (mənbənin öz sıralaması): STEP 5 module architecture,
+    STEP 6 DB model, STEP 7 API model, STEP 8 execution chains, STEP 9 skill
+    chains — hər biri yalnız növbəti "next"-də oxunacaq.
 - `+` README — chunk 14-ün kritik ayrımı (`.sdd` mən qururam / real project
   path-ləri prompt engine üçün referansdır, indi əl ilə yaradılmır) ayrıca
   bölmə kimi sənədləşdirildi. Struktur dəyişikliyi tələb olunmadı — bu repo
@@ -97,7 +103,8 @@ qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunaca
   (BE/FE/MD/QA/DO)/Architecture/Flow/Database/API/Cases/DependsOn/UsedBy/
   Produces/ConsumedBy/State/Rules. Köhnə `Path:`/`Dependencies:` sərbəst
   formatı bu kanonik quruluşla əvəz olundu.
-- `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, flow.sdd, db.sdd, api.sdd, cases.sdd)
+- `+` project/payment/* — tam işlənmiş nümunə (payment.sdd, db.sdd, api.sdd, cases.sdd —
+  flow.sdd chunk 16-da silindi, bax yuxarı RETRACTED bəndi)
 - `~` project/course/, project/user/ — yalnız stub (course.sdd/user.sdd chunk-13
   şablonuna görə yeniləndi, amma flow/db/api/cases hələ detallandırılmayıb)
 - `+` protocol/symbols.sdd, protocol/stages.sdd, protocol/rules.sdd
@@ -106,8 +113,8 @@ qatı, ayrı məna) mövcuddur. Bu ayrım bundan sonrakı hər addımda qorunaca
 - `~` system/MASTER.md — qaralama (chunk 4-də "..." ilə bitir, tam deyil)
 - `!` backend/*, frontend/* və s. daxili skill fayl(lar)ı hələ boşdur — chat özü də deyir:
   "skill-lərə hələ keçmirik"
-- `!` chains/*, yalnız template — real feature chain-i (məs. payment) hələ ayrıca yazılmayıb,
-  onun yerinə həmin məlumat indi project/payment/flow.sdd-də saxlanılır
+- `!` chains/*, yalnız template — real feature chain-i (məs. payment) hələ yazılmayıb;
+  bu STEP 8-in işidir (prompt/new/16.md-in yol xəritəsi), hələ oxunmayıb
 - `?` prompts/* intelligence-layer məntiqi hələ fayl formatına düşməyib (yalnız konsepsiya)
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

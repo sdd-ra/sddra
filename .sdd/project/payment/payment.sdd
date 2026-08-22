@@ -14,9 +14,14 @@ Owns:
 
 Architecture:
   ModularMonolith
+  @architecture   # project-level default (see project/architecture.sdd ->
+                  # LayerArchitecture); no Payment-local override yet
+                  # (planned STEP 5, prompt/new/16.md)
 
 Flow:
-  @flow
+  TBD — flow.sdd retracted (prompt/new/16.md). It conflated architecture
+  with execution order; the latter will live in .sdd/chains/*.chain
+  (STEP 8), not here. Do not resolve @flow until that file exists.
 
 Database:
   @db
@@ -46,14 +51,18 @@ State:
 Rules:
   Module-specific knowledge MUST remain inside this directory.
   Source code MUST be resolved through Owns.
-  Flow MUST be resolved through @flow.
+  Architecture MUST be resolved through @architecture (project-level until
+  a Payment-local override exists).
   Database information MUST be resolved through @db.
   API information MUST be resolved through @api.
   Business/test cases MUST be resolved through @cases.
 
 Note:
-  @flow / @db / @api / @cases are references to the sibling files in this
-  folder (flow.sdd, db.sdd, api.sdd, cases.sdd). AI opens them only when the
-  current stage actually needs them — the module-inheritance / lazy-load
-  pattern from prompt/new/9.md. This file follows the universal <module>.sdd
-  template finalized in prompt/new/13.md (STEP 3).
+  @db / @api / @cases are references to the sibling files in this folder
+  (db.sdd, api.sdd, cases.sdd). AI opens them only when the current stage
+  actually needs them — the module-inheritance / lazy-load pattern from
+  prompt/new/9.md. This file follows the universal <module>.sdd template
+  finalized in prompt/new/13.md (STEP 3), amended by prompt/new/16.md:
+  the Flow field/its flow.sdd reference was retracted (execution order is
+  not architecture — see project/architecture.sdd -> Note), and Architecture
+  now points at @architecture instead of a bare literal.
