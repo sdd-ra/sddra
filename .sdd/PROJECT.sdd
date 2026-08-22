@@ -31,7 +31,7 @@ Directories:
   skills:
     path: ./skills
     purpose: Engineering skill-lər — AI-nin işi HOW səviyyəsində necə görəcəyi
-    state: boş (STEP 1)
+    state: STEP 6 tamamlandı — skills.sdd router + 8 boş SkillDomain qovluğu (global/backend/api/frontend/mobile/database/qa/devops) yaradıldı, konkret skill-lər hələ yazılmayıb
 
   prompts:
     path: ./prompts
@@ -194,3 +194,9 @@ Note:
   istifadəçi təsdiqi ilə silinib (git tarixçəsində qalır); yerinə
   `chains.sdd` router + `feature.chain`/`bugfix.chain`/`change.chain`
   yazılıb — bax .sdd/chains/chains.sdd -> Note.
+
+  (prompt/new/23.md, STEP 6) `.sdd/skills/` skeleti quruldu: `skills.sdd`
+  router (Rules [S1]-[S16]) + 8 boş SkillDomain qovluğu. Chain stage-lərinə
+  skill bağlanması (bax chains/chains.sdd -> [C9]) bu addımda hələ
+  edilmədi — konkret skill-lər yazılmadan bağlama mənasız olardı (bax
+  .sdd/skills/skills.sdd -> Note).

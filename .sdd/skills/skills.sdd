@@ -1,0 +1,191 @@
+Skills: SDD
+
+Purpose:
+  Define the architecture, discovery and execution rules for engineering
+  skills used by the SDD system. Bu fayl `.sdd`-in dördüncü bilgi qatını
+  təyin edir — əvvəlki üç qatla birlikdə tam mənzərəni yaradır:
+
+    project/      -> WHAT / WHERE  (layihə nədir, harada yerləşir)
+    architecture/  -> RULES         (sistem necə qurulub, hansı əlaqələr icazəlidir)
+    chains/        -> WHEN / ORDER  (iş hansı ardıcıllıqla görülür)
+    skills/        -> HOW           (hər addım konkret necə icra olunur — BU FAYL)
+
+  Bu fayl özü heç bir konkret skill TƏRİF ETMİR (bax SkillDomains aşağıda
+  hələ boşdur) — yalnız skill-lərin necə kəşf ediləcəyini, asılılıqlarının
+  necə həll olunacağını və chain stage-lərinə necə bağlanacağını təyin edir.
+
+SkillDomains:
+
+  global:
+    path: ./global
+    purpose: Universal engineering rules (bütün domenlərə tətbiq olunur)
+    state: boş (STEP 6) — skelet yaradılıb, konkret skill hələ yazılmayıb
+
+  backend:
+    path: ./backend
+    purpose: Backend engineering rules
+    state: boş (STEP 6)
+
+  api:
+    path: ./api
+    purpose: API engineering rules
+    state: boş (STEP 6)
+
+  frontend:
+    path: ./frontend
+    purpose: Frontend engineering rules
+    state: boş (STEP 6)
+
+  mobile:
+    path: ./mobile
+    purpose: Mobile engineering rules
+    state: boş (STEP 6)
+
+  database:
+    path: ./database
+    purpose: Database engineering rules
+    state: boş (STEP 6)
+
+  qa:
+    path: ./qa
+    purpose: Quality assurance rules
+    state: boş (STEP 6)
+
+  devops:
+    path: ./devops
+    purpose: DevOps engineering rules
+    state: boş (STEP 6)
+
+
+Rules:
+
+  [S1]
+  A skill MUST have one clear responsibility.
+
+  [S2]
+  A skill MUST describe HOW work is performed.
+
+  [S3]
+  A skill MUST NOT contain project-specific knowledge (bax Note aşağıda —
+  bu, architecture/architecture.sdd -> SeparationOfConcerns prinsipinin
+  skill qatına tətbiqidir).
+
+  [S4]
+  A skill MUST NOT redefine project architecture (bax project/
+  architecture.sdd — skill ona istinad edə bilər, təkrarlaya bilməz).
+
+  [S5]
+  A skill MUST NOT redefine execution chains (bax chains/chains.sdd -> [C8]
+  — eyni sərhəd, əks istiqamətdən: chain-lər implementation qaydası
+  daşımır, skill-lər isə ardıcıllıq/marşrutlaşdırma tərif etmir).
+
+  [S6]
+  A skill MAY reference project models.
+
+  [S7]
+  A skill MAY reference another skill.
+
+  [S8]
+  Skill dependencies MUST be explicit (bax `requires:` konvensiyası
+  aşağıda, Execution bölməsi).
+
+  [S9]
+  Skills MUST be composable.
+
+  [S10]
+  Skills MUST be reusable across projects (bax [S3] — project-specific
+  bilgi olmadığı üçün bu avtomatik təmin olunur).
+
+  [S11]
+  A skill MUST declare its input and output.
+
+  [S12]
+  A skill MUST declare validation criteria.
+
+  [S13]
+  A skill MUST declare failure conditions.
+
+  [S14]
+  A skill MUST NOT silently override another skill.
+
+  [S15]
+  Conflicting skills MUST be resolved before implementation (bax
+  PROJECT.sdd -> HumanDecision — həll olunmayan conflikt insan qərarı
+  tələb edir, [R11]).
+
+  [S16]
+  (best-practice əlavə) A skill domain directory listed in SkillDomains
+  MAY be empty — an empty domain is a declared placeholder, not a missing
+  one (bax `state:` sahələri yuxarıda). Bir skill faylı yazılmadan əvvəl
+  onun domain-i mütləq yuxarıdakı SkillDomains-də əvvəlcədən elan
+  olunmalıdır — elan olunmamış qovluqda skill yaratmaq qadağandır (bax
+  chains.sdd -> [C1] ilə eyni prinsip: hər vahid məlum bir konteynerə
+  aid olmalıdır, orphan ola bilməz).
+
+
+SkillContract:
+
+  Every skill SHOULD define:
+
+    Name
+    Purpose
+    AppliesWhen
+    Requires
+    Produces
+    Rules
+    Forbids
+    Validation
+    Failure
+    RelatedSkills
+
+
+Execution:
+
+  Chain stage
+    >
+  Resolve required skills
+    >
+  Resolve skill dependencies
+    >
+  Execute skills in declared order
+    >
+  Validate output
+    >
+  Return result to chain
+
+  Qeyd: "Resolve required skills" addımı chain stage adı ilə skill domain-i
+  arasında bağlantı tələb edir (bax chains/chains.sdd -> [C9] — bu bağlama
+  BİLƏRƏKDƏN hələ edilməyib, çünki konkret skill-lər hələ yazılmayıb;
+  bağlama yalnız hər domendə ən azı bir real skill mövcud olduqda
+  mənalıdır).
+
+State: +
+  (STEP 6 tamamlandı — skelet: skills.sdd router + 8 boş SkillDomain
+  qovluğu yaradıldı. Konkret skill-lər (ddd, clean-code, solid, security,
+  testing, error-handling, observability və s.) və onların `requires:`
+  zənciri hələ yazılmayıb — gələcək "next"lərlə əlavə olunacaq.)
+
+Note:
+  (prompt/new/23.md, STEP 6) Bu fayl mənbə template-ə əsasən yazılıb,
+  amma bir neçə best-practice əlavəsi ilə: (1) Purpose bölməsinə 4 qatın
+  (project/architecture/chains/skills) tam müqayisəli xəritəsi əlavə
+  olundu — yalnız "HOW" demək əvəzinə, digər 3 qatla necə fərqləndiyini
+  aydın etmək üçün; (2) hər SkillDomain-ə `state:` sahəsi əlavə olundu
+  (bax PROJECT.sdd -> [R10] — mərhələ state-i qeyd olunmalıdır, bu həm
+  qovluq, həm fayl səviyyəsində tətbiq edilir); (3) [S16] əlavə olundu —
+  domain-lərin boş qala bilməsini formal qayda kimi təsbit etmək üçün,
+  əks halda "boş qovluq" ilə "unudulmuş qovluq" fərqlənməz idi; (4)
+  Execution bölməsinə chains.sdd -> [C9] ilə əlaqəni izah edən Qeyd
+  əlavə olundu.
+
+  Skill-lərin real yazılması (məsələn `backend/ddd/skill.md`,
+  `backend/security/skill.md`) və onların bir-birinə `requires:` ilə
+  bağlanması BİLƏRƏKDƏN bu addımda edilmir — mənbə (prompt/new/23.md)
+  özü də "Hələ bunların içində konkret skill yaratmırıq" deyir. Bu, yalnız
+  skelet + qayda mühərriki addımıdır.
+
+  Ən vacib qorunan sərhəd (bax [S3]): heç bir skill faylında "Payment
+  table", "PaymentService", "./backend/payment" kimi project-specific
+  adlar görünməyəcək — bu bilgi yalnız `.sdd/project/`-də yaşayır. Skill
+  yalnız "Repository Pattern necə tətbiq olunur?" səviyyəsində ümumi
+  mühəndislik qaydası saxlayır.

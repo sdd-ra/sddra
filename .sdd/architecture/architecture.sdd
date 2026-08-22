@@ -30,7 +30,7 @@ Components:
 
   SKILLS:
     path: ../skills
-    role: Engineering skills (HOW, STEP 9)
+    role: Engineering skills (HOW, STEP 6)
 
   PROMPTS:
     path: ../prompts
@@ -196,6 +196,14 @@ Note:
   "feature-per-chain" rolu köhnəlmişdi — STEP 5-in "Tam sıfırla" reset-i
   ilə `chains/_TEMPLATE.feature.sdd` silinib, chain-tipi modeli (router +
   feature/bugfix/change.chain) qurulub (bax .sdd/chains/chains.sdd -> Note).
+
+  (prompt/new/23.md, STEP 6) SKILLS komponentinin `role:` sahəsindəki
+  "STEP 9" işarəsi köhnə (əvvəlki numerasiya sxemindən qalma) yanlışlıq
+  idi — düzəldilib "STEP 6"-ya, çünki `.sdd/skills/` məhz bu addımda
+  (prompt/new/23.md) qurulur, doqquzuncu deyil. SKILLS -> SKILLS
+  münasibəti (bax Relationships: CHAINS -> SKILLS yuxarıda) indi real
+  faylla təmin olunur: `skills/skills.sdd` (bax onun Purpose bölməsi —
+  4 qatın: project/architecture/chains/skills tam müqayisəli xəritəsi).
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
