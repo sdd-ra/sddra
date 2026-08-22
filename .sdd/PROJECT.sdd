@@ -16,6 +16,7 @@ Directories:
   project:
     path: ./project
     purpose: Layihənin .sdd modeli və layihəyə xas bilgi (WHAT/WHY/WHERE)
+    state: STEP 4 tamamlandı — map/architecture/dependencies/domains/indexes/modules sxem-yalnız yazılıb, konkret domen məzmunu gələcək "next"lərlə əlavə olunacaq
 
   architecture:
     path: ./architecture
@@ -169,11 +170,13 @@ Note:
   təşkil edirdi. Köhnə məzmun git tarixçəsində qalır (bax commit `abd38de`
   öncəsi).
 
-  (məlum, hələ təmizlənməmiş qalıq) `.sdd/project/map.sdd` (Flow:,
-  Navigation:) və `.sdd/project/architecture.sdd` (Purpose:, LayerArchitecture
-  şərhləri) hələ köhnə `protocol/symbols.sdd`, `protocol/rules.sdd`,
-  `module/flow.sdd` ifadələrinə istinad edir. Bu, next-gated qaydaya görə
-  qabaqlanmır — yalnız bu fayllara aid bir "next" gələndə düzəldiləcək.
+  (prompt/new/21.md, STEP 4 — HƏLL OLUNUB) Əvvəllər burda qeyd olunan
+  `.sdd/project/map.sdd` və `.sdd/project/architecture.sdd`-in köhnə
+  `protocol/symbols.sdd`, `protocol/rules.sdd`, `module/flow.sdd`
+  istinadları STEP 4-ün "Tam sıfırla" reset-i ilə silinib: hər iki fayl
+  (və `dependencies.sdd`, yeni `domains.sdd`/`indexes.sdd`/`modules.sdd`)
+  sxem-yalnız formada yenidən yazılıb, heç bir köhnə `protocol/`-a istinad
+  qalmayıb (bax .sdd/project/*.sdd -> hər faylın öz Note-u, git tarixçəsi).
 
   (prompt/new/14.md, hələ qüvvədədir) .sdd/ özü bu repoda əl ilə tikilən
   yeganə şeydir. .sdd/ daxilində hər hansı yerdə (project/map.sdd -> Paths:,
