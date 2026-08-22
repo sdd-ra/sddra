@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/24.md`-ə qədər oxunub (93 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/26.md`-ə qədər oxunub (93 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -240,6 +240,37 @@ istinad edən köhnəlmiş `README.md`. Bu, chunk 24-ün tələb etdiyi 5-qovluq
   `architecture/architecture.sdd`-nin `TASKS` komponentinin köhnə "active/planned/completed"
   rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
 
+## STEP 8 correction — `.sdd/tasks/` → `.sdd/project/tasks.sdd` (prompt/new/26.md)
+
+Yuxarıdakı STEP 8 (root-level `.sdd/tasks/`, 6 state qovluğu) mənbə chat tərəfindən
+**geri götürüldü**: task-ları qlobal/root səviyyəsində saxlamaq `.sdd`-in başqa bir
+layihəyə köçürülə bilən (portable) qalması prinsipi ilə ziddiyyət təşkil edirdi — task
+əslində layihə bilgisinin bir hissəsidir, ayrıca qlobal infrastruktur deyil. İstifadəçidən
+yenə **"Tam sıfırla"** təsdiqi alındı (eyni STEP 1/4/5/7 pattern-i):
+
+- **Silindi (git tarixçəsində qalır):** kök-səviyyəli `.sdd/tasks/` bütünlüklə —
+  `README.md`, `tasks.sdd` (TaskLifecycle/StateToDirectory/Rules [T1]-[T17]) və 6 qovluq
+  (`active/backlog/blocked/review/done/failed`).
+- **Yeni yaradıldı:** `.sdd/project/tasks.sdd` — **TaskModel router**, storage deyil.
+  `Ownership` ([T1]), `Storage` (konvensiya: `project/<domain>/tasks/*.sdd`, [T2]-[T5]),
+  `TaskLifecycle` ([T6] — state artıq qovluqla deyil, hər task faylının öz `State:`
+  sahəsi ilə izlənir), `Failure`, `TaskTypes`, `TaskContract` ([T7]), `Rules: [T8]-[T17]`,
+  `Dependency`, `Review`, `Verification`, `Parallel`, `States` (StateMarker legend).
+- **Prinsipial fərq:** köhnə model task state-ni **qovluq yerləşməsi** ilə izləyirdi
+  (`active/`, `done/` və s.), yeni model **faylın öz sahəsi** ilə izləyir — bu, task-ın
+  domen daxilində sərbəst yerləşə bilməsinə (Locality) imkan verir, root-a bağlı qalmır.
+- **Konkret task instansiyaları hələ yaradılmayıb** — `.sdd/project/` altında hələ heç
+  bir real domen qovluğu (`users/`, `payments/` və s.) yoxdur (STEP 4 yalnız sxem-yalnız
+  fayllar yaratmışdı), ona görə `project/<domain>/tasks/*.sdd` konvensiyası hələ tətbiq
+  oluna bilmir — domen yaranan kimi tətbiq olunacaq.
+- `PROJECT.sdd`-də ayrıca `tasks:` `Directories:` girişi silindi, `project:` girişinin
+  `purpose:`/`state:` sahələrinə qatıldı; `Navigation:`-də `tasks:` indi `@tasks` yox,
+  `@project/tasks.sdd`-ə işarə edir.
+  `architecture/architecture.sdd`-nin `TASKS` komponentinin `path:`/`role:` sahələri
+  `../project/tasks.sdd`-ə uyğunlaşdırıldı; `Relationships`/`Allowed`/`Forbidden` qrafı
+  DƏYİŞMƏDİ — yalnız TASKS-ın harada yaşadığı (path) dəyişdi (bax hər iki faylın öz
+  Note-u).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -250,7 +281,6 @@ istinad edən köhnəlmiş `README.md`. Bu, chunk 24-ün tələb etdiyi 5-qovluq
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence (prompts.sdd router + 5 qovluq, STEP 7)
-├── tasks/          — task/subtask icra vəziyyəti (tasks.sdd router + 6 qovluq, STEP 8)
 ├── decisions/       — human decision və architecture qərarları
 └── state/          — .sdd sisteminin ümumi vəziyyət məlumatları (boş, STEP 1)
 ```
@@ -260,7 +290,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/25.md-ə qədər)
+## Status (prompt/new/26.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -294,12 +324,23 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `KnowledgeExtraction`, `Traceability`) + `extracted/`/`conflicts/` yeni yaradıldı.
   "Rejected" `[P19]` ilə ARCHIVE-in alt-halına çevrildi. Konkret prompt instansiyaları
   bilərəkdən hələ edilmədi.
-- `+` **`tasks/` STEP-8 "Tam sıfırla" (prompt/new/25.md):** köhnə `README.md` (dangling
-  `system/MASTER.md` istinadı, `proposals/`-gated model, `PAY-001.N` formatı) sıfırlanıb;
-  `tasks.sdd` router (`TaskLifecycle`, `StateToDirectory`, `Failure`, `TaskTypes`,
-  `TaskContract`, `Rules: [T1]-[T17]`, `Dependency`, `Review`, `Verification`, `Parallel`) +
-  6 qovluq (`active/backlog/blocked/review/done/failed`) + qısa `README.md` yaradıldı.
-  Konkret task instansiyaları bilərəkdən hələ edilmədi.
+- `+` **`tasks/` STEP-8 "Tam sıfırla" (prompt/new/25.md) — sonra geri götürülüb:** köhnə
+  `README.md` (dangling `system/MASTER.md` istinadı, `proposals/`-gated model, `PAY-001.N`
+  formatı) sıfırlanıb; `tasks.sdd` router (`TaskLifecycle`, `StateToDirectory`, `Failure`,
+  `TaskTypes`, `TaskContract`, `Rules: [T1]-[T17]`, `Dependency`, `Review`, `Verification`,
+  `Parallel`) + 6 qovluq (`active/backlog/blocked/review/done/failed`) + qısa `README.md`
+  yaradıldı. Bu struktur özü aşağıdakı STEP 8 correction ilə tamamilə silindi — tarixi qeyd
+  kimi saxlanılır.
+- `+` **`project/tasks.sdd` STEP-8 correction "Tam sıfırla" (prompt/new/26.md):** yuxarıdakı
+  root-level `.sdd/tasks/` (6 qovluq + router + README) istifadəçi təsdiqi ilə tamamilə
+  silindi (git tarixçəsində qalır) — task-ları qlobal saxlamaq `.sdd`-nin portativlik
+  prinsipi ilə ziddiyyət təşkil edirdi. Yerinə `project/tasks.sdd` yaradıldı — TaskModel
+  router (storage deyil): `Ownership [T1]`, `Storage` (konvensiya `project/<domain>/tasks/
+  *.sdd`, `[T2]-[T5]`), `TaskLifecycle [T6]` (state artıq qovluqla deyil, faylın öz `State:`
+  sahəsi ilə izlənir), `Failure`, `TaskTypes`, `TaskContract [T7]`, `Rules: [T8]-[T17]`,
+  `Dependency`, `Review`, `Verification`, `Parallel`, `States` (StateMarker). `PROJECT.sdd`
+  və `architecture/architecture.sdd` uyğun olaraq yeniləndi (bax hər ikisinin öz Note-u).
+  Konkret task instansiyaları bilərəkdən hələ edilmədi (heç bir real domen qovluğu yoxdur).
 - `+` `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
