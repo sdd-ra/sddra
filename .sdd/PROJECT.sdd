@@ -19,7 +19,12 @@ Directories:
       Konkret task instansiyaları da bura aiddir (project/<domain>/tasks/
       *.sdd) — amma task-ın NECƏ işlədiyi (engine) buradan çıxıb, root-da
       yaşayır (bax tasks: girişi aşağıda, Note, STEP 8 final)
-    state: STEP 8 final tamamlandı — map/architecture/dependencies/domains/indexes/modules sxem-yalnız (STEP 4) qalır, konkret domen/task məzmunu gələcək "next"lərlə əlavə olunacaq
+    state: STEP 8 final tamamlandı — map/dependencies/domains/indexes/modules sxem-yalnız (STEP 4) qalır, konkret domen/task məzmunu gələcək "next"lərlə əlavə olunacaq.
+      STEP 14 (prompt/new/36.md) added project.sdd (Feature/Component
+      layers on top of the existing Domain/Module model, Rules [PM1]-
+      [PM8]) and flows.sdd (this project's default stage flow, Rules
+      [F1]-[F6]) — see project/project.sdd -> Note, project/flows.sdd
+      -> Note.
 
   tasks:
     path: ./tasks
@@ -378,3 +383,42 @@ Note:
   `Allowed`/`Forbidden` in architecture.sdd's component graph changed —
   this STEP only added a new rules layer alongside it, per NoDuplication
   (see architecture/architecture.sdd -> Principles).
+
+  (prompt/new/36.md, STEP 14) The source labeled this chunk "STEP 13" —
+  a third consecutive reuse of a step number already used by 34.md and
+  by 35.md's own chunk before it. This repo's own sequential count
+  treats it as STEP 14, matching project/project.sdd -> State and
+  project/flows.sdd -> State.
+
+  The source proposed five files: `project.sdd`, plus full rewrites of
+  `map.sdd`, `dependencies.sdd` and `indexes.sdd`. All three of the
+  latter already exist here with different, STEP-4-era content (bax
+  prompt/new/21.md) that already satisfies their stated scope —
+  overwriting them would have lost STEP 4's reset history and violated
+  NoDuplication/SingleSourceOfTruth for no gain, so they were left
+  untouched. Only two files were genuinely new: `project/project.sdd`
+  (the Feature/Component layers on top of the existing Domain/Module
+  model, Rules [PM1]-[PM8]) and `project/flows.sdd` (this project's own
+  default stage flow, Rules [F1]-[F6]) — see each file's own Note for
+  full rationale and departures from the source.
+
+  Rule IDs: the source's bare `[P1]-[P10]` range collided with
+  `prompts/prompts.sdd`'s own `[P#]` range, so `project.sdd`'s rules
+  were renumbered to `[PM1]-[PM8]` ("ProjectModel"). `flows.sdd`'s
+  `[F1]-[F6]` range was confirmed free against every other prefix in
+  this repo and kept as-is.
+
+  This STEP also resolved a double dangling forward-reference that had
+  existed since STEP 11/12: `chains/chains.sdd -> ProjectFlow` and
+  `project/map.sdd -> Navigation` both pointed at a project-wide
+  `flows.sdd` that did not exist yet. `chains.sdd -> ProjectFlow` was
+  edited to reflect that the project-wide file now exists, with a Note
+  addendum recording the change (see chains/chains.sdd -> Note); the
+  domain-specific reference remains a genuine forward reference, no
+  domain existing yet. `map.sdd -> Navigation` was checked and needed
+  no edit — it already routed through `chains.sdd -> ProjectFlow`
+  rather than duplicating the dangling reference itself.
+
+  The `Directories -> project` entry's `state:` field above was
+  extended to record this STEP's additions alongside the existing
+  STEP 8 final state.

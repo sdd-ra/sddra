@@ -1,0 +1,134 @@
+Spec: Project/Flows
+
+Purpose:
+  Define how THIS project normally moves work between engineering
+  stages — the concrete, project-level instance of the chain engine.
+  This is NOT the chain engine itself (bax chains/chains.sdd, ENGINE
+  layer) and NOT a domain's real flow (bax project/<domain>/flows.sdd,
+  not yet created — forward reference, no domain exists yet).
+
+  Three layers, not to be confused:
+
+    chains/chains.sdd            -> "CHAIN NECƏ İŞLƏYİR?" (generic engine)
+    project/flows.sdd            -> "BU PROJECT-IN DEFAULT FLOW-U NƏDİR?" (this file)
+    project/<domain>/flows.sdd   -> "<DOMAIN> ÜÇÜN REAL FLOW NƏDİR?" (concrete, future)
+
+
+Owns:
+  This project's default stage sequence
+  Project-level flow rules
+
+
+DoesNotOwn:
+  Chain lifecycle rules and stage definitions   (see ../chains/chains.sdd)
+  Domain-specific flow overrides                (see project/<domain>/flows.sdd, future)
+  Feature-level chain type selection            (see ./project.sdd -> [PM4])
+
+
+Stages:
+
+  AN, AR, DB, BE, API, FE, MD, QA, DO, VR
+
+  (reusing chains/chains.sdd's own Stages vocabulary — discipline stages
+  DB/BE/API/FE/MD/QA/DO, orchestration stages AN/AR, final verification
+  VR — not redefined here, bax chains/chains.sdd -> Stages.)
+
+
+Default:
+
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+
+Rules:
+
+  [F1]
+  This file defines this project's default flow, not the chain engine
+  itself.
+
+  [F2]
+  Global chain lifecycle rules remain owned by chains/chains.sdd — this
+  file MUST NOT redefine them.
+
+  [F3]
+  A domain flow (project/<domain>/flows.sdd) MAY override the default
+  sequence above when justified by that domain's own dependencies.
+
+  [F4]
+  A feature flow MAY add or remove stages from the default sequence
+  based on its own dependency analysis.
+
+  [F5]
+  VR MUST remain the final verification stage in any resolved flow,
+  regardless of domain/feature overrides.
+
+  [F6]
+  Flow changes (default sequence, domain overrides, feature overrides)
+  MUST be traceable — recorded via decisions/decisions.sdd or state/
+  state.sdd, not silently changed.
+
+
+FlowResolution:
+
+  Global chain rules (chains/chains.sdd)
+    > Project flow (this file)
+    > Domain flow (project/<domain>/flows.sdd)
+    > Feature-specific stage overrides
+    > Final executable chain
+
+  (mirrors the ENGINE > MODEL resolution pattern already used by
+  chains/chains.sdd -> FlowResolution and architecture/principles.sdd
+  -> Resolution — root stays reusable, the project model carries the
+  concrete instance.)
+
+
+Portability:
+
+  This file's Default sequence is this project's own instance and is
+  NOT expected to be reusable as-is across other projects — unlike
+  chains/chains.sdd, which MUST remain project-agnostic.
+
+
+Navigation:
+  Chain engine:     @../chains/chains.sdd
+  Project model:     @./project.sdd
+  Domain flow:        @./<domain>/flows.sdd (future, no domain exists yet)
+
+
+State: STEP 14
+
+Note:
+  (prompt/new/36.md — source labeled this "STEP 13", the same
+  third-consecutive mislabel collision noted in ./project.sdd -> Note;
+  this repo's own sequential count treats it as STEP 14, bax
+  ../PROJECT.sdd -> Note.)
+
+  This file resolves a double dangling forward-reference that existed
+  since STEP 11/12: chains/chains.sdd -> ProjectFlow already pointed at
+  `@../project/flows.sdd`, and project/map.sdd -> Navigation already
+  routed through a flow step, but no such file existed yet (bax
+  chains/chains.sdd -> ProjectFlow's own prior note, now stale and
+  corrected as part of this same STEP — bax ../chains/chains.sdd ->
+  Note). This file is the first genuinely new file this STEP creates
+  with no existing-file collision (contrast ./project.sdd, which
+  collided with domains.sdd/modules.sdd's territory, and map.sdd/
+  dependencies.sdd/indexes.sdd, left untouched — bax ./project.sdd ->
+  Note).
+
+  Rule IDs: the source's bare `[F1]-[F6]` range was confirmed free
+  against every other prefix in this repo ([R] PROJECT, [C] chains,
+  [T] tasks, [D] decisions, [S] state, [AP] architecture principles,
+  [P] prompts, [PM] project model) — kept as-is, no renumbering needed.
+
+  Deliberate departures from the source spec, per the standing "apply,
+  don't copy" rule: added an explicit Owns/DoesNotOwn pair (absent from
+  the source) stating this file does NOT redefine chain lifecycle rules
+  or domain-level overrides, matching this repo's established per-file
+  convention (bax architecture/principles.sdd -> DoesNotOwn); added a
+  FlowResolution section mirroring chains.sdd's own FlowResolution and
+  principles.sdd's Resolution, since the source described this
+  three-layer relationship only in prose (bax "Ən vacib məsələ" in the
+  source chunk) without a matching structured Resolution block; folded
+  the source's separate "AN/AR/.../VR" Stages list into a one-line
+  reference to chains.sdd's own Stages vocabulary rather than
+  redeclaring it a second time (bax NoDuplication, architecture/
+  architecture.sdd -> Principles).
