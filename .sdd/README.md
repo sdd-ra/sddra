@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/28.md`-ə qədər oxunub (93 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/36.md`-ə qədər oxunub (103 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -399,12 +399,45 @@ olunmadı, sırf əlavə (sibling-file) tikinti oldu:
   qovluğu yoxdur (STEP 4-dən bəri sxem-yalnız), qaydalar domen yaranan kimi
   ona qarşı yoxlanılacaq.
 
+## STEP 14 — `.sdd/project/project.sdd` + `.sdd/project/flows.sdd` (prompt/new/36.md)
+
+Mənbə chunk 36 özünü yenə "STEP 13" adlandırdı — 34.md və 35.md-nin öz chunk-ından
+sonra artıq **üçüncü ardıcıl** nömrə toqquşması. Bu repo-nun öz ardıcıl sayğacı bunu
+STEP 14 kimi qəbul edir (bax `PROJECT.sdd -> Note`). Mənbə beş fayl təklif etdi:
+`project.sdd`, üstəlik `map.sdd`/`dependencies.sdd`/`indexes.sdd`-in tam yenidən
+yazılması. Bu üçü artıq STEP 4-dən qalma fərqli məzmunla mövcuddur və öz məqsədini
+tam ödəyir — üzərinə yazmaq STEP 4-ün reset tarixçəsini itirər və
+NoDuplication/SingleSourceOfTruth-u boş yerə pozardı, ona görə toxunulmadı:
+
+- **Yeni yaradıldı:** `project/project.sdd` — mövcud Domain/Module modelinin üstünə
+  **Feature** və **Component** qatlarını əlavə edir (`ProjectStructure: Project >
+  Domain > Module > Feature > Component`), `Rules: [PM1]-[PM8]` (mənbənin
+  `[P1]-[P10]`-dan bu repo-nun öz `[P#]` prefiksi — artıq `prompts.sdd`-ə aid —
+  ilə toqquşmaması üçün yenidən nömrələndi), `CodeMapping`, `Portability`,
+  `ResolutionOrder`, `NavigationFiles` (bax `project/project.sdd -> Note`).
+- **Yeni yaradıldı:** `project/flows.sdd` — bu layihənin default stage ardıcıllığı
+  (`AN > AR > DB > BE > API > FE > MD > QA > DO > VR`), `Rules: [F1]-[F6]`,
+  `FlowResolution` (`chains.sdd` > bu fayl > domen flow > feature override) —
+  `chains/chains.sdd -> ProjectFlow`-un işarə etdiyi, əvvəllər mövcud olmayan fayl
+  (bax `project/flows.sdd -> Note`).
+- **Ripple-edit:** `chains/chains.sdd -> ProjectFlow` yeniləndi — "Neither file
+  exists yet" ifadəsi silindi, indi yalnız domen-səviyyəli referans həqiqi
+  forward-reference olaraq qeyd olunur (bax `chains/chains.sdd -> Note`, STEP 14
+  addendum). `project/map.sdd -> Navigation` yoxlanıldı, dəyişiklik lazım olmadı —
+  artıq `chains.sdd -> ProjectFlow` üzərindən yönləndirir.
+- `PROJECT.sdd`-nin `Directories -> project -> state:` sahəsi bu STEP-in
+  əlavələrini qeyd etmək üçün genişləndirildi, yeni STEP 14 Note bəndi əlavə
+  olundu (bax `PROJECT.sdd -> Note`).
+- Konkret domen/feature/component instansiyaları bilərəkdən indi yaradılmadı —
+  heç bir real domen qovluğu yoxdur (STEP 4-dən bəri sxem-yalnız), bu, yalnız
+  sxem qatını genişləndirən bir addımdır.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
 .sdd/
 ├── PROJECT.sdd     — .sdd sisteminin ana entry point-i
-├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE)
+├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE; project.sdd — Feature/Component qatları, flows.sdd — bu layihənin default stage axını, STEP 14)
 ├── architecture/   — architecture.sdd (.sdd-in öz meta komponent qrafı, STEP 3) + principles.sdd (qlobal engineering-arxitektura prinsipləri, STEP 13)
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
@@ -419,7 +452,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/28.md-ə qədər)
+## Status (prompt/new/36.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -503,6 +536,21 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   saxlanıldı (bacı fayllarla konvensiyaya uyğun). `path:`/`role:` və
   Relationships/Allowed/Forbidden qrafı DƏYİŞMƏDİ (bax .sdd/architecture/architecture.sdd
   -> Note); `PROJECT.sdd` uyğun referans ilə yeniləndi.
+- `+` **`architecture/principles.sdd` STEP-13 yaradılma (prompt/new/35.md):** qlobal
+  mühəndislik prinsipləri (`AP1`-`AP18`) yeni fayl olaraq yaradıldı — ENGINE
+  (`architecture/architecture.sdd` — `.sdd`-in öz komponent qrafı) ilə MODEL
+  (`project/architecture.sdd` — bu layihənin konkret arxitekturası) arasındakı
+  fərqi formallaşdırır, `Resolution` bloku ilə. Heç bir mövcud fayl silinmədi/
+  üzərinə yazılmadı — sırf əlavə edici addım idi.
+- `+` **`project/project.sdd` + `project/flows.sdd` STEP-14 (prompt/new/36.md):**
+  `map.sdd`/`dependencies.sdd`/`indexes.sdd` (STEP-4-dən qalma) toxunulmadı;
+  `project.sdd` yeni yaradıldı — `Project > Domain > Module > Feature > Component`
+  modelinə Feature/Component qatları əlavə edir, `Rules: [PM1]-[PM8]`; `flows.sdd`
+  yeni yaradıldı — bu layihənin default stage axını (`AN > AR > DB > BE > API >
+  FE > MD > QA > DO > VR`), `Rules: [F1]-[F6]`. `chains/chains.sdd -> ProjectFlow`
+  yeniləndi — `../project/flows.sdd` artıq mövcuddur, yalnız domen-səviyyəli
+  referans hələ də həqiqi forward-reference olaraq qalır. Ətraflı bax hər üç
+  faylın öz Note bölməsinə və yuxarıdakı "STEP 14" bölməsinə.
 - `+` `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 

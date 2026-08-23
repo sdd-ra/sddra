@@ -129,10 +129,12 @@ ProjectFlow:
     Project-wide default: @../project/flows.sdd
     Domain-specific:      @../project/<domain>/flows.sdd
 
-  Neither file exists yet in this repo — .sdd/ is the only hand-built
-  tree here (see PROJECT.sdd -> Note), and a real flow is real project
-  content with no concrete domain to belong to yet. This is a forward
-  reference, not a missing file.
+  Project-wide default flow now exists (see ../project/flows.sdd,
+  STEP 14). Domain-specific flow does not exist yet — .sdd/ is the
+  only hand-built tree here (see PROJECT.sdd -> Note), and a real
+  domain flow is real project content with no concrete domain to
+  belong to yet. That reference remains a genuine forward reference,
+  not a missing file.
 
 
 FlowResolution:
@@ -303,3 +305,8 @@ Note:
   `Resolution:` naming were not reinstated — already reconsidered once
   during STEP 11 for repo-wide-convention reasons (see git history) and
   those reasons still apply unchanged.
+
+  STEP 14 addendum (prompt/new/36.md): `ProjectFlow:` above updated —
+  `../project/flows.sdd` now exists (see that file's own Note), so the
+  "Neither file exists yet" sentence was corrected to reflect only the
+  domain-specific reference as a still-genuine forward reference.

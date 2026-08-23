@@ -1,0 +1,237 @@
+Spec: Project/Model
+
+Purpose:
+  Define how the real software project is represented inside the SDD
+  project model — the Project > Domain > Module > Feature > Component
+  hierarchy AI resolves before touching source code. This file owns the
+  SHAPE of that hierarchy only; the concrete instances (which domains,
+  which modules) live in their own sibling files, not here (see
+  DoesNotOwn, NavigationFiles).
+
+
+Owns:
+  Project structure (Project > Domain > Module > Feature > Component)
+  Feature model (schema)
+  Component model (schema)
+  Ownership rule
+  Project-model navigation order
+
+
+DoesNotOwn:
+  Domain list and domain-level rules        (see ./domains.sdd)
+  Module list and module-level contracts    (see ./modules.sdd)
+  Routing/index map                         (see ./map.sdd)
+  Concrete dependency graph                 (see ./dependencies.sdd)
+  Category-level index declarations         (see ./indexes.sdd)
+  This project's concrete architecture      (see ./architecture.sdd)
+  This project's execution flow             (see ./flows.sdd)
+  Global SDD engine rules (chains/tasks/decisions/state/skills/prompts)
+
+  (This file sits one level above domains.sdd/modules.sdd: those two
+  already model the Domain and Module layers concretely — bax their own
+  Spec headers. This file adds the two layers that were still
+  unmodeled, Feature and Component, and states how all five layers
+  relate, without re-declaring what domains.sdd/modules.sdd already own.)
+
+
+Principle:
+
+  The project model MUST represent the software system without
+  requiring AI to inspect the entire source tree before understanding
+  the system.
+
+
+ProjectStructure:
+
+  Project > Domain > Module > Feature > Component
+
+
+Domain:
+
+  A domain represents a coherent business capability.
+  Schema and concrete domains: see ./domains.sdd.
+
+
+Module:
+
+  A module represents a technical or functional boundary inside a
+  domain — what it owns, its public surface, its declared dependencies.
+  Schema and concrete modules: see ./modules.sdd.
+
+
+Feature:
+
+  A feature represents executable product behavior inside a module —
+  the smallest unit a prompt or task typically targets.
+
+  Example (illustrative only, no concrete feature exists yet):
+
+    payment (module) > refund (feature) > automatic-refund (variant)
+
+  A feature SHOULD declare: purpose, owning module, dependencies, and
+  the chain type it runs under (bax chains/chains.sdd -> Stages).
+
+
+Component:
+
+  A component represents an implementation boundary inside a feature —
+  the discipline-level slice of code that actually realizes it.
+
+  MAY include (reusing this project's own established layer vocabulary,
+  bax ./architecture.sdd -> Layers, chains/chains.sdd -> Stages):
+
+    DB    database / persistence
+    BE    backend / domain logic
+    API   API surface
+    FE    frontend
+    MD    mobile
+    QA    tests
+    DO    deployment / devops
+
+  A component SHOULD declare: path, owner, responsibility, exposes,
+  depends_on (bax CodeMapping below).
+
+
+Ownership:
+
+  Every project element (domain, module, feature, component) MUST have
+  one clear owner.
+
+  Example:
+
+    payments (module)
+      owns: payment state, payment rules, payment database model
+
+    refund (feature)
+      owns: refund behavior, refund workflow
+
+
+Navigation:
+
+  AI SHOULD resolve, top to bottom, before reading source code:
+
+    Project > Domain > Module > Feature > Component > Code
+
+  Entry point for this resolution: ./map.sdd (routing only, bax its own
+  Purpose) and ./indexes.sdd (category-level fast lookup).
+
+
+Rules:
+
+  [PM1]
+  Every project domain MUST have a project model file (bax
+  ./domains.sdd -> Rules for the domain-level requirement this refines).
+
+  [PM2]
+  Every domain SHOULD expose its boundaries and declare owned
+  components.
+
+  [PM3]
+  Project elements (domain/module/feature/component declarations) MUST
+  NOT duplicate information owned by global SDD systems (chains, tasks,
+  decisions, state, skills) — reference them instead.
+
+  [PM4]
+  Feature declarations MUST reference the chain type they run under
+  (bax chains/chains.sdd -> Stages) instead of redefining chain
+  lifecycle rules.
+
+  [PM5]
+  Feature/component declarations MUST reference task and decision rules
+  (bax tasks/tasks.sdd, decisions/decisions.sdd) instead of redefining
+  their lifecycle.
+
+  [PM6]
+  Component code paths MUST be mapped to project ownership (bax
+  CodeMapping below).
+
+  [PM7]
+  AI SHOULD use this project model to locate code before searching the
+  source tree (bax Navigation above).
+
+  [PM8]
+  This file MUST NOT redeclare the concrete domain/module list already
+  owned by domains.sdd/modules.sdd (bax DoesNotOwn — avoids
+  NoDuplication violations, bax architecture/architecture.sdd ->
+  Principles).
+
+
+CodeMapping:
+
+  Every component SHOULD declare:
+
+    path
+    owner
+    responsibility
+    exposes
+    depends_on
+
+  (Real paths are lookup references for a future real project tree —
+  bax PROJECT.sdd -> Note, prompt/new/14.md: creating backend/frontend/
+  mobile/qa/devops directories now is explicitly out of scope.)
+
+
+Portability:
+
+  This file MUST remain reusable across projects unchanged — it defines
+  the SHAPE of the hierarchy, not this project's concrete domains.
+  Concrete instances belong to domains.sdd/modules.sdd and future
+  project/<domain>/ content, not here.
+
+
+ResolutionOrder:
+
+  PROJECT > DOMAIN > MODULE > FEATURE > COMPONENT > CODE
+
+
+NavigationFiles:
+
+  map.sdd:           Project navigation map (routing only)
+  architecture.sdd:   This project's concrete architecture
+  flows.sdd:          This project's execution flow (bax [PM4])
+  dependencies.sdd:    Concrete dependency graph (schema currently)
+  indexes.sdd:         Category-level fast navigation index
+  domains.sdd:         Domain schema and concrete domain list
+  modules.sdd:         Module schema and concrete module list
+
+
+State: STEP 4 (domains/modules) + STEP 14 (this file, Feature/Component)
+
+Note:
+  (prompt/new/36.md — source labeled this "STEP 13", a THIRD consecutive
+  reuse of a step number already used by prompt/new/34.md and its own
+  prior chunk 35.md; this repo's own sequential count treats it as
+  STEP 14, bax ../PROJECT.sdd -> Note.)
+
+  Naming/placement decision: the source proposes this content as
+  `project.sdd`, plus full rewrites of `map.sdd`, `dependencies.sdd` and
+  `indexes.sdd`. All three of those already exist in this repo with
+  different, STEP-4-era content (bax their own Spec headers and Notes,
+  prompt/new/21.md) that already fully satisfies their stated scope —
+  overwriting them would lose STEP 4's reset history and violate this
+  repo's own NoDuplication/SingleSourceOfTruth principles for no gain.
+  They were left untouched; this file's `NavigationFiles` section
+  references them instead of restating their content (bax [PM8]).
+
+  Rule IDs: the source used a bare `[P1]-[P10]` range, which collides
+  with `prompts/prompts.sdd`'s own `[P#]` range (bax PROJECT.sdd ->
+  Directories -> prompts). Renumbered to `[PM1]-[PM8]`
+  ("ProjectModel") to read unambiguously next to this repo's other
+  prefixes ([R] PROJECT rules, [C] chains, [T] tasks, [D] decisions,
+  [S] state, [AP] architecture principles, [P] prompts). Two of the
+  source's ten rules ([P4]/skills-reference and [P9]/CodeMapping-only)
+  were folded into neighboring rules rather than kept as separates,
+  since they restated the same NoDuplication point already covered.
+
+  Deliberate departures from the source spec, per the standing "apply,
+  don't copy" rule: Domain/Module sections were shortened to pointers
+  into the already-existing `domains.sdd`/`modules.sdd` rather than
+  redefining them here (avoids a second source of truth); Component's
+  "MAY include: backend/api/frontend/mobile/database/qa/devops" prose
+  was replaced with this project's own already-established DB/BE/API/
+  FE/MD/QA/DO vocabulary (bax project/architecture.sdd -> Layers,
+  chains/chains.sdd -> Stages) instead of introducing a second,
+  differently-worded component list; added an explicit DoesNotOwn
+  section (absent from the source) to make the boundary against the
+  five sibling files explicit, matching this repo's established
+  per-file convention (bax architecture/principles.sdd -> DoesNotOwn).
