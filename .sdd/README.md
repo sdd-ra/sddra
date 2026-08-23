@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/26.md`-ə qədər oxunub (93 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/27.md`-ə qədər oxunub (93 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -271,6 +271,41 @@ yenə **"Tam sıfırla"** təsdiqi alındı (eyni STEP 1/4/5/7 pattern-i):
   DƏYİŞMƏDİ — yalnız TASKS-ın harada yaşadığı (path) dəyişdi (bax hər iki faylın öz
   Note-u).
 
+## STEP 8 final — `.sdd/project/tasks.sdd` → `.sdd/tasks/tasks.sdd` (prompt/new/27.md)
+
+Yuxarıdakı STEP 8 correction (26.md) öz növbəsində istifadəçi tərəfindən düzəldildi: mənbə
+öz sözü ilə aydınlaşdırdı ki, task-ın **NECƏ** işlədiyi (lifecycle, creation, decomposition,
+dependency, state, review, failure, recovery, relocation, completion) `.sdd` sisteminin ÖZ
+davranışıdır — layihə bilgisi deyil. Bu, əslində root-da qalanda daha **portativdir**
+(`.sdd` başqa layihəyə köçəndə bu fayl dəyişmədən gəlir), `project/`-ə köçəndə YOX —
+26.md-in mülahizəsi tərsinə çevrildi. İstifadəçidən yenə **"Tam sıfırla"** təsdiqi alındı
+(eyni STEP 1/4/5/7/8-correction pattern-i):
+
+- **Silindi (git tarixçəsində qalır):** `.sdd/project/tasks.sdd` (26.md-in yaratdığı
+  TaskModel router faylı) bütünlüklə.
+- **Yeni yaradıldı:** `.sdd/tasks/tasks.sdd` (root-level, kök qovluq) — demək olar ki
+  eyni `Ownership [T1]`, `Storage` (konvensiya `project/<domain>/tasks/*.sdd`, `[T2]-[T5]`),
+  `TaskLifecycle [T6]`, `Failure`, `TaskTypes`, `TaskContract [T7]`, `Rules: [T8]-[T17]`,
+  `Dependency`, `Review`, `Verification`, `Parallel`, `States` (StateMarker) məzmunu ilə —
+  yalnız yeri və çərçivəsi dəqiqləşdi (bax "apply, don't copy" qaydası). STEP 8-dəki
+  (25.md) 6 state-qovluğu (`active/backlog/blocked/review/done/failed`) BƏRPA OLUNMADI —
+  bu fayl yalnız ENGINE-dir, storage deyil.
+- **Prinsipial fərq belə formallaşdı (mənbənin öz sözü ilə):**
+  - **TASK ENGINE** (`.sdd/tasks/tasks.sdd`) — "necə işləyir?" → root-level, sistemə xas.
+  - **PROJECT MODEL** (`project/<domain>/tasks/*.sdd`) — "nəyə aiddir?" → layihəyə xas,
+    dəyişmədi.
+- Bu, 26.md-in portativlik prinsipini pozmur — əksinə tətbiq edir: engine root-da qalanda
+  portativdir (sistemlə hər layihəyə gəlir), yalnız konkret task-domen xəritələnməsi
+  layihəyə xasdır.
+- `PROJECT.sdd`-də ayrıca `tasks:` `Directories:` girişi bərpa edildi (`./tasks`),
+  `project:` girişinin `purpose:`/`state:` sahələrindən task-engine ifadələri çıxarıldı;
+  `Navigation:`-də `tasks:` yenidən `@tasks`-a işarə edir (`@project/tasks.sdd` əvəzinə).
+  `architecture/architecture.sdd`-nin `TASKS` komponentinin `path:`/`role:` sahələri
+  `../tasks/tasks.sdd`-ə uyğunlaşdırıldı; `Relationships`/`Allowed`/`Forbidden` qrafı yenə
+  DƏYİŞMƏDİ — yalnız path/role (bax hər iki faylın öz Note-u).
+- Konkret task instansiyaları yenə bilərəkdən yaradılmadı — heç bir real domen qovluğu
+  yoxdur (STEP 4 yalnız sxem-yalnız).
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -281,6 +316,7 @@ yenə **"Tam sıfırla"** təsdiqi alındı (eyni STEP 1/4/5/7 pattern-i):
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence (prompts.sdd router + 5 qovluq, STEP 7)
+├── tasks/          — task engine: necə yaranır/icra olunur/tamamlanır (tasks.sdd, root-level, STEP 8 final)
 ├── decisions/       — human decision və architecture qərarları
 └── state/          — .sdd sisteminin ümumi vəziyyət məlumatları (boş, STEP 1)
 ```
@@ -290,7 +326,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/26.md-ə qədər)
+## Status (prompt/new/27.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -341,6 +377,19 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `Dependency`, `Review`, `Verification`, `Parallel`, `States` (StateMarker). `PROJECT.sdd`
   və `architecture/architecture.sdd` uyğun olaraq yeniləndi (bax hər ikisinin öz Note-u).
   Konkret task instansiyaları bilərəkdən hələ edilmədi (heç bir real domen qovluğu yoxdur).
+- `+` **`tasks/tasks.sdd` STEP-8 final "Tam sıfırla" (prompt/new/27.md):** yuxarıdakı
+  `project/tasks.sdd` (26.md) istifadəçi mənbə sözü ilə düzəldildi — task-ın NECƏ işlədiyi
+  (lifecycle/creation/decomposition/dependency/state/review/failure/recovery/relocation/
+  completion) `.sdd`-nin öz sistem davranışıdır, layihə bilgisi deyil, root-da qalanda daha
+  portativdir. `.sdd/project/tasks.sdd` tamamilə silindi (git tarixçəsində qalır); yerinə
+  `.sdd/tasks/tasks.sdd` yaradıldı — demək olar ki eyni Ownership/Storage/TaskLifecycle/
+  Failure/TaskTypes/TaskContract/Rules `[T1]-[T17]`/Dependency/Review/Verification/Parallel/
+  States məzmunu ilə, yalnız yeri və çərçivəsi dəqiqləşdi: TASK ENGINE (bu fayl, "necə
+  işləyir?") vs PROJECT MODEL (`project/<domain>/tasks/*.sdd`, "nəyə aiddir?", dəyişmədi).
+  `PROJECT.sdd` (`Directories: tasks:` bərpa, `Navigation: @tasks`) və
+  `architecture/architecture.sdd` (`TASKS` komponentinin `path:`/`role:`) uyğun olaraq
+  yeniləndi (bax hər ikisinin öz Note-u); `Relationships`/`Allowed`/`Forbidden` qrafı yenə
+  DƏYİŞMƏDİ. Konkret task instansiyaları yenə bilərəkdən yaradılmadı.
 - `+` `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 

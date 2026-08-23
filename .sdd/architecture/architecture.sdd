@@ -37,11 +37,13 @@ Components:
     role: Prompt intelligence (inbox, analysis, STEP 7)
 
   TASKS:
-    path: ../project/tasks.sdd
-    role: TaskModel router (WHAT a task is, ownership, storage convention —
-      NOT storage itself). Konkret task instansiyaları öz domeninin altında
-      yaşayır (../project/<domain>/tasks/*.sdd), bu komponentdə deyil (STEP 8
-      correction, bax ../project/tasks.sdd -> Note)
+    path: ../tasks/tasks.sdd
+    role: Task ENGINE (HOW a task works — lifecycle, creation, decomposition,
+      dependency, state, review, failure, recovery, relocation, completion).
+      Root-level, çünki bu .sdd sisteminin öz davranışıdır — layihə bilgisi
+      deyil (portativlik). Konkret task instansiyaları ("nəyə aiddir?") öz
+      domeninin altında yaşayır (../project/<domain>/tasks/*.sdd), bu
+      komponentdə deyil (STEP 8 final, bax ../tasks/tasks.sdd -> Note)
 
   DECISIONS:
     path: ../decisions
@@ -236,6 +238,21 @@ Note:
   `TASKS: MUST NOT redefine global SDD architecture`) DƏYİŞMƏDİ — bu STEP
   yalnız TASKS-ın harada yaşadığını (path) dəyişdi, .sdd komponent
   qrafındakı rolunu yox.
+
+  (prompt/new/27.md, STEP 8 final — HƏLL OLUNUB) Yuxarıdakı STEP 8 correction
+  (26.md) öz növbəsində düzəldildi — istifadəçi mənbə sözü ilə aydınlaşdırdı
+  ki, task-ın NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/
+  state/review/failure/recovery/relocation/completion) `.sdd`-nin öz sistem
+  davranışıdır, layihə bilgisi deyil; root-da qalanda daha portativdir
+  (`.sdd` başqa layihəyə köçəndə bu fayl dəyişmədən gəlir), `project/`-ə
+  köçəndə YOX. TASKS komponentinin `path:` sahəsi `../project/tasks.sdd`
+  -> `../tasks/tasks.sdd`-ə dəyişdi, `role:` yeniləndi: TASKS yenidən
+  root-level, amma STEP 8-dəki (25.md) kimi storage-qovluqları YOX — yalnız
+  ENGINE (qayda faylı). Konkret task instansiyaları yenə
+  `project/<domain>/tasks/*.sdd` konvensiyası ilə öz sahibinin altında
+  yaşayır (dəyişmədi). `.sdd/project/tasks.sdd` (26.md-in yaratdığı fayl)
+  tamamilə silindi (git tarixçəsində qalır) — bax .sdd/tasks/tasks.sdd ->
+  Note. Relationships/Allowed/Forbidden qrafı yenə DƏYİŞMƏDİ.
 
   Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
   saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
