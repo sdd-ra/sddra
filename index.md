@@ -40,7 +40,7 @@ rationale; this table is just the resume pointer.
 | 13   | 35.md                | Added global architecture principles engine                 | 5418e43 |
 | 14   | 36.md                | Added Feature/Component model + `project/flows.sdd`         | 3645898 |
 | 15   | 37.md                | Added `project/instantiation.sdd` (project decision pipeline) | 2266f3c |
-| 16   | 38.md                | Correction pass: softened `[AP18]` + `ArchitectureSelection` (architecture/principles.sdd), `[C22]`/`DefaultFlow` addendum (chains/chains.sdd), `Evolution:`/`[PI7]-[PI9]` (project/instantiation.sdd), `[S17]` catalog-vs-applicability note (skills/skills.sdd) | (pending) |
+| 16   | 38.md                | Correction pass: softened `[AP18]` + `ArchitectureSelection` (architecture/principles.sdd), `[C22]`/`DefaultFlow` addendum (chains/chains.sdd), `Evolution:`/`[PI7]-[PI9]` (project/instantiation.sdd), `[S17]` catalog-vs-applicability note (skills/skills.sdd) | 93bcb3a |
 
 **Resume pointer: next file to read is `prompt/new/39.md`, gated on the
 next explicit "next" trigger.** Files 1–38 are fully read and actioned;
