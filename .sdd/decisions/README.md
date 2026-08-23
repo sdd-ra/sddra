@@ -10,7 +10,7 @@ not restate that rule, it just applies it to architecture decisions).
 
 Status: no decisions recorded yet in this replay.
 
-The lifecycle mechanics (states, rules `[D1]`-`[D14]`, the
+The lifecycle mechanics (states, rules `[D1]`-`[D17]`, the
 `project/<domain>/decisions/<state>/*.sdd` storage convention) live in
 `decisions.sdd` in this same directory — this README stays a short
 human-facing summary and does not restate that engine.

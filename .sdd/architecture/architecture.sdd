@@ -47,8 +47,8 @@ Components:
 
   DECISIONS:
     path: ../decisions
-    role: Human decision ENGINE (decision lifecycle, Rules [D1]-[D14],
-      STEP 9 final). Root-level, same portability reasoning as TASKS above
+    role: Human decision ENGINE (decision lifecycle, Rules [D1]-[D17],
+      STEP 9 enrichment). Root-level, same portability reasoning as TASKS above
       — this is .sdd's own decision-management behavior, not project
       knowledge. Concrete decision instances live under their owning
       domain (../project/<domain>/decisions/<state>/*.sdd), not in this
@@ -301,3 +301,14 @@ Note:
   instance storage, belongs under `project/<domain>/`, never directly
   under `.sdd` root. DECISIONS' entries in Relationships/Allowed/Forbidden
   did NOT change — only `role:` and the underlying directory layout moved.
+
+  (prompt/new/31.md, STEP 9 enrichment — additive, Full Reset NOT required)
+  DECISIONS' `path:` and its entries in Relationships/Allowed/Forbidden
+  again did NOT change — only the `role:` field's rule range moved from
+  `[D1]-[D14]` to `[D1]-[D17]` and the step marker from "STEP 9 final" to
+  "STEP 9 enrichment", reflecting that `decisions/decisions.sdd` gained an
+  `Ownership:` section ([D15]), a `Source:` section ([D16]) and a
+  NoDuplication-referencing purity rule ([D17]) — all mirrored from the
+  equivalent sections already present in `tasks/tasks.sdd` (see
+  ../decisions/decisions.sdd -> Note for the full reasoning and what was
+  rejected from the source chunk).
