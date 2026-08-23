@@ -259,3 +259,10 @@ Note:
   strukturu artıq özü aydın və tam idi; əlavə edilən yeganə best-practice
   hissələr bu Note və `HumanControl`-un R9/R11-ə açıq istinadı, həmçinin
   `State:` sətridir (R10-a uyğun).
+
+  (prompt/new/28.md, STEP 8 refinement — additive, "Tam sıfırla" tələb
+  olunmadı) TASKS komponentinin `path:`/`role:` sahələri DƏYİŞMƏDİ (yenə
+  `../tasks/tasks.sdd`, yenə ENGINE-vs-MODEL izahı) — bu addım yalnız
+  `tasks.sdd`-in öz daxili strukturunu zənginləşdirdi (bax
+  ../tasks/tasks.sdd -> Note), .sdd komponent qrafına (Relationships/
+  Allowed/Forbidden) heç bir təsiri olmadı.

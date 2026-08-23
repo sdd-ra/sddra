@@ -27,7 +27,10 @@ Directories:
       qaydaları (bax tasks/tasks.sdd). Konkret task instansiyaları BURDA
       DEYİL, öz sahibinin altında yaşayır (project/<domain>/tasks/*.sdd,
       bax Note aşağıda, STEP 8 final)
-    state: STEP 8 final tamamlandı — tasks.sdd (TaskEngine, Rules [T1]-[T17]) root-da yazıldı
+    state: STEP 8 refinement tamamlandı (prompt/new/28.md) — tasks.sdd (TaskEngine, Rules
+      [T1]-[T20]) root-da, Owns/Scope/DoesNotOwn/TaskCreation/Source/TaskScope/Lifecycle+
+      BlockedFlow+FailureFlow+ReviewFailure+VerificationFailure/Decomposition/Completion/
+      Portability/Traceability/Navigation bölmələri ilə zənginləşdirildi
 
   architecture:
     path: ./architecture
