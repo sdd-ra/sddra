@@ -95,8 +95,43 @@ Rules:
   [AP17] Architecture MUST NOT introduce microservice complexity
          without an actual requirement (microservice-ready is not
          microservice-first — see Important below).
-  [AP18] Modular monolith is the default architecture when independent
-         deployment is not currently required.
+  [AP18] Architecture selection MUST be proportional to project scope,
+         domain complexity, expected growth and operational constraints
+         — no architecture style is mandated by default irrespective of
+         context (see ArchitectureSelection below).
+
+
+ArchitectureSelection:
+
+  Criteria:
+    project scope
+    domain complexity
+    expected growth
+    scalability requirements
+    team constraints
+    operational requirements
+    security requirements
+    integration requirements
+    deployment requirements
+    cost
+
+  Principle:
+    Prefer the simplest architecture that satisfies the criteria above.
+    Avoid speculative complexity not justified by current requirements
+    (see [AP17]).
+
+  Examples:
+    small scope, low complexity       -> simple modular application
+    medium scope, moderate complexity -> modular monolith
+    large scope, high complexity      -> modular monolith, or a
+                                          distributed architecture when
+                                          the criteria above justify it
+    independently-scalable components -> service extraction MAY be
+                                          considered (see ServiceExtraction
+                                          below)
+
+  A project's actual choice, made against these criteria, is recorded in
+  ../project/architecture.sdd — not here (see DoesNotOwn above).
 
 
 DependencyDirection:
@@ -257,3 +292,19 @@ Note:
   ../chains/chains.sdd, ../state/state.sdd); condensed the source's
   three-line-per-item vertical lists (DependencyDirection, Forbidden,
   ExtractionTarget) onto single lines where no meaning was lost.
+
+  (prompt/new/38.md, STEP 16) Source objected to [A18] — its own prior
+  wording, "modular monolith is the default architecture" — as an
+  unconditional default the AI could apply without checking whether it
+  actually fits a given project, and proposed a criteria-based
+  `ArchitectureSelection:` in its place. Applied here as a softened
+  [AP18] (proportionality, not silence — still a real MUST, just no
+  longer a fixed style) plus the new `ArchitectureSelection:` section
+  (Criteria/Principle/Examples) directly below Rules, close to the rule
+  it explains. Source's separate `ExtractionReadiness:` clause was NOT
+  duplicated as a new section — this file's own `ServiceExtraction:` +
+  `Important:` (STEP 13) already state the identical constraint
+  ("extraction-ready is not extraction-now"); ArchitectureSelection's
+  last Example line cross-references ServiceExtraction instead of
+  restating it, per NoDuplication (see ../architecture/architecture.sdd
+  -> Principles).

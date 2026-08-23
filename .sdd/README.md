@@ -472,6 +472,40 @@ define what every project must look like" prinsipi ilə bağlanaraq:
   bu, yalnız "necə qərar veriləcək?" pipeline-ını əlavə edən bir addımdır,
   "nə qərar verildi?" sualının cavabı deyil.
 
+## STEP 16 — düzəliş paketi: architecture, chains, instantiation, skills (prompt/new/38.md)
+
+Mənbə chunk 38 dörd ayrı düzəliş təklif etdi, yeni fayl yaratmadan, mövcud STEP
+13/14/15 fayllarına əlavə/yumşaltma şəklində:
+
+- **`architecture/principles.sdd`:** `[AP18]` — əvvəlki "modular monolith is
+  the default architecture" ifadəsi qeydsiz-şərtsiz default kimi oxuna
+  bilərdi; yumşaldıldı — proporsionallıq qaydası (scope/complexity/growth/
+  operational constraints-ə uyğun, heç bir stil default təyin olunmur) + yeni
+  `ArchitectureSelection:` bölməsi (Criteria/Principle/Examples), Rules-dan
+  dərhal sonra. Mənbənin ayrıca `ExtractionReadiness:` bəndi TƏKRAR
+  OLUNMADI — mövcud `ServiceExtraction:`/`Important:` (STEP 13) artıq eyni
+  qeydi saxlayır (bax `architecture/principles.sdd -> Note`).
+- **`chains/chains.sdd`:** `[C22]` və `DefaultFlow` addendum əlavə olundu
+  (bax `chains/chains.sdd -> Note`, STEP 16 bəndi).
+- **`project/instantiation.sdd`:** yeni `Evolution:` bölməsi (Rules-dan
+  əvvəl, `ArchitectureSelection` ilə eyni yerləşdirmə naxışı) + `[PI7]`
+  (dəyişikliyə görə pipeline-a yenidən giriş), `[PI8]` (artıq təsdiqlənmiş
+  bilginin sükutla ləğvi qadağandır), `[PI9]` (gate-lərdəki insan qərarları
+  gələcək generasiyaya bağlayıcı geri-bildirim kimi qayıdır). `State: STEP 15`
+  → `STEP 16`. Mənbənin "kiçik layihə üçün lazımsız distributed complexity-dən
+  qaçın" bəndi TƏKRAR OLUNMADI — `architecture/principles.sdd ->
+  ArchitectureSelection` və bu faylın öz `[PI2]`-si artıq eyni qaydanı
+  saxlayır.
+- **`skills/skills.sdd`:** yeni `[S17]` — kataloqda mövcud olmaq hər layihəyə
+  tətbiq olunmaq demək deyil; tətbiqolunanlıq `project/instantiation.sdd ->
+  SkillFiltering/[PI5]`-in Relevant → Applicable → Required daraltmasına
+  həvalə edilir (cross-reference, təkrar deyil), `[S16]`-dan dərhal sonra.
+
+Dördü də NoDuplication prinsipinə (bax `architecture/architecture.sdd ->
+Principles`) əsaslanır: hər düzəliş ya mövcud qaydanı yumşaldır, ya da mövcud
+başqa fayla istinad əlavə edir — heç biri yeni fayl yaratmadı və heç bir
+mövcud məzmunu təkrarlamadı.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -492,7 +526,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/37.md-ə qədər)
+## Status (prompt/new/38.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -599,6 +633,12 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   və `PROJECT.sdd` (yeni `[R12]`) ripple-edit ilə yeniləndi. Heç bir mövcud fayl
   silinmədi/üzərinə yazılmadı. Ətraflı bax `project/instantiation.sdd -> Note` və
   yuxarıdakı "STEP 15" bölməsinə.
+- `+` **STEP 16 düzəliş paketi (prompt/new/38.md):** `architecture/principles.sdd`
+  (`[AP18]` yumşaldıldı + yeni `ArchitectureSelection:` bölməsi), `chains/chains.sdd`
+  (`[C22]` + `DefaultFlow` addendum), `project/instantiation.sdd` (yeni `Evolution:`
+  bölməsi + `[PI7]-[PI9]`, `State: STEP 16`), `skills/skills.sdd` (yeni `[S17]`) —
+  dördü də mövcud fayllara additive düzəliş, heç bir yeni fayl yaradılmadı. Ətraflı
+  bax hər faylın öz Note bölməsinə və yuxarıdakı "STEP 16" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

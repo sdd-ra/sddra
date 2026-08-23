@@ -122,6 +122,14 @@ Rules:
   chains.sdd -> [C1] ilə eyni prinsip: hər vahid məlum bir konteynerə
   aid olmalıdır, orphan ola bilməz).
 
+  [S17]
+  A skill existing in SkillDomains above does not mean it MUST be
+  applied to every project — catalog membership and applicability are
+  different questions. Applicability is narrowed by ../project/
+  instantiation.sdd -> SkillFiltering/[PI5] (Relevant -> Applicable ->
+  Required) before Execution's "Resolve required skills" step runs
+  (bax Execution below).
+
 
 SkillContract:
 
@@ -189,3 +197,13 @@ Note:
   adlar görünməyəcək — bu bilgi yalnız `.sdd/project/`-də yaşayır. Skill
   yalnız "Repository Pattern necə tətbiq olunur?" səviyyəsində ümumi
   mühəndislik qaydası saxlayır.
+
+  (prompt/new/38.md, STEP 16) Source pointed out this file's catalog
+  (SkillDomains above) could be misread as "every listed domain applies
+  to every project" — nothing in this file said otherwise. Rather than
+  restating ../project/instantiation.sdd -> SkillFiltering's Relevant
+  -> Applicable -> Required narrowing here (that would duplicate it),
+  added [S17] as a one-sentence cross-reference making the boundary
+  explicit at the point a reader would assume the opposite: right after
+  [S16] establishes that an empty domain is still a valid, declared
+  entry in the catalog.

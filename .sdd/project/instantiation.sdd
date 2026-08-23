@@ -100,6 +100,17 @@ ArchitectureSelection:
   AI.)
 
 
+Evolution:
+
+  RAW PROMPT -> Project Instance (bax Pipeline above) is not a one-time
+  run. A project instance MUST be re-evaluated through the same
+  pipeline whenever new information changes an earlier stage's
+  conclusion (new requirement, scale change, corrected human decision)
+  — bax [PI7]. Re-evaluation is scoped to what changed; it MUST NOT
+  re-derive stages the change did not affect (bax NoDuplication,
+  Pipeline above).
+
+
 Rules:
 
   [PI1]
@@ -135,6 +146,27 @@ Rules:
   owned by ./project.sdd — it owns the PROCESS that decides how much of
   that shape gets used, not the shape itself.
 
+  [PI7]
+  A project instance MUST evolve as the project evolves — this file's
+  Pipeline MUST be re-entered, scoped to the change, whenever new
+  information invalidates an earlier stage's conclusion; the pipeline
+  is not a one-time generation step (bax Evolution above).
+
+  [PI8]
+  Evolution (bax [PI7]) MUST NOT discard already-confirmed project
+  information (domains, modules, features, components, resolved
+  architecture, prior human decisions) unless the specific change that
+  triggered re-evaluation explicitly supersedes it — silent
+  regeneration of unrelated, already-settled parts of the project
+  instance is forbidden.
+
+  [PI9]
+  Human decisions made at any pipeline gate (bax [PI4], ../PROJECT.sdd
+  -> HumanDecision) MUST feed back into how AI generates and evaluates
+  the project instance going forward — they are binding corrections to
+  the reasoning pipeline itself, not one-off overrides discarded after
+  the stage that produced them.
+
 
 Navigation:
   Project hierarchy shape:        @./project.sdd
@@ -146,7 +178,7 @@ Navigation:
   Human decision gate:            @../PROJECT.sdd -> HumanDecision
 
 
-State: STEP 15
+State: STEP 16
 
 Note:
   (prompt/new/37.md — source labeled this "Yeni STEP 13", a FOURTH
@@ -197,4 +229,24 @@ Note:
   [R12] rather than repeated here, since PROJECT.sdd is this repo's
   constitution-level file and [R1]-[R11] already state foundational
   principles of exactly this kind (bax ../PROJECT.sdd -> Note, STEP 15
-  entry).)
+  entry).
+
+  (prompt/new/38.md, STEP 16) Source pointed out this file, as written
+  at STEP 15, only covered initial generation — it said nothing about
+  what happens after: a project changes, and the model must keep up
+  without losing what was already decided. Added a new `Evolution:`
+  section (placed directly above Rules, same placement pattern as
+  ArchitectureSelection) plus [PI7]-[PI9]: [PI7] states the model MUST
+  re-enter the Pipeline, scoped to the change, when new information
+  invalidates an earlier conclusion; [PI8] is the preserve-existing-
+  information constraint the source asked for, phrased as a limit on
+  [PI7] rather than a free-standing rule, since it only has meaning in
+  relation to evolution; [PI9] generalizes the source's narrower
+  "human corrections should be remembered" point into a standing rule
+  that human decisions at any gate (bax [PI4]) feed back into future
+  generation, not just the gate they were made at. Source's own
+  suggestion that a small project should avoid unnecessary distributed
+  complexity was NOT duplicated here — ../architecture/principles.sdd
+  -> ArchitectureSelection (also STEP 16) already states this via its
+  Examples list, and this file's own [PI2] already forbids unjustified
+  pattern adoption; repeating it here would violate NoDuplication.)

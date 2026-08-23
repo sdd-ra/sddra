@@ -30,6 +30,12 @@ Directories:
       architecture-selection filtering, Rules [PI1]-[PI6]) and
       cross-referenced it from project.sdd (new [PM9]) — see
       project/instantiation.sdd -> Note.
+      STEP 16 (prompt/new/38.md) extended project/instantiation.sdd with
+      an `Evolution:` section and Rules [PI7]-[PI9] — a project instance
+      MUST be re-evaluated (scoped to the change) as the project evolves,
+      without discarding already-confirmed information, and human
+      decisions at any gate feed back into future generation — see
+      project/instantiation.sdd -> Note, STEP 16 entry.
 
   tasks:
     path: ./tasks
@@ -51,17 +57,27 @@ Directories:
       project/architecture.sdd-də qalır.
     state: STEP 3 tamamlandı, STEP 13 ilə genişləndi (prompt/new/35.md) —
       architecture/principles.sdd (Rules [AP1]-[AP18]) əlavə olundu, layihə-
-      səviyyəli architecture ayrıca project/architecture.sdd-də qalır
+      səviyyəli architecture ayrıca project/architecture.sdd-də qalır.
+      STEP 16 (prompt/new/38.md) softened [AP18] (guideline, not absolute
+      prohibition) and added an ArchitectureSelection: section (the
+      trade-off flow, cross-referenced from project/instantiation.sdd's
+      own ArchitectureSelection) — see architecture/principles.sdd ->
+      Note, STEP 16 entry.
 
   chains:
     path: ./chains
     purpose: Execution chain-lər və mərhələ keçidləri (chain-tipi modeli — feature/bugfix/change, bax chains/chains.sdd)
-    state: STEP 12 tamamlandı — STEP 11-in chains/templates/*.sdd + chains/stages/*.sdd bölünməsi geri qaytarıldı; chains.sdd yenidən tək fayla yığcamlaşdırıldı (Stages inline, DefaultFlow arayış ardıcıllığı, ProjectFlow/FlowResolution project/flows.sdd-ə yönləndirir), skill-bağlama hələ edilmir
+    state: STEP 12 tamamlandı — STEP 11-in chains/templates/*.sdd + chains/stages/*.sdd bölünməsi geri qaytarıldı; chains.sdd yenidən tək fayla yığcamlaşdırıldı (Stages inline, DefaultFlow arayış ardıcıllığı, ProjectFlow/FlowResolution project/flows.sdd-ə yönləndirir), skill-bağlama hələ edilmir.
+      STEP 16 (prompt/new/38.md) added [C22] — see chains/chains.sdd ->
+      Note, STEP 16 entry.
 
   skills:
     path: ./skills
     purpose: Engineering skill-lər — AI-nin işi HOW səviyyəsində necə görəcəyi
-    state: STEP 6 tamamlandı — skills.sdd router + 8 boş SkillDomain qovluğu (global/backend/api/frontend/mobile/database/qa/devops) yaradıldı, konkret skill-lər hələ yazılmayıb
+    state: STEP 6 tamamlandı — skills.sdd router + 8 boş SkillDomain qovluğu (global/backend/api/frontend/mobile/database/qa/devops) yaradıldı, konkret skill-lər hələ yazılmayıb.
+      STEP 16 (prompt/new/38.md) added [S17] — catalog membership ≠
+      applicability, cross-referenced to project/instantiation.sdd ->
+      SkillFiltering — see skills/skills.sdd -> Note, STEP 16 entry.
 
   prompts:
     path: ./prompts
@@ -469,3 +485,34 @@ Note:
   repeated in instantiation.sdd, since PROJECT.sdd is this repo's
   constitution-level file and [R1]-[R11] already state foundational
   principles of the same kind.
+
+  (prompt/new/38.md, STEP 16) Source was a correction pass over four
+  already-built files rather than new territory — this repo's own
+  sequential count treats it as STEP 16. Four changes, each applied
+  as a targeted addition to an existing file rather than a rewrite, per
+  the standing "apply, don't copy" rule:
+
+  (1) architecture/principles.sdd — [AP18] was softened from an absolute
+  prohibition to a guideline, and a new ArchitectureSelection: section
+  (the trade-off flow: Customer Input -> ... -> Human Approval) was
+  added — see architecture/principles.sdd -> Note, STEP 16 entry, for
+  full rationale.
+
+  (2) chains/chains.sdd — a new [C22] rule was added addressing the
+  gap the source raised — see chains/chains.sdd -> Note, STEP 16 entry.
+
+  (3) project/instantiation.sdd — a new Evolution: section and
+  [PI7]-[PI9] were added, covering re-entry of the Pipeline scoped to
+  what changed, preservation of already-confirmed project information,
+  and human decisions feeding back into future generation — see
+  project/instantiation.sdd -> Note, STEP 16 entry.
+
+  (4) skills/skills.sdd — a new [S17] rule was added, making explicit
+  that SkillDomains catalog membership does not imply applicability to
+  every project — see skills/skills.sdd -> Note, STEP 16 entry.
+
+  Per NoDuplication (architecture/architecture.sdd -> Principles), this
+  entry cross-references each file's own Note section rather than
+  restating their reasoning in full. No new [R] rule was needed here —
+  this STEP only extended existing rule sets, it did not introduce a new
+  constitution-level concern.
