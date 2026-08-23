@@ -288,9 +288,9 @@ Navigation:
 
 
 States:
-  (mirrors the canonical legend in PROJECT.sdd -> State, reinterpreted for
-  a single decision instance's lifecycle; `^` is the one addition — see
-  Note below for why)
+  (mirrors the canonical legend now defined in full at state/state.sdd,
+  reinterpreted for a single decision instance's lifecycle; `^` was added
+  here before state/state.sdd existed — see Note below for the update)
 
   ? = PENDING     (canonical "decision required" — awaiting a human choice)
   ~ = ANALYZING   (canonical "active" — context/alternatives being assembled)
@@ -299,9 +299,9 @@ States:
   ! = BLOCKED     (canonical "blocked" — cannot be analyzed yet, e.g. missing context)
   > = NEXT        (canonical "next" — queued to be raised with the human next)
   @ = REFERENCE   (canonical "reference" — pointer to a decision recorded elsewhere)
-  ^ = SUPERSEDED  (additive — not part of the canonical 7-glyph legend, added
-                    because no canonical glyph covers "was approved, then
-                    overridden by a newer decision"; see Note)
+  ^ = SUPERSEDED  (canonical "superseded" — see state/state.sdd ->
+                    ExtendedStates, where `^` is now formally defined
+                    system-wide, not just added locally here; see Note)
 
 
 State: +
@@ -478,3 +478,15 @@ Note:
   missing (Ownership, Source, [D15]-[D17]) or genuinely stale
   (Traceability, Navigation), following the same "apply, don't copy"
   discipline used for every prior chunk in this replay.
+
+  (prompt/new/32.md, STEP 10) `.sdd/state/state.sdd` was written as the
+  system's canonical state-notation engine. This closes a gap the STEP 9
+  Note above flagged implicitly: `^ = SUPERSEDED` was added here as a
+  local, additive extension "not part of the canonical 7-glyph legend"
+  because no dedicated state file existed yet to hold it. It now does —
+  `state/state.sdd -> ExtendedStates` formally defines `^` (alongside
+  `=`/`:`/`*`/`_`) as part of the system-wide notation, not a decisions.sdd
+  invention. The `States:` block above was updated to reflect this: `^`
+  is now described as canonical, cross-referencing `state/state.sdd`
+  instead of standing alone as a locally-justified addition. No glyph
+  meaning changed — this is a provenance correction, not a redefinition.

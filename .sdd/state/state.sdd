@@ -1,0 +1,237 @@
+State: SDD
+
+Purpose:
+  Define the universal state notation used across the whole .sdd system —
+  the compact symbols (+, ~, -, !, ?, >, @ and the extended =, :, *, ^, _)
+  that appear in every object's own `State:` field (tasks, decisions,
+  chain stages, skill runs), what each one MEANS, and how an object is
+  allowed to move from one to another (see Flows below).
+
+  This file does NOT store any object's current state value. Each object
+  carries its own value inline, in its own `State:` field (same precedent
+  as tasks/tasks.sdd -> Lifecycle; see Storage below). This file only
+  standardizes what those values mean and how they may change.
+
+  This file lives at .sdd root, not under project/, because state
+  notation is a behavior of the .sdd system itself, not project
+  knowledge (same reasoning as tasks/tasks.sdd -> Purpose). That is what
+  keeps it portable: moving .sdd to a different project brings this file
+  unchanged.
+
+
+Owns: ./
+
+Scope:
+  State symbols
+  State meanings
+  State transitions
+  State transition rules
+  Failure states
+  Blocking states
+  Verification states
+
+
+DoesNotOwn:
+  Project state
+  Task instances
+  Project decisions
+  Project architecture
+  Skill execution
+
+  (see architecture/architecture.sdd -> Forbidden: "STATE: MUST NOT
+  define architecture." — DoesNotOwn is the concrete list form of that
+  same prohibition, not a redefinition of it.)
+
+
+Principle:
+
+  State MUST describe the current condition of an SDD object.
+
+  State MUST NOT describe the object's entire history.
+
+  History MUST remain traceable through the object itself.
+
+
+Storage:
+  Unlike tasks/tasks.sdd and decisions/decisions.sdd, this file defines
+  NO instance storage convention of its own. A state VALUE is not a
+  separate object — it lives inline inside the `State:` field of the
+  object it describes. This mirrors tasks/tasks.sdd -> Lifecycle, which
+  already established that task state lives inside the task's own file,
+  not in a separate global directory.
+
+  .sdd/state/ MUST NOT contain per-object state instances — only this
+  one engine file.
+
+
+Symbols:
+
+  + = DONE
+  ~ = ACTIVE
+  - = FAILED
+  ! = BLOCKED
+  ? = DECISION_REQUIRED
+  > = NEXT
+  @ = REFERENCE
+
+
+ExtendedStates:
+
+  = = CREATED
+  : = ANALYZING
+  * = REVIEW
+  ^ = SUPERSEDED
+  _ = ARCHIVED
+
+
+Meaning:
+
+  =: Object has been created but has not entered analysis.
+  :: Object is currently being analyzed.
+  >: Object is the next eligible execution target.
+  ~: Object is currently being executed.
+  *: Object is waiting for or undergoing review.
+  +: Object successfully completed its required validation.
+  -: Object failed execution or validation.
+  !: Object cannot continue because a dependency, environment or
+     required condition is unresolved.
+  ?: Human decision is required before the object can proceed.
+  ^: Object has been replaced by a newer object.
+  _: Object is no longer active but is preserved for history.
+  @: Reference to another SDD object.
+
+
+Flows:
+  (arrows written as `->` rather than a bare `>`, because `>` is itself
+  the NEXT symbol — using it as the separator too would make a flow like
+  `~ > > > ~` unreadable. This is a deliberate departure from the plain
+  `>` chains used in tasks/tasks.sdd, made necessary by the symbol
+  collision; see Note below.)
+
+  GeneralFlow:
+    = -> : -> > -> ~ -> * -> +
+
+  FailureFlow:
+    ~ -> - -> : -> > -> ~
+
+  ReviewFailureFlow:
+    * -> - -> : -> > -> ~
+
+  BlockedFlow:
+    ~ -> ! -> > -> ~
+
+  DecisionFlow:
+    ~ -> ? -> +
+    ~ -> ? -> -
+
+  SupersedeFlow:
+    + -> ^ -> @ new-object
+
+
+Rules:
+
+  [S1] Every state MUST have exactly one defined meaning.
+  [S2] State symbols MUST NOT be redefined by project components.
+  [S3] Project-specific state MAY use these states but MUST NOT change
+       their global meaning.
+  [S4] AI MUST NOT skip a required state transition.
+  [S5] AI MUST NOT mark an object as + without required validation.
+  [S6] - MUST identify the reason for failure.
+  [S7] ! MUST identify the unresolved dependency or condition.
+  [S8] ? MUST identify the human decision being requested.
+  [S9] ^ MUST reference the object that replaced the current object.
+  [S10] _ MUST preserve the object's historical traceability.
+  [S11] > MUST only be assigned to an executable or eligible next stage.
+  [S12] Multiple objects MAY have ~ when they are independent and
+        parallel execution is permitted.
+  [S13] An object MUST NOT become ~ if a required dependency is ! or ?.
+  [S14] State changes MUST be traceable.
+  [S15] State represents condition, not ownership.
+  [S16] Ownership MUST be resolved through the project model, not
+        through state (see DoesNotOwn).
+
+
+Failure:
+  Every - state MUST define: reason, failed_at, failed_by, recovery_target
+
+
+Recovery:
+  - -> analyze failure -> identify responsible stage -> : -> > -> ~
+
+
+Verification:
+  An object MAY become + only when: required work completed, required
+  dependencies satisfied, required reviews passed, required verification
+  passed.
+
+
+Escalation:
+  The ? state is the point where AI MUST stop and hand control to a
+  human (see PROJECT.sdd -> HumanDecision, decisions/decisions.sdd ->
+  Escalation). This file does not redefine either rule — it only marks
+  the state symbol that triggers them.
+
+
+Navigation:
+  Tasks:     @../tasks/
+  Decisions: @../decisions/
+  Chains:    @../chains/
+  Skills:    @../skills/
+  Project:   @../project/
+
+
+Portability:
+  State definitions MUST remain independent from project-specific data.
+  Moving .sdd to another project MUST NOT require changing this file.
+
+
+State: +
+
+Note:
+  (prompt/new/32.md, STEP 10) Written from the source spec with the
+  following deliberate departures:
+
+  Header renamed from the source's proposed `Spec: StateSystem` to
+  `State: SDD`, matching the repo's own confirmed convention
+  (`<Name>: SDD` — see tasks.sdd, decisions.sdd, architecture.sdd,
+  chains.sdd, skills.sdd, prompts.sdd, and decisions.sdd's own Note log,
+  which documents this pattern explicitly). `StateEngine: SDD` was also
+  considered and rejected — decisions.sdd is the only sibling using an
+  `<Name>Engine` form (`TaskEngine`), and even that is an outlier the
+  other five siblings don't follow.
+
+  Source's `Owns:` topic list renamed to `Scope:` — same collision and
+  same fix already applied to decisions.sdd (`Owns:` is reserved for the
+  directory path only, per the ExplicitReference/SingleSourceOfTruth
+  precedent set there).
+
+  `Storage:` section added (not present in source) to explicitly state
+  that, unlike tasks/decisions, this file owns no instance storage
+  convention at all — state values live inline in each object's own
+  `State:` field. This closes a gap the source spec left implicit.
+
+  `Escalation:` section added (not present in source) as a short
+  cross-reference from `?` to PROJECT.sdd -> HumanDecision and
+  decisions/decisions.sdd -> Escalation, so a reader following the state
+  machine does not have to guess where `?` actually leads.
+
+  No `Ownership:`/`Contract:`/`Types:` sections were added, even though
+  decisions.sdd and tasks.sdd both have them — those sections describe
+  concrete instance types those engines own. State has no instance type
+  of its own (see Storage above), so those sections do not apply here.
+
+  Source's six Flows were reformatted from a vertical one-glyph-per-line
+  layout into single-line arrow chains, using `->` instead of `>` as the
+  separator specifically because `>` collides with the NEXT symbol
+  itself (see Flows note above). All six flows, all sixteen Rules
+  ([S1]-[S16]), Failure, Recovery, Verification, Navigation and
+  Portability were kept close to source — reviewed and found sound, no
+  duplication with sibling files, no rejected content.
+
+  Follow-on updates made in this same pass: PROJECT.sdd's `Directories ->
+  state` and `State` sections were converted to short pointers at this
+  file (NoDuplication); tasks/tasks.sdd's `States` cross-reference was
+  repointed here; decisions/decisions.sdd's `States`/Note framing of `^`
+  as "not part of the canonical legend" was corrected now that this file
+  formally defines it as part of `ExtendedStates` (see each file's own
+  Note log for the exact entry).

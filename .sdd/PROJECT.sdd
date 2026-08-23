@@ -65,8 +65,14 @@ Directories:
 
   state:
     path: ./state
-    purpose: Qlobal .sdd vəziyyəti və kompakt state işarələri
-    state: boş (STEP 1)
+    purpose: Universal state notation engine — what each compact state
+      symbol means and how objects may transition between them (see
+      state/state.sdd). Does not store any object's actual state value.
+    state: STEP 10 complete (prompt/new/32.md) — state.sdd written:
+      Symbols/ExtendedStates (12 total)/Meaning/Flows/Rules [S1]-[S16]/
+      Failure/Recovery/Verification/Escalation. Concrete state values
+      remain inline in each object's own State: field (see state/
+      state.sdd -> Storage), never stored here.
 
 Navigation:
   project: @project
@@ -125,14 +131,10 @@ Rules:
   changes (bax HumanDecision aşağıda — R9-un təbii davamı).
 
 State:
-
-  + = completed
-  ~ = active
-  - = failed
-  ! = blocked
-  ? = decision required
-  > = next
-  @ = reference
+  See state/state.sdd for the full symbol legend, per-symbol meaning and
+  transition rules (Symbols/ExtendedStates/Meaning/Flows/Rules). This
+  section stays a pointer, not a second copy of the same table
+  (NoDuplication — see architecture/architecture.sdd -> Principles).
 
 PromptProcessing:
   Before starting work:
@@ -312,3 +314,25 @@ Note:
   `DecisionContract`, `Rules` `[D1]`-`[D12]`, `States` və `Escalation`
   DƏYİŞMƏDİ — bu düzəliş yalnız qərar instansiyasının HARADA
   saxlanıldığını dəyişir, lifecycle-ın necə işlədiyini yox.
+
+  (prompt/new/32.md, STEP 10) `.sdd/state/state.sdd` was written —
+  `State: SDD` router, canonical Symbols (+ ~ - ! ? > @) plus
+  ExtendedStates (= : * ^ _), per-symbol Meaning, six named Flows
+  (GeneralFlow/FailureFlow/ReviewFailureFlow/BlockedFlow/DecisionFlow/
+  SupersedeFlow), Rules [S1]-[S16], and Failure/Recovery/Verification/
+  Escalation sections (see state/state.sdd -> Note for exactly what was
+  kept, renamed or added relative to the source chunk).
+
+  The `Directories -> state` entry above and the inline `State:` table
+  that used to live directly in this file were both updated: the table
+  is now a short pointer to state/state.sdd instead of a second copy of
+  the same seven symbols (NoDuplication — see architecture/
+  architecture.sdd -> Principles). The old inline table (`+ = completed`,
+  `~ = active`, ...) is preserved in git history, not deleted silently.
+
+  Language note: starting with this entry, new Note entries added in
+  this session are written in English rather than Azerbaijani, per the
+  user's own stated goal of keeping persisted .sdd content in English
+  while chat itself stays Azerbaijani. The existing Azerbaijani Note
+  entries above are left as-is here — converting them is a separate,
+  not-yet-started pass, not part of this STEP.
