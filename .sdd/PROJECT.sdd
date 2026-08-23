@@ -57,9 +57,11 @@ Directories:
     purpose: İnsan qərarları və təsdiqlənmiş dəyişikliklər — AI-nin insan
       qərarı tələb etdiyi nöqtələrin idarə edildiyi qat (bax
       decisions/decisions.sdd)
-    state: STEP 9 tamamlandı — decisions.sdd router (Rules [D1]-[D12]) + 4
-      boş Storage qovluğu (pending/approved/rejected/superseded) yaradıldı,
-      konkret qərar instansiyaları hələ yoxdur
+    state: STEP 9 final tamamlandı — decisions.sdd router (Rules
+      [D1]-[D14]) ENGINE-only saxlanılır, root səviyyəsində Storage
+      qovluğu yoxdur (ROOT PURITY RULE). Konkret qərar instansiyaları
+      mövcud domen yarandıqda project/<domain>/decisions/<state>/*.sdd
+      altında saxlanılacaq (bax decisions/decisions.sdd -> Note)
 
   state:
     path: ./state
@@ -277,3 +279,36 @@ Note:
   `decisions:` girişinə `state:` sahəsi əlavə olundu (əvvəllər yox idi —
   yeganə bacı giriş bu sahədən məhrum idi). Konkret qərar instansiyası hələ
   yaradılmadı (STEP 5/6/7/8-in eyni skeleton-only prinsipi).
+
+  (prompt/new/30.md, STEP 9 correction — "Tam sıfırla", istifadəçi təsdiqi
+  ilə) Yuxarıdakı STEP 9 (29.md) versiyası `.sdd/decisions/` altında (root
+  səviyyəsində) dörd boş Storage qovluğu (`pending/approved/rejected/
+  superseded`) yaratmışdı — bu, STEP 8-in (25.md) artıq bir dəfə etdiyi və
+  STEP 8 final-ın (27.md) düzəltdiyi eyni səhvin təkrarı idi: konkret
+  instansiya storage-ı `.sdd` root-unda saxlanılmamalıdır, çünki bu faylı
+  bir layihənin datasına bağlayır və .sdd-nin portativliyini pozur (bax
+  architecture/architecture.sdd -> Principles, Locality/NoDuplication).
+  Ümumi qayda: `.sdd` root-u yalnız sistem səviyyəli (ENGINE) tərifləri
+  saxlamalıdır; layihəyə xas bilgi — o cümlədən konkret qərar
+  instansiyaları — `project/<domain>/` altında olmalıdır, heç vaxt birbaşa
+  `.sdd` root-unda (ROOT PURITY RULE).
+
+  Dörd Storage qovluğu (hər biri yalnız `.gitkeep` saxlayırdı) silindi (git
+  tarixçəsində qalır). `decisions/decisions.sdd`-in `Storage:` bölməsi
+  literal qovluq siyahısından ENGINE-only konvensiya bəyanatına
+  yenidən yazıldı — `project/<domain>/decisions/<state>/*.sdd`, eynilə
+  `tasks/tasks.sdd`-in (STEP 8 final) öz Storage bölməsi kimi. İki yeni
+  qayda əlavə olundu, `tasks.sdd`-in `[T19]`/`[T20]`-ni güzgüləyərək:
+  `[D13]` (lifecycle qaydaları burada tərif olunur, konkret instansiyalar
+  daxilində yox) və `[D14]` (konkret qərar instansiyaları öz sahib
+  domeninin altında qalmalıdır, `.sdd/decisions/` daxilində saxlanıla
+  bilməz) — bax decisions/decisions.sdd -> Note tam əsaslandırma üçün.
+
+  Yuxarıdakı `Directories:` bölməsindəki `decisions:` girişinin
+  `purpose:`/`state:` sahələri yeniləndi (indi `[D1]-[D14]` və ROOT PURITY
+  RULE-a istinad edir, köhnə "4 boş Storage qovluğu" ifadəsi silindi).
+  `architecture/architecture.sdd`-nin `DECISIONS` komponentinin `role:`
+  sahəsi eyni şəkildə yeniləndi (bax onun öz Note-u). `DecisionLifecycle`,
+  `DecisionContract`, `Rules` `[D1]`-`[D12]`, `States` və `Escalation`
+  DƏYİŞMƏDİ — bu düzəliş yalnız qərar instansiyasının HARADA
+  saxlanıldığını dəyişir, lifecycle-ın necə işlədiyini yox.

@@ -47,7 +47,12 @@ Components:
 
   DECISIONS:
     path: ../decisions
-    role: Human decisions (decision lifecycle, Rules [D1]-[D12], STEP 9)
+    role: Human decision ENGINE (decision lifecycle, Rules [D1]-[D14],
+      STEP 9 final). Root-level, same portability reasoning as TASKS above
+      — this is .sdd's own decision-management behavior, not project
+      knowledge. Concrete decision instances live under their owning
+      domain (../project/<domain>/decisions/<state>/*.sdd), not in this
+      component (see ../decisions/decisions.sdd -> Note)
 
   STATE:
     path: ../state
@@ -279,3 +284,20 @@ Note:
   ../decisions/decisions.sdd -> Note). Four empty Storage subdirectories
   (pending/approved/rejected/superseded) were created under `../decisions`
   with `.gitkeep` placeholders — no concrete decision instances exist yet.
+
+  (prompt/new/30.md, STEP 9 correction — ROOT PURITY RULE, "Tam sıfırla",
+  user confirmed) The STEP 9 (29.md) version above put concrete-instance
+  Storage directories directly under `.sdd/decisions/` (root) — the exact
+  mistake STEP 8 (25.md) already made and STEP 8 final (27.md) already
+  corrected for TASKS. Applying that same correction here: the four
+  Storage subdirectories were deleted (preserved in git history); DECISIONS'
+  `role:` above was rewritten to describe it as ENGINE-only, with concrete
+  decision instances routed through `../project/<domain>/decisions/
+  <state>/*.sdd` instead; two new rules were added to `decisions.sdd`,
+  `[D13]`/`[D14]`, mirroring `tasks.sdd`'s `[T19]`/`[T20]` (see
+  ../decisions/decisions.sdd -> Note for the full reasoning). This is now
+  the general ROOT PURITY RULE for `.sdd`: root holds only system-level
+  (engine) definitions; project-specific knowledge, including any concrete
+  instance storage, belongs under `project/<domain>/`, never directly
+  under `.sdd` root. DECISIONS' entries in Relationships/Allowed/Forbidden
+  did NOT change — only `role:` and the underlying directory layout moved.
