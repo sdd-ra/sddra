@@ -5,7 +5,7 @@ Purpose:
   components exist inside .sdd/, how they relate, and which relationships
   are allowed. This is NOT the project's technical architecture (stack,
   module isolation, layers) — that lives in project/architecture.sdd
-  (bax Note aşağıda, adı bənzər olsa da miqyası fərqlidir).
+  (see Note below — similar name, different scope).
 
 Owns:
   .sdd/
@@ -14,7 +14,7 @@ Components:
 
   PROJECT:
     path: ../PROJECT.sdd
-    role: Root entry point / router (bax PROJECT.sdd -> Rules R1-R3)
+    role: Root entry point / router (see PROJECT.sdd -> Rules R1-R3)
 
   PROJECT_MODEL:
     path: ../project
@@ -26,7 +26,7 @@ Components:
 
   CHAINS:
     path: ../chains
-    role: Execution chains (chain-tipi modeli — feature/bugfix/change, STEP 5)
+    role: Execution chains (chain-type model — feature/bugfix/change, STEP 5)
 
   SKILLS:
     path: ../skills
@@ -40,14 +40,14 @@ Components:
     path: ../tasks/tasks.sdd
     role: Task ENGINE (HOW a task works — lifecycle, creation, decomposition,
       dependency, state, review, failure, recovery, relocation, completion).
-      Root-level, çünki bu .sdd sisteminin öz davranışıdır — layihə bilgisi
-      deyil (portativlik). Konkret task instansiyaları ("nəyə aiddir?") öz
-      domeninin altında yaşayır (../project/<domain>/tasks/*.sdd), bu
-      komponentdə deyil (STEP 8 final, bax ../tasks/tasks.sdd -> Note)
+      Root-level, because this is .sdd's own system behavior, not project
+      knowledge (portability). Concrete task instances ("what does it belong
+      to?") live under their own domain (../project/<domain>/tasks/*.sdd),
+      not in this component (STEP 8 final, see ../tasks/tasks.sdd -> Note)
 
   DECISIONS:
     path: ../decisions
-    role: Human decisions
+    role: Human decisions (decision lifecycle, Rules [D1]-[D12], STEP 9)
 
   STATE:
     path: ../state
@@ -176,93 +176,106 @@ Principles:
     applies it to the SDD component graph above.
 
 State: +
-  (STEP 3 tamamlandı — bax PROJECT.sdd -> Rules [R10]: mərhələ bitəndə
-  state işarələnməlidir.)
+  (STEP 3 completed — see PROJECT.sdd -> Rules [R10]: state must be marked
+  when a stage finishes.)
 
 Note:
-  (prompt/new/20.md) Bu fayl `.sdd`-in ÖZ komponentlərinin (PROJECT,
-  PROJECT_MODEL, ARCHITECTURE, CHAINS, SKILLS, PROMPTS, TASKS, DECISIONS,
-  STATE) bir-biri ilə necə əlaqələndiyini təsvir edir — "meta" səviyyədədir.
+  (prompt/new/20.md) This file describes how .sdd's OWN components
+  (PROJECT, PROJECT_MODEL, ARCHITECTURE, CHAINS, SKILLS, PROMPTS, TASKS,
+  DECISIONS, STATE) relate to each other — it operates at the "meta" level.
 
-  Fərqləndirmə (adı toqquşduğu üçün vacib): `project/architecture.sdd`
-  layihənin öz texniki arxitekturasıdır (stack, ModuleIsolation,
-  LayerArchitecture — FE/BE/DB necə çağırır) və bu fayldan TAMAMILƏ
-  ayrıdır. Bu fayl heç vaxt `project/architecture.sdd`-in məzmununu
-  təkrarlamır (bax NoDuplication prinsipi yuxarıda) — sadəcə
-  PROJECT_MODEL komponenti kimi ona referans verir.
+  Important distinction (the names collide): `project/architecture.sdd` is
+  the PROJECT's own technical architecture (stack, ModuleIsolation,
+  LayerArchitecture — how FE/BE/DB call each other) and is COMPLETELY
+  separate from this file. This file never duplicates that content (see
+  NoDuplication above) — it only references PROJECT_MODEL as a component.
 
-  (prompt/new/21.md, STEP 4 — HƏLL OLUNUB) `project/architecture.sdd`-in
-  əvvəllər istinad etdiyi köhnə `protocol/symbols.sdd`, `protocol/rules.sdd`
-  ifadələri STEP 4-ün "Tam sıfırla" reset-i ilə silinib; həmin fayl indi
-  sxem-yalnız formadadır və heç bir köhnə `protocol/`-a istinad qalmayıb
-  (bax .sdd/project/architecture.sdd -> Note, .sdd/PROJECT.sdd -> Note).
+  (prompt/new/21.md, STEP 4 — RESOLVED) The stale `protocol/symbols.sdd`
+  and `protocol/rules.sdd` references that `project/architecture.sdd` used
+  to carry were removed by STEP 4's Full Reset; that file is now
+  schema-only and carries no remaining reference to the retired
+  `protocol/` tree (see .sdd/project/architecture.sdd -> Note,
+  .sdd/PROJECT.sdd -> Note).
 
-  (prompt/new/22.md, STEP 5 — HƏLL OLUNUB) Yuxarıdakı CHAINS komponentinin
-  "feature-per-chain" rolu köhnəlmişdi — STEP 5-in "Tam sıfırla" reset-i
-  ilə `chains/_TEMPLATE.feature.sdd` silinib, chain-tipi modeli (router +
-  feature/bugfix/change.chain) qurulub (bax .sdd/chains/chains.sdd -> Note).
+  (prompt/new/22.md, STEP 5 — RESOLVED) The CHAINS component's earlier
+  "feature-per-chain" role description had gone stale — STEP 5's Full
+  Reset removed `chains/_TEMPLATE.feature.sdd` and replaced it with the
+  chain-type model (router + feature/bugfix/change.chain; see
+  .sdd/chains/chains.sdd -> Note).
 
-  (prompt/new/23.md, STEP 6) SKILLS komponentinin `role:` sahəsindəki
-  "STEP 9" işarəsi köhnə (əvvəlki numerasiya sxemindən qalma) yanlışlıq
-  idi — düzəldilib "STEP 6"-ya, çünki `.sdd/skills/` məhz bu addımda
-  (prompt/new/23.md) qurulur, doqquzuncu deyil. SKILLS -> SKILLS
-  münasibəti (bax Relationships: CHAINS -> SKILLS yuxarıda) indi real
-  faylla təmin olunur: `skills/skills.sdd` (bax onun Purpose bölməsi —
-  4 qatın: project/architecture/chains/skills tam müqayisəli xəritəsi).
+  (prompt/new/23.md, STEP 6) The SKILLS component's `role:` field carried a
+  stale "STEP 9" marker left over from an earlier numbering scheme — wrong,
+  since `.sdd/skills/` is actually built at this step (prompt/new/23.md),
+  not the ninth. Corrected to "STEP 6". The CHAINS -> SKILLS relationship
+  (see Relationships above) is now backed by a real file, `skills/
+  skills.sdd` (see its Purpose section for the full four-layer map of
+  project/architecture/chains/skills).
 
-  (prompt/new/24.md, STEP 7 — HƏLL OLUNUB) PROMPTS komponentinin `role:`
-  sahəsinə "STEP 7" işarəsi əlavə olundu (digər komponentlərlə eyni
-  konvensiya). Forbidden bölməsindəki "PROMPTS: MUST NOT silently modify
-  architecture or global rules" qaydası dəyişməyib — `.sdd/prompts/`-un
-  STEP 7 reset-i (bax .sdd/prompts/prompts.sdd -> Note) yalnız PROMPTS-un
-  öz daxili strukturunu qurdu, bu Forbidden qaydasını pozmadı.
+  (prompt/new/24.md, STEP 7 — RESOLVED) Added a "STEP 7" marker to the
+  PROMPTS component's `role:` field, matching the convention used by the
+  other components. The Forbidden-section rule "PROMPTS: MUST NOT silently
+  modify architecture or global rules" is unchanged — the STEP 7 reset of
+  `.sdd/prompts/` (see .sdd/prompts/prompts.sdd -> Note) only built
+  PROMPTS' own internal structure; it did not touch this rule.
 
-  (prompt/new/25.md, STEP 8 — HƏLL OLUNUB, sonra geri götürülüb) TASKS
-  komponentinin `role:` sahəsindəki köhnə "active/planned/completed"
-  ifadəsi əvəz olunmuşdu — `.sdd/tasks/`-un o zamankı strukturuna (6
-  qovluq: active/backlog/blocked/review/done/failed) istinad edirdi. Bu
-  struktur özü artıq mövcud deyil (bax aşağıdakı STEP 8 correction qeydi)
-  — tarixi qeyd kimi saxlanılır.
+  (prompt/new/25.md, STEP 8 — RESOLVED, later reverted) The TASKS
+  component's `role:` field previously described the "active/planned/
+  completed" model, referencing the `.sdd/tasks/` layout of that time (6
+  directories: active/backlog/blocked/review/done/failed). That structure
+  no longer exists (see the STEP 8 correction note below) — kept here only
+  as a historical record.
 
-  (prompt/new/26.md, STEP 8 correction — HƏLL OLUNUB) TASKS komponentinin
-  `path:` sahəsi `../tasks` -> `../project/tasks.sdd`-ə dəyişdi, `role:`
-  yeniləndi: TASKS artıq root-level qovluq DEYİL, `project/tasks.sdd`
-  TaskModel router-idir — konkret task-lar `project/<domain>/tasks/*.sdd`
-  konvensiyası ilə öz sahibinin altında yaşayır (bax Locality/NoDuplication
-  prinsipləri yuxarıda, .sdd/project/tasks.sdd -> Storage, [T2]). Root-level
-  `.sdd/tasks/` (README.md, tasks.sdd, 6 qovluq) istifadəçi təsdiqi
-  ("Tam sıfırla") ilə tamamilə silindi (git tarixçəsində qalır).
+  (prompt/new/26.md, STEP 8 correction — RESOLVED) The TASKS component's
+  `path:` field changed from `../tasks` to `../project/tasks.sdd`; `role:`
+  was updated: TASKS was no longer a root-level directory but the
+  `project/tasks.sdd` TaskModel router — concrete tasks lived under their
+  owning domain via the `project/<domain>/tasks/*.sdd` convention (see the
+  Locality/NoDuplication principles above, .sdd/project/tasks.sdd ->
+  Storage, [T2]). The root-level `.sdd/tasks/` (README.md, tasks.sdd, 6
+  directories) was fully deleted with user confirmation (Full Reset;
+  preserved in git history).
 
-  Relationships/Allowed/Forbidden bölmələrindəki TASKS qeydləri
-  (`PROMPTS -> TASKS`, `TASKS -> STATE`, `TASKS: may_reference: ...`,
-  `TASKS: MUST NOT redefine global SDD architecture`) DƏYİŞMƏDİ — bu STEP
-  yalnız TASKS-ın harada yaşadığını (path) dəyişdi, .sdd komponent
-  qrafındakı rolunu yox.
+  The TASKS entries in Relationships/Allowed/Forbidden (`PROMPTS -> TASKS`,
+  `TASKS -> STATE`, `TASKS: may_reference: ...`, `TASKS: MUST NOT redefine
+  global SDD architecture`) did NOT change — this step only moved where
+  TASKS lives (path), not its role in the .sdd component graph.
 
-  (prompt/new/27.md, STEP 8 final — HƏLL OLUNUB) Yuxarıdakı STEP 8 correction
-  (26.md) öz növbəsində düzəldildi — istifadəçi mənbə sözü ilə aydınlaşdırdı
-  ki, task-ın NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/
-  state/review/failure/recovery/relocation/completion) `.sdd`-nin öz sistem
-  davranışıdır, layihə bilgisi deyil; root-da qalanda daha portativdir
-  (`.sdd` başqa layihəyə köçəndə bu fayl dəyişmədən gəlir), `project/`-ə
-  köçəndə YOX. TASKS komponentinin `path:` sahəsi `../project/tasks.sdd`
-  -> `../tasks/tasks.sdd`-ə dəyişdi, `role:` yeniləndi: TASKS yenidən
-  root-level, amma STEP 8-dəki (25.md) kimi storage-qovluqları YOX — yalnız
-  ENGINE (qayda faylı). Konkret task instansiyaları yenə
-  `project/<domain>/tasks/*.sdd` konvensiyası ilə öz sahibinin altında
-  yaşayır (dəyişmədi). `.sdd/project/tasks.sdd` (26.md-in yaratdığı fayl)
-  tamamilə silindi (git tarixçəsində qalır) — bax .sdd/tasks/tasks.sdd ->
-  Note. Relationships/Allowed/Forbidden qrafı yenə DƏYİŞMƏDİ.
+  (prompt/new/27.md, STEP 8 final — RESOLVED) The STEP 8 correction (26.md)
+  was itself corrected in turn — the source clarified that HOW a task
+  works (lifecycle/creation/decomposition/dependency/state/review/failure/
+  recovery/relocation/completion) is .sdd's own system behavior, not
+  project knowledge. This is actually MORE portable staying at the root
+  (`.sdd` carries this file unchanged into any new project it moves to)
+  than it would be inside `project/`. The TASKS component's `path:` field
+  changed from `../project/tasks.sdd` back to `../tasks/tasks.sdd`;
+  `role:` was updated: TASKS is root-level again, but unlike the STEP 8
+  (25.md) version it has no storage directories — it is ENGINE only (a
+  rules file). Concrete task instances still live under their owning
+  domain via `project/<domain>/tasks/*.sdd` (unchanged). `.sdd/project/
+  tasks.sdd` (created by 26.md) was fully deleted (preserved in git
+  history) — see .sdd/tasks/tasks.sdd -> Note. Relationships/Allowed/
+  Forbidden again did NOT change.
 
-  Mənbə (prompt/new/20.md) template-i demək olar ki, olduğu kimi
-  saxlanıldı, çünki Components/Relationships/Allowed/Forbidden/Principles
-  strukturu artıq özü aydın və tam idi; əlavə edilən yeganə best-practice
-  hissələr bu Note və `HumanControl`-un R9/R11-ə açıq istinadı, həmçinin
-  `State:` sətridir (R10-a uyğun).
+  The source template (prompt/new/20.md) was kept almost as-is, since its
+  Components/Relationships/Allowed/Forbidden/Principles structure was
+  already clear and complete; the only added best-practice pieces are this
+  Note, HumanControl's explicit reference to R9/R11, and the `State:` line
+  (per R10).
 
-  (prompt/new/28.md, STEP 8 refinement — additive, "Tam sıfırla" tələb
-  olunmadı) TASKS komponentinin `path:`/`role:` sahələri DƏYİŞMƏDİ (yenə
-  `../tasks/tasks.sdd`, yenə ENGINE-vs-MODEL izahı) — bu addım yalnız
-  `tasks.sdd`-in öz daxili strukturunu zənginləşdirdi (bax
-  ../tasks/tasks.sdd -> Note), .sdd komponent qrafına (Relationships/
-  Allowed/Forbidden) heç bir təsiri olmadı.
+  (prompt/new/28.md, STEP 8 refinement — additive, Full Reset NOT
+  required) The TASKS component's `path:`/`role:` fields did NOT change
+  (still `../tasks/tasks.sdd`, still the ENGINE-vs-MODEL explanation) —
+  this step only enriched `tasks.sdd`'s own internal structure (see
+  ../tasks/tasks.sdd -> Note); it had no effect on the .sdd component
+  graph (Relationships/Allowed/Forbidden).
+
+  (prompt/new/29.md, STEP 9 — additive, Full Reset NOT required) The
+  DECISIONS component's `path:` (already `../decisions`) and its entries
+  in Relationships/Allowed/Forbidden were already declared before this
+  step and did NOT change — only `role:` gained a `(STEP 9)` marker,
+  matching the convention used by CHAINS/SKILLS/PROMPTS, and the internal
+  structure of `decisions/decisions.sdd` itself was built out (Rules
+  [D1]-[D12], DecisionLifecycle, DecisionContract, Escalation, States; see
+  ../decisions/decisions.sdd -> Note). Four empty Storage subdirectories
+  (pending/approved/rejected/superseded) were created under `../decisions`
+  with `.gitkeep` placeholders — no concrete decision instances exist yet.
