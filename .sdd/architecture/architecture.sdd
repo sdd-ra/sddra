@@ -5,7 +5,11 @@ Purpose:
   components exist inside .sdd/, how they relate, and which relationships
   are allowed. This is NOT the project's technical architecture (stack,
   module isolation, layers) — that lives in project/architecture.sdd
-  (see Note below — similar name, different scope).
+  (see Note below — similar name, different scope). It is also NOT the
+  global engineering-architecture rules (modularity, coupling, dependency
+  direction, service extraction) the AI applies to any project's actual
+  code — those live in the sibling file ./principles.sdd (see Note below,
+  STEP 13 entry).
 
 Owns:
   .sdd/
@@ -22,7 +26,10 @@ Components:
 
   ARCHITECTURE:
     path: ../architecture
-    role: SDD system architecture definitions (this file)
+    role: SDD system architecture definitions (this file, the component
+      graph) plus the global engineering-architecture principles engine
+      (./principles.sdd — modularity, coupling, dependency direction,
+      service extraction; STEP 13)
 
   CHAINS:
     path: ../chains
@@ -346,3 +353,29 @@ Note:
   ../state/state.sdd -> Note). No concrete state storage directories were
   created — state values live inline in each object's own `State:` field,
   consistent with the ROOT PURITY RULE established at STEP 9 (30.md).
+
+  (prompt/new/35.md, STEP 13 — source labeled this "STEP 12" again, a
+  duplicate of the label already used by STEP 12/34.md; not a signal to
+  reuse this repo's STEP 12, see PROJECT.sdd -> Note for the sequential
+  count.) The source asked for a `Spec: ArchitectureSystem` document
+  defining global engineering-architecture principles (modularity,
+  coupling, dependency direction, service extraction) at this same
+  `architecture/` path. Placing that content directly in this file would
+  have overwritten/duplicated the component graph above and violated
+  this file's own SeparationOfConcerns/SingleSourceOfTruth/NoDuplication
+  Principles (see above). Resolved by adding a new sibling file instead,
+  ./principles.sdd, rather than editing this file's meaning — this file
+  keeps describing .sdd's own component graph (meta), ./principles.sdd
+  describes engineering-architecture rules for real project code
+  (global), and project/architecture.sdd stays the concrete instance for
+  this project (see ./principles.sdd -> Purpose for the full three-file
+  map, and its own Note for the naming-collision rationale in full).
+
+  Disambiguation: this file's own `Principles:` section above
+  (SeparationOfConcerns/SingleSourceOfTruth/ExplicitReference/Locality/
+  NoDuplication/Traceability/HumanControl) is about how .sdd's own
+  components relate to each other. It is unrelated to and unchanged by
+  ./principles.sdd, which is about how real project code should be
+  architected (domain boundaries, dependency direction, coupling). The
+  near-identical naming (`Principles:` section here vs. `principles.sdd`
+  file there) is coincidental, not a shared concept — do not merge them.

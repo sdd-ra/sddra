@@ -4,7 +4,11 @@ Purpose:
   Layihənin ÖZ komponentlərinin (layers, modules, stack) necə qurulduğunu
   və əlaqələndiyini təsvir edir — bu, layihənin texniki arxitekturasıdır,
   YOX .sdd sisteminin öz meta-arxitekturası (bax architecture/architecture.sdd
-  — fərqli, ayrı sənəddir, STEP 3).
+  — fərqli, ayrı sənəddir, STEP 3), YOX də qlobal engineering-arxitektura
+  prinsipləri (modularity, coupling, dependency direction) — onlar
+  architecture/principles.sdd-də yaşayır (STEP 13) və konkret layer
+  əlaqələri (Rules/Validation aşağıda) o qlobal qaydalara qarşı yoxlanılır
+  (bax Resolution: architecture/principles.sdd -> Resolution).
 
 Layers:
   DB

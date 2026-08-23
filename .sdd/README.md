@@ -359,13 +359,53 @@ təklif etdiyi `Spec: TaskSystem` əvəzinə) — `.sdd`-in digər bacı fayllar
 referans yeniləndi; `path:`/`role:` və Relationships/Allowed/Forbidden qrafı
 DƏYİŞMƏDİ.
 
+## STEP 13 — `.sdd/architecture/principles.sdd` Global Architecture Principles (prompt/new/35.md)
+
+`.sdd/architecture/` qovluğu STEP 3-dən bəri `architecture.sdd` (`.sdd`-in öz meta
+komponent qrafı) saxlayırdı. Mənbə chunk 35 eyni qovluğa fərqli bir konsept
+gətirdi — real layihə koduna baxarkən AI-nin tətbiq etməli olduğu **qlobal
+mühəndislik-arxitektura prinsipləri** (modularity, coupling, dependency
+direction, layering, service-extraction readiness). Mənbə bunu yenə
+`architecture/architecture.sdd` adlandırırdı — bu adı overwrite etmək STEP 3-ün
+komponent qrafını itirər/dublikat edərdi, ona görə "Tam sıfırla" tələb
+olunmadı, sırf əlavə (sibling-file) tikinti oldu:
+
+- **Yeni yaradıldı:** `architecture/principles.sdd` — `CorePrinciple`,
+  `ArchitectureGoals`, `Rules: [AP1]-[AP18]` (mənbənin `[A1]-[A18]`-dən bu
+  repo-nun digər prefiks konvensiyasına — `[C]`/`[T]`/`[D]`/`[S]`/`[R]` —
+  uyğun yenidən nömrələndi), `DependencyDirection`, `DomainInteraction`,
+  `Forbidden`, `ModuleBoundary`, `ServiceExtraction`, `ArchitectureValidation`,
+  `ArchitectureFailure` (öz paralel failure modeli əvəzinə `chains.sdd ->
+  Failure/ReviewFailure`-a istinad edir), `ProjectArchitecture`,
+  `Resolution` (qlobal prinsiplər > `project/architecture.sdd` >
+  `project/<domain>/architecture.sdd` > feature > implementation — eyni
+  ENGINE-vs-MODEL pattern-i `chains.sdd`/`tasks.sdd`-də olduğu kimi),
+  `Portability`, `Navigation`.
+- **Üçlü ayrım** (`principles.sdd -> Purpose`-də tərif olunub):
+  `architecture/architecture.sdd` = `.sdd`-in öz komponent qrafı (meta),
+  `architecture/principles.sdd` = AI-nin İSTƏNİLƏN layihənin koduna necə
+  baxmalı olduğu (qlobal, bu fayl), `project/architecture.sdd` = BU layihə
+  konkret necə qurulub (konkret).
+- **Ripple-update:** `architecture/architecture.sdd`-nin Purpose/`ARCHITECTURE`
+  komponent rolu/Note-u yeni faylı cross-reference edəcək şəkildə redaktə
+  olundu (komponent qrafının özü — Relationships/Allowed/Forbidden —
+  DƏYİŞMƏDİ); `project/architecture.sdd`-nin Purpose-u üçüncü fərqi
+  aydınlaşdıran bir cümlə ilə genişləndi; `PROJECT.sdd`-nin
+  `Directories -> architecture` girişinin `purpose:`/`state:` sahələri
+  yeniləndi və STEP 13-ü tam izah edən yeni bir Note bəndi əlavə olundu
+  (bax hər üç faylın öz Note-u).
+- Real layihə domenlərinə bu qaydaların konkret tətbiqi (məs. hansı domen
+  hansı boundary-ni pozur) **bilərəkdən indi edilmir** — heç bir real domen
+  qovluğu yoxdur (STEP 4-dən bəri sxem-yalnız), qaydalar domen yaranan kimi
+  ona qarşı yoxlanılacaq.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
 .sdd/
 ├── PROJECT.sdd     — .sdd sisteminin ana entry point-i
 ├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE)
-├── architecture/   — .sdd sisteminin və project architecture qaydalarının modeli (boş, STEP 1)
+├── architecture/   — architecture.sdd (.sdd-in öz meta komponent qrafı, STEP 3) + principles.sdd (qlobal engineering-arxitektura prinsipləri, STEP 13)
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
 ├── prompts/        — daxil olan və saxlanılan prompt intelligence (prompts.sdd router + 5 qovluq, STEP 7)

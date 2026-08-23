@@ -34,8 +34,14 @@ Directories:
 
   architecture:
     path: ./architecture
-    purpose: .sdd sisteminin öz komponent arxitekturası (bax architecture/architecture.sdd)
-    state: STEP 3 tamamlandı — layihə-səviyyəli architecture ayrıca project/architecture.sdd-də qalır
+    purpose: .sdd sisteminin öz komponent arxitekturası (architecture/architecture.sdd)
+      PLUS qlobal engineering-arxitektura prinsipləri — modularity, coupling,
+      dependency direction, service extraction (architecture/principles.sdd,
+      STEP 13). Layihə-səviyyəli konkret arxitektura ayrıca
+      project/architecture.sdd-də qalır.
+    state: STEP 3 tamamlandı, STEP 13 ilə genişləndi (prompt/new/35.md) —
+      architecture/principles.sdd (Rules [AP1]-[AP18]) əlavə olundu, layihə-
+      səviyyəli architecture ayrıca project/architecture.sdd-də qalır
 
   chains:
     path: ./chains
@@ -353,3 +359,22 @@ Note:
   while chat itself stays Azerbaijani. The existing Azerbaijani Note
   entries above are left as-is here — converting them is a separate,
   not-yet-started pass, not part of this STEP.
+
+  (prompt/new/35.md, STEP 13) `.sdd/architecture/principles.sdd` was
+  added — the global engineering-architecture rules engine (modularity,
+  coupling, dependency direction, layering, service-extraction
+  readiness; Rules [AP1]-[AP18]). The source named this file
+  `architecture/architecture.sdd`, reusing a path this repo already gave
+  a different meaning at STEP 3 (20.md) — the meta component graph of
+  .sdd itself. Overwriting it would have duplicated/lost that graph, so
+  it was added as a new sibling file instead; `architecture.sdd` itself
+  was only edited to cross-reference the new file (Purpose, ARCHITECTURE
+  component role, Note), not rewritten (see architecture/architecture.sdd
+  -> Note, architecture/principles.sdd -> Note for the full rationale).
+  `project/architecture.sdd` (concrete, this-project architecture) had
+  its Purpose extended with the same pointer, keeping the existing
+  distinction against the meta-graph file. The `Directories -> architecture`
+  entry above was updated accordingly. Nothing under `Relationships`/
+  `Allowed`/`Forbidden` in architecture.sdd's component graph changed —
+  this STEP only added a new rules layer alongside it, per NoDuplication
+  (see architecture/architecture.sdd -> Principles).

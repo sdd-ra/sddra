@@ -1,0 +1,259 @@
+Architecture: Principles
+
+Purpose:
+  Define the engineering-architecture principles the AI applies when
+  analyzing, designing, implementing and reviewing actual project code —
+  modularity, coupling, dependency direction, layering, service-extraction
+  readiness. This is the GLOBAL RULES layer (see map below) — it does NOT
+  describe .sdd's own internal component graph (that is
+  ../architecture/architecture.sdd -> Components/Relationships, a
+  different concern under the same directory — see Note for why these
+  are two files, not one).
+
+  .sdd/architecture/architecture.sdd   -> how .sdd itself is built (meta)
+  .sdd/architecture/principles.sdd     -> how AI must think about ANY
+                                           project's code architecture
+                                           (this file)
+  .sdd/project/architecture.sdd        -> how THIS project is actually
+                                           built (concrete)
+
+
+Owns:
+  Architecture principles
+  Architecture boundaries
+  Modularity rules
+  Dependency rules
+  Layering rules
+  Coupling rules
+  Scalability rules
+  Service extraction rules
+  Architecture validation
+
+
+DoesNotOwn:
+  Project-specific architecture
+  Domain-specific architecture
+  Project components
+  Project paths
+  Project database structure
+  Project APIs
+  .sdd's own component graph
+
+  (see ../architecture/architecture.sdd -> Principles ->
+  SeparationOfConcerns — concrete project structure belongs to
+  ../project/architecture.sdd and ../project/<domain>/architecture.sdd,
+  not here; this file's own component graph belongs to
+  architecture.sdd, not here either. This file only owns the
+  reusable rule vocabulary a real project's architecture is checked
+  against — see Resolution below.)
+
+
+CorePrinciple:
+
+  Code MUST be designed so that a modular monolith can be separated
+  into independently deployable services without requiring a complete
+  rewrite.
+
+
+ArchitectureGoals:
+
+  modularity
+  low coupling
+  high cohesion
+  explicit boundaries
+  dependency direction
+  replaceability
+  testability
+  observability
+  scalability
+  service extraction readiness
+
+
+Rules:
+
+  [AP1]  Every business domain MUST have an explicit boundary.
+  [AP2]  Domain boundaries MUST NOT depend on implementation paths.
+  [AP3]  Cross-domain communication MUST use explicit contracts.
+  [AP4]  Internal implementation details MUST NOT leak across domain
+         boundaries.
+  [AP5]  Dependencies MUST point toward stable abstractions.
+  [AP6]  Circular dependencies MUST NOT exist.
+  [AP7]  A module MUST have a clearly defined responsibility.
+  [AP8]  Shared code MUST NOT become an uncontrolled dependency hub.
+  [AP9]  Business logic MUST NOT depend directly on infrastructure
+         implementations when abstraction is required.
+  [AP10] External integrations MUST have explicit boundaries.
+  [AP11] Database access MUST remain inside the responsible boundary
+         unless explicitly approved by architecture.
+  [AP12] A domain MUST NOT access another domain's internal database
+         structures directly.
+  [AP13] Cross-domain data access MUST use an approved contract.
+  [AP14] Domain logic MUST remain independently testable.
+  [AP15] A module SHOULD be independently replaceable.
+  [AP16] A module SHOULD be independently deployable in the future
+         when service extraction becomes necessary.
+  [AP17] Architecture MUST NOT introduce microservice complexity
+         without an actual requirement (microservice-ready is not
+         microservice-first — see Important below).
+  [AP18] Modular monolith is the default architecture when independent
+         deployment is not currently required.
+
+
+DependencyDirection:
+
+  Presentation > Application > Domain > Infrastructure
+
+
+DomainInteraction:
+
+  Domain A > Contract > Domain B
+
+
+Forbidden:
+
+  Domain A  > Domain B internal implementation
+  Domain A  > Domain B database table
+  Domain A  > Domain B private service
+  Presentation > Infrastructure directly
+
+
+ModuleBoundary:
+
+  Every module SHOULD define:
+    purpose
+    owns
+    exposes
+    depends_on
+    forbids
+
+
+ServiceExtraction:
+
+  A module is considered extraction-ready when:
+    boundary is explicit
+    dependencies are explicit
+    contracts are explicit
+    internal state is isolated
+    database ownership is known
+    external integrations are isolated
+    tests do not require unrelated modules
+    cross-module communication is explicit
+
+  ExtractionTarget:
+    ModularMonolith > IsolatedModule > ExplicitContract >
+    IndependentDataOwnership > ServiceCandidate > Microservice
+
+
+Important:
+
+  Service extraction readiness does NOT mean "build microservices now".
+  It means "do not design the monolith in a way that makes future
+  extraction unnecessarily expensive." (see [AP17])
+
+
+ArchitectureValidation:
+
+  Every feature MUST be checked for:
+    boundary violation
+    dependency violation
+    circular dependency
+    coupling
+    cohesion
+    data ownership
+    contract ownership
+    infrastructure leakage
+    scalability risk
+    extraction risk
+
+
+ArchitectureFailure:
+
+  If architecture validation fails, implementation MUST NOT be
+  considered complete.
+
+  Flow:
+    implementation > architecture-review > FAILED > responsible-stage
+    > recover > review > VR
+
+  (mirrors ../chains/chains.sdd -> Failure/ReviewFailure — architecture
+  review is one more review gate a chain can fail at, not a separate
+  failure model.)
+
+
+ProjectArchitecture:
+
+  Project-specific architecture MUST be defined in:
+    @../project/architecture.sdd
+
+  Domain-specific architecture MAY be defined in:
+    @../project/<domain>/architecture.sdd
+
+
+Resolution:
+
+  Global architecture rules (this file)
+    > Project architecture (../project/architecture.sdd)
+    > Domain architecture (../project/<domain>/architecture.sdd)
+    > Feature architecture
+    > Implementation
+
+  (mirrors the ENGINE > MODEL resolution pattern already used by
+  ../chains/chains.sdd -> FlowResolution and ../tasks/tasks.sdd —
+  root stays reusable, the project model carries the concrete instance.)
+
+
+Portability:
+
+  This file MUST remain reusable across projects unchanged.
+  Project-specific architecture MUST NOT be embedded into this file
+  (see DoesNotOwn above).
+
+
+Navigation:
+  Project architecture: @../project/architecture.sdd
+  Domain architecture:  @../project/<domain>/architecture.sdd
+  SDD's own component graph: @./architecture.sdd
+  Chains:                @../chains/chains.sdd
+  Skills:                @../skills/
+
+
+State: +
+
+Note:
+  (prompt/new/35.md, STEP 13 — source labeled this "STEP 12", a duplicate
+  of the label already used by prompt/new/34.md/chains.sdd; the source's
+  own numbering is inconsistent here, not a signal to reuse this repo's
+  STEP 12 — this repo's own sequential count treats it as STEP 13, see
+  ../PROJECT.sdd -> Note.)
+
+  Naming/placement decision: the source names this file
+  `.sdd/architecture/architecture.sdd`, reusing a path this repo already
+  gave a different meaning at STEP 3 (prompt/new/20.md) — the meta
+  component graph of .sdd itself (Components/Relationships/Allowed/
+  Forbidden/Principles). Overwriting that file with this content would
+  duplicate/lose that graph and violate this repo's own already-declared
+  SeparationOfConcerns/SingleSourceOfTruth/NoDuplication principles (see
+  ./architecture.sdd -> Principles). Resolved by adding this file as a
+  new sibling, `principles.sdd`, under the same `architecture/`
+  directory instead of overwriting `architecture.sdd` — the directory
+  now holds two distinct concerns (meta-graph vs. code-architecture
+  rules), each in its own file, cross-referenced (see Purpose above,
+  ./architecture.sdd -> Note).
+
+  Rule IDs renumbered from the source's `[A1]-[A18]` to `[AP1]-[AP18]`
+  to avoid a bracket-prefix collision with any future root-level domain
+  that might claim a bare `[A...]` range, and to read unambiguously as
+  "ArchitecturePrinciples" next to this repo's other prefixes ([C] chains,
+  [T] tasks, [D] decisions, [S] state, [R] PROJECT rules).
+
+  Deliberate departures from the source spec, per the standing
+  "apply, don't copy" rule: added the Purpose-level three-file map
+  (architecture.sdd / principles.sdd / project/architecture.sdd)
+  disambiguating this file from its meta-graph sibling; folded
+  ArchitectureFailure's Flow into a direct cross-reference to
+  chains.sdd's existing Failure/ReviewFailure model rather than
+  restating a parallel failure model; added Navigation and State
+  sections to match this repo's established per-file convention (see
+  ../chains/chains.sdd, ../state/state.sdd); condensed the source's
+  three-line-per-item vertical lists (DependencyDirection, Forbidden,
+  ExtractionTarget) onto single lines where no meaning was lost.
