@@ -145,6 +145,10 @@ modeli ilə ziddiyyət təşkil etdi — istifadəçidən **"Tam sıfırla"** t�
   Chain = "iş hansı ardıcıllıqla görülür?" — ikisi fərqli suallara cavab verir.
 - Skill-lərin chain stage-lərinə bağlanması **bilərəkdən indi edilmir** (`chains.sdd -> [C9]`)
   — `.sdd/skills/` qurulanda görüləcək iş (növbəti "next").
+- **STEP 11 yeniləməsi (prompt/new/33.md):** `feature.chain`/`bugfix.chain`/`change.chain`
+  özləri də əvəzləndi — `chains/templates/feature.sdd`/`bugfix.sdd`/`change.sdd`-ə köçürüldü,
+  ortaq DB/BE/API/FE/MD/QA/DO/VR stage-ləri `chains/stages/*.sdd`-ə çıxarıldı (NoDuplication),
+  ingilis dilinə tərcümə edildi, köhnə `.chain` faylları silindi (git tarixçəsində qalır).
 - `PROJECT.sdd`-nin `chains:` girişinin `purpose:`/`state:` sətirləri yeniləndi;
   `architecture/architecture.sdd`-nin `CHAINS` komponentinin köhnə "feature-per-chain, STEP 8"
   rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
@@ -392,6 +396,10 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   (per-feature instansiasiya modeli) silindi (git tarixçəsində qalır); `chains.sdd` router +
   `feature.chain`/`bugfix.chain`/`change.chain` yaradıldı (chain-tipi modeli). Skill-bağlama
   bilərəkdən indi edilmir.
+- `+` **`chains/` STEP-11 genişlənmə (prompt/new/33.md):** `feature.chain`/`bugfix.chain`/
+  `change.chain` `chains/templates/*.sdd`-ə köçürüldü, ortaq stage-lər `chains/stages/*.sdd`-ə
+  çıxarıldı (NoDuplication), ingiliscəyə tərcümə edildi; köhnə `.chain` faylları silindi
+  (git tarixçəsində qalır).
 - `+` **`skills/` STEP-6 additive tikinti (prompt/new/23.md):** `.sdd/skills/` tam boş idi,
   ziddiyyət yox idi — `skills.sdd` router (`SkillDomains` ×8, `Rules: [S1]-[S16]`,
   `SkillContract`, `Execution:`) + 8 boş `SkillDomain` qovluğu yaradıldı. Kök `.gitkeep`

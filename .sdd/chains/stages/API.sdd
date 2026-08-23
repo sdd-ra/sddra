@@ -1,0 +1,47 @@
+Stage: API
+
+Purpose:
+  API / Contract stage. Owns the API contract and integration surface
+  of the unit of work — endpoint/interface definitions, request/response
+  shapes, versioning — everything FE and MD need as a stable contract
+  before they can build against it.
+
+
+Requires:
+  BE (see stages/BE.sdd -> Blocks)
+
+
+Produces:
+  A stable, documented contract that FE and MD can build against.
+
+
+Blocks:
+  FE, MD — neither MUST execute until API is DONE (see chains.sdd ->
+  Rules [C5]).
+
+
+Optional:
+  Never skipped when FE or MD are part of the unit of work — a UI
+  cannot integrate against a contract that does not exist. MAY be
+  skipped only when the unit of work is purely internal/backend, with
+  no consumer-facing surface at all.
+
+
+Skills:
+  @../../skills/api/
+
+  (see chains.sdd -> DoesNotOwn — this file defines WHEN/responsibility
+  only; HOW the contract is actually implemented belongs to skills/api/,
+  not here.)
+
+
+State: + (vocabulary defined here; skills/api/ content is not yet
+  written — see skills/skills.sdd -> SkillDomains, state: boş)
+
+
+Note:
+  (prompt/new/33.md, STEP 11) Extracted out of the flat feature.chain /
+  bugfix.chain / change.chain, where the API responsibility was repeated
+  inline in each file. Defined once here per NoDuplication; referenced
+  from chains.sdd -> Stages and from every template under ./templates/
+  that includes an API step.
