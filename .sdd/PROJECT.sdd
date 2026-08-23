@@ -15,11 +15,19 @@ Directories:
 
   project:
     path: ./project
-    purpose: Layihənin .sdd modeli və layihəyə xas bilgi (WHAT/WHY/WHERE),
-      o cümlədən TaskModel (bax project/tasks.sdd) — task-lar öz domeninin
-      altında yaşayır (project/<domain>/tasks/*.sdd), qlobal deyil (bax
-      Note aşağıda, STEP 8 correction)
-    state: STEP 8 correction tamamlandı — map/architecture/dependencies/domains/indexes/modules sxem-yalnız (STEP 4) + tasks.sdd (TaskModel router, Rules [T1]-[T17]) yazıldı, konkret domen/task məzmunu gələcək "next"lərlə əlavə olunacaq
+    purpose: Layihənin .sdd modeli və layihəyə xas bilgi (WHAT/WHY/WHERE).
+      Konkret task instansiyaları da bura aiddir (project/<domain>/tasks/
+      *.sdd) — amma task-ın NECƏ işlədiyi (engine) buradan çıxıb, root-da
+      yaşayır (bax tasks: girişi aşağıda, Note, STEP 8 final)
+    state: STEP 8 final tamamlandı — map/architecture/dependencies/domains/indexes/modules sxem-yalnız (STEP 4) qalır, konkret domen/task məzmunu gələcək "next"lərlə əlavə olunacaq
+
+  tasks:
+    path: ./tasks
+    purpose: Task engine — task necə yaranır, icra olunur, tamamlanır
+      qaydaları (bax tasks/tasks.sdd). Konkret task instansiyaları BURDA
+      DEYİL, öz sahibinin altında yaşayır (project/<domain>/tasks/*.sdd,
+      bax Note aşağıda, STEP 8 final)
+    state: STEP 8 final tamamlandı — tasks.sdd (TaskEngine, Rules [T1]-[T17]) root-da yazıldı
 
   architecture:
     path: ./architecture
@@ -56,7 +64,7 @@ Navigation:
   chains: @chains
   skills: @skills
   prompts: @prompts
-  tasks: @project/tasks.sdd
+  tasks: @tasks
   decisions: @decisions
   state: @state
 
@@ -229,3 +237,24 @@ Note:
   bölməsindəki ayrıca `tasks:` giriş silindi, `project:` girişinin
   `purpose`/`state` sahələrinə qatıldı; `Navigation:` bölməsində `tasks:`
   indi `@project/tasks.sdd`-ə işarə edir (@tasks əvəzinə).
+
+  (prompt/new/27.md, STEP 8 final — "Tam sıfırla", istifadəçi təsdiqi ilə) Yuxarıdakı
+  STEP 8 correction (26.md) da öz növbəsində düzəldildi: istifadəçi mənbə sözü ilə
+  aydınlaşdırdı ki, task-ın NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/
+  state/review/failure/recovery/relocation/completion) `.sdd` sisteminin ÖZ davranışıdır,
+  layihə bilgisi deyil — buna görə root-da qalanda daha portativdir (`.sdd` başqa layihəyə
+  köçəndə bu fayl dəyişmədən gəlir), `project/`-ə köçəndə YOX. `.sdd/project/tasks.sdd`
+  (26.md-in yaratdığı fayl) tamamilə silindi (git tarixçəsində qalır); yerinə
+  `.sdd/tasks/tasks.sdd` (TaskEngine) yaradıldı — demək olar ki eyni Ownership/Storage/
+  TaskLifecycle/Failure/TaskTypes/TaskContract/Rules [T1]-[T17]/Dependency/Review/
+  Verification/Parallel/States məzmunu ilə, yalnız yeri və çərçivəsi dəqiqləşdi:
+
+    TASK ENGINE (.sdd/tasks/tasks.sdd) — "necə işləyir?"
+    PROJECT MODEL (project/<domain>/tasks/*.sdd) — "nəyə aiddir?" (dəyişmədi)
+
+  Yuxarıdakı `Directories:` bölməsində ayrıca `tasks:` girişi bərpa edildi (`./tasks`),
+  `project:` girişinin `purpose:`/`state:` sahələrindən task-engine-ə xas ifadələr
+  çıxarıldı; `Navigation:`-də `tasks:` yenidən `@tasks`-a işarə edir (`@project/tasks.sdd`
+  əvəzinə). `architecture/architecture.sdd`-nin `TASKS` komponentinin `path:`/`role:`
+  sahələri `../tasks/tasks.sdd`-ə uyğunlaşdırıldı (bax onun öz Note-u) — `Relationships`/
+  `Allowed`/`Forbidden` qrafı yenə DƏYİŞMƏDİ, yalnız path/role.

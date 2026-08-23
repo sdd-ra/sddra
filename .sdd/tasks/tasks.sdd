@@ -1,15 +1,21 @@
-TaskModel: SDD
+TaskEngine: SDD
 
 Purpose:
-  Layihə üzrə icra olunan işin modelini tərif edir — task NƏDİR, kimə
-  MƏXSUSDUR və harada SAXLANIR. Bu fayl özü task storage-i deyil, router/
-  qayda mühərrikidir (bax Storage aşağıda) — konkret task instansiyaları
-  öz domeninin altında yaşayır, burda TƏKRAR yazılmır (bax NoDuplication,
-  architecture/architecture.sdd -> Principles).
+  .sdd sisteminin task engine-i — task necə YARANIR, necə İCRA OLUNUR və
+  necə TAMAMLANIR qaydalarını tərif edir ("necə işləyir?" sualı). Bu fayl
+  konkret task data-sı SAXLAMIR — real task instansiyaları öz sahibinin
+  altında yaşayır (bax Storage aşağıda, project/<domain>/tasks/*.sdd) və
+  "kimə aiddir?" sualına cavab verir (PROJECT MODEL tərəfi, bax Note).
 
   Zəncir: Prompt > Analysis > Decision > Chain > Task > Subtask > Review > VR
   — task, bu zəncirin sərbəst addımı deyil, prompt/decision/chain-in icra
   davamıdır (bax Traceability, architecture/architecture.sdd -> Principles).
+
+  Bu fayl root-səviyyəlidir (.sdd/tasks/tasks.sdd), çünki task necə
+  işlədiyi .sdd sisteminin öz davranışıdır — layihə bilgisi deyil. Bu, onu
+  portativ edir: .sdd başqa bir layihəyə köçəndə bu fayl DƏYİŞMƏDƏN gəlir,
+  yalnız konkret task instansiyaları (project/<domain>/tasks/*.sdd) yeni
+  layihəyə xasdır (bax Note aşağıda, prompt/new/27.md).
 
 
 Ownership:
@@ -23,9 +29,11 @@ Ownership:
 
 
 Storage:
-  Task öz sahibinin (owning component) altında saxlanılır, qlobal/root
-  səviyyəsində DEYİL — bu, .sdd-nin başqa bir layihəyə köçürülə bilən
-  (portable) qalmasını təmin edir (bax Locality principle).
+  Task öz sahibinin (owning component) altında saxlanılır, bu faylın
+  yanında (root-da) DEYİL — bu, .sdd-nin başqa bir layihəyə köçürülə bilən
+  (portable) qalmasını təmin edir (bax Locality principle). Bu fayl
+  (TaskEngine) yalnız bu konvensiyanı TƏYİN edir, storage-in özü deyil —
+  necə işlədiyinin bir hissəsi kimi (task harada saxlanmalıdır).
 
   Konvensiya:
     project/<domain>/tasks/*.sdd
@@ -34,8 +42,8 @@ Storage:
     project/payments/tasks/TASK-003.sdd
     project/users/tasks/TASK-001.sdd
 
-  [T2] Task MUST NOT be stored globally (məs. root-level .sdd/tasks/) when
-       its ownership is resolvable to a domain/module.
+  [T2] Task MUST NOT be stored inside .sdd/tasks/ (bu faylın yanında) —
+       yalnız öz sahibinin altında, project/<domain>/tasks/ altında.
   [T3] Moving a task between owners (domain/module dəyişəndə) MUST preserve
        its history and cross-references (bax Dependency aşağıda) — daşınma
        bir referansı qırmamalıdır.
@@ -149,7 +157,7 @@ States:
 
 
 State: +
-  (STEP 8 correction tamamlandı — bax Note. Bu fayl qayda mühərrikidir,
+  (STEP 8 final tamamlandı — bax Note. Bu fayl root-səviyyəli task engine-dir,
   konkret task instansiyaları hələ yazılmayıb, çünki .sdd/project/ altında
   hələ heç bir konkret domen qovluğu (users/, payments/ və s.) yoxdur —
   STEP 4-də yalnız sxem-yalnız fayllar yaradılıb. Domen qovluğu real
@@ -157,34 +165,35 @@ State: +
 
 
 Note:
-  (prompt/new/26.md, STEP 8 correction — "Tam sıfırla", istifadəçi təsdiqi
-  ilə) Əvvəlki STEP 8 (prompt/new/25.md) root-level `.sdd/tasks/` qlobal
-  qovluq modeli qurmuşdu (6 state qovluğu: active/backlog/blocked/review/
-  done/failed + tasks.sdd router, Rules [T1]-[T17]). Bu model geri
-  götürüldü, çünki task-ları root-da saxlamaq .sdd-nin başqa bir layihəyə
-  köçürülə bilən (portable) olması prinsipi ilə ziddiyyət təşkil edirdi —
-  task əslində layihə bilgisinin (project knowledge) bir hissəsidir, ayrıca
-  qlobal infrastruktur deyil (bax Locality/SeparationOfConcerns,
-  architecture/architecture.sdd -> Principles).
+  (prompt/new/27.md, STEP 8 final — istifadəçi təsdiqi ilə) STEP 8
+  correction-da (prompt/new/26.md) bu fayl `project/tasks.sdd`-ə
+  köçürülmüşdü — task-ları qlobal saxlamağın portativlik prinsipini
+  pozduğu düşünülürdü. Amma istifadəçi öz mənbə sözü ilə düzəltdi: task-ın
+  NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/state/review/
+  failure/recovery/relocation/completion qaydaları) .sdd sisteminin ÖZ
+  davranışıdır — layihə bilgisi deyil, .sdd-nin özü ilə hər layihəyə gələn
+  sistem qaydasıdır. Bu, əslində root-da qalanda daha portativdir,
+  project/-ə köçəndə YOX — project/ layihəyə xas, root isə sistemə xasdır.
 
-  Köhnə `.sdd/tasks/` (README.md, tasks.sdd, 6 boş qovluq) tamamilə silindi
-  (git tarixçəsində qalır). Yerinə bu fayl (`project/tasks.sdd`) gəldi —
-  TaskModel router, storage DEYİL. Konkret task-lar bundan sonra
-  `project/<domain>/tasks/*.sdd` konvensiyası ilə yaradılacaq.
+  Fərq belə formallaşdı (mənbənin öz sözü ilə):
+    TASK ENGINE (.sdd/tasks/tasks.sdd, bu fayl) — "necə işləyir?"
+    PROJECT MODEL (project/<domain>/tasks/*.sdd) — "nəyə aiddir?"
 
-  Best-practice əlavələr (mənbə chunk-ın illüstrativ nümunələri hərfi
-  köçürülmədi, bax "apply, don't copy" qaydası):
-  (1) köhnə tasks.sdd-dəki TaskLifecycle/Failure/TaskTypes/TaskContract/
-  Dependency/Review/Verification/Parallel bölmələri konseptual olaraq
-  saxlanıldı — bunlar hələ də düzgün idi, yalnız StateToDirectory (6
-  qovluq xəritəsi) atıldı, çünki artıq qovluqla deyil, hər faylın öz
-  `State:` sahəsi ilə izlənir (bax [T6], StateMarker);
-  (2) [T2]-[T5] əlavə olundu — mənbə chunk-ın `[T1]-[T7]` nümunəsindəki
-  ownership/relocation ideyalarını konkret, yoxlana bilən qaydalara
-  çevirir;
-  (3) mənbədəki konkret nümunələr (project/users/, project/payments/
-  domenləri, TASK-001..004, TASK-042 relocation nümunəsi) hərfi
-  köçürülmədi — bu repoda hələ heç bir real domen qovluğu yoxdur (bax
-  project/domains.sdd, STEP 4 — sxem-yalnız), illüstrativ qovluq yaratmaq
-  "skelet + qayda mühərriki, konkret instansiya yox" prinsipini pozardı
-  (eynilə STEP 5/6/7/8-də olduğu kimi).
+  `.sdd/project/tasks.sdd` (26.md-in yaratdığı fayl) tamamilə silindi (git
+  tarixçəsində qalır) — bu fayl (`.sdd/tasks/tasks.sdd`) onun yerini tutdu,
+  demək olar ki eyni Ownership/Storage/TaskLifecycle/Failure/TaskTypes/
+  TaskContract/Rules/Dependency/Review/Verification/Parallel/States
+  məzmunu ilə (bax "apply, don't copy" qaydası — məzmun konseptual olaraq
+  saxlanıldı, yalnız yeri və çərçivəsi (ENGINE vs MODEL ayrımı) dəqiqləşdi).
+
+  Storage konvensiyası ([T2]-[T5]) bu fayldan HƏLƏ DƏ çıxır, çünki bu da
+  "necə işləyir?" sualının bir hissəsidir (task harada saxlanmalıdır) —
+  amma bu fayl özü heç vaxt konkret task data-sı saxlamır, yalnız
+  konvensiyanı tərif edir (bax Storage yuxarıda).
+
+  Mənbədəki konkret task instansiya nümunəsi (`project/payments/tasks/
+  TASK-002.sdd`, Task: PaymentRefund) hərfi köçürülmədi — bu repoda hələ
+  heç bir real domen qovluğu yoxdur (bax project/domains.sdd, STEP 4 —
+  sxem-yalnız), illüstrativ qovluq yaratmaq "skelet + qayda mühərriki,
+  konkret instansiya yox" prinsipini pozardı (eynilə STEP 5/6/7/8/8
+  correction-da olduğu kimi).
