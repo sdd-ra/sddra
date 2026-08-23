@@ -9,11 +9,11 @@ Purpose:
   this file).
 
   This file does not hold concrete project decisions itself (e.g. "should
-  payment use PostgreSQL"). Those are decision INSTANCES, filed under
-  pending/approved/rejected/superseded once raised (see Storage below).
-  This file only defines the rules that govern that lifecycle — the same
-  "engine, not instance data" pattern already used by tasks/tasks.sdd,
-  chains/chains.sdd and skills/skills.sdd.
+  payment use PostgreSQL"). Those are decision INSTANCES, filed under their
+  owning domain's pending/approved/rejected/superseded state once raised
+  (see Storage below). This file only defines the rules that govern that
+  lifecycle — the same ENGINE-vs-MODEL pattern already used by
+  tasks/tasks.sdd (STEP 8 final), chains/chains.sdd and skills/skills.sdd.
 
 
 Owns:
@@ -43,20 +43,26 @@ DoesNotOwn:
 
 
 Storage:
-  (directory convention only — no concrete decision instances exist yet in
-  this replay, see Note below)
+  A decision instance is stored under its owning domain, NOT beside this
+  file (root) — this keeps .sdd portable across projects (see Locality
+  principle, architecture/architecture.sdd -> Principles). This file
+  (DecisionEngine) only DEFINES this convention and the lifecycle/rules a
+  decision instance must follow; it is not the storage itself — the same
+  ENGINE-vs-MODEL split already applied to tasks/tasks.sdd (STEP 8 final,
+  see its Storage section and Note).
 
-  pending:
-    path: ./pending
+  Convention:
+    project/<domain>/decisions/<state>/*.sdd
 
-  approved:
-    path: ./approved
+  Where <state> is one of: pending / approved / rejected / superseded —
+  matching the DecisionLifecycle states below.
 
-  rejected:
-    path: ./rejected
+  For example:
+    project/payments/decisions/pending/DEC-004.sdd
+    project/payments/decisions/approved/DEC-002.sdd
 
-  superseded:
-    path: ./superseded
+  The .sdd/decisions/ directory MUST NOT contain project decision
+  instances.
 
 
 DecisionTypes:
@@ -155,6 +161,15 @@ Rules:
   A new decision MUST supersede an old decision instead of
   silently rewriting its history.
 
+  [D13]
+  Decision lifecycle rules are defined here (.sdd/decisions/decisions.sdd),
+  not inside project decision instances.
+
+  [D14]
+  Project decision instances MUST remain inside their owning project
+  model (project/<domain>/decisions/<state>/*.sdd) — MUST NOT be stored
+  inside .sdd/decisions/.
+
 
 DecisionImpact:
 
@@ -246,10 +261,10 @@ States:
 
 
 State: +
-  (STEP 9 completed — decisions.sdd router (Rules [D1]-[D12]) + four Storage
-  directories (pending/approved/rejected/superseded, each a `.gitkeep`
-  placeholder) created. No concrete decision instances exist yet — see
-  Note below, same restraint as STEP 5/6/7/8.)
+  (STEP 9 final completed — decisions.sdd router (Rules [D1]-[D14]) is
+  ENGINE only, no root-level storage directories. Concrete decision
+  instances will live under project/<domain>/decisions/<state>/*.sdd once a
+  real domain exists — see Note below, same restraint as STEP 5/6/7/8.)
 
 
 Note:
@@ -306,3 +321,37 @@ Note:
   technology decision, business ambiguity, global rule change; see
   `Escalation:` above, which applies `PROJECT.sdd -> HumanDecision` to this
   layer without redefining it).
+
+  (prompt/new/30.md, STEP 9 correction — ROOT PURITY RULE, "Tam sıfırla",
+  user confirmed) The STEP 9 (29.md) version above created four empty
+  Storage subdirectories (`./pending`, `./approved`, `./rejected`,
+  `./superseded`) directly under `.sdd/decisions/`. A fresh read of
+  `tasks/tasks.sdd -> Storage` (STEP 8 final, 27.md) showed this repeats
+  the exact mistake STEP 8 already corrected once for tasks: concrete
+  instance storage does not belong at `.sdd` root, because it ties this
+  otherwise-portable file to one project's data and breaks Locality/
+  NoDuplication (see architecture/architecture.sdd -> Principles). The
+  general rule this instance falls under: `.sdd` root MUST hold only
+  system-level (engine) definitions; anything project-specific — including
+  concrete decision instances — belongs under `project/<domain>/`, never
+  directly under `.sdd` root (ROOT PURITY RULE).
+
+  All four Storage directories (each holding only a `.gitkeep`) were
+  deleted with user confirmation (git history preserves them). `Storage:`
+  above was rewritten from a literal directory listing to an ENGINE-only
+  convention statement — `project/<domain>/decisions/<state>/*.sdd` — same
+  shape as `tasks/tasks.sdd -> Storage`. Two rules were added, mirroring
+  `tasks.sdd`'s `[T19]`/`[T20]`: `[D13]` (lifecycle rules live here, not in
+  project decision instances) and `[D14]` (project decision instances MUST
+  live under their owning domain, MUST NOT be stored inside
+  `.sdd/decisions/`). The `<state>` segment (pending/approved/rejected/
+  superseded) is new relative to `tasks.sdd`'s convention — decisions,
+  unlike tasks, have a meaningful terminal storage split by resolution
+  outcome, so the state lives in the path rather than only in the
+  instance's own `state:` field.
+
+  `DecisionLifecycle`, `DecisionContract`, `Rules` `[D1]`-`[D12]`, `States`
+  and `Escalation` are UNCHANGED — this correction only moves WHERE a
+  decision instance is stored, not how the lifecycle works, matching how
+  STEP 8 final left `TaskLifecycle`/`TaskContract`/`[T1]`-`[T17]` untouched
+  when it corrected task storage.
