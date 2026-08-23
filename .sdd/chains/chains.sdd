@@ -1,74 +1,290 @@
 Chains: SDD
 
 Purpose:
-  Define and route execution chains — the ordered sequence of stages a
-  unit of work moves through. This is NOT the system's structural
-  architecture (bax project/architecture.sdd, architecture/architecture.sdd
-  -> Note): chains answer "bu iş hansı ardıcıllıqla görülməlidir?",
-  architecture isə "sistem necə qurulub?" sualına cavab verir.
+  Define how engineering work moves through dependent engineering stages,
+  from task creation to final verification. This is the WHEN/ORDER layer
+  (see skills/skills.sdd -> Purpose for the full four-layer map:
+  project/architecture/chains/skills).
 
-ChainTypes:
-  feature
-  bugfix
-  change
+  Chains exist because a single requested stage is rarely the whole
+  unit of engineering work. AI MUST NOT treat completing one stage as
+  completing the feature — the chain continues until every required
+  downstream stage, including VR, has passed (see Rules [C19] below).
+  This is the core reason this file exists, not an incidental rule.
+
+
+Owns: ./
+
+Scope:
+  Chain model
+  Stage model
+  Stage dependency rules
+  Chain transition rules
+  Chain validation
+  Failure recovery
+  Parallel execution rules
+
+
+DoesNotOwn:
+  Project-specific flows
+  Project-specific dependencies
+  Project-specific tasks
+  Engineering skill implementations
+  Project architecture
+
+  (see architecture/architecture.sdd -> SeparationOfConcerns — HOW work
+  is implemented belongs to skills/; WHICH flow a real project uses
+  belongs to project/*/flows.sdd, not here. See Templates below for the
+  exact boundary between this engine and a project's own flow.)
+
+
+Principle:
+  A chain represents the execution order of engineering work.
+  A chain MUST be dependency-driven, not hardcoded per chain type.
+  A chain MUST NOT assume every project uses the same engineering stages
+  — see MobileExample below.
+
+
+Stages:
+
+  Engineering discipline stages — each has one responsibility and one
+  dedicated definition file under ./stages/, reusable across every chain
+  type and every project (see NoDuplication):
+
+    DB:  Database         — schema/data changes.                  @./stages/DB.sdd
+    BE:  Backend           — backend implementation.                @./stages/BE.sdd
+    API: API / Contract    — API contract and integration.          @./stages/API.sdd
+    FE:  Frontend          — web frontend implementation.           @./stages/FE.sdd
+    MD:  Mobile            — mobile implementation.                 @./stages/MD.sdd
+    QA:  Quality Assurance — testing and quality validation.        @./stages/QA.sdd
+    DO:  DevOps            — build, deployment, infra validation.   @./stages/DO.sdd
+    VR:  Verification      — final system verification.             @./stages/VR.sdd
+
+  Chain-orchestration stages — analysis/decision points that begin or
+  redirect a chain. These are chain-type-specific, not reusable
+  engineering disciplines, so they are defined inline inside each
+  template under ./templates/, not given a file here:
+
+    AN:     Analysis         — initial scope/requirement analysis.
+    AR:     Architecture     — architecture decisions for new work.
+    IMPACT: Impact Analysis  — determine what a bug or change actually
+                               affects before touching it. Its exact
+                               meaning differs by chain type (bug scope
+                               vs. change invalidation) — see
+                               templates/bugfix.sdd and templates/change.sdd.
+
+
+Important:
+  VR = VERIFY.
+  VR is the final validation stage of a chain.
+  VR MUST NOT be treated as an implementation stage.
+
+
+ChainLifecycle:
+  DISCOVER > PLAN > EXECUTE > REVIEW > VERIFY
+
+  Note:
+    This is the macro lifecycle a chain moves through as a whole — not
+    the same thing as a chain's concrete Sequence (see templates/*.sdd)
+    and not the same thing as a single task's own lifecycle (see
+    tasks/tasks.sdd -> Lifecycle, which is per-task, not per-chain).
+
+
+ExecutionModel:
+  Chain > Resolve stages > Resolve dependencies > Resolve required skills
+  > Execute eligible stage > Validate stage > Continue chain
+
+
+Dependency:
+  requires:    stage cannot execute until the dependency is satisfied
+  blocks:      an unresolved stage prevents a dependent stage from starting
+  optional:    a stage may be skipped once proven unnecessary (never
+               silently — see Rules [C7]/[C9])
+  parallel:    stages may execute concurrently when independent
+  invalidates: a change requires downstream reevaluation (see Rules [C15])
+
+
+DynamicFlow:
+  Prompt > ImpactAnalysis > DetermineAffectedStages > ResolveDependencies
+  > BuildChain > Execute
+
+  Note:
+    This is how a chain is actually assembled for a real prompt — stages
+    are not read off a fixed list, they are derived. See Templates below
+    for where the derivation stops being generic (this file) and starts
+    being project-specific (project/*/flows.sdd).
+
+
+Illustrations:
+
+  MobileExample:
+    If mobile is not affected: BE > API > FE > QA > DO > VR
+    If mobile is affected:     BE > API > FE > MD > QA > DO > VR
+
+  ParallelExample:
+    If DB and BE are independent of each other:
+         DB
+          |
+          +------+
+          |      |
+          v      v
+         BE     API
+          |      |
+          +--+---+
+             |
+             v
+             FE
+
+
+Failure:
+  Stage > FAILED > ImpactAnalysis > ResponsibleStage > RECOVER > ContinueChain
+
+ReviewFailure:
+  Stage > REVIEW > FAILED > ResponsibleStage > RECOVER
+
+VerificationFailure:
+  VR > FAILED > ImpactAnalysis > AffectedStage(s) > RECOVER > QA > DO > VR
+
+
+Completion:
+  A chain is DONE only when:
+    all required stages are completed
+    all required reviews have passed
+    all required dependencies are satisfied
+    VR has passed
+
 
 Rules:
 
-  [C1]
-  Every task MUST belong to a chain.
+  [C1]  Every executable task MUST belong to a chain.
+  [C2]  Every chain MUST define its stages as an ordered Sequence (see
+        templates/*.sdd).
+  [C3]  Every stage MUST have a declared responsibility (see Stages above).
+  [C4]  Stage order MUST be derived from dependencies, not hardcoded
+        identically for every chain type (see Dependency above).
+  [C5]  A stage MUST NOT execute before its required dependencies are
+        satisfied.
+  [C6]  A stage MAY execute in parallel with another stage when their
+        dependencies allow it (see ParallelExample).
+  [C7]  A chain MUST NOT silently skip a required stage.
+  [C8]  Optional stages MUST declare their activation condition (see
+        Dependency -> optional).
+  [C9]  A stage MAY be dynamically added when impact analysis identifies
+        a new requirement, and MAY be removed when proven irrelevant —
+        never silently (see [C7]).
+  [C10] Completing one stage MUST NOT automatically complete the entire
+        chain.
+  [C11] Chain completion requires VR to pass (see Completion above).
+  [C12] A failed stage MUST return to its responsible stage for recovery
+        (see Failure above).
+  [C13] A failed review MUST reopen the responsible stage, not just the
+        review step (see ReviewFailure above).
+  [C14] VR failure MUST trigger impact analysis before recovery (see
+        VerificationFailure above).
+  [C15] A completed stage MUST be reopened when a later change
+        invalidates its output (see Dependency -> invalidates).
+  [C16] Chain definitions MUST NOT contain engineering implementation
+        rules (see architecture/architecture.sdd -> SeparationOfConcerns
+        — HOW belongs to skills/, not here).
+  [C17] Chain stages MAY reference skills.
+  [C18] Chain stages MAY reference project models.
+  [C19] AI MUST preserve chain continuity — completing the originally
+        requested stage MUST NOT be treated as completing the feature
+        when downstream stages remain (see Purpose above; this is the
+        rule that gives this file its reason to exist).
+  [C20] Chain decisions MUST be traceable.
+  [C21] Global (engine-level) chain changes require human approval (see
+        PROJECT.sdd -> HumanDecision); project-specific chain/flow
+        definitions belong to the project model, not here (see
+        DoesNotOwn above).
 
-  [C2]
-  Every chain MUST define an ordered sequence.
 
-  [C3]
-  A stage MUST NOT start before its required predecessor is complete.
+Templates:
+  feature -> ./templates/feature.sdd
+  bugfix  -> ./templates/bugfix.sdd
+  change  -> ./templates/change.sdd
 
-  [C4]
-  A failed stage MUST route to its declared recovery stage.
+  Note:
+    A template is a generic, project-agnostic stage sequence for one
+    chain TYPE (see Rules [C2]). It is still not a real project flow —
+    a real project's actual flow (which stages really apply, and in
+    what real order for THAT project) is owned by that project's own
+    model, e.g. .sdd/project/payments/flows.sdd, not by a template here
+    (see DoesNotOwn). A template answers "how does a feature chain work
+    in general"; a project flow answers "which flow does THIS project
+    actually have" (see Navigation below).
 
-  [C5]
-  A completed stage MUST be reopened when a later change invalidates
-  its output.
 
-  [C6]
-  A chain MUST NOT silently skip a required stage.
+Navigation:
+  Stage definitions: @./stages/
+  Chain templates:   @./templates/
+  Project flows:     @../project/*/flows.sdd
+  Tasks:             @../tasks/
+  Skills:            @../skills/
+  State:             @../state/
 
-  [C7]
-  Optional stages MUST declare their activation condition.
-
-  [C8]
-  Chain definitions MUST NOT contain engineering implementation rules
-  (bax architecture/architecture.sdd -> SeparationOfConcerns: eyni prinsip
-  burada da tətbiq olunur — HOW skills/-ə aiddir, bura yox).
-
-  [C9]
-  Chain stages MAY reference skills (bağlama hələ edilmir, bax Note).
-
-  [C10]
-  Chain stages MAY reference project models.
-
-  [C11]
-  Global chain changes require human approval (bax PROJECT.sdd -> Rules
-  [R9]/[R11] — eyni HumanControl prinsipi, təkrar tərif deyil).
-
-Resolution:
-
-  feature -> ./feature.chain
-  bugfix  -> ./bugfix.chain
-  change  -> ./change.chain
 
 State: +
 
 Note:
-  (prompt/new/22.md, STEP 5 — "Tam sıfırla", istifadəçi təsdiqi ilə) Bu
-  qovluqda əvvəllər mövcud olan `_TEMPLATE.feature.sdd` (hər feature üçün
-  ayrıca fayl instansiasiya edən model, retired `protocol/stages.sdd` və
-  `protocol/rules.sdd`-a istinad edən, BE/FE/MD/QA/DO node-larında
-  discipline-bazlı `.sdd/backend/...` skill yolları olan) silindi (git
-  tarixçəsində qalır). Bu fayl onun yerinə gəlir: konkret task-lar üçün
-  ayrıca fayl yaratmaq əvəzinə, hər task bu 3 ÜMUMİ chain TİPİNDƏN birinə
-  aid olur (C1) — task-ın öz irəliləmə vəziyyəti gələcəkdə `.sdd/tasks/`-da
-  izlənəcək, bu fayllarda deyil (bax NoDuplication).
+  (prompt/new/33.md, STEP 11) Restructured from the flat STEP 5 layout
+  (chains.sdd router + feature.chain/bugfix.chain/change.chain, Rules
+  [C1]-[C11]) into an engine with two subdirectories:
 
-  Skill-lərin chain stage-lərinə bağlanması bilərəkdən indi edilmir (C9) —
-  `.sdd/skills/` qurulanda (növbəti "next") görüləcək iş.
+    ./stages/    — one file per reusable engineering-discipline stage
+                   (BE/API/FE/MD/DB/QA/DO/VR), extracted out of the three
+                   chain files so their responsibility is defined once,
+                   not repeated per chain type (see NoDuplication).
+    ./templates/ — one file per chain type (feature/bugfix/change),
+                   superseding ../feature.chain, ../bugfix.chain and
+                   ../change.chain, which are deleted in this same pass
+                   (preserved in git history, same precedent as STEP 5's
+                   deletion of the old _TEMPLATE.feature.sdd).
+
+  Deliberate departures from the source spec (prompt/new/33.md), applied
+  per the standing "apply, don't copy" rule:
+
+  Header kept as `Chains: SDD`, not switched to the source's proposed
+  `Spec: ChainSystem` — matches the confirmed repo-wide `<Name>: SDD`
+  convention (see state/state.sdd's own Note for the same precedent).
+
+  Source's `Owns:` topic list renamed to `Scope:`, and a real `Owns: ./`
+  path line added — same collision and same fix already applied to
+  decisions.sdd and state.sdd (`Owns:` is reserved for the directory
+  path only).
+
+  Source's separate `StandardStages` and `StageResponsibilities`
+  sections were merged into one `Stages:` section (name + responsibility
+  + file pointer together) to avoid restating the same eight stages
+  twice. AN/AR/IMPACT — present in the existing chain files but absent
+  from the source's eight-stage list — were kept and explicitly
+  classified as "chain-orchestration stages" (chain-type-specific,
+  defined inline in templates/, no dedicated file), rather than dropped;
+  the source did not address them at all.
+
+  Source's `Rules [C1]-[C18]` were merged with this file's own prior
+  `[C1]-[C11]` (renumbered as one consolidated `[C1]-[C21]` list) rather
+  than appended — several source rules restated an existing rule in
+  different words (e.g. source [C5] and prior [C3] both express "no
+  execution before dependencies"); the clearer wording was kept once.
+
+  Source's generic `Example` section was dropped — it would have
+  duplicated templates/feature.sdd's own Sequence (see NoDuplication);
+  `MobileExample`/`ParallelExample` were kept under a new `Illustrations:`
+  heading because they illustrate the Dependency vocabulary itself, not
+  one project's flow.
+
+  Source's `DefaultFeatureFlow` was not embedded here — its content now
+  lives once, in templates/feature.sdd -> Sequence, referenced through
+  the new `Templates:` section instead of duplicated.
+
+  Old `Resolution:` section (pointing at ./*.chain) renamed `Templates:`
+  and repointed at ./templates/*.sdd; its explanatory Note was rewritten
+  to state the ENGINE-vs-MODEL boundary the source itself argued for:
+  "Global SDD deyir 'flow necə işləyir'. Project flow deyir 'bu
+  project-də hansı flow var'" (source, closing section) — i.e. this file
+  defines how a chain works in general; a real project's actual flow is
+  owned by project/*/flows.sdd, which does not exist in this repo yet
+  and is intentionally not created here (see .sdd-only scope — flows.sdd
+  is real per-project content, out of bounds until a concrete project
+  domain exists under .sdd/project/).

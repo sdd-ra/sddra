@@ -214,6 +214,13 @@ Note:
   chain-type model (router + feature/bugfix/change.chain; see
   .sdd/chains/chains.sdd -> Note).
 
+  (prompt/new/33.md, STEP 11) The flat `feature.chain`/`bugfix.chain`/
+  `change.chain` files named just above are themselves now superseded —
+  moved into `chains/templates/feature.sdd`/`bugfix.sdd`/`change.sdd`,
+  with the shared discipline stages factored out into `chains/stages/
+  *.sdd` (see .sdd/chains/chains.sdd -> Note). The `.chain` files were
+  deleted in that pass (preserved in git history).
+
   (prompt/new/23.md, STEP 6) The SKILLS component's `role:` field carried a
   stale "STEP 9" marker left over from an earlier numbering scheme — wrong,
   since `.sdd/skills/` is actually built at this step (prompt/new/23.md),

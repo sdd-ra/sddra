@@ -1,0 +1,46 @@
+Stage: DO
+
+Purpose:
+  DevOps stage. Owns build, deployment and infrastructure validation of
+  the unit of work — build pipeline, environment/config changes,
+  release — everything VR needs already deployed before it can verify
+  the system as a whole.
+
+
+Requires:
+  QA passed (see stages/QA.sdd -> Blocks)
+
+
+Produces:
+  Deployed/released unit of work, in the target environment(s), ready
+  for final verification.
+
+
+Blocks:
+  VR — VR MUST NOT verify a unit of work that has not been deployed
+  where verification happens (see chains.sdd -> Rules [C5]).
+
+
+Optional:
+  MAY be skipped only when the unit of work requires no deployment/infra
+  change at all (never silently — see chains.sdd -> Rules [C7]).
+
+
+Skills:
+  @../../skills/devops/
+
+  (see chains.sdd -> DoesNotOwn — this file defines WHEN/responsibility
+  only; HOW the deployment is actually implemented belongs to
+  skills/devops/, not here.)
+
+
+State: + (vocabulary defined here; skills/devops/ content is not yet
+  written — see skills/skills.sdd -> SkillDomains, state: boş)
+
+
+Note:
+  (prompt/new/33.md, STEP 11) Extracted out of the flat feature.chain /
+  bugfix.chain / change.chain, where the DO responsibility was repeated
+  inline in each file. Defined once here per NoDuplication; referenced
+  from chains.sdd -> Stages and from every template under ./templates/
+  that includes a DO step.

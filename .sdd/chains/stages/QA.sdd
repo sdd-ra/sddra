@@ -1,0 +1,53 @@
+Stage: QA
+
+Purpose:
+  Quality Assurance stage. Owns testing and quality validation of the
+  unit of work as a whole — functional correctness, regressions, edge
+  cases — everything DO needs already validated before it deploys the
+  result anywhere.
+
+
+Requires:
+  BE, API, and whichever of FE/MD are part of this unit of work (see
+  chains.sdd -> MobileExample — QA always follows the full set of
+  implementation stages that actually ran, not a fixed list).
+
+
+Produces:
+  Validated, tested unit of work, ready for deployment.
+
+
+Blocks:
+  DO — DO MUST NOT deploy a unit of work that has not passed QA (see
+  chains.sdd -> Rules [C5]).
+
+
+ReviewFailure:
+  A QA failure reopens the responsible implementation stage, not just
+  QA itself (see chains.sdd -> ReviewFailure, Rules [C13]).
+
+
+Optional:
+  QA is not optional for any unit of work that reaches implementation
+  — see chains.sdd -> Completion, which requires all required reviews
+  to have passed.
+
+
+Skills:
+  @../../skills/qa/
+
+  (see chains.sdd -> DoesNotOwn — this file defines WHEN/responsibility
+  only; HOW testing is actually implemented belongs to skills/qa/, not
+  here.)
+
+
+State: + (vocabulary defined here; skills/qa/ content is not yet
+  written — see skills/skills.sdd -> SkillDomains, state: boş)
+
+
+Note:
+  (prompt/new/33.md, STEP 11) Extracted out of the flat feature.chain /
+  bugfix.chain / change.chain, where the QA responsibility was repeated
+  inline in each file. Defined once here per NoDuplication; referenced
+  from chains.sdd -> Stages and from every template under ./templates/
+  that includes a QA step.

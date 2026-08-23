@@ -33,7 +33,7 @@ Navigation:
     -> map.sdd
     -> Resolution[module|domain|feature]
     -> yalnız resolve edilmiş modeli yüklə
-    -> icra ardıcıllığı üçün chains/*.chain (STEP 8, hələ qurulmayıb)
+    -> icra ardıcıllığı üçün chains/chains.sdd -> templates/*.sdd (STEP 11-də quruldu)
 
 Note:
   (prompt/new/21.md, STEP 4) Əvvəlki versiya "Domains:" bölməsində modul
