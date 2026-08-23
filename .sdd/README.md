@@ -152,6 +152,12 @@ modeli ilə ziddiyyət təşkil etdi — istifadəçidən **"Tam sıfırla"** t�
 - `PROJECT.sdd`-nin `chains:` girişinin `purpose:`/`state:` sətirləri yeniləndi;
   `architecture/architecture.sdd`-nin `CHAINS` komponentinin köhnə "feature-per-chain, STEP 8"
   rolu da düzəldildi (bax architecture/architecture.sdd -> Note).
+- **STEP 12 geri qaytarma (prompt/new/34.md):** yuxarıdakı STEP 11 bölünməsi "gərəksiz
+  abstraksiya" hesab edilərək ləğv edildi — `chains/templates/*.sdd` və `chains/stages/*.sdd`
+  silindi (git tarixçəsində qalır), `chains.sdd` yenidən tək fayla yığcamlaşdırıldı: `Stages:`
+  inline, qlobal chain-tipi dispatch yoxdur, `DefaultFlow` bir arayış ardıcıllığıdır, yeni
+  `ProjectFlow`/`FlowResolution` bölmələri real axını `project/flows.sdd`/
+  `project/<domain>/flows.sdd`-ə həvalə edir (hələ mövcud deyil, bilərəkdən).
 
 ## STEP 6 — `.sdd/skills/` Skill Architecture (prompt/new/23.md)
 
@@ -400,6 +406,10 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `change.chain` `chains/templates/*.sdd`-ə köçürüldü, ortaq stage-lər `chains/stages/*.sdd`-ə
   çıxarıldı (NoDuplication), ingiliscəyə tərcümə edildi; köhnə `.chain` faylları silindi
   (git tarixçəsində qalır).
+- `+` **`chains/` STEP-12 geri qaytarma (prompt/new/34.md):** STEP-11-in `templates/`/`stages/`
+  bölünməsi ləğv edildi (silindi, git tarixçəsində qalır); `chains.sdd` tək fayla
+  qaytarıldı — `Stages:` inline, qlobal chain-tipi dispatch yox, `DefaultFlow` arayış
+  ardıcıllığı, yeni `ProjectFlow`/`FlowResolution` real axını `project/flows.sdd`-ə həvalə edir.
 - `+` **`skills/` STEP-6 additive tikinti (prompt/new/23.md):** `.sdd/skills/` tam boş idi,
   ziddiyyət yox idi — `skills.sdd` router (`SkillDomains` ×8, `Rules: [S1]-[S16]`,
   `SkillContract`, `Execution:`) + 8 boş `SkillDomain` qovluğu yaradıldı. Kök `.gitkeep`

@@ -40,7 +40,7 @@ Directories:
   chains:
     path: ./chains
     purpose: Execution chain-lər və mərhələ keçidləri (chain-tipi modeli — feature/bugfix/change, bax chains/chains.sdd)
-    state: STEP 11 tamamlandı — chains.sdd router + chains/templates/feature|bugfix|change.sdd + chains/stages/DB|BE|API|FE|MD|QA|DO|VR.sdd yazıldı (köhnə flat .chain faylları silindi), skill-bağlama hələ edilmir
+    state: STEP 12 tamamlandı — STEP 11-in chains/templates/*.sdd + chains/stages/*.sdd bölünməsi geri qaytarıldı; chains.sdd yenidən tək fayla yığcamlaşdırıldı (Stages inline, DefaultFlow arayış ardıcıllığı, ProjectFlow/FlowResolution project/flows.sdd-ə yönləndirir), skill-bağlama hələ edilmir
 
   skills:
     path: ./skills
@@ -221,6 +221,16 @@ Note:
   stage-lər `chains/stages/*.sdd`-ə çıxarılıb (NoDuplication), ingilis
   dilinə tərcümə edilib. Köhnə `.chain` faylları həmin pas-da silinib
   (git tarixçəsində qalır) — bax .sdd/chains/chains.sdd -> Note.
+
+  (prompt/new/34.md, STEP 12) Yuxarıdakı STEP 11 bölünməsi ("gərəksiz
+  abstraksiya", istifadəçinin öz sözü ilə) geri qaytarılıb — `chains/
+  templates/*.sdd` və `chains/stages/*.sdd` silinib (git tarixçəsində
+  qalır), `chains.sdd` yenidən tək fayla yığcamlaşdırılıb: `Stages:`
+  inline tərif olunur, qlobal chain-tipi dispatch-i yoxdur, `DefaultFlow`
+  bir arayış ardıcıllığıdır, real layihə axını isə yeni `ProjectFlow`/
+  `FlowResolution` bölmələri vasitəsilə `project/flows.sdd`/
+  `project/<domain>/flows.sdd`-ə həvalə edilir (hələ mövcud deyil,
+  bilərəkdən — bax .sdd/chains/chains.sdd -> Note).
 
   (prompt/new/23.md, STEP 6) `.sdd/skills/` skeleti quruldu: `skills.sdd`
   router (Rules [S1]-[S16]) + 8 boş SkillDomain qovluğu. Chain stage-lərinə

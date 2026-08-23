@@ -218,10 +218,11 @@ Decomposition:
   Subtasks MAY belong to different engineering stages:
     DB, BE, API, FE, MD, QA, DO
 
-  (bu qısaltmalar chains/templates/feature.sdd-in Sequence-i ilə eynidir
-  [STEP 11-də chains/feature.chain-dən köçürüldü, bax chains/chains.sdd
-  -> Note] — Decomposition subtask-ları chain stage-lərinə
-  uyğunlaşdırır, təkrar tərif etmir, bax ExplicitReference principle.)
+  (bu qısaltmalar chains/chains.sdd -> Stages-də tərif olunan
+  discipline stage-lərlə eynidir [STEP 12-də chains/templates/
+  feature.sdd-in yerini tək fayl aldı, bax chains/chains.sdd -> Note] —
+  Decomposition subtask-ları chain stage-lərinə uyğunlaşdırır, təkrar
+  tərif etmir, bax ExplicitReference principle.)
 
 
 Review:
@@ -366,9 +367,10 @@ Note:
     (Purpose/Note) idi).
   - `Decomposition:` əlavə olundu (ParentTask>Subtask>Subtask>Validation,
     subtask-lar DB/BE/API/FE/MD/QA/DO mərhələlərinə aid ola bilər) — bu
-    qısaltmalar chains/templates/feature.sdd-in Sequence-i ilə eynidir
-    (STEP 11-dən əvvəl chains/feature.chain idi), təkrar tərif etmədən
-    ora istinad edir (ExplicitReference).
+    qısaltmalar chains/chains.sdd -> Stages-də tərif olunan stage-lərlə
+    eynidir (STEP 11-də chains/templates/feature.sdd idi, STEP 12-də
+    tək fayla qayıtdı — bax chains/chains.sdd -> Note), təkrar tərif
+    etmədən ora istinad edir (ExplicitReference).
   - `Verification:` `Completion:` adlandırıldı (mənbənin adlandırmasına
     uyğun, "Done when:" checklist-i ilə) — köhnə 5 şərtə "VR passed" əlavə
     edildi, "Kod bitdi, sağ ol" cümləsi saxlanıldı.
