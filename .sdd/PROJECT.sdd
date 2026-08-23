@@ -54,7 +54,12 @@ Directories:
 
   decisions:
     path: ./decisions
-    purpose: İnsan qərarları və təsdiqlənmiş dəyişikliklər
+    purpose: İnsan qərarları və təsdiqlənmiş dəyişikliklər — AI-nin insan
+      qərarı tələb etdiyi nöqtələrin idarə edildiyi qat (bax
+      decisions/decisions.sdd)
+    state: STEP 9 tamamlandı — decisions.sdd router (Rules [D1]-[D12]) + 4
+      boş Storage qovluğu (pending/approved/rejected/superseded) yaradıldı,
+      konkret qərar instansiyaları hələ yoxdur
 
   state:
     path: ./state
@@ -261,3 +266,14 @@ Note:
   əvəzinə). `architecture/architecture.sdd`-nin `TASKS` komponentinin `path:`/`role:`
   sahələri `../tasks/tasks.sdd`-ə uyğunlaşdırıldı (bax onun öz Note-u) — `Relationships`/
   `Allowed`/`Forbidden` qrafı yenə DƏYİŞMƏDİ, yalnız path/role.
+
+  (prompt/new/29.md, STEP 9) `.sdd/decisions/decisions.sdd` yazıldı —
+  `Decisions: SDD` router, Rules `[D1]`-`[D12]`, `DecisionLifecycle`
+  (`CREATED > ANALYZED > PENDING > APPROVED/REJECTED`, `APPROVED >
+  SUPERSEDED`), `DecisionContract`, `Escalation` (bax `HumanDecision`
+  yuxarıda — bu qayda təkrar tərif olunmur, yalnız decision qatına tətbiq
+  edilir), `States` (kanonik 7 işarəni güzgüləyir + `^ = SUPERSEDED`
+  əlavəsi, bax onun öz Note-u). Yuxarıdakı `Directories:` bölməsində
+  `decisions:` girişinə `state:` sahəsi əlavə olundu (əvvəllər yox idi —
+  yeganə bacı giriş bu sahədən məhrum idi). Konkret qərar instansiyası hələ
+  yaradılmadı (STEP 5/6/7/8-in eyni skeleton-only prinsipi).

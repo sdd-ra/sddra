@@ -1,0 +1,308 @@
+Decisions: SDD
+
+Purpose:
+  Define how human decisions are requested, recorded, approved, rejected,
+  superseded and applied inside the SDD system. This is the layer that
+  manages the POINTS where AI needs a human decision — it is not a place
+  where AI records its own decisions (see Note below for the full
+  distinction; this is the single most important thing to understand about
+  this file).
+
+  This file does not hold concrete project decisions itself (e.g. "should
+  payment use PostgreSQL"). Those are decision INSTANCES, filed under
+  pending/approved/rejected/superseded once raised (see Storage below).
+  This file only defines the rules that govern that lifecycle — the same
+  "engine, not instance data" pattern already used by tasks/tasks.sdd,
+  chains/chains.sdd and skills/skills.sdd.
+
+
+Owns:
+  ./
+
+
+Scope:
+  Decision lifecycle
+  Decision structure (contract every decision instance must satisfy)
+  Approval / rejection rules
+  Conflict resolution
+  Decision traceability
+  Decision state (instance-level — see States below)
+
+
+DoesNotOwn:
+  Project-specific architecture (see project/architecture.sdd)
+  Project-specific requirements (see project/)
+  Tasks (see tasks/tasks.sdd)
+  Skills (see skills/skills.sdd)
+  Chains (see chains/chains.sdd)
+
+  (this file records THAT a decision was needed and WHAT was decided — it
+  does not own the domains a decision happens to be ABOUT; see
+  architecture/architecture.sdd -> Forbidden for the SDD-system-level
+  version of this same boundary)
+
+
+Storage:
+  (directory convention only — no concrete decision instances exist yet in
+  this replay, see Note below)
+
+  pending:
+    path: ./pending
+
+  approved:
+    path: ./approved
+
+  rejected:
+    path: ./rejected
+
+  superseded:
+    path: ./superseded
+
+
+DecisionTypes:
+
+  architecture
+  requirement
+  security
+  dependency
+  technology
+  scope
+  process
+  exception
+
+
+DecisionLifecycle:
+
+  CREATED
+    >
+  ANALYZED
+    >
+  PENDING
+    >
+  APPROVED
+
+  CREATED
+    >
+  ANALYZED
+    >
+  PENDING
+    >
+  REJECTED
+
+  APPROVED
+    >
+  SUPERSEDED
+
+
+DecisionContract:
+
+  Every decision instance MUST define:
+
+    id
+    type
+    question
+    reason
+    context
+    alternatives
+    impact
+    affected
+    requested_by
+    state
+    resolution
+
+
+Rules:
+
+  [D1]
+  AI MUST request a decision when an unresolved human choice
+  affects architecture, scope, security or critical behavior.
+
+  [D2]
+  AI MUST NOT silently convert an unresolved conflict into
+  an implementation decision.
+
+  [D3]
+  AI MUST provide the context required for the human to decide.
+
+  [D4]
+  AI SHOULD provide possible alternatives when known.
+
+  [D5]
+  Every approved decision MUST be traceable to the work
+  that caused it.
+
+  [D6]
+  Every rejected decision MUST preserve its history.
+
+  [D7]
+  A superseded decision MUST NOT remain an active rule.
+
+  [D8]
+  A decision MAY affect project model, architecture,
+  chain or task execution.
+
+  [D9]
+  Decision impact MUST be evaluated before implementation.
+
+  [D10]
+  AI MUST NOT modify unrelated project areas because of
+  a decision without impact analysis.
+
+  [D11]
+  Decisions MUST remain immutable after approval.
+
+  [D12]
+  A new decision MUST supersede an old decision instead of
+  silently rewriting its history.
+
+
+DecisionImpact:
+
+  local:
+    affects one project component
+
+  domain:
+    affects one domain
+
+  project:
+    affects the project architecture or behavior
+
+  global:
+    affects the SDD system itself
+
+
+Escalation:
+  (mirrors PROJECT.sdd -> HumanDecision — this section does not redefine
+  that rule, it only names the decision-layer-specific triggers that make
+  [D1] fire)
+
+  AI_CAN_DECIDE:
+    routine work
+    deterministic work
+
+  AI_MUST_ASK:
+    architecture conflict
+    security exception
+    scope change
+    major technology decision
+    business ambiguity
+    global rule change
+
+
+Resolution:
+
+  APPROVED:
+    referenced work MAY continue.
+
+  REJECTED:
+    related work MUST follow the rejection result.
+
+  SUPERSEDED:
+    the previous decision MUST NOT be used as active authority.
+
+
+Traceability:
+
+  Prompt
+    >
+  Analysis
+    >
+  Decision
+    >
+  Task
+    >
+  Chain
+    >
+  Implementation
+    >
+  Verification
+
+
+Navigation:
+  project: @project
+  architecture: @architecture
+  chains: @chains
+  skills: @skills
+  prompts: @prompts
+  tasks: @tasks
+  state: @state
+
+
+States:
+  (mirrors the canonical legend in PROJECT.sdd -> State, reinterpreted for
+  a single decision instance's lifecycle; `^` is the one addition — see
+  Note below for why)
+
+  ? = PENDING     (canonical "decision required" — awaiting a human choice)
+  ~ = ANALYZING   (canonical "active" — context/alternatives being assembled)
+  + = APPROVED    (canonical "completed" — human confirmed, dependent work may continue)
+  - = REJECTED    (canonical "failed" — human declined, history preserved)
+  ! = BLOCKED     (canonical "blocked" — cannot be analyzed yet, e.g. missing context)
+  > = NEXT        (canonical "next" — queued to be raised with the human next)
+  @ = REFERENCE   (canonical "reference" — pointer to a decision recorded elsewhere)
+  ^ = SUPERSEDED  (additive — not part of the canonical 7-glyph legend, added
+                    because no canonical glyph covers "was approved, then
+                    overridden by a newer decision"; see Note)
+
+
+State: +
+  (STEP 9 completed — decisions.sdd router (Rules [D1]-[D12]) + four Storage
+  directories (pending/approved/rejected/superseded, each a `.gitkeep`
+  placeholder) created. No concrete decision instances exist yet — see
+  Note below, same restraint as STEP 5/6/7/8.)
+
+
+Note:
+  (prompt/new/29.md, STEP 9) Header kept as `Decisions: SDD` rather than the
+  source's proposed `Spec: DecisionSystem`, for the same reason
+  `tasks/tasks.sdd` kept `TaskEngine: SDD` over its own source's `Spec:
+  TaskSystem`: the `<Name>: SDD` pattern (`Architecture: SDD`, `Chains:
+  SDD`, `Skills: SDD`, `Prompts: SDD`) is this repo's actual naming
+  convention across sibling root engine files, and "apply, don't copy"
+  means the existing convention wins over a per-chunk proposal.
+
+  `Owns`/`Scope`/`DoesNotOwn` were restructured from the source: the source
+  used `Owns:` for a list of abstract concepts (decision lifecycle,
+  structure, etc.), which collides with how `Owns:` is used elsewhere in
+  this repo (a path, e.g. `tasks/tasks.sdd -> Owns: ./`). That concept list
+  was moved to a new `Scope:` field instead, and `Owns:` now holds the path
+  — the same collision-avoidance move `tasks/tasks.sdd` made when it
+  renamed its own `Scope:` to `TaskScope:` to avoid colliding with the
+  file's top-level `Scope:`.
+
+  The `States:` legend was reworked from the source's proposal. The source
+  reassigned `+`/`-`/`~`/`?` to decision-specific labels and introduced an
+  undocumented `^` glyph while dropping `!`/`>` — but a fresh read of
+  `tasks/tasks.sdd -> States` showed the actual precedent is to MIRROR the
+  canonical 7-glyph legend from `PROJECT.sdd -> State` (same glyphs, same
+  underlying meaning, reinterpreted for the instance type at hand) and only
+  ADD a new glyph when a real gap exists, documenting the addition
+  explicitly — exactly how `tasks.sdd` added `@ = reference` to its own
+  States block and noted in prose that this was "not a new global marker,
+  just locally completed." This file follows the same discipline: `?`/`~`/
+  `+`/`-`/`!`/`>`/`@` all keep their canonical meaning, reinterpreted for a
+  decision instance, and `^ = SUPERSEDED` is added on top as an explicit,
+  justified extension, because none of the canonical 7 glyphs cover "was
+  approved, then overridden by a newer decision."
+
+  As with STEP 5/6/7/8, this step is deliberately skeleton + rules engine
+  only. The source's `DEC-004.sdd` walkthrough (a Frontend-vs-Database
+  architecture question, resolved `? -> +` after human approval of
+  alternative "A: FE -> API -> BE -> DB") was NOT created as a real file
+  under `pending/` — there is no concrete project domain yet to raise a
+  real decision about (`project/` remains schema-only, STEP 4). It is kept
+  here only as an illustration of the shape a decision instance takes once
+  one exists: `Decision: DEC-004`, `Type: architecture`, `Question:`,
+  `Reason:`, `Context: @project/<domain>/architecture.sdd`, `Alternatives:`
+  (A/B/...), `Impact:`, `Affected: @project/<domain>`, `State: ?`,
+  `RequestedBy: @task/<id>` — moving to `State: +` under `approved/` once a
+  human picks an alternative.
+
+  Most important principle (source's closing point, reformulated): this
+  directory is not "AI's own decision folder." It is the layer that manages
+  the points where AI needs a human decision — the mechanism that keeps
+  `AI CAN DECIDE` (routine, deterministic work) separate from `AI MUST ASK`
+  (architecture conflict, security exception, scope change, major
+  technology decision, business ambiguity, global rule change; see
+  `Escalation:` above, which applies `PROJECT.sdd -> HumanDecision` to this
+  layer without redefining it).
