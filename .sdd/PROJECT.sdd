@@ -25,6 +25,11 @@ Directories:
       [PM8]) and flows.sdd (this project's default stage flow, Rules
       [F1]-[F6]) — see project/project.sdd -> Note, project/flows.sdd
       -> Note.
+      STEP 15 (prompt/new/37.md) added project/instantiation.sdd (the
+      prompt -> project-instance pipeline, ProjectScale, skill/
+      architecture-selection filtering, Rules [PI1]-[PI6]) and
+      cross-referenced it from project.sdd (new [PM9]) — see
+      project/instantiation.sdd -> Note.
 
   tasks:
     path: ./tasks
@@ -140,6 +145,13 @@ Rules:
   (best-practice əlavə) Human approval is also required for destructive
   changes and unresolved conflicting requirements, not only architecture
   changes (bax HumanDecision aşağıda — R9-un təbii davamı).
+
+  [R12]
+  The SDD system defines HOW a project is understood; it does NOT define
+  WHAT every project must look like — this file's own directory router
+  and every project-model file it points to (bax Directories -> project)
+  stay reusable SHAPE, never a mandatory checklist a project must fill in
+  full (bax project/instantiation.sdd -> CorePrinciple, STEP 15).
 
 State:
   See state/state.sdd for the full symbol legend, per-symbol meaning and
@@ -422,3 +434,38 @@ Note:
   The `Directories -> project` entry's `state:` field above was
   extended to record this STEP's additions alongside the existing
   STEP 8 final state.
+
+  (prompt/new/37.md, STEP 15) The source labeled this chunk "Yeni STEP
+  13" — a FOURTH consecutive reuse of a step number already claimed by
+  34.md, 35.md and 36.md's own chunks. This repo's own sequential count
+  treats it as STEP 15, matching project/instantiation.sdd -> State.
+
+  The source described a "Project Instantiation" pipeline (RAW PROMPT
+  -> Prompt Analysis -> Skill Discovery -> Architecture Analysis ->
+  Scale Analysis -> Complexity Analysis -> Dependency Analysis ->
+  Project Decision -> Project Instance), a ProjectScale XS-XL
+  classification, skill-applicability narrowing, and an architecture
+  trade-off/human-approval flow, closing on the principle "The SDD
+  system defines how a project is understood; it does not define what
+  every project must look like." This describes a PROCESS, not project
+  SHAPE, so it was placed in a new sibling file, `project/
+  instantiation.sdd` (Rules [PI1]-[PI6]), rather than overwriting or
+  folding into `project/project.sdd` — the same new-sibling-file
+  pattern used at STEP 13 for `architecture/principles.sdd`. See
+  project/instantiation.sdd -> Note for full rationale, rule-ID
+  disambiguation ([PI], confirmed free against [R]/[C]/[T]/[D]/[S]/
+  [AP]/[P]/[PM]/[F]), and the departures taken from the source's raw
+  pipeline diagram and illustrative examples.
+
+  `project/project.sdd` was edited (not overwritten) to cross-reference
+  the new file — Purpose, DoesNotOwn, a new rule [PM9] (forbidding
+  speculative hierarchy population), Portability and NavigationFiles
+  all updated — resolving the tension between project.sdd's fixed-SHAPE
+  framing and this STEP's "PROJECT IS GENERATED, NOT PREDEFINED"
+  principle without weakening either (see project/project.sdd -> Note,
+  "STEP 15 addendum").
+
+  The source's closing principle was added here as [R12] rather than
+  repeated in instantiation.sdd, since PROJECT.sdd is this repo's
+  constitution-level file and [R1]-[R11] already state foundational
+  principles of the same kind.
