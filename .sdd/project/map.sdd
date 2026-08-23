@@ -33,7 +33,9 @@ Navigation:
     -> map.sdd
     -> Resolution[module|domain|feature]
     -> yalnız resolve edilmiş modeli yüklə
-    -> icra ardıcıllığı üçün chains/chains.sdd -> templates/*.sdd (STEP 11-də quruldu)
+    -> icra ardıcıllığı üçün chains/chains.sdd -> Stages/DefaultFlow (STEP 12-də
+       tək fayla yığcamlaşdırıldı; real ardıcıllıq üçün bax chains.sdd ->
+       ProjectFlow -> ../project/flows.sdd)
 
 Note:
   (prompt/new/21.md, STEP 4) Əvvəlki versiya "Domains:" bölməsində modul

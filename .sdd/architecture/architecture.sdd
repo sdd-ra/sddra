@@ -221,6 +221,14 @@ Note:
   *.sdd` (see .sdd/chains/chains.sdd -> Note). The `.chain` files were
   deleted in that pass (preserved in git history).
 
+  (prompt/new/34.md, STEP 12 — REVERTED) STEP 11's `chains/templates/`
+  and `chains/stages/` split above was judged unnecessary abstraction
+  and reverted — both deleted (preserved in git history); `chains.sdd`
+  is a single file again, with `Stages:` inline, no engine-level
+  chain-type dispatch, and new `ProjectFlow`/`FlowResolution` sections
+  deferring the real sequence to `project/flows.sdd` (see
+  .sdd/chains/chains.sdd -> Note).
+
   (prompt/new/23.md, STEP 6) The SKILLS component's `role:` field carried a
   stale "STEP 9" marker left over from an earlier numbering scheme — wrong,
   since `.sdd/skills/` is actually built at this step (prompt/new/23.md),
