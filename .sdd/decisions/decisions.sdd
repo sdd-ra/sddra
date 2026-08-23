@@ -30,6 +30,7 @@ Scope:
 
 
 DoesNotOwn:
+  Project-specific decisions (concrete decision instances — see Storage below)
   Project-specific architecture (see project/architecture.sdd)
   Project-specific requirements (see project/)
   Tasks (see tasks/tasks.sdd)
@@ -37,9 +38,22 @@ DoesNotOwn:
   Chains (see chains/chains.sdd)
 
   (this file records THAT a decision was needed and WHAT was decided — it
-  does not own the domains a decision happens to be ABOUT; see
-  architecture/architecture.sdd -> Forbidden for the SDD-system-level
-  version of this same boundary)
+  does not own the domains a decision happens to be ABOUT, nor the concrete
+  decision instances themselves; tasks/tasks.sdd -> DoesNotOwn lists
+  "Project-specific tasks" for the identical reason — an ENGINE file
+  excludes its own instance type; see architecture/architecture.sdd ->
+  Forbidden for the SDD-system-level version of this same boundary)
+
+
+Ownership:
+  Every decision is identified by the component that owns it:
+    project
+    domain
+    module
+    feature (if applicable)
+
+  [D15] Every decision MUST have a resolvable owner (domain/module) — see
+        Storage below for where an owned decision instance is filed.
 
 
 Storage:
@@ -117,6 +131,22 @@ DecisionContract:
     resolution
 
 
+Source:
+  A decision MUST have a traceable source.
+
+  Source MAY reference:
+    prompt
+    task
+    architecture_change
+    requirement
+    bug
+    another_decision
+
+  [D16] Every decision's source MUST resolve to a real prompts/, tasks/ or
+        architecture/ item (or another of the types above) — an
+        abstract/undefined source is not accepted (see Source above).
+
+
 Rules:
 
   [D1]
@@ -169,6 +199,19 @@ Rules:
   Project decision instances MUST remain inside their owning project
   model (project/<domain>/decisions/<state>/*.sdd) — MUST NOT be stored
   inside .sdd/decisions/.
+
+  [D15]
+  Every decision MUST have a resolvable owner (domain/module) (see
+  Ownership above).
+
+  [D16]
+  Every decision's source MUST resolve to a real prompts/, tasks/ or
+  architecture/ item (see Source above).
+
+  [D17]
+  A decision MUST NOT duplicate knowledge owned by project, architecture,
+  tasks or skills (see NoDuplication principle, architecture/
+  architecture.sdd -> Principles).
 
 
 DecisionImpact:
@@ -230,17 +273,18 @@ Traceability:
     >
   Implementation
     >
-  Verification
+  Review
+    >
+  VR
 
 
 Navigation:
-  project: @project
-  architecture: @architecture
-  chains: @chains
-  skills: @skills
-  prompts: @prompts
-  tasks: @tasks
-  state: @state
+  Decision lifecycle rules: @./decisions.sdd
+  Project decision instances: @../project/*/decisions/
+  Architecture: @../architecture/
+  Project models: @../project/
+  Chains: @../chains/
+  Tasks: @../tasks/
 
 
 States:
@@ -355,3 +399,82 @@ Note:
   decision instance is stored, not how the lifecycle works, matching how
   STEP 8 final left `TaskLifecycle`/`TaskContract`/`[T1]`-`[T17]` untouched
   when it corrected task storage.
+
+  (prompt/new/31.md, STEP 9 enrichment — additive, Full Reset NOT required)
+  The source proposed a broader rewrite of this file. Each part was checked
+  against `tasks/tasks.sdd` — the sibling root-level ENGINE file this file
+  was already built to structurally mirror (STEP 8 final) — and only
+  adopted where that comparison actually supported it:
+
+  - Header (`Decisions: SDD`), the `Owns:`/`Scope:` split, and the flat
+    `DoesNotOwn:` list were KEPT as-is — the source's proposed
+    `Spec: DecisionSystem` header, unsplit `Owns:`, and granularity-split
+    `DoesNotOwn:` would all break from the convention `tasks.sdd` already
+    established and this file already followed (see the 29.md Note above
+    for why that convention won the first time). One genuine gap WAS
+    adopted from `DoesNotOwn:`: a self-referential "Project-specific
+    decisions" line was missing — `tasks.sdd -> DoesNotOwn` already lists
+    "Project-specific tasks" for the identical ENGINE-excludes-its-own-
+    instance-type reason, so the matching line was added here too.
+
+  - A new `Ownership:` section was ADOPTED (renamed from the source's
+    `DecisionOwnership:` to match `tasks.sdd`'s exact field name), carrying
+    a new rule `[D15]` — mirrors `tasks.sdd -> Ownership`/`[T1]` exactly:
+    every instance needs a resolvable domain/module owner.
+
+  - A new `Source:` section was ADOPTED (not present in the source chunk,
+    but a real gap: `tasks.sdd -> Source` requires every task's source to
+    resolve to a real item, and decision instances have the identical
+    traceability need — `DecisionContract` already required a `source`
+    field but nothing constrained what it could point to). New rule
+    `[D16]` mirrors `tasks.sdd`'s `[T2]` shape and is, like `[T2]`, both
+    stated inline here and repeated in `Rules:` with a backref.
+
+  - The source's proposed `[D15]` (a purity rule about decisions not
+    redefining architecture/tasks) was REPLACED with `[D17]`, reworded to
+    reference the existing `NoDuplication` principle
+    (`architecture/architecture.sdd -> Principles`) directly instead of
+    restating it — mirrors `tasks.sdd -> [T18]` exactly, which cites the
+    same principle rather than re-deriving it.
+
+  - `Resolution:`'s proposed new `PENDING` entry was REJECTED — `PENDING`
+    is a lifecycle state (see `DecisionLifecycle`/`States`), not a
+    terminal resolution outcome; adding it here would blur that
+    distinction rather than clarify it.
+
+  - `Traceability:` was FIXED (a real staleness bug, independent of the
+    source's proposal): it ended `...Implementation > Verification`, while
+    `tasks.sdd -> Traceability` — the pattern this chain was built to
+    match — ends `...Implementation > Review > VR`. Now consistent.
+
+  - `Navigation:` was RESTYLED from bare `@component`-name entries to the
+    relative-path form `tasks.sdd -> Navigation` uses, including an
+    explicit "Project decision instances" entry
+    (`@../project/*/decisions/`) — the source proposed this style but its
+    exact entry set was replaced with one derived from this file's own
+    `Relationships`/`Traceability`/`Source` sections (Architecture, Project
+    models, Chains, Tasks), following the same "what does this file
+    actually reference" logic `tasks.sdd -> Navigation` uses rather than
+    copying the source's list verbatim.
+
+  - A new abstract `Portability:` section (proposed by the source) was
+    REJECTED after checking `tasks.sdd -> Portability` directly: that
+    section is about relocating a concrete task INSTANCE between owning
+    domains (preserve history/identity, re-resolve dependencies) — it does
+    not apply to decisions, which never relocate; once approved they are
+    only ever SUPERSEDED ([D7], [D12]), never moved. Adding either the
+    source's abstract-reusability version or a relocation-flavored
+    rewrite would duplicate reasoning this file's own Storage/DoesNotOwn
+    sections and `[D14]` already state.
+
+  - The source's flat, unannotated `States:` legend replacement was
+    REJECTED for the same reason the 29.md version of this section was
+    already rejected once (see above) — the existing legend already
+    mirrors `PROJECT.sdd -> State` correctly and stays.
+
+  `DecisionLifecycle`, `DecisionContract`, `Rules` `[D1]`-`[D14]`,
+  `DecisionImpact`, `Escalation`, `Resolution` and `States` are otherwise
+  UNCHANGED — this pass only enriched structure that was either genuinely
+  missing (Ownership, Source, [D15]-[D17]) or genuinely stale
+  (Traceability, Navigation), following the same "apply, don't copy"
+  discipline used for every prior chunk in this replay.
