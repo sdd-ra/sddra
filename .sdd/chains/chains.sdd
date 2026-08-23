@@ -238,6 +238,13 @@ Rules:
         PROJECT.sdd -> HumanDecision); project-specific chain/flow
         definitions belong to the project model, not here (see
         DoesNotOwn above, ProjectFlow above).
+  [C22] A stage MUST NOT enter a chain without a justification derived
+        from DynamicFlow above (project model, feature requirements,
+        dependencies, affected components, applicable skills, deployment
+        requirements) — DefaultFlow is a reference order, not a template
+        to instantiate wholesale; irrelevant stages MUST NOT be created
+        (reinforces [C4]/[C7]/[C8]/[C9], stated explicitly here because
+        this is the one gap they leave open — see Note).
 
 
 Navigation:
@@ -310,3 +317,17 @@ Note:
   `../project/flows.sdd` now exists (see that file's own Note), so the
   "Neither file exists yet" sentence was corrected to reflect only the
   domain-specific reference as a still-genuine forward reference.
+
+  STEP 16 addendum (prompt/new/38.md): source proposed a `ChainResolution:`
+  section restating that the AI must determine applicable stages from
+  the project model/requirements/dependencies/affected components/skills/
+  deployment needs, ending "Irrelevant stages MUST NOT be created." This
+  file already had that mechanism — `DynamicFlow`, `FlowResolution`, and
+  Rules `[C4]`/`[C7]`/`[C8]`/`[C9]` — so the source section was NOT added
+  as a duplicate; only its one genuinely new sentence ("irrelevant stages
+  MUST NOT be created") was missing as an explicit MUST, added as `[C22]`
+  instead of a new top-level section, per NoDuplication (see
+  ../architecture/architecture.sdd -> Principles). `DefaultFlow` itself
+  was left unchanged — it already carries a Note framing it as
+  illustration only, which is what the source was actually objecting to
+  in spirit, and that Note already says so.
