@@ -56,7 +56,13 @@ Components:
 
   STATE:
     path: ../state
-    role: System state
+    role: State notation ENGINE (universal state symbols, meanings and
+      transition rules — Symbols/ExtendedStates/Meaning/Flows/Rules
+      [S1]-[S16], STEP 10). Root-level, same portability reasoning as TASKS
+      and DECISIONS above — this defines .sdd's own state vocabulary, not
+      project knowledge. Stores no per-object state value: each object
+      keeps its own state inline in its own `State:` field (see
+      ../state/state.sdd -> Storage)
 
 
 Relationships:
@@ -312,3 +318,16 @@ Note:
   equivalent sections already present in `tasks/tasks.sdd` (see
   ../decisions/decisions.sdd -> Note for the full reasoning and what was
   rejected from the source chunk).
+
+  (prompt/new/32.md, STEP 10 — additive, Full Reset NOT required) STATE's
+  `path:` (already `../state`) and its entries in Relationships/Allowed/
+  Forbidden were already declared before this step and did NOT change —
+  only `role:` was expanded from the placeholder "System state" to
+  describe it as the state-notation ENGINE (mirroring the TASKS/DECISIONS
+  `role:` style: what it defines, why it stays root-level, and what it
+  explicitly does not store). The internal structure of `state/state.sdd`
+  itself was built out (Symbols, ExtendedStates, Meaning, six Flows, Rules
+  [S1]-[S16], Failure/Recovery/Verification/Escalation; see
+  ../state/state.sdd -> Note). No concrete state storage directories were
+  created — state values live inline in each object's own `State:` field,
+  consistent with the ROOT PURITY RULE established at STEP 9 (30.md).

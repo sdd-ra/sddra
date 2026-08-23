@@ -272,7 +272,8 @@ Portability:
 
 
 States:
-  (StateMarker, bax PROJECT.sdd -> State)
+  (StateMarker, bax state/state.sdd — kanonik simvol/keçid mühərriki bu
+  fayldadır, PROJECT.sdd -> State artıq yalnız ona göstərici saxlayır)
   + = done      (VERIFIED / DONE)
   ~ = active    (ACTIVE)
   - = failed    (FAILED, bax FailureFlow/ReviewFailure/VerificationFailure)
@@ -408,3 +409,11 @@ Note:
   sualının bir hissəsidir (task harada saxlanmalıdır) — amma bu fayl özü
   heç vaxt konkret task data-sı saxlamır, yalnız konvensiyanı tərif edir
   (bax Storage yuxarıda).
+
+  (prompt/new/32.md, STEP 10) `.sdd/state/state.sdd` was written as the
+  system's canonical state-notation engine (Symbols/ExtendedStates/
+  Meaning/Flows/Rules [S1]-[S16]). This file's own `States` block above
+  was repointed from `PROJECT.sdd -> State` to `state/state.sdd` —
+  same glyphs, same meanings, just a corrected pointer target now that
+  the canonical legend has its own dedicated file instead of living
+  inline in PROJECT.sdd. No glyph meaning changed here.
