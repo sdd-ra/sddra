@@ -16,7 +16,7 @@ reading the whole history first.
 
 ## ReplayProgress
 
-Source material: `prompt/new/1.md` – `prompt/new/103.md` (103 files, see
+Source material: `prompt/new/1.md` – `prompt/new/114.md` (114 files, see
 `run.md` for how they were produced from `chat_history.md`).
 
 Gated rule: read and act on exactly one `prompt/new/{N}.md` per explicit
@@ -39,10 +39,11 @@ rationale; this table is just the resume pointer.
 | 12   | 34.md                | Collapsed chain engine back to single-file model            | 8081c4b |
 | 13   | 35.md                | Added global architecture principles engine                 | 5418e43 |
 | 14   | 36.md                | Added Feature/Component model + `project/flows.sdd`         | 3645898 |
+| 15   | 37.md                | Added `project/instantiation.sdd` (project decision pipeline) | (pending) |
 
-**Resume pointer: next file to read is `prompt/new/37.md`, gated on the
-next explicit "next" trigger.** Files 1–36 are fully read and actioned;
-37–103 are untouched and must stay untracked/unread until triggered.
+**Resume pointer: next file to read is `prompt/new/38.md`, gated on the
+next explicit "next" trigger.** Files 1–37 are fully read and actioned;
+38–114 are untouched and must stay untracked/unread until triggered.
 
 
 ## TranslationBacklog

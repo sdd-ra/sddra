@@ -1,0 +1,200 @@
+Spec: Project/Instantiation
+
+Purpose:
+  Define HOW a concrete project instance (the actual domains, modules,
+  features, components, scale, and architecture this repo's project
+  model ends up holding) gets produced from a raw customer prompt — the
+  PROCESS, not the resulting content. This file does not hold this
+  project's own domains/modules/features (bax ./domains.sdd,
+  ./modules.sdd, ./project.sdd) — it holds the reasoning pipeline that
+  decides what gets created there, and how much of it is needed.
+
+  CorePrinciple:
+
+    PROJECT IS GENERATED, NOT PREDEFINED.
+
+  Neither this file's own instantiation pipeline nor ./project.sdd's
+  five/six-file NavigationFiles set is a mandatory checklist every
+  project must fill in full — they describe what CAN exist and how it
+  gets decided, not what MUST exist. A trivial project may justify only
+  one or two domain/module entries; a large one may justify all of them
+  plus feature/component depth. The file layout in ./project.sdd stays
+  fixed as a SHAPE (bax ./project.sdd -> Portability); how much of that
+  shape gets populated, and with what architecture, is what this file's
+  pipeline decides per project.
+
+
+Owns:
+  The instantiation pipeline (prompt -> project instance)
+  ProjectScale classification and its role in gating architecture choice
+  Skill-applicability narrowing (Relevant -> Applicable -> Required)
+  Architecture-selection trade-off flow and its human-approval gate
+
+
+DoesNotOwn:
+  Project hierarchy shape (Project>Domain>Module>Feature>Component)
+                                                (see ./project.sdd)
+  Prompt intake/analysis mechanics                (see ../prompts/prompts.sdd)
+  Skill catalog content                           (see ../skills/skills.sdd)
+  Global engineering-architecture principles       (see ../architecture/principles.sdd)
+  This project's own resolved architecture         (see ./architecture.sdd)
+  Concrete domain/module list                      (see ./domains.sdd, ./modules.sdd)
+  Human-decision gate mechanics                    (see ../PROJECT.sdd -> HumanDecision)
+
+
+Pipeline:
+
+  RAW PROMPT
+    -> Prompt Analysis         (bax ../prompts/prompts.sdd -> Lifecycle)
+    -> Skill Discovery         (bax SkillFiltering below)
+    -> Architecture Analysis   (bax ArchitectureSelection below)
+    -> Scale Analysis          (bax ProjectScale below)
+    -> Complexity Analysis
+    -> Dependency Analysis     (bax ./dependencies.sdd)
+    -> Project Decision        (human approval, bax [PI4])
+    -> Project Instance        (./domains.sdd, ./modules.sdd, ./project.sdd
+                                 Feature/Component entries, ./architecture.sdd,
+                                 ./flows.sdd get populated)
+
+  Each stage narrows what the next stage needs to consider — later
+  stages MUST NOT re-derive conclusions already settled by an earlier
+  stage (bax NoDuplication, architecture/architecture.sdd -> Principles).
+
+
+ProjectScale:
+
+  Illustrative classification only — the actual scale for any given
+  project is an OUTPUT of Complexity/Dependency analysis, never an input
+  assumed in advance:
+
+    XS   trivial / single-purpose application
+    S    light modular application
+    M    modular monolith
+    L    strong modular architecture, partial independent scaling
+    XL   distributed / service-oriented architecture
+
+  Scale drives how much of ./project.sdd's hierarchy gets populated and
+  which architecture patterns are even eligible for consideration — it
+  is not a target to reach.
+
+
+SkillFiltering:
+
+  Project -> Relevant Skills -> Applicable Skills -> Required Skills
+    -> Architecture
+
+  (YAGNI + Context Awareness — bax ../skills/skills.sdd. Applying the
+  full skill catalog to a project regardless of its scale violates this
+  file's CorePrinciple just as much as prescribing a fixed file layout
+  would.)
+
+
+ArchitectureSelection:
+
+  Customer Input -> Requirements -> Complexity -> Expected Growth
+    -> Team/Operational Constraints -> Architecture Candidates
+    -> Trade-off Analysis -> Recommended Architecture -> Human Approval
+
+  (bax ../PROJECT.sdd -> HumanDecision, [R9]/[R11] — architecture choice
+  is exactly the class of change that MUST NOT be silently decided by
+  AI.)
+
+
+Rules:
+
+  [PI1]
+  AI MUST classify ProjectScale (bax ProjectScale above) from
+  Complexity/Dependency analysis before proposing any architecture
+  pattern — scale is a conclusion, not an assumption.
+
+  [PI2]
+  AI MUST NOT apply a pattern (DDD, microservices, event sourcing,
+  CQRS, hexagonal, ...) solely because AI is familiar with it — every
+  pattern proposal MUST trace back to this file's Scale/Complexity/
+  Dependency analysis and cite what requirement drove it.
+
+  [PI3]
+  Files and entries under ./project.sdd's hierarchy (domains.sdd,
+  modules.sdd, and this file's own Feature/Component instances) MUST
+  only be populated once analysis justifies them — creating them
+  speculatively "in case they're needed later" violates CorePrinciple.
+
+  [PI4]
+  A recommended architecture MUST pass through ArchitectureSelection's
+  Trade-off Analysis and MUST receive human approval before it becomes
+  this project's resolved architecture (bax ./architecture.sdd ->
+  ViolationVsDecision, ../PROJECT.sdd -> HumanDecision).
+
+  [PI5]
+  Skill selection MUST follow SkillFiltering's Relevant -> Applicable
+  -> Required narrowing — skipping straight to the full catalog is
+  itself a Scale-Awareness violation, not a shortcut.
+
+  [PI6]
+  This file MUST NOT redeclare the project hierarchy shape already
+  owned by ./project.sdd — it owns the PROCESS that decides how much of
+  that shape gets used, not the shape itself.
+
+
+Navigation:
+  Project hierarchy shape:        @./project.sdd
+  Prompt intake:                  @../prompts/prompts.sdd
+  Skill catalog:                  @../skills/skills.sdd
+  Global architecture principles: @../architecture/principles.sdd
+  This project's resolved arch.:  @./architecture.sdd
+  Dependency graph:                @./dependencies.sdd
+  Human decision gate:            @../PROJECT.sdd -> HumanDecision
+
+
+State: STEP 15
+
+Note:
+  (prompt/new/37.md — source labeled this "Yeni STEP 13", a FOURTH
+  reuse of a step number already claimed by prompt/new/34.md, 35.md and
+  36.md's own chunks — bax ../PROJECT.sdd -> Note, ./project.sdd ->
+  Note, ./flows.sdd -> Note for the first three instances of this same
+  mislabeling pattern. This repo's own sequential count treats it as
+  STEP 15.
+
+  Naming/placement decision: the source's "Project Instantiation"
+  content describes a PROCESS (prompt -> project instance), not project
+  SHAPE — it does not belong inside ./project.sdd, which explicitly
+  owns shape only (bax ./project.sdd -> Purpose, Portability) and whose
+  NavigationFiles set is a different concern (WHERE things live, not
+  HOW they get decided). Rather than overwriting ./project.sdd or
+  folding this into it, this content was placed in a new sibling file —
+  the same pattern used at STEP 13 when architecture/principles.sdd was
+  added alongside architecture/architecture.sdd instead of overwriting
+  it (bax architecture/architecture.sdd -> Note).
+
+  Rule IDs: the source used a bare, unstructured description with no
+  rule-ID scheme. Assigned a new prefix, `[PI]` ("Project
+  Instantiation"), confirmed free against every other prefix in this
+  repo ([R] PROJECT, [C] chains, [T] tasks, [D] decisions, [S] state,
+  [AP] architecture principles, [P] prompts, [PM] project model,
+  [F] flows) — same disambiguation pattern used when [PM] was chosen
+  over a colliding bare [P] at STEP 14.
+
+  Deliberate departures from the source, per the standing "apply, don't
+  copy" rule: the source's full pipeline diagram (CUSTOMER -> RAW
+  PROMPT -> ... -> QA -> DO -> VR) was not reproduced verbatim — its
+  tail end (REQUIREMENTS -> FLOWS -> TASKS -> CHAINS -> BE>API>FE>MD ->
+  QA -> DO -> VR) already restates chains.sdd's DefaultFlow and
+  flows.sdd's Default sequence (bax NoDuplication), so only the novel
+  front half (RAW PROMPT -> ... -> PROJECT INSTANCE) was kept as this
+  file's Pipeline; the source's illustrative ProjectScale examples
+  (a todo app vs. a multi-tenant SaaS platform) were generalized into
+  the abstract XS-XL definitions above rather than copied as concrete
+  scenarios, since concrete instances belong to a real project prompt,
+  not to this schema file (bax [PI3] — this file itself must not
+  speculatively invent project examples); explicit Owns/DoesNotOwn
+  added (absent from the source), matching this repo's established
+  per-file convention (bax architecture/principles.sdd -> DoesNotOwn).
+
+  This file's closing principle from the source — "The SDD system
+  defines how a project is understood; it does not define what every
+  project must look like." — was placed at ../PROJECT.sdd -> Rules as
+  [R12] rather than repeated here, since PROJECT.sdd is this repo's
+  constitution-level file and [R1]-[R11] already state foundational
+  principles of exactly this kind (bax ../PROJECT.sdd -> Note, STEP 15
+  entry).)

@@ -432,12 +432,52 @@ NoDuplication/SingleSourceOfTruth-u boş yerə pozardı, ona görə toxunulmadı
   heç bir real domen qovluğu yoxdur (STEP 4-dən bəri sxem-yalnız), bu, yalnız
   sxem qatını genişləndirən bir addımdır.
 
+## STEP 15 — `.sdd/project/instantiation.sdd` (prompt/new/37.md)
+
+Mənbə chunk 37 özünü "Yeni STEP 13" adlandırdı — 34.md, 35.md və 36.md-nin öz
+chunk-ından sonra artıq **dördüncü ardıcıl** nömrə toqquşması. Bu repo-nun öz
+ardıcıl sayğacı bunu STEP 15 kimi qəbul edir (bax `PROJECT.sdd -> Note`). Mənbə
+"Project Instantiation" adlı bir pipeline təsvir etdi: RAW PROMPT -> Prompt
+Analysis -> Skill Discovery -> Architecture Analysis -> Scale Analysis ->
+Complexity Analysis -> Dependency Analysis -> Project Decision -> Project
+Instance, üstəlik bir `ProjectScale` (XS/S/M/L/XL) təsnifatı, skill-filtrasiya
+axını (Relevant -> Applicable -> Required) və insan-təsdiqli architecture
+seçim axını, "The SDD system defines how a project is understood; it does not
+define what every project must look like" prinsipi ilə bağlanaraq:
+
+- **Yeni yaradıldı:** `project/instantiation.sdd` — bu, SHAPE deyil, PROCESS-
+  dir (`project/project.sdd` artıq hierarchy SHAPE-ni sahiblənir), ona görə
+  `project.sdd`-nin üzərinə yazılmadı, bacı fayl kimi əlavə olundu (STEP 13-də
+  `architecture/principles.sdd`-in `architecture/architecture.sdd`-ə bacı fayl
+  kimi əlavə olunması ilə eyni naxış). `Purpose` (`CorePrinciple: PROJECT IS
+  GENERATED, NOT PREDEFINED`), `Owns`, `DoesNotOwn`, `Pipeline` (mənbənin quyruq
+  hissəsi — REQUIREMENTS-dən sonrakı BE/API/FE/MD/QA/DO/VR axını —
+  `chains.sdd`/`flows.sdd`-in artıq sahiblədiyi məzmunu təkrarladığı üçün
+  saxlanılmadı, yalnız RAW PROMPT -> PROJECT INSTANCE hissəsi qaldı),
+  `ProjectScale` (XS-XL, mücərrəd tərif kimi — mənbənin konkret todo-app/SaaS
+  nümunələri ümumiləşdirildi), `SkillFiltering`, `ArchitectureSelection`,
+  `Rules: [PI1]-[PI6]` (yeni `[PI]` prefiksi — bütün mövcud prefikslərə qarşı
+  toqquşmasız təsdiqləndi) yaradıldı.
+- **Ripple-edit:** `project/project.sdd` yeniləndi (üzərinə yazılmadı) —
+  `Purpose`, `DoesNotOwn`, yeni `[PM9]` qaydası (spekulyativ hierarchy
+  doldurmağı qadağan edir), `Portability`, `NavigationFiles` yeni faylı
+  cross-reference edir (bax `project/project.sdd -> Note`, "STEP 15 addendum").
+- **Ripple-edit:** `PROJECT.sdd`-yə mənbənin bağlanış prinsipi yeni `[R12]`
+  qaydası kimi əlavə olundu (instantiation.sdd deyil, PROJECT.sdd özü — bu,
+  repo-nun constitution-səviyyəli faylıdır və `[R1]-[R11]` artıq eyni tipli
+  fundamental prinsipləri saxlayır); `Directories -> project -> state:` sahəsi
+  genişləndirildi, yeni STEP 15 Note bəndi əlavə olundu (bax `PROJECT.sdd ->
+  Note`).
+- Konkret domen/module/feature instansiyaları bilərəkdən indi yaradılmadı —
+  bu, yalnız "necə qərar veriləcək?" pipeline-ını əlavə edən bir addımdır,
+  "nə qərar verildi?" sualının cavabı deyil.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
 .sdd/
 ├── PROJECT.sdd     — .sdd sisteminin ana entry point-i
-├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE; project.sdd — Feature/Component qatları, flows.sdd — bu layihənin default stage axını, STEP 14)
+├── project/        — real project-in .sdd modelini saxlayır (WHAT/WHY/WHERE; project.sdd — Feature/Component qatları (STEP 14), flows.sdd — bu layihənin default stage axını (STEP 14), instantiation.sdd — prompt-dan project instansiyasına gedən qərar pipeline-ı (STEP 15))
 ├── architecture/   — architecture.sdd (.sdd-in öz meta komponent qrafı, STEP 3) + principles.sdd (qlobal engineering-arxitektura prinsipləri, STEP 13)
 ├── chains/         — işlərin mərhələ-mərhələ keçidlərini saxlayır (chain-tipi modeli — feature/bugfix/change)
 ├── skills/         — AI-nin işi necə görəcəyini müəyyən edən skill-lər (skills.sdd router + 8 boş domain, STEP 6)
@@ -452,7 +492,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/36.md-ə qədər)
+## Status (prompt/new/37.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -552,6 +592,13 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   referans hələ də həqiqi forward-reference olaraq qalır. Ətraflı bax hər üç
   faylın öz Note bölməsinə və yuxarıdakı "STEP 14" bölməsinə.
 - `+` `decisions/README.md` — toxunulmadı.
+- `+` **`project/instantiation.sdd` STEP-15 yaradılma (prompt/new/37.md):** prompt-dan
+  project instansiyasına gedən qərar pipeline-ı (`CorePrinciple: PROJECT IS GENERATED,
+  NOT PREDEFINED`), `ProjectScale` (XS-XL), `SkillFiltering`, `ArchitectureSelection`,
+  `Rules: [PI1]-[PI6]` yeni fayl olaraq yaradıldı. `project/project.sdd` (yeni `[PM9]`)
+  və `PROJECT.sdd` (yeni `[R12]`) ripple-edit ilə yeniləndi. Heç bir mövcud fayl
+  silinmədi/üzərinə yazılmadı. Ətraflı bax `project/instantiation.sdd -> Note` və
+  yuxarıdakı "STEP 15" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

@@ -8,6 +8,12 @@ Purpose:
   which modules) live in their own sibling files, not here (see
   DoesNotOwn, NavigationFiles).
 
+  This SHAPE is fixed and reusable (bax Portability), but populating it
+  is not mandatory in full for every project — HOW MUCH of it gets
+  populated, with what architecture, is decided by the instantiation
+  pipeline, not assumed here (bax ./instantiation.sdd -> CorePrinciple,
+  "PROJECT IS GENERATED, NOT PREDEFINED").
+
 
 Owns:
   Project structure (Project > Domain > Module > Feature > Component)
@@ -25,6 +31,7 @@ DoesNotOwn:
   Category-level index declarations         (see ./indexes.sdd)
   This project's concrete architecture      (see ./architecture.sdd)
   This project's execution flow             (see ./flows.sdd)
+  How a project instance gets decided       (see ./instantiation.sdd)
   Global SDD engine rules (chains/tasks/decisions/state/skills/prompts)
 
   (This file sits one level above domains.sdd/modules.sdd: those two
@@ -155,6 +162,11 @@ Rules:
   NoDuplication violations, bax architecture/architecture.sdd ->
   Principles).
 
+  [PM9]
+  Populating this hierarchy's layers (domain/module/feature/component
+  entries) beyond what current analysis justifies is FORBIDDEN — bax
+  ./instantiation.sdd -> [PI3], CorePrinciple.
+
 
 CodeMapping:
 
@@ -176,7 +188,9 @@ Portability:
   This file MUST remain reusable across projects unchanged — it defines
   the SHAPE of the hierarchy, not this project's concrete domains.
   Concrete instances belong to domains.sdd/modules.sdd and future
-  project/<domain>/ content, not here.
+  project/<domain>/ content, not here. How much of this SHAPE a given
+  project ends up populating is likewise reusable logic, owned by
+  ./instantiation.sdd, not by this file.
 
 
 ResolutionOrder:
@@ -193,9 +207,12 @@ NavigationFiles:
   indexes.sdd:         Category-level fast navigation index
   domains.sdd:         Domain schema and concrete domain list
   modules.sdd:         Module schema and concrete module list
+  instantiation.sdd:   How a project instance gets decided (STEP 15)
 
 
 State: STEP 4 (domains/modules) + STEP 14 (this file, Feature/Component)
+  + STEP 15 (Purpose/DoesNotOwn/[PM9]/Portability/NavigationFiles
+  cross-references to instantiation.sdd)
 
 Note:
   (prompt/new/36.md — source labeled this "STEP 13", a THIRD consecutive
@@ -235,3 +252,14 @@ Note:
   section (absent from the source) to make the boundary against the
   five sibling files explicit, matching this repo's established
   per-file convention (bax architecture/principles.sdd -> DoesNotOwn).
+
+  STEP 15 addendum (prompt/new/37.md): this file's fixed-hierarchy
+  framing was in tension with 37.md's "PROJECT IS GENERATED, NOT
+  PREDEFINED" principle — resolved by cross-referencing the new
+  ./instantiation.sdd (Purpose, DoesNotOwn, new [PM9], Portability,
+  NavigationFiles all updated) rather than editing ProjectStructure or
+  weakening Portability's "reusable across projects unchanged" claim:
+  the SHAPE stays fixed, only HOW MUCH of it gets populated is now
+  explicitly owned elsewhere. Bax ./instantiation.sdd -> Note for the
+  full STEP 15 rationale, including the source's fourth consecutive
+  "STEP 13" mislabel.
