@@ -4,7 +4,7 @@ Bu qovluq `chat_history.md`-nin (`prompt/new/1.md … 89.md`) ardıcıl replay-i
 **hər "next" komandasından sonra** tikilir və yenidən dəqiqləşdirilir. Model tamamlanmış
 deyil — canlı, artan bir sənəddir.
 
-- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/27.md`-ə qədər oxunub (93 fayldan).
+- **Mənbə:** `prompt/new/1.md` → hazırda `prompt/new/28.md`-ə qədər oxunub (93 fayldan).
 - **Referans (toxunulmaz, kopyalanmır):** `old/.sdd/`, `old/sdd-system/.sdd/` — daha əvvəlki,
   yekunlaşmış bir versiyanın nümunəsidir. Bu qovluq həmin nümunəni kor-koranə köçürmür;
   öz məntiqini yalnız oxunmuş chunk-lardan çıxarır və hər "next"-də korreksiya edilir.
@@ -306,6 +306,49 @@ davranışıdır — layihə bilgisi deyil. Bu, əslində root-da qalanda daha *
 - Konkret task instansiyaları yenə bilərəkdən yaradılmadı — heç bir real domen qovluğu
   yoxdur (STEP 4 yalnız sxem-yalnız).
 
+## STEP 8 refinement — `.sdd/tasks/tasks.sdd` daxili zənginləşdirmə (prompt/new/28.md)
+
+Yuxarıdakı STEP 8 final (27.md) ilə qurulmuş `tasks/tasks.sdd` faylının YERİ və
+ROLU (root-level TASK ENGINE, `project/<domain>/tasks/*.sdd` PROJECT MODEL-dən
+ayrı) dəyişmədi — bu addım yalnız həmin faylın öz DAXİLİ strukturunu
+zənginləşdirdi, əlavə/additive xarakterli idi, buna görə "Tam sıfırla" tələb
+olunmadı (bax .sdd/architecture/architecture.sdd -> Note).
+
+Əlavə olunanlar:
+- Fayl başlığının altına açıq `Owns:`/`Scope:`/`DoesNotOwn:` blokları — TASKS
+  komponentinin nəyə sahib olduğu və olmadığı indi bir baxışda görünür.
+- Yeni `TaskCreation:` axını — task necə yaranır (mənbə: chain stage, decision,
+  və ya manual).
+- `TaskContract` zənginləşdi: `title`, `scope` sahələri əlavə olundu; yeni
+  `Source:` bloku (task-ın haradan yarandığını izləyir) və task-səviyyəli
+  `TaskScope:` bloku (sistem-səviyyəli `Scope:` ilə adı toqquşmasın deyə
+  fərqli adlandırıldı).
+- `Lifecycle` bir neçə fokuslu bloka bölündü: `BlockedFlow`, `FailureFlow`,
+  `ReviewFailure`, `VerificationFailure` — hər biri öz uğursuzluq/bərpa
+  ssenarisini ayrıca izah edir (əvvəlki tək-blok Lifecycle əvəzinə).
+- Qaydalar yenidən nömrələndi: `Rules [T1]-[T20]` (əvvəlki [T1]-[T17]-dən
+  böyüdü). Köhnə relocation qaydaları yeni `Portability:` blokuna köçürüldü;
+  yeni `[T19]`/`[T20]` ENGINE-vs-MODEL ayrılığını formal qaydaya çevirir.
+- Yeni `Decomposition:` bloku (böyük task-ların alt-task-lara necə
+  bölünəcəyi).
+- `Verification:` bloku `Completion:` adlandırıldı (daha dəqiq ad).
+- Yeni `Portability:` bloku (köhnə relocation qaydalarının yeni evi).
+- `@ = reference` işarəsi PROJECT.sdd-nin kanonik `State:` legend-i ilə
+  sinxronlaşdırıldı.
+- Yeni `Traceability:` bloku (hər task-ın layihə elementi/chain
+  stage/decision-a necə izlənildiyi — bax architecture.sdd -> Principles ->
+  `Traceability`).
+- Yeni `Navigation:` bloku (fayl daxilində sürətli keçid).
+
+Dəyişməyənlər: fayl başlığı `TaskEngine: SDD` olaraq saxlanıldı (28.md-nin
+təklif etdiyi `Spec: TaskSystem` əvəzinə) — `.sdd`-in digər bacı fayllarının
+(`architecture.sdd`, `chains.sdd`, `skills.sdd`, `prompts.sdd`) hamısında
+`<Ad>: SDD` konvensiyası işlədilir, bu konvensiyaya uyğunluq üstün tutuldu.
+`PROJECT.sdd` (`Directories: tasks: state:`) və
+`architecture/architecture.sdd` (bu Note-un sonuncu bəndi) uyğun olaraq
+referans yeniləndi; `path:`/`role:` və Relationships/Allowed/Forbidden qrafı
+DƏYİŞMƏDİ.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -326,7 +369,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/27.md-ə qədər)
+## Status (prompt/new/28.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -390,6 +433,18 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `architecture/architecture.sdd` (`TASKS` komponentinin `path:`/`role:`) uyğun olaraq
   yeniləndi (bax hər ikisinin öz Note-u); `Relationships`/`Allowed`/`Forbidden` qrafı yenə
   DƏYİŞMƏDİ. Konkret task instansiyaları yenə bilərəkdən yaradılmadı.
+- `+` **`tasks/tasks.sdd` STEP-8 refinement (prompt/new/28.md):** yuxarıdakı STEP-8
+  final faylı əlavə/additive şəkildə zənginləşdirildi ("Tam sıfırla" tələb olunmadı)
+  — yeni `Owns`/`Scope`/`DoesNotOwn` top-level blokları, `TaskCreation` axını, daha
+  zəngin `TaskContract` (title/scope), `Source`, task-səviyyəli `TaskScope`,
+  `Lifecycle`-ın `BlockedFlow`/`FailureFlow`/`ReviewFailure`/`VerificationFailure`-a
+  bölünməsi, yenidən nömrələnmiş `Rules [T1]-[T20]` (köhnə relocation qaydaları yeni
+  `Portability` blokuna keçdi, yeni `[T19]`/`[T20]` ENGINE-vs-MODEL ayrılığını
+  formallaşdırır), yeni `Decomposition`, `Verification` → `Completion` adı, yeni
+  `Traceability` və `Navigation` blokları. Fayl başlığı `TaskEngine: SDD` olaraq
+  saxlanıldı (bacı fayllarla konvensiyaya uyğun). `path:`/`role:` və
+  Relationships/Allowed/Forbidden qrafı DƏYİŞMƏDİ (bax .sdd/architecture/architecture.sdd
+  -> Note); `PROJECT.sdd` uyğun referans ilə yeniləndi.
 - `+` `decisions/README.md` — toxunulmadı.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 

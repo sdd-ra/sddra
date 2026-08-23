@@ -1,21 +1,50 @@
 TaskEngine: SDD
 
 Purpose:
-  .sdd sisteminin task engine-i — task necə YARANIR, necə İCRA OLUNUR və
-  necə TAMAMLANIR qaydalarını tərif edir ("necə işləyir?" sualı). Bu fayl
-  konkret task data-sı SAXLAMIR — real task instansiyaları öz sahibinin
-  altında yaşayır (bax Storage aşağıda, project/<domain>/tasks/*.sdd) və
-  "kimə aiddir?" sualına cavab verir (PROJECT MODEL tərəfi, bax Note).
+  .sdd sisteminin task engine-i — task necə YARANIR, necə QURULUR, necə
+  BAĞLANIR, necə İCRA OLUNUR, necə REVIEW OLUNUR, necə UĞURSUZ OLUR/BƏRPA
+  OLUNUR və necə TAMAMLANIR qaydalarını tərif edir ("necə işləyir?" sualı).
+  Bu fayl konkret task data-sı SAXLAMIR — real task instansiyaları öz
+  sahibinin altında yaşayır (bax Storage aşağıda, project/<domain>/tasks/
+  *.sdd) və "kimə aiddir?" sualına cavab verir (PROJECT MODEL tərəfi, bax
+  DoesNotOwn, Note).
 
-  Zəncir: Prompt > Analysis > Decision > Chain > Task > Subtask > Review > VR
-  — task, bu zəncirin sərbəst addımı deyil, prompt/decision/chain-in icra
-  davamıdır (bax Traceability, architecture/architecture.sdd -> Principles).
+  Tam izlənmə zənciri Traceability bölməsində formallaşıb (bax aşağıda).
 
   Bu fayl root-səviyyəlidir (.sdd/tasks/tasks.sdd), çünki task necə
   işlədiyi .sdd sisteminin öz davranışıdır — layihə bilgisi deyil. Bu, onu
   portativ edir: .sdd başqa bir layihəyə köçəndə bu fayl DƏYİŞMƏDƏN gəlir,
   yalnız konkret task instansiyaları (project/<domain>/tasks/*.sdd) yeni
-  layihəyə xasdır (bax Note aşağıda, prompt/new/27.md).
+  layihəyə xasdır (bax Note aşağıda, prompt/new/27.md, prompt/new/28.md).
+
+
+Owns:
+  ./
+
+
+Scope:
+  Task lifecycle
+  Task structure
+  Task states
+  Task dependencies
+  Task decomposition
+  Task review
+  Task recovery
+  Task traceability
+  Task portability
+
+
+DoesNotOwn:
+  Project-specific tasks
+  Project architecture
+  Project dependencies
+  Engineering skills
+  Execution chain definitions
+  Human decisions
+
+  (bax architecture/architecture.sdd -> Forbidden: "TASKS: MUST NOT
+  redefine global SDD architecture" — DoesNotOwn bu qadağanın konkret
+  siyahı halına salınmasıdır, təkrar tərif deyil.)
 
 
 Ownership:
@@ -25,7 +54,17 @@ Ownership:
     module
     feature (əgər varsa)
 
-  [T1] Every task MUST have a resolvable owner (domain/module).
+  [T1] Every executable task MUST have a resolvable owner (domain/module).
+
+
+TaskCreation:
+  Prompt > Analyze > Identify affected project element > Determine task
+  type > Resolve dependencies > Select chain > Create task > Register
+  task state
+
+  Bu axını konkret icra edən skill (bax skills/global/task/, hələ boş —
+  STEP 6) özü heç vaxt layihə task data-sı SAXLAMIR, yalnız axını TƏTBİQ
+  edir (bax SeparationOfConcerns, architecture/architecture.sdd).
 
 
 Storage:
@@ -42,35 +81,7 @@ Storage:
     project/payments/tasks/TASK-003.sdd
     project/users/tasks/TASK-001.sdd
 
-  [T2] Task MUST NOT be stored inside .sdd/tasks/ (bu faylın yanında) —
-       yalnız öz sahibinin altında, project/<domain>/tasks/ altında.
-  [T3] Moving a task between owners (domain/module dəyişəndə) MUST preserve
-       its history and cross-references (bax Dependency aşağıda) — daşınma
-       bir referansı qırmamalıdır.
-  [T4] A relocated task MUST remain executable as long as all referenced
-       dependencies (bax Dependency) hələ resolve oluna bilir — relocation
-       özü-özlüyündə task-ı sındırmamalıdır.
-  [T5] Task references (dependencies, related_tasks, source) SHOULD be
-       relative to .sdd root və ya öz sahibinə görə verilsin, absolute
-       fayl-sistemi yoluna görə YOX — bu, [T4]-ün portativliyini qoruyur.
-
-
-TaskLifecycle:
-  CREATED > ANALYZED > READY > ACTIVE > REVIEW > VERIFIED > DONE
-
-  [T6] Task state öz task faylının daxilində saxlanılır (bax
-       TaskContract.state) — state ayrıca qlobal bir qovluq strukturu
-       (active/backlog/blocked/...) ilə İZLƏNMİR, çünki bu, task-ı yenidən
-       root-a bağlayardı ([T2]-nin əksinə). State qovluqla deyil, faylın öz
-       `State:` sahəsi ilə oxunur (bax States aşağıda, StateMarker).
-
-
-Failure:
-  ACTIVE > FAILED > RECOVER > ACTIVE
-  REVIEW > FAILED > RECOVER > ACTIVE
-
-  Failure heç vaxt birbaşa DONE-a keçmir — recovery məsul mərhələyə (ACTIVE
-  və ya REVIEW-un yaratdığı iş) qayıdır, heç vaxt irəli sıçramır (bax [T11]).
+  The .sdd/tasks/ directory MUST NOT contain project task instances.
 
 
 TaskTypes:
@@ -80,37 +91,115 @@ TaskTypes:
 
 TaskContract:
   Every task MUST define:
-    id, type, purpose, source, owner (domain/module), chain, dependencies,
-    subtasks, related_tasks, done_when, state
+    id, type, title, purpose, owner (domain/module), source, chain,
+    scope, dependencies, subtasks, related, done_when, state
 
-  [T7] Task skill (bax skills/global/task/, hələ boş — STEP 6) TƏYİN edir
-       task-ın NECƏ yaradıldığını, decompose olunduğunu, review/recovery
-       axınını — özü heç vaxt konkret layihə task data-sı SAXLAMIR (bax
-       SeparationOfConcerns).
+
+Source:
+  A task MUST have a traceable source.
+
+  Source MAY reference:
+    prompt
+    decision
+    requirement
+    bug
+    architecture_change
+    another_task
+
+  [T2] Every task's source MUST resolve to a real prompts/ və ya
+       decisions/ item (və ya yuxarıdakı digər növlərdən birinə) —
+       mücərrəd/qeyri-müəyyən mənbə qəbul edilmir.
+
+
+TaskScope:
+  A task MUST explicitly identify what it affects (fərqləndir: bu, yuxarı
+  bölmədəki `Scope:` — TaskSystem-in ÖZ çərçivəsi — ilə eyni ad daşımasın
+  deyə ayrıca adlandırılıb).
+
+  Scope MAY reference:
+    project, domain, module, feature, backend, api, frontend, mobile,
+    database, qa, devops
+
+  [T4] Every task MUST declare its scope (bax TaskContract.scope).
+
+
+Lifecycle:
+  CREATED > ANALYZED > READY > ACTIVE > REVIEW > VERIFIED > DONE
+
+  Task state öz task faylının daxilində saxlanılır (bax
+  TaskContract.state) — state ayrıca qlobal bir qovluq strukturu ilə
+  İZLƏNMİR, çünki bu, task-ı yenidən root-a bağlayardı ([T20]-in əksinə).
+  State qovluqla deyil, faylın öz `State:` sahəsi ilə oxunur (bax States
+  aşağıda, StateMarker).
+
+
+BlockedFlow:
+  READY > BLOCKED > READY
+
+  BLOCKED ayrıca lifecycle state deyil, READY/ACTIVE üzərində bir
+  overlay-vəziyyətdir — asılılıq açılan kimi task öz əvvəlki state-inə
+  qayıdır (bax [T6]).
+
+
+FailureFlow:
+  ACTIVE > FAILED > RECOVER > ACTIVE
+
+
+ReviewFailure:
+  REVIEW > FAILED > RECOVER > ACTIVE
+
+
+VerificationFailure:
+  VERIFIED > FAILED > RECOVER
+
+  Failure heç vaxt birbaşa DONE-a keçmir — recovery məsul mərhələyə
+  qayıdır, heç vaxt irəli sıçramır (bax [T8]/[T9]). VerificationFailure
+  qəsdən yalnız RECOVER-də dayanır (ACTIVE-ə avtomatik qayıtmır) — VR
+  uğursuzluğu adətən hansı mərhələnin (implementation, review, yoxsa
+  dependency) məsul olduğunu yenidən müəyyənləşdirməyi tələb edir.
 
 
 Rules:
-  [T8] Every task MUST declare a source (bax Traceability — hansı
-       prompt/decision/chain-dən yarandığı).
-  [T9] Every task's `source` MUST resolve to a real `prompts/` və ya
-       `decisions/` item — mücərrəd/qeyri-müəyyən mənbə qəbul edilmir.
-  [T10] Every task MUST belong to a chain, və bu dəyər yalnız
-        `chains/chains.sdd -> ChainTypes`-də tərif olunmuş ola bilər
-        (feature/bugfix/change) — naməlum chain adı ilə task yaradıla bilməz.
-  [T11] Failed tasks MUST enter recovery və məsul mərhələyə qayıtmalıdır —
-        heç vaxt irəli sıçramır (bax Failure).
-  [T12] DONE MUST require verification (bax Verification aşağıda).
-  [T13] AI MUST NOT silently close an unresolved task.
-  [T14] A blocked dependency (bax Dependency -> blocks) MUST prevent
-        execution.
-  [T15] Parallel execution is allowed ONLY when the dependency graph
-        explicitly allows it — AI MUST NOT unilaterally decide to
-        parallelize (bax Parallel aşağıda).
-  [T16] Review failure MUST reopen the responsible work, not just the
+  [T1] Every executable task MUST have a resolvable owner (domain/module)
+       (bax Ownership yuxarıda).
+  [T2] Every task's source MUST resolve to a real prompts/ və ya
+       decisions/ item (bax Source yuxarıda).
+  [T3] Every task MUST belong to a valid chain, və bu dəyər yalnız
+       chains/chains.sdd -> ChainTypes-də tərif olunmuş ola bilər
+       (feature/bugfix/change) — naməlum chain adı ilə task yaradıla bilməz.
+  [T4] Every task MUST declare its scope (bax TaskScope yuxarıda).
+  [T5] Dependencies MUST be resolved before execution.
+  [T6] A blocked dependency MUST block the dependent task (bax
+       Dependency -> blocks, BlockedFlow).
+  [T7] A task MUST NOT be marked DONE before VR (verification) passes
+       (bax Completion aşağıda).
+  [T8] A failed task MUST enter recovery.
+  [T9] Recovery MUST return to the responsible stage — heç vaxt irəli
+       sıçramır.
+  [T10] A review failure MUST reopen the responsible work, not just the
         review step.
-  [T17] Changes to completed (DONE) task-a təsir edən dəyişiklik impact
-        analysis-i tetiklaməlidir (bax prompts/prompts.sdd -> Impact —
-        eyni anlayış, burda tətbiqi).
+  [T11] A completed (DONE) task MUST be reopened if a later change
+        invalidates its result (bax prompts/prompts.sdd -> Impact — eyni
+        anlayış, burda tətbiqi).
+  [T12] AI MUST NOT silently skip a required stage.
+  [T13] AI MUST NOT silently close an unresolved task.
+  [T14] Parallel execution is allowed ONLY when the dependency graph
+        explicitly permits it — AI MUST NOT unilaterally decide to
+        parallelize (bax Parallel aşağıda).
+  [T15] Subtasks MUST inherit the relevant context of their parent task
+        (bax Decomposition aşağıda).
+  [T16] Subtasks MUST NOT create an independent chain that conflicts with
+        the parent task.
+  [T17] Related tasks MUST be explicitly referenced (bax
+        TaskContract.related).
+  [T18] A task MUST NOT duplicate knowledge owned by project, architecture
+        or skills (bax NoDuplication principle, architecture/
+        architecture.sdd -> Principles).
+  [T19] Task lifecycle rules are defined here (.sdd/tasks/tasks.sdd), not
+        inside project task instances.
+  [T20] Project task instances MUST remain inside their owning project
+        model (project/<domain>/tasks/*.sdd) — MUST NOT be stored inside
+        .sdd/tasks/.
 
 
 Dependency:
@@ -121,52 +210,108 @@ Dependency:
   supersedes:  this task replaces another task
 
 
+Decomposition:
+  ParentTask > Subtask > Subtask > Validation
+
+  Parent task MUST remain responsible for the final outcome (bax [T15]).
+
+  Subtasks MAY belong to different engineering stages:
+    DB, BE, API, FE, MD, QA, DO
+
+  (bu qısaltmalar chains/feature.chain-in Sequence-i ilə eynidir —
+  Decomposition subtask-ları chain stage-lərinə uyğunlaşdırır, təkrar
+  tərif etmir, bax ExplicitReference principle.)
+
+
 Review:
-  code-review, architecture-review, security-review, qa-review,
-  deployment-review, ultra-review
+  Review MAY include:
+    code-review, architecture-review, security-review, qa-review,
+    deployment-review, ultra-review
 
 
-Verification:
-  A task is VERIFIED only when:
-    implementation satisfies specification
-    required tests pass
-    required reviews pass
+Completion:
+  Done when:
+    required implementation completed
+    required tests passed
+    required reviews passed
     architecture remains valid
     dependencies remain valid
+    VR passed
 
-  "Kod bitdi, sağ ol" VERIFIED demək deyil — yuxarıdakı 5 şərt yoxlanmadan
-  task DONE-a keçə bilməz (bax [T12], [T13]).
+  "Kod bitdi, sağ ol" DONE demək deyil — yuxarıdakı şərtlər yoxlanmadan
+  task DONE-a keçə bilməz (bax [T7], [T13]).
 
 
 Parallel:
   Paralel icra AI-nin öz seçimi deyil, yalnız asılılıq qrafının (bax
-  Dependency) buna icazə verdiyi hallarda baş verir (bax [T15]). Məsələn
+  Dependency) buna icazə verdiyi hallarda baş verir (bax [T14]). Məsələn
   BE və DB tapşırıqları bir-birindən asılı olmadıqda paralel gedə bilər,
   amma hər ikisi API tapşırığının `requires` şərti olduğu üçün API onlar
   bitmədən başlaya bilməz (fork-join).
+
+
+Portability:
+  A task MAY be moved between .sdd project models (owner dəyişəndə —
+  domain/module).
+
+  When moved:
+    task history MUST be preserved
+    task identity MUST be preserved
+    source MUST remain traceable
+    chain reference MUST remain valid
+    skill references MUST remain valid
+    dependencies MUST be re-resolved
+
+  If a dependency cannot be resolved after relocation:
+    state = !
+    reason = dependency-unresolved
+
+  Task references (dependencies, related, source) SHOULD be relative to
+  .sdd root və ya öz sahibinə görə verilsin, absolute fayl-sistemi yoluna
+  görə YOX — bu, relocation-un portativliyini qoruyur.
 
 
 States:
   (StateMarker, bax PROJECT.sdd -> State)
   + = done      (VERIFIED / DONE)
   ~ = active    (ACTIVE)
-  - = failed    (FAILED, bax Failure)
-  ! = blocked   (bax Dependency -> blocks)
+  - = failed    (FAILED, bax FailureFlow/ReviewFailure/VerificationFailure)
+  ! = blocked   (bax Dependency -> blocks, Portability -> dependency-unresolved)
   ? = decision  (REVIEW nəticəsi qeyri-müəyyəndir, insan qərarı gözlənir)
   > = next      (CREATED / ANALYZED / READY, hələ başlanmayıb)
+  @ = reference (bu task əslində başqa bir .sdd obyektinə göstərici/alias-dır,
+                 öz məzmununu saxlamır)
+
+
+Traceability:
+  Source > Task > Chain > Skills > Implementation > Review > VR
+
+  Task, bu zəncirin sərbəst addımı deyil, prompt/decision/chain-in icra
+  davamıdır (bax architecture/architecture.sdd -> Principles ->
+  Traceability).
+
+
+Navigation:
+  Task lifecycle rules: @./tasks.sdd
+  Project task instances: @../project/*/tasks/
+  Chains: @../chains/
+  Skills: @../skills/
+  Decisions: @../decisions/
+  Project models: @../project/
 
 
 State: +
-  (STEP 8 final tamamlandı — bax Note. Bu fayl root-səviyyəli task engine-dir,
-  konkret task instansiyaları hələ yazılmayıb, çünki .sdd/project/ altında
-  hələ heç bir konkret domen qovluğu (users/, payments/ və s.) yoxdur —
-  STEP 4-də yalnız sxem-yalnız fayllar yaradılıb. Domen qovluğu real
-  yaranan kimi `<domain>/tasks/*.sdd` konvensiyası tətbiq olunacaq.)
+  (STEP 8 refinement tamamlandı — bax Note. Bu fayl root-səviyyəli task
+  engine-dir, konkret task instansiyaları hələ yazılmayıb, çünki
+  .sdd/project/ altında hələ heç bir konkret domen qovluğu (users/,
+  payments/ və s.) yoxdur — STEP 4-də yalnız sxem-yalnız fayllar
+  yaradılıb. Domen qovluğu real yaranan kimi <domain>/tasks/*.sdd
+  konvensiyası tətbiq olunacaq.)
 
 
 Note:
   (prompt/new/27.md, STEP 8 final — istifadəçi təsdiqi ilə) STEP 8
-  correction-da (prompt/new/26.md) bu fayl `project/tasks.sdd`-ə
+  correction-da (prompt/new/26.md) bu fayl project/tasks.sdd-ə
   köçürülmüşdü — task-ları qlobal saxlamağın portativlik prinsipini
   pozduğu düşünülürdü. Amma istifadəçi öz mənbə sözü ilə düzəltdi: task-ın
   NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/state/review/
@@ -179,21 +324,87 @@ Note:
     TASK ENGINE (.sdd/tasks/tasks.sdd, bu fayl) — "necə işləyir?"
     PROJECT MODEL (project/<domain>/tasks/*.sdd) — "nəyə aiddir?"
 
-  `.sdd/project/tasks.sdd` (26.md-in yaratdığı fayl) tamamilə silindi (git
-  tarixçəsində qalır) — bu fayl (`.sdd/tasks/tasks.sdd`) onun yerini tutdu,
-  demək olar ki eyni Ownership/Storage/TaskLifecycle/Failure/TaskTypes/
-  TaskContract/Rules/Dependency/Review/Verification/Parallel/States
-  məzmunu ilə (bax "apply, don't copy" qaydası — məzmun konseptual olaraq
-  saxlanıldı, yalnız yeri və çərçivəsi (ENGINE vs MODEL ayrımı) dəqiqləşdi).
+  (prompt/new/28.md, STEP 8 refinement — additive, "Tam sıfırla" TƏLƏB
+  OLUNMADI) Mənbə chat eyni fayl üçün daha formal/zəngin bir spesifikasiya
+  təqdim etdi (`Spec: TaskSystem`) — yer/çərçivə DƏYİŞMİR (yenə
+  .sdd/tasks/tasks.sdd, yenə ENGINE vs MODEL ayrımı), ona görə bu, əvvəlki
+  STEP 1/4/5/7/8/8-correction/8-final-dəki kimi ziddiyyətli reset deyil,
+  sırf zənginləşdirmədir — istifadəçi təsdiqi tələb edən "Tam sıfırla"
+  presedenti bura tətbiq olunmadı (bax sddra-apply-not-copy qaydası).
+  Mənbə mətni HƏRFİ köçürülmədi (bax "apply, don't copy"), aşağıdakı kimi
+  tətbiq edildi:
 
-  Storage konvensiyası ([T2]-[T5]) bu fayldan HƏLƏ DƏ çıxır, çünki bu da
-  "necə işləyir?" sualının bir hissəsidir (task harada saxlanmalıdır) —
-  amma bu fayl özü heç vaxt konkret task data-sı saxlamır, yalnız
-  konvensiyanı tərif edir (bax Storage yuxarıda).
+  - `Owns: ./`, `Scope:`, `DoesNotOwn:` bloku əlavə olundu — TaskSystem-in
+    öz çərçivəsini digər .sdd faylları ilə eyni konvensiyaya (bax
+    architecture/architecture.sdd -> Owns) uyğunlaşdırdı.
+  - `TaskCreation:` axını əlavə olundu (Prompt>Analyze>...>Register task
+    state) — əvvəllər bu axın heç yerdə yazılmamışdı.
+  - `TaskContract`-a `title` və `scope` sahələri əlavə olundu.
+  - `Source:` ayrıca bölmə oldu (mənbə tipləri: prompt/decision/
+    requirement/bug/architecture_change/another_task) — köhnə [T9]-un
+    üstündən qurulan zənginləşdirmə.
+  - Mənbə mətnində task-ın öz `Scope:` bölməsi TaskSystem-in yuxarı
+    səviyyəli `Scope:` bölməsi ilə eyni adı daşıyırdı (adlandırma
+    toqquşması) — bu fayl daxilində aydınlıq üçün `TaskScope:` adlandırıldı
+    (bax "apply, don't copy" — hərfi köçürmə bu toqquşmanı saxlayardı).
+  - `TaskLifecycle`+`Failure` (tək blok) `Lifecycle`/`BlockedFlow`/
+    `FailureFlow`/`ReviewFailure`/`VerificationFailure` olaraq ayrıldı —
+    `VerificationFailure` qəsdən yalnız RECOVER-də dayanır (mənbə də belə
+    yazır), çünki VR uğursuzluğu ACTIVE-ə avtomatik qayıtmamalıdır.
+  - `Rules` köhnə [T1]-[T17]-dən yeni [T1]-[T20]-ə keçdi — nömrələr
+    dəyişdi, amma köhnə [T1]/[T8]/[T9]/[T10]/[T11]-[T17] konseptual olaraq
+    itmədi (yuxarıdakı Rules-a bax, hər biri uyğun yeni nömrəyə köçürüldü).
+    Köhnə [T2]-[T5] (relocation-a aid) Rules-dan çıxarılıb ayrıca
+    `Portability:` bölməsinə köçürüldü (mənbənin öz strukturuna uyğun) —
+    NoDuplication üçün daha təmiz ayrım. Ən vacib yeni əlavələr: [T19]
+    (lifecycle qaydaları burda tərif olunur, project task-ları daxilində
+    YOX) və [T20] (project task instansiyaları öz sahibinin altında
+    qalmalıdır) — bunlar STEP 8 final-ın ENGINE/MODEL ayrımını indi açıq,
+    yoxlanıla bilən qayda kimi formallaşdırır (əvvəllər yalnız prosa
+    (Purpose/Note) idi).
+  - `Decomposition:` əlavə olundu (ParentTask>Subtask>Subtask>Validation,
+    subtask-lar DB/BE/API/FE/MD/QA/DO mərhələlərinə aid ola bilər) — bu
+    qısaltmalar chains/feature.chain-in Sequence-i ilə eynidir, təkrar
+    tərif etmədən ora istinad edir (ExplicitReference).
+  - `Verification:` `Completion:` adlandırıldı (mənbənin adlandırmasına
+    uyğun, "Done when:" checklist-i ilə) — köhnə 5 şərtə "VR passed" əlavə
+    edildi, "Kod bitdi, sağ ol" cümləsi saxlanıldı.
+  - `Portability:` yeni ayrıca bölmə oldu — köhnə [T3]-[T5]-in konseptual
+    davamı, üstəlik konkret uğursuzluq kodu əlavə etdi: relocation-dan
+    sonra asılılıq resolve olunmasa, `state = !`, `reason =
+    dependency-unresolved`.
+  - `States`-ə `@ = reference` markeri əlavə olundu — bu YENİ qlobal
+    marker DEYİL, artıq `PROJECT.sdd -> State`-də mövcud idi (bax
+    PROJECT.sdd -> State: "@= reference"), sadəcə bu faylın öz lokal
+    States güzgüsündə əskik idi, indi tamamlandı. Mənbənin ayrıca
+    `StateRules:` bloku HƏRFİ köçürülmədi (NoDuplication) — hər markerin
+    izahı `States` bölməsindəki inline şərhlərə (bax `@` sətri) əlavə
+    olundu, PROJECT.sdd-nin kanonik legend-ini təkrarlamadan.
+  - `Traceability:` ayrıca bölmə oldu — əvvəllər Purpose daxilində qısa
+    "Zəncir" sətri idi, indi formal `Source > Task > Chain > Skills >
+    Implementation > Review > VR` zənciri kimi çıxarıldı; Purpose bu
+    bölməyə istinad edir, təkrarlamır.
+  - `Navigation:` əlavə olundu (`@`-referanslar: tasks.sdd özü, project
+    task instansiyaları, chains, skills, decisions, project models) —
+    PROJECT.sdd-nin root-səviyyəli Navigation konvensiyasının bu fayl üçün
+    lokal təkrarı, AI-nin əlaqəli yolları PROJECT.sdd-ə qayıtmadan tapa
+    bilməsi üçün.
+  - Fayl başlığı (`TaskEngine: SDD`) DƏYİŞMƏDİ — mənbə `Spec: TaskSystem`
+    yazır, amma bu, digər bacı fayllarla (`Architecture: SDD`,
+    `PROJECT.sdd`-in öz konvensiyası) uzlaşmır; "apply, don't copy"
+    qaydasına görə mövcud adlandırma konvensiyası saxlanıldı.
+  - Storage/TaskTypes/Dependency/Review/Parallel/Ownership demək olar ki
+    dəyişmədi (artıq düzgün idi) — yalnız TaskContract-a iki sahə əlavə
+    olundu (yuxarı bax).
+  - Konkret task instansiya nümunələri (mənbədəki `.sdd/project/users/
+    tasks/TASK-001.sdd`, `.../payments/tasks/TASK-002.sdd`) yenə HƏRFİ
+    yaradılmadı — bu repoda hələ heç bir real domen qovluğu yoxdur (bax
+    project/domains.sdd, STEP 4 — sxem-yalnız), "skelet + qayda mühərriki,
+    konkret instansiya yox" prinsipi qorunur (eynilə STEP 5/6/7/8/8
+    correction/8 final-da olduğu kimi).
 
-  Mənbədəki konkret task instansiya nümunəsi (`project/payments/tasks/
-  TASK-002.sdd`, Task: PaymentRefund) hərfi köçürülmədi — bu repoda hələ
-  heç bir real domen qovluğu yoxdur (bax project/domains.sdd, STEP 4 —
-  sxem-yalnız), illüstrativ qovluq yaratmaq "skelet + qayda mühərriki,
-  konkret instansiya yox" prinsipini pozardı (eynilə STEP 5/6/7/8/8
-  correction-da olduğu kimi).
+  Storage konvensiyası ([T2]-[T5] köhnə, indi Storage+Portability-ə
+  bölünmüş) bu fayldan HƏLƏ DƏ çıxır, çünki bu da "necə işləyir?"
+  sualının bir hissəsidir (task harada saxlanmalıdır) — amma bu fayl özü
+  heç vaxt konkret task data-sı saxlamır, yalnız konvensiyanı tərif edir
+  (bax Storage yuxarıda).
