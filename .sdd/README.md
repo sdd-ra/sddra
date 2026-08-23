@@ -506,6 +506,38 @@ Principles`) əsaslanır: hər düzəliş ya mövcud qaydanı yumşaldır, ya da
 başqa fayla istinad əlavə edir — heç biri yeni fayl yaratmadı və heç bir
 mövcud məzmunu təkrarlamadı.
 
+## STEP 17 — `.sdd/prompts/prompts.sdd` genişlənməsi (prompt/new/39.md)
+
+Mənbə chunk 39 yeni fayl deyil, mövcud `prompts/prompts.sdd`-in (STEP 7)
+scope-una düşən bir genişlənmə təklif etdi — prompt-un HANSI FORMADA gələ
+biləcəyi və gəldikdən sonra necə müqayisə/ziddiyyət-yoxlanılacağı barədə.
+Bu, STEP 16-dakı düzəliş paketi ilə eyni naxış idi (mövcud fayla additive
+əlavə, yeni fayl yox, "Tam sıfırla" tələb olunmadı):
+
+- **`prompts/prompts.sdd`-ə əlavə olundu:** `InputForms:` (prompt-un gələ
+  biləcəyi 7 forma — bir cümlə, bir istifadəçi hekayəsi, bir bug report,
+  bir texniki tələb, bir sərbəst mətn, bir səs/transkript, bir mövcud
+  sənəd parçası), `Rules: [P21]-[P24]` (forma ≠ mürəkkəblik, tələb ≠
+  fərziyyə, qeyri-müəyyənlik heç vaxt sükutla həll olunmur, NoBlindExecution),
+  `ConflictResolution:` (`[P11]`-in "necə?" sualına sabit ardıcıllıqla
+  cavab: detect -> compare -> impact -> resolve-or-escalate),
+  `Branches:` (ExistingProject vs NewProject fərqli axınları), `ImpactAreas:`
+  (mövcud `Impact:` bölməsini tamamlayan bir checklist), `Navigation:`
+  (`project/instantiation.sdd -> Navigation`-un eyni naxışı ilə).
+- Qayda nömrələnməsi `[P20]`-dən davam etdi, yeni prefiks açılmadı.
+- **Təkrarlanmadı (bax NoDuplication, `architecture/architecture.sdd ->
+  Principles`):** insan qərarı tələb edən sərhədlər artıq
+  `project/instantiation.sdd` və `PROJECT.sdd -> HumanDecision`-da mövcuddur
+  — burada yalnız cross-reference edildi.
+- **Bilərəkdən təxirə salındı:** mənbənin öz "Prompt Registry" özü-özünü
+  zənginləşdirmə ideyası — mənbənin özünün də dediyi kimi, gələcək bir
+  STEP-in işidir.
+- `PROJECT.sdd`-nin `Directories -> prompts -> state:` sahəsi bu STEP-in
+  əlavələrini qeyd etmək üçün genişləndirildi, yeni STEP 17 Note bəndi
+  əlavə olundu (bax `PROJECT.sdd -> Note`).
+- Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
+  qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```

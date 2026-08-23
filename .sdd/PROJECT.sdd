@@ -83,6 +83,9 @@ Directories:
     path: ./prompts
     purpose: Prompt qəbulu (inbox), analizi və prompt intelligence (bax prompts/prompts.sdd)
     state: STEP 7 tamamlandı — prompts.sdd router (Rules [P1]-[P20]) + 5 qovluq (inbox/active/archive/extracted/conflicts) yaradıldı, konkret prompt instansiyaları hələ yoxdur
+      STEP 17 (prompt/new/39.md) extended prompts.sdd with InputForms:,
+      Rules [P21]-[P24], ConflictResolution:, Branches:, ImpactAreas: and
+      Navigation: sections — see prompts/prompts.sdd -> Note, STEP 17 entry.
 
   decisions:
     path: ./decisions
@@ -516,3 +519,23 @@ Note:
   restating their reasoning in full. No new [R] rule was needed here —
   this STEP only extended existing rule sets, it did not introduce a new
   constitution-level concern.
+
+  (prompt/new/39.md, STEP 17) Source content collided with prompts/
+  prompts.sdd's existing (STEP 7) scope rather than opening new
+  territory, so it was applied as a targeted extension of that file
+  rather than a new sibling file or a rewrite — same pattern as STEP 16.
+  Added: InputForms: (7 forms a prompt may arrive in), Rules [P21]-[P24]
+  (form ≠ complexity, requirement ≠ assumption, ambiguity is never
+  silently resolved, NoBlindExecution), ConflictResolution: (answering
+  [P11]'s "how" with a fixed detect -> compare -> impact -> resolve-or-
+  escalate sequence), Branches: (ExistingProject vs NewProject),
+  ImpactAreas: (a checklist complementing the existing Impact: section),
+  and Navigation: (mirroring project/instantiation.sdd -> Navigation).
+  Rule numbering continued from [P20] rather than introducing a new
+  prefix. See prompts/prompts.sdd -> Note, STEP 17 entry, for the full
+  rationale, including what was deliberately not duplicated (already
+  covered by project/instantiation.sdd and PROJECT.sdd -> HumanDecision)
+  and what was deliberately deferred (the source's own "Prompt Registry"
+  self-evolution idea, left for a future STEP per the source's own
+  stated intent). No new [R] rule was needed — this STEP only extended
+  an existing rule set.
