@@ -13,6 +13,11 @@ Rules:
   Do not duplicate module/domain details here.
   A code artifact's reference tag MUST resolve through Resolution below —
   no parallel lookup table (bax CodeReference aşağıda).
+  AI MUST NOT trust a resolved map entry blindly — the map returns a
+  pointer, not the fact itself.
+  AI MUST use the map to navigate (hara getməli), və source kodu (ya da
+  testlər, DB/API kontraktı) faktı təsdiqləmək üçün istifadə etməli (bax
+  CodeReference -> SourceOfTruth aşağıda).
 
 Resolution:
   module:  @modules
@@ -38,6 +43,26 @@ CodeReference:
   Bu fayl YALNIZ marşrutlaşdırma addımını (artefakt -> model girişi)
   sahiblənir — resolve olunan girişin özünün artıq dediyini TƏKRARLAMIR
   (Purpose-dəki qayda burda da qüvvədədir).
+
+  SourceOfTruth: "reallıq" növünə görə, hansı artefakt həqiqi mənbədir —
+  map/model deyil, aşağıdakılardır (bax architecture.sdd -> SingleSourceOfTruth):
+    runtime davranışı        -> source kod
+    data forması / kontrakt  -> source kod (DB/API tərifi kod daxilində)
+    testin doğruluğu         -> testlər
+    layihə təşkilatı         -> project model (module/domain/feature, bax
+                                 modules.sdd/domains.sdd)
+    mühəndislik qaydası      -> architecture/architecture.sdd
+    icra ardıcıllığı         -> chains/chains.sdd
+  Map/model heç birinin üçün mənbə DEYİL — yalnız həmin mənbəyə aparan
+  göstəricidir (bax Rules -> "AI MUST NOT trust... blindly").
+
+  Drift: resolve olunan model girişi source kodun faktiki vəziyyəti ilə
+  üst-üstə düşmürsə (map drift), AI yeni simvol İCAD ETMİR — mövcud `!`
+  (BLOCKED) state simvolunu, təsviri bir `reason` ilə (məs. `reason:
+  map-drift`) işarələyir (bax state.sdd -> [S2]/[S7]) və bunu bir task-a
+  yönləndirir (bax tasks.sdd -> Source, məs. `bug`/`architecture_change`).
+  AI heç vaxt drift-i özbaşına "düzəltmək" üçün source kodu YA DA map-i
+  səssizcə YENİDƏN YAZMIR — bu, həmişə insan/task nəzarətindən keçməlidir.
 
 Paths:
   BE -> ./backend
@@ -85,3 +110,23 @@ Note:
   OLUNMADI — real kod hələ yoxdur, konkret sintaksis indi premature olardı
   (eyni "skeleton + rule engine only, konkret nümunə yox" presedenti, bax
   PROJECT.sdd -> Note, STEP 20).
+
+  (prompt/new/45.md, STEP 23) Source konkret per-domen/per-komponent
+  qovluq ağacı (`.sdd/project/{domain}/{component}/map.sdd`) və işlənmiş
+  `@PAY/refund` nümunələri təklif etdi — REDDEDİLDİ, çünki real domen
+  qovluqları hələ yoxdur (eyni presedent: STEP 4 "Tam sıfırla", STEP 20/21/
+  22-nin `protocol/` təklifini üç dəfə rədd etməsi). Applied: SourceOfTruth
+  cədvəli və üç qaydalı "map-i kor-koranə güvənmə" prinsipi (yuxarı bax) —
+  bunlar abstrakt, konkret nümunəyə bağlı deyil. Applied: MAP DRIFT
+  konsepsiyası, lakin yeni simvol kimi yox, mövcud `!` (BLOCKED) state
+  simvolu üzərindən (bax Drift yuxarıda, [S2]/[S7] ilə toqquşmadan). Source-
+  un hierarxik semantik-ID naviqasiya ağacı (`@PROJECT -> @PAY -> @REFUND`)
+  REDDEDİLDİ — artıq mövcud `Resolution[module|domain|feature]` mexanizmi
+  ilə eyni işi görür (NoDuplication). Source-un insan-sənədi (`.md`) vs
+  AI-sənədi (`.sdd/project`, `.sdd/skills`, `.sdd/chains`) marşrutlaşdırma
+  cədvəli REDDEDİLDİ — artıq architecture.sdd -> CompactModel prinsipi
+  ("SDD content... rules, not prose... full narrative... belongs to
+  human-facing documentation") eyni ayrımı ifadə edir, təkrar cədvəl
+  NoDuplication-a ziddir. Function-level mapping-in optional olması
+  ayrıca əlavə tələb etmədi — artıq architecture.sdd -> TokenEconomy/
+  CompactModel prinsipləri ilə örtülür (bax STEP 22).
