@@ -876,3 +876,60 @@ Note:
   Rules:`/`CodeReference:` and `project/modules.sdd -> Rules:` sections.
   See `project/map.sdd -> Note` and `project/modules.sdd -> Note` for
   the mirrored entries.
+
+  (prompt/new/46.md, STEP 24 — "STEP 17 DÜZƏLİŞ" in the source's own
+  internal numbering, "Virtual Project Mirror") Source proposed that
+  `.sdd/project` mirror the real source tree 1:1, a concrete `docs/`
+  directory structure, two-tier BDD notation, skill/architecture maturity
+  levels (L1-L5), a canonical System Design vocabulary, technology-
+  fingerprint tags, infrastructure-as-dependency, and a diagram-as-output
+  rule. Each item evaluated on its own merits:
+
+  Applied to `architecture/architecture.sdd -> Principles:`: `CleanSource`
+  — real source directories (once they exist) MUST NOT carry co-located
+  `.sdd`/`.md` metadata files; AI-facing data lives only in the mirror
+  tree, human-facing narrative only in `docs/`. This formalizes where the
+  Mirror concept belongs; it is an application of Locality/
+  SeparationOfConcerns, not a new authority. Applied: `DiagramAsOutput`
+  — any diagram (Mermaid/PlantUML/etc.) MUST be generated from the model,
+  never hand-maintained as a second source (direct application of
+  SingleSourceOfTruth). Applied to `CompactModel`: a concrete BDD example
+  (AI-facing `G:`/`W:`/`T:` vs human-facing `Given`/`When`/`Then` — same
+  semantics, not two sources) was folded into the existing principle
+  rather than opening a new section for the source's two-tier BDD
+  proposal.
+
+  Applied to `project/map.sdd -> CodeReference:`: a `Mirror:` subsection
+  — a real source file `<root>/<path>/<file>.<ext>` may have ONE mirror
+  file at `.sdd/project/<path>/<file>.sdd`; the mirror file's own PATH is
+  the reference, source carries no in-file tag. This resolves the
+  "concrete reference tag syntax" question STEP 21/23 deliberately left
+  UNDEFINED. The mirror format is compact (`Own:`/`Do:`/`Use:`/`Test:` +
+  a Resolution pointer); no real source exists yet, so no mirror file is
+  materialized now — this is a format definition only, same "skeleton +
+  rule, no concrete example" precedent as STEP 20. Applied to `Paths:`:
+  `DOCS -> ./docs`, for human documentation, kept separate from `.sdd/`
+  per `CleanSource`.
+
+  Declined: the source's concrete `docs/` substructure
+  (`about-project.md`, `architecture/{system,backend,frontend,mobile,
+  devops}.md`, `domains/{payments,users,analytics}.md`, `database/`,
+  `api/`, `bdd/`, `decisions/`) — no real domains/components exist yet,
+  a concrete example now would be premature (same precedent as STEP 4,
+  the three-time `protocol/` decline across STEP 20\21\22, and STEP 23).
+
+  Deferred (tied to the source's own future "STEP 18 — Project
+  Intelligence / Architecture Profile"): skill maturity levels (L1-L5 per
+  skill/tag), architecture maturity levels (L1-L5 for `#ARCH`), the
+  System Design canonical vocabulary (`#SCALE #DAU #MAU #QPS #LAT #SLA
+  #SLO #SLI #SPOF #HA #DR #RPO #RTO #CACHE #QUEUE #CDN #LB #DB #REPL
+  #SHARD #PART #OBS #LOG #METRIC #TRACE`), language/framework-as-skill
+  technology-fingerprint tags, infrastructure-as-dependency in the
+  project model, and the full discovery/profiling pipeline (PROMPT ->
+  PROJECT DISCOVERY -> CONTEXT EXTRACTION -> SCALE PROFILE -> TECHNOLOGY
+  PROFILE -> ARCHITECTURE LEVEL -> SKILL LEVEL -> PROJECT MODEL -> CHAINS
+  -> TASKS -> IMPLEMENTATION -> QA -> VR) — these are scale/profiling
+  concerns, out of this STEP's scope. No new rule-ID prefix was needed;
+  all changes landed inside existing `Principles:`/`CodeReference:`/
+  `Paths:` sections. See `architecture/architecture.sdd -> Note` and
+  `project/map.sdd -> Note` for the mirrored entries.

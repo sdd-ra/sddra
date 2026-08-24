@@ -29,11 +29,25 @@ CodeReference:
     girişinə qayıtmaq — yuxarıdakı Resolution-un əks istiqaməti (ad/domen
     -> yol əvəzinə, artefakt -> model girişi).
 
-  Real layihə yarandıqda, bir source faylı öz sahibi olan module/domain/
-  feature girişinə işarə edən bir referans daşıya bilər (məsələn bir
-  ödəniş-geri-qaytarma faylı "refund" modulunu sahiblənən girişə işarə
-  edir). Konkret referans SİNTAKSİSİ (tag format) burda TƏYİN OLUNMUR —
-  bu ayrı bir qərardır, hələ premature (bax Note aşağıda).
+  Real layihə yarandıqda, source-kod özü heç bir referans TAG-ı DAŞIMIR
+  (bax architecture.sdd -> Principles -> CleanSource) — bunun əvəzinə
+  `.sdd/project` real source ağacını 1:1 GÜZGÜLƏYİR (bax Mirror aşağıda).
+  "Konkret referans sintaksisi" artıq ayrıca tag formatı deyil, sadəcə
+  mirror faylının öz YOLUdur (STEP 24, əvvəlki premature qərarı həll edir,
+  bax Note aşağıda).
+
+  Mirror:
+    Real source faylı `<root>/<path>/<file>.<ext>` üçün, `.sdd/project/
+    <path>/<file>.sdd` adında BİR mirror faylı mövcud ola bilər (məsələn
+    `BE/internal/analytics/repository.go` -> `.sdd/project/BE/internal/
+    analytics/repository.sdd`). Mirror faylının YOLU özü referansdır —
+    source daxilində ayrıca tag/annotasiya YOXDUR (bax CleanSource).
+    Mirror fayl formatı yığcamdır (bax architecture.sdd -> CompactModel):
+    `Own:`/`Do:`/`Use:`/`Test:` sahələri + Resolution-a işarə edən
+    pointer(lər) (-> modules.sdd/domains.sdd girişi). Bu fayllar YALNIZ
+    real source mövcud olduqda yaranır — indi (real source yoxdur) heç bir
+    mirror fayl yaradılmır, bu yalnız formatın TƏRİFİDİR (eyni "skeleton +
+    qayda, konkret nümunə yox" presedenti, bax PROJECT.sdd -> Note STEP 20).
 
   AI resolution ardıcıllığı:
     source artefakt -> onun referansı -> Resolution[module|domain|feature]
@@ -70,9 +84,12 @@ Paths:
   MD -> ./mobile
   QA -> ./qa
   DO -> ./devops
+  DOCS -> ./docs
   # (prompt/new/14.md-dən qalan, hələ qüvvədə olan qeyd) bunlar gələcək real
   # layihə kodu üçün lookup referanslarıdır — bu qovluqları indi yaratmaq
   # göstərişi deyil. .sdd/ bu repoda əl ilə tikilən yeganə şeydir.
+  # (STEP 24) DOCS insan-sənədi üçündür (bax architecture.sdd -> CleanSource)
+  # — .sdd/-dən AYRI, AI-facing deyil, insan üçün nərrativ izah daşıyır.
 
 Navigation:
   USER INPUT
@@ -130,3 +147,23 @@ Note:
   NoDuplication-a ziddir. Function-level mapping-in optional olması
   ayrıca əlavə tələb etmədi — artıq architecture.sdd -> TokenEconomy/
   CompactModel prinsipləri ilə örtülür (bax STEP 22).
+
+  (prompt/new/46.md, STEP 24) Source "Virtual Project Mirror" konsepsiyası
+  təklif etdi: `.sdd/project` real source ağacını 1:1 güzgüləyir, hər
+  mirror faylı öz yolu ilə referans olur. Applied: bu, STEP 21/23-ün
+  qəsdən TƏYİN OLUNMAMIŞ qoyduğu "konkret referans tag sintaksisi"
+  sualını həll edir — CodeReference -> Mirror bölməsi əlavə olundu (yol =
+  referans, source daxilində ayrıca tag yoxdur). Applied: `DOCS -> ./docs`
+  Paths-a əlavə olundu (insan-sənədi, .sdd/-dən ayrı, bax architecture.sdd
+  -> CleanSource). Source-un `docs/` üçün təklif etdiyi konkret alt-struktur
+  (`about-project.md`, `architecture/{system,backend,...}.md`,
+  `domains/{payments,users,...}.md`, s.) REDDEDİLDİ — real domenlər/
+  komponentlər hələ yoxdur, konkret nümunə indi premature olardı (eyni
+  presedent: STEP 4, STEP 20/21/22 `protocol/`, STEP 23). Skill/architecture
+  maturity səviyyələri (L1-L5), System Design lüğəti (`#SCALE #DAU #MAU`
+  və s.), texnologiya-fingerprint tag-ları, infrastructure-as-dependency və
+  tam "discovery pipeline" (PROMPT -> ... -> VR) DEFER edildi — source-un
+  özünün adlandırdığı gələcək "STEP 18 — Project Intelligence / Architecture
+  Profile" mövzusudur, bu STEP-in əhatəsindən kənardır (bax
+  architecture.sdd -> Note STEP 24 üçün CleanSource/DiagramAsOutput/
+  CompactModel-ə BDD nümunəsi əlavələri).
