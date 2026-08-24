@@ -36,6 +36,10 @@ Directories:
       without discarding already-confirmed information, and human
       decisions at any gate feed back into future generation — see
       project/instantiation.sdd -> Note, STEP 16 entry.
+      STEP 20 (prompt/new/42.md) added the ANALYZE_PROJECT operation
+      (bax Operations: yuxarıda, Rules [PA1]-[PA9]) — its output target
+      is this directory; no new sub-structure was added here yet, only
+      the entry point that will eventually populate it from discovery.
 
   tasks:
     path: ./tasks
@@ -210,6 +214,56 @@ HumanDecision:
     global project rule changes
     destructive changes
     unresolved conflicting requirements
+
+Operations:
+  A named Operation is a temporary mode the AI enters on an explicit
+  trigger, distinct from ordinary implementation work. It does not own a
+  directory of its own; its output lands in the existing Directories
+  above (NoDuplication).
+
+  ANALYZE_PROJECT:
+    Trigger: user explicitly requests project analysis (e.g. "Analyze
+      project", "Analyze this project", "Layihəni analiz et", "Layihəni
+      araşdır").
+    Priority: MUST take priority over pending implementation requests
+      until discovery is complete — AI MUST NOT silently start
+      implementing while discovery is still open.
+    Scope: structure, architecture, domains, modules, features, backend,
+      frontend, mobile, database, API, tests, DevOps, dependencies,
+      flows, external integrations, configuration, security boundaries.
+    SourceOfTruth: source code, database schema, API definitions, tests,
+      configuration, deployment configuration and existing documentation
+      MUST be treated as evidence — never assumption.
+    PromptRelationship: analysis of an EXISTING project MUST NOT depend
+      on a customer prompt describing the system; source code is the
+      primary evidence (bax prompts/prompts.sdd -> Branches).
+    Output: AI MUST generate or update .sdd/project/ (bax Directories ->
+      project yuxarıda) to represent the discovered system.
+    Result: findings MUST be kept in four visibly separate categories —
+      DISCOVERED (bax [PA4]/[PA6]), RECOMMENDATIONS (bax [PA9]), RISKS,
+      UNKNOWN (bax [PA7]) — never merged into one undifferentiated model.
+
+  Rules:
+    [PA1] AI MUST NOT modify source code during discovery.
+    [PA2] AI MUST NOT create implementation tasks before discovery is
+      sufficiently complete.
+    [PA3] AI MUST NOT assume architecture from project/module/file names
+      alone.
+    [PA4] Existing code behavior MUST be analyzed, not inferred from
+      documentation alone.
+    [PA5] Existing implementation MAY differ from recommended best
+      practices — this difference MUST be recorded, not silently fixed.
+    [PA6] Discovered reality MUST be kept separate from recommended
+      improvements.
+    [PA7] Uncertain findings MUST be marked as uncertain rather than
+      asserted as fact.
+    [PA8] Existing architecture MUST NOT be silently rewritten in the
+      project model — a conflict between discovered reality and this
+      repo's own architecture principles (bax architecture/
+      principles.sdd) is a HumanDecision candidate (bax HumanDecision
+      yuxarıda), not a silent rewrite.
+    [PA9] Recommendations MUST be recorded separately from discovered
+      facts.
 
 Entry:
   Read:
@@ -590,3 +644,50 @@ Note:
   sentence bridge was added there; the example task file #PAY-042.sdd
   was not created, same "skeleton + rule engine only, no concrete
   instance" precedent as every prior STEP).
+
+  (prompt/new/42.md, STEP 20) Source proposed three things. Only the
+  first was applied; the other two were deliberately declined.
+
+  Applied: a new ANALYZE_PROJECT operation (bax Operations: yuxarıda,
+  Rules [PA1]-[PA9]) — a genuinely new concept (this file had no
+  Operations: section before), so it got its own new prefix, consistent
+  with how [PI]/[AP]/[F] were assigned for new concepts at STEP 13-15.
+  Its Trigger/Scope/SourceOfTruth/Output/Result were adapted, not
+  copied verbatim, and cross-reference existing sections (HumanDecision,
+  Directories -> project, prompts/prompts.sdd -> Branches) instead of
+  restating them.
+
+  Declined: a standalone `protocol.sdd` (`Spec: SDDProtocol`) proposing
+  canonical Identifiers (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) and skill
+  sigils (#IDP/#TX/#SEC/...). The stage-identifier table duplicates
+  chains/chains.sdd -> Stages, which already owns this vocabulary — the
+  same NoDuplication reasoning, and the same STEP 11->12 split-then-
+  revert precedent, that rejected a tasks.sdd file-split at STEP 19. A
+  new top-level .sdd/protocol/ directory would also directly contradict
+  this file's own STEP 1 history (bax yuxarıda), which records deleting
+  a prior `Reference: system:/protocol:` section for pointing at
+  directories that no longer exist in this repo's model. The proposed
+  `TaskStates:` table (+/~/>/?/!/@/✓/-) directly conflicts with the
+  canonical state/state.sdd symbols and would violate its own [S2] —
+  the identical conflict already rejected once at STEP 19's alternate
+  8-symbol table. The skill-sigil shortcodes are deferred, not built:
+  skills/skills.sdd is still catalog-only (no concrete skill files
+  exist yet per its own STEP 6/18 scope), so shorthand for skills that
+  don't exist yet would be premature.
+
+  Declined: standardizing `tasks/tasks.sdd`'s TaskContract with a new
+  `Origin` field (prompt/analysis/finding/decision/review). Its own
+  existing `Source:` section already covers this ground ("A task MUST
+  have a traceable source. Source MAY reference: prompt, decision,
+  requirement, bug, architecture_change, another_task", enforced by
+  [T2]) — adding a second, differently-named field for the same concept
+  would itself violate [T18] NoDuplication. No edit was made to tasks/
+  tasks.sdd for this STEP.
+
+  Also not created: the source's concrete `#PAY-042.sdd` example task
+  file — same "skeleton + rule engine only, no concrete instance"
+  precedent as every prior STEP (no real domain folder exists to hold
+  it). The source's suggestion that chains/ should next be rebuilt on
+  the (declined) protocol vocabulary is noted but not actionable — it
+  is a suggestion for a future prompt/new file, not an instruction to
+  act on now.
