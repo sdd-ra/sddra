@@ -748,3 +748,64 @@ Note:
   12: "Artıq random folder yaratmaq olmaz"). They remain candidates for
   their own future prompt/new chunks, one STEP at a time, per this
   repo's own established pace.
+
+  (prompt/new/44.md, STEP 22 — "STEP 16" per the source's own internal
+  numbering, which this repo does not follow; see ReplayProgress in
+  index.md for the authoritative sequential count.) Source proposed a
+  final "kernel" for the `.sdd/protocol/` directory floated at STEP 20
+  and re-floated at STEP 21: 6 files (protocol.sdd [P1]-[P10], stages.sdd,
+  states.sdd, relations.sdd [R1]-[R7], origins.sdd, vocabulary.sdd), a
+  worked compact task-format example, and a token-economy statement
+  ("AI should read the smallest sufficient context; AI must expand
+  references only when required; human documentation should contain the
+  full explanation; SDD should contain the compact operational model").
+
+  Declined (third re-proposal of the same directory, same reasoning as
+  STEP 20/21, this time with per-file verification against the concrete
+  proposed content):
+  - `protocol/stages.sdd` (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) is a near-total
+    subset of `chains/chains.sdd -> Stages:` (verified verbatim this
+    STEP — same ten stage IDs, same orchestration/discipline split) —
+    NoDuplication.
+  - `protocol/states.sdd` (+ =READY, ~ =IN_PROGRESS, > =REVIEW, ? =BLOCKED,
+    ! =FAILED, @ =HUMAN_ACTION) directly contradicts the canonical
+    `state/state.sdd -> Symbols` (+ =DONE, ~ =ACTIVE, - =FAILED, ! =BLOCKED,
+    ? =DECISION_REQUIRED, > =NEXT, @ =REFERENCE) — same symbols, different
+    meanings, would violate `state.sdd`'s own `[S2]` ("state symbols MUST
+    NOT be redefined by project components") and the proposal's own
+    `[P2]`/`[P9]` rules against exactly this kind of collision.
+  - `protocol/relations.sdd [R1]-[R7]` and `protocol/protocol.sdd
+    [P1]-[P10]` would collide with this file's own root `Rules: [R1]-
+    [R12]` and `prompts/prompts.sdd`'s own `[P1]-[P24]` — same rule-ID
+    prefix, different authority, ambiguous for any future cross-reference.
+  - `protocol/origins.sdd` — reaffirms the STEP 20 decline of a task
+    `Origin` field; `tasks/tasks.sdd -> Source` (`[T18]`) already owns
+    this concept, unchanged.
+  - The standalone `protocol/` directory as a container is therefore
+    declined a third time — every file it would hold either duplicates
+    an existing owner or collides with an existing rule-ID range.
+  - `vocabulary.sdd`'s `#TAG -> skill.md` mechanism — declined for now,
+    same reasoning as STEP 20's skill-sigil decline: `skills/skills.sdd`
+    is still catalog-only (STEP 6/18), no concrete skill file exists yet
+    to tag.
+
+  Applied: the token-economy statement was the one genuinely new item
+  (STEP 21 had already confirmed, via grep, zero existing coverage of it
+  anywhere in `.sdd/`). Added as two new named entries to
+  `architecture/architecture.sdd -> Principles:` — `TokenEconomy` (AI
+  MUST read the smallest sufficient context, MUST expand a reference only
+  when the task requires it) and `CompactModel` (SDD content MUST stay
+  compact/operational; full narrative explanation belongs to human-facing
+  docs like this repo's README.md STEP log) — adapted into that section's
+  existing short-statement style, not copied verbatim, and not given a
+  new file or rule-ID prefix since `architecture.sdd -> Principles:`
+  already owns exactly this kind of cross-cutting rule. This resolves the
+  token-economy item STEP 21 explicitly deferred.
+
+  Deferred again: the compact task-reference-format example (source
+  section 8) — still blocked on the same undefined tag syntax STEP 21
+  deliberately left open in `project/map.sdd -> CodeReference`, applying
+  a syntax now would be premature for the same reason as then. CHAIN
+  resolution algorithm, SKILL CHAIN engine mechanics, BDD/Test protocol,
+  and DB/API model remain untouched, carried forward from STEP 21's own
+  deferred list — not part of this source chunk, still future STEPs.

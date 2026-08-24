@@ -705,6 +705,53 @@ rədd edildi ya da təxirə salındı:
   `[PMap#]`-tipli prefiks istifadə etməyib).
 
 
+## STEP 22 — `architecture/architecture.sdd` genişlənməsi (prompt/new/44.md)
+
+Mənbə (öz nömrələməsində "STEP 16", bu repo-nun ardıcıl sayğacı ilə eyni
+deyil — bax `index.md -> ReplayProgress`) `.sdd/protocol/` üçün "final
+kernel" təklif etdi: 6 fayl (protocol.sdd, stages.sdd, states.sdd,
+relations.sdd, origins.sdd, vocabulary.sdd), kompakt task-format nümunəsi
+və token-economy prinsipi. Yalnız sonuncu tətbiq olundu:
+
+- **Rədd edildi (üçüncü təkrar təklif) — `protocol/` qovluğu bütövlükdə:**
+  hər fayl ayrı-ayrı yoxlanıldı — `stages.sdd` `chains/chains.sdd ->
+  Stages`-in demək olar tam təkrarıdır (AN/AR/DB/BE/API/FE/MD/QA/DO/VR,
+  eyni on stage ID); `states.sdd` kanonik `state/state.sdd -> Symbols`
+  ilə birbaşa semantik toqquşur (eyni simvollar, fərqli mənalar — `[S2]`
+  pozulardı); `relations.sdd [R1]-[R7]` və `protocol.sdd [P1]-[P10]`
+  bu faylın öz kök `[R1]-[R12]` və `prompts/prompts.sdd`-in öz
+  `[P1]-[P24]` prefiksləri ilə toqquşardı; `origins.sdd` STEP 20-nin
+  rədd etdiyi `Origin` sahəsinin təkrarıdır (`tasks.sdd -> Source`,
+  `[T18]` artıq sahiblənir); `vocabulary.sdd`-in `#TAG` mexanizmi vaxtından
+  əvvəldir (`skills.sdd` hələ yalnız kataloqdur, konkret skill faylı yox).
+  Ətraflı per-fayl əsaslandırma `PROJECT.sdd -> Note`-dadır, burda
+  təkrarlanmır (NoDuplication).
+- **Tətbiq olundu:** token-economy bəyanatı — STEP 21 artıq grep ilə
+  təsdiqləmişdi ki, `.sdd/`-də bu konsept üçün sıfır mövcud əhatə var.
+  `architecture/architecture.sdd -> Principles:`-ə iki yeni bənd əlavə
+  olundu (`HumanControl`-dan sonra): `TokenEconomy` (AI ən kiçik kifayət
+  qədər konteksti oxumalı, referansı yalnız lazım olduqda genişləndirməli)
+  və `CompactModel` (SDD məzmunu kompakt/operativ qalmalı, tam izah
+  insan-yönümlü sənədləşdirməyə aiddir, məsələn bu README-nin STEP jurnalı).
+  Mövcud bölmənin qısa-bəyanat üslubunda, mənbədən köçürülmədən adaptasiya
+  edildi; yeni fayl və ya yeni rule-ID prefiksi tələb olunmadı.
+- **Təxirə salındı (təkrar):** kompakt task-reference format nümunəsi
+  (mənbə bölmə 8) — STEP 21-in `project/map.sdd -> CodeReference`-də
+  qəsdən açıq buraxdığı tag sintaksisinə bağlıdır, indi sintaksis
+  fiksləmək hələ də vaxtından əvvəldir. CHAIN resolution alqoritmi, SKILL
+  CHAIN mühərriki, BDD/Test protokolu, DB/API modeli — bu chunk-un hissəsi
+  deyil, STEP 21-in öz təxirə salınmış siyahısından davam edir.
+- `architecture/architecture.sdd -> Note`-a və `PROJECT.sdd -> Note`-a
+  yeni STEP 22 bəndləri əlavə olundu (ikincisi ingilis dilində, STEP
+  10-dan bəri qüvvədə olan qayda üzrə); ikisi arasında təkrarlanma yoxdur
+  — `architecture.sdd` qısa xülasə verir və `PROJECT.sdd`-ə istinad edir,
+  tam per-fayl matris yalnız `PROJECT.sdd`-dədir.
+- Yeni rule-ID prefiksi lazım olmadı — `TokenEconomy`/`CompactModel`
+  mövcud unprefixed `Principles:` üslubunda əlavə olundu (bu bölmə heç
+  vaxt `[AP#]`-tipli nömrələnmiş prefiks istifadə etməyib, `architecture/
+  principles.sdd`-dən fərqli olaraq).
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -725,7 +772,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/43.md-ə qədər)
+## Status (prompt/new/44.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -876,6 +923,16 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   BDD/Test protokolu, DB/API modeli, token-economy prinsipi növbəti
   STEP-lərə təxirə salındı. Ətraflı bax `PROJECT.sdd -> Note` və
   yuxarıdakı "STEP 21" bölməsinə.
+- `+` **STEP 22 — `architecture/architecture.sdd` genişlənməsi
+  (prompt/new/44.md):** `Principles:`-ə iki yeni bənd — `TokenEconomy` və
+  `CompactModel` (STEP 21-in təxirə saldığı token-economy prinsipi indi
+  tətbiq olundu); təklif olunan `.sdd/protocol/` qovluğu (6 fayl: protocol/
+  stages/states/relations/origins/vocabulary.sdd) üçüncü dəfə, hər fayl
+  ayrı-ayrı yoxlanılaraq rədd edildi (chains.sdd Stages, state.sdd `[S2]`,
+  PROJECT.sdd öz `[R]`, prompts.sdd öz `[P]`, tasks.sdd Source/`[T18]` ilə
+  toqquşma/təkrar); kompakt task-format nümunəsi yenə təxirə salındı.
+  Ətraflı bax `PROJECT.sdd -> Note`, `architecture/architecture.sdd ->
+  Note` və yuxarıdakı "STEP 22" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
