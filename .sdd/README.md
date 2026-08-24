@@ -538,6 +538,46 @@ Bu, STEP 16-dakı düzəliş paketi ilə eyni naxış idi (mövcud fayla additiv
 - Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
   qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
 
+## STEP 18 — `.sdd/skills/skills.sdd` genişlənməsi (prompt/new/40.md)
+
+Mənbə chunk 40 tam yeni bir `Spec: SkillSystem` sənədi (öz `[SK1]-[SK14]`
+nömrələnməsi ilə) təklif etdi, amma bu mövcud `skills/skills.sdd`-in
+(STEP 6, STEP 16) scope-una düşür — eyni STEP 16/17 naxışı: additive
+genişləndirmə, yeni fayl/prefiks yox:
+
+- **`skills/skills.sdd`-ə əlavə olundu:** 4 yeni SkillDomain
+  (`architecture`, `security`, `performance`, `engineering` — hər biri
+  üçün fiziki qovluq + `.gitkeep`, STEP 6-nın 8-domain presedentinə
+  uyğun, indi cəmi 12 domain), `Rules: [S18]-[S24]` (seçim faktorları,
+  architecture-domain-in digər domenləri məhdudlaşdıra bilməsi, conflict
+  detection vs resolution ayrımı, dependency-lərin tam həll olunması,
+  icra izlənilə bilənliyi, output-un yarada biləcəyi artefakt növləri),
+  `Applicability:` (`applicable/optional/unnecessary/blocked/
+  conflicting`), `SkillContract`-a `Scope`/`ConflictsWith`/`Severity`
+  sahələri, `SkillPriority:`, `SkillConflict:`, `SkillOutput:` (+
+  `SkillToTask`/`SkillToChain`), `Evolution:`, `SkillDiscovery:`,
+  `ComplexityControl:`, və genişləndirilmiş `Execution:` axını (discover
+  ilə başlayır, record ilə bitir).
+- Qayda nömrələnməsi `[S17]`-dən davam etdi, yeni prefiks açılmadı.
+- **Təkrarlanmadı (bax NoDuplication):** mənbənin `Reuse:`/`Portability:`
+  bölmələri (artıq `[S3]`/`[S10]`-da var), tam `SkillSelection:` funnel-i
+  (artıq `project/instantiation.sdd -> SkillFiltering`/`[PI5]`-in
+  işidir), `SkillDependency:` relation tipləri (`requires`/`supports`/
+  `conflicts`/`enhances` — artıq `[S7]`/`[S8]`/`[S14]`/`[S15]`/`[S21]`/
+  `[S22]`-də əhatə olunub), və mənbənin sonundakı top-level `.sdd`
+  mexanizm diaqramı (artıq `architecture/architecture.sdd`-in işidir,
+  STEP 3/13).
+- **Bilərəkdən təxirə salındı:** konkret skill fayllarının (məsələn
+  `architecture/ddd/skill.md`) real yazılması — STEP 6-nın "yalnız
+  skelet + qayda mühərriki" qərarı hələ qüvvədədir; mənbənin
+  `SkillChain:` illüstrativ nümunəsi bu bölmədə sənədləşdirildi, spec
+  məzmunu kimi əlavə olunmadı (bax yuxarı, misal üçün nümunə).
+- `PROJECT.sdd`-nin `Directories -> skills -> state:` sahəsi bu STEP-in
+  əlavələrini qeyd etmək üçün genişləndirildi, yeni STEP 18 Note bəndi
+  əlavə olundu (bax `PROJECT.sdd -> Note`).
+- Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
+  qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -558,7 +598,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/38.md-ə qədər)
+## Status (prompt/new/40.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -671,6 +711,21 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   bölməsi + `[PI7]-[PI9]`, `State: STEP 16`), `skills/skills.sdd` (yeni `[S17]`) —
   dördü də mövcud fayllara additive düzəliş, heç bir yeni fayl yaradılmadı. Ətraflı
   bax hər faylın öz Note bölməsinə və yuxarıdakı "STEP 16" bölməsinə.
+- `+` **STEP 17 — `prompts/prompts.sdd` genişlənməsi (prompt/new/39.md):** yeni
+  `InputForms:` bölməsi (7 giriş forması), `Rules: [P21]-[P24]`,
+  `ConflictResolution:`, `Branches:`, `ImpactAreas:`, `Navigation:` — hamısı
+  mövcud `prompts.sdd`-ə additive düzəliş, yeni fayl/prefiks yaradılmadı.
+  Ətraflı bax `prompts/prompts.sdd -> Note` və yuxarıdakı "STEP 17" bölməsinə.
+- `+` **STEP 18 — `skills/skills.sdd` genişlənməsi (prompt/new/40.md):** 4 yeni
+  SkillDomain (`architecture`/`security`/`performance`/`engineering`, hər biri
+  fiziki qovluq + `.gitkeep`, indi cəmi 12 domain), `Rules: [S18]-[S24]`,
+  `Applicability:`, `SkillContract`-a `Scope`/`ConflictsWith`/`Severity`,
+  `SkillPriority:`, `SkillConflict:`, `SkillOutput:`, `Evolution:`,
+  `SkillDiscovery:`, `ComplexityControl:`, genişləndirilmiş `Execution:` axını —
+  mövcud `[S1]-[S17]` nömrələnməsinin davamı, yeni prefiks açılmadı.
+  `PROJECT.sdd -> Directories -> skills -> state` və `Note` bölməsi də
+  uyğun yeniləndi. Ətraflı bax `skills/skills.sdd -> Note` və yuxarıdakı
+  "STEP 18" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
