@@ -46,10 +46,11 @@ rationale; this table is just the resume pointer.
 | 19   | 41.md                | Extended `tasks/tasks.sdd`: `TaskResolution:`, `TaskKnowledge:`, `NoLoop:`/`Escalation:`, `[T21]-[T22]`, `TaskContract` `skills`/`attempts` Optional fields | 51a2e13 |
 | 20   | 42.md                | Extended `PROJECT.sdd`: new `Operations:` section + `ANALYZE_PROJECT` (`[PA1]-[PA9]`); declined proposed `protocol.sdd` (stage IDs/skill sigils/alt state table) and `tasks.sdd` `Origin` field (NoDuplication/`[S2]`/`[T18]`) | b236eeb |
 | 21   | 43.md                | Extended `project/map.sdd`: added `CodeReference:` (Code↔SDD mapping, tag syntax left undefined); declined `protocol.sdd` re-proposal (reaffirmed) and discovery-taxonomy duplicate; deferred chain-resolution/skill-chain/task-compact-format/BDD/DB-API/token-economy items to future STEPs | 57f169a |
+| 22   | 44.md                | Extended `architecture/architecture.sdd`: added `Principles:` entries `TokenEconomy`/`CompactModel` (resolves STEP 21's deferred token-economy item); declined `protocol/` directory re-proposal a third time (per-file check vs chains.sdd Stages, state.sdd `[S2]`, PROJECT.sdd/prompts.sdd own rule-ID ranges, tasks.sdd Source); deferred compact task-reference-format example again | d6c6b21 |
 
-**Resume pointer: next file to read is `prompt/new/44.md`, gated on the
-next explicit "next" trigger.** Files 1–43 are fully read and actioned;
-44–114 are untouched and must stay untracked/unread until triggered.
+**Resume pointer: next file to read is `prompt/new/45.md`, gated on the
+next explicit "next" trigger.** Files 1–44 are fully read and actioned;
+45–114 are untouched and must stay untracked/unread until triggered.
 
 
 ## TranslationBacklog
