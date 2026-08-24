@@ -612,6 +612,53 @@ eyni STEP 16/17/18 naxışı: additive genişləndirmə, yeni fayl/prefiks yox:
 - Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
   qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
 
+## STEP 20 — `.sdd/PROJECT.sdd` genişlənməsi (prompt/new/42.md)
+
+Mənbə chunk 42 üç şey təklif etdi: yeni bir `ANALYZE_PROJECT` əməliyyatı,
+ayrıca bir `protocol.sdd` (stage identifikatorları + skill sigilləri +
+öz task-state cədvəli ilə) və `tasks.sdd`-in `TaskContract`-ına yeni bir
+`Origin` sahəsi. Bunlardan yalnız biri tətbiq olundu:
+
+- **`PROJECT.sdd`-ə əlavə olundu:** yeni `Operations:` bölməsi (bu fayl
+  əvvəl heç vaxt belə bir konsept saxlamırdı — `HumanDecision:`-dan sonra,
+  `Entry:`-dən əvvəl) və içində `ANALYZE_PROJECT` əməliyyatı (Trigger >
+  Priority > Scope > SourceOfTruth > PromptRelationship > Output > Result)
+  və yeni `Rules: [PA1]-[PA9]` bloku. Bu, həqiqətən yeni bir konsept
+  olduğu üçün (STEP 13-15-də `[PI]`/`[AP]`/`[F]`-ə tətbiq olunan eyni
+  qayda ilə) öz yeni prefiksini aldı, mövcud `[R]` qaydalarına əlavə
+  olunmadı. `Directories -> project -> state:` sahəsi bu STEP-in
+  `ANALYZE_PROJECT`-in çıxış hədəfi bu qovluq olduğunu qeyd etmək üçün
+  genişləndirildi.
+- **Rədd edildi — `protocol.sdd`:** təklif olunan stage-identifikator
+  cədvəli (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) artıq `chains/chains.sdd ->
+  Stages`-in sahibi olduğu vokabulyarı təkrarlayırdı (NoDuplication),
+  eyni STEP 11→12 split-then-revert presedenti (bax `chains/chains.sdd ->
+  Note`) və `PROJECT.sdd`-in öz STEP 1 tarixçəsi (əvvəlki `Reference:
+  system:/protocol:` bölməsinin artıq mövcud olmayan qovluqlara işarə
+  etdiyi üçün silinməsi) yeni bir `.sdd/protocol/` qovluğunun açılmasına
+  qarşı birbaşa dəlil idi. Təklif olunan `TaskStates:` cədvəli (+/~/>/?/
+  !/@/✓/-) kanonik `state/state.sdd` simvolları ilə birbaşa toqquşurdu
+  (`[S2]` pozulardı) — STEP 19-da eyni növ 8-simvollu alternativ cədvəlin
+  rədd edilməsi ilə eyni məntiq. Skill-sigil qısaltmaları təxirə salındı:
+  `skills/skills.sdd` hələ yalnız kataloqdur (STEP 6/18 üzrə konkret
+  skill faylı yoxdur), mövcud olmayan skill-lər üçün qısaltma vaxtından
+  əvvəldir.
+- **Rədd edildi — `Origin` sahəsi:** `tasks/tasks.sdd`-in mövcud
+  `Source:` bölməsi (`[T2]` ilə gücləndirilir) artıq eyni konsepti
+  (task-ın izlənə bilən mənbəyi: prompt/decision/requirement/bug/
+  architecture_change/another_task) əhatə edir — ikinci, fərqli adlı
+  sahə əlavə etmək `[T18]` NoDuplication-ı pozardı. `tasks/tasks.sdd`-ə
+  bu STEP üçün heç bir dəyişiklik edilmədi.
+- **Yaradılmadı:** mənbənin konkret `#PAY-042.sdd` nümunə task faylı —
+  hər STEP-də tətbiq olunan "skelet + qayda mühərriki, konkret instansiya
+  yox" prinsipi qorunur, real domen qovluğu yoxdur.
+- `PROJECT.sdd -> Note`-a yeni STEP 20 bəndi əlavə olundu, həm tətbiq
+  olunanı, həm də rədd edilən üç şeyi ətraflı izah edir (ingilis dilində,
+  STEP 10-dan bəri qüvvədə olan qayda üzrə).
+- Yeni `[R]` qaydası lazım olmadı — `[PA]` özü öz yeni prefiksidir, kök
+  `Rules:` blokuna toxunulmadı.
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -632,7 +679,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/41.md-ə qədər)
+## Status (prompt/new/42.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -767,6 +814,13 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `Portability:`-ə körpü cümləsi — hamısı mövcud `tasks.sdd`-ə additive
   düzəliş, yeni fayl/prefiks yaradılmadı. Ətraflı bax `tasks/tasks.sdd ->
   Note` və yuxarıdakı "STEP 19" bölməsinə.
+- `+` **STEP 20 — `PROJECT.sdd` genişlənməsi (prompt/new/42.md):** yeni
+  `Operations:` bölməsi və `ANALYZE_PROJECT` əməliyyatı (`[PA1]-[PA9]`,
+  yeni prefiks), `Directories -> project -> state` uyğun yeniləndi;
+  təklif olunan `protocol.sdd` (stage-identifikatorlar + skill-sigillər +
+  alternativ task-state cədvəli) və `tasks.sdd`-ə `Origin` sahəsi
+  NoDuplication/`[S2]`/`[T18]` səbəblərinə görə rədd edildi. Ətraflı bax
+  `PROJECT.sdd -> Note` və yuxarıdakı "STEP 20" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

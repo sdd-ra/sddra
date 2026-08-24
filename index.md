@@ -44,10 +44,11 @@ rationale; this table is just the resume pointer.
 | 17   | 39.md                | Extended `prompts/prompts.sdd`: `InputForms:` (7 forms), `[P21]-[P24]`, `ConflictResolution:`, `Branches:`, `ImpactAreas:`, `Navigation:` | 57717de |
 | 18   | 40.md                | Extended `skills/skills.sdd`: 4 new SkillDomains (architecture/security/performance/engineering), `[S18]-[S24]`, `Applicability:`, `SkillPriority:`/`SkillConflict:`/`SkillOutput:`/`Evolution:`/`SkillDiscovery:`/`ComplexityControl:` | a7b8910 |
 | 19   | 41.md                | Extended `tasks/tasks.sdd`: `TaskResolution:`, `TaskKnowledge:`, `NoLoop:`/`Escalation:`, `[T21]-[T22]`, `TaskContract` `skills`/`attempts` Optional fields | 51a2e13 |
+| 20   | 42.md                | Extended `PROJECT.sdd`: new `Operations:` section + `ANALYZE_PROJECT` (`[PA1]-[PA9]`); declined proposed `protocol.sdd` (stage IDs/skill sigils/alt state table) and `tasks.sdd` `Origin` field (NoDuplication/`[S2]`/`[T18]`) | PENDING |
 
-**Resume pointer: next file to read is `prompt/new/42.md`, gated on the
-next explicit "next" trigger.** Files 1–41 are fully read and actioned;
-42–114 are untouched and must stay untracked/unread until triggered.
+**Resume pointer: next file to read is `prompt/new/43.md`, gated on the
+next explicit "next" trigger.** Files 1–42 are fully read and actioned;
+43–114 are untouched and must stay untracked/unread until triggered.
 
 
 ## TranslationBacklog
