@@ -48,10 +48,11 @@ rationale; this table is just the resume pointer.
 | 21   | 43.md                | Extended `project/map.sdd`: added `CodeReference:` (Code↔SDD mapping, tag syntax left undefined); declined `protocol.sdd` re-proposal (reaffirmed) and discovery-taxonomy duplicate; deferred chain-resolution/skill-chain/task-compact-format/BDD/DB-API/token-economy items to future STEPs | 57f169a |
 | 22   | 44.md                | Extended `architecture/architecture.sdd`: added `Principles:` entries `TokenEconomy`/`CompactModel` (resolves STEP 21's deferred token-economy item); declined `protocol/` directory re-proposal a third time (per-file check vs chains.sdd Stages, state.sdd `[S2]`, PROJECT.sdd/prompts.sdd own rule-ID ranges, tasks.sdd Source); deferred compact task-reference-format example again | d6c6b21 |
 | 23   | 45.md                | Extended `project/map.sdd`: added "do not trust map blindly" 3-rule principle, `CodeReference -> SourceOfTruth:`/`Drift:` subsections (drift via existing `!` state symbol, no new symbol); extended `project/modules.sdd`: optional `files`/`entry`/`tests` routing fields; declined per-domain directory tree + `@PAY/refund` example, hierarchical `@PROJECT->@PAY->@REFUND` ID nav, doc-routing table, and modules.sdd `Owns`/`Dependencies`/`DependsOn`/`UsedBy`/`Triggers`/`Produces` fields | c10bcb2 |
+| 24   | 46.md                | Extended `architecture/architecture.sdd`: added `Principles:` entries `CleanSource`/`DiagramAsOutput`, BDD example folded into `CompactModel`; extended `project/map.sdd -> CodeReference:`: added `Mirror:` subsection (resolves STEP 21/23's deferred reference-tag-syntax question) and `Paths -> DOCS`; declined concrete `docs/` substructure; deferred skill/architecture maturity levels, System Design vocabulary, tech-fingerprint tags, infrastructure-as-dependency, full discovery pipeline (source's own "STEP 18") | a81ba02 |
 
-**Resume pointer: next file to read is `prompt/new/46.md`, gated on the
-next explicit "next" trigger.** Files 1–45 are fully read and actioned;
-46–114 are untouched and must stay untracked/unread until triggered.
+**Resume pointer: next file to read is `prompt/new/47.md`, gated on the
+next explicit "next" trigger.** Files 1–46 are fully read and actioned;
+47–114 are untouched and must stay untracked/unread until triggered.
 
 
 ## TranslationBacklog
