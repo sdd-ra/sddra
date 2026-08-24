@@ -56,6 +56,32 @@ SkillDomains:
     purpose: DevOps engineering rules
     state: boş (STEP 6)
 
+  architecture:
+    path: ./architecture
+    purpose: Architecture-level skills (modularity, domain modeling, DDD
+      boundary çəkilməsi və s. — bax [S20], bu domendəki skill-lər digər
+      domenlərin applicability-sinə təsir edə bilər)
+    state: boş (STEP 18) — elan olunub, skill hələ yazılmayıb
+
+  security:
+    path: ./security
+    purpose: Security engineering rules (threat modeling, auth, data
+      protection)
+    state: boş (STEP 18)
+
+  performance:
+    path: ./performance
+    purpose: Performance engineering rules (profiling, caching, scaling)
+    state: boş (STEP 18)
+
+  engineering:
+    path: ./engineering
+    purpose: Cross-cutting general engineering practice (clean code, error
+      handling, observability — `global` ilə üst-üstə düşməsin deyə: `global`
+      "bütün domenlərə universal tətbiq olunan qayda", `engineering` isə
+      "konkret bir mühəndislik təcrübəsi" mənasındadır)
+    state: boş (STEP 18)
+
 
 Rules:
 
@@ -130,6 +156,64 @@ Rules:
   Required) before Execution's "Resolve required skills" step runs
   (bax Execution below).
 
+  [S18]
+  Skill selection MUST consider project context — scale, resolved
+  architecture, the current task, this skill's dependencies, and risk.
+  This rule states WHICH factors feed the narrowing; the narrowing
+  PROCESS itself is owned by ../project/instantiation.sdd ->
+  SkillFiltering/[PI5] (bax [S17] — bu qayda onu təkrarlamır, yalnız
+  həmin pipeline-ın hansı girişlərə baxdığını dəqiqləşdirir).
+
+  [S19]
+  A skill MUST NOT introduce complexity the project's scale does not
+  warrant (bax ComplexityControl aşağıda).
+
+  [S20]
+  A skill in the `architecture` domain MAY determine whether a skill in
+  another domain is applicable within its scope — architecture-level
+  decisions (məs. domain boundary, modularity strategy) constrain what
+  lower-level skills (məs. concrete DDD tactical patterns) even make
+  sense to apply (bax SkillDomains -> architecture yuxarıda).
+
+  [S21]
+  Conflicting skills (bax `conflicts_with`, SkillContract aşağıda) MUST
+  be DETECTED before execution begins — this is a distinct, earlier step
+  from [S15]'s RESOLUTION requirement; detection can happen as soon as
+  the required-skill set is known, resolution only once context is
+  analyzed (bax SkillConflict aşağıda).
+
+  [S22]
+  A skill's declared dependencies (bax [S8]) MUST fully resolve before
+  that skill executes — an unresolved `requires:` blocks execution, it
+  does not degrade to a warning.
+
+  [S23]
+  Skill execution MUST be traceable — which skill ran, in what order,
+  against which chain stage (bax PROJECT.sdd -> [R10], state qeydi
+  mərhələ səviyyəsində aparılmalıdır; bax Execution -> "Record" addımı
+  aşağıda).
+
+  [S24]
+  A skill's output MAY create a task, a decision, a constraint, a
+  review, a new chain stage, or general project knowledge — bax
+  SkillOutput/SkillToTask/SkillToChain aşağıda; hansı artefaktın
+  yaradılacağını bu fayl deyil, nəticənin növü müəyyən edir.
+
+
+Applicability:
+
+  A resolved skill MAY be:
+
+    applicable    — context uyğundur, tətbiq oluna bilər
+    optional      — faydalıdır, amma tələb olunmur
+    unnecessary   — layihə miqyası/konteksti bunu tələb etmir (bax [S19])
+    blocked       — asılılığı (bax [S8]/[S22]) hələ həll olunmayıb
+    conflicting   — başqa seçilmiş skill ilə ziddiyyətdədir (bax [S21])
+
+  Yalnız `applicable` və (seçilibsə) `optional` skill-lər Execution-a
+  daxil olur; `unnecessary`/`blocked`/`conflicting` skill-lər chain-ə
+  ötürülmür (bax [S17], instantiation.sdd -> SkillFiltering).
+
 
 SkillContract:
 
@@ -137,18 +221,93 @@ SkillContract:
 
     Name
     Purpose
+    Scope             (STEP 18 — skill-in tətbiq sərhədi, bax [S19])
     AppliesWhen
     Requires
     Produces
     Rules
     Forbids
+    ConflictsWith      (STEP 18 — bax [S21], SkillConflict aşağıda)
+    Severity           (STEP 18 — critical/high/normal/low, bax SkillPriority)
     Validation
     Failure
     RelatedSkills
 
 
+SkillPriority:
+
+  critical > high > normal > low
+
+  Priority MUST NOT override applicability (bax Applicability yuxarıda)
+  — yüksək prioritetli, amma `unnecessary`/`blocked` olan skill tətbiq
+  OLUNMUR. Priority yalnız `applicable` dəstinin daxilində icra sırasını
+  təsir edir, uyğunluğu deyil.
+
+
+SkillConflict:
+
+  Əgər Skill A `conflicts_with` Skill B (bax SkillContract):
+
+    identify conflict (bax [S21])
+      >
+    analyze context
+      >
+    select applicable approach
+      OR
+    request human decision (bax PROJECT.sdd -> HumanDecision, [R11] —
+      eyni eskalasiya yolu [S15]-in tələb etdiyi ilə)
+
+
+SkillOutput:
+
+  A skill SHOULD produce structured findings:
+
+    status, findings, risks, recommendations, affected, required_actions
+
+  SkillToTask:
+    Implementation tələb edən finding  -> MAY create a task
+      (bax ../tasks/tasks.sdd)
+    Human choice tələb edən finding    -> MUST create a decision
+      (bax ../decisions/decisions.sdd)
+    Validation tələb edən finding      -> MUST create a review
+
+  SkillToChain:
+    Skill nəticəsi hansı chain stage-in tələb olunduğunu göstərə bilər
+    (bax [S24]) — konkret stage-domain uyğunluğu ../chains/chains.sdd ->
+    [C9]-in özündə saxlanılır, burada təkrarlanmır.
+
+
+Evolution:
+
+  A new/updated skill MAY: improve, complement, conflict with, or
+  replace an existing skill (bax ../project/instantiation.sdd ->
+  Evolution — eyni prinsip skill qatına tətbiqi).
+
+  Before REPLACING an existing skill, AI MUST compare: scope, rules,
+  applicability, dependencies, conflicts, project impact.
+
+
+SkillDiscovery:
+
+  AI SHOULD use domain/index-level metadata (bax SkillDomains yuxarıda)
+  to identify candidate skills before reading a full skill file's
+  content — full content SHOULD load only once a skill is at least
+  `Relevant` (bax instantiation.sdd -> SkillFiltering).
+
+
+ComplexityControl:
+
+  A skill MUST NOT increase project complexity without measurable
+  benefit (bax [S19]). Məsələn: kiçik layihədə sadə modularity avtomatik
+  olaraq DDD + CQRS + Event Sourcing + Microservices-ə çevrilməməlidir —
+  miqyas bunu tələb etmirsə, əlavə struktur özü bir violation-dır (bax
+  ../project/instantiation.sdd -> CorePrinciple).
+
+
 Execution:
 
+  Discover candidate skills (bax SkillDiscovery)
+    >
   Chain stage
     >
   Resolve required skills
@@ -160,6 +319,8 @@ Execution:
   Validate output
     >
   Return result to chain
+    >
+  Record execution (bax [S23])
 
   Qeyd: "Resolve required skills" addımı chain stage adı ilə skill domain-i
   arasında bağlantı tələb edir (bax chains/chains.sdd -> [C9] — bu bağlama
@@ -169,9 +330,13 @@ Execution:
 
 State: +
   (STEP 6 tamamlandı — skelet: skills.sdd router + 8 boş SkillDomain
-  qovluğu yaradıldı. Konkret skill-lər (ddd, clean-code, solid, security,
-  testing, error-handling, observability və s.) və onların `requires:`
-  zənciri hələ yazılmayıb — gələcək "next"lərlə əlavə olunacaq.)
+  qovluğu yaradıldı. STEP 18-də 4 yeni domen (architecture/security/
+  performance/engineering) elan olundu və mühərrik qaydaları (selection
+  factors, Applicability states, priority, conflict resolution,
+  discovery, complexity control) əlavə olundu. Konkret skill-lər (ddd,
+  clean-code, solid, security, testing, error-handling, observability
+  və s.) və onların `requires:` zənciri hələ yazılmayıb — gələcək
+  "next"lərlə əlavə olunacaq.)
 
 Note:
   (prompt/new/23.md, STEP 6) Bu fayl mənbə template-ə əsasən yazılıb,
@@ -207,3 +372,43 @@ Note:
   explicit at the point a reader would assume the opposite: right after
   [S16] establishes that an empty domain is still a valid, declared
   entry in the catalog.
+
+  (prompt/new/40.md, STEP 18) Source proposed a full `Spec: SkillSystem`
+  rewrite with its own `Rules: [SK1]-[SK14]` numbering. Rejected as a
+  literal adoption (bax standing "apply, don't copy" qaydası) — instead
+  extended this file's existing [S1]-[S17] numbering to [S18]-[S24],
+  consolidating source's 12 substantive rules ([SK3]-[SK14]; [SK1]/[SK2]
+  were pure restatements of Execution's existing discover/resolve flow,
+  folded into the extended Execution list instead of duplicated as
+  rules). Added: 4 new SkillDomains (architecture/security/performance/
+  engineering, each now with a physical directory + `.gitkeep`, matching
+  STEP 6's 8-domain precedent); `Applicability:` states (applicable/
+  optional/unnecessary/blocked/conflicting); `SkillContract` extended
+  with `Scope`/`ConflictsWith`/`Severity`; `SkillPriority`/`SkillConflict`/
+  `SkillOutput` (+`SkillToTask`/`SkillToChain`)/`Evolution`/
+  `SkillDiscovery`/`ComplexityControl` sections; `Execution` extended
+  with a discover-first, record-last bookend (bax [S23]).
+
+  Deliberately SKIPPED as duplicative, not omissions:
+  - Source's `Reuse:`/`Portability:` sections — already covered by
+    [S3] (no project-specific names) and [S10] (cross-project reuse).
+  - Source's full `SkillSelection:` funnel — already owned by
+    ../project/instantiation.sdd -> SkillFiltering/[PI5]; [S17]/[S18]
+    already cross-reference it rather than restate it.
+  - Source's `SkillDependency:` relation types (requires/supports/
+    conflicts/enhances) — requires is already [S7]/[S8]/[S22], conflicts
+    is already [S14]/[S15]/[S21]; supports/enhances are soft advisory
+    relations with no enforcement semantics distinct from
+    `RelatedSkills` in SkillContract, so not added as new rule content.
+  - Source's closing top-level `.sdd` mechanism diagram — verified
+    against ../architecture/architecture.sdd, which already owns the
+    `.sdd` component graph (STEP 3, reaffirmed STEP 13's Note). Adding
+    a second graph here would violate NoDuplication; belongs in
+    README.md narrative only, if anywhere.
+  - Source's `SkillChain:` illustrative example (architecture >
+    modularity > clean-code > testing) — a worked example, not a rule;
+    kept for README.md's STEP 18 narrative rather than spec content.
+
+  Konkret skill fayllarının (`architecture/ddd/skill.md` və s.) real
+  yazılması bu addımda da hələ edilmir — STEP 6-nın "yalnız skelet +
+  qayda mühərriki" qərarı STEP 18-də də qüvvədədir.
