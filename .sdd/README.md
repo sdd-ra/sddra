@@ -862,6 +862,45 @@ qiymətləndirildi:
   `CodeReference:`/`Paths:` bölmələrinə additive əlavə edildi.
 
 
+## STEP 25 — Recap/reaffirmation checkpoint (prompt/new/47.md)
+
+Mənbə orijinal chat-dan bir recap/handoff mesajı idi — ZIP çatdırılması
+(`sdd-system.zip`) haqqında qeyd, "indiyə qədər razılaşılan hər şeyi"
+yenidən sadalayır: kanonik mərhələ modeli (`AN -> AR -> DB -> BE -> API
+-> FE -> MD -> QA -> DO -> VR`), yığcam state simvolları, `PROJECT/`
+ağacı (`BE/FE/MD/DB/DO` real source + `docs/` insan-sənədi + `.sdd/`
+AI modeli), Virtual Project Mirror nümunəsi, iki-səviyyəli BDD,
+`CleanSource`, `docs/` modeli, source-kodun runtime-truth olması,
+təkrarsızlıq (no-duplication) və AI-nin ən kiçik lazımi konteksti əvvəl
+oxuması. Hər element mövcud modellə çarpaz yoxlanıldı:
+
+- **Heç nə yeni tətbiq olunmadı** — mənbənin sadaladığı demək olar hər
+  şey artıq mövcuddur:
+  - `chains/chains.sdd -> DefaultFlow`/`Stages:` artıq eyni mərhələ
+    modelini daşıyır (STEP 1-dən bəri, STEP 12-də bir fayla
+    yığcamlaşdırılıb).
+  - `state/state.sdd -> Symbols:` artıq yığcam state siyahısını
+    daşıyır — bu repo-nun DONE üçün `+` işarəsi (mənbənin `✓`-in
+    əvəzinə) STEP 10-dan bəri qəsdən qəbul edilmiş, dəyişməz adlandırma
+    qərarıdır.
+  - Mirror konsepsiyası, `CleanSource`, `docs/` yolu, BDD ayrımı,
+    `SourceOfTruth`, `NoDuplication`, `TokenEconomy`/`CompactModel` —
+    hamısı artıq STEP 22-24 arasında tətbiq olunub.
+- **Rədd edildi (təkrarən təsdiqləndi):** `protocol/` alt-qovluğu
+  (mənbənin öz ağacında göstərilir) — STEP 12/20/21/22-də artıq üç dəfə
+  rədd edilib, dəyişməz qalır.
+- **Təxirə salındı (dəyişməz):** real skill kitabxanası (Go/Backend,
+  DDD, modular monolith, Clean Code, DB, API, QA, DevOps, System
+  Design) və onun `L1-L5` seçim mexanizmi — mənbənin özünün gələcək
+  "STEP 18" mövzusu, artıq STEP 24-ün Note-unda təxirə salınmış eyni
+  əhatə.
+- Heç bir `.sdd/` funksional fayl dəyişmədi — yalnız bu STEP-in
+  reviewed/reaffirmed nəticəsi `PROJECT.sdd -> Note`-a əlavə olundu
+  (paralel ingilis bənd, STEP 10-dan bəri qüvvədə olan qayda üzrə). Bu,
+  əvvəlki "əksər hissəsi rədd/təsdiq" presedentini davam etdirir (STEP
+  20/21/22-nin təkrar `protocol/` rədləri kimi).
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -882,7 +921,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/46.md-ə qədər)
+## Status (prompt/new/47.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -1064,5 +1103,14 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   maturity səviyyələri, System Design lüğəti, tech-fingerprint tag-ları,
   infrastructure-as-dependency və discovery pipeline DEFER edildi
   (source-un öz "STEP 18" mövzusu).
+- `~` **STEP 25 — recap/reaffirmation checkpoint (prompt/new/47.md):**
+  mənbə ZIP-delivery recap mesajı idi, sadaladığı hər şey (stage modeli,
+  compact states, Mirror, `CleanSource`, `docs/`, BDD ayrımı,
+  `SourceOfTruth`, `NoDuplication`, token-economy) artıq STEP 1-24
+  arasında tətbiq olunub — heç bir yeni `.sdd/` funksional dəyişiklik
+  edilmədi, yalnız `PROJECT.sdd -> Note`-a cross-check nəticəsi əlavə
+  olundu. `protocol/` yenə (dördüncü dəfə) rədd edildi; real skill
+  kitabxanası + `L1-L5` mexanizmi yenə "STEP 18"-ə təxirə salındı. Ətraflı
+  bax yuxarıdakı "STEP 25" bölməsinə.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
