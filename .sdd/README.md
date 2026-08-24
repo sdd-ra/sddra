@@ -752,6 +752,62 @@ və token-economy prinsipi. Yalnız sonuncu tətbiq olundu:
   principles.sdd`-dən fərqli olaraq).
 
 
+## STEP 23 — `project/map.sdd` + `project/modules.sdd` genişlənməsi (prompt/new/45.md)
+
+Mənbə (öz nömrələməsində "STEP 17 — Code ↔ SDD Mapping") per-domen/per-komponent
+`map.sdd` qovluq ağacı, `Owns:`/`Files:`/`Tests:`/`Entry:`/`Dependencies:`/
+`DependsOn:`/`UsedBy:`/`Triggers:`/`Produces:` sxemi, `SourceTruth` cədvəli,
+MAP DRIFT konsepsiyası (`!MAP_MISMATCH`/`!DRIFT` simvolları), üç qaydalı
+"map-i kor-koranə güvənmə" prinsipi, hierarxik semantik-ID naviqasiya ağacı
+(`@PROJECT -> @PAY -> @REFUND`) və insan-sənəd/AI-sənəd marşrutlaşdırma
+cədvəli təklif etdi. Hər element ayrıca qiymətləndirildi:
+
+- **Tətbiq olundu (`map.sdd -> Rules:`):** üç qaydalı prinsip — AI resolve
+  olunmuş map girişinə kor-koranə güvənmir (map pointer verir, fakt özü
+  deyil), AI map-i naviqasiya üçün istifadə edir, faktı source kod/testlər/
+  DB-API kontraktı təsdiqləyir. Mövcud fayl üslubuna uyğunlaşdırılaraq
+  yenidən yazıldı, mənbədən köçürülmədən.
+- **Tətbiq olundu (`map.sdd -> CodeReference -> SourceOfTruth:`):** abstrakt
+  cədvəl — runtime davranışı/data forması/kontrakt -> source kod, testin
+  doğruluğu -> testlər, layihə təşkilatı -> project model, mühəndislik
+  qaydası -> architecture.sdd, icra ardıcıllığı -> chains.sdd. Konkret
+  domen/komponent nümunəsi yoxdur (real domen yoxdur).
+- **Tətbiq olundu (`map.sdd -> CodeReference -> Drift:`):** MAP DRIFT
+  konsepsiyası saxlanıldı, lakin yeni simvol (`!MAP_MISMATCH`/`!DRIFT`)
+  İCAD OLUNMADI — mövcud `!` (BLOCKED) state simvolu, `reason: map-drift`
+  ilə istifadə olunur (bax state.sdd `[S2]`/`[S7]`), nəticə bir task-a
+  yönləndirilir (tasks.sdd -> Source). Yeni simvol kanonik `state.sdd ->
+  Symbols` siyahısı ilə toqquşardı (eyni səbəb, STEP 22-nin `protocol/
+  states.sdd` rəddi).
+- **Rədd edildi — konkret `.sdd/project/{domain}/{component}/map.sdd`
+  qovluq ağacı və işlənmiş `@PAY/refund` nümunələri:** real domen
+  qovluqları hələ yoxdur (eyni presedent: STEP 4 "Tam sıfırla", STEP 20/21/
+  22-nin `protocol/` təklifini üç dəfə rəddi).
+- **Rədd edildi — hierarxik semantik-ID naviqasiya ağacı
+  (`@PROJECT -> @PAY -> @REFUND`):** mövcud `Resolution[module|domain|
+  feature]` mexanizmi ilə eyni işi görür (NoDuplication).
+- **Rədd edildi — insan-sənəd (`.md`) vs AI-sənəd (`.sdd/*`) marşrutlaşdırma
+  cədvəli:** artıq `architecture.sdd -> Principles -> CompactModel` eyni
+  ayrımı ifadə edir ("rules, not prose... full narrative belongs to
+  human-facing documentation") — təkrar cədvəl NoDuplication-a ziddir.
+- **Tətbiq olundu (`modules.sdd -> Rules:`):** yeni optional sahələr —
+  `files` (sahiblənən source yolları) və `entry` (əsas entry-point faylı),
+  həmçinin `tests` (sahiblənən test yolları) — hamısı routing-only qeyd
+  kimi, `map.sdd -> CodeReference -> SourceOfTruth`-a istinadla.
+- **Rədd edildi (`modules.sdd -> Note:`) — `Owns:`/`Dependencies:`/
+  `DependsOn:`:** artıq mövcud Rules-da var (NoDuplication). **Rədd edildi
+  — `UsedBy:`:** `deps`-in tərs istiqaməti kimi derivable-dır, ayrı sahə
+  duplicate risk yaradardı. **Rədd edildi — `Triggers:`/`Produces:`:**
+  icra/hadisə anlayışları artıq chains.sdd/tasks.sdd-nin sahəsidir,
+  premature/duplicate hesab edildi.
+- Function-level mapping-in optional olması ayrıca əlavə tələb etmədi —
+  artıq `architecture.sdd -> TokenEconomy/CompactModel` prinsipləri ilə
+  örtülür (bax STEP 22).
+- Yeni rule-ID prefiksi lazım olmadı — dəyişikliklər mövcud `map.sdd ->
+  Rules:`/`CodeReference:` və `modules.sdd -> Rules:` bölmələrinə əlavə
+  edildi.
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -772,7 +828,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/44.md-ə qədər)
+## Status (prompt/new/45.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -934,5 +990,12 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   Ətraflı bax `PROJECT.sdd -> Note`, `architecture/architecture.sdd ->
   Note` və yuxarıdakı "STEP 22" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
+- `+` **`project/map.sdd` + `project/modules.sdd` STEP-23 genişlənmə (prompt/new/45.md):**
+  `map.sdd -> Rules:`-ə "map-i kor-koranə güvənmə" prinsipi, `CodeReference:`-ə
+  `SourceOfTruth:`/`Drift:` alt-bölmələri əlavə olundu (drift mövcud `!` state
+  simvolu üzərindən, yeni simvol icad olunmadı); `modules.sdd -> Rules:`-ə
+  optional `files`/`entry`/`tests` sahələri əlavə olundu. Konkret domen ağacı,
+  `@PAY/refund` nümunəsi, hierarxik ID naviqasiyası və doc-routing cədvəli
+  rədd edildi (bax yuxarı STEP 23 bölməsi).
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

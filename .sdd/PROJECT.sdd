@@ -40,6 +40,16 @@ Directories:
       (bax Operations: yuxarıda, Rules [PA1]-[PA9]) — its output target
       is this directory; no new sub-structure was added here yet, only
       the entry point that will eventually populate it from discovery.
+      STEP 21 (prompt/new/43.md) added map.sdd -> CodeReference: (Code ↔
+      SDD mapping, reverse direction from source artifact back to its
+      owning module/domain/feature entry; concrete tag syntax deliberately
+      left undefined) — see project/map.sdd -> Note, STEP 21 entry.
+      STEP 23 (prompt/new/45.md) extended map.sdd -> Rules:/CodeReference:
+      with a "do not trust the map blindly" principle and SourceOfTruth/
+      Drift subsections (drift routed through the existing `!` state
+      symbol, no new symbol invented), and modules.sdd -> Rules: with
+      optional `files`/`entry`/`tests` routing fields — see project/
+      map.sdd -> Note and project/modules.sdd -> Note, STEP 23 entries.
 
   tasks:
     path: ./tasks
@@ -809,3 +819,60 @@ Note:
   resolution algorithm, SKILL CHAIN engine mechanics, BDD/Test protocol,
   and DB/API model remain untouched, carried forward from STEP 21's own
   deferred list — not part of this source chunk, still future STEPs.
+
+  (prompt/new/45.md, STEP 23 — "STEP 17" in the source's own internal
+  numbering, "Code ↔ SDD Mapping") Source proposed a concrete per-domain/
+  per-component `.sdd/project/{domain}/{component}/map.sdd` directory
+  tree with worked `@PAY/refund` examples, an `Owns:`/`Files:`/`Tests:`/
+  `Entry:`/`Dependencies:`/`DependsOn:`/`UsedBy:`/`Triggers:`/`Produces:`
+  field schema, a `SourceTruth` table, a MAP DRIFT concept with new
+  `!MAP_MISMATCH`/`!DRIFT` symbols, a hierarchical semantic-ID navigation
+  tree (`@PROJECT -> @PAY -> @REFUND`), and a human-doc-vs-AI-doc routing
+  table. Each item evaluated on its own merits:
+
+  Declined: the concrete directory tree and `@PAY/refund` worked
+  examples — no real domain directories exist yet (same precedent as
+  STEP 4's "Tam sıfırla" and the three-time decline of `protocol/` across
+  STEP 20/21/22). Declined: the hierarchical semantic-ID navigation tree
+  — duplicates the existing `map.sdd -> Resolution[module|domain|
+  feature]` mechanism (NoDuplication). Declined: the human-doc vs AI-doc
+  routing table — `architecture.sdd -> Principles -> CompactModel`
+  already states this exact split ("rules, not prose... full narrative
+  belongs to human-facing documentation"), a second table would itself
+  violate NoDuplication.
+
+  Applied to `project/map.sdd -> Rules:`: a three-rule principle — AI
+  MUST NOT trust a resolved map entry blindly (the map returns a
+  pointer, not the fact itself), AI MUST use the map only to navigate,
+  and source code/tests/the DB-API contract are what confirm the fact.
+  Applied to `project/map.sdd -> CodeReference:`: a `SourceOfTruth:`
+  subsection (an abstract table — runtime behavior/data shape/contract
+  -> source code, test correctness -> tests, project organization ->
+  the project model, engineering rule -> architecture.sdd, execution
+  order -> chains.sdd; no concrete domain example, since none exists
+  yet) and a `Drift:` subsection — MAP DRIFT is kept as a concept, but
+  routed through the existing `!` (BLOCKED) state symbol with a
+  descriptive `reason: map-drift` (bax state.sdd `[S2]`/`[S7]`) and
+  escalated to a task (bax tasks.sdd -> Source), rather than inventing
+  the source's proposed new symbols — a new symbol would collide with
+  the canonical `state.sdd -> Symbols` list, the same reasoning STEP 22
+  used to decline a parallel `protocol/states.sdd`.
+
+  Applied to `project/modules.sdd -> Rules:`: optional `files` (owned
+  source paths) and `entry` (primary entry-point file) fields, plus
+  `tests` (owned test paths) — all routing pointers only, cross-
+  referencing `map.sdd -> CodeReference -> SourceOfTruth`. Declined
+  (modules.sdd): `Owns:`/`Dependencies:`/`DependsOn:` — already present
+  in modules.sdd's own Rules (NoDuplication). Declined: `UsedBy:` —
+  derivable as the reverse of `deps`, a separate field would itself be
+  a duplicate-risk source of truth. Declined: `Triggers:`/`Produces:` —
+  execution/event concepts already owned by chains.sdd/tasks.sdd,
+  premature and duplicate here.
+
+  Function-level mapping's optionality required no separate addition —
+  already covered by `architecture.sdd -> Principles ->
+  TokenEconomy/CompactModel` (bax STEP 22). No new rule-ID prefix was
+  needed; all changes landed inside the existing `project/map.sdd ->
+  Rules:`/`CodeReference:` and `project/modules.sdd -> Rules:` sections.
+  See `project/map.sdd -> Note` and `project/modules.sdd -> Note` for
+  the mirrored entries.
