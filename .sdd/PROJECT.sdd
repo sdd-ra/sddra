@@ -933,3 +933,28 @@ Note:
   all changes landed inside existing `Principles:`/`CodeReference:`/
   `Paths:` sections. See `architecture/architecture.sdd -> Note` and
   `project/map.sdd -> Note` for the mirrored entries.
+
+  (prompt/new/47.md, STEP 25) Source was a recap/handoff message from the
+  original chat (a ZIP delivery note) restating everything "agreed so
+  far": the canonical stage model (`AN -> AR -> DB -> BE -> API -> FE ->
+  MD -> QA -> DO -> VR`), compact state symbols, the `PROJECT/` tree
+  (`BE/FE/MD/DB/DO` real source + `docs/` human docs + `.sdd/` AI model),
+  the Virtual Project Mirror example, two-tier BDD, `CleanSource`, the
+  `docs/` model, source-as-runtime-truth, no-duplication, and reading the
+  smallest necessary context first. Reviewed against the current model:
+  every item already exists — `chains/chains.sdd -> DefaultFlow`/`Stages`
+  already carries the exact stage model; `state/state.sdd -> Symbols`
+  already carries the compact states (this repo's `+` for DONE vs the
+  source's `✓` is a pre-existing, deliberate naming choice from STEP 10,
+  left unchanged); the Mirror concept, `CleanSource`, `docs/` path, BDD
+  split, `SourceOfTruth`, `NoDuplication`, and `TokenEconomy`/
+  `CompactModel` were all applied in STEPs 22-24. A `protocol/`
+  subdirectory (present in the source's tree) remains declined per STEP
+  12/20/21/22. No new principle, field, or section was needed — this
+  STEP is a pure reaffirmation checkpoint, no `.sdd/` content changed
+  beyond this Note and its mirrors. The one forward-looking item (a real
+  skill library for Go/Backend, DDD, modular monolith, Clean Code, DB,
+  API, QA, DevOps, System Design, plus an `L1-L5` selection mechanism)
+  remains deferred, tied to the same future "STEP 18" scope already
+  recorded in STEP 24's Note. See `.sdd/README.md -> STEP 25` for the
+  full per-item cross-check.
