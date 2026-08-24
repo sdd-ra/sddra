@@ -11,11 +11,33 @@ Rules:
   Feature -> feature model (domen daxilində, hələ mövcud deyil)
   Global map MUST contain routing information only.
   Do not duplicate module/domain details here.
+  A code artifact's reference tag MUST resolve through Resolution below —
+  no parallel lookup table (bax CodeReference aşağıda).
 
 Resolution:
   module:  @modules
   domain:  @domains
   feature: @features   # gələcək — domenlər konkretləşəndə əlavə olunacaq
+
+CodeReference:
+  Purpose: source-kod artefaktından geriyə, onu sahiblənən .sdd model
+    girişinə qayıtmaq — yuxarıdakı Resolution-un əks istiqaməti (ad/domen
+    -> yol əvəzinə, artefakt -> model girişi).
+
+  Real layihə yarandıqda, bir source faylı öz sahibi olan module/domain/
+  feature girişinə işarə edən bir referans daşıya bilər (məsələn bir
+  ödəniş-geri-qaytarma faylı "refund" modulunu sahiblənən girişə işarə
+  edir). Konkret referans SİNTAKSİSİ (tag format) burda TƏYİN OLUNMUR —
+  bu ayrı bir qərardır, hələ premature (bax Note aşağıda).
+
+  AI resolution ardıcıllığı:
+    source artefakt -> onun referansı -> Resolution[module|domain|feature]
+    -> sahiblənən giriş -> həmin girişin öz purpose/dependency/skill/task
+    məlumatı (bax modules.sdd, domains.sdd).
+
+  Bu fayl YALNIZ marşrutlaşdırma addımını (artefakt -> model girişi)
+  sahiblənir — resolve olunan girişin özünün artıq dediyini TƏKRARLAMIR
+  (Purpose-dəki qayda burda da qüvvədədir).
 
 Paths:
   BE -> ./backend
@@ -50,3 +72,16 @@ Note:
   payment/course/user modul qovluqları və onların bu fayldakı Modules:/
   Resolve: qeydləri silinib (bax git tarixçəsi, bu commit-dən əvvəl) —
   gələcək bir "next" onları bu təzə sxemə uyğun yenidən quracaq.
+
+  (prompt/new/43.md, STEP 21) Source, "Code ↔ SDD mapping" adlı ayrıca bir
+  protokolun yoxluğunu ən böyük çatışmazlıqlardan biri kimi qeyd etdi.
+  Yoxlanıldı: bu fayl əvvəllər YALNIZ irəli istiqamətli marşrutu (ad/domen
+  -> yol) sahiblənirdi, kod artefaktından geriyə model girişinə qayıtmaq
+  üçün heç nə yox idi — bu, doğrudan da mövcud boşluq idi. Applied:
+  CodeReference bölməsi əlavə olundu — eyni faylda, çünki bu, artıq bu
+  faylın sahiblədiyi "routing/index only" konseptinin əks istiqamətidir,
+  yeni fayl/qovluq tələb etmir. Konkret referans tag sintaksisi (məsələn
+  source-un öz `@PAY/refund` kimi bir işarə daşıması) qəsdən TƏYİN
+  OLUNMADI — real kod hələ yoxdur, konkret sintaksis indi premature olardı
+  (eyni "skeleton + rule engine only, konkret nümunə yox" presedenti, bax
+  PROJECT.sdd -> Note, STEP 20).
