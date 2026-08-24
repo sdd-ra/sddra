@@ -808,6 +808,60 @@ cədvəli təklif etdi. Hər element ayrıca qiymətləndirildi:
   edildi.
 
 
+## STEP 24 — `architecture/architecture.sdd` + `project/map.sdd` genişlənməsi (prompt/new/46.md)
+
+Mənbə (öz nömrələməsində "STEP 17 DÜZƏLİŞ") "Virtual Project Mirror" konsepsiyası
+təklif etdi: `.sdd/project` real source ağacını 1:1 güzgüləyən, `docs/` qovluq
+strukturu, iki-səviyyəli BDD notasiyası, skill/architecture maturity səviyyələri
+(L1-L5), System Design lüğəti, texnologiya-fingerprint tag-ları,
+infrastructure-as-dependency və diaqram-yalnız-output qaydası. Hər element ayrıca
+qiymətləndirildi:
+
+- **Tətbiq olundu (`project/map.sdd -> CodeReference -> Mirror:`):** Virtual
+  Project Mirror konsepsiyasının nüvəsi — real source faylı `<root>/<path>/
+  <file>.<ext>` üçün `.sdd/project/<path>/<file>.sdd` adında bir mirror fayl,
+  faylın öz YOLU referansdır (source daxilində ayrıca tag yoxdur). Bu, STEP
+  21/23-ün qəsdən TƏYİN OLUNMAMIŞ qoyduğu "konkret referans tag sintaksisi"
+  sualını həll edir. Mirror fayl formatı yığcamdır (`Own:`/`Do:`/`Use:`/`Test:`
+  + Resolution pointer) — real source yoxdur, indi heç bir konkret mirror fayl
+  yaradılmır, bu yalnız formatın tərifidir.
+- **Tətbiq olundu (`architecture/architecture.sdd -> Principles -> CleanSource`):**
+  real source qovluqları (mövcud olduqda) source-kodun yanında co-located
+  `.sdd`/`.md` metadata faylı DAŞIMAYACAQ — AI-facing data yalnız mirror
+  ağacında, insan-facing nərrativ yalnız `docs/`-da yaşayır. Mirror
+  konsepsiyasının hara aid olduğunu rəsmiləşdirir, Locality/
+  SeparationOfConcerns-in tətbiqidir, yeni səlahiyyət deyil.
+- **Tətbiq olundu (`architecture/architecture.sdd -> Principles -> DiagramAsOutput`):**
+  diaqram (Mermaid/PlantUML/s.) modeldən GENERASİYA OLUNMALIDIR, ikinci mənbə
+  ola bilməz — SingleSourceOfTruth-un birbaşa tətbiqi.
+- **Tətbiq olundu (`architecture/architecture.sdd -> Principles -> CompactModel`):**
+  mövcud bəndə konkret BDD nümunəsi əlavə olundu (AI-facing `G:`/`W:`/`T:` vs
+  insan-facing `Given`/`When`/`Then` — eyni semantika, iki mənbə yox) — mənbənin
+  iki-səviyyəli BDD təklifini yeni bölmə açmadan, mövcud prinsipin bir
+  nümunəsi kimi qəbul edir.
+- **Tətbiq olundu (`project/map.sdd -> Paths:`):** `DOCS -> ./docs` əlavə
+  olundu, `CleanSource`-a istinadla — insan-sənədi üçün, `.sdd/`-dən ayrı.
+- **Rədd edildi — konkret `docs/` alt-strukturu** (`about-project.md`,
+  `architecture/{system,backend,frontend,mobile,devops}.md`, `domains/
+  {payments,users,analytics}.md`, `database/`, `api/`, `bdd/`, `decisions/`):
+  real domenlər/komponentlər hələ yoxdur, konkret nümunə indi premature
+  olardı (eyni presedent: STEP 4, STEP 20/21/22 `protocol/`, STEP 23).
+- **Təxirə salındı (mənbənin öz gələcək "STEP 18 — Project Intelligence /
+  Architecture Profile" mövzusu):** skill səviyyələri (L1-L5 hər skill/tag
+  üçün), arxitektura yetkinlik səviyyələri (L1-L5, `#ARCH` üçün), System
+  Design kanonik lüğəti (`#SCALE #DAU #MAU #QPS #LAT #SLA #SLO #SLI #SPOF
+  #HA #DR #RPO #RTO #CACHE #QUEUE #CDN #LB #DB #REPL #SHARD #PART #OBS #LOG
+  #METRIC #TRACE`), dil/framework-as-skill texnologiya-fingerprint tag-ları,
+  infrastructure-as-dependency, tam discovery pipeline (PROMPT -> PROJECT
+  DISCOVERY -> ... -> VR) — bunlar miqyas/profiling məsələləridir, bu STEP-in
+  əhatəsindən kənardır.
+- `architecture/architecture.sdd -> Note`-a və `project/map.sdd -> Note`-a
+  yeni STEP 24 bəndləri, `PROJECT.sdd -> Note`-a ingilis dilində paralel bənd
+  əlavə olundu (STEP 10-dan bəri qüvvədə olan qayda üzrə).
+- Yeni rule-ID prefiksi lazım olmadı — dəyişikliklər mövcud `Principles:`/
+  `CodeReference:`/`Paths:` bölmələrinə additive əlavə edildi.
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -828,7 +882,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/45.md-ə qədər)
+## Status (prompt/new/46.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -997,5 +1051,18 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   optional `files`/`entry`/`tests` sahələri əlavə olundu. Konkret domen ağacı,
   `@PAY/refund` nümunəsi, hierarxik ID naviqasiyası və doc-routing cədvəli
   rədd edildi (bax yuxarı STEP 23 bölməsi).
+- `+` **`architecture\architecture.sdd` + `project\map.sdd` STEP-24 genişlənmə
+  (prompt\new\46.md):** `architecture.sdd -> Principles:`-ə `CleanSource`
+  (source-kod ayrıca referans tag/metadata daşımır) və `DiagramAsOutput`
+  (diaqram modeldən generasiya olunur, ikinci mənbə deyil) əlavə olundu;
+  `CompactModel`-ə BDD `G:`/`W:`/`T:` nümunəsi əlavə olundu. `map.sdd ->
+  CodeReference:`-ə `Mirror:` alt-bölməsi əlavə olundu — real source faylı
+  üçün `.sdd/project/<path>/<file>.sdd` mirror faylı, faylın öz YOLU
+  referansdır (STEP 21/23-ün açıq qoyduğu "tag sintaksisi" sualını həll
+  edir). `Paths:`-ə `DOCS -> ./docs` əlavə olundu. Konkret `docs/`
+  alt-strukturu rədd edildi (bax yuxarı STEP 24 bölməsi); skill/architecture
+  maturity səviyyələri, System Design lüğəti, tech-fingerprint tag-ları,
+  infrastructure-as-dependency və discovery pipeline DEFER edildi
+  (source-un öz "STEP 18" mövzusu).
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.

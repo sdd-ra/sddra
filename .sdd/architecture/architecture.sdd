@@ -205,7 +205,26 @@ Principles:
     prose) — the full narrative explanation of a decision belongs to
     human-facing documentation (e.g. README.md's per-STEP log), which
     MAY restate an SDD rule at length for a human reader without that
-    restatement becoming a second SSOT for the rule.
+    restatement becoming a second SSOT for the rule. (e.g. BDD
+    scenarios: AI-facing form uses abbreviated `G:`/`W:`/`T:` tags,
+    human-facing form uses full `Given`/`When`/`Then` prose — same
+    semantics, not two sources of truth; STEP 24.)
+
+  CleanSource:
+    Real source directories (once they exist) MUST NOT contain
+    co-located SDD or doc metadata files next to code (no
+    `repository.sdd`/`repository.md` sitting beside `repository.go`) —
+    AI-facing semantic data lives only under the mirrored `.sdd/project`
+    tree (bax project/map.sdd -> CodeReference -> Mirror), human-facing
+    narrative only under `docs/` (bax project/map.sdd -> Paths). This is
+    an application of Locality/SeparationOfConcerns above, not a new
+    authority (STEP 24).
+
+  DiagramAsOutput:
+    A diagram (Mermaid/PlantUML/Graphviz, etc.) MUST be generated FROM
+    the project model — it is a rendering, never a second source of
+    truth (bax SingleSourceOfTruth above). AI MUST NOT derive or update
+    the project model from a diagram (STEP 24).
 
 State: +
   (STEP 3 completed — see PROJECT.sdd -> Rules [R10]: state must be marked
@@ -405,3 +424,22 @@ Note:
   `CompactModel`, in this file's own short-statement style rather than as
   a separate file or a new `[AP]`/`[P]`-style prefix, since this section
   already owns exactly this kind of cross-cutting engineering rule.
+
+  (prompt/new/46.md, STEP 24) Source (its own "STEP 17 DÜZƏLİŞ") proposed
+  14 items around a Virtual Project Mirror. Applied here: `CleanSource`
+  Principle (source dirs must never carry co-located `.sdd`/`.md`
+  metadata — resolves where the Mirror concept's data actually lives, see
+  `project/map.sdd -> CodeReference -> Mirror`), `DiagramAsOutput`
+  Principle (diagrams generated FROM the model, never authored as their
+  own truth — a direct application of `SingleSourceOfTruth` above, not a
+  new authority), and a concrete BDD `G:`/`W:`/`T:` vs `Given`/`When`/
+  `Then` example folded into the existing `CompactModel` statement (no new
+  section — same AI-compact/human-verbose split already stated there).
+  Declined/deferred: skill levels (L1-L5 per tag), architecture maturity
+  levels (L1-L5 for `#ARCH`), the System Design canonical vocabulary
+  (`#SCALE #DAU #MAU #QPS ...`), language/framework-as-skill tech-
+  fingerprint tags, infrastructure-as-dependency in the project model, and
+  the full discovery pipeline (PROMPT -> ... -> VR) — these are scale/
+  profiling concerns the source itself points at its own next topic,
+  "STEP 18 — Project Intelligence / Architecture Profile," not this STEP's
+  scope (see `project/map.sdd -> Note` STEP 24 for the full citation).
