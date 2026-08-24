@@ -43,10 +43,11 @@ Directories:
       qaydaları (bax tasks/tasks.sdd). Konkret task instansiyaları BURDA
       DEYİL, öz sahibinin altında yaşayır (project/<domain>/tasks/*.sdd,
       bax Note aşağıda, STEP 8 final)
-    state: STEP 8 refinement tamamlandı (prompt/new/28.md) — tasks.sdd (TaskEngine, Rules
-      [T1]-[T20]) root-da, Owns/Scope/DoesNotOwn/TaskCreation/Source/TaskScope/Lifecycle+
-      BlockedFlow+FailureFlow+ReviewFailure+VerificationFailure/Decomposition/Completion/
-      Portability/Traceability/Navigation bölmələri ilə zənginləşdirildi
+    state: STEP 19 tamamlandı (prompt/new/41.md) — tasks.sdd (TaskEngine, Rules
+      [T1]-[T22]) root-da, Owns/Scope/DoesNotOwn/TaskCreation/TaskResolution/TaskKnowledge/
+      Source/TaskScope/Lifecycle+BlockedFlow+FailureFlow+ReviewFailure+VerificationFailure/
+      NoLoop/Escalation/Decomposition/Completion/Portability/Traceability/Navigation
+      bölmələri ilə zənginləşdirildi (bax tasks/tasks.sdd -> Note, STEP 19 entry)
 
   architecture:
     path: ./architecture
@@ -568,3 +569,24 @@ Note:
   are still not written — STEP 6's "skeleton + rule engine only" scope
   still holds. No new [R] rule was needed — this STEP only extended an
   existing rule set within skills/skills.sdd.
+
+  (prompt/new/41.md, STEP 19) Source proposed a full `Spec: TaskSystem`
+  rewrite for tasks/tasks.sdd, including a file-split (lifecycle.sdd/
+  states.sdd/templates/task.sdd — rejected, mirrors the STEP 11->12
+  chains.sdd split-then-revert precedent) and an alternate 8-symbol
+  task-state table (rejected outright — conflicts with the canonical
+  state/state.sdd symbols, would violate its own [S2]). Applied only the
+  genuinely new content as a targeted extension of the existing single
+  tasks.sdd file: TaskResolution: (Task > Project Context > Applicable
+  Skills > Dependencies > Chain > Implementation, new [T21]), Escalation:
+  + NoLoop: (attempts field + retry-limit -> state = ?, reusing the
+  canonical `?` DECISION_REQUIRED symbol rather than inventing one, new
+  [T22]), TaskKnowledge: (skills field, reference-only, reinforces
+  [T18]), and two new Optional TaskContract fields (skills, attempts).
+  Rule numbering continued from [T20] to [T21]-[T22]. See tasks/
+  tasks.sdd -> Note, STEP 19 entry, for the full rationale, including
+  what was deliberately not duplicated (the "TaskPortability" content
+  mostly overlapped the existing Portability: section — only a one-
+  sentence bridge was added there; the example task file #PAY-042.sdd
+  was not created, same "skeleton + rule engine only, no concrete
+  instance" precedent as every prior STEP).
