@@ -193,6 +193,20 @@ Principles:
     definition; this file does not restate it as new authority, it just
     applies it to the SDD component graph above.
 
+  TokenEconomy:
+    AI MUST read the smallest sufficient context for a task, and MUST
+    expand a reference (follow it to another SDD file) only when the
+    task actually requires that file's detail — this is the same
+    Locality/ExplicitReference discipline above, applied to how AI
+    consumes the graph at read-time, not a new authority.
+
+  CompactModel:
+    SDD content itself MUST stay compact and operational (rules, not
+    prose) — the full narrative explanation of a decision belongs to
+    human-facing documentation (e.g. README.md's per-STEP log), which
+    MAY restate an SDD rule at length for a human reader without that
+    restatement becoming a second SSOT for the rule.
+
 State: +
   (STEP 3 completed — see PROJECT.sdd -> Rules [R10]: state must be marked
   when a stage finishes.)
@@ -379,3 +393,15 @@ Note:
   architected (domain boundaries, dependency direction, coupling). The
   near-identical naming (`Principles:` section here vs. `principles.sdd`
   file there) is coincidental, not a shared concept — do not merge them.
+
+  (prompt/new/44.md, STEP 22) Source proposed a new `.sdd/protocol/`
+  directory (6 files: protocol.sdd, stages.sdd, states.sdd, relations.sdd,
+  origins.sdd, vocabulary.sdd) plus a token-economy statement. The
+  directory itself was declined (third re-proposal after STEP 20/21, see
+  `PROJECT.sdd -> Note` for the full per-file citation matrix — not
+  repeated here, NoDuplication). Only the token-economy content was
+  genuinely new (STEP 21 had already confirmed zero existing coverage) —
+  applied above as two Principles entries, `TokenEconomy` and
+  `CompactModel`, in this file's own short-statement style rather than as
+  a separate file or a new `[AP]`/`[P]`-style prefix, since this section
+  already owns exactly this kind of cross-cutting engineering rule.
