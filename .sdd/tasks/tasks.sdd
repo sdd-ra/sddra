@@ -67,6 +67,30 @@ TaskCreation:
   edir (bax SeparationOfConcerns, architecture/architecture.sdd).
 
 
+TaskResolution:
+  Task > Project Context > Applicable Skills > Dependencies > Chain >
+  Implementation
+
+  Bu, TaskCreation-dan (necə YARANIR) fərqli bir mərhələdir — artıq
+  mövcud olan (yaranmış) bir task icraya başlamazdan ƏVVƏL öz tam
+  kontekstini bu ardıcıllıqla HƏLL edir (resolve): əvvəlcə öz layihə
+  kontekstinə (bax project/), sonra tətbiq oluna bilən skill-lərə (bax
+  skills/skills.sdd -> Applicability), sonra asılılıqlarına (bax
+  Dependency aşağıda), sonra öz chain-inə (bax chains/), yalnız bundan
+  sonra implementasiyaya keçir. AI bu ardıcıllığı ATLAYA BİLMƏZ (bax
+  [T21]) — bu, TaskPortability-in relocation zamanı "dependencies MUST
+  be re-resolved" tələbinin (bax Portability aşağıda) həyata keçirmə
+  mexanizmidir, ayrıca yeni prinsip deyil.
+
+
+TaskKnowledge:
+  TaskContract.skills sahəsi tətbiq oluna bilən skill-lərə REFERANSDIR
+  (məs. @../skills/backend/ddd.sdd formatında), onların təsvirini və ya
+  qaydalarını təkrar YAZMIR — bax [T18] NoDuplication. Task öz icrası
+  üçün lazım olan mühəndislik biliyini heç vaxt öz daxilində köçürmür,
+  yalnız hara baxılmalı olduğunu göstərir (bax Navigation aşağıda).
+
+
 Storage:
   Task öz sahibinin (owning component) altında saxlanılır, bu faylın
   yanında (root-da) DEYİL — bu, .sdd-nin başqa bir layihəyə köçürülə bilən
@@ -93,6 +117,11 @@ TaskContract:
   Every task MUST define:
     id, type, title, purpose, owner (domain/module), source, chain,
     scope, dependencies, subtasks, related, done_when, state
+
+  Optional:
+    skills   (bax TaskKnowledge yuxarıda — referans-only, @-ilə)
+    attempts (bax NoLoop aşağıda — neçə dəfə FAILED > RECOVER dövrü
+              keçildiyini sayır, retry-limit-i aşkar etmək üçün)
 
 
 Source:
@@ -159,6 +188,27 @@ VerificationFailure:
   dependency) məsul olduğunu yenidən müəyyənləşdirməyi tələb edir.
 
 
+NoLoop:
+  FailureFlow/ReviewFailure özlüyündə neçə dəfə təkrarlana biləcəyinə
+  həddi TƏYİN ETMİR — bu, sonsuz FAILED > RECOVER > ACTIVE dövrünə yol
+  aça bilər. TaskContract.attempts hər RECOVER dövründə artırılır; konkret
+  retry-limit dəyəri (N) layihəyə xasdır (bax DoesNotOwn — layihə
+  parametri), bu fayl yalnız SAYILMASI və HƏDD aşılanda Escalation-a
+  keçilməsi tələbini qoyur (bax [T22]).
+
+
+Escalation:
+  attempts >= retry-limit  =>  state = ?
+
+  Retry-limit-ə çatan task AI tərəfindən sükutla RECOVER-ə davam
+  etdirilə bilməz — kanonik `?` (DECISION_REQUIRED, bax state/state.sdd
+  -> Escalation) state-inə keçir, insan qərarı gözlənir. Bu, YENİ bir
+  qlobal state DEYİL — artıq bu faylın öz `States` bölməsində və
+  state/state.sdd-də mövcud olan `?` markerinin FailureFlow-a konkret
+  tətbiqidir (bax [S2]: "State symbols MUST NOT be redefined by project
+  components" — buna görə burda yeni simvol İCAD OLUNMUR).
+
+
 Rules:
   [T1] Every executable task MUST have a resolvable owner (domain/module)
        (bax Ownership yuxarıda).
@@ -200,6 +250,13 @@ Rules:
   [T20] Project task instances MUST remain inside their owning project
         model (project/<domain>/tasks/*.sdd) — MUST NOT be stored inside
         .sdd/tasks/.
+  [T21] AI MUST resolve task context via the TaskResolution order (bax
+        TaskResolution yuxarıda) before implementation — a step MUST NOT
+        be skipped.
+  [T22] AI MUST track attempts (bax TaskContract.attempts) and MUST
+        escalate to state = ? once the project-defined retry-limit is
+        reached (bax NoLoop/Escalation yuxarıda) — AI MUST NOT loop
+        indefinitely on the same failure.
 
 
 Dependency:
@@ -267,6 +324,9 @@ Portability:
   If a dependency cannot be resolved after relocation:
     state = !
     reason = dependency-unresolved
+
+  ("dependencies MUST be re-resolved" mexanizmi TaskResolution
+  bölməsində formallaşıb — bax yuxarıda.)
 
   Task references (dependencies, related, source) SHOULD be relative to
   .sdd root və ya öz sahibinə görə verilsin, absolute fayl-sistemi yoluna
@@ -421,3 +481,62 @@ Note:
   same glyphs, same meanings, just a corrected pointer target now that
   the canonical legend has its own dedicated file instead of living
   inline in PROJECT.sdd. No glyph meaning changed here.
+
+  (prompt/new/41.md, STEP 19) Mənbə chat yenidən eyni fayl üçün daha
+  zəngin bir `Spec: TaskSystem` təqdim etdi, bu dəfə fokus TaskResolution
+  (icra öncəsi kontekst həlli), Failure/Escalation (retry-limit-dən
+  sonra insan qərarına keçid) və TaskKnowledge (skill referansları)
+  üzərinə idi. Mətn HƏRFİ köçürülmədi (bax "apply, don't copy") —
+  `.sdd/tasks/tasks.sdd`-in (bax bu fayl) və kanonik `state/state.sdd`-in
+  (STEP 10) mövcud məzmunu ilə müqayisə edildikdən sonra aşağıdakı kimi
+  seçici tətbiq olundu:
+
+  - `TaskResolution:` yeni bölmə əlavə olundu (Task > Project Context >
+    Applicable Skills > Dependencies > Chain > Implementation) —
+    `TaskCreation:`-dan sonra yerləşdirildi, çünki fərqli mərhələdir
+    (necə YARANIR vs artıq yaranmış task icraya başlamazdan əvvəl necə
+    öz kontekstini HƏLL edir). Yeni [T21] bu ardıcıllığın atlanıla
+    bilməyəcəyini formallaşdırır.
+  - `Escalation:` və `NoLoop:` yeni bölmələr əlavə olundu (`Verification
+    Failure`-dan sonra, `Rules`-dan əvvəl) — mövcud FailureFlow/
+    ReviewFailure/VerificationFailure dövrlərinin heç birində retry-limit
+    yox idi (sonsuz RECOVER > ACTIVE dövrü mümkün idi). Yeni `attempts`
+    sahəsi (bax TaskContract) sayır, limit aşılanda kanonik `?`
+    (DECISION_REQUIRED) state-inə keçilir — bu, state/state.sdd-nin öz
+    Escalation bölməsində artıq mövcud olan "AI MUST stop and hand
+    control to a human" prinsipinin FailureFlow-a konkret tətbiqidir,
+    YENİ simvol deyil. Yeni [T22] bunu qayda kimi formallaşdırır.
+  - `TaskKnowledge:` yeni bölmə əlavə olundu (`TaskContract`-dan sonra) —
+    `skills` sahəsini (yeni, Optional) referans-only olaraq izah edir
+    (məs. `@../skills/backend/ddd.sdd`), [T18] NoDuplication-ı
+    gücləndirir.
+  - `TaskContract`-a iki Optional sahə əlavə olundu: `skills` (yuxarı
+    bax) və `attempts` (bax NoLoop).
+  - `Portability:` bölməsinə bir körpü cümləsi əlavə olundu —
+    "dependencies MUST be re-resolved" tələbinin mexanizmi indi
+    `TaskResolution`-da formallaşıb, deyə ora istinad edildi (yeni bölmə
+    deyil, mövcud Portability demək olar ki dəyişmədən qaldı).
+
+  Mənbənin aşağıdakı hissələri isə RƏDD EDİLDİ (səbəbi ilə):
+  - Fayl-split təklifi (`tasks.sdd`+`lifecycle.sdd`+`states.sdd`+
+    `templates/task.sdd`) — state artıq STEP 10-dan bəri kanonik
+    `state/state.sdd`-də yaşayır (təkrar olardı), lifecycle/templates
+    ayrımı isə STEP 11 -> STEP 12-dəki eyni "chains split, sonra tək
+    fayla geri qayıtdı" presedentini təkrarlayardı (bax chains/
+    chains.sdd -> Note). Tək fayl modeli qorunur.
+  - 8 simvollu alternativ task-state cədvəli (`+`=READY, `~`=IN_PROGRESS,
+    `?`=BLOCKED, `!`=FAILED, `>`=REVIEW, `✓`=DONE, `@`=WAITING_HUMAN,
+    `-`=CANCELLED) — bu, kanonik `state/state.sdd` simvollarının
+    mənalarını AÇIQ-AÇIĞA yenidən tərif edərdi (`[S2]`: "State symbols
+    MUST NOT be redefined by project components" pozulardı). Üstəlik
+    "yeni" WAITING_HUMAN/REVIEW anlayışları artıq kanonik `?`
+    (DECISION_REQUIRED) və extended `*` (REVIEW) simvolları ilə
+    ifadə olunur — heç bir yeni simvola ehtiyac yoxdur.
+  - Konkret nümunə task faylı (`.sdd/tasks/#PAY-042.sdd`, tam sahə
+    siyahısı ilə) — "skelet + qayda mühərriki, konkret instansiya yox"
+    prinsipi qorunur (bax yuxarıdakı STEP 8/8-final Note-ları), bu
+    repoda hələ heç bir real domen qovluğu (project/payments/ və s.)
+    yoxdur.
+  - "TaskPortability" bölməsinin qalan hissəsi böyük ölçüdə mövcud
+    `Portability:` bölməsi ilə üst-üstə düşürdü — yalnız yuxarıdakı bir
+    cümlə körpü kifayət etdi, ayrıca bölmə yaradılmadı (NoDuplication).

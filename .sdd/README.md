@@ -578,6 +578,40 @@ genişləndirmə, yeni fayl/prefiks yox:
 - Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
   qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
 
+## STEP 19 — `.sdd/tasks/tasks.sdd` genişlənməsi (prompt/new/41.md)
+
+Mənbə chunk 41 yenidən tam yeni bir `Spec: TaskSystem` sənədi təklif etdi
+(öz fayl-split və alternativ state-cədvəli ideyaları ilə), amma bu mövcud
+`tasks/tasks.sdd`-in (STEP 8 final, STEP 8 refinement) scope-una düşür —
+eyni STEP 16/17/18 naxışı: additive genişləndirmə, yeni fayl/prefiks yox:
+
+- **`tasks/tasks.sdd`-ə əlavə olundu:** `TaskResolution:` (Task > Project
+  Context > Applicable Skills > Dependencies > Chain > Implementation —
+  artıq YARANMIŞ bir task-ın icraya başlamazdan ƏVVƏL öz kontekstini necə
+  HƏLL etdiyi, TaskCreation-dan fərqli mərhələ), `TaskKnowledge:` (`skills`
+  sahəsinin referans-only olduğunu izah edir, `[T18]` NoDuplication-ı
+  gücləndirir), `NoLoop:`/`Escalation:` (yeni `attempts` sahəsi sayır,
+  layihəyə xas retry-limit aşılanda kanonik `?` DECISION_REQUIRED
+  state-inə keçid — YENİ simvol deyil, bax `state/state.sdd -> [S2]`),
+  `TaskContract`-a iki yeni `Optional` sahə (`skills`, `attempts`),
+  `Portability:`-ə bir körpü cümləsi ("dependencies MUST be re-resolved"
+  mexanizmi indi `TaskResolution`-da formallaşıb).
+- Qayda nömrələnməsi `[T20]`-dən davam etdi (`[T21]`, `[T22]`), yeni
+  prefiks açılmadı.
+- **Rədd edildi:** fayl-split təklifi (`tasks.sdd`+`lifecycle.sdd`+
+  `states.sdd`+`templates/task.sdd`) — STEP 11 -> STEP 12-dəki eyni
+  "chains split, sonra tək fayla geri qayıtdı" presedentini təkrarlayardı
+  (bax `chains/chains.sdd -> Note`); alternativ 8 simvollu task-state
+  cədvəli — kanonik `state/state.sdd` simvollarını yenidən tərif edərdi
+  (`[S2]` pozulardı); konkret nümunə task faylı (`#PAY-042.sdd`) —
+  "skelet + qayda mühərriki, konkret instansiya yox" prinsipi qorunur,
+  hələ heç bir real domen qovluğu yoxdur.
+- `PROJECT.sdd`-nin `Directories -> tasks -> state:` sahəsi bu STEP-in
+  əlavələrini qeyd etmək üçün genişləndirildi, yeni STEP 19 Note bəndi
+  əlavə olundu (bax `PROJECT.sdd -> Note`).
+- Heç bir yeni `[R]` qaydası lazım olmadı — bu STEP yalnız mövcud bir
+  qayda dəstini genişləndirdi, yeni konstitusiya-səviyyəli məsələ açmadı.
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -598,7 +632,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/40.md-ə qədər)
+## Status (prompt/new/41.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -726,6 +760,13 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   `PROJECT.sdd -> Directories -> skills -> state` və `Note` bölməsi də
   uyğun yeniləndi. Ətraflı bax `skills/skills.sdd -> Note` və yuxarıdakı
   "STEP 18" bölməsinə.
+- `+` **STEP 19 — `tasks/tasks.sdd` genişlənməsi (prompt/new/41.md):** yeni
+  `TaskResolution:` bölməsi (`[T21]`), `TaskKnowledge:` bölməsi,
+  `NoLoop:`/`Escalation:` bölmələri (`[T22]`, kanonik `?` state-inə
+  istinad), `TaskContract`-a `skills`/`attempts` Optional sahələri,
+  `Portability:`-ə körpü cümləsi — hamısı mövcud `tasks.sdd`-ə additive
+  düzəliş, yeni fayl/prefiks yaradılmadı. Ətraflı bax `tasks/tasks.sdd ->
+  Note` və yuxarıdakı "STEP 19" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
