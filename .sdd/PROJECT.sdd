@@ -691,3 +691,60 @@ Note:
   the (declined) protocol vocabulary is noted but not actionable — it
   is a suggestion for a future prompt/new file, not an instruction to
   act on now.
+
+  (prompt/new/43.md, STEP 21) Source was a self-audit of the whole .sdd
+  system so far (a status table across ten-plus subsystems, plus a
+  15-step proposed build order starting with PROTOCOL). Only one item
+  was applied; the rest were declined or deliberately deferred.
+
+  Applied: `project/map.sdd -> CodeReference` — the source's "Code ↔ SDD
+  mapping" gap (item 6/status 🔴 in its own audit table) was verified as
+  genuinely unaddressed: map.sdd's existing Resolution/Paths sections
+  only route forward (name/domain -> path), nothing routed backward
+  (a code artifact -> the .sdd model entry that owns it). CodeReference
+  was added to the SAME file rather than a new one, since it is the
+  reverse direction of the routing concept map.sdd already owns, not a
+  new concept — consistent with the "extend the owning file" pattern
+  used at STEP 13 (architecture/principles.sdd) and STEP 15 (project/
+  instantiation.sdd). The concrete tag syntax (e.g. `@PAY/refund` on a
+  source file) was deliberately left undefined — no real project code
+  exists yet to carry such a tag, so fixing a syntax now would be
+  premature, same "skeleton + rule engine only" precedent as every
+  prior STEP.
+
+  Declined (reaffirmed): the source's #1-priority item, a standalone
+  `.sdd/protocol/` directory defining canonical stage identifiers
+  (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) and skill sigils. This is the same
+  proposal STEP 20 already declined (bax yuxarıda) — re-verified this
+  STEP directly against chains/chains.sdd -> Stages, which already
+  defines this exact identifier set with the same chain-orchestration
+  vs engineering-discipline split the source re-describes. Nothing in
+  this chunk changes STEP 20's reasoning (NoDuplication, the STEP 11->12
+  split-then-revert precedent, this file's own STEP 1 protocol/-deletion
+  history, the [S2] conflict with state/state.sdd's symbols) — it is
+  re-cited here, not re-argued.
+
+  Declined: the source's discovery-output taxonomy (FACT/RECOMMENDATION/
+  RISK/UNKNOWN, item 5 in its audit). This duplicates Operations ->
+  ANALYZE_PROJECT -> Result (bax yuxarıda), already built at STEP 20:
+  DISCOVERED/RECOMMENDATIONS/RISKS/UNKNOWN under [PA4]/[PA6]/[PA9]/[PA7]
+  is the same four-way split under different labels (FACT = DISCOVERED).
+  No edit was made for this item.
+
+  Deferred (not built this STEP, no file touched): the remaining items
+  from the source's 15-step order — CHAIN resolution algorithm (task ->
+  affected components -> dependencies -> applicable skills -> stages ->
+  chain), SKILL CHAIN engine mechanics (skill -> output -> next skill;
+  partially already covered by skills/skills.sdd's SkillOutput/
+  SkillToTask/SkillToChain from STEP 18 — a full audit of that overlap
+  is future work, not this STEP's), TASK compact reference format (a
+  `#PAY-042` / `@PAY/refund` shorthand alongside the existing verbose
+  TaskContract — the underlying human/AI split is already the Human vs
+  AI output principle below), BDD/Test protocol, DB/API model, and a
+  cross-cutting COMPACT+DETERMINISTIC+HUMAN-RESOLVABLE token-economy
+  principle. Each is a genuinely separate, sizeable concept — bundling
+  them into one STEP would repeat the exact "random folder / everything
+  at once" mistake the source itself warns against (bax source, section
+  12: "Artıq random folder yaratmaq olmaz"). They remain candidates for
+  their own future prompt/new chunks, one STEP at a time, per this
+  repo's own established pace.

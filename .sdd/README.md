@@ -659,6 +659,52 @@ ayrıca bir `protocol.sdd` (stage identifikatorları + skill sigilləri +
   `Rules:` blokuna toxunulmadı.
 
 
+## STEP 21 — `.sdd/project/map.sdd` genişlənməsi (prompt/new/43.md)
+
+Mənbə chunk 43 bütün `.sdd` sisteminin öz-auditini apardı (10+ alt-sistem
+üzrə status cədvəli 🟢/🟡/🔴, plus 15 addımlıq təklif olunan tikinti
+sırası, PROTOCOL-dan başlayaraq). Yalnız bir maddə tətbiq olundu, qalanı
+rədd edildi ya da təxirə salındı:
+
+- **`project/map.sdd`-ə əlavə olundu:** yeni `CodeReference:` bölməsi —
+  mənbənin "Code ↔ SDD mapping" boşluğu (öz auditində 🔴, 6-cı maddə).
+  Yoxlanılıb: `map.sdd`-in mövcud `Resolution:`/`Paths:` yalnız irəli
+  istiqamətli marşrutu (ad/domen -> yol) sahiblənirdi, kod artefaktından
+  geriyə model girişinə qayıtmaq üçün heç nə yox idi — real boşluq idi.
+  Eyni faylda həll olundu (yeni fayl/qovluq yox), çünki bu, `map.sdd`-in
+  artıq sahiblədiyi routing konseptinin sadəcə əks istiqamətidir — STEP
+  13/STEP 15-də istifadə olunan "sahiblənən faylı genişləndir" naxışı ilə
+  eyni. Konkret referans tag sintaksisi (məsələn `@PAY/refund`) qəsdən
+  TƏYİN OLUNMADI — real kod hələ yoxdur, indi sintaksis fiksləmək
+  vaxtından əvvəldir.
+- **Rədd edildi (təkrar təsdiq) — `protocol.sdd`:** mənbənin #1 prioritet
+  maddəsi (stage identifikatorları + skill sigilləri üçün ayrıca qovluq)
+  STEP 20-də artıq rədd edilmişdi; bu STEP `chains/chains.sdd -> Stages`
+  ilə birbaşa yenidən yoxlanıldı — heç nə dəyişməyib, arqument təkrar
+  qurulmadı, sadəcə istinad edildi.
+- **Rədd edildi — discovery taxonomy:** mənbənin FACT/RECOMMENDATION/
+  RISK/UNKNOWN kateqoriyaları (5-ci maddə) `PROJECT.sdd -> Operations ->
+  ANALYZE_PROJECT -> Result`-un (STEP 20) DISCOVERED/RECOMMENDATIONS/
+  RISKS/UNKNOWN (`[PA4]/[PA6]/[PA9]/[PA7]`) ilə demək olar eynidir —
+  fərqli etiketlərlə eyni dörd-hissəli bölgü. Heç bir fayl dəyişmədi.
+- **Təxirə salındı (bu STEP-də qurulmadı):** CHAIN resolution alqoritmi,
+  SKILL CHAIN mühərriki mexanikası (qismən artıq `skills/skills.sdd`-in
+  STEP 18 `SkillOutput`/`SkillToTask`/`SkillToChain`-i ilə üst-üstə düşür
+  — tam overlap auditi gələcək iş), TASK compact reference formatı
+  (`#PAY-042` qısaltması), BDD/Test protokolu, DB/API modeli, və
+  COMPACT+DETERMINISTIC+HUMAN-RESOLVABLE token-economy prinsipi
+  (`architecture/principles.sdd`-də sıfır mövcud əhatə, grep ilə
+  təsdiqləndi). Hər biri ayrıca, kifayət qədər böyük konsepsiyadır —
+  hamısını bir STEP-ə yığmaq mənbənin özünün xəbərdarlıq etdiyi
+  "hər şeyi eyni anda et" səhvini təkrarlayardı (bax mənbə, bölmə 12).
+  Növbəti `prompt/new/` chunk-larına buraxılır.
+- `PROJECT.sdd -> Note`-a yeni STEP 21 bəndi əlavə olundu (ingilis
+  dilində), tətbiq/rədd/təxir siyahısını ətraflı izah edir.
+- Yeni rule-ID prefiksi lazım olmadı — `CodeReference:` `map.sdd`-in
+  mövcud unprefixed `Rules:` üslubunda saxlanıldı (bu fayl heç vaxt
+  `[PMap#]`-tipli prefiks istifadə etməyib).
+
+
 ## Struktur (prompt/new/17.md → 18.md ilə təsdiqlənib, STEP 1 skeleton)
 
 ```
@@ -679,7 +725,7 @@ bu, PROJECT MODEL-dir. `.sdd/project/payment/` real `payment/` kod qovluğu deyi
 sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/API ilə
 əlaqəlidir?" sualına AI üçün model verir (bax həmçinin `sddra-sdd-only-no-real-scaffold`).
 
-## Status (prompt/new/42.md-ə qədər)
+## Status (prompt/new/43.md-ə qədər)
 
 - `~` **STEP 1 skeleton reset (prompt/new/17.md) + təsdiq (prompt/new/18.md):** kök quruluş
   yuxarıdakı 9 elementə endirildi və chunk 18-də eyni siyahı ilə təsdiqləndi. `architecture/`,
@@ -821,6 +867,15 @@ sadəcə "Payment project-də haradadır, hansı komponentləri var, hansı DB/A
   alternativ task-state cədvəli) və `tasks.sdd`-ə `Origin` sahəsi
   NoDuplication/`[S2]`/`[T18]` səbəblərinə görə rədd edildi. Ətraflı bax
   `PROJECT.sdd -> Note` və yuxarıdakı "STEP 20" bölməsinə.
+- `+` **STEP 21 — `project/map.sdd` genişlənməsi (prompt/new/43.md):** yeni
+  `CodeReference:` bölməsi (Code ↔ SDD mapping, artefakt -> model girişi
+  marşrutu), tag sintaksisi qəsdən təyin olunmadı; təklif olunan
+  `protocol.sdd` (təkrar) və FACT/RECOMMENDATION/RISK/UNKNOWN discovery
+  taxonomy (ANALYZE_PROJECT -> Result ilə eynilik) rədd edildi; CHAIN
+  resolution alqoritmi, SKILL CHAIN mühərriki, TASK compact format,
+  BDD/Test protokolu, DB/API modeli, token-economy prinsipi növbəti
+  STEP-lərə təxirə salındı. Ətraflı bax `PROJECT.sdd -> Note` və
+  yuxarıdakı "STEP 21" bölməsinə.
 - `!` `state/` — hələ boş (yalnız `.gitkeep`), məzmun növbəti "next"-lərdə müəyyənləşəcək.
 
 Hər növbəti "next" bu faylları ya təsdiqləyəcək, ya da düzəliş edəcək.
