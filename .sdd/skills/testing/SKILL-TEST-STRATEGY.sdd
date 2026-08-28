@@ -1,0 +1,57 @@
+# Skill: Test Strategy
+
+Purpose:
+  Define how the SDDRA system executes, evaluates, and maintains tests.
+  This skill governs test selection, execution workflow, and failure handling.
+  It is the single source of truth for AI-driven test execution.
+
+ID: SKILL-TEST-STRATEGY
+
+Domain: testing
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - AI test execution
+  - CI/CD test pipelines
+  - Test impact analysis
+  - Failure investigation
+
+Input:
+  - Task context (impact, risk, stack)
+  - Project test state
+  - Test type definitions
+  - Gate criteria
+
+Output:
+  - Test execution plan
+  - Selected test types
+  - Pass/fail results
+  - Failure findings
+
+Execute:
+  1. Receive task context from chain engine
+  2. Query .sdd/testing/types.sdd for applicable test types
+  3. Select tests based on impact and risk
+  4. Execute .sdd/testing/scripts/run.ps1 with appropriate category
+  5. Parse results and generate findings
+  6. Update project/testing/ state
+  7. Route failures to task graph
+
+Test Selection Rules:
+  [TS1] Every task MUST have at least one unit test.
+  [TS2] API changes MUST include contract tests.
+  [TS3] Security changes MUST include security gate tests.
+  [TS4] UI changes MUST include E2E tests.
+  [TS5] Data changes MUST include integration tests.
+  [TS6] Performance-critical paths MUST include performance tests.
+
+Execution Rules:
+  [TS7] Tests MUST be executed from .sdd/testing/scripts/.
+  [TS8] AI MUST NOT create ad-hoc test commands outside this skill.
+  [TS9] Test results MUST be stored in .sdd/project/testing/.
+  [TS10] Flaky tests MUST be quarantined and investigated.
+
+State: +
