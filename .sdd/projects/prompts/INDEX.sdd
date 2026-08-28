@@ -1,0 +1,31 @@
+# Projects: Prompts
+
+Purpose:
+  Formalized prompt examples and processed prompt registry.
+  Contains prompts that have been analyzed, formalized, and approved
+  for execution. Each prompt has an ID, best practice documentation,
+  and associated skills/tasks.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @prompt-001/
+   3 @prompt-002/
+
+Rules:
+  [PR1] Every formalized prompt MUST have a unique ID.
+  [PR2] Every prompt MUST document expected skills, decisions, and tasks.
+  [PR3] Prompts MUST be reviewed by human before execution.
+  [PR4] Prompts MUST include best practice references.
+  [PR5] Prompt state MUST be tracked: draft, review, approved, active, done.
+
+Navigation:
+  Prompt001: @prompt-001/prompt.md
+  Prompt001Skill: @prompt-001/skill/SKILL-API-PAYMENT-L1.sdd
+  Prompt002: @prompt-002/prompt.md
+  Prompt002Skill: @prompt-002/skill/SKILL-SECURITY-AUTH-L2.sdd
+  PromptEngine: @../prompts/INDEX.sdd
+  PromptDocs: @../../project/docs/prompts/
+
+State: +
