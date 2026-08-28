@@ -374,3 +374,112 @@ Active development. Model is live and incrementally refined. All `.sdd/` files a
 ## License
 
 Proprietary - All rights reserved
+
+## Installation
+
+### As Standalone Repository
+
+```bash
+git clone https://github.com/sddra/sddra.ai.git
+cd sddra.ai
+```
+
+Clone the repo and use `.sdd/` as your engineering OS. No additional installation required.
+
+### As Claude Code Plugin
+
+```bash
+/plugin marketplace add sddra/sddra-marketplace
+/plugin install sddra@sddra-marketplace
+```
+
+### As Codex CLI Plugin
+
+```bash
+codex plugin install sddra
+```
+
+### As Cursor Extension
+
+Install from Cursor Marketplace: search for "SDDRA".
+
+### As OpenCode Plugin
+
+```bash
+opencode plugin install sddra
+```
+
+### As Hermes Agent Plugin
+
+```bash
+hermes plugin install sddra
+```
+
+### As Pi Extension
+
+```bash
+pi extension install sddra
+```
+
+### As Kimi Code Plugin
+
+```bash
+kimi plugin install sddra
+```
+
+## Plugin Manifests
+
+This repo includes plugin manifests for multiple AI agent platforms:
+
+- `.agents/plugins/marketplace.json` — Claude Code marketplace
+- `.claude-plugin/plugin.json` — Claude Code plugin
+- `.codex-plugin/plugin.json` — Codex CLI plugin
+- `.cursor-plugin/plugin.json` — Cursor extension
+- `.opencode/plugins/sddra.js` — OpenCode plugin
+- `.pi/extensions/sddra.ts` — Pi extension
+- `.hermes-plugin/plugin.yaml` — Hermes plugin
+- `.kimi-plugin/plugin.json` — Kimi Code plugin
+
+Each manifest points to the same `.sdd/` core, so the system behaves identically whether cloned directly or installed from a marketplace.
+
+## Usage After Installation
+
+1. Open your project root
+2. Run `/sdd` to analyze prompts
+3. Follow the chain graph: P1 → D1 → S1 → C1 → DEP1
+4. Human approval required at each gate
+5. `.sdd/` remains immutable — all execution metadata stays in `.sdd/`
+
+## Troubleshooting
+
+### System won't start
+1. Run `/sdd-health` to check integrity
+2. Verify `.sdd/PROJECT.sdd` exists
+3. Verify `.sdd/INDEX.sdd` exists
+4. Verify `.sdd/protocol/ROOT.sdd` exists
+5. Restore from backup if needed
+
+### Plugin not loading
+1. Verify plugin manifest exists for your platform
+2. Check platform-specific logs
+3. Ensure `.sdd/` structure is intact
+4. Reinstall plugin from marketplace
+
+### Chain execution fails
+1. Check `/sdd-status` for current state
+2. Run `/sdd-resume` to continue from checkpoint
+3. Check logs in `prompts/prompt-XXX/logs/`
+4. Review decisions in `.sdd/decisions/`
+
+### Git commit rejected
+1. Check commit message format
+2. Run pre-commit hook manually
+3. Fix validation errors
+4. Try commit again
+
+### Tests failing
+1. Run tests locally
+2. Check test output
+3. Fix failing tests
+4. Run local validation
+5. Push again

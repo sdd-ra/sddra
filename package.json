@@ -1,0 +1,50 @@
+{
+  "name": "sddra",
+  "version": "0.1.0",
+  "description": "SDDRA: Spec-Driven Development & Engineering Operating System",
+  "main": ".sdd/INDEX.sdd",
+  "engines": {
+    "claude-code": ">=1.0.0",
+    "codex-cli": ">=1.0.0",
+    "cursor": ">=0.1.0",
+    "opencode": ">=1.0.0",
+    "hermes": ">=1.0.0",
+    "pi": ">=1.0.0",
+    "kimi-code": ">=1.0.0"
+  },
+  "keywords": [
+    "sdd",
+    "spec-driven",
+    "engineering",
+    "ai-agent",
+    "workflow",
+    "skills",
+    "prompts"
+  ],
+  "author": {
+    "name": "SDDRA",
+    "email": "contact@sddra.ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sddra/sddra.ai.git"
+  },
+  "files": [
+    ".sdd/**/*",
+    "prompts/**/*",
+    ".agents/**/*",
+    ".claude-plugin/**/*",
+    ".codex-plugin/**/*",
+    ".cursor-plugin/**/*",
+    ".opencode/**/*",
+    ".pi/**/*",
+    ".hermes-plugin/**/*",
+    ".kimi-plugin/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "test": ".sdd/testing/scripts/run.ps1",
+    "health": "/sdd-health"
+  }
+}
