@@ -9,9 +9,9 @@ Purpose:
 
   Three layers, not to be confused:
 
-    chains/chains.sdd            -> "CHAIN NECƏ İŞLƏYİR?" (generic engine)
-    project/flows.sdd            -> "BU PROJECT-IN DEFAULT FLOW-U NƏDİR?" (this file)
-    project/<domain>/flows.sdd   -> "<DOMAIN> ÜÇÜN REAL FLOW NƏDİR?" (concrete, future)
+    chains/chains.sdd            -> "HOW DOES THE CHAIN WORK?" (generic engine)
+    project/flows.sdd            -> "WHAT IS THIS PROJECT'S DEFAULT FLOW?" (this file)
+    project/<domain>/flows.sdd   -> "WHAT IS THE REAL FLOW FOR <DOMAIN>?" (concrete, future)
 
 
 Owns:
@@ -122,13 +122,13 @@ Note:
   Deliberate departures from the source spec, per the standing "apply,
   don't copy" rule: added an explicit Owns/DoesNotOwn pair (absent from
   the source) stating this file does NOT redefine chain lifecycle rules
-  or domain-level overrides, matching this repo's established per-file
-  convention (bax architecture/principles.sdd -> DoesNotOwn); added a
-  FlowResolution section mirroring chains.sdd's own FlowResolution and
-  principles.sdd's Resolution, since the source described this
-  three-layer relationship only in prose (bax "Ən vacib məsələ" in the
-  source chunk) without a matching structured Resolution block; folded
-  the source's separate "AN/AR/.../VR" Stages list into a one-line
-  reference to chains.sdd's own Stages vocabulary rather than
-  redeclaring it a second time (bax NoDuplication, architecture/
-  architecture.sdd -> Principles).
+   or domain-level overrides, matching this repo's established per-file
+   convention (see architecture/principles.sdd -> DoesNotOwn); added a
+   FlowResolution section mirroring chains.sdd's own FlowResolution and
+   principles.sdd's Resolution, since the source described this
+   three-layer relationship only in prose (see "Most important point" in
+   the source chunk) without a matching structured Resolution block; folded
+   the source's separate "AN/AR/.../VR" Stages list into a one-line
+   reference to chains.sdd's own Stages vocabulary rather than
+   redeclaring it a second time (see NoDuplication, architecture/
+   architecture.sdd -> Principles).

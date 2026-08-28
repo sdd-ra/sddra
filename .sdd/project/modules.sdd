@@ -1,8 +1,8 @@
-Spec: Project/Modules
+﻿Spec: Project/Modules
 
 Purpose:
   Declare each domain module: what it owns, its public surface, and its
-  direct dependencies — schema only. Concrete module declarations (e.g.
+  direct dependencies â€” schema only. Concrete module declarations (e.g.
   payment, course, user) are added once those domains are rebuilt.
 
 Rules:
@@ -12,31 +12,18 @@ Rules:
   A module MUST NOT depend on any module not listed in its declared deps
   (undeclared dependency = architecture violation, bax architecture.sdd).
   A module MAY declare `files` (owned source paths) and `entry` (its
-  primary entry-point file) once real source exists — these are routing
-  pointers only, not a second source of truth (bax map.sdd -> CodeReference
-  -> SourceOfTruth: layihə təşkilatı üçün mənbə budur, amma runtime
-  davranışı hələ də source kodun özüdür).
+   primary entry-point file) once real source exists â€” these are routing
+   pointers only, not a second source of truth (see map.sdd -> CodeReference
+   -> SourceOfTruth: it is the source for project organization, but runtime
+   behavior is still source code itself).
   A module MAY declare `tests` (owned test paths) using the same
   routing-only rule.
 
 Note:
-  (prompt/new/21.md, STEP 4) Bu fayl chunk 21-in adlandırdığı 5 fayla
-  (map/architecture/dependencies/domains/indexes) daxil deyil, amma yaradılması
-  zəruri idi: map.sdd-nin öz `Resolution:` bölməsi `@modules`-a istinad edir,
-  bu fayl olmadan həmin istinad boşluqda qalardı (bax map.sdd -> Resolution).
+  This file is a SCHEMA â€” concrete module declarations are generated per
+  project from templates/_sdd/modules/. This file does not contain
+  concrete project data.
 
-  Əvvəlki konkret M{} bloku (user/course/payment, öz owns/api/deps
-  siyahıları ilə) sxem-yalnız formaya sıfırlanıb — bax git tarixçəsi bu
-  commit-dən əvvəl. Konkret modul bəyanatları müvafiq domenlər yenidən
-  qurulanda bu sxemə uyğun əlavə olunacaq.
 
-  (prompt/new/45.md, STEP 23) Source "Code ↔ SDD Mapping" üçün per-komponent
-  `Owns:`/`Files:`/`Tests:`/`Entry:`/`Dependencies:`/`DependsOn:`/`UsedBy:`/
-  `Triggers:`/`Produces:` sxemi təklif etdi. Yoxlanıldı: `Owns:`/
-  `Dependencies:`/`DependsOn:` artıq yuxarıdakı Rules-da var (NoDuplication
-  — əlavə olunmadı). `Files:`/`Entry:`/`Tests:` yeni idi və routing-only
-  qeyd kimi əlavə olundu (yuxarı bax). `UsedBy:` `deps`-in tərs istiqaməti
-  kimi derivable-dır (ayrı sahə kimi saxlanmır — duplicate risk). `Triggers:`/
-  `Produces:` icra/hadisə anlayışlarıdır, artıq chains.sdd/tasks.sdd-nin
-  sahəsidir (bax chains.sdd -> Stages, tasks.sdd -> Source) — bura əlavə
-  olunmadı, premature/duplicate hesab edildi.
+State: +
+

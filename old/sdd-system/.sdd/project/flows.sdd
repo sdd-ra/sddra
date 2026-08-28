@@ -1,8 +1,0 @@
-Spec: ProjectFlows
-Purpose: Project-level dependency and execution map.
-Rules:
-  This is a navigation map, not a task list.
-  Domain-local flow.sdd files MAY exist under .sdd/project/<domain>/.
-  Local flow definitions take precedence for local navigation only.
-  Global flow records cross-domain dependencies.
-  Any non-standard flow MUST record why it differs from the standard.

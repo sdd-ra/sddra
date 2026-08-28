@@ -1,23 +1,27 @@
-Spec: Project/Domains
+﻿Spec: Project/Domains
 
 Purpose:
-  Layihədə təmsil olunan biznes domenlərini müəyyən edir — sxem yalnız,
-  konkret domen siyahısı deyil.
+  Defines the business domains represented in the project â€” schema only,
+   not a concrete domain list.
 
 Rules:
   Each domain MUST have an identifiable owner.
   Domain knowledge MUST remain within its own domain model.
-  Cross-domain dependencies MUST be explicit (bax dependencies.sdd).
+  Cross-domain dependencies MUST be explicit (see dependencies.sdd).
 
 Note:
-  Bu, map.sdd-dəki modul-səviyyəli anlayışdan fərqlidir: `modules.sdd`
-  texniki/kod-boundary kontraktını (owns/api/deps) təsvir edir, bu fayl isə
-  biznes-domen modelinin sxemidir — praktikada çox vaxt 1-ə-1 uyğun gəlir
-  (məs. "payment" həm modul, həm domen ola bilər), amma konseptual olaraq
-  ayrıdır və qarışdırılmamalıdır.
+  This differs from the module-level concept in map.sdd: `modules.sdd`
+   describes the technical/code-boundary contract (owns/api/deps), this
+   file is the schema of the business-domain model â€” in practice they
+   often 1:1 match (e.g. "payment" can be both a module and a domain),
+   but conceptually they are separate and must not be mixed.
 
-  (prompt/new/21.md, STEP 4) Köhnə `map.sdd` versiyası bu iki anlayışı
-  "Domains:" bölməsində modul siyahısını təkrarlayaraq qarışdırmışdı
-  (bax map.sdd -> Note). Bu fayl həmin qarışıqlığı ayırd etmək üçün
-  yaradılıb. Konkret domenlər (payment, course, user və s.) gələcək bir
-  "next"lə bu sxemə uyğun yenidən quruluacaq.
+   (prompt/new/21.md, STEP 4) The old `map.sdd` version mixed these two
+   concepts by repeating the module list in the "Domains:" section (see
+   map.sdd -> Note). This file was created to separate that confusion.
+   Concrete domains (payment, course, user, etc.) will be rebuilt
+   according to this schema in a future "next" step.
+
+
+State: +
+

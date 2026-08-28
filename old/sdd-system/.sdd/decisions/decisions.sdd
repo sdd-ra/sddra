@@ -1,3 +1,0 @@
-Spec: DecisionIndex
-Purpose: Index approved and pending project decisions.
-Rule: Decisions belong to project context; root protocol defines how decisions are represented and evaluated.

@@ -1,7 +1,0 @@
-Spec: PromptIntake
-Purpose: Treat new prompt files as candidate input before execution.
-Flow: discover -> classify -> compare -> impact -> approve/queue/archive
-Rules:
-  New prompts MUST be checked before task execution.
-  Higher-priority engineering rules MUST be surfaced before implementation.
-  Useful new knowledge MAY become a skill candidate after approval.
