@@ -83,8 +83,8 @@ ReadOrder:
    37 @dependencies/INDEX.sdd (dependency graph engine)
    38 @dependencies/graph.sdd (DAG, topological sort, cycle detection)
    39 @dependencies/locking.sdd (locking model, deadlock, lease)
-   40 @decisions/decisions.sdd
-   41 @decisions/ (decision instances, when present)
+   40 @project/decisions/decisions.sdd
+   41 @project/decisions/ (decision instances, when present)
    42 @project/decisions/INDEX.sdd (project decision registry)
    43 @project/dependencies/INDEX.sdd (project dependency state)
    44 @project/dependencies/graph.sdd (project dependency graph)
@@ -102,7 +102,7 @@ ReadOrder:
     56 @commands/ (command definitions, when present)
     57 @plugins/INDEX.sdd (plugin adapters)
     58 @plugins/ (plugin adapter definitions, when present)
-    59 @tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
+    59 @project/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
    56 @project/INDEX.sdd       (project map)
    57 @project/PROJECT.sdd     (project model)
    58 @project/architecture/INDEX.sdd (project architecture map)
@@ -217,11 +217,11 @@ Navigation:
   ProjectStackDatabase: @project/stack/database.sdd
   ProjectStackTesting: @project/stack/testing.sdd
   ProjectStackInfrastructure: @project/stack/infrastructure.sdd
-  Decisions:  @decisions/decisions.sdd
-  DecisionInstances: @decisions/
+  Decisions:  @project/decisions/decisions.sdd
+  DecisionInstances: @project/decisions/
    DomainDecisions: @project/decisions/INDEX.sdd
    DecisionHumanDocs: @project/docs/decisions/INDEX.md
-  TaskEngine: @tasks/tasks.sdd
+  TaskEngine: @project/tasks/tasks.sdd
   TaskInstances: @project/tasks/
   TaskScheduler: @project/tasks/INDEX.sdd
   Workflow:   @workflow/INDEX.sdd
@@ -385,7 +385,7 @@ Navigation:
    SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
    Reasoning: @orchestrator/reasoning.sdd
    FastPath: @chains/fast-path.sdd
-   BugTracking: @bugs/INDEX.sdd
+   BugTracking: @project/bugs/INDEX.sdd
    ParallelExecution: @workflows/parallel-execution.sdd
    KnowledgeSharing: @workflows/knowledge-sharing.sdd
    IntelligentRuntime: @workflows/intelligent-runtime.sdd
@@ -499,3 +499,4 @@ Note:
     Added CLI commands for Claude AI integration. /sdd, /sdd-analyze,
     /sdd-status, /sdd-decisions commands allow executing SDDRA from
     Claude CLI while respecting .sdd/ rules and human gates.
+
