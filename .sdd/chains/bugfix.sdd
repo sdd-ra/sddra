@@ -1,0 +1,42 @@
+# Chain: Bugfix
+
+Purpose:
+  Bugfix chain for fixing bugs in the system.
+
+ID: B1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AR: Architecture
+  BE: Backend
+  TS: Test
+  QA: QA
+  SC: Security
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  BE -> [AR]
+  TS -> [BE]
+  QA -> [TS]
+  SC -> [QA]
+  VR -> [SC]
+
+Parallel: []
+Gates:
+  AR: root-cause-found
+  BE: fix-implemented
+  TS: regression-added
+  QA: tests-pass
+  SC: no-regression
+  VR: fix-verified
+
+Retry: 3
+Token: @project/tokens/B1.sdd
+Rule: @rules/chain-rules.sdd
+Skills:
+   AR: plugins/plugin-adapters/systematic-debugging.sdd
+
+State: +
+

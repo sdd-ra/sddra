@@ -1,0 +1,44 @@
+# Chain: Incident
+Purpose:
+  Chain: Incident
+
+
+ID: I1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AR: Architecture
+  SC: Security
+  BE?: Backend
+  DB?: Database
+  DO: DevOps
+  QA: QA
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  SC -> [AR]
+  BE -> [SC]
+  DB -> [SC]
+  DO -> [SC]
+  QA -> [BE,DB]
+  VR -> [DO]
+
+Parallel: []
+Gates:
+  AR: root-cause-found
+  SC: impact-assessed
+  BE: fix-ok
+  DB: data-ok
+  DO: deploy-ok
+  QA: regression-ok
+  VR: resolved
+
+Retry: 3
+Token: @project/tokens/I1.sdd
+   Rule: @rules/chain-rules.sdd
+
+State: +
+
+

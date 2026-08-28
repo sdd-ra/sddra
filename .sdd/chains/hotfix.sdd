@@ -1,0 +1,40 @@
+# Chain: Hotfix
+Purpose:
+  Chain: Hotfix
+
+
+ID: H1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AR: Architecture
+  BE: Backend
+  SC: Security
+  DO: DevOps
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  BE -> [AR]
+  SC -> [BE]
+  DO -> [SC]
+  VR -> [DO]
+
+Parallel: []
+Gates:
+  AR: root-cause-found
+  BE: fix-ok
+  SC: security-ok
+  DO: deploy-ok
+  VR: prod-verified
+
+Retry: 2
+Token: @project/tokens/H1.sdd
+Rule: @rules/chain-rules.sdd
+Skills:
+   AR: plugins/plugin-adapters/systematic-debugging.sdd
+
+State: +
+
+

@@ -1,0 +1,58 @@
+# Chain: Feature
+
+Purpose:
+  Feature chain for adding new features.
+
+ID: F1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AN: Analyze
+  AR: Architecture
+  DB?: Database
+  BE: Backend
+  API?: API
+  FE?: Frontend
+  MD?: Mobile
+  TS: Test
+  QA: QA
+  DO?: DevOps
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  DB -> [AR]
+  BE -> [AR,DB]
+  API -> [BE]
+  FE -> [API]
+  MD -> [API]
+  TS -> [BE,FE,MD]
+  QA -> [TS]
+  DO -> [QA]
+  VR -> [DO]
+
+Parallel:
+  [FE, MD]
+
+Gates:
+  AR: req-approved
+  DB: schema-approved
+  BE: code-review-passed
+  API: contract-tests-passed
+  FE: ui-review-passed
+  MD: mobile-review-passed
+  TS: coverage-met
+  QA: all-tests-pass
+  DO: deploy-ok
+  VR: all-verified
+
+Retry: 3
+Token: @project/tokens/F1.sdd
+Rule: @rules/chain-rules.sdd
+Skills:
+  TS: plugins/plugin-adapters/test-driven-development.sdd
+   Parallel: plugins/plugin-adapters/dispatching-parallel-agents.sdd
+
+State: +
+

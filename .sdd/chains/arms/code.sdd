@@ -1,0 +1,34 @@
+# Arm: Code
+
+Purpose:
+  Execute .sdd/project/ tasks to code. Minimal tokens.
+
+Parent: D0
+Returns: D0
+
+Stage:
+  id: C1
+  name: code
+  parent: D0
+  returns_to: D0
+  inputs:
+    - .sdd/project/
+    - .sdd/project/decisions/ (approved decisions)
+  outputs:
+    - project/
+    - .sdd/project/decisions/DEC-XXX.sdd (updated status)
+  skills:
+    - workflows/task-execution.sdd
+    - plugins/plugin-adapters/using-git-worktrees.sdd
+  token:
+    - ../../project/tokens/C1.sdd
+  rule:
+    - ./rules/INDEX.sdd
+  decision:
+    - Implement tasks linked to approved decisions
+    - Update decision status to implemented
+  gate:
+     - human_review
+
+State: +
+

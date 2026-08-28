@@ -1,0 +1,158 @@
+# Chain Fast Path
+
+Purpose:
+  Simplified execution path for common operations. Reduces
+  overhead for simple tasks while maintaining safety.
+
+## Fast Path Conditions
+
+A task qualifies for fast path when:
+  - Risk is LOW or MEDIUM
+  - No architectural changes
+  - No database schema changes
+  - No security policy changes
+  - No production deployment
+  - Uses existing patterns
+  - Dependencies are available
+
+## Fast Path Stages
+
+Simplified chain for qualifying tasks:
+
+  D0
+    ↓
+  P1 (prompt) — analyze intent
+    ↓
+  D1 (docs) — generate minimal docs
+    ↓
+  S1 (sdd) — update project state
+    ↓
+  C1 (code) — implement
+    ↓
+  R1 (review) — automated review
+    ↓
+  D0
+
+Skipped stages:
+  - DEP1 (deploy) — human deploys manually
+  - Optional QA — if tests pass automatically
+
+## Fast Path Rules
+
+  [FP1] Fast path ONLY for LOW/MEDIUM risk tasks
+  [FP2] Fast path requires all dependencies available
+  [FP3] Fast path skips human gates for non-critical items
+  [FP4] Fast path still creates decisions for significant changes
+  [FP5] Fast path logs all steps for audit
+  [FP6] Fast path can be overridden by human
+  [FP7] Fast path fails over to full chain if issues detected
+
+## Fast Path Decision Tree
+
+  Task Received
+    ↓
+  Risk Assessment
+    ↓
+  LOW/MEDIUM? ───NO───> Full Chain
+    ↓ YES
+  Architectural Change? ───YES───> Full Chain
+    ↓ NO
+  DB Schema Change? ───YES───> Full Chain
+    ↓ NO
+  Security Policy Change? ───YES───> Full Chain
+    ↓ NO
+  Production Deploy? ───YES───> Full Chain
+    ↓ NO
+  Dependencies Available? ───NO───> Full Chain
+    ↓ YES
+  Fast Path ← ← ← ← ← ← ← ← ← ← ←
+
+## Fast Path vs Full Chain
+
+| Aspect | Fast Path | Full Chain |
+|--------|-----------|------------|
+| Stages | 5 | 6+ |
+| Human Gates | Minimal | All |
+| Token Usage | ~30% | 100% |
+| Speed | Fast | Thorough |
+| Risk Coverage | Basic | Complete |
+| Use Case | Simple tasks | Complex tasks |
+
+## Fast Path Examples
+
+Simple Bug Fix:
+  P1 → D1 → S1 → C1 → R1 → D0
+  Example: "Fix typo in error message"
+
+Small Feature:
+  P1 → D1 → S1 → C1 → R1 → D0
+  Example: "Add logging to payment service"
+
+Refactor:
+  P1 → D1 → S1 → C1 → R1 → D0
+  Example: "Extract common validation logic"
+
+## Fast Path Safety
+
+Safety Mechanisms:
+  - Automated tests must pass
+  - Lint must pass
+  - No breaking changes
+  - Backward compatible
+  - Rollback available
+
+Safety Checks:
+  [FP-S1] Tests pass
+  [FP-S2] Lint passes
+  [FP-S3] No breaking API changes
+  [FP-S4] Backward compatible
+  [FP-S5] Rollback tested
+
+Fast Path Failure:
+  - If any safety check fails → Full Chain
+  - If human overrides → Full Chain
+  - If dependencies missing → Full Chain
+
+## Fast Path Configuration
+
+Default:
+  enabled: true
+  max_risk: MEDIUM
+  require_tests: true
+  require_lint: true
+  auto_deploy: false
+
+Per-Project:
+  fast_path:
+    enabled: <boolean>
+    max_risk: <LOW|MEDIUM|HIGH>
+    require_tests: <boolean>
+    require_lint: <boolean>
+    auto_deploy: <boolean>
+    skip_stages: [<list>]
+
+## Fast Path Metrics
+
+Track:
+  - Fast path usage rate
+  - Fast path success rate
+  - Fast path vs full chain comparison
+  - Time saved
+  - Token saved
+  - Failure reasons
+
+## Fast Path Commands
+
+/sdd-fast:
+  Execute task using fast path
+  Usage: /sdd-fast "fix typo in error message"
+
+/sdd-full:
+  Force full chain execution
+  Usage: /sdd-full "refactor payment module"
+
+/sdd-auto:
+  Auto-select path based on risk
+  Usage: /sdd-auto "add logging"
+
+State: +
