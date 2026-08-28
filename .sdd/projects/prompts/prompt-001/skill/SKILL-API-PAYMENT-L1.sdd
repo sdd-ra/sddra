@@ -1,0 +1,50 @@
+# Skill: Payment API Fundamentals
+
+Purpose:
+  First skill for payment module prompt.
+  Defines API contracts for payment processing.
+
+ID: SKILL-API-PAYMENT-L1
+
+Domain: api/payment
+
+Level: L1
+
+Status: STABLE
+
+Use:
+  Designing payment API endpoints
+
+Input:
+  - Payment requirements
+  - Refund requirements
+  - Webhook requirements
+
+Output:
+  - API endpoint definitions
+  - Request/response schemas
+  - Error handling patterns
+
+Execute:
+  1. Define charge endpoint
+  2. Define refund endpoint
+  3. Define webhook endpoint
+  4. Define status endpoint
+  5. Define error responses
+
+Examples:
+  POST /api/v1/payments/charge
+  POST /api/v1/payments/{id}/refund
+  POST /api/webhooks/payment
+
+Validation:
+  - OpenAPI spec generated
+  - All endpoints documented
+  - Error codes defined
+
+Avoid:
+  - Storing card data
+  - Client-side payment processing
+  - Missing idempotency keys
+
+State: +

@@ -1,0 +1,51 @@
+# Skill: Authentication Fundamentals
+
+Purpose:
+  First skill for authentication prompt.
+  Defines authentication patterns and security requirements.
+
+ID: SKILL-SECURITY-AUTH-L2
+
+Domain: security/authentication
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  Implementing user authentication
+
+Input:
+  - Authentication requirements
+  - Security constraints
+  - User model
+
+Output:
+  - Authentication flow design
+  - Security requirements
+  - Token strategy
+
+Execute:
+  1. Analyze authentication requirements
+  2. Select authentication method
+  3. Define token strategy
+  4. Define password policy
+  5. Define session management
+
+Examples:
+  JWT with refresh tokens
+  Session-based authentication
+  OAuth2 integration
+
+Validation:
+  - Security review passed
+  - Penetration testing passed
+  - Compliance requirements met
+
+Avoid:
+  - Plain text passwords
+  - Weak JWT secrets
+  - Infinite token expiry
+  - Client-side auth validation only
+
+State: +
