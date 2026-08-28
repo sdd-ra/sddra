@@ -1,0 +1,30 @@
+export default {
+  name: 'sddra',
+  description: 'SDDRA: Spec-Driven Development & Engineering Operating System',
+  version: '0.1.0',
+  author: {
+    name: 'SDDRA',
+    email: 'contact@sddra.ai'
+  },
+  license: 'MIT',
+  repository: 'https://github.com/sddra/sddra.ai',
+  keywords: [
+    'sdd',
+    'spec-driven',
+    'engineering',
+    'ai-agent',
+    'workflow'
+  ],
+  engines: {
+    opencode: '>=1.0.0'
+  },
+  skills: [
+    './.sdd/skills/'
+  ],
+  commands: [
+    './.sdd/commands/'
+  ],
+  prompts: [
+    './prompts/'
+  ]
+};

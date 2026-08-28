@@ -1,0 +1,20 @@
+{
+  "name": "sddra-marketplace",
+  "description": "SDDRA engineering operating system plugin marketplace",
+  "owner": {
+    "name": "SDDRA",
+    "email": "contact@sddra.ai"
+  },
+  "plugins": [
+    {
+      "name": "sddra",
+      "description": "SDDRA: Spec-Driven Development & Engineering Operating System. Provides .sdd protocol, chain engine, skills, prompts, and workflow automation for AI agents.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "SDDRA",
+        "email": "contact@sddra.ai"
+      }
+    }
+  ]
+}
