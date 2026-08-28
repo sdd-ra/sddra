@@ -10,7 +10,7 @@ generates `project/` (source code) with human approval at every gate.
 ### Two-Language Model
 - `.sdd/` — machine-readable AI intent (immutable rules, schemas, workflows, DevOps)
 - `project/` — human source-of-truth code (concrete implementations)
-- `docs/` — human-readable documentation
+- `.sdd/project/docs/` — human-readable documentation generated from prompts
 
 ### Chain Graph
 Cyclic root `D0` with 6 arms. Every arm returns to `D0`:
@@ -92,7 +92,6 @@ project/                      # Concrete source code
   frontend/
   mobile/
   database/
-  tests/
 
 prompts/                      # Root-level prompt inbox (user submissions)
   inbox/                      # New prompts awaiting processing
@@ -100,12 +99,12 @@ prompts/                      # Root-level prompt inbox (user submissions)
   archive/                    # Completed prompts
   extracted/                  # Extracted knowledge
 
-old/                           # Archived external assets and historical versions
+old/                           # Archived external assets and historical versions (excluded from distribution)
 ```
 
 ## Principles
 
-- **Immutability**: `.sdd/` files are read-only for AI. Only the owner can modify them.
+- **Immutability**: Core `.sdd/` rules (protocol, architecture, standards) are immutable. AI may append decisions, tasks, and project state only.
 - **Token Minimalism**: Short IDs, `INDEX.sdd` routing, lazy loading, no full-catalog reads
 - **Single Source of Truth**: `.sdd/` defines intent; `project/` is implementation
 - **No Duplication**: Global files route only; project files contain details
@@ -116,8 +115,8 @@ old/                           # Archived external assets and historical version
 ## AI Behavior Rules
 
 1. **READ `.sdd/` FIRST**: AI MUST read `.sdd/` files before touching `project/`
-2. **CREATE IN `project/`**: AI creates new files in `project/`, never in `.sdd/`
-3. **UPDATE `.sdd/` ONLY WHEN NEEDED**: AI updates `.sdd/` only for new decisions, tasks, or states
+2. **CREATE IN `project/`**: AI creates implementation code in `project/`, never in `.sdd/`
+3. **UPDATE `.sdd/` ONLY FOR PROJECT ARTIFACTS**: AI updates `.sdd/` only for new decisions, tasks, states, or project-specific content
 4. **FOLLOW THE CHAIN**: D0 -> arm -> D0, never skip gates
 5. **USE TEMPLATES**: `.sdd/templates/` provides immutable scaffolding
 6. **RECORD TOKENS**: Every stage records token usage
@@ -131,7 +130,7 @@ old/                           # Archived external assets and historical version
 ### Git Commits
 - All commits MUST follow semantic format: `<type>(<scope>): <subject>`
 - Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `revert`
-- Valid scopes: `sdd`, `project`, `docs`, `chains`, `skills`, `prompts`, `commands`, `templates`, `patterns`, `workflows`, `decisions`, `gates`, `tests`
+- Valid scopes: `sdd`, `project`, `docs`, `chains`, `skills`, `prompts`, `commands`, `templates`, `patterns`, `workflows`, `decisions`, `gates`, `tests`, `testing`, `orchestrator`, `agent`, `security`, `architecture`, `stages`, `state`, `tasks`, `plugins`, `context`, `dependencies`, `observability`, `runtime`, `schemas`, `standards`, `cases`, `bugs`
 - Breaking changes MUST include `!` and footer: `BREAKING CHANGE: <description>`
 
 ### Git Hooks
@@ -256,18 +255,20 @@ The system includes resilience patterns:
 ### Prompt to Code
 1. User submits prompt to `prompts/inbox/`
 2. `/sdd` reads prompt
-3. Selects first skill from `prompt/prompt-XXX/skill/`
-4. Executes P1 (prompt analysis)
-5. Executes D1 (docs generation)
-6. Human approves docs
-7. Executes S1 (sdd generation)
-8. Human approves sdd
-9. Executes C1 (code generation)
-10. Human reviews code
-11. Executes R1 (review)
-12. Human approves production
-13. Executes DEP1 (deploy)
-14. Moves prompt to `archive/`
+3. Analyzes and formalizes prompt into `.sdd/projects/prompts/`
+4. Documents prompt with ID in `.sdd/project/docs/prompts/`
+5. Human reviews documented prompt
+6. Executes P1 (prompt analysis)
+7. Executes D1 (docs generation)
+8. Human approves docs
+9. Executes S1 (sdd generation)
+10. Human approves sdd
+11. Executes C1 (code generation)
+12. Human reviews code
+13. Executes R1 (review)
+14. Human approves production
+15. Executes DEP1 (deploy)
+16. Moves prompt to `prompts/archive/`
 
 ### Git Workflow
 1. Create branch: `feat(scope): description`
@@ -351,7 +352,7 @@ The system includes resilience patterns:
 ### Chain execution fails
 1. Check `/sdd-status` for current state
 2. Run `/sdd-resume` to continue from checkpoint
-3. Check logs in `prompts/prompt-XXX/logs/`
+3. Check logs in `.sdd/testing/scripts/results/`
 4. Review decisions in `.sdd/decisions/`
 
 ### Git commit rejected
@@ -468,7 +469,7 @@ Each manifest points to the same `.sdd/` core, so the system behaves identically
 ### Chain execution fails
 1. Check `/sdd-status` for current state
 2. Run `/sdd-resume` to continue from checkpoint
-3. Check logs in `prompts/prompt-XXX/logs/`
+3. Check logs in `.sdd/testing/scripts/results/`
 4. Review decisions in `.sdd/decisions/`
 
 ### Git commit rejected

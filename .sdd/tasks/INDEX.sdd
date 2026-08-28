@@ -1,0 +1,23 @@
+# Tasks
+
+Purpose:
+  Task lifecycle engine. Defines how tasks are created, assigned,
+  executed, reviewed, and closed within the SDDRA system.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @tasks.sdd (task lifecycle rules)
+
+Rules:
+  [T1] Every task MUST have a unique ID.
+  [T2] Tasks MUST be assigned to specific stages.
+  [T3] Task status MUST be tracked: pending -> active -> done.
+  [T4] Task dependencies MUST be resolved before execution.
+
+Navigation:
+  Tasks: @tasks.sdd
+  ProjectTasks: @../project/tasks/INDEX.sdd
+
+State: +

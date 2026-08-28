@@ -1,0 +1,43 @@
+# Architecture
+
+Purpose:
+  System architecture knowledge base. Defines architecture levels,
+  patterns, principles, scaling, availability, data, observability,
+  networking, and deployment rules.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @architecture.sdd (architecture overview)
+   3 @levels.sdd (ProjectScale L0-L5)
+   4 @patterns.sdd (architecture patterns)
+   5 @principles.sdd (architecture principles)
+   6 @scaling.sdd (scaling rules)
+   7 @availability.sdd (availability/RTO/RPO)
+   8 @data.sdd (data architecture)
+   9 @observability.sdd (observability)
+   10 @networking.sdd (networking)
+   11 @deployment.sdd (deployment)
+
+Rules:
+  [AR1] Architecture MUST be defined before implementation.
+  [AR2] Architecture patterns MUST be documented.
+  [AR3] Scaling rules MUST be defined for L3+ systems.
+  [AR4] Availability targets MUST be explicit.
+  [AR5] Data architecture MUST include storage, flow, and retention.
+
+Navigation:
+  Architecture: @architecture.sdd
+  Levels: @levels.sdd
+  Patterns: @patterns.sdd
+  Principles: @principles.sdd
+  Scaling: @scaling.sdd
+  Availability: @availability.sdd
+  Data: @data.sdd
+  Observability: @observability.sdd
+  Networking: @networking.sdd
+  Deployment: @deployment.sdd
+  ProjectArchitecture: @../project/architecture/INDEX.sdd
+
+State: +
