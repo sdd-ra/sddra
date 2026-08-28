@@ -1,0 +1,46 @@
+# Stages
+
+Purpose:
+  Stage definitions for the SDDRA chain graph. Each stage represents
+  a distinct phase in the development lifecycle with specific inputs,
+  outputs, and approval gates.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @AN.sdd (Analyze)
+   3 @AR.sdd (Architecture)
+   4 @DB.sdd (Database)
+   5 @BE.sdd (Backend)
+   6 @API.sdd (API)
+   7 @FE.sdd (Frontend)
+   8 @MD.sdd (Mobile)
+   9 @QA.sdd (Quality Assurance)
+   10 @SC.sdd (Security)
+   11 @TS.sdd (Testing)
+   12 @DO.sdd (DevOps)
+   13 @RV.sdd (Review)
+   14 @VR.sdd (Verification)
+
+Rules:
+  [ST1] Every stage MUST have a defined input and output contract.
+  [ST2] Stages MUST NOT be skipped without explicit approval.
+  [ST3] Stage transitions MUST be recorded in state.
+
+Navigation:
+  Analyze: @AN.sdd
+  Architecture: @AR.sdd
+  Database: @DB.sdd
+  Backend: @BE.sdd
+  API: @API.sdd
+  Frontend: @FE.sdd
+  Mobile: @MD.sdd
+  QA: @QA.sdd
+  Security: @SC.sdd
+  Testing: @TS.sdd
+  DevOps: @DO.sdd
+  Review: @RV.sdd
+  Verification: @VR.sdd
+
+State: +

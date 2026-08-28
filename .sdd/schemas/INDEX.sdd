@@ -1,0 +1,32 @@
+# Schemas
+
+Purpose:
+  Canonical schemas for SDDRA artifacts. Defines the structure and
+  validation rules for tasks, decisions, workflows, skills, gates,
+  and modules.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @task.sdd (task schema)
+   3 @decision.sdd (decision schema)
+   4 @workflow.sdd (workflow schema)
+   5 @skill.sdd (skill schema)
+   6 @gate.sdd (gate schema)
+   7 @module.sdd (module schema)
+
+Rules:
+  [SC1] All .sdd files MUST conform to their schema.
+  [SC2] Schemas are immutable unless explicitly versioned.
+  [SC3] Schema changes require migration plan.
+
+Navigation:
+  Task: @task.sdd
+  Decision: @decision.sdd
+  Workflow: @workflow.sdd
+  Skill: @skill.sdd
+  Gate: @gate.sdd
+  Module: @module.sdd
+
+State: +

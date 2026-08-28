@@ -1,0 +1,28 @@
+# Runtime
+
+Purpose:
+  Agent runtime state and execution context. Tracks current agent,
+  session, events, and checkpoints during chain execution.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @agent.sdd (agent capabilities and limits)
+   3 @session.sdd (session management)
+   4 @current.sdd (current execution state)
+   5 @events.sdd (runtime event log)
+
+Rules:
+  [RT1] Runtime state MUST be preserved across chain stages.
+  [RT2] Checkpoints MUST be created before risky operations.
+  [RT3] Events MUST be logged for audit trail.
+
+Navigation:
+  Agent: @agent.sdd
+  Session: @session.sdd
+  Current: @current.sdd
+  Events: @events.sdd
+  Checkpoints: @checkpoints/
+
+State: +

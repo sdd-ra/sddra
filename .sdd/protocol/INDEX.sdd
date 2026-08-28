@@ -1,0 +1,22 @@
+# Protocol
+
+Purpose:
+  Universal protocol layer. Defines rules, vocabulary, stages, states,
+  relations, and origins that govern the entire SDDRA system.
+  This layer is above all project-specific content.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @ROOT.sdd (universal rules)
+
+Rules:
+  [PR1] Protocol rules are immutable unless explicitly changed.
+  [PR2] All project-specific content must comply with protocol.
+  [PR3] Protocol changes require human approval.
+
+Navigation:
+  Root: @ROOT.sdd
+
+State: +

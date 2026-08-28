@@ -1,0 +1,501 @@
+Index: SDD
+
+Purpose:
+  The primary entry point of the .sdd system. The agent must route all
+  other .sdd data through this file. No file is self-contained — all
+  files obey the INDEX → PROTOCOL → RESOLVER → CONTEXT mechanism.
+
+Owns: ./
+
+ReadOrder:
+    1  @protocol/ROOT.sdd
+    2  @project/project.sdd
+    3  @graph/graph.sdd
+    4  @templates/INDEX.sdd (project structure templates)
+    5  @project/graph/ (domain-level graphs, when present)
+   5  @skills/INDEX.sdd
+   6  @skills/languages/INDEX.sdd
+   7  @skills/languages/go/
+   8  @skills/languages/rust/
+   9  @skills/languages/java/
+   10 @skills/languages/php/
+   11 @skills/languages/python/
+   12 @skills/languages/csharp/
+   13 @skills/languages/cpp/
+   14 @skills/languages/typescript/
+   15 @skills/languages/javascript/
+   16 @skills/languages/swift/
+   17 @skills/languages/kotlin/
+   18 @skills/languages/ruby/
+   19 @skills/frameworks/INDEX.sdd
+   20 @skills/frameworks/react/
+   21 @skills/frameworks/flutter/
+   22 @skills/frameworks/react-native/
+   23 @skills/frameworks/swiftui/
+   24 @skills/frameworks/kotlin-multiplatform/
+   25 @skills/frameworks/nextjs/
+   26 @skills/frameworks/nestjs/
+   27 @skills/frameworks/spring-boot/
+   28 @skills/frameworks/django/
+   29 @skills/frameworks/fastapi/
+   30 @skills/frameworks/express/
+   31 @skills/frameworks/dotnet/
+   32 @skills/frameworks/laravel/
+   33 @skills/frameworks/symfony/
+   34 @skills/frameworks/svelte/
+   35 @skills/databases/INDEX.sdd
+   36 @skills/databases/postgresql/
+   37 @skills/databases/mongodb/
+   38 @skills/databases/redis/
+   39 @skills/databases/mysql/
+   40 @skills/databases/cassandra/
+   41 @skills/databases/elasticsearch/
+   42 @skills/platforms/INDEX.sdd
+   43 @skills/platforms/docker/
+   44 @skills/platforms/kubernetes/
+   45 @skills/platforms/aws/
+   46 @skills/platforms/gcp/
+   47 @skills/platforms/azure/
+   48 @skills/platforms/terraform/
+   49 @skills/messaging/INDEX.sdd
+   50 @skills/messaging/kafka/
+   51 @skills/messaging/rabbitmq/
+   52 @skills/messaging/nats/
+   53 @skills/cross-cutting/INDEX.sdd
+   54 @skills/cross-cutting/testing/
+   55 @skills/cross-cutting/security/
+   56 @skills/cross-cutting/architecture/
+   57 @skills/cross-cutting/observability/
+   58 @architecture/INDEX.sdd (architecture knowledge base)
+   24 @architecture/levels.sdd (ProjectScale L0-L5)
+   25 @architecture/patterns.sdd (architecture patterns)
+   26 @architecture/scaling.sdd (scaling rules)
+   27 @architecture/availability.sdd (availability/RTO/RPO)
+   28 @architecture/data.sdd (data architecture)
+   29 @architecture/observability.sdd (observability)
+   30 @architecture/networking.sdd (networking)
+   31 @architecture/deployment.sdd (deployment)
+   32 @chains/INDEX.sdd
+   33 @chains/ (chain definitions, when present)
+   34 @stages/ (stage definitions, when present)
+   35 @security/INDEX.sdd
+   36 @security/ (security controls, when present)
+   37 @dependencies/INDEX.sdd (dependency graph engine)
+   38 @dependencies/graph.sdd (DAG, topological sort, cycle detection)
+   39 @dependencies/locking.sdd (locking model, deadlock, lease)
+   40 @decisions/decisions.sdd
+   41 @decisions/ (decision instances, when present)
+   42 @project/decisions/INDEX.sdd (project decision registry)
+   43 @project/dependencies/INDEX.sdd (project dependency state)
+   44 @project/dependencies/graph.sdd (project dependency graph)
+   45 @project/dependencies/locks.sdd (project lock state)
+   46 @project/dependencies/reservations/ (resource reservations)
+   47 @stack/INDEX.sdd          (stack technology knowledge base)
+   48 @stack/ (technology catalogs, when present)
+   49 @project/stack/INDEX.sdd  (project stack selection)
+   50 @project/stack/ (project technology instances, when present)
+   51 @observability/INDEX.sdd  (observability and incident engine)
+   52 @observability/ (observability catalogs, when present)
+    53 @project/observability/INDEX.sdd (project observability state)
+    54 @project/observability/ (project runtime instances, when present)
+    55 @commands/INDEX.sdd (CLI commands for SDDRA)
+    56 @commands/ (command definitions, when present)
+    57 @plugins/INDEX.sdd (plugin adapters)
+    58 @plugins/ (plugin adapter definitions, when present)
+    59 @tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
+   56 @project/INDEX.sdd       (project map)
+   57 @project/PROJECT.sdd     (project model)
+   58 @project/architecture/INDEX.sdd (project architecture map)
+   59 @project/architecture/system.sdd (system architecture)
+   60 @project/architecture/components.sdd (component architecture)
+   61 @project/architecture/data.sdd (data architecture)
+   62 @project/architecture/infrastructure.sdd (infrastructure)
+   63 @project/tasks/INDEX.sdd (task scheduler map)
+   64 @project/tasks/          (project task instances)
+   65 @workflow/INDEX.sdd
+   66 @workflow/ (workflow engine: stages, transitions, gates, testing, state)
+   67 @runtime/events.sdd (runtime event log)
+   68 @verification/ (when present)
+   69 @state/state.sdd
+
+Modes:
+  ANALYZE   — project discovery and context building
+  PLAN      — prompt to task/chain planning
+  WORK      — task execution
+  VERIFY    — QA, security, architecture verification
+  REVIEW    — cross-layer review
+  INCIDENT  — production incident response
+  AUDIT     — drift detection and health check
+  CLI       — /sdd commands in Claude AI
+
+Rules:
+  [I1]  AI MUST start from INDEX.sdd — never scan .sdd/ blindly.
+  [I2]  AI MUST resolve a reference before reading the target file.
+  [I3]  AI MUST read minimum sufficient context — no full-catalog reads.
+  [I4]  AI MUST follow declared chains — never skip a mandatory gate.
+  [I5]  AI MUST preserve state transitions — every stage change must be recorded.
+  [I6]  AI MUST NOT invent project facts — all facts must trace to a real artifact.
+  [I7]  AI MUST treat assumptions as assumptions — mark them explicitly, never as facts.
+  [I8]  AI MUST route through the protocol layer before interpreting any project-specific content.
+  [I9]  AI MUST read CLAUDE.md before executing any /sdd command.
+  [I10] AI MUST record token usage for every chain stage.
+  [I11] AI MUST create decision records for significant changes.
+  [I12] AI MUST NOT skip human gates.
+  [I13] AI MUST use short IDs and indexes for token minimization.
+
+Entry:
+  @protocol/ROOT.sdd
+
+Navigation:
+  Protocol:   @protocol/ROOT.sdd
+  Templates:  @templates/INDEX.sdd
+  TemplatesDocs: @templates/_sdd/docs
+  TemplatesDecisions: @templates/_sdd/decisions
+  TemplatesTasks: @templates/_sdd/tasks
+  TemplatesStack: @templates/_sdd/stack
+  TemplatesModules: @templates/_sdd/modules
+  TemplatesArchitecture: @templates/_sdd/architecture
+  TemplatesFlows: @templates/_sdd/flows
+  TemplatesDomains: @templates/_sdd/domains
+  Project:    @project/PROJECT.sdd
+  ProjectMap: @project/INDEX.sdd
+  Architecture: @architecture/INDEX.sdd
+  ArchitectureLevels: @architecture/levels.sdd
+  ArchitecturePatterns: @architecture/patterns.sdd
+  ArchitectureScaling: @architecture/scaling.sdd
+  ArchitectureAvailability: @architecture/availability.sdd
+  ArchitectureData: @architecture/data.sdd
+  ArchitectureObservability: @architecture/observability.sdd
+  ArchitectureNetworking: @architecture/networking.sdd
+  ArchitectureDeployment: @architecture/deployment.sdd
+  ProjectArchitecture: @project/architecture/INDEX.sdd
+  ProjectArchitectureSystem: @project/architecture/system.sdd
+  ProjectArchitectureComponents: @project/architecture/components.sdd
+  ProjectArchitectureData: @project/architecture/data.sdd
+  ProjectArchitectureInfrastructure: @project/architecture/infrastructure.sdd
+  ProjectArchitectureDiagrams: @project/architecture/diagrams/
+  Graph:      @graph/graph.sdd
+  DomainGraph: @project/graph/
+  Skills:     @skills/INDEX.sdd
+  SkillCategories: @skills/
+  Chains:     @chains/INDEX.sdd
+  ChainDefs:  @chains/
+  Stages:     @stages/
+  Security:   @security/INDEX.sdd
+  SecurityLevels: @security/levels.sdd
+  SecurityControls: @security/controls.sdd
+  SecurityGates: @security/gates.sdd
+  SecurityGateSpecs: @security/gates/
+  SecurityThreats: @security/threats.sdd
+  SecurityScanners: @security/scanners.sdd
+  ProjectSecurity: @project/security/INDEX.sdd
+  ProjectFindings: @project/security/findings/
+  ProjectThreats: @project/security/threats/
+  ProjectExceptions: @project/security/exceptions/
+  DependencyEngine: @dependencies/INDEX.sdd
+  DependencyGraph: @dependencies/graph.sdd
+  DependencyLocking: @dependencies/locking.sdd
+  ProjectDependencies: @project/dependencies/INDEX.sdd
+  ProjectDependencyGraph: @project/dependencies/graph.sdd
+  ProjectLocks: @project/dependencies/locks.sdd
+  ProjectReservations: @project/dependencies/reservations/
+  Stack: @stack/INDEX.sdd
+  StackLanguages: @stack/languages.sdd
+  StackBackend: @stack/backend.sdd
+  StackFrontend: @stack/frontend.sdd
+  StackMobile: @stack/mobile.sdd
+  StackDatabase: @stack/database.sdd
+  StackCache: @stack/cache.sdd
+  StackMessaging: @stack/messaging.sdd
+  StackTesting: @stack/testing.sdd
+  StackInfrastructure: @stack/infrastructure.sdd
+  StackObservability: @stack/observability.sdd
+  ProjectStack: @project/stack/INDEX.sdd
+  ProjectStackBackend: @project/stack/backend.sdd
+  ProjectStackFrontend: @project/stack/frontend.sdd
+  ProjectStackMobile: @project/stack/mobile.sdd
+  ProjectStackDatabase: @project/stack/database.sdd
+  ProjectStackTesting: @project/stack/testing.sdd
+  ProjectStackInfrastructure: @project/stack/infrastructure.sdd
+  Decisions:  @decisions/decisions.sdd
+  DecisionInstances: @decisions/
+   DomainDecisions: @project/decisions/INDEX.sdd
+   DecisionHumanDocs: @project/docs/decisions/INDEX.md
+  TaskEngine: @tasks/tasks.sdd
+  TaskInstances: @project/tasks/
+  TaskScheduler: @project/tasks/INDEX.sdd
+  Workflow:   @workflow/INDEX.sdd
+  WorkflowStages: @workflow/stages.sdd
+  WorkflowTransitions: @workflow/transitions.sdd
+  WorkflowGates: @workflow/gates.sdd
+  WorkflowTesting: @workflow/testing.sdd
+  WorkflowState: @workflow/state.sdd
+  WorkflowLifecycle: @workflow/lifecycle.sdd
+  WorkflowDependencies: @workflow/dependencies.sdd
+  WorkflowRecovery: @workflow/recovery.sdd
+  WorkflowPolicies: @workflow/policies.sdd
+  ProjectWorkflow: @project/workflow/INDEX.sdd
+  ProjectWorkflowLifecycle: @project/workflow/lifecycle.sdd
+  ProjectWorkflowActive: @project/workflow/active.sdd
+  ProjectWorkflowExceptions: @project/workflow/exceptions.sdd
+  Observability: @observability/INDEX.sdd
+  Logging: @observability/logging.sdd
+  Metrics: @observability/metrics.sdd
+  Tracing: @observability/tracing.sdd
+  Alerting: @observability/alerting.sdd
+  Health: @observability/health.sdd
+  Diagnostics: @observability/diagnostics.sdd
+  Incident: @observability/incident.sdd
+  ProjectObservability: @project/observability/INDEX.sdd
+  ProjectRuntime: @project/observability/runtime.sdd
+  ProjectServices: @project/observability/services.sdd
+  ProjectAlerts: @project/observability/alerts.sdd
+  ProjectIncidents: @project/observability/incidents/
+  ProjectDiagnostics: @project/observability/diagnostics/
+  Docs: @project/docs/INDEX.sdd
+  DocsMappings: @project/docs/mappings.sdd
+  DocsOwnership: @project/docs/ownership.sdd
+  Context: @context/INDEX.sdd
+  ContextRouting: @context/routing.sdd
+  ContextPriorities: @context/priorities.sdd
+  ContextBudgets: @context/budgets.sdd
+  ContextLoading: @context/loading.sdd
+  ContextDependencies: @context/dependencies.sdd
+  ContextCache: @context/cache.sdd
+  ProjectContext: @project/context/INDEX.sdd
+  ProjectContextMap: @project/context/map.sdd
+  ProjectContextActive: @project/context/active.sdd
+  Agent: @agent/INDEX.sdd
+  AgentCapabilities: @agent/capabilities.sdd
+  AgentPermissions: @agent/permissions.sdd
+  AgentPolicies: @agent/policies.sdd
+  AgentApprovals: @agent/approvals.sdd
+  AgentExecution: @agent/execution.sdd
+  AgentRollback: @agent/rollback.sdd
+  AgentLimits: @agent/limits.sdd
+  AgentAudit: @agent/audit.sdd
+  RuntimeWorkspace: @runtime/INDEX.sdd
+  Discovery: @discovery/INDEX.sdd
+  DiscoveryRules: @discovery/rules.sdd
+  DiscoveryScanners: @discovery/scanners.sdd
+  DiscoveryDetectors: @discovery/detectors.sdd
+  DiscoveryMapping: @discovery/mapping.sdd
+  DiscoveryConfidence: @discovery/confidence.sdd
+  DiscoveryConflicts: @discovery/conflicts.sdd
+  DiscoveryBaseline: @discovery/baseline.sdd
+  ProjectMode: @project/mode.sdd
+  Graph: @graph/INDEX.sdd
+  GraphNodes: @graph/nodes.sdd
+  GraphRelations: @graph/relations.sdd
+  GraphTraceability: @graph/traceability.sdd
+  GraphImpact: @graph/impact.sdd
+  GraphOwnership: @graph/ownership.sdd
+  GraphDependencies: @graph/dependencies.sdd
+  GraphCoverage: @graph/coverage.sdd
+  GraphDrift: @graph/drift.sdd
+  Gates: @gates/INDEX.sdd
+  GatesPolicy: @gates/policy.sdd
+  GatesLevels: @gates/levels.sdd
+  GatesQuality: @gates/quality.sdd
+  GatesTesting: @gates/testing.sdd
+  GatesSecurity: @gates/security.sdd
+  GatesPerformance: @gates/performance.sdd
+  GatesInfrastructure: @gates/infrastructure.sdd
+  GatesRelease: @gates/release.sdd
+  GatesExceptions: @gates/exceptions.sdd
+  GatesEvidence: @gates/evidence.sdd
+  ProjectGates: @project/gates/INDEX.sdd
+  ProjectGatePolicy: @project/gates/policy.sdd
+  ProjectGateActive: @project/gates/active.sdd
+  Skills: @skills/INDEX.sdd
+  SkillsLanguages: @skills/languages/INDEX.sdd
+  SkillsGo: @skills/languages/go/INDEX.sdd
+  SkillsGoTesting: @skills/languages/go/testing/INDEX.sdd
+  SkillsRust: @skills/languages/rust/INDEX.sdd
+  SkillsJava: @skills/languages/java/INDEX.sdd
+  SkillsPHP: @skills/languages/php/INDEX.sdd
+  SkillsPython: @skills/languages/python/INDEX.sdd
+  SkillsCSharp: @skills/languages/csharp/INDEX.sdd
+  SkillsCPP: @skills/languages/cpp/INDEX.sdd
+  SkillsTypeScript: @skills/languages/typescript/INDEX.sdd
+  SkillsJavaScript: @skills/languages/javascript/INDEX.sdd
+  SkillsSwift: @skills/languages/swift/INDEX.sdd
+  SkillsKotlin: @skills/languages/kotlin/INDEX.sdd
+  SkillsRuby: @skills/languages/ruby/INDEX.sdd
+  SkillsFrameworks: @skills/frameworks/INDEX.sdd
+  SkillsReact: @skills/frameworks/react/INDEX.sdd
+  SkillsFlutter: @skills/frameworks/flutter/INDEX.sdd
+  SkillsReactNative: @skills/frameworks/react-native/INDEX.sdd
+  SkillsSwiftUI: @skills/frameworks/swiftui/INDEX.sdd
+  SkillsKMP: @skills/frameworks/kotlin-multiplatform/INDEX.sdd
+  SkillsNextJS: @skills/frameworks/nextjs/INDEX.sdd
+  SkillsNestJS: @skills/frameworks/nestjs/INDEX.sdd
+  SkillsSpringBoot: @skills/frameworks/spring-boot/INDEX.sdd
+  SkillsDjango: @skills/frameworks/django/INDEX.sdd
+  SkillsFastAPI: @skills/frameworks/fastapi/INDEX.sdd
+  SkillsExpress: @skills/frameworks/express/INDEX.sdd
+  SkillsDotNet: @skills/frameworks/dotnet/INDEX.sdd
+  SkillsLaravel: @skills/frameworks/laravel/INDEX.sdd
+  SkillsSymfony: @skills/frameworks/symfony/INDEX.sdd
+  SkillsSvelte: @skills/frameworks/svelte/INDEX.sdd
+  SkillsDatabases: @skills/databases/INDEX.sdd
+  SkillsPostgreSQL: @skills/databases/postgresql/INDEX.sdd
+  SkillsMongoDB: @skills/databases/mongodb/INDEX.sdd
+  SkillsRedis: @skills/databases/redis/INDEX.sdd
+  SkillsMySQL: @skills/databases/mysql/INDEX.sdd
+  SkillsCassandra: @skills/databases/cassandra/INDEX.sdd
+  SkillsElasticsearch: @skills/databases/elasticsearch/INDEX.sdd
+  SkillsPlatforms: @skills/platforms/INDEX.sdd
+  SkillsDocker: @skills/platforms/docker/INDEX.sdd
+  SkillsKubernetes: @skills/platforms/kubernetes/INDEX.sdd
+  SkillsAWS: @skills/platforms/aws/INDEX.sdd
+  SkillsGCP: @skills/platforms/gcp/INDEX.sdd
+  SkillsAzure: @skills/platforms/azure/INDEX.sdd
+  SkillsTerraform: @skills/platforms/terraform/INDEX.sdd
+  SkillsMessaging: @skills/messaging/INDEX.sdd
+  SkillsKafka: @skills/messaging/kafka/INDEX.sdd
+  SkillsRabbitMQ: @skills/messaging/rabbitmq/INDEX.sdd
+  SkillsNATS: @skills/messaging/nats/INDEX.sdd
+   SkillsCrossCutting: @skills/cross-cutting/INDEX.sdd
+   SkillsTesting: @skills/cross-cutting/testing/INDEX.sdd
+   SkillsSecurity: @skills/cross-cutting/security/INDEX.sdd
+   SkillsArchitecture: @skills/cross-cutting/architecture/INDEX.sdd
+   SkillsObservability: @skills/cross-cutting/observability/INDEX.sdd
+   SkillsDevOps: @skills/devops/INDEX.sdd
+   SkillsDevOpsGit: @skills/devops/git/INDEX.sdd
+   SkillsDevOpsCiCd: @skills/devops/ci-cd/INDEX.sdd
+   SkillsDevOpsSecurity: @skills/devops/security/INDEX.sdd
+   SkillsDevOpsTesting: @skills/devops/testing/INDEX.sdd
+   Patterns: @patterns/INDEX.sdd
+   PatternCircuitBreaker: @patterns/circuit-breaker.sdd
+   PatternCheckpointRestore: @patterns/checkpoint-restore.sdd
+   PatternGracefulDegradation: @patterns/graceful-degradation.sdd
+   Resilience: @RESILIENCE.md
+   Resources: @RESOURCES.sdd
+   WorkPlan: @WORK-PLAN.sdd
+   GitWorkflow: @GIT-WORKFLOW.sdd
+   Audit: @AUDIT.sdd
+   Evolution: @EVOLUTION.sdd
+   Documentation: @DOCUMENTATION.md
+   Analysis: @ANALYSIS.md
+   SkillExecution: @skills/SKILL-EXECUTION.sdd
+   SkillDiscovery: @skills/SKILL-DISCOVERY.sdd
+   SkillRecommendation: @skills/SKILL-RECOMMENDATION.sdd
+   SkillGapAnalysis: @skills/SKILL-GAP-ANALYSIS.sdd
+   SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
+   Reasoning: @orchestrator/reasoning.sdd
+   FastPath: @chains/fast-path.sdd
+   BugTracking: @bugs/INDEX.sdd
+   ParallelExecution: @workflows/parallel-execution.sdd
+   KnowledgeSharing: @workflows/knowledge-sharing.sdd
+   IntelligentRuntime: @workflows/intelligent-runtime.sdd
+  HumanSkills: @project/docs/skills/
+  Orchestrator: @orchestrator/INDEX.sdd
+  OrchestratorIntent: @orchestrator/intent.sdd
+  OrchestratorModes: @orchestrator/modes.sdd
+  OrchestratorState: @orchestrator/state.sdd
+  OrchestratorPipeline: @orchestrator/pipeline.sdd
+  OrchestratorBoundary: @orchestrator/boundary.sdd
+  RuntimeAgent: @runtime/agent.sdd
+  RuntimeSession: @runtime/session.sdd
+  RuntimeCurrent: @runtime/current.sdd
+  Standards: @standards/INDEX.sdd
+  StandardsNaming: @standards/naming.sdd
+  StandardsLevels: @standards/levels.sdd
+  StandardsStates: @standards/states.sdd
+  StandardsRelations: @standards/relations.sdd
+  StandardsConventions: @standards/conventions.sdd
+  Schemas: @schemas/INDEX.sdd
+  SchemaTask: @schemas/task.sdd
+  SchemaDecision: @schemas/decision.sdd
+  SchemaWorkflow: @schemas/workflow.sdd
+  SchemaSkill: @schemas/skill.sdd
+  SchemaGate: @schemas/gate.sdd
+  SchemaModule: @schemas/module.sdd
+  Runtime:    @runtime/events.sdd
+  Testing:    @testing/INDEX.sdd
+  TestLevels: @testing/levels.sdd
+  TestTypes:  @testing/types.sdd
+  TestGates:  @testing/gates.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectCoverage: @project/testing/coverage.sdd
+  ProjectTestRuns: @project/testing/runs/
+  ProjectTestFailures: @project/testing/failures/
+  ProjectTestExceptions: @project/testing/exceptions/
+   Docs:       @project/docs/INDEX.sdd
+   DocsTasks:  @project/docs/tasks/
+   DocsDecisions: @project/docs/decisions/
+    Commands:   @commands/INDEX.sdd
+    CommandSDD: @commands/sdd.sdd
+    CommandAnalyze: @commands/sdd-analyze.sdd
+    CommandStatus: @commands/sdd-status.sdd
+    CommandDecisions: @commands/sdd-decisions.sdd
+    CommandHealth: @commands/sdd-health.sdd
+    CommandBackup: @commands/sdd-backup.sdd
+    CommandRestore: @commands/sdd-restore.sdd
+    CommandResume: @commands/sdd-resume.sdd
+   CommandDecisions: @commands/sdd-decisions.sdd
+   Plugins: @plugins/INDEX.sdd
+   PluginAdapterMap: @plugins/adapter-map.sdd
+   PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd
+   PluginTDD: @plugins/plugin-adapters/test-driven-development.sdd
+   PluginDebugging: @plugins/plugin-adapters/systematic-debugging.sdd
+   PluginWritingPlans: @plugins/plugin-adapters/writing-plans.sdd
+   PluginGitWorktrees: @plugins/plugin-adapters/using-git-worktrees.sdd
+   PluginCodeReview: @plugins/plugin-adapters/code-review.sdd
+   PluginParallelAgents: @plugins/plugin-adapters/dispatching-parallel-agents.sdd
+   PluginWritingSkills: @plugins/plugin-adapters/writing-skills.sdd
+   PluginVerification: @plugins/plugin-adapters/verification-before-completion.sdd
+   Verification: @verification/
+   State:      @state/state.sdd
+
+State: +
+   (created as the universal entry point and routing table)
+   (added architecture and decisions to ReadOrder and Navigation)
+   (added dependency graph engine and locking model to ReadOrder and Navigation)
+   (added stack technology knowledge base to ReadOrder and Navigation)
+   (added workflow lifecycle engine to ReadOrder and Navigation)
+   (added observability and incident engine to ReadOrder and Navigation)
+   (added CLI commands to ReadOrder and Navigation)
+   (added plugin adapters to ReadOrder and Navigation)
+
+Note:
+   INDEX.sdd is the first file AI reads when entering .sdd/. It does not
+    contain project-specific content — it is a pure routing table. The
+    ReadOrder above is the universal loading sequence for any mode; AI may
+    stop early once it has enough context for the current task (see [I3],
+    TokenEconomy in architecture/architecture.sdd -> Principles).
+
+    Added architecture and decisions sections to ReadOrder and Navigation.
+    Architecture knowledge base includes levels.sdd, patterns.sdd, scaling.sdd,
+    availability.sdd, data.sdd, observability.sdd, networking.sdd, deployment.sdd.
+    Project architecture state lives in project/architecture/ with 1:1 mapping
+    to human docs. Decisions registry lives in project/decisions/ with 1:1
+    mapping to docs/decisions/.
+
+    Added dependency graph engine and locking model sections to ReadOrder
+    and Navigation. Root dependencies/ = reusable system intelligence (graph
+    algorithms, locking rules); project/dependencies/ = concrete project state
+    (actual dependency graph, lock state, reservations).
+
+    Added stack technology knowledge base sections to ReadOrder and Navigation.
+    Root stack/ = reusable technology knowledge (languages, frameworks,
+    databases, caches, messaging, testing, infrastructure, observability);
+    project/stack/ = concrete project state (selected technology instances).
+    Technology selection follows architecture, not precedes it.
+
+    Added workflow lifecycle engine sections to ReadOrder and Navigation.
+    Root workflow/ = reusable workflow knowledge (lifecycle, stages,
+    dependencies, recovery, policies); project/workflow/ = concrete project
+    workflow state (active instances, exceptions).
+
+    Added observability and incident engine sections to ReadOrder and
+    Navigation. Root observability/ = reusable observability knowledge
+    (logging, metrics, tracing, alerting, health, diagnostics, incident);
+    project/observability/ = concrete project runtime state (services, alerts,
+    incidents, diagnostics). This completes the development → runtime →
+    feedback loop.
+
+    Added CLI commands for Claude AI integration. /sdd, /sdd-analyze,
+    /sdd-status, /sdd-decisions commands allow executing SDDRA from
+    Claude CLI while respecting .sdd/ rules and human gates.
