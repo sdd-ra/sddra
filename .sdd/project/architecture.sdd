@@ -1,14 +1,14 @@
 Spec: Project/Architecture
 
 Purpose:
-  Layihənin ÖZ komponentlərinin (layers, modules, stack) necə qurulduğunu
-  və əlaqələndiyini təsvir edir — bu, layihənin texniki arxitekturasıdır,
-  YOX .sdd sisteminin öz meta-arxitekturası (bax architecture/architecture.sdd
-  — fərqli, ayrı sənəddir, STEP 3), YOX də qlobal engineering-arxitektura
-  prinsipləri (modularity, coupling, dependency direction) — onlar
-  architecture/principles.sdd-də yaşayır (STEP 13) və konkret layer
-  əlaqələri (Rules/Validation aşağıda) o qlobal qaydalara qarşı yoxlanılır
-  (bax Resolution: architecture/principles.sdd -> Resolution).
+  Describes how the project's OWN components (layers, modules, stack) are
+   structured and connected — this is the project's technical architecture,
+   NOT the .sdd system's own meta-architecture (see architecture/architecture.sdd
+   — different, separate document, STEP 3), NOT global engineering-architecture
+   principles (modularity, coupling, dependency direction) — those live in
+   architecture/principles.sdd (STEP 13) and concrete layer relationships
+   (Rules/Validation below) are checked against those global rules
+   (see Resolution: architecture/principles.sdd -> Resolution).
 
 Layers:
   DB
@@ -35,25 +35,14 @@ State:
   ~ = architecture change in progress
 
 ViolationVsDecision:
-  AI MUST NOT silently resolve which of these iki hal baş verib:
+  AI MUST NOT silently resolve which of these two cases occurred:
     A) mistake                 -> state: ! (Architecture Violation)
     B) deliberate new decision -> state: ? (Architecture Decision Required,
-                                   insan təsdiqi, bax PROJECT.sdd HumanDecision)
-  AI `?` qaldırır və dayanır — nə `!` işarələyib "düzəltmir", nə də sükutla
-  yeni norma kimi qəbul edir.
+                                   human approval, see PROJECT.sdd HumanDecision)
+  AI leaves `?` and stops — it does NOT mark `!` saying "not fixing", nor
+  does it silently accept as new normal.
 
 Note:
-  (prompt/new/21.md, STEP 4) Bu sənəd hazırda yalnız SXEMdir — konkret layer
-  əlaqələri (məs. BE -> DB, FE -> API) hələ yazılmır, çünki layihənin
-  konkret stack/modul faktları hələ mövcud deyil. Onlar konkret domenlər
-  (payment/course/user və s.) yenidən qurulan bir gələcək "next"lə əlavə
-  olunacaq.
-
-  İstifadəçinin açıq təsdiqi ilə ("Tam sıfırla") bu fayl əvvəllər saxladığı
-  konkret P{} stack shorthand (EduNexus/MM/GO/PG/RX/RN/DK), ModuleIsolation/
-  ExtractCheck və DefaultAllowed/DefaultForbidden kənarları ilə birlikdə
-  sıfırlanıb — bu məzmun git tarixçəsində qalır (bu commit-dən əvvəl).
-  Eyni zamanda köhnəlmiş `protocol/symbols.sdd`/`protocol/rules.sdd`
-  istinadları (bax .sdd/PROJECT.sdd -> Note, "məlum, hələ təmizlənməmiş
-  qalıq" — indi HƏLL OLUNUB) və köhnə "bu fayl STEP 4-ün hədəfidir" özü-
-  referanslı qeydi (fərqli, köhnə nömrələmə sxemindən qalma) də silinib.
+  This document is a SCHEMA — concrete layer relationships (e.g. BE -> DB,
+  FE -> API) are generated per project from templates/_sdd/architecture/.
+  This file does not contain concrete project data.

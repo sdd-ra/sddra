@@ -54,7 +54,7 @@ Pipeline:
     -> Project Decision        (human approval, bax [PI4])
     -> Project Instance        (./domains.sdd, ./modules.sdd, ./project.sdd
                                  Feature/Component entries, ./architecture.sdd,
-                                 ./flows.sdd get populated)
+                                 ./flows.sdd, ./profile.sdd get populated)
 
   Each stage narrows what the next stage needs to consider — later
   stages MUST NOT re-derive conclusions already settled by an earlier

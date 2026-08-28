@@ -1,8 +1,7 @@
-Spec: Project/Indexes
+﻿Spec: Project/Indexes
 
 Purpose:
-  Layihə bilgisinin sürətli resolve edilməsi üçün kateqoriya-səviyyəli
-  indeks siyahısı.
+  Category-level index list for fast resolution of project knowledge.
 
 Indexes:
   module
@@ -20,11 +19,15 @@ Rules:
   Indexes MUST reference authoritative SDD files, not duplicate them.
 
 Note:
-  Bu fayl map.sdd-dən fərqlidir: map.sdd "hara getməliyəm?" sualına konkret
-  Resolution (@modules, @domains) ilə cavab verir; bu fayl isə daha geniş,
-  kateqoriya-səviyyəli bir indeks bəyanatıdır (məs. gələcəkdə `api`,
-  `database`, `test`, `deployment` kimi kateqoriyalar üzrə axtarış üçün).
-  Təkrarçılığın qarşısını almaq üçün (bax architecture/architecture.sdd ->
-  NoDuplication) bu fayl konkret yol siyahısı saxlamır, yalnız hansı
-  kateqoriyaların indeksləşdiyini bəyan edir — konkret indeks məzmunu
-  müvafiq domenlər/modullar yenidən qurulanda əlavə olunacaq.
+  This file differs from map.sdd: map.sdd answers "where should I go?"
+   with concrete Resolution (@modules, @domains); this file is a broader,
+   category-level index declaration (for future search by categories
+   like `api`, `database`, `test`, `deployment`). To prevent duplication
+   (see architecture/architecture.sdd -> NoDuplication) this file does
+   not store concrete path lists, it only declares which categories are
+   indexed â€” concrete index content will be added when corresponding
+   domains/modules are rebuilt.
+
+
+State: +
+

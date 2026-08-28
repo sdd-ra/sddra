@@ -1,9 +1,9 @@
-Spec: Project/Dependencies
+﻿Spec: Project/Dependencies
 
 Purpose:
-  Layihə komponentləri arasındakı əlaqələri təsvir edir — sxem/lüğət
-  yalnız. Konkret asılılıq qrafları (hansı modul hansına asılıdır) hər
-  domenin öz modelində yaşayacaq, domenlər yenidən qurulanda.
+  Describes the relationships between project components â€” schema/glossary
+   only. Concrete dependency graphs (which module depends on which) will
+   live inside each domain's own model, when domains are rebuilt.
 
 RelationTypes:
   depends_on
@@ -20,8 +20,12 @@ Rules:
   New dependencies MUST be evaluated against architecture.sdd.
 
 Note:
-  (prompt/new/21.md, STEP 4) Əvvəlki konkret Payment/Course/User asılılıq
-  qrafı (Payment -> User, Course, PaymentGateway; Course -> User) sıfırlanıb
-  — bax git tarixçəsi (bu commit-dən əvvəl). Gələcək bir "next" konkret
-  domenləri yenidən qurduqda yuxarıdakı RelationTypes lüğəti əsasında
-  konkret qraf yenidən yaradılacaq.
+  (prompt/new/21.md, STEP 4) The previous concrete Payment/Course/User
+   dependency graph (Payment -> User, Course, PaymentGateway; Course ->
+   User) was reset â€” see git history (before this commit). A future
+   "next" step will rebuild the concrete graph based on the RelationTypes
+   glossary above when concrete domains are rebuilt.
+
+
+State: +
+

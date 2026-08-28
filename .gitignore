@@ -1,0 +1,76 @@
+# SDDRA .gitignore
+
+# SDD system files (immutable, owner-controlled)
+.sdd/
+
+# Old/archived files
+old/
+
+# Temporary files
+tmp/
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if any)
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.bak
+*.backup
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+ENV/
+env/
+
+# Go
+go.sum
+
+# Java
+target/
+*.class
+
+# C#
+bin/
+obj/
+*.exe
+*.dll
+
+# Rust
+target/
+Cargo.lock
+
+# General
+*.pid
+*.seed
+*.pid.lock

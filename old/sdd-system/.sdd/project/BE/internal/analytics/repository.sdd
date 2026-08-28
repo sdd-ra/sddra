@@ -1,9 +1,0 @@
-Spec: AnalyticsRepository
-Id: @BE/analytics/repository
-Source: BE/internal/analytics/repository.go
-Owns: analytics persistence/query behavior
-Skills: #REPO #DBD #TX
-DependsOn: @DB/analytics
-Tests: BE/internal/analytics/repository_test.go
-Chain: DB → BE → QA → VR
-State: +

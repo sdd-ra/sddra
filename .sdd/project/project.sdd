@@ -1,4 +1,4 @@
-Spec: Project/Model
+﻿Spec: Project/Model
 
 Purpose:
   Define how the real software project is represented inside the SDD
@@ -21,6 +21,9 @@ Owns:
   Component model (schema)
   Ownership rule
   Project-model navigation order
+  Project profile schema (Stack/Scale/Availability/Regions/Compliance/
+    Constraints/Goals)
+  Non-goals schema (explicitly excluded scope)
 
 
 DoesNotOwn:
@@ -46,6 +49,85 @@ Principle:
   The project model MUST represent the software system without
   requiring AI to inspect the entire source tree before understanding
   the system.
+
+  AI MUST select best practices based on project context (stack, scale,
+  constraints, non-goals), not apply generic best practices universally
+  (bax ../architecture/principles.sdd -> ArchitectureSelection,
+  ../project/instantiation.sdd -> SkillFiltering).
+
+
+Profile:
+
+  A project instance MAY declare its operational context so AI can
+  choose architecture, skills, and implementation strategies that fit
+  the actual project rather than a generic default. This file defines
+  the schema only — concrete values belong to the instantiated project
+  (bax ../instantiation.sdd -> Pipeline -> Project Instance).
+
+  Schema:
+
+    Stack:
+      BE:    <backend framework / language>
+      DB:    <database>
+      FE:    <frontend framework>
+      MD:    <mobile framework>
+      DO:    <deployment / orchestration>
+
+    Scale:
+      DAU:   <number>
+      MAU:   <number>
+      QPS:   <number>
+
+    Availability:
+      SLA:   <percentage>
+
+    Architecture:
+      <style: modular_monolith / microservices / serverless / ...>
+
+    Regions:
+      <count>
+
+    Compliance:
+      <standards: GDPR / SOC2 / ...>
+
+    Constraints:
+      <list>
+
+    Goals:
+      <list>
+
+    ComplexityBudget:
+      <L0-L5 scale constraint that gates which patterns are eligible>
+
+    NFR:
+      Latency:     <target>
+      Availability: <target>
+      Security:     <baseline>
+      Recovery:     <RPO/RTO>
+
+    SecurityRiskBudget:
+      SecurityLevel:     <L0-L5>
+      RiskTolerance:     <low/medium/high>
+      CriticalAllowed:   <true/false>
+      HighAllowed:       <true/false>
+      PentestRequired:   <true/false>
+      ExternalExposure:  <public/internal/private>
+
+
+NonGoals:
+
+  A project instance MAY declare explicit non-goals to prevent AI from
+  introducing scope creep via "best practice" additions the project has
+  consciously excluded. This file defines the schema only — concrete
+  values belong to the instantiated project.
+
+  Schema:
+
+    NonGoals:
+      <explicitly excluded concept>
+
+  Examples (illustrative only):
+    microservices, multi-region, blockchain, event-sourcing
 
 
 ProjectStructure:
@@ -193,6 +275,194 @@ Portability:
   ./instantiation.sdd, not by this file.
 
 
+Documentation:
+
+  A project instance MAY declare its human-facing documentation structure
+  so AI can keep docs synchronized with code changes and humans can
+  navigate the system without reading .sdd/. This file defines the
+  documentation SHAPE only — concrete docs belong to the project's
+  ./docs/ directory (bax ../PROJECT.sdd -> Directories -> docs).
+
+  LayerStructure:
+
+    docs/
+    ├── 00-about/        (project.md, glossary.md, system-overview.md)
+    ├── 10-business/     (business-model.md, business-rules.md, domains/, workflows/)
+    ├── 20-architecture/ (overview.md, decisions.md, boundaries.md, dependencies.md, diagrams/)
+    ├── 30-backend/      (overview.md, modules/, services/, api/, diagrams/)
+    ├── 40-frontend/     (overview.md, modules/, state/, diagrams/)
+    ├── 50-mobile/       (overview.md, android/, ios/, diagrams/)
+    ├── 60-database/     (overview.md, schema/, migrations/, indexing/, diagrams/)
+    ├── 70-api/          (overview.md, contracts/, authentication.md, diagrams/)
+    ├── 80-qa/           (strategy.md, bdd/, automation/, ui/, manual/, diagrams/)
+    ├── 90-security/     (overview.md, threats.md, policies.md, incidents/)
+    ├── 100-devops/      (overview.md, docker/, ci-cd/, deployment/, rollback/, diagrams/)
+    ├── 110-infrastructure/ (overview.md, vps/, aws/, azure/, gcp/, kubernetes/)
+    ├── 120-support/     (overview.md, runbooks/, troubleshooting/, incidents/, faq/)
+    └── 130-operations/  (monitoring.md, alerting.md, sla.md, disaster-recovery.md)
+
+  OwnershipMatrix:
+
+    Every problem type MUST map to a primary owner, secondary owner,
+    and runbook. This matrix lives at docs/00-about/ownership.md and
+    is the human-facing lookup for "who do I call when X breaks?".
+
+    Example:
+
+      | Problem            | Primary | Secondary | Runbook           |
+      | API 500            | BE      | DO        | api-500           |
+      | UI broken          | FE      | QA        | ui-failure        |
+      | Mobile crash       | MD      | QA        | mobile-crash      |
+      | DB unavailable     | DB      | DO        | database-down     |
+      | Deployment fail    | DO      | BE        | deployment-failure|
+      | Security issue     | SEC     | DO        | security-incident |
+      | Business rule wrong| Product | BE        | business-rule     |
+      | Test failure       | QA      | Owner     | test-failure      |
+
+  DocMetadata:
+
+    Every doc file SHOULD declare its ownership so humans can identify
+    the responsible team at a glance:
+
+      Owner:       Backend
+      Secondary:   Database, QA, Security
+      Business:    Payment
+      Related:     @PAY/refund, @DB/payment, @API/refund
+
+    Every doc file SHOULD declare its intended audience:
+
+      Audience:
+        business
+        developer
+        qa
+        devops
+        support
+
+    This lets AI route humans to the right doc without making them read
+    everything (bax TokenEconomy in ../architecture/architecture.sdd
+    -> Principles).
+
+  OnePageSummary:
+
+    Every major domain or component SHOULD have a one-page summary
+    before detailed documentation:
+
+      Purpose
+      Owner
+      Users
+      Inputs
+      Outputs
+      Dependencies
+      Main Flow
+      Failure modes
+      Current status
+
+    Humans MUST NOT need to read 10 pages to understand a module's
+    purpose and ownership.
+
+  DiagramMetadata:
+
+    Every diagram file SHOULD declare its metadata above the diagram:
+
+      Layer:     ARCH
+      Owner:     Backend
+      Related:   @PAY, @DB/payment, @API/payment, @DO/payment
+      Source:    .sdd/project/flows.sdd
+      Generated: 2026-08-20
+      Status:    ✓ verified
+
+  CanonicalDiagramTypes:
+
+    #CTX   Context
+    #ARCH  Architecture
+    #FLOW  Flow
+    #SEQ   Sequence
+    #DATA  Data model
+    #DEP   Dependency
+    #NET   Network
+    #DEPLOY Deployment
+    #CI    CI/CD
+    #OBS   Observability
+    #SEC   Security
+    #TEST  Test flow
+
+  Views:
+
+    A single canonical relationship model in .sdd/project/flows.sdd
+    MAY have multiple human-facing views. Each layer reads the same
+    model but renders only the slice relevant to its concern (bax
+    TokenEconomy in ../architecture/architecture.sdd -> Principles).
+    Examples: Business view, Backend view, Frontend view, Mobile view,
+    QA view, DevOps view.
+
+  DocIndex:
+
+    docs/index.md is the human entry point. It MUST list every layer
+    with its Owner, Purpose, Related domains, Related diagrams, and
+    Related runbooks.
+
+  DocStatus:
+
+    Documentation status is tracked per work item using compact symbols
+    (bax ../tasks/tasks.sdd -> DocumentationStatus):
+
+      DOC+  documentation current and verified
+      DOC~  documentation stale, update required
+      DOC!  documentation missing, block VR
+
+    A work item MUST NOT pass VR while any impacted layer's
+    documentation is DOC! or DOC~ without an approved exception.
+
+
+RiskRegister:
+
+  A project instance MAY maintain a risk register so architecture and
+  implementation decisions can account for known risks. This file defines
+  the schema only — concrete risks belong to the instantiated project.
+
+  Schema:
+
+    id
+    area
+    risk
+    probability
+    impact
+    trigger
+    mitigation
+    owner
+
+  Example:
+
+    #RISK-004
+
+    Area:
+      Database
+
+    Risk:
+      PostgreSQL becomes bottleneck
+
+    Probability:
+      medium
+
+    Impact:
+      high
+
+    Trigger:
+      CPU > 75%
+
+    Mitigation:
+      indexing
+      caching
+      read replica
+
+    Owner:
+      DB / DO
+
+  AI MUST consult the risk register when proposing architecture or
+  implementation changes (bax ../architecture/principles.sdd ->
+  ArchitectureSelection).
+
+
 ResolutionOrder:
 
   PROJECT > DOMAIN > MODULE > FEATURE > COMPONENT > CODE
@@ -210,9 +480,362 @@ NavigationFiles:
   instantiation.sdd:   How a project instance gets decided (STEP 15)
 
 
+CanonicalSections:
+
+  The .sdd/ Architecture v1 defines 15 canonical sections. This file
+  does not implement them all — it references them so AI knows the
+  target shape when reading or extending .sdd/:
+
+    01 PROJECT        — PROJECT.sdd, project model
+    02 PROTOCOL       — syntax, states, stages, rules
+    03 SYMBOLS        — compact glyphs and meanings
+    04 SKILLS         — engineering skill catalog
+    05 PROJECT MODEL  — domains, modules, features, components
+    06 FLOWS / CHAINS — execution chains and dependencies
+    07 TASKS          — task engine and instances
+    08 DECISIONS      — human decision lifecycle
+    09 SECURITY       — security as cross-cutting gate
+    10 VERIFICATION   — QA, review, VR
+    11 STATE          — state notation engine
+    12 DOCS CONTRACT  — docs/ structure and ownership
+    13 COST / CONTEXT — progressive context loading
+    14 DRIFT          — code-vs-model drift detection
+    15 RISK           — risk register and health
+
+  These sections are distributed across the existing .sdd/ files; no
+  new file is created for each section (NoDuplication). AI MUST load
+  them in the order above when doing full project discovery (bax
+  ProgressiveContextLoading in ../tasks/tasks.sdd).
+
+
+Domain:
+
+  A domain represents a coherent business capability. This file defines
+  the schema only — concrete domain declarations live at .sdd/project/
+  <domain>/PROJECT.sdd once real project analysis justifies them (bax
+  ./instantiation.sdd -> CorePrinciple).
+
+  Schema:
+
+    ID:
+      @<domain>
+
+    Type:
+      domain
+
+    Purpose:
+      <one-line description>
+
+    Paths:
+      BE:  <backend path>
+      FE:  <frontend path>
+      MD:  <mobile path>
+      DB:  <database path>
+      QA:  <test path>
+
+    Owns:
+      <list of capabilities>
+
+    Uses:
+      @<other-domain>
+
+    API:
+      @api/<domain>
+
+    Data:
+      @db/<domain>
+
+    Chain:
+      <domain-specific chain, or global default>
+
+    Risk:
+      <R0-R5>
+
+    Security:
+      @SC/<domain>
+
+    Docs:
+      @docs/business/<domain>
+      @docs/developer/<domain>
+
+
+Module:
+
+  A module represents a technical or functional boundary inside a
+  domain. This file defines the schema only — concrete module
+  declarations live at .sdd/project/<domain>/<module>.sdd once real
+  project analysis justifies them.
+
+  Schema:
+
+    ID:
+      @<domain>/<module>
+
+    Type:
+      module
+
+    Purpose:
+      <one-line description>
+
+    Paths:
+      BE:  <backend path>
+      FE:  <frontend path>
+      MD:  <mobile path>
+      DB:  <database path>
+      QA:  <test path>
+
+    Owns:
+      <list of responsibilities>
+
+    DependsOn:
+      @<other-module>
+
+    UsedBy:
+      @<other-module>
+
+    API:
+      @api/<module>
+
+    Data:
+      @db/<module>
+
+    Chain:
+      <module-specific chain>
+
+    Risk:
+      <R0-R5>
+
+    Security:
+      @SC/<module>
+
+    Docs:
+      @docs/business/<module>
+      @docs/developer/<module>
+
+
+Component:
+
+  A component represents an implementation boundary inside a module —
+  the discipline-level slice of code that actually realizes it.
+
+  Schema:
+
+    ID:
+      @<domain>/<module>/<component>
+
+    Type:
+      component
+
+    Stage:
+      BE / DB / API / FE / MD / QA / DO
+
+    Path:
+      ./<layer>/<path>
+
+    Owns:
+      <list of files/responsibilities>
+
+    Tests:
+      ./<test-path>
+
+    API:
+      @api/<component>
+
+    DB:
+      @db/<component>
+
+    Skills:
+      @<stage>/<skill>
+
+    DependsOn:
+      @<other-component>
+
+    UsedBy:
+      @<other-component>
+
+    Chain:
+      <component-specific chain>
+
+    Risk:
+      <R0-R5>
+
+    Security:
+      @SC/<component>
+
+
+SourceMapping:
+
+  Source code artifacts are mapped to semantic identifiers through
+  mirror files, not through source code annotations (bax CleanSource
+  in ../architecture/architecture.sdd -> Principles).
+
+  Mirror file format:
+    Own:      <what this artifact owns>
+    Do:       <what this artifact does>
+    Use:      <what this artifact uses>
+    Test:     <test paths>
+    ->        <pointer to module/domain model>
+
+  Mirror files live at .sdd/project/<source-path>/<artifact>.sdd
+  and are created only when real source exists.
+
+  Bidirectional resolution:
+    source -> semantic: mirror file path -> semantic ID
+    semantic -> source: semantic ID -> mirror file path -> real source
+
+
+Declared:
+
+  Approved project intent — architecture, domains, modules, components,
+  flows, decisions, constraints.
+
+Observed:
+
+  Actual repository/runtime state — source code, tests, config, metrics,
+  actual dependencies.
+
+Drift:
+
+  When Declared != Observed, AI MUST create a DRIFT finding and a task
+  to reconcile the difference. Drift severity:
+
+    D0 = no drift
+    D1 = minor (typo, naming)
+    D2 = significant (missing module, wrong dependency)
+    D3 = critical (architecture violation, security gap)
+
+  AI MUST detect drift by comparing change impact against the project
+  model, not by re-reading the entire repository (bax ProgressiveContextLoading
+  in ../tasks/tasks.sdd, TokenEconomy in ../architecture/architecture.sdd
+  -> Principles).
+
+
+MinimalModel:
+
+  Every domain/component does NOT need a 500-line document. The minimal
+  model is:
+
+    ID
+    Paths
+    Owns
+    DependsOn / UsedBy
+    Chain
+    Risk
+
+  Everything else lives in the graph and skills. This prevents context
+  bloat and keeps the project model token-efficient.
+
+
+Graph:
+
+  The project graph is the relationship layer on top of the project model.
+  It answers: "What is related to what?" and "Who owns what?" The project
+  model says "@payments exists"; the graph says "@payments -> @users,
+  @payments -> @gateway, @payments/refund owner: BE".
+
+  The graph has three sub-types (see graph/graph.sdd):
+
+    DependencyGraph  — "What is A dependent on?"
+    ImpactGraph      — "What is affected when A changes?"
+    OwnershipGraph   — "Who is responsible for this work?"
+
+  Graph structure:
+
+    Nodes:     semantic identifiers (@payments, @payments/refund, ...)
+    Edges:     relationships between nodes with metadata
+    Ownership: node -> owner mapping
+
+  Edge metadata:
+
+    type:        dependency | calls | uses | writes | tests |
+                 secures | deploys | verifies | produces | consumes
+    protocol:    HTTP | gRPC | CLI | Event | ...
+    contract:    @api/refund
+    risk:        R0-R5
+    required:    true | false
+    direction:   inbound | outbound
+    since:       <version or date>
+    status:      + | ~ | ! | ?
+
+  Graph is the primary source of truth for relationships. AI MUST NOT
+  use filesystem search when the graph already contains the answer
+  (bax TokenEconomy in ../architecture/architecture.sdd -> Principles).
+
+
+GraphDrift:
+
+  Graph drift is a subset of project drift (bax Declared/Observed/Drift
+  above). When the graph says:
+
+    @payments/refund -> @db/refunds
+
+  but the actual code has:
+
+    @payments/refund -> @redis/cache
+
+  AI MUST:
+    1. Detect the drift
+    2. Create a DRIFT finding
+    3. Create a task to reconcile the graph
+    4. NOT silently update the graph without human approval for
+       significant changes (bax ../PROJECT.sdd -> HumanDecision)
+
+  Drift severity:
+    D0 = no drift
+    D1 = minor (new optional dependency)
+    D2 = significant (missing dependency, wrong owner)
+    D3 = critical (security gap, architecture violation)
+
+
+FallbackDiscovery:
+
+  When the graph says nothing about a node, AI MUST fall back to
+  discovery, but MUST NOT silently update the graph:
+
+    GRAPH MISSING
+      ↓
+    DISCOVER
+      ↓
+    OBSERVE
+      ↓
+    DRAFT UPDATE
+      ↓
+    HUMAN APPROVAL (if significant)
+      ↓
+    UPDATE GRAPH
+
+  Domain-local graph updates MAY be proposed automatically, but MUST
+  be reviewed before being accepted (bax ../PROJECT.sdd -> HumanDecision).
+
+
+DomainGraph:
+
+  Each domain MAY have its own local graph at .sdd/project/<domain>/
+  graph.sdd containing only the nodes and edges relevant to that domain.
+  The global graph at .sdd/graph/graph.sdd contains only high-level
+  domain-to-domain relationships.
+
+  Resolution order:
+    1. Global graph (.sdd/graph/graph.sdd)
+    2. Domain graph (.sdd/project/<domain>/graph.sdd)
+    3. Component model (.sdd/project/<domain>/<component>.sdd)
+    4. Fallback discovery (if all graphs are silent)
+
+  This keeps the global graph small and the domain graph detailed —
+  context locality (bax TokenEconomy in ../architecture/architecture.sdd
+  -> Principles).
+
+
 State: STEP 4 (domains/modules) + STEP 14 (this file, Feature/Component)
   + STEP 15 (Purpose/DoesNotOwn/[PM9]/Portability/NavigationFiles
   cross-references to instantiation.sdd)
+  + — expanded Domain/Module/Component schemas
+  with Paths/Uses/API/Data/Chain/Risk/Security/Docs, added SourceMapping,
+  Declared/Observed/Drift, MinimalModel, Project/Root entry point at
+  project/PROJECT.sdd
+  + — added Graph: section (DependencyGraph,
+  ImpactGraph, OwnershipGraph, EdgeMetadata, GraphDrift, FallbackDiscovery,
+  DomainGraph), created graph/graph.sdd as global graph entry point
 
 Note:
   (prompt/new/36.md — source labeled this "STEP 13", a THIRD consecutive
@@ -263,3 +886,90 @@ Note:
   explicitly owned elsewhere. Bax ./instantiation.sdd -> Note for the
   full STEP 15 rationale, including the source's fourth consecutive
   "STEP 13" mislabel.
+
+  addendum (prompt/new/60.md): Domain/Module/Component schemas
+   expanded with Paths, Uses, API, Data, Chain, Risk, Security, Docs;
+   SourceMapping section added (mirror files, bidirectional resolution);
+   Declared/Observed/Drift model added; MinimalModel principle added;
+   project/PROJECT.sdd referenced as root entry point (Windows filesystem
+   limitation: project.sdd and PROJECT.sdd cannot coexist in the same
+   directory, so root project model metadata is referenced from here
+   rather than duplicated).
+  added Decisions: section (decision storage
+  under project/<domain>/decisions/<state>/, decision index, decision
+  retrieval flow, decision impact workflow, token economy for decisions,
+  relation model DependsOn/Supersedes/Conflicts/Affects/DerivedFrom/
+  Requires/ReviewedBy/ImplementedBy/VerifiedBy).
+
+Decisions:
+
+  A project instance MAY maintain decisions at the domain level so AI can
+  trace why a choice was made and what it affects. This file defines the
+  SHAPE only — concrete decisions belong to the instantiated project.
+
+  Storage:
+    project/<domain>/decisions/<state>/*.sdd
+
+    Where <state> is one of: pending / approved / rejected / superseded
+
+    Example:
+      project/<domain>/decisions/pending/DEC-<ID>.sdd
+      project/<domain>/decisions/approved/DEC-<ID>.sdd
+
+  DecisionIndex:
+    Each domain MAY maintain an INDEX.sdd for fast lookup:
+
+      Domain: @<domain>
+      Active: DEC-<ID>, DEC-<ID>
+      Review: DEC-<ID>
+      Superseded: DEC-<ID>, DEC-<ID>
+
+    AI MUST load INDEX first, then only the relevant decisions.
+
+  DecisionRetrieval:
+    Task -> Domain -> Decision INDEX -> affected decisions -> only relevant DEC files
+
+  DecisionImpactWorkflow:
+    NEW DECISION
+      -> COMPARE
+      -> CONFLICT CHECK
+      -> IMPACT ANALYSIS
+        -> SKILL IMPACT
+        -> GRAPH IMPACT
+        -> TASK IMPACT
+        -> DOC IMPACT
+      -> HUMAN GATE
+      -> APPROVE
+      -> CREATE / UPDATE TASKS
+
+  RelationModel:
+    DependsOn:     decision depends on another decision
+    Supersedes:    decision replaces an older decision
+    Conflicts:     decision contradicts another decision
+    Affects:       decision affects a project element
+    DerivedFrom:   decision derived from another decision
+    Requires:      decision requires a skill
+    ReviewedBy:    decision reviewed by
+    ImplementedBy: decision implemented by a task
+    VerifiedBy:    decision verified by a QA task
+
+  TokenEconomy:
+    ->  affects
+    =>  produces
+    <-  depends
+    ~   pending
+    +   accepted
+    !   conflict/fail
+    x   superseded
+    @   review
+
+  Decision states:
+    ~ proposed
+    @ review
+    + accepted
+    ! rejected
+    x superseded
+    ? deprecated
+
+
+State: STEP 4 (domains/modules) + STEP 14 (this file, Feature/Component)
