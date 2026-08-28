@@ -1,0 +1,183 @@
+﻿Skills: SDD
+
+Purpose:
+  Skill Intelligence and Self-Evolution Engine. Skills are living
+  engineering knowledge packages organized by technology and competency
+  layers (L1-L5). Each programming language has layered skills from
+  fundamentals to architecture.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @languages/INDEX.sdd
+   3  @languages/go/
+   4  @languages/rust/
+   5  @languages/java/
+   6  @languages/php/
+   7  @languages/python/
+   8  @languages/csharp/
+   9  @languages/cpp/
+   10 @languages/typescript/
+   11 @languages/javascript/
+   12 @languages/swift/
+   13 @languages/kotlin/
+   14 @languages/ruby/
+   15 @frameworks/INDEX.sdd
+   16 @frameworks/react/
+   17 @frameworks/flutter/
+   18 @frameworks/react-native/
+   19 @frameworks/swiftui/
+   20 @frameworks/kotlin-multiplatform/
+   21 @frameworks/nextjs/
+   22 @frameworks/nestjs/
+   23 @frameworks/spring-boot/
+   24 @frameworks/django/
+   25 @frameworks/fastapi/
+   26 @frameworks/express/
+   27 @frameworks/dotnet/
+   28 @frameworks/laravel/
+   29 @frameworks/symfony/
+   30 @frameworks/svelte/
+   31 @databases/INDEX.sdd
+   32 @databases/postgresql/
+   33 @databases/mongodb/
+   34 @databases/redis/
+   35 @databases/mysql/
+   36 @databases/cassandra/
+   37 @databases/elasticsearch/
+   38 @platforms/INDEX.sdd
+   39 @platforms/docker/
+   40 @platforms/kubernetes/
+   41 @platforms/aws/
+   42 @platforms/gcp/
+   43 @platforms/azure/
+   44 @platforms/terraform/
+   45 @messaging/INDEX.sdd
+   46 @messaging/kafka/
+   47 @messaging/rabbitmq/
+   48 @messaging/nats/
+   49 @devops/INDEX.sdd
+   50 @devops/git/
+   51 @devops/ci-cd/
+   52 @devops/security/
+   53 @devops/testing/
+   54 @testing/INDEX.sdd
+   55 @testing/SKILL-TEST-STRATEGY.sdd
+   56 @meta/INDEX.sdd
+   57 @meta/SKILL-DISCOVERY.sdd
+   58 @meta/SKILL-RECOMMENDATION.sdd
+   59 @meta/SKILL-GAP-ANALYSIS.sdd
+   60 @meta/SKILL-EXTERNAL-REFERENCES.sdd
+   61 @cross-cutting/INDEX.sdd
+   62 @cross-cutting/testing/
+   63 @cross-cutting/security/
+   64 @cross-cutting/architecture/
+   65 @cross-cutting/observability/
+
+Modes:
+  APPLY    — apply skill to current task
+  REVIEW   — review skill for updates
+  UPGRADE  — propose skill upgrade
+  COMPARE  — compare approaches
+  AUDIT    — audit skill health
+
+Rules:
+  [SK1]  Skill Core MUST be short and token-efficient.
+  [SK2]  Skill MUST have AI Core, Human Knowledge, and Evidence layers.
+  [SK3]  Skill MUST have metadata: ID, Domain, Level, Version, Status, Maturity, Risk, ReviewDate, EvidenceLevel.
+  [SK4]  Skill status: DRAFT, EXPERIMENTAL, STABLE, DEPRECATED, RETIRED.
+  [SK5]  Skill maturity: UNKNOWN, EMERGING, VALIDATED, MATURE, STANDARD.
+  [SK6]  Skill NEVER changes directly — DISCOVER → ANALYZE → PROPOSE → REVIEW → APPROVE → UPDATE.
+  [SK7]  Evidence priority: Official standard > Official documentation > Security advisory > Vendor docs > Peer-reviewed research > Reputable source > Community consensus > Blog/opinion.
+  [SK8]  Skill MUST have search keys for knowledge discovery.
+  [SK9]  Skill MUST track technology lifecycle.
+  [SK10] Skill health MUST be monitored: Freshness, Evidence, Usage, Security, Compatibility.
+  [SK11] Staleness detection MUST flag skills for review.
+  [SK12] Skill anti-patterns MUST be detected: Too broad, Too vague, Outdated, Contradictory, Duplicated, Unsupported, Over-engineered.
+  [SK13] Skill granularity MUST be small and focused.
+  [SK14] Skill conflicts MUST be reported, not auto-resolved.
+  [SK15] Skill versioning: MAJOR (breaking), MINOR (compatible), PATCH (correction).
+  [SK16] Skill compatibility MUST be checked against project versions.
+  [SK17] Skill review schedule: Critical 30 days, Normal 90 days, Stable 180 days.
+  [SK18] Skill feedback loop: INCIDENT → SKILL-GAP → SKILL-UPGRADE-PROPOSAL.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    languages
+    frameworks
+    databases
+    platforms
+    messaging
+    cross-cutting
+
+Navigation:
+  Skills: @skills/INDEX.sdd
+  Languages: @skills/languages/INDEX.sdd
+  Go: @skills/languages/go/INDEX.sdd
+  GoTesting: @skills/languages/go/testing/INDEX.sdd
+  Rust: @skills/languages/rust/INDEX.sdd
+  Java: @skills/languages/java/INDEX.sdd
+  PHP: @skills/languages/php/INDEX.sdd
+  Python: @skills/languages/python/INDEX.sdd
+  CSharp: @skills/languages/csharp/INDEX.sdd
+  CPP: @skills/languages/cpp/INDEX.sdd
+  TypeScript: @skills/languages/typescript/INDEX.sdd
+  JavaScript: @skills/languages/javascript/INDEX.sdd
+  Swift: @skills/languages/swift/INDEX.sdd
+  Kotlin: @skills/languages/kotlin/INDEX.sdd
+  Ruby: @skills/languages/ruby/INDEX.sdd
+  Frameworks: @skills/frameworks/INDEX.sdd
+  React: @skills/frameworks/react/INDEX.sdd
+  Flutter: @skills/frameworks/flutter/INDEX.sdd
+  ReactNative: @skills/frameworks/react-native/INDEX.sdd
+  SwiftUI: @skills/frameworks/swiftui/INDEX.sdd
+  KMP: @skills/frameworks/kotlin-multiplatform/INDEX.sdd
+  NextJS: @skills/frameworks/nextjs/INDEX.sdd
+  NestJS: @skills/frameworks/nestjs/INDEX.sdd
+  SpringBoot: @skills/frameworks/spring-boot/INDEX.sdd
+  Django: @skills/frameworks/django/INDEX.sdd
+  FastAPI: @skills/frameworks/fastapi/INDEX.sdd
+  Express: @skills/frameworks/express/INDEX.sdd
+  DotNet: @skills/frameworks/dotnet/INDEX.sdd
+  Laravel: @skills/frameworks/laravel/INDEX.sdd
+  Symfony: @skills/frameworks/symfony/INDEX.sdd
+  Svelte: @skills/frameworks/svelte/INDEX.sdd
+  Databases: @skills/databases/INDEX.sdd
+  PostgreSQL: @skills/databases/postgresql/INDEX.sdd
+  MongoDB: @skills/databases/mongodb/INDEX.sdd
+  Redis: @skills/databases/redis/INDEX.sdd
+  MySQL: @skills/databases/mysql/INDEX.sdd
+  Cassandra: @skills/databases/cassandra/INDEX.sdd
+  Elasticsearch: @skills/databases/elasticsearch/INDEX.sdd
+  Platforms: @skills/platforms/INDEX.sdd
+  Docker: @skills/platforms/docker/INDEX.sdd
+  Kubernetes: @skills/platforms/kubernetes/INDEX.sdd
+  AWS: @skills/platforms/aws/INDEX.sdd
+  GCP: @skills/platforms/gcp/INDEX.sdd
+  Azure: @skills/platforms/azure/INDEX.sdd
+  Terraform: @skills/platforms/terraform/INDEX.sdd
+  Messaging: @skills/messaging/INDEX.sdd
+  Kafka: @skills/messaging/kafka/INDEX.sdd
+  RabbitMQ: @skills/messaging/rabbitmq/INDEX.sdd
+  NATS: @skills/messaging/nats/INDEX.sdd
+   CrossCutting: @skills/cross-cutting/INDEX.sdd
+   Testing: @skills/cross-cutting/testing/INDEX.sdd
+   Security: @skills/cross-cutting/security/INDEX.sdd
+   Architecture: @skills/cross-cutting/architecture/INDEX.sdd
+   Observability: @skills/cross-cutting/observability/INDEX.sdd
+   DevOps: @skills/devops/INDEX.sdd
+   DevOpsGit: @skills/devops/git/INDEX.sdd
+   DevOpsCiCd: @skills/devops/ci-cd/INDEX.sdd
+   DevOpsSecurity: @skills/devops/security/INDEX.sdd
+    DevOpsTesting: @skills/devops/testing/INDEX.sdd
+    Meta: @skills/meta/INDEX.sdd
+    SkillDiscovery: @skills/meta/SKILL-DISCOVERY.sdd
+    SkillRecommendation: @skills/meta/SKILL-RECOMMENDATION.sdd
+    SkillGapAnalysis: @skills/meta/SKILL-GAP-ANALYSIS.sdd
+    HumanSkills: @docs/skills/
+
+State: +

@@ -1,0 +1,87 @@
+﻿# Index: Testing
+
+Purpose:
+  Testing knowledge base entry point. This directory defines HOW tests
+  are written, executed, and evaluated across the whole system. Testing
+  is split into two layers:
+    - .sdd/testing/ defines reusable testing knowledge (types,
+      levels, gates, principles) and execution scripts
+    - .sdd/project/testing/ tracks concrete project test state (coverage,
+      runs, failures, exceptions)
+
+Owns: ./
+
+ReadOrder:
+  1  INDEX.sdd (this file)
+  2  levels.sdd (test depth levels L0-L5)
+  3  types.sdd (test type definitions)
+  4  gates.sdd (test gate criteria)
+  5  bdd.sdd (BDD testing)
+  6  unit.sdd (unit testing)
+  7  integration.sdd (integration testing)
+  8  api.sdd (API testing)
+  9  contract.sdd (contract testing)
+  10 e2e.sdd (end-to-end testing)
+  11 ui.sdd (UI testing)
+  12 mobile.sdd (mobile testing)
+  13 performance.sdd (performance testing)
+  14 load.sdd (load testing)
+  15 scripts/run.ps1 (test runner)
+  16 skills/testing/SKILL-TEST-STRATEGY.sdd (test strategy)
+
+Rules:
+  [TEST1] AI MUST select test types based on task impact, risk, and
+          stack — not all test types apply to every task.
+  [TEST2] BDD is a first-class citizen — business behavior MUST be
+          defined in BDD before implementation starts.
+  [TEST3] Test source code MUST NOT be mixed with .sdd metadata —
+          source code stays in project test directories, .sdd stores
+          only metadata and workflow.
+  [TEST4] Test failures MUST create findings and feed back into the
+          task graph (bax project/testing/failures/).
+  [TEST5] Test status MUST be tracked per task in project/testing/.
+  [TEST6] Flaky tests MUST be flagged separately from failures.
+  [TEST7] Coverage is not just a percentage — critical path, risk, and
+          mutation coverage MUST be considered.
+  [TEST8] Test impact analysis MUST select only affected tests for a
+          change — full regression is for merge/release only.
+  [TEST9] Test gates MUST pass before a task can advance to DONE.
+  [TEST10] Waived tests MUST have explicit approval and expiration.
+  [TEST11] Test execution MUST be triggered from .sdd/testing/scripts/
+          when AI runs tests, never from root-level test directories.
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestTypes: @types.sdd
+  TestLevels: @levels.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  Performance: @performance.sdd
+  Load: @load.sdd
+  TestRunner: @scripts/run.ps1
+  TestStrategy: @skills/testing/SKILL-TEST-STRATEGY.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectCoverage: @project/testing/coverage.sdd
+  ProjectRuns: @project/testing/runs/
+  ProjectFailures: @project/testing/failures/
+  ProjectExceptions: @project/testing/exceptions/
+  Skills: @skills/INDEX.sdd
+  Tasks: @tasks/tasks.sdd
+  Security: @security/INDEX.sdd
+  State: @state/state.sdd
+
+State: +
+  Note:
+  This directory is the testing knowledge
+  base. It defines test types, levels, gates, and principles. The actual
+  test execution workflow is in @workflow/testing.sdd. Project-specific
+  test state (coverage, runs, failures) lives in @project/testing/.
+  Test execution scripts live in @scripts/ and are invoked by AI or CI.

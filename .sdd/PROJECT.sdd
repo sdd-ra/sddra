@@ -1,960 +1,134 @@
-Project: EduNexus
+﻿SDD: sddra
 
 Purpose:
-  .sdd sisteminin əsas giriş nöqtəsi (root router) — necə işlədiyini və
-  məlumatı haradan tapmaq lazım olduğunu göstərir. Bu fayl özü detallı
-  layihə bilgisini saxlamır (bax R2/R3 aşağıda).
+  Specification-Driven Development framework that makes AI understand project structure, dependencies, and execution flow.
 
 Root:
   ./
 
 Architecture:
-  Modular
+  ModularMonolith
+
+Model:
+  .sdd
 
 Directories:
+  cases:
+    path: ./cases
+    purpose: Case specifications (WHAT)
 
-  project:
-    path: ./project
-    purpose: Layihənin .sdd modeli və layihəyə xas bilgi (WHAT/WHY/WHERE).
-      Konkret task instansiyaları da bura aiddir (project/<domain>/tasks/
-      *.sdd) — amma task-ın NECƏ işlədiyi (engine) buradan çıxıb, root-da
-      yaşayır (bax tasks: girişi aşağıda, Note, STEP 8 final)
-    state: STEP 8 final tamamlandı — map/dependencies/domains/indexes/modules sxem-yalnız (STEP 4) qalır, konkret domen/task məzmunu gələcək "next"lərlə əlavə olunacaq.
-      STEP 14 (prompt/new/36.md) added project.sdd (Feature/Component
-      layers on top of the existing Domain/Module model, Rules [PM1]-
-      [PM8]) and flows.sdd (this project's default stage flow, Rules
-      [F1]-[F6]) — see project/project.sdd -> Note, project/flows.sdd
-      -> Note.
-      STEP 15 (prompt/new/37.md) added project/instantiation.sdd (the
-      prompt -> project-instance pipeline, ProjectScale, skill/
-      architecture-selection filtering, Rules [PI1]-[PI6]) and
-      cross-referenced it from project.sdd (new [PM9]) — see
-      project/instantiation.sdd -> Note.
-      STEP 16 (prompt/new/38.md) extended project/instantiation.sdd with
-      an `Evolution:` section and Rules [PI7]-[PI9] — a project instance
-      MUST be re-evaluated (scoped to the change) as the project evolves,
-      without discarding already-confirmed information, and human
-      decisions at any gate feed back into future generation — see
-      project/instantiation.sdd -> Note, STEP 16 entry.
-      STEP 20 (prompt/new/42.md) added the ANALYZE_PROJECT operation
-      (bax Operations: yuxarıda, Rules [PA1]-[PA9]) — its output target
-      is this directory; no new sub-structure was added here yet, only
-      the entry point that will eventually populate it from discovery.
-      STEP 21 (prompt/new/43.md) added map.sdd -> CodeReference: (Code ↔
-      SDD mapping, reverse direction from source artifact back to its
-      owning module/domain/feature entry; concrete tag syntax deliberately
-      left undefined) — see project/map.sdd -> Note, STEP 21 entry.
-      STEP 23 (prompt/new/45.md) extended map.sdd -> Rules:/CodeReference:
-      with a "do not trust the map blindly" principle and SourceOfTruth/
-      Drift subsections (drift routed through the existing `!` state
-      symbol, no new symbol invented), and modules.sdd -> Rules: with
-      optional `files`/`entry`/`tests` routing fields — see project/
-      map.sdd -> Note and project/modules.sdd -> Note, STEP 23 entries.
-
-  tasks:
-    path: ./tasks
-    purpose: Task engine — task necə yaranır, icra olunur, tamamlanır
-      qaydaları (bax tasks/tasks.sdd). Konkret task instansiyaları BURDA
-      DEYİL, öz sahibinin altında yaşayır (project/<domain>/tasks/*.sdd,
-      bax Note aşağıda, STEP 8 final)
-    state: STEP 19 tamamlandı (prompt/new/41.md) — tasks.sdd (TaskEngine, Rules
-      [T1]-[T22]) root-da, Owns/Scope/DoesNotOwn/TaskCreation/TaskResolution/TaskKnowledge/
-      Source/TaskScope/Lifecycle+BlockedFlow+FailureFlow+ReviewFailure+VerificationFailure/
-      NoLoop/Escalation/Decomposition/Completion/Portability/Traceability/Navigation
-      bölmələri ilə zənginləşdirildi (bax tasks/tasks.sdd -> Note, STEP 19 entry)
-
-  architecture:
-    path: ./architecture
-    purpose: .sdd sisteminin öz komponent arxitekturası (architecture/architecture.sdd)
-      PLUS qlobal engineering-arxitektura prinsipləri — modularity, coupling,
-      dependency direction, service extraction (architecture/principles.sdd,
-      STEP 13). Layihə-səviyyəli konkret arxitektura ayrıca
-      project/architecture.sdd-də qalır.
-    state: STEP 3 tamamlandı, STEP 13 ilə genişləndi (prompt/new/35.md) —
-      architecture/principles.sdd (Rules [AP1]-[AP18]) əlavə olundu, layihə-
-      səviyyəli architecture ayrıca project/architecture.sdd-də qalır.
-      STEP 16 (prompt/new/38.md) softened [AP18] (guideline, not absolute
-      prohibition) and added an ArchitectureSelection: section (the
-      trade-off flow, cross-referenced from project/instantiation.sdd's
-      own ArchitectureSelection) — see architecture/principles.sdd ->
-      Note, STEP 16 entry.
+  templates:
+    path: ./templates
+    purpose: Reusable project structure templates (immutable, generated per-prompt)
+    index: @templates/INDEX.sdd
 
   chains:
     path: ./chains
-    purpose: Execution chain-lər və mərhələ keçidləri (chain-tipi modeli — feature/bugfix/change, bax chains/chains.sdd)
-    state: STEP 12 tamamlandı — STEP 11-in chains/templates/*.sdd + chains/stages/*.sdd bölünməsi geri qaytarıldı; chains.sdd yenidən tək fayla yığcamlaşdırıldı (Stages inline, DefaultFlow arayış ardıcıllığı, ProjectFlow/FlowResolution project/flows.sdd-ə yönləndirir), skill-bağlama hələ edilmir.
-      STEP 16 (prompt/new/38.md) added [C22] — see chains/chains.sdd ->
-      Note, STEP 16 entry.
+    purpose: Execution chains (graph-based, cyclic, arms return to root)
+    graph: @chains/graph.sdd
+    selector: @chains/selector.sdd
+    arms: @chains/arms
+    rules: @chains/rules
+    tokens: @chains/tokens
 
   skills:
     path: ./skills
-    purpose: Engineering skill-lər — AI-nin işi HOW səviyyəsində necə görəcəyi
-    state: STEP 6 tamamlandı — skills.sdd router + 8 boş SkillDomain qovluğu (global/backend/api/frontend/mobile/database/qa/devops) yaradıldı, konkret skill-lər hələ yazılmayıb.
-      STEP 16 (prompt/new/38.md) added [S17] — catalog membership ≠
-      applicability, cross-referenced to project/instantiation.sdd ->
-      SkillFiltering — see skills/skills.sdd -> Note, STEP 16 entry.
-      STEP 18 (prompt/new/40.md) added 4 more SkillDomains (architecture/
-      security/performance/engineering, now 12 physical directories total)
-      and Rules [S18]-[S24] — selection-factor scope, Applicability
-      states, SkillPriority, SkillConflict, SkillOutput, Evolution,
-      SkillDiscovery, ComplexityControl — see skills/skills.sdd -> Note,
-      STEP 18 entry.
+    purpose: Engineering skills organized by technology and competency layers (L1-L5)
+    devops: ./skills/devops
+    devops_purpose: DevOps skills (git, ci-cd, security, testing) - immutable rules
+    meta: ./skills/meta
+    meta_purpose: Meta-skills for skill discovery, recommendation, and gap analysis
 
   prompts:
     path: ./prompts
-    purpose: Prompt qəbulu (inbox), analizi və prompt intelligence (bax prompts/prompts.sdd)
-    state: STEP 7 tamamlandı — prompts.sdd router (Rules [P1]-[P20]) + 5 qovluq (inbox/active/archive/extracted/conflicts) yaradıldı, konkret prompt instansiyaları hələ yoxdur
-      STEP 17 (prompt/new/39.md) extended prompts.sdd with InputForms:,
-      Rules [P21]-[P24], ConflictResolution:, Branches:, ImpactAreas: and
-      Navigation: sections — see prompts/prompts.sdd -> Note, STEP 17 entry.
+    purpose: Prompt intelligence engine
+    root: ../prompts
+    root_purpose: Root-level prompt inbox (user submissions)
+    formalized: ../projects/prompts
+    documented: ../project/docs/prompts
+
+  workflows:
+    path: ./workflows
+    purpose: Execution workflows (task execution, recovery, parallel, knowledge sharing)
+
+  commands:
+    path: ./commands
+    purpose: CLI commands for SDDRA in Claude AI
+
+  plugins:
+    path: ./plugins
+    purpose: External plugin adapters mapped to SDDRA chain graph
+
+  project:
+    path: ./project
+    purpose: Project-specific SDD structure (domains, modules, tasks, docs)
+
+  tasks:
+    path: ./tasks
+    purpose: Task state tracking
 
   decisions:
     path: ./decisions
-    purpose: İnsan qərarları və təsdiqlənmiş dəyişikliklər — AI-nin insan
-      qərarı tələb etdiyi nöqtələrin idarə edildiyi qat (bax
-      decisions/decisions.sdd)
-    state: STEP 9 final tamamlandı — decisions.sdd router (Rules
-      [D1]-[D14]) ENGINE-only saxlanılır, root səviyyəsində Storage
-      qovluğu yoxdur (ROOT PURITY RULE). Konkret qərar instansiyaları
-      mövcud domen yarandıqda project/<domain>/decisions/<state>/*.sdd
-      altında saxlanılacaq (bax decisions/decisions.sdd -> Note)
+    purpose: Human decisions
 
   state:
     path: ./state
-    purpose: Universal state notation engine — what each compact state
-      symbol means and how objects may transition between them (see
-      state/state.sdd). Does not store any object's actual state value.
-    state: STEP 10 complete (prompt/new/32.md) — state.sdd written:
-      Symbols/ExtendedStates (12 total)/Meaning/Flows/Rules [S1]-[S16]/
-      Failure/Recovery/Verification/Escalation. Concrete state values
-      remain inline in each object's own State: field (see state/
-      state.sdd -> Storage), never stored here.
+    purpose: State symbols
 
 Navigation:
-  project: @project
-  architecture: @architecture
+  start: PROJECT.sdd
+  cases: @cases
+  templates: @templates
+  templatesIndex: @templates/INDEX.sdd
   chains: @chains
   skills: @skills
   prompts: @prompts
+  workflows: @workflows
+  commands: @commands
+  plugins: @plugins
+  project: @project
   tasks: @tasks
   decisions: @decisions
   state: @state
 
-NavigationFlow:
-  USER REQUEST
-    -> PROJECT.sdd
-    -> project? / architecture? / chain? / skill? / prompt? / task? / decision? / state?
-    -> resolve responsible directory
-    -> only then read its content (R5/R6)
-
 Rules:
-
-  [R1]
-  PROJECT.sdd is the root entry point of the .sdd system.
-
-  [R2]
-  PROJECT.sdd MUST NOT contain detailed project knowledge.
-
-  [R3]
-  Detailed knowledge MUST live in the directory responsible for it.
-
-  [R4]
-  AI MUST resolve the responsible .sdd directory before starting work.
-
-  [R5]
-  AI MUST NOT scan the entire .sdd directory when a direct reference exists.
-
-  [R6]
-  AI MUST follow references before performing broad discovery.
-
-  [R7]
-  AI MUST preserve declared relationships between .sdd components.
-
-  [R8]
-  AI MUST NOT silently modify global .sdd rules.
-
-  [R9]
-  Changes to global .sdd architecture require human approval.
-
-  [R10]
-  (best-practice əlavə) AI MUST update the relevant .sdd state marker after
-  completing a stage — a stage that finishes without its state being
-  updated is indistinguishable from one that never ran.
-
-  [R11]
-  (best-practice əlavə) Human approval is also required for destructive
-  changes and unresolved conflicting requirements, not only architecture
-  changes (bax HumanDecision aşağıda — R9-un təbii davamı).
-
-  [R12]
-  The SDD system defines HOW a project is understood; it does NOT define
-  WHAT every project must look like — this file's own directory router
-  and every project-model file it points to (bax Directories -> project)
-  stay reusable SHAPE, never a mandatory checklist a project must fill in
-  full (bax project/instantiation.sdd -> CorePrinciple, STEP 15).
-
-State:
-  See state/state.sdd for the full symbol legend, per-symbol meaning and
-  transition rules (Symbols/ExtendedStates/Meaning/Flows/Rules). This
-  section stays a pointer, not a second copy of the same table
-  (NoDuplication — see architecture/architecture.sdd -> Principles).
-
-PromptProcessing:
-  Before starting work:
-    1. Read root project prompt.
-    2. Read .sdd/PROJECT.sdd navigation.
-    3. Check .sdd/prompts inbox.
-    4. Analyze new prompts against current work.
-    5. Determine whether they affect current work, future work, or global rules.
-    6. Do not silently change global rules.
-
-HumanDecision:
-  AI MAY:
-    analyze
-    propose
-    plan
-    implement
-    test
-    review
-    route
-
-  AI MUST request human decision for:
-    architecture changes
-    global skill changes
-    global project rule changes
-    destructive changes
-    unresolved conflicting requirements
-
-Operations:
-  A named Operation is a temporary mode the AI enters on an explicit
-  trigger, distinct from ordinary implementation work. It does not own a
-  directory of its own; its output lands in the existing Directories
-  above (NoDuplication).
-
-  ANALYZE_PROJECT:
-    Trigger: user explicitly requests project analysis (e.g. "Analyze
-      project", "Analyze this project", "Layihəni analiz et", "Layihəni
-      araşdır").
-    Priority: MUST take priority over pending implementation requests
-      until discovery is complete — AI MUST NOT silently start
-      implementing while discovery is still open.
-    Scope: structure, architecture, domains, modules, features, backend,
-      frontend, mobile, database, API, tests, DevOps, dependencies,
-      flows, external integrations, configuration, security boundaries.
-    SourceOfTruth: source code, database schema, API definitions, tests,
-      configuration, deployment configuration and existing documentation
-      MUST be treated as evidence — never assumption.
-    PromptRelationship: analysis of an EXISTING project MUST NOT depend
-      on a customer prompt describing the system; source code is the
-      primary evidence (bax prompts/prompts.sdd -> Branches).
-    Output: AI MUST generate or update .sdd/project/ (bax Directories ->
-      project yuxarıda) to represent the discovered system.
-    Result: findings MUST be kept in four visibly separate categories —
-      DISCOVERED (bax [PA4]/[PA6]), RECOMMENDATIONS (bax [PA9]), RISKS,
-      UNKNOWN (bax [PA7]) — never merged into one undifferentiated model.
-
-  Rules:
-    [PA1] AI MUST NOT modify source code during discovery.
-    [PA2] AI MUST NOT create implementation tasks before discovery is
-      sufficiently complete.
-    [PA3] AI MUST NOT assume architecture from project/module/file names
-      alone.
-    [PA4] Existing code behavior MUST be analyzed, not inferred from
-      documentation alone.
-    [PA5] Existing implementation MAY differ from recommended best
-      practices — this difference MUST be recorded, not silently fixed.
-    [PA6] Discovered reality MUST be kept separate from recommended
-      improvements.
-    [PA7] Uncertain findings MUST be marked as uncertain rather than
-      asserted as fact.
-    [PA8] Existing architecture MUST NOT be silently rewritten in the
-      project model — a conflict between discovered reality and this
-      repo's own architecture principles (bax architecture/
-      principles.sdd) is a HumanDecision candidate (bax HumanDecision
-      yuxarıda), not a silent rewrite.
-    [PA9] Recommendations MUST be recorded separately from discovered
-      facts.
-
-Entry:
-  Read:
-    PROJECT.sdd
-
-  Resolve:
-    project
-    architecture
-    chains
-    skills
-    prompts
-    tasks
-    decisions
-    state
-
-Note:
-  (prompt/new/19.md) PROJECT.sdd is a router/constitution, not a knowledge
-  base. Məsələn "Payment PostgreSQL istifadə edir" -> .sdd/project/payment/,
-  "DDD necə tətbiq olunur" -> .sdd/skills/ (hələ boş) — heç biri bura
-  yazılmır (R2/R3).
-
-  (prompt/new/17.md) Bu fayl STEP 1 reset-dən (bax .sdd/README.md) sonra
-  yenidən yazılıb: köhnə `Disciplines:`, `SkillModel: .sdd/<discipline>/`,
-  `Flow: AN>AR>DB>BE>API>FE>MD>QA>DO>VR` və `Reference: system:/protocol:`
-  bölmələri silinib, çünki bunlar artıq mövcud olmayan qovluqlara
-  (`system/`, `protocol/`, discipline-bazlı `.sdd/<discipline>/`) işarə
-  edirdi və chunk 16-nın flow-u module-dən çıxarma qərarı ilə də ziddiyyət
-  təşkil edirdi. Köhnə məzmun git tarixçəsində qalır (bax commit `abd38de`
-  öncəsi).
-
-  (prompt/new/21.md, STEP 4 — HƏLL OLUNUB) Əvvəllər burda qeyd olunan
-  `.sdd/project/map.sdd` və `.sdd/project/architecture.sdd`-in köhnə
-  `protocol/symbols.sdd`, `protocol/rules.sdd`, `module/flow.sdd`
-  istinadları STEP 4-ün "Tam sıfırla" reset-i ilə silinib: hər iki fayl
-  (və `dependencies.sdd`, yeni `domains.sdd`/`indexes.sdd`/`modules.sdd`)
-  sxem-yalnız formada yenidən yazılıb, heç bir köhnə `protocol/`-a istinad
-  qalmayıb (bax .sdd/project/*.sdd -> hər faylın öz Note-u, git tarixçəsi).
-
-  (prompt/new/14.md, hələ qüvvədədir) .sdd/ özü bu repoda əl ilə tikilən
-  yeganə şeydir. .sdd/ daxilində hər hansı yerdə (project/map.sdd -> Paths:,
-  modul Owns: qeydləri) referans edilən real layihə yolları gələcək ayrı
-  bir prompt engine üçün lookup referanslarıdır — backend/, frontend/,
-  mobile/, qa/, devops/ qovluqlarını indi yaratmaq göstərişi deyil.
-
-  Bu, mənbə söhbətdəki EduNexus illüstrasiyasından alınan template/nümunə
-  instansiyadır; real layihəyə tətbiq ediləndə sübutdan (evidence) yenidən
-  generasiya edilməlidir.
-
-  (prompt/new/22.md, STEP 5 — "Tam sıfırla") `chains/_TEMPLATE.feature.sdd`
-  (per-feature instansiasiya modeli, retired `protocol/`-a istinad edən)
-  istifadəçi təsdiqi ilə silinib (git tarixçəsində qalır); yerinə
-  `chains.sdd` router + `feature.chain`/`bugfix.chain`/`change.chain`
-  yazılıb — bax .sdd/chains/chains.sdd -> Note.
-
-  (prompt/new/33.md, STEP 11) Yuxarıdakı `feature.chain`/`bugfix.chain`/
-  `change.chain` özləri də artıq əvəzlənib — `chains/templates/
-  feature.sdd`/`bugfix.sdd`/`change.sdd`-ə köçürülüb, ortaq discipline
-  stage-lər `chains/stages/*.sdd`-ə çıxarılıb (NoDuplication), ingilis
-  dilinə tərcümə edilib. Köhnə `.chain` faylları həmin pas-da silinib
-  (git tarixçəsində qalır) — bax .sdd/chains/chains.sdd -> Note.
-
-  (prompt/new/34.md, STEP 12) Yuxarıdakı STEP 11 bölünməsi ("gərəksiz
-  abstraksiya", istifadəçinin öz sözü ilə) geri qaytarılıb — `chains/
-  templates/*.sdd` və `chains/stages/*.sdd` silinib (git tarixçəsində
-  qalır), `chains.sdd` yenidən tək fayla yığcamlaşdırılıb: `Stages:`
-  inline tərif olunur, qlobal chain-tipi dispatch-i yoxdur, `DefaultFlow`
-  bir arayış ardıcıllığıdır, real layihə axını isə yeni `ProjectFlow`/
-  `FlowResolution` bölmələri vasitəsilə `project/flows.sdd`/
-  `project/<domain>/flows.sdd`-ə həvalə edilir (hələ mövcud deyil,
-  bilərəkdən — bax .sdd/chains/chains.sdd -> Note).
-
-  (prompt/new/23.md, STEP 6) `.sdd/skills/` skeleti quruldu: `skills.sdd`
-  router (Rules [S1]-[S16]) + 8 boş SkillDomain qovluğu. Chain stage-lərinə
-  skill bağlanması (bax chains/chains.sdd -> [C9]) bu addımda hələ
-  edilmədi — konkret skill-lər yazılmadan bağlama mənasız olardı (bax
-  .sdd/skills/skills.sdd -> Note).
-
-  (prompt/new/24.md, STEP 7 — "Tam sıfırla") STEP 1-dən əvvəl mövcud olan
-  köhnə `.sdd/prompts/` (dörd qovluq: inbox/active/archive/rejected,
-  artıq mövcud olmayan `system/MASTER.md`-ə istinad edən README.md)
-  istifadəçi təsdiqi ilə sıfırlanıb: `prompts.sdd` router (Rules
-  [P1]-[P20]) yazıldı, `rejected/` silindi ([P19] ilə ARCHIVE-in
-  alt-halına çevrildi), `extracted/` və `conflicts/` yeni yaradıldı (bax
-  .sdd/prompts/prompts.sdd -> Note).
-
-  (prompt/new/25.md, STEP 8 — "Tam sıfırla") Köhnə `.sdd/tasks/README.md`
-  (artıq mövcud olmayan `system/MASTER.md`-ə istinad edən, `proposals/`-
-  gated approve modelinə əsaslanan, `PAY-001.N` dot-nömrələnmiş subtask
-  formatlı) istifadəçi təsdiqi ilə sıfırlanıb: `tasks.sdd` router (Rules
-  [T1]-[T17]) yazıldı, 6 qovluq (active/backlog/blocked/review/done/
-  failed) yeni yaradıldı. Bu addım özü artıq "Tam sıfırla" ilə geri
-  götürülüb (bax aşağıdakı STEP 8 correction qeydi) — tarixi qeyd kimi
-  saxlanılır.
-
-  (prompt/new/26.md, STEP 8 correction — "Tam sıfırla", istifadəçi təsdiqi
-  ilə) Yuxarıdakı root-level `.sdd/tasks/` (6 qovluq + tasks.sdd) tamamilə
-  silindi (git tarixçəsində qalır) — task-ları qlobal saxlamaq .sdd-nin
-  başqa layihəyə köçürülə bilən (portable) qalması prinsipi ilə ziddiyyət
-  təşkil edirdi. Yerinə `project/tasks.sdd` (TaskModel router, storage
-  DEYİL) gəldi — konkret task-lar bundan sonra `project/<domain>/tasks/
-  *.sdd` konvensiyası ilə öz sahibinin altında yaradılacaq (bax
-  .sdd/project/tasks.sdd -> Note, Storage, [T2]). Yuxarıdakı `Directories:`
-  bölməsindəki ayrıca `tasks:` giriş silindi, `project:` girişinin
-  `purpose`/`state` sahələrinə qatıldı; `Navigation:` bölməsində `tasks:`
-  indi `@project/tasks.sdd`-ə işarə edir (@tasks əvəzinə).
-
-  (prompt/new/27.md, STEP 8 final — "Tam sıfırla", istifadəçi təsdiqi ilə) Yuxarıdakı
-  STEP 8 correction (26.md) da öz növbəsində düzəldildi: istifadəçi mənbə sözü ilə
-  aydınlaşdırdı ki, task-ın NECƏ işlədiyi (lifecycle/creation/decomposition/dependency/
-  state/review/failure/recovery/relocation/completion) `.sdd` sisteminin ÖZ davranışıdır,
-  layihə bilgisi deyil — buna görə root-da qalanda daha portativdir (`.sdd` başqa layihəyə
-  köçəndə bu fayl dəyişmədən gəlir), `project/`-ə köçəndə YOX. `.sdd/project/tasks.sdd`
-  (26.md-in yaratdığı fayl) tamamilə silindi (git tarixçəsində qalır); yerinə
-  `.sdd/tasks/tasks.sdd` (TaskEngine) yaradıldı — demək olar ki eyni Ownership/Storage/
-  TaskLifecycle/Failure/TaskTypes/TaskContract/Rules [T1]-[T17]/Dependency/Review/
-  Verification/Parallel/States məzmunu ilə, yalnız yeri və çərçivəsi dəqiqləşdi:
-
-    TASK ENGINE (.sdd/tasks/tasks.sdd) — "necə işləyir?"
-    PROJECT MODEL (project/<domain>/tasks/*.sdd) — "nəyə aiddir?" (dəyişmədi)
-
-  Yuxarıdakı `Directories:` bölməsində ayrıca `tasks:` girişi bərpa edildi (`./tasks`),
-  `project:` girişinin `purpose:`/`state:` sahələrindən task-engine-ə xas ifadələr
-  çıxarıldı; `Navigation:`-də `tasks:` yenidən `@tasks`-a işarə edir (`@project/tasks.sdd`
-  əvəzinə). `architecture/architecture.sdd`-nin `TASKS` komponentinin `path:`/`role:`
-  sahələri `../tasks/tasks.sdd`-ə uyğunlaşdırıldı (bax onun öz Note-u) — `Relationships`/
-  `Allowed`/`Forbidden` qrafı yenə DƏYİŞMƏDİ, yalnız path/role.
-
-  (prompt/new/29.md, STEP 9) `.sdd/decisions/decisions.sdd` yazıldı —
-  `Decisions: SDD` router, Rules `[D1]`-`[D12]`, `DecisionLifecycle`
-  (`CREATED > ANALYZED > PENDING > APPROVED/REJECTED`, `APPROVED >
-  SUPERSEDED`), `DecisionContract`, `Escalation` (bax `HumanDecision`
-  yuxarıda — bu qayda təkrar tərif olunmur, yalnız decision qatına tətbiq
-  edilir), `States` (kanonik 7 işarəni güzgüləyir + `^ = SUPERSEDED`
-  əlavəsi, bax onun öz Note-u). Yuxarıdakı `Directories:` bölməsində
-  `decisions:` girişinə `state:` sahəsi əlavə olundu (əvvəllər yox idi —
-  yeganə bacı giriş bu sahədən məhrum idi). Konkret qərar instansiyası hələ
-  yaradılmadı (STEP 5/6/7/8-in eyni skeleton-only prinsipi).
-
-  (prompt/new/30.md, STEP 9 correction — "Tam sıfırla", istifadəçi təsdiqi
-  ilə) Yuxarıdakı STEP 9 (29.md) versiyası `.sdd/decisions/` altında (root
-  səviyyəsində) dörd boş Storage qovluğu (`pending/approved/rejected/
-  superseded`) yaratmışdı — bu, STEP 8-in (25.md) artıq bir dəfə etdiyi və
-  STEP 8 final-ın (27.md) düzəltdiyi eyni səhvin təkrarı idi: konkret
-  instansiya storage-ı `.sdd` root-unda saxlanılmamalıdır, çünki bu faylı
-  bir layihənin datasına bağlayır və .sdd-nin portativliyini pozur (bax
-  architecture/architecture.sdd -> Principles, Locality/NoDuplication).
-  Ümumi qayda: `.sdd` root-u yalnız sistem səviyyəli (ENGINE) tərifləri
-  saxlamalıdır; layihəyə xas bilgi — o cümlədən konkret qərar
-  instansiyaları — `project/<domain>/` altında olmalıdır, heç vaxt birbaşa
-  `.sdd` root-unda (ROOT PURITY RULE).
-
-  Dörd Storage qovluğu (hər biri yalnız `.gitkeep` saxlayırdı) silindi (git
-  tarixçəsində qalır). `decisions/decisions.sdd`-in `Storage:` bölməsi
-  literal qovluq siyahısından ENGINE-only konvensiya bəyanatına
-  yenidən yazıldı — `project/<domain>/decisions/<state>/*.sdd`, eynilə
-  `tasks/tasks.sdd`-in (STEP 8 final) öz Storage bölməsi kimi. İki yeni
-  qayda əlavə olundu, `tasks.sdd`-in `[T19]`/`[T20]`-ni güzgüləyərək:
-  `[D13]` (lifecycle qaydaları burada tərif olunur, konkret instansiyalar
-  daxilində yox) və `[D14]` (konkret qərar instansiyaları öz sahib
-  domeninin altında qalmalıdır, `.sdd/decisions/` daxilində saxlanıla
-  bilməz) — bax decisions/decisions.sdd -> Note tam əsaslandırma üçün.
-
-  Yuxarıdakı `Directories:` bölməsindəki `decisions:` girişinin
-  `purpose:`/`state:` sahələri yeniləndi (indi `[D1]-[D14]` və ROOT PURITY
-  RULE-a istinad edir, köhnə "4 boş Storage qovluğu" ifadəsi silindi).
-  `architecture/architecture.sdd`-nin `DECISIONS` komponentinin `role:`
-  sahəsi eyni şəkildə yeniləndi (bax onun öz Note-u). `DecisionLifecycle`,
-  `DecisionContract`, `Rules` `[D1]`-`[D12]`, `States` və `Escalation`
-  DƏYİŞMƏDİ — bu düzəliş yalnız qərar instansiyasının HARADA
-  saxlanıldığını dəyişir, lifecycle-ın necə işlədiyini yox.
-
-  (prompt/new/32.md, STEP 10) `.sdd/state/state.sdd` was written —
-  `State: SDD` router, canonical Symbols (+ ~ - ! ? > @) plus
-  ExtendedStates (= : * ^ _), per-symbol Meaning, six named Flows
-  (GeneralFlow/FailureFlow/ReviewFailureFlow/BlockedFlow/DecisionFlow/
-  SupersedeFlow), Rules [S1]-[S16], and Failure/Recovery/Verification/
-  Escalation sections (see state/state.sdd -> Note for exactly what was
-  kept, renamed or added relative to the source chunk).
-
-  The `Directories -> state` entry above and the inline `State:` table
-  that used to live directly in this file were both updated: the table
-  is now a short pointer to state/state.sdd instead of a second copy of
-  the same seven symbols (NoDuplication — see architecture/
-  architecture.sdd -> Principles). The old inline table (`+ = completed`,
-  `~ = active`, ...) is preserved in git history, not deleted silently.
-
-  Language note: starting with this entry, new Note entries added in
-  this session are written in English rather than Azerbaijani, per the
-  user's own stated goal of keeping persisted .sdd content in English
-  while chat itself stays Azerbaijani. The existing Azerbaijani Note
-  entries above are left as-is here — converting them is a separate,
-  not-yet-started pass, not part of this STEP.
-
-  (prompt/new/35.md, STEP 13) `.sdd/architecture/principles.sdd` was
-  added — the global engineering-architecture rules engine (modularity,
-  coupling, dependency direction, layering, service-extraction
-  readiness; Rules [AP1]-[AP18]). The source named this file
-  `architecture/architecture.sdd`, reusing a path this repo already gave
-  a different meaning at STEP 3 (20.md) — the meta component graph of
-  .sdd itself. Overwriting it would have duplicated/lost that graph, so
-  it was added as a new sibling file instead; `architecture.sdd` itself
-  was only edited to cross-reference the new file (Purpose, ARCHITECTURE
-  component role, Note), not rewritten (see architecture/architecture.sdd
-  -> Note, architecture/principles.sdd -> Note for the full rationale).
-  `project/architecture.sdd` (concrete, this-project architecture) had
-  its Purpose extended with the same pointer, keeping the existing
-  distinction against the meta-graph file. The `Directories -> architecture`
-  entry above was updated accordingly. Nothing under `Relationships`/
-  `Allowed`/`Forbidden` in architecture.sdd's component graph changed —
-  this STEP only added a new rules layer alongside it, per NoDuplication
-  (see architecture/architecture.sdd -> Principles).
-
-  (prompt/new/36.md, STEP 14) The source labeled this chunk "STEP 13" —
-  a third consecutive reuse of a step number already used by 34.md and
-  by 35.md's own chunk before it. This repo's own sequential count
-  treats it as STEP 14, matching project/project.sdd -> State and
-  project/flows.sdd -> State.
-
-  The source proposed five files: `project.sdd`, plus full rewrites of
-  `map.sdd`, `dependencies.sdd` and `indexes.sdd`. All three of the
-  latter already exist here with different, STEP-4-era content (bax
-  prompt/new/21.md) that already satisfies their stated scope —
-  overwriting them would have lost STEP 4's reset history and violated
-  NoDuplication/SingleSourceOfTruth for no gain, so they were left
-  untouched. Only two files were genuinely new: `project/project.sdd`
-  (the Feature/Component layers on top of the existing Domain/Module
-  model, Rules [PM1]-[PM8]) and `project/flows.sdd` (this project's own
-  default stage flow, Rules [F1]-[F6]) — see each file's own Note for
-  full rationale and departures from the source.
-
-  Rule IDs: the source's bare `[P1]-[P10]` range collided with
-  `prompts/prompts.sdd`'s own `[P#]` range, so `project.sdd`'s rules
-  were renumbered to `[PM1]-[PM8]` ("ProjectModel"). `flows.sdd`'s
-  `[F1]-[F6]` range was confirmed free against every other prefix in
-  this repo and kept as-is.
-
-  This STEP also resolved a double dangling forward-reference that had
-  existed since STEP 11/12: `chains/chains.sdd -> ProjectFlow` and
-  `project/map.sdd -> Navigation` both pointed at a project-wide
-  `flows.sdd` that did not exist yet. `chains.sdd -> ProjectFlow` was
-  edited to reflect that the project-wide file now exists, with a Note
-  addendum recording the change (see chains/chains.sdd -> Note); the
-  domain-specific reference remains a genuine forward reference, no
-  domain existing yet. `map.sdd -> Navigation` was checked and needed
-  no edit — it already routed through `chains.sdd -> ProjectFlow`
-  rather than duplicating the dangling reference itself.
-
-  The `Directories -> project` entry's `state:` field above was
-  extended to record this STEP's additions alongside the existing
-  STEP 8 final state.
-
-  (prompt/new/37.md, STEP 15) The source labeled this chunk "Yeni STEP
-  13" — a FOURTH consecutive reuse of a step number already claimed by
-  34.md, 35.md and 36.md's own chunks. This repo's own sequential count
-  treats it as STEP 15, matching project/instantiation.sdd -> State.
-
-  The source described a "Project Instantiation" pipeline (RAW PROMPT
-  -> Prompt Analysis -> Skill Discovery -> Architecture Analysis ->
-  Scale Analysis -> Complexity Analysis -> Dependency Analysis ->
-  Project Decision -> Project Instance), a ProjectScale XS-XL
-  classification, skill-applicability narrowing, and an architecture
-  trade-off/human-approval flow, closing on the principle "The SDD
-  system defines how a project is understood; it does not define what
-  every project must look like." This describes a PROCESS, not project
-  SHAPE, so it was placed in a new sibling file, `project/
-  instantiation.sdd` (Rules [PI1]-[PI6]), rather than overwriting or
-  folding into `project/project.sdd` — the same new-sibling-file
-  pattern used at STEP 13 for `architecture/principles.sdd`. See
-  project/instantiation.sdd -> Note for full rationale, rule-ID
-  disambiguation ([PI], confirmed free against [R]/[C]/[T]/[D]/[S]/
-  [AP]/[P]/[PM]/[F]), and the departures taken from the source's raw
-  pipeline diagram and illustrative examples.
-
-  `project/project.sdd` was edited (not overwritten) to cross-reference
-  the new file — Purpose, DoesNotOwn, a new rule [PM9] (forbidding
-  speculative hierarchy population), Portability and NavigationFiles
-  all updated — resolving the tension between project.sdd's fixed-SHAPE
-  framing and this STEP's "PROJECT IS GENERATED, NOT PREDEFINED"
-  principle without weakening either (see project/project.sdd -> Note,
-  "STEP 15 addendum").
-
-  The source's closing principle was added here as [R12] rather than
-  repeated in instantiation.sdd, since PROJECT.sdd is this repo's
-  constitution-level file and [R1]-[R11] already state foundational
-  principles of the same kind.
-
-  (prompt/new/38.md, STEP 16) Source was a correction pass over four
-  already-built files rather than new territory — this repo's own
-  sequential count treats it as STEP 16. Four changes, each applied
-  as a targeted addition to an existing file rather than a rewrite, per
-  the standing "apply, don't copy" rule:
-
-  (1) architecture/principles.sdd — [AP18] was softened from an absolute
-  prohibition to a guideline, and a new ArchitectureSelection: section
-  (the trade-off flow: Customer Input -> ... -> Human Approval) was
-  added — see architecture/principles.sdd -> Note, STEP 16 entry, for
-  full rationale.
-
-  (2) chains/chains.sdd — a new [C22] rule was added addressing the
-  gap the source raised — see chains/chains.sdd -> Note, STEP 16 entry.
-
-  (3) project/instantiation.sdd — a new Evolution: section and
-  [PI7]-[PI9] were added, covering re-entry of the Pipeline scoped to
-  what changed, preservation of already-confirmed project information,
-  and human decisions feeding back into future generation — see
-  project/instantiation.sdd -> Note, STEP 16 entry.
-
-  (4) skills/skills.sdd — a new [S17] rule was added, making explicit
-  that SkillDomains catalog membership does not imply applicability to
-  every project — see skills/skills.sdd -> Note, STEP 16 entry.
-
-  Per NoDuplication (architecture/architecture.sdd -> Principles), this
-  entry cross-references each file's own Note section rather than
-  restating their reasoning in full. No new [R] rule was needed here —
-  this STEP only extended existing rule sets, it did not introduce a new
-  constitution-level concern.
-
-  (prompt/new/39.md, STEP 17) Source content collided with prompts/
-  prompts.sdd's existing (STEP 7) scope rather than opening new
-  territory, so it was applied as a targeted extension of that file
-  rather than a new sibling file or a rewrite — same pattern as STEP 16.
-  Added: InputForms: (7 forms a prompt may arrive in), Rules [P21]-[P24]
-  (form ≠ complexity, requirement ≠ assumption, ambiguity is never
-  silently resolved, NoBlindExecution), ConflictResolution: (answering
-  [P11]'s "how" with a fixed detect -> compare -> impact -> resolve-or-
-  escalate sequence), Branches: (ExistingProject vs NewProject),
-  ImpactAreas: (a checklist complementing the existing Impact: section),
-  and Navigation: (mirroring project/instantiation.sdd -> Navigation).
-  Rule numbering continued from [P20] rather than introducing a new
-  prefix. See prompts/prompts.sdd -> Note, STEP 17 entry, for the full
-  rationale, including what was deliberately not duplicated (already
-  covered by project/instantiation.sdd and PROJECT.sdd -> HumanDecision)
-  and what was deliberately deferred (the source's own "Prompt Registry"
-  self-evolution idea, left for a future STEP per the source's own
-  stated intent). No new [R] rule was needed — this STEP only extended
-  an existing rule set.
-
-  (prompt/new/40.md, STEP 18) Source proposed a full `Spec: SkillSystem`
-  rewrite with its own [SK1]-[SK14] numbering, colliding with skills/
-  skills.sdd's existing (STEP 6/16) [S1]-[S17] scope rather than opening
-  new territory — applied as a targeted extension, same pattern as
-  STEP 16/17. Added: 4 new SkillDomains (architecture/security/
-  performance/engineering, each given a physical directory + `.gitkeep`
-  matching STEP 6's precedent), Rules [S18]-[S24], Applicability: states,
-  SkillContract extension (Scope/ConflictsWith/Severity), SkillPriority:,
-  SkillConflict:, SkillOutput: (+SkillToTask/SkillToChain), Evolution:,
-  SkillDiscovery:, ComplexityControl:, and an extended Execution:
-  lifecycle (discover-first, record-last). Rule numbering continued from
-  [S17] rather than introducing a new prefix. See skills/skills.sdd ->
-  Note, STEP 18 entry, for the full rationale, including what was
-  deliberately not duplicated (Reuse/Portability already covered by
-  [S3]/[S10]; SkillSelection funnel already owned by project/
-  instantiation.sdd -> SkillFiltering; SkillDependency relation types
-  already covered by [S7]/[S8]/[S14]/[S15]/[S21]/[S22]; the closing
-  `.sdd` mechanism diagram already owned by architecture/architecture.sdd
-  per STEP 3/13). Concrete skill files (e.g. architecture/ddd/skill.md)
-  are still not written — STEP 6's "skeleton + rule engine only" scope
-  still holds. No new [R] rule was needed — this STEP only extended an
-  existing rule set within skills/skills.sdd.
-
-  (prompt/new/41.md, STEP 19) Source proposed a full `Spec: TaskSystem`
-  rewrite for tasks/tasks.sdd, including a file-split (lifecycle.sdd/
-  states.sdd/templates/task.sdd — rejected, mirrors the STEP 11->12
-  chains.sdd split-then-revert precedent) and an alternate 8-symbol
-  task-state table (rejected outright — conflicts with the canonical
-  state/state.sdd symbols, would violate its own [S2]). Applied only the
-  genuinely new content as a targeted extension of the existing single
-  tasks.sdd file: TaskResolution: (Task > Project Context > Applicable
-  Skills > Dependencies > Chain > Implementation, new [T21]), Escalation:
-  + NoLoop: (attempts field + retry-limit -> state = ?, reusing the
-  canonical `?` DECISION_REQUIRED symbol rather than inventing one, new
-  [T22]), TaskKnowledge: (skills field, reference-only, reinforces
-  [T18]), and two new Optional TaskContract fields (skills, attempts).
-  Rule numbering continued from [T20] to [T21]-[T22]. See tasks/
-  tasks.sdd -> Note, STEP 19 entry, for the full rationale, including
-  what was deliberately not duplicated (the "TaskPortability" content
-  mostly overlapped the existing Portability: section — only a one-
-  sentence bridge was added there; the example task file #PAY-042.sdd
-  was not created, same "skeleton + rule engine only, no concrete
-  instance" precedent as every prior STEP).
-
-  (prompt/new/42.md, STEP 20) Source proposed three things. Only the
-  first was applied; the other two were deliberately declined.
-
-  Applied: a new ANALYZE_PROJECT operation (bax Operations: yuxarıda,
-  Rules [PA1]-[PA9]) — a genuinely new concept (this file had no
-  Operations: section before), so it got its own new prefix, consistent
-  with how [PI]/[AP]/[F] were assigned for new concepts at STEP 13-15.
-  Its Trigger/Scope/SourceOfTruth/Output/Result were adapted, not
-  copied verbatim, and cross-reference existing sections (HumanDecision,
-  Directories -> project, prompts/prompts.sdd -> Branches) instead of
-  restating them.
-
-  Declined: a standalone `protocol.sdd` (`Spec: SDDProtocol`) proposing
-  canonical Identifiers (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) and skill
-  sigils (#IDP/#TX/#SEC/...). The stage-identifier table duplicates
-  chains/chains.sdd -> Stages, which already owns this vocabulary — the
-  same NoDuplication reasoning, and the same STEP 11->12 split-then-
-  revert precedent, that rejected a tasks.sdd file-split at STEP 19. A
-  new top-level .sdd/protocol/ directory would also directly contradict
-  this file's own STEP 1 history (bax yuxarıda), which records deleting
-  a prior `Reference: system:/protocol:` section for pointing at
-  directories that no longer exist in this repo's model. The proposed
-  `TaskStates:` table (+/~/>/?/!/@/✓/-) directly conflicts with the
-  canonical state/state.sdd symbols and would violate its own [S2] —
-  the identical conflict already rejected once at STEP 19's alternate
-  8-symbol table. The skill-sigil shortcodes are deferred, not built:
-  skills/skills.sdd is still catalog-only (no concrete skill files
-  exist yet per its own STEP 6/18 scope), so shorthand for skills that
-  don't exist yet would be premature.
-
-  Declined: standardizing `tasks/tasks.sdd`'s TaskContract with a new
-  `Origin` field (prompt/analysis/finding/decision/review). Its own
-  existing `Source:` section already covers this ground ("A task MUST
-  have a traceable source. Source MAY reference: prompt, decision,
-  requirement, bug, architecture_change, another_task", enforced by
-  [T2]) — adding a second, differently-named field for the same concept
-  would itself violate [T18] NoDuplication. No edit was made to tasks/
-  tasks.sdd for this STEP.
-
-  Also not created: the source's concrete `#PAY-042.sdd` example task
-  file — same "skeleton + rule engine only, no concrete instance"
-  precedent as every prior STEP (no real domain folder exists to hold
-  it). The source's suggestion that chains/ should next be rebuilt on
-  the (declined) protocol vocabulary is noted but not actionable — it
-  is a suggestion for a future prompt/new file, not an instruction to
-  act on now.
-
-  (prompt/new/43.md, STEP 21) Source was a self-audit of the whole .sdd
-  system so far (a status table across ten-plus subsystems, plus a
-  15-step proposed build order starting with PROTOCOL). Only one item
-  was applied; the rest were declined or deliberately deferred.
-
-  Applied: `project/map.sdd -> CodeReference` — the source's "Code ↔ SDD
-  mapping" gap (item 6/status 🔴 in its own audit table) was verified as
-  genuinely unaddressed: map.sdd's existing Resolution/Paths sections
-  only route forward (name/domain -> path), nothing routed backward
-  (a code artifact -> the .sdd model entry that owns it). CodeReference
-  was added to the SAME file rather than a new one, since it is the
-  reverse direction of the routing concept map.sdd already owns, not a
-  new concept — consistent with the "extend the owning file" pattern
-  used at STEP 13 (architecture/principles.sdd) and STEP 15 (project/
-  instantiation.sdd). The concrete tag syntax (e.g. `@PAY/refund` on a
-  source file) was deliberately left undefined — no real project code
-  exists yet to carry such a tag, so fixing a syntax now would be
-  premature, same "skeleton + rule engine only" precedent as every
-  prior STEP.
-
-  Declined (reaffirmed): the source's #1-priority item, a standalone
-  `.sdd/protocol/` directory defining canonical stage identifiers
-  (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) and skill sigils. This is the same
-  proposal STEP 20 already declined (bax yuxarıda) — re-verified this
-  STEP directly against chains/chains.sdd -> Stages, which already
-  defines this exact identifier set with the same chain-orchestration
-  vs engineering-discipline split the source re-describes. Nothing in
-  this chunk changes STEP 20's reasoning (NoDuplication, the STEP 11->12
-  split-then-revert precedent, this file's own STEP 1 protocol/-deletion
-  history, the [S2] conflict with state/state.sdd's symbols) — it is
-  re-cited here, not re-argued.
-
-  Declined: the source's discovery-output taxonomy (FACT/RECOMMENDATION/
-  RISK/UNKNOWN, item 5 in its audit). This duplicates Operations ->
-  ANALYZE_PROJECT -> Result (bax yuxarıda), already built at STEP 20:
-  DISCOVERED/RECOMMENDATIONS/RISKS/UNKNOWN under [PA4]/[PA6]/[PA9]/[PA7]
-  is the same four-way split under different labels (FACT = DISCOVERED).
-  No edit was made for this item.
-
-  Deferred (not built this STEP, no file touched): the remaining items
-  from the source's 15-step order — CHAIN resolution algorithm (task ->
-  affected components -> dependencies -> applicable skills -> stages ->
-  chain), SKILL CHAIN engine mechanics (skill -> output -> next skill;
-  partially already covered by skills/skills.sdd's SkillOutput/
-  SkillToTask/SkillToChain from STEP 18 — a full audit of that overlap
-  is future work, not this STEP's), TASK compact reference format (a
-  `#PAY-042` / `@PAY/refund` shorthand alongside the existing verbose
-  TaskContract — the underlying human/AI split is already the Human vs
-  AI output principle below), BDD/Test protocol, DB/API model, and a
-  cross-cutting COMPACT+DETERMINISTIC+HUMAN-RESOLVABLE token-economy
-  principle. Each is a genuinely separate, sizeable concept — bundling
-  them into one STEP would repeat the exact "random folder / everything
-  at once" mistake the source itself warns against (bax source, section
-  12: "Artıq random folder yaratmaq olmaz"). They remain candidates for
-  their own future prompt/new chunks, one STEP at a time, per this
-  repo's own established pace.
-
-  (prompt/new/44.md, STEP 22 — "STEP 16" per the source's own internal
-  numbering, which this repo does not follow; see ReplayProgress in
-  index.md for the authoritative sequential count.) Source proposed a
-  final "kernel" for the `.sdd/protocol/` directory floated at STEP 20
-  and re-floated at STEP 21: 6 files (protocol.sdd [P1]-[P10], stages.sdd,
-  states.sdd, relations.sdd [R1]-[R7], origins.sdd, vocabulary.sdd), a
-  worked compact task-format example, and a token-economy statement
-  ("AI should read the smallest sufficient context; AI must expand
-  references only when required; human documentation should contain the
-  full explanation; SDD should contain the compact operational model").
-
-  Declined (third re-proposal of the same directory, same reasoning as
-  STEP 20/21, this time with per-file verification against the concrete
-  proposed content):
-  - `protocol/stages.sdd` (AN/AR/DB/BE/API/FE/MD/QA/DO/VR) is a near-total
-    subset of `chains/chains.sdd -> Stages:` (verified verbatim this
-    STEP — same ten stage IDs, same orchestration/discipline split) —
-    NoDuplication.
-  - `protocol/states.sdd` (+ =READY, ~ =IN_PROGRESS, > =REVIEW, ? =BLOCKED,
-    ! =FAILED, @ =HUMAN_ACTION) directly contradicts the canonical
-    `state/state.sdd -> Symbols` (+ =DONE, ~ =ACTIVE, - =FAILED, ! =BLOCKED,
-    ? =DECISION_REQUIRED, > =NEXT, @ =REFERENCE) — same symbols, different
-    meanings, would violate `state.sdd`'s own `[S2]` ("state symbols MUST
-    NOT be redefined by project components") and the proposal's own
-    `[P2]`/`[P9]` rules against exactly this kind of collision.
-  - `protocol/relations.sdd [R1]-[R7]` and `protocol/protocol.sdd
-    [P1]-[P10]` would collide with this file's own root `Rules: [R1]-
-    [R12]` and `prompts/prompts.sdd`'s own `[P1]-[P24]` — same rule-ID
-    prefix, different authority, ambiguous for any future cross-reference.
-  - `protocol/origins.sdd` — reaffirms the STEP 20 decline of a task
-    `Origin` field; `tasks/tasks.sdd -> Source` (`[T18]`) already owns
-    this concept, unchanged.
-  - The standalone `protocol/` directory as a container is therefore
-    declined a third time — every file it would hold either duplicates
-    an existing owner or collides with an existing rule-ID range.
-  - `vocabulary.sdd`'s `#TAG -> skill.md` mechanism — declined for now,
-    same reasoning as STEP 20's skill-sigil decline: `skills/skills.sdd`
-    is still catalog-only (STEP 6/18), no concrete skill file exists yet
-    to tag.
-
-  Applied: the token-economy statement was the one genuinely new item
-  (STEP 21 had already confirmed, via grep, zero existing coverage of it
-  anywhere in `.sdd/`). Added as two new named entries to
-  `architecture/architecture.sdd -> Principles:` — `TokenEconomy` (AI
-  MUST read the smallest sufficient context, MUST expand a reference only
-  when the task requires it) and `CompactModel` (SDD content MUST stay
-  compact/operational; full narrative explanation belongs to human-facing
-  docs like this repo's README.md STEP log) — adapted into that section's
-  existing short-statement style, not copied verbatim, and not given a
-  new file or rule-ID prefix since `architecture.sdd -> Principles:`
-  already owns exactly this kind of cross-cutting rule. This resolves the
-  token-economy item STEP 21 explicitly deferred.
-
-  Deferred again: the compact task-reference-format example (source
-  section 8) — still blocked on the same undefined tag syntax STEP 21
-  deliberately left open in `project/map.sdd -> CodeReference`, applying
-  a syntax now would be premature for the same reason as then. CHAIN
-  resolution algorithm, SKILL CHAIN engine mechanics, BDD/Test protocol,
-  and DB/API model remain untouched, carried forward from STEP 21's own
-  deferred list — not part of this source chunk, still future STEPs.
-
-  (prompt/new/45.md, STEP 23 — "STEP 17" in the source's own internal
-  numbering, "Code ↔ SDD Mapping") Source proposed a concrete per-domain/
-  per-component `.sdd/project/{domain}/{component}/map.sdd` directory
-  tree with worked `@PAY/refund` examples, an `Owns:`/`Files:`/`Tests:`/
-  `Entry:`/`Dependencies:`/`DependsOn:`/`UsedBy:`/`Triggers:`/`Produces:`
-  field schema, a `SourceTruth` table, a MAP DRIFT concept with new
-  `!MAP_MISMATCH`/`!DRIFT` symbols, a hierarchical semantic-ID navigation
-  tree (`@PROJECT -> @PAY -> @REFUND`), and a human-doc-vs-AI-doc routing
-  table. Each item evaluated on its own merits:
-
-  Declined: the concrete directory tree and `@PAY/refund` worked
-  examples — no real domain directories exist yet (same precedent as
-  STEP 4's "Tam sıfırla" and the three-time decline of `protocol/` across
-  STEP 20/21/22). Declined: the hierarchical semantic-ID navigation tree
-  — duplicates the existing `map.sdd -> Resolution[module|domain|
-  feature]` mechanism (NoDuplication). Declined: the human-doc vs AI-doc
-  routing table — `architecture.sdd -> Principles -> CompactModel`
-  already states this exact split ("rules, not prose... full narrative
-  belongs to human-facing documentation"), a second table would itself
-  violate NoDuplication.
-
-  Applied to `project/map.sdd -> Rules:`: a three-rule principle — AI
-  MUST NOT trust a resolved map entry blindly (the map returns a
-  pointer, not the fact itself), AI MUST use the map only to navigate,
-  and source code/tests/the DB-API contract are what confirm the fact.
-  Applied to `project/map.sdd -> CodeReference:`: a `SourceOfTruth:`
-  subsection (an abstract table — runtime behavior/data shape/contract
-  -> source code, test correctness -> tests, project organization ->
-  the project model, engineering rule -> architecture.sdd, execution
-  order -> chains.sdd; no concrete domain example, since none exists
-  yet) and a `Drift:` subsection — MAP DRIFT is kept as a concept, but
-  routed through the existing `!` (BLOCKED) state symbol with a
-  descriptive `reason: map-drift` (bax state.sdd `[S2]`/`[S7]`) and
-  escalated to a task (bax tasks.sdd -> Source), rather than inventing
-  the source's proposed new symbols — a new symbol would collide with
-  the canonical `state.sdd -> Symbols` list, the same reasoning STEP 22
-  used to decline a parallel `protocol/states.sdd`.
-
-  Applied to `project/modules.sdd -> Rules:`: optional `files` (owned
-  source paths) and `entry` (primary entry-point file) fields, plus
-  `tests` (owned test paths) — all routing pointers only, cross-
-  referencing `map.sdd -> CodeReference -> SourceOfTruth`. Declined
-  (modules.sdd): `Owns:`/`Dependencies:`/`DependsOn:` — already present
-  in modules.sdd's own Rules (NoDuplication). Declined: `UsedBy:` —
-  derivable as the reverse of `deps`, a separate field would itself be
-  a duplicate-risk source of truth. Declined: `Triggers:`/`Produces:` —
-  execution/event concepts already owned by chains.sdd/tasks.sdd,
-  premature and duplicate here.
-
-  Function-level mapping's optionality required no separate addition —
-  already covered by `architecture.sdd -> Principles ->
-  TokenEconomy/CompactModel` (bax STEP 22). No new rule-ID prefix was
-  needed; all changes landed inside the existing `project/map.sdd ->
-  Rules:`/`CodeReference:` and `project/modules.sdd -> Rules:` sections.
-  See `project/map.sdd -> Note` and `project/modules.sdd -> Note` for
-  the mirrored entries.
-
-  (prompt/new/46.md, STEP 24 — "STEP 17 DÜZƏLİŞ" in the source's own
-  internal numbering, "Virtual Project Mirror") Source proposed that
-  `.sdd/project` mirror the real source tree 1:1, a concrete `docs/`
-  directory structure, two-tier BDD notation, skill/architecture maturity
-  levels (L1-L5), a canonical System Design vocabulary, technology-
-  fingerprint tags, infrastructure-as-dependency, and a diagram-as-output
-  rule. Each item evaluated on its own merits:
-
-  Applied to `architecture/architecture.sdd -> Principles:`: `CleanSource`
-  — real source directories (once they exist) MUST NOT carry co-located
-  `.sdd`/`.md` metadata files; AI-facing data lives only in the mirror
-  tree, human-facing narrative only in `docs/`. This formalizes where the
-  Mirror concept belongs; it is an application of Locality/
-  SeparationOfConcerns, not a new authority. Applied: `DiagramAsOutput`
-  — any diagram (Mermaid/PlantUML/etc.) MUST be generated from the model,
-  never hand-maintained as a second source (direct application of
-  SingleSourceOfTruth). Applied to `CompactModel`: a concrete BDD example
-  (AI-facing `G:`/`W:`/`T:` vs human-facing `Given`/`When`/`Then` — same
-  semantics, not two sources) was folded into the existing principle
-  rather than opening a new section for the source's two-tier BDD
-  proposal.
-
-  Applied to `project/map.sdd -> CodeReference:`: a `Mirror:` subsection
-  — a real source file `<root>/<path>/<file>.<ext>` may have ONE mirror
-  file at `.sdd/project/<path>/<file>.sdd`; the mirror file's own PATH is
-  the reference, source carries no in-file tag. This resolves the
-  "concrete reference tag syntax" question STEP 21/23 deliberately left
-  UNDEFINED. The mirror format is compact (`Own:`/`Do:`/`Use:`/`Test:` +
-  a Resolution pointer); no real source exists yet, so no mirror file is
-  materialized now — this is a format definition only, same "skeleton +
-  rule, no concrete example" precedent as STEP 20. Applied to `Paths:`:
-  `DOCS -> ./docs`, for human documentation, kept separate from `.sdd/`
-  per `CleanSource`.
-
-  Declined: the source's concrete `docs/` substructure
-  (`about-project.md`, `architecture/{system,backend,frontend,mobile,
-  devops}.md`, `domains/{payments,users,analytics}.md`, `database/`,
-  `api/`, `bdd/`, `decisions/`) — no real domains/components exist yet,
-  a concrete example now would be premature (same precedent as STEP 4,
-  the three-time `protocol/` decline across STEP 20\21\22, and STEP 23).
-
-  Deferred (tied to the source's own future "STEP 18 — Project
-  Intelligence / Architecture Profile"): skill maturity levels (L1-L5 per
-  skill/tag), architecture maturity levels (L1-L5 for `#ARCH`), the
-  System Design canonical vocabulary (`#SCALE #DAU #MAU #QPS #LAT #SLA
-  #SLO #SLI #SPOF #HA #DR #RPO #RTO #CACHE #QUEUE #CDN #LB #DB #REPL
-  #SHARD #PART #OBS #LOG #METRIC #TRACE`), language/framework-as-skill
-  technology-fingerprint tags, infrastructure-as-dependency in the
-  project model, and the full discovery/profiling pipeline (PROMPT ->
-  PROJECT DISCOVERY -> CONTEXT EXTRACTION -> SCALE PROFILE -> TECHNOLOGY
-  PROFILE -> ARCHITECTURE LEVEL -> SKILL LEVEL -> PROJECT MODEL -> CHAINS
-  -> TASKS -> IMPLEMENTATION -> QA -> VR) — these are scale/profiling
-  concerns, out of this STEP's scope. No new rule-ID prefix was needed;
-  all changes landed inside existing `Principles:`/`CodeReference:`/
-  `Paths:` sections. See `architecture/architecture.sdd -> Note` and
-  `project/map.sdd -> Note` for the mirrored entries.
-
-  (prompt/new/47.md, STEP 25) Source was a recap/handoff message from the
-  original chat (a ZIP delivery note) restating everything "agreed so
-  far": the canonical stage model (`AN -> AR -> DB -> BE -> API -> FE ->
-  MD -> QA -> DO -> VR`), compact state symbols, the `PROJECT/` tree
-  (`BE/FE/MD/DB/DO` real source + `docs/` human docs + `.sdd/` AI model),
-  the Virtual Project Mirror example, two-tier BDD, `CleanSource`, the
-  `docs/` model, source-as-runtime-truth, no-duplication, and reading the
-  smallest necessary context first. Reviewed against the current model:
-  every item already exists — `chains/chains.sdd -> DefaultFlow`/`Stages`
-  already carries the exact stage model; `state/state.sdd -> Symbols`
-  already carries the compact states (this repo's `+` for DONE vs the
-  source's `✓` is a pre-existing, deliberate naming choice from STEP 10,
-  left unchanged); the Mirror concept, `CleanSource`, `docs/` path, BDD
-  split, `SourceOfTruth`, `NoDuplication`, and `TokenEconomy`/
-  `CompactModel` were all applied in STEPs 22-24. A `protocol/`
-  subdirectory (present in the source's tree) remains declined per STEP
-  12/20/21/22. No new principle, field, or section was needed — this
-  STEP is a pure reaffirmation checkpoint, no `.sdd/` content changed
-  beyond this Note and its mirrors. The one forward-looking item (a real
-  skill library for Go/Backend, DDD, modular monolith, Clean Code, DB,
-  API, QA, DevOps, System Design, plus an `L1-L5` selection mechanism)
-  remains deferred, tied to the same future "STEP 18" scope already
-  recorded in STEP 24's Note. See `.sdd/README.md -> STEP 25` for the
-  full per-item cross-check.
+  [R1] PROJECT.sdd is the root entry point.
+  [R2] AI MUST resolve .sdd references before searching code.
+  [R3] Cases define WHAT needs to be built.
+  [R4] Templates define HOW to build it.
+  [R5] Chains define WHEN and in what ORDER.
+  [R6] Skills define engineering rules.
+  [R7] project/ is derived from .sdd, not the source of truth.
+  [R8] AI MUST update .sdd state after each stage.
+  [R9] Architectural changes require human approval.
+  [R10] .sdd files describe WHAT, WHY, WHERE, STATE.
+  [R11] Skills describe HOW.
+  [R12] Source code remains implementation truth.
+  [R13] Human MUST approve docs before .sdd/project/ generation.
+  [R14] Human MUST approve .sdd/project/ before code execution.
+  [R15] Human MUST approve production deployment.
+  [R16] AI MUST work from .sdd/project/, not directly on code.
+  [R17] docs/ is human language, .sdd/project/ is AI language.
+  [R18] Prompt engine converts simple prompts to docs/ then .sdd/project/.
+  [R19] Claude MUST read CLAUDE.md before executing any /sdd command.
+  [R20] Claude MUST respect the chain graph: D0 -> arm -> D0.
+  [R21] Claude MUST record token usage for every stage.
+  [R22] Claude MUST create decision records for significant changes.
+  [R23] Claude MUST NOT skip human gates.
+  [R24] Plugins MUST be adapted to SDDRA format before use.
+  [R25] Only general-purpose plugins are adapted; domain-specific ones are rejected.
+  [R26] External dependencies are not added via plugins.
+  [R27] .sdd/ files are IMMUTABLE — only the owner can modify them.
+  [R28] AI MUST create new files in project/, never in .sdd/.
+  [R29] AI MUST update .sdd/ only for new decisions, tasks, or state changes.
+  [R30] Templates in .sdd/templates/ are READ-ONLY — AI must not modify them.
+  [R31] All commits MUST follow semantic format: <type>(<scope>): <subject>.
+  [R32] Valid types: feat, fix, docs, style, refactor, test, chore, build, ci, perf, revert.
+  [R33] Valid scopes: sdd, project, docs, chains, skills, prompts, commands, templates, patterns, workflows, decisions, gates, tests.
+  [R34] All commits MUST pass pre-commit hooks before push.
+  [R35] All code MUST pass local validation before push.
+  [R36] All changes MUST pass CI/CD pipeline before merge.
+  [R37] Production deployment requires human approval.
+  [R38] .sdd/ changes require owner approval.
+  [R39] project/ changes require human review.
+  [R40] All DevOps practices are encoded as skills in .sdd/skills/devops/.

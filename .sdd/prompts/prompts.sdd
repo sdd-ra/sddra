@@ -1,299 +1,58 @@
-Prompts: SDD
+﻿Prompts: default
 
 Purpose:
-  Manage, analyze, classify and preserve project prompts before they
-  become executable work. Bu fayl `.sdd`-in "giriş filtri"dir — yeni
-  gələn hər prompt birbaşa `tasks/`-a düşmür, əvvəlcə bu modeldən keçir
-  (bax Lifecycle aşağıda).
+  Manage, analyze, classify, and preserve project prompts
+  before they become executable work.
 
-  Fərqləndirmə (əvvəlki qatlarla): `chains/` işin NƏ VAXT/HANSI SIRAYLA
-  görüləcəyini (WHEN/ORDER), `skills/` NECƏ icra olunacağını (HOW) təyin
-  edir — `prompts/` isə bunlardan əvvəl gəlir: yeni bir mətn parçasının
-  ÜMUMİYYƏTLƏ nəyə aid olduğunu (tapşırıq? bilgi? qərar tələbi?
-  ziddiyyət?) həll edir. Nəticədə iş `tasks/`-a, layihə bilgisi
-  `project/`-ə, mühəndislik qaydası `skills/`-ə, arxitektura qərarı isə
-  `decisions/`-ə köçürülür (bax Comparison/Decision aşağıda).
+Lifecycle:
+  RECEIVE > ANALYZE > CLASSIFY > COMPARE > IMPACT > DECIDE > EXECUTE | BACKLOG | ARCHIVE
 
 Directories:
-
   inbox:
     path: ./inbox
-    purpose: Newly received prompts, not yet analyzed
-    state: boş (STEP 7)
+    purpose: Newly received prompts
 
   active:
     path: ./active
-    purpose: Prompts currently affecting active work
-    state: boş (STEP 7)
+    purpose: Prompts affecting active work
 
   archive:
     path: ./archive
-    purpose: Processed prompts with no further actionable value (rədd
-      olunanlar da daxil, bax [P19])
-    state: boş (STEP 7)
+    purpose: Processed prompts and historical knowledge
 
   extracted:
     path: ./extracted
-    purpose: Useful knowledge extracted from prompts, pending routing to
-      project/skills/decisions (bax KnowledgeExtraction aşağıda)
-    state: boş (STEP 7)
+    purpose: Useful knowledge extracted from prompts
 
   conflicts:
     path: ./conflicts
-    purpose: Prompt conflicts requiring human resolution (bax [P11]/[P20])
-    state: boş (STEP 7)
+    purpose: Prompt conflicts requiring resolution
 
-
-Lifecycle:
-
-  RECEIVE > ANALYZE > CLASSIFY > COMPARE > IMPACT > DECIDE > EXECUTE / BACKLOG / ARCHIVE
-
-
-PromptTypes:
-  requirement, feature, bug, architecture, improvement, constraint, skill,
-  process, decision, knowledge
-
-
-InputForms:
-  (best-practice əlavə, bax [P21]) A prompt's surface FORM is independent
-  of its PromptType/Impact — the same requirement may arrive in any of
-  these shapes, and ANALYZE (bax Lifecycle) MUST look past form to
-  content:
-
-    short         one line, minimal context ("add refund endpoint")
-    descriptive   explains what, not why
-    narrative     tells a scenario/story the requirement is embedded in
-    technical     names concrete technologies/patterns directly
-    corrective    reports something already built is wrong (bax bug in
-                  PromptTypes, ConflictResolution below)
-    incremental   extends/modifies a previously processed prompt (bax
-                  [P4] update/related)
-    mixed         combines more than one of the above
-
+Types:
+  requirement
+  feature
+  bug
+  architecture
+  improvement
+  constraint
+  skill
+  process
+  decision
+  knowledge
+  tech-stack
+  role-assignment
+  provisioning
 
 Rules:
-
   [P1] Every new prompt MUST be analyzed before execution.
-  [P2] AI MUST check existing prompt knowledge before processing a new prompt.
-  [P3] A prompt MUST be compared against existing project knowledge, active
-       tasks, chains, skills and decisions when relevant (bax Comparison).
-  [P4] AI MUST determine whether the prompt is: new / duplicate / update /
-       conflict / obsolete / related / higher_priority.
-  [P5] Useful new knowledge MUST NOT be copied blindly into skills (bax
-       skills/skills.sdd -> [S3] — eyni sərhəd, bu tərəfdən: prompt xam
-       mətn kimi deyil, KnowledgeExtraction zənciri ilə skill-ə çevrilir).
-  [P6] Project-specific knowledge belongs to project/.
-  [P7] Engineering knowledge belongs to skills/.
-  [P8] Architecture decisions belong to decisions/.
-  [P9] Executable work belongs to tasks/.
-  [P10] A prompt MUST NOT silently change global SDD rules (bax
-        architecture/architecture.sdd -> Forbidden: PROMPTS).
-  [P11] Conflicting information MUST be preserved until resolved — bax
-        `conflicts/` qovluğu; heç vaxt sadəcə silinmir.
-  [P12] AI MUST identify whether the prompt affects the current task.
-  [P13] AI MUST identify whether the prompt creates future work.
-  [P14] AI MAY create backlog work from a prompt.
-  [P15] AI MAY identify parallel work when dependencies allow it.
-  [P16] AI MUST identify higher-priority work that should be completed
-        before the current task.
-  [P17] Processed prompts MUST remain traceable (bax Traceability aşağıda).
-  [P18] Archived prompts MUST NOT be treated as active instructions unless
-        explicitly reactivated.
-  [P19] (best-practice əlavə) Rədd edilmiş ("rejected") bir prompt ayrıca
-        qovluq deyil, ARCHIVE nəticəsinin bir alt-halıdır — rədd səbəbi
-        `Traceability.final_action` sahəsində saxlanılır, fayl özü
-        `archive/`-ə köçür (bax Note aşağıda, "Tam sıfırla" qərarı).
-  [P20] (best-practice əlavə) ESCALATE nəticəsi (bax Decision) `decisions/`
-        altında açıq, insan qərarı gözləyən bir item yaratmalıdır — bax
-        PROJECT.sdd -> HumanDecision / [R9]/[R11]; bu fayl həmin qaydanı
-        təkrar tərif etmir, yalnız prompt axınına tətbiq edir.
-  [P21] (prompt/new/39.md) A prompt's length or InputForm MUST NOT
-        determine the scale/complexity of the work it produces — a
-        one-line prompt MAY still require the full ../project/
-        instantiation.sdd Pipeline, and a long narrative MAY resolve to
-        a single small task; complexity is an OUTPUT of ANALYZE/IMPACT,
-        never inferred from form (bax InputForms above).
-  [P22] (prompt/new/39.md) AI MUST distinguish requirements the prompt
-        actually states from assumptions AI makes to fill gaps in it;
-        assumptions MUST be surfaced as assumptions, not silently merged
-        into the requirement list as if the human had stated them.
-  [P23] (prompt/new/39.md) AI MUST identify ambiguity in a prompt during
-        ANALYZE. Important ambiguity (bax [P16] higher-priority, [P20]
-        ESCALATE) MUST NOT be silently resolved into an implementation
-        decision — it MUST be surfaced for human resolution rather than
-        guessed past (bax [P24] NoBlindExecution).
-  [P24] (NoBlindExecution, prompt/new/39.md) AI MUST NOT execute a
-        prompt directly — skipping ANALYZE/CLASSIFY/IMPACT — when the
-        prompt changes architecture, security, scope, or other critical
-        behavior; such prompts MUST complete this file's Lifecycle
-        first, same as any other prompt (bax PROJECT.sdd ->
-        HumanDecision, ../architecture/architecture.sdd -> Forbidden:
-        PROMPTS, [P10] above — this rule is the prompt-intake-side
-        restatement of the same boundary, not a new one).
-
-
-ConflictResolution:
-  (best-practice əlavə, [P11]-in "necə" sualına cavabı, prompt/new/39.md)
-  A conflict (bax [P4] conflict, [P11]) is resolved through a fixed
-  sequence, not ad hoc:
-
-    detect conflict > compare against existing knowledge/decisions >
-    determine impact (bax Impact/ImpactAreas) >
-      EITHER apply a previously human-authorized rule that already
-      covers this exact conflict (bax ../decisions/decisions.sdd)
-      OR request a new human decision (bax [P20], PROJECT.sdd ->
-      HumanDecision) when no such rule exists yet
-
-  A conflict MUST NOT be resolved by AI guessing a resolution that no
-  prior human decision actually covers (bax [P24] NoBlindExecution).
-
-
-Comparison:
-  NewPrompt > ExistingPrompts > ProjectModel > Architecture > Skills >
-  Chains > Tasks > Decisions
-
-
-Branches:
-  (best-practice əlavə, prompt/new/39.md) Comparison above resolves to
-  one of two branches, depending on whether ProjectModel already has
-  content to compare against:
-
-    ExistingProject:
-      the prompt is analyzed against already-resolved project/
-      architecture/skills/chains/tasks/decisions (bax Comparison above)
-      — it MUST NOT be treated as grounds for a new project.
-
-    NewProject:
-      ProjectModel is empty/not yet resolved — the prompt instead drives
-      ../project/instantiation.sdd -> Pipeline (Prompt Analysis this
-      file's Lifecycle feeds into -> Skill Discovery -> Architecture
-      Analysis -> Scale Analysis -> ... -> Project Decision, human
-      approval required, bax [PI4]).
-
-  This file does not redefine instantiation.sdd's Pipeline steps here
-  (bax NoDuplication, ../architecture/architecture.sdd -> Principles) —
-  it only states which branch a given prompt falls into.
-
-
-Impact:
-  current: affects active work
-  dependency: blocks or changes another task
-  parallel: can be executed independently
-  future: creates future work
-  global: affects project-wide rules
-  none: no actionable impact
-
-
-ImpactAreas:
-  (best-practice əlavə, Impact-ın "harada" sualına cavabı, prompt/new/39.md)
-  Impact yuxarıda prompt-un TƏSİRİNİN NÖVÜNÜ (current/dependency/...)
-  təyin edir; ImpactAreas isə həmin təsirin hansı SAHƏLƏRƏ toxunduğunu
-  sadalayır — IMPACT addımında (bax Lifecycle) hər biri yoxlanılmalıdır:
-
-    architecture, domains, modules, database, API, frontend, mobile,
-    QA, DevOps, security, dependencies, existing tasks, existing
-    decisions
-
-  Bu siyahı `project/`, `skills/`, `chains/`, `decisions/` qatlarının öz
-  domenlərini təkrar tərif etmir (bax NoDuplication) — yalnız IMPACT
-  addımında yoxlama checklist-i kimi xidmət edir.
-
-
-Decision:
-  EXECUTE: new work can start
-  UPDATE: existing knowledge/task must be updated
-  BACKLOG: useful but not currently executable
-  PARALLEL: independent work can be scheduled
-  ESCALATE: human decision required (bax [P20])
-  ARCHIVE: no actionable value (rədd edilənlər daxil, bax [P19])
-
-
-KnowledgeExtraction:
-  (best-practice əlavə, [P5]-in "necə" sualına cavabı) Xam prompt mətni
-  birbaşa skill-ə çevrilmir, sabit zəncirdən keçir:
-
-    prompt (inbox/) > extracted knowledge (extracted/) > skill proposal
-    > human approval > skill (skills/<domain>/)
-
-  Zəncir qırılmadan heç bir prompt mətni birbaşa `skills/` altına
-  düşməməlidir — bu, `.sdd/prompts/`-un "bilgi zibilliyinə" çevrilməsinin
-  qarşısını alır.
-
-
-Traceability:
-  Every processed prompt MUST preserve:
-    source, received_at, classification, affected_area, related_task,
-    related_decision, extracted_knowledge, final_action
-
-
-Navigation:
-  (best-practice əlavə, ../project/instantiation.sdd -> Navigation ilə
-  eyni konvensiya, prompt/new/39.md)
-    New-project pipeline: @../project/instantiation.sdd -> Pipeline
-    Human approval gate: @../PROJECT.sdd -> HumanDecision
-    Prior authorized decisions: @../decisions/decisions.sdd
-    Skill relevance narrowing: @../project/instantiation.sdd ->
-      SkillFiltering
+  [P2] AI MUST check existing prompt knowledge before processing new prompt.
+  [P3] A prompt MUST be compared against existing project knowledge.
+  [P4] Prompts MUST be archived, not deleted.
+  [P5] Prompts MUST be categorized by domain.
+  [P6] Tech stack prompts MUST resolve to skill paths.
+  [P7] Role assignment prompts MUST require human approval.
+  [P8] Provisioning prompts MUST only execute after approval.
 
 
 State: +
-  (STEP 7 tamamlandı — skelet: prompts.sdd router + 5 qovluq (inbox/
-  active/archive/extracted/conflicts) yaradıldı. Konkret prompt fayl
-  formatı və nümunə instansiya hələ yazılmayıb.)
-  (STEP 17 əlavə olundu — bax Note aşağıda.)
 
-Note:
-  (prompt/new/24.md, STEP 7) Bu fayl mənbə template-ə əsasən yazılıb, bir
-  neçə best-practice əlavəsi ilə: (1) Purpose bölməsinə `prompts/`-un
-  digər üç qatdan (project/architecture/chains/skills) necə fərqləndiyi
-  izah edildi; (2) hər Directory-ə `state:` sahəsi əlavə olundu (bax
-  PROJECT.sdd -> [R10]); (3) [P19]/[P20] əlavə olundu — "rejected"
-  anlayışının ARCHIVE-in bir alt-halı kimi formallaşdırılması və
-  ESCALATE-in `decisions/`-ə necə bağlandığının aydınlaşdırılması üçün;
-  (4) `KnowledgeExtraction` bölməsi əlavə olundu — [P5] mənbədə yalnız
-  bir cümləlik qadağa idi, burda konkret zəncir kimi ifadə olunub.
-
-  Struktur ("Tam sıfırla" — istifadəçi təsdiqi ilə həll olundu): STEP 1-
-  dən əvvəl mövcud olan köhnə `.sdd/prompts/` (dörd qovluq: inbox/active/
-  archive/rejected + `system/MASTER.md`-ə istinad edən köhnəlmiş
-  README.md) bu addımla sıfırlanıb. `rejected/` qovluğu silinib (git
-  tarixçəsində qalır) və [P19] ilə ARCHIVE-in alt-halı kimi əvəz olunub;
-  `extracted/` və `conflicts/` yeni yaradılıb (mənbə spesifikasiyasında
-  var idi, köhnə struktur onları saxlamırdı); README.md-dəki dangling
-  `system/MASTER.md` istinadı silinib (bax .sdd/prompts/README.md).
-
-  Konkret prompt instansiyaları (real `inbox/*.md` faylları, real
-  `extracted/*.sdd` bilgiləri) BİLƏRƏKDƏN bu addımda yaradılmır — bu,
-  yalnız skelet + qayda mühərriki addımıdır, eynilə STEP 5/STEP 6-da
-  olduğu kimi.
-
-  (prompt/new/39.md, STEP 17) Mənbənin [P]-prefiksli məzmunu (InputForms,
-  PromptLifecycle, PromptClassification, PromptImpact, PromptEvolution,
-  Conflict, NoBlindExecution, HumanReview) artıq mövcud bu faylla (STEP 7)
-  üst-üstə düşdüyü üçün YENİ sibling fayl (`analysis.sdd`/
-  `normalization.sdd`/`lifecycle.sdd`) yaratmaq əvəzinə bu faylı
-  genişləndirdim, eyni STEP 16 "correction pass" konvensiyası ilə. Rule-ID
-  nömrələnməsi `[P20]`-dən davam etdi (`[P21]`-`[P24]`), yeni prefiks
-  yaradılmadı. Əlavə olunanlar: `InputForms:` (7 forma: short/descriptive/
-  narrative/technical/corrective/incremental/mixed), `[P21]`-`[P24]`
-  (forma≠mürəkkəblik, requirement≠assumption, ambiguity heç vaxt səssiz
-  həll olunmur, NoBlindExecution), `ConflictResolution:` ([P11]-in "necə"
-  sualına konkret cavab), `Branches:` (ExistingProject vs NewProject),
-  `ImpactAreas:` (mövcud `Impact:`-ə tamamlayıcı sahə siyahısı),
-  `Navigation:` (../project/instantiation.sdd -> Navigation ilə eyni
-  konvensiya).
-
-  Bilərəkdən TƏKRARLANMADI (bax NoDuplication,
-  ../architecture/architecture.sdd -> Principles): mənbənin reuse-
-  existing-knowledge/check-skills/evaluate-scale/avoid-complexity
-  qaydaları (artıq ../project/instantiation.sdd -> CorePrinciple/
-  [PI1]-[PI3]/SkillFiltering/[PI5]-də var); mənbənin tam ExistingProject/
-  NewProject nəqli (artıq instantiation.sdd -> Pipeline-də var — burda
-  yalnız `Branches:` ilə qısa istinad edildi); mənbənin HumanReview
-  checklist-i (artıq PROJECT.sdd -> HumanDecision və instantiation.sdd
-  -> ArchitectureSelection-un human-approval gate-ində var).
-
-  Bilərəkdən ERTƏLƏNDİ (mənbənin öz "növbəti mərhələ" qeydinə əsasən,
-  indi qurulmadı): "Prompt Registry" özü-özünü-təkmilləşdirən meta-sistem
-  ideyası — mənbə (prompt/new/39.md) bunu özü gələcək mərhələyə saxlayır,
-  bu fayl da eyni qərarı təkrarlayır, indi tətbiq etmir.
