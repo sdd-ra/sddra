@@ -1,0 +1,91 @@
+Index: Security
+
+Purpose:
+  Security control layer entry point. Security is a cross-cutting concern
+  that applies to every stage of the SDLC, not a single stage or skill.
+  This index routes to the security policy, controls, gates, threats,
+  and scanners.
+
+Owns: ./
+
+ReadOrder:
+  1  INDEX.sdd (this file)
+  2  levels.sdd (security level definitions L0-L5)
+  3  SECURITY.sdd (security policy and scope)
+  4  controls.sdd (security controls catalog)
+  5  gates.sdd (security gates overview)
+  6  gates/ (individual gate specifications)
+  7  threats.sdd (threat model)
+  8  scanners.sdd (security scanners and their configuration)
+  9  findings/ (security findings, when applicable)
+
+Modes:
+  APPLY   — apply security controls to a task/chain
+  AUDIT   — audit security posture
+  SCAN    — run security scanners
+  GATE    — evaluate security gate pass/fail
+
+Rules:
+  [SEC1]  AI MUST load this index before reading any security file.
+  [SEC2]  Security is mandatory for all changes — AI MUST NOT skip
+          security applicability calculation.
+  [SEC3]  Security controls are selected based on risk level (R0-R5),
+          not applied uniformly.
+  [SEC4]  Critical and High findings MUST block VR until resolved.
+          Only human MAY accept an unresolved Critical/High finding.
+  [SEC5]  Security exceptions MUST be recorded explicitly with owner,
+          reason, and expiration date.
+  [SEC6]  Security review level is determined by project SecurityLevel
+          (L0-L5), not by individual preference.
+  [SEC7]  DDoS, pentest, and other heavy controls are triggered by
+          conditions, not applied to every change.
+  [SEC8]  Security findings MUST have a lifecycle: ~ ? triaged ?
+          task-created ? fixing ? verification ? + (or x for false
+          positive, @ for accepted risk).
+  [SEC9]  Security layer coordinates with chains/chains.sdd -> SecurityGate,
+          tasks/tasks.sdd -> SecurityAcceptanceCriteria/SecuritySeverity,
+          and project/project.sdd -> SecurityRiskBudget.
+  [SEC10] Security MUST NOT be treated as a final-stage checkbox.
+          It is a continuous control layer throughout the SDLC.
+
+
+SecurityLevels:
+  L0: baseline (no additional controls)
+  L1: baseline + automated scans
+  L2: scans + security tests
+  L3: threat model + DAST
+  L4: pentest + architecture security review
+  L5: continuous security + external assessment
+
+
+Navigation:
+  Protocol: @protocol/ROOT.sdd
+  Project: @project/project.sdd
+  ProjectSecurity: @project/security/INDEX.sdd
+  ProjectFindings: @project/security/findings/
+  ProjectThreats: @project/security/threats/
+  ProjectExceptions: @project/security/exceptions/
+  Graph: @graph/graph.sdd
+  Skills: @skills/INDEX.sdd
+  Chains: @chains/INDEX.sdd
+  Tasks: @project/tasks/tasks.sdd
+  Security: @security/INDEX.sdd
+  SecurityLevels: @security/levels.sdd
+  SecurityPolicy: @security/SECURITY.sdd
+  SecurityControls: @security/controls.sdd
+  SecurityGates: @security/gates.sdd
+  SecurityGateSpecs: @security/gates/
+  SecurityThreats: @security/threats.sdd
+  SecurityScanners: @security/scanners.sdd
+  Verification: @verification/
+  State: @state/state.sdd
+  Decisions: @project/decisions/decisions.sdd
+
+State: +
+  Note:
+  This file is the entry point for the
+  security control layer. Security is not just a skill or a stage —
+  it is a cross-cutting control layer that applies to every stage of
+  the SDLC. The security layer coordinates with existing security
+  content in chains, tasks, skills, and project files.
+

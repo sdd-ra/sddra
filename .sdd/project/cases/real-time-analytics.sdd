@@ -1,0 +1,107 @@
+Case: REAL-TIME-ANALYTICS
+
+id: REAL-TIME-ANALYTICS
+type: feature
+title: Real-Time Analytics Platform
+purpose: Build real-time analytics and business intelligence platform
+status: DRAFT
+state: -
+created: 2026-08-27
+updated: 2026-08-27
+
+depends_on:
+  - PAYMENT-INTEGRATION
+
+produces:
+  - backend/analytics-service
+  - backend/ingestion-service
+  - frontend/analytics-dashboard
+  - infrastructure/kafka
+  - infrastructure/clickhouse
+  - tests/load
+
+chain: feature
+
+template: modular-feature
+
+stages:
+  AN: -
+  AR: -
+  DB: -
+  BE: -
+  API: -
+  FE: -
+  MD: -
+  QA: -
+  DO: -
+  VR: -
+
+tech_stack:
+  languages:
+    - rust (L4 web-systems)
+    - typescript (L3-L4 enterprise)
+    - python (L3-L5 data-engineering)
+  frameworks:
+    - axum (rust web)
+    - nextjs (L1 dashboard)
+    - fastapi (L1 data api)
+  databases:
+    - postgresql (L3-L4 enterprise)
+    - redis (L1 caching)
+    - elasticsearch (L1 search)
+    - clickhouse (time-series)
+  platforms:
+    - docker (L3 kubernetes)
+    - kubernetes (L1-L2)
+    - terraform (L1)
+    - gcp (L1 cloud)
+  messaging:
+    - kafka (L1-L2 event streaming)
+    - nats (L1 lightweight)
+  cross-cutting:
+    - testing: performance, integration
+    - security: authentication, authorization
+    - architecture: event-driven, microservices
+    - observability: logging, metrics, tracing, alerting
+
+rules:
+  [A1] Data ingestion MUST handle 1M events/second.
+  [A2] Dashboard MUST refresh in real-time.
+  [A3] All queries MUST be optimized for time-series.
+  [A4] Data retention MUST be configurable.
+  [A5] Access MUST be role-based.
+  [A6] All pipelines MUST be idempotent.
+  [A7] Alerting MUST be configurable per metric.
+  [A8] Export MUST support multiple formats.
+
+decisions:
+  - id: RTA-001
+    title: Analytics engine selection
+    status: pending
+    options:
+      - clickhouse
+      - druid
+      - timescaledb
+
+  - id: RTA-002
+    title: Real-time transport
+    status: pending
+    options:
+      - websockets
+      - server-sent events
+      - polling
+
+approval_required:
+  - RTA-001
+  - RTA-002
+
+provisioning:
+  triggers:
+    - kafka cluster
+    - clickhouse cluster
+    - elasticsearch cluster
+    - redis cluster
+
+   State: -
+
+State: +
