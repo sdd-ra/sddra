@@ -1,0 +1,50 @@
+Chains: Index
+
+Purpose:
+  Execution chains. Root D0 branches to arms; arms return to D0.
+  Every execution path is a branch of default.
+
+Graph:
+  root: D0
+  arms: P1,D1,S1,C1,R1,DEP1
+  selector: @selector.sdd
+  rules: @rules/INDEX.sdd
+  tokens: @project/tokens/INDEX.sdd
+
+Files:
+  graph: @graph.sdd
+  default: @default.sdd
+  selector: @selector.sdd
+  feature: @feature.sdd
+  bugfix: @bugfix.sdd
+  hotfix: @hotfix.sdd
+  refactor: @refactor.sdd
+  security: @security.sdd
+  maintenance: @maintenance.sdd
+  migration: @migration.sdd
+  incident: @incident.sdd
+  test-scenario: @test-scenario.sdd
+
+Arms:
+  prompt: @arms/prompt.sdd
+  docs: @arms/docs.sdd
+  sdd: @arms/sdd.sdd
+  code: @arms/code.sdd
+  review: @arms/review.sdd
+  deploy: @arms/deploy.sdd
+
+Rules:
+  chain: @rules/chain-rules.sdd
+
+Tokens:
+  calculator: @project/tokens/calculator.sdd
+  P1: @project/tokens/P1.sdd
+  D1: @project/tokens/D1.sdd
+  S1: @project/tokens/S1.sdd
+  C1: @project/tokens/C1.sdd
+  R1: @project/tokens/R1.sdd
+  DEP1: @project/tokens/DEP1.sdd
+  D0: @project/tokens/D0.sdd
+
+State: +
+

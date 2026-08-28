@@ -1,0 +1,34 @@
+# Test Scenario: School Platform
+
+Purpose:
+  Practical test of the chain graph system.
+
+Input:
+  "Build an education platform for schools.
+   Video conferencing, payments, AI search should be included.
+   20K users in first 10 months, 1M in 2 years."
+
+Expected Flow:
+  D0 -> P1 -> D0
+  D0 -> D1 -> D0
+  D0 -> S1 -> D0
+  D0 -> C1 -> D0
+  D0 -> R1 -> D0
+  D0 -> DEP1 -> D0
+
+Token Budget:
+  P1: <= 5000
+  D1: <= 10000
+  S1: <= 15000
+  C1: <= 40000
+  R1: <= 5000
+  DEP1: <= 5000
+  Total: <= 70000
+
+Validation:
+  - All arms return to D0
+  - Token delta recorded
+  - Human gates respected
+   - No direct project/ access before S1
+
+State: +

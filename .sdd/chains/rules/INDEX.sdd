@@ -1,0 +1,20 @@
+# Chain Rules
+
+Purpose:
+  Unbreakable laws for chain execution. Flows through every node.
+
+Rules:
+  CR1: Every arm MUST return to parent D0 after completion.
+  CR2: Human MUST approve before entering S1 from D1.
+  CR3: Human MUST approve before entering C1 from S1.
+  CR4: Token delta MUST be recorded for every stage.
+  CR5: AI MUST NOT read project/ before S1 approval.
+  CR6: Every output MUST be validated before returning to D0.
+  CR7: If a stage fails, retry max 3 times before escalating.
+  CR8: Project root is source of truth for code; .sdd is source of truth for intent.
+  CR9: docs/ is human language; .sdd/project/ is AI language.
+  CR10: Chain execution MUST be idempotent.
+
+ AppliesTo: P1,D1,S1,C1,R1,DEP1
+
+State: +

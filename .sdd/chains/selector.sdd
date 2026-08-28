@@ -1,0 +1,27 @@
+# Chain Selector
+
+Purpose:
+  Map execution type to chain node ID.
+
+Map:
+  prompt: P1
+  docs: D1
+  sdd: S1
+  code: C1
+  review: R1
+  deploy: DEP1
+  feature: F1
+  bugfix: B1
+  hotfix: H1
+  refactor: RF1
+  security: SEC1
+  maintenance: M1
+  migration: MG1
+  incident: I1
+
+Selector:
+  input: type
+  output: node_id
+   fallback: D0
+
+State: +

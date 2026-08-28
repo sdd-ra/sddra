@@ -1,0 +1,38 @@
+# Arm: Docs
+
+Purpose:
+  Generate human docs from prompt. Minimal tokens.
+
+Parent: D0
+Returns: D0
+
+Stage:
+  id: D1
+  name: docs
+  parent: D0
+  returns_to: D0
+  inputs:
+    - prompt
+  outputs:
+    - docs/00-about/project.md
+    - docs/20-architecture/overview.md
+    - docs/30-backend/overview.md
+    - docs/40-frontend/overview.md
+    - docs/60-database/overview.md
+    - docs/70-api/overview.md
+    - docs/100-devops/overview.md
+    - .sdd/project/decisions/DEC-XXX.sdd (proposed decisions)
+  skills:
+    - prompts/tech-stack/prompt-to-docs.sdd
+  token:
+    - ../../project/tokens/D1.sdd
+  rule:
+    - ./rules/INDEX.sdd
+  decision:
+    - Create decision records for architectural/tech choices
+    - Status: proposed
+  gate:
+     - human
+
+State: +
+

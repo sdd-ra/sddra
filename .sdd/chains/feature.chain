@@ -1,0 +1,87 @@
+Chain: feature
+
+Sequence:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+Stages:
+  AN:
+    name: Analyze
+    description: Analyze requirement and existing model
+    next: AR
+    fail: AN
+    required: true
+
+  AR:
+    name: Architecture
+    description: Design architecture and module boundaries
+    next: DB or BE
+    fail: AR
+    required: true
+
+  DB:
+    name: Database
+    description: Design database schema and migrations
+    condition: database-impact
+    next: BE
+    skip: BE
+    fail: DB
+    required: false
+
+  BE:
+    name: Backend
+    description: Implement backend code and tests
+    next: API
+    fail: BE
+    required: true
+
+  API:
+    name: API
+    description: Define and implement API contracts
+    condition: api-impact
+    next: FE
+    fail: API
+    required: true
+
+  FE:
+    name: Frontend
+    description: Implement frontend code
+    next: MD
+    fail: FE
+    required: true
+
+  MD:
+    name: Mobile
+    description: Implement mobile code
+    condition: mobile-impact
+    next: QA
+    fail: MD
+    required: false
+
+  QA:
+    name: Quality Assurance
+    description: Run tests and validate implementation
+    next: DO
+    fail: QA
+    required: true
+
+  DO:
+    name: DevOps
+    description: Prepare infrastructure and deployment
+    next: VR
+    fail: DO
+    required: true
+
+  VR:
+    name: Verify
+    description: Final verification and sign-off
+    next: DONE
+    fail: VR
+    required: true
+
+Rules:
+  [F1] Feature chain MUST include BE, FE, QA, DO, VR.
+  [F2] DB is optional based on database-impact.
+  [F3] MD is optional based on mobile-impact.
+   [F4] API is optional based on api-impact.
+
+State: +

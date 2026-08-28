@@ -1,0 +1,41 @@
+# Chain: Maintenance
+Purpose:
+  Chain: Maintenance
+
+
+ID: M1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AR: Architecture
+  BE?: Backend
+  DB?: Database
+  DO: DevOps
+  QA: QA
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  BE -> [AR]
+  DB -> [AR]
+  DO -> [BE,DB]
+  QA -> [BE,DB]
+  VR -> [DO]
+
+Parallel: []
+Gates:
+  AR: plan-approved
+  BE: changes-ok
+  DB: db-changes-ok
+  DO: deploy-ok
+  QA: tests-pass
+  VR: verified
+
+Retry: 2
+Token: @project/tokens/M1.sdd
+   Rule: @rules/chain-rules.sdd
+
+State: +
+
+

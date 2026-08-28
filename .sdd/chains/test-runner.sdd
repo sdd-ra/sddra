@@ -1,0 +1,39 @@
+# Test Runner
+
+Purpose:
+  Test the chain graph system with minimal tokens.
+
+Test Cases:
+  TC1: Token tracking
+    Input: "Test prompt"
+    Expected: project/tokens/P1.sdd created
+    Budget: <= 5000 tokens
+
+  TC2: Chain graph
+    Input: Full flow
+    Expected: All arms return to D0
+    Budget: <= 70000 tokens
+
+  TC3: Human gates
+    Input: Any arm
+    Expected: Human approval required
+    Budget: N/A
+
+  TC4: Minimal context
+    Input: P1 only
+    Expected: Only P1 files loaded
+    Budget: <= 2000 tokens
+
+  TC5: Error recovery
+    Input: Failing stage
+    Expected: Retry 3x, then escalate
+    Budget: N/A
+
+Run:
+  python scripts/test_chain.py --case TC1
+  python scripts/test_chain.py --case TC2
+  python scripts/test_chain.py --case TC3
+  python scripts/test_chain.py --case TC4
+   python scripts/test_chain.py --case TC5
+
+State: +

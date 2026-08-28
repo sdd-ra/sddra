@@ -1,0 +1,36 @@
+# Arm: SDD
+
+Purpose:
+  Convert approved docs/ to .sdd/project/. Minimal tokens.
+
+Parent: D0
+Returns: D0
+
+Stage:
+  id: S1
+  name: sdd
+  parent: D0
+  returns_to: D0
+  inputs:
+    - docs/
+    - .sdd/project/decisions/ (approved decisions)
+  outputs:
+    - .sdd/project/PROJECT.sdd
+    - .sdd/project/domains.sdd
+    - .sdd/project/tasks/INDEX.sdd
+    - .sdd/project/tasks/TASK-XXX.sdd (linked to decisions)
+  skills:
+    - prompts/tech-stack/docs-to-project.sdd
+    - plugins/plugin-adapters/writing-plans.sdd
+  token:
+    - ../../project/tokens/S1.sdd
+  rule:
+    - ./rules/INDEX.sdd
+  decision:
+    - Reference approved decisions from D1
+    - Create tasks linked to decision IDs
+  gate:
+     - human
+
+State: +
+

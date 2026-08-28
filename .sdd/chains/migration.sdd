@@ -1,0 +1,41 @@
+# Chain: Migration
+Purpose:
+  Chain: Migration
+
+
+ID: MG1
+Parent: D0
+MapTo: C1
+
+Stages:
+  AR: Architecture
+  DB: Database
+  BE?: Backend
+  QA: QA
+  DO: DevOps
+  VR: Verify
+
+Dependencies:
+  AR -> []
+  DB -> [AR]
+  BE -> [DB]
+  QA -> [DB,BE]
+  DO -> [QA]
+  VR -> [DO]
+
+Parallel: []
+Gates:
+  AR: plan-approved
+  DB: migration-ready
+  BE: code-ready
+  QA: migration-tested
+  DO: deploy-ok
+  VR: data-integrity-ok
+
+Retry: 2
+Token: @project/tokens/MG1.sdd
+   Rule: @rules/chain-rules.sdd
+
+State: +
+
+

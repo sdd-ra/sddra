@@ -1,0 +1,19 @@
+﻿# Token Record: P1
+Purpose:
+  Token Record: P1
+
+
+Stage: P1
+RunID: RUN-TC4
+Timestamp: 2026-08-27T19:00:00Z
+TokensIn: 500
+TokensOut: 1500
+TokensDelta: 1000
+Status: completed
+Parent: D0
+DurationMs: 0
+RetryCount: 0
+ Error: None
+
+State: +
+

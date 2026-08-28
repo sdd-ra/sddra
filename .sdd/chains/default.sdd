@@ -1,0 +1,27 @@
+# Default Chain
+
+Purpose:
+  Root chain. All arms return here after their branch.
+
+Type: cyclic
+Root: D0
+Arms: P1,D1,S1,C1,R1,DEP1
+
+Stage:
+  id: D0
+  name: default
+  kind: root
+  next:
+    - P1
+    - D1
+    - S1
+    - C1
+    - R1
+    - DEP1
+  rule:
+    - ./rules/INDEX.sdd
+  token:
+     - ../../project/tokens/D0.sdd
+
+State: +
+
