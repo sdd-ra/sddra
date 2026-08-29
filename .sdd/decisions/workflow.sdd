@@ -1,7 +1,8 @@
 # Decision Workflow
 
 Purpose:
-  Lifecycle of a decision from proposal to verification.
+  Decision lifecycle from proposal to closure, including task mapping
+  and chain integration.
 
 States:
   proposed:
@@ -17,6 +18,7 @@ States:
     Next: implemented
     Who: Human
     Gate: approval recorded
+    Action: create tasks, link to decision
 
   rejected:
     Next: archived
@@ -42,15 +44,36 @@ States:
     Next: archived
     Who: Human
     Gate: new decision approved
+    Action: migrate tasks to new decision
 
   archived:
     Final state
 
 Flow:
   proposed -> review -> approved -> implemented -> verified -> closed
-                   -> rejected -> archived
-                   -> revised -> review
-                   -> superseded -> archived
+                    -> rejected -> archived
+                    -> revised -> review
+                    -> superseded -> archived
+
+ChainIntegration:
+  D0 -> D1 (docs):
+    Decision proposed during docs generation
+  Human approval:
+    Required before S1 (sdd) for architectural/security/business
+  D0 -> S1 (sdd):
+    Approved decision converted to tasks
+  D0 -> C1 (code):
+    Tasks implemented, decision -> implemented
+  D0 -> R1 (review):
+    Review completed, decision -> verified
+  D0 -> DEP1 (deploy):
+    Deployment verified, decision -> closed
+
+TaskMapping:
+  Every approved decision MUST create at least one task.
+  Every task MUST reference its parent decision ID.
+  Decision status MUST update as tasks progress.
+  Superseded decisions MUST migrate tasks to new decision.
 
 Rules:
   [DW1] Every significant change MUST have a decision record.
@@ -63,5 +86,10 @@ Rules:
   [DW8] Decision rationale MUST be recorded.
   [DW9] Implementation MUST reference decision ID.
   [DW10] Verification MUST reference decision criteria.
+  [DTL1] Every approved decision MUST create at least one task.
+  [DTL2] Every task MUST reference its parent decision.
+  [DTL3] Decision status MUST update as tasks progress.
+  [DTL4] Verification MUST run before decision is closed.
+  [DTL5] Superseded decisions MUST migrate tasks to new decision.
 
 State: +

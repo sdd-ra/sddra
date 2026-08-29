@@ -83,9 +83,7 @@ ReadOrder:
    37 @dependencies/INDEX.sdd (dependency graph engine)
    38 @dependencies/graph.sdd (DAG, topological sort, cycle detection)
    39 @dependencies/locking.sdd (locking model, deadlock, lease)
-   40 @projects/{project_name}/decisions/decisions.sdd
-   41 @projects/{project_name}/decisions/ (decision instances, when present)
-   42 @projects/{project_name}/decisions/INDEX.sdd (project decision registry)
+   40 @projects/{project_name}/decisions/INDEX.sdd (project decision registry)
    43 @projects/{project_name}/dependencies/INDEX.sdd (project dependency state)
    44 @projects/{project_name}/dependencies/graph.sdd (project dependency graph)
    45 @projects/{project_name}/dependencies/locks.sdd (project lock state)
@@ -236,9 +234,9 @@ Navigation:
   Features: @features/INDEX.sdd
   FeatureLayers: @features/layers.sdd
   FeatureDecisions: @features/decisions.sdd
-  Decisions:  @projects/{project_name}/decisions/decisions.sdd
+  Decisions:  @projects/{project_name}/decisions/INDEX.sdd
   DecisionInstances: @projects/{project_name}/decisions/
-   DomainDecisions: @projects/{project_name}/decisions/INDEX.sdd
+  DomainDecisions: @projects/{project_name}/decisions/INDEX.sdd
    DecisionHumanDocs: @projects/{project_name}/docs/decisions/INDEX.md
   TaskEngine: @projects/{project_name}/tasks/tasks.sdd
   TaskInstances: @projects/{project_name}/tasks/

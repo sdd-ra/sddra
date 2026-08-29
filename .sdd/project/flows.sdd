@@ -31,7 +31,7 @@ Rules:
   [F3] A domain flow (project/<domain>/flows.sdd) MAY override the default sequence above when justified by that domain's own dependencies.
   [F4] A feature flow MAY add or remove stages from the default sequence based on its own dependency analysis.
   [F5] VR MUST remain the final verification stage in any resolved flow, regardless of domain/feature overrides.
-  [F6] Flow changes MUST be traceable — recorded via decisions/decisions.sdd or state/state.sdd, not silently changed.
+  [F6] Flow changes MUST be traceable — recorded via decisions/rules.sdd or state/state.sdd, not silently changed.
 
 FlowResolution:
 
