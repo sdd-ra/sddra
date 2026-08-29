@@ -10,7 +10,7 @@ generates `project/` (source code) with human approval at every gate.
 ### Two-Language Model
 - `.sdd/` — machine-readable AI intent (immutable rules, schemas, workflows, DevOps)
 - `project/` — human source-of-truth code (concrete implementations)
-- `.sdd/projects/vkard.az/docs/` — human-readable documentation generated from prompts
+- `.sdd/instances/vkard.az/docs/` — human-readable documentation generated from prompts
 
 ### Chain Graph
 Cyclic root `D0` with 6 arms. Every arm returns to `D0`:
@@ -256,7 +256,7 @@ The system includes resilience patterns:
 1. User submits prompt to `prompts/inbox/`
 2. `/sdd` reads prompt
 3. Analyzes and formalizes prompt into `.sdd/projects/prompts/`
-4. Documents prompt with ID in `.sdd/projects/vkard.az/docs/prompts/`
+4. Documents prompt with ID in `.sdd/instances/vkard.az/docs/prompts/`
 5. Human reviews documented prompt
 6. Executes P1 (prompt analysis)
 7. Executes D1 (docs generation)

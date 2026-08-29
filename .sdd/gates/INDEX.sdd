@@ -69,7 +69,7 @@ Navigation:
   Release: @gates/release.sdd
   Exceptions: @gates/exceptions.sdd
   Evidence: @gates/evidence.sdd
-  ProjectGates: @projects/vkard.az/gates/INDEX.sdd
+  ProjectGates: @instances/vkard.az/gates/INDEX.sdd
 
 State: +
   

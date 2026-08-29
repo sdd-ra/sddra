@@ -19,7 +19,7 @@ Optimization:
   - Minimize context duplication
 Tracking:
 
-  File: .sdd/projects/vkard.az/tokens/{node}.sdd
+  File: .sdd/instances/vkard.az/tokens/{node}.sdd
   Fields:
     stage
     run_id

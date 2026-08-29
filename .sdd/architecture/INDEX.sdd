@@ -38,6 +38,6 @@ Navigation:
   Observability: @observability.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
-  ProjectArchitecture: @../projects/vkard.az/architecture/INDEX.sdd
+  ProjectArchitecture: @../instances/vkard.az/architecture/INDEX.sdd
 
 State: +

@@ -68,7 +68,7 @@ Navigation:
   Graph: @graph/graph.sdd
   Skills: @skills/INDEX.sdd
   Chains: @chains/INDEX.sdd
-  Tasks: @projects/vkard.az/tasks/tasks.sdd
+  Tasks: @instances/vkard.az/tasks/tasks.sdd
   Security: @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd
   SecurityPolicy: @security/SECURITY.sdd
@@ -79,7 +79,7 @@ Navigation:
   SecurityScanners: @security/scanners.sdd
   Verification: @verification/
   State: @state/state.sdd
-  Decisions: @projects/vkard.az/decisions/decisions.sdd
+  Decisions: @instances/vkard.az/decisions/decisions.sdd
 
 State: +
   Note:

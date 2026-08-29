@@ -4,7 +4,7 @@ Purpose:
   Root-level prompt inbox. This is where users submit raw prompts.
   `/sdd` analyzes prompts from this folder, creates intelligent
   best-practice formalizations in `.sdd/projects/prompts/`,
-  documents them with IDs in `.sdd/projects/vkard.az/docs/prompts/`,
+  documents them with IDs in `.sdd/instances/vkard.az/docs/prompts/`,
   and waits for human approval before execution.
 
 Structure:
@@ -18,7 +18,7 @@ Structure:
   1. User submits raw prompt to `prompts/inbox/`
   2. `/sdd` analyzes the prompt
   3. AI creates formalized prompt in `.sdd/projects/prompts/`
-  4. AI documents prompt with ID and best practice in `.sdd/projects/vkard.az/docs/prompts/`
+  4. AI documents prompt with ID and best practice in `.sdd/instances/vkard.az/docs/prompts/`
   5. Human reviews documented prompt
   6. If approved, flow-based planning begins
   7. Execution proceeds through chain engine
@@ -39,13 +39,13 @@ Structure:
 
   After analysis, prompts are documented in:
   - `.sdd/projects/prompts/` — formalized prompt with expected skills, decisions, tasks
-  - `.sdd/projects/vkard.az/docs/prompts/` — human-readable documentation with ID and best practice
+  - `.sdd/instances/vkard.az/docs/prompts/` — human-readable documentation with ID and best practice
 
 ## Rules
   [P1] Root prompts/ contains ONLY raw user prompts — no .sdd metadata
   [P2] Every prompt MUST be analyzed before execution
   [P3] Formalized prompts MUST live in `.sdd/projects/prompts/`
-  [P4] Documented prompts with IDs MUST live in `.sdd/projects/vkard.az/docs/prompts/`
+  [P4] Documented prompts with IDs MUST live in `.sdd/instances/vkard.az/docs/prompts/`
   [P5] Human MUST approve documented prompt before execution
   [P6] Prompts are NEVER deleted, only archived
 

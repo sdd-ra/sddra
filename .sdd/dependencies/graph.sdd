@@ -4,7 +4,7 @@ Purpose:
   Define the dependency graph engine — how dependencies are represented,
   validated, evaluated, and how they drive task readiness and scheduling.
   This is the reusable system intelligence; concrete project graphs live
-  in projects/vkard.az/dependencies/graph.sdd.
+  in instances/vkard.az/dependencies/graph.sdd.
 
 Owns:
   Dependency graph model, DAG rules, topological sort, cycle detection,
@@ -368,7 +368,7 @@ Navigation:
   DependencyEngine: ./INDEX.sdd
   DependencyGraph: ./graph.sdd
   DependencyLocking: ./locking.sdd
-  ProjectDependencies: ../projects/vkard.az/dependencies/INDEX.sdd
-  ProjectDependencyGraph: ../projects/vkard.az/dependencies/graph.sdd
-  ProjectLocks: ../projects/vkard.az/dependencies/locks.sdd
-  ProjectReservations: ../projects/vkard.az/dependencies/reservations/
+  ProjectDependencies: ../instances/vkard.az/dependencies/INDEX.sdd
+  ProjectDependencyGraph: ../instances/vkard.az/dependencies/graph.sdd
+  ProjectLocks: ../instances/vkard.az/dependencies/locks.sdd
+  ProjectReservations: ../instances/vkard.az/dependencies/reservations/
