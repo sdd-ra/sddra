@@ -1,59 +1,27 @@
 Patterns: Gamification
 
 Purpose:
-  Reusable patterns for gamification systems.
-  Covers player identity, points economy, badges, leaderboards,
-  event-driven actions, rule engines, anti-cheat, and real-time delivery.
-
-Owns: ./
+  Reusable patterns for gamification systems. Covers player identity,
+  points economy, badges, leaderboards, event-driven actions, rule
+  engines, anti-cheat, and real-time delivery.
 
 Patterns:
 
   PlayerIdentity:
-    name: Player Identity
     description: Stable external identity for gamification platforms
     complexity: Low
     scale_fit: L0-L5
-    pros:
-      - decouples internal user model from external platform
-      - supports multiple external gamification providers
-      - enables user migration and A/B testing
-    cons:
-      - requires identity mapping maintenance
-      - eventual consistency between internal and external profiles
-    when_to_use:
-      - any external gamification integration
-      - multi-provider strategies
-      - user migration scenarios
-    when_to_avoid:
-      - single internal gamification system
     best_practices:
-      - use immutable external ID (auid) as primary reference
+      - use immutable external ID as primary reference
       - maintain bidirectional ID mapping with TTL
       - sync profile data asynchronously with backoff
       - cache player profile with invalidation on update
       - never expose internal IDs to external platform
 
   PointsEconomy:
-    name: Points Economy
     description: Event-driven point awards with idempotency and audit
     complexity: Medium
     scale_fit: L1-L5
-    pros:
-      - transparent point flow
-      - supports complex earning rules
-      - enables analytics and fraud detection
-    cons:
-      - requires idempotency and deduplication
-      - eventual consistency for aggregated balances
-      - audit log storage overhead
-    when_to_use:
-      - any points-based gamification
-      - multiple point sources
-      - compliance requirements
-    when_to_avoid:
-      - simple single-source points
-      - no audit requirements
     best_practices:
       - award points via events, not direct DB writes
       - make point events idempotent (event_id dedup)
@@ -64,28 +32,12 @@ Patterns:
       - use optimistic locking for concurrent point updates
 
   BadgeAchievement:
-    name: Badge and Achievement
     description: Rule-based badge unlocking with status tracking
     complexity: Medium
     scale_fit: L1-L5
-    pros:
-      - flexible rule definitions
-      - supports complex unlock conditions
-      - enables dynamic badge campaigns
-    cons:
-      - rule evaluation overhead
-      - requires careful state management
-      - time-based rules need scheduler
-    when_to_use:
-      - any achievement system
-      - dynamic badge campaigns
-      - progression tracking
-    when_to_avoid:
-      - static single-badge systems
-      - no progression requirements
     best_practices:
       - evaluate badges asynchronously after point events
-      - make badge rules declarative (JSON config)
+      - make badge rules declarative
       - support time-window rules (daily, weekly, all-time)
       - track badge status: locked, unlocked, expired, revoked
       - batch badge evaluation for offline users
@@ -93,119 +45,54 @@ Patterns:
       - emit events on badge unlock for real-time notification
 
   Leaderboard:
-    name: Leaderboard
     description: Ranked player lists with multiple scopes and caching
     complexity: Medium-High
     scale_fit: L2-L5
-    pros:
-      - engaging competitive feature
-      - supports multiple ranking dimensions
-      - enables social features
-    cons:
-      - expensive to maintain in real-time
-      - requires careful caching strategy
-      - tie-breaking complexity
-    when_to_use:
-      - competitive or social features
-      - multiple ranking scopes (global, friends, regional)
-      - high user volume
-    when_to_avoid:
-      - low user count
-      - no competitive element
-      - simple personal dashboards only
     best_practices:
       - separate write model (point events) from read model (leaderboard)
-      - use sorted sets (Redis) or materialized views for hot leaderboards
+      - use sorted sets or materialized views for hot leaderboards
       - batch recalculate stale leaderboards asynchronously
       - support multiple scopes: global, friends, regional, time-window
-      - implement tie-breaking: secondary sort by timestamp, then auid
-      - cache top-N results with short TTL (30s-5m)
+      - implement deterministic tie-breaking
+      - cache top-N results with short TTL
       - paginate deep leaderboards; avoid full scans
       - snapshot leaderboards for historical/seasonal views
 
   EventDrivenActions:
-    name: Event-Driven Actions
     description: User actions captured as events for gamification processing
     complexity: Medium
     scale_fit: L1-L5
-    pros:
-      - decouples action capture from processing
-      - supports replay and re-processing
-      - enables audit and analytics
-    cons:
-      - requires event infrastructure
-      - ordering challenges at scale
-      - storage overhead for event history
-    when_to_use:
-      - any action-tracking gamification
-      - multi-platform event sources
-      - audit requirements
-    when_to_avoid:
-      - simple single-action systems
-      - no replay requirements
     best_practices:
       - emit events at action source (client, API, webhook)
       - include actor, action, context, timestamp in event envelope
       - use correlation ID to link action to point/badge outcomes
-      - batch events for processing (1s-5s windows)
-      - deduplicate at ingestion layer (event_id or auid + action + time window)
+      - batch events for processing
+      - deduplicate at ingestion layer
       - persist raw events for replay and debugging
-      - support both real-time (WebSocket) and batch (queue) ingestion
+      - support both real-time and batch ingestion
 
   RuleEngine:
-    name: Gamification Rule Engine
     description: Declarative rules for points, badges, and conditions
     complexity: Medium-High
     scale_fit: L2-L5
-    pros:
-      - non-developers can create rules
-      - supports A/B testing and campaigns
-      - enables rapid iteration
-    cons:
-      - rule evaluation complexity
-      - requires validation and testing framework
-      - performance overhead for complex rules
-    when_to_use:
-      - dynamic gamification campaigns
-      - multiple rule variants
-      - non-technical rule authors
-    when_to_avoid:
-      - static hardcoded rules
-      - simple single-condition systems
     best_practices:
-      - define rules in declarative format (JSON/YAML)
+      - define rules in declarative format
       - support conditions: user_attr, action_count, time_window, streak
       - support actions: award_points, unlock_badge, notify
       - version rules and support gradual rollout
-      - validate rules before activation (syntax, logic, performance)
+      - validate rules before activation
       - log rule evaluation decisions for debugging
       - support rule chaining and dependencies
       - implement rule timeout to prevent infinite loops
 
   AntiCheat:
-    name: Anti-Cheat
     description: Validation and anomaly detection for gamification integrity
     complexity: High
     scale_fit: L2-L5
-    pros:
-      - maintains system integrity
-      - enables fair competition
-      - supports automated rollback
-    cons:
-      - requires monitoring and tuning
-      - false positive risk
-      - performance overhead
-    when_to_use:
-      - any competitive gamification
-      - real-money or high-value rewards
-      - public leaderboards
-    when_to_avoid:
-      - purely decorative gamification
-      - no external validation possible
     best_practices:
-      - enforce rate limits per user per action (min/max interval)
+      - enforce rate limits per user per action
       - validate action context: IP, device, session, time-of-day
-      - detect statistical anomalies (z-score, clustering)
+      - detect statistical anomalies
       - maintain rollback capability for point adjustments
       - log all suspicious activity with evidence
       - implement progressive penalties: warn, cap, revoke, ban
@@ -213,58 +100,25 @@ Patterns:
       - use human review for high-value rollbacks
 
   RealTimeDelivery:
-    name: Real-Time Delivery
-    description: WebSocket-based real-time gamification updates
+    description: Real-time gamification updates
     complexity: Medium
     scale_fit: L1-L5
-    pros:
-      - engaging user experience
-      - immediate feedback
-      - supports live features
-    cons:
-      - connection management overhead
-      - requires fallback for disconnected users
-      - scaling challenges at high concurrency
-    when_to_use:
-      - live leaderboards
-      - real-time point notifications
-      - multiplayer or social features
-    when_to_avoid:
-      - offline-first applications
-      - low real-time requirements
     best_practices:
-      - use WebSocket firehose with topic-based subscriptions
-      - implement heartbeat and auto-reconnect with exponential backoff
+      - use topic-based subscriptions
+      - implement heartbeat and auto-reconnect
       - buffer events for briefly disconnected clients
-      - fall back to polling when WebSocket unavailable
+      - fall back to polling when unavailable
       - batch updates to reduce message frequency
-      - compress large payloads (leaderboard snapshots)
-      - implement backpressure handling
-      - authenticate connections at upgrade time
+      - compress large payloads
+      - authenticate connections
 
   CQRSGamification:
-    name: CQRS for Gamification
     description: Separate read and write models for gamification data
     complexity: Medium-High
     scale_fit: L2-L5
-    pros:
-      - optimized read/write paths
-      - scalable leaderboard queries
-      - supports multiple read models
-    cons:
-      - eventual consistency complexity
-      - more infrastructure
-      - requires sync mechanisms
-    when_to_use:
-      - high read/write ratio
-      - multiple query patterns
-      - scaling bottlenecks
-    when_to_avoid:
-      - simple low-traffic systems
-      - strong consistency required everywhere
     best_practices:
-      - write model: immutable events (point_awarded, badge_unlocked)
-      - read model: materialized views (player_balance, leaderboard, badge_grid)
+      - write model: immutable events
+      - read model: materialized views
       - sync via event handlers with idempotent projections
       - support multiple read models from same event stream
       - rebuild read models from events when corrupted
@@ -272,21 +126,11 @@ Patterns:
 
 Selection:
   AI MUST select gamification patterns based on:
-    ProjectScale (L0-L5)
-    User volume
-    Competitive features required
-    Real-time requirements
-    Compliance and audit requirements
-    Team capability
-    Infrastructure constraints
-
-Navigation:
-  Architecture: @../architecture/INDEX.sdd
-  Skills: @../../skills/sdd/INDEX.sdd
-  Project: @../project/INDEX.sdd
+    ProjectScale (L0-L5), User volume, Competitive features required,
+    Real-time requirements, Compliance and audit requirements
 
 Rules:
-  [GAM-01] Player identity MUST use immutable external ID (auid) as primary reference.
+  [GAM-01] Player identity MUST use immutable external ID as primary reference.
   [GAM-02] Point awards MUST be event-driven and idempotent.
   [GAM-03] Badge rules MUST be declarative and versioned.
   [GAM-04] Leaderboards MUST separate write model from read model.
@@ -301,5 +145,9 @@ Rules:
   [GAM-13] Player profile sync MUST be asynchronous with backoff.
   [GAM-14] Event ingestion MUST deduplicate before processing.
   [GAM-15] Gamification data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL).
+
+Navigation:
+  Architecture: @../architecture/INDEX.sdd
+  Skills: @../../skills/sdd/INDEX.sdd
 
 State: +

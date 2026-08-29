@@ -1,109 +1,72 @@
-# Pattern: Checkpoint & Restore
+Pattern: Checkpoint & Restore
 
 Purpose:
   Enable chain recovery by saving state after each stage.
   If chain fails, resume from last successful checkpoint
   instead of starting over. Ensures no work is lost.
 
-## Checkpoint Strategy
+CheckpointStrategy:
+  Trigger:
+    - After each successful stage completion
+    - Before stage with high failure risk
+    - On human approval gates
+    - Periodic (every N stages)
 
-Checkpoint Trigger:
-  - After each successful stage completion
-  - Before stage with high failure risk (C1, DEP1)
-  - On human approval gates
-  - Periodic (every N stages)
+  Content:
+    - Chain execution ID
+    - Current stage
+    - Completed stages list
+    - Stage outputs (compressed)
+    - Token usage per stage
+    - Decision state
+    - Timestamp
+    - Hash for integrity
 
-Checkpoint Content:
-  - Chain execution ID
-  - Current stage
-  - Completed stages list
-  - Stage outputs (compressed)
-  - Token usage per stage
-  - Decision state
-  - Timestamp
-  - Hash for integrity
+  Storage:
+    - .runtime/checkpoints/<chain-id>/
+    - checkpoint-<stage>.json
+    - manifest.json
 
-Checkpoint Storage:
-  .runtime/checkpoints/
-    <chain-id>/
-      checkpoint-<stage>.json
-      manifest.json
+  Retention:
+    - Keep last 10 checkpoints per chain
+    - Delete after successful chain completion
+    - Archive old checkpoints
 
-Checkpoint Retention:
-  - Keep last 10 checkpoints per chain
-  - Delete after successful chain completion
-  - Archive old checkpoints to .runtime/archive/
+RestoreStrategy:
+  Trigger:
+    - Chain failure detected
+    - User requests resume
+    - System detects incomplete chain
 
-## Restore Strategy
+  Process:
+    1. Load latest checkpoint
+    2. Verify checkpoint integrity (hash)
+    3. Identify last successful stage
+    4. Resume from next stage
+    5. Skip completed stages
+    6. Continue chain execution
 
-Restore Trigger:
-  - Chain failure detected
-  - User requests /sdd-resume
-  - System detects incomplete chain
+  Validation:
+    - Checkpoint hash matches
+    - Stage outputs are valid
+    - Dependencies are met
+    - No conflicting state
 
-Restore Process:
-  1. Load latest checkpoint
-  2. Verify checkpoint integrity (hash)
-  3. Identify last successful stage
-  4. Resume from next stage
-  5. Skip completed stages
-  6. Continue chain execution
+StateRecovery:
+  Backup: .sdd/project/state/ before each stage
+  Rollback: If stage fails, rollback to checkpoint state
+  Resume: Continue from checkpoint, discard partial outputs
 
-Restore Validation:
-  - Checkpoint hash matches
-  - Stage outputs are valid
-  - Dependencies are met
-  - No conflicting state
+Idempotency:
+  Stages are idempotent: re-running with same inputs produces same outputs
+  Idempotency keys: prompt hash, decision hash, state hash
 
-## State Recovery
-
-State Backup:
-  - Backup .sdd/project/state/ before each stage
-  - Store in checkpoint
-  - Restore on failure
-
-State Rollback:
-  - If stage fails, rollback to checkpoint state
-  - Discard partial outputs
-  - Resume from checkpoint
-
-## Idempotency
-
-Idempotent Stages:
-  - P1: Can re-run with same prompt
-  - D1: Can re-run with same inputs
-  - S1: Can re-run with same decisions
-  - C1: Can re-run with same .sdd/ (overwrites code)
-  - R1: Can re-run review
-  - DEP1: Cannot re-run (production deployment)
-
-Idempotency Keys:
-  - Prompt hash for P1
-  - Decision hash for D1
-  - .sdd/ state hash for S1
-  - Template hash for C1
-
-## Recovery Metrics
-
-Track:
-  - Checkpoint frequency
-  - Restore frequency
-  - Time saved by restore
-  - Failure rate per stage
-  - Recovery success rate
-
-## Commands
-
-/sdd-checkpoint:
-  Create manual checkpoint
-  Usage: /sdd-checkpoint --name=<name>
-
-/sdd-resume:
-  Resume from last checkpoint
-  Usage: /sdd-resume --chain=<chain-id>
-
-/sdd-checkpoints:
-  List available checkpoints
-  Usage: /sdd-checkpoints --chain=<chain-id>
+Rules:
+  [CR1] Checkpoint MUST be created after each successful stage.
+  [CR2] Checkpoint MUST be verified before restore.
+  [CR3] Restore MUST resume from exact state, not restart.
+  [CR4] Partial outputs MUST be discarded on restore.
+  [CR5] Checkpoint retention MUST be enforced.
+  [CR6] Checkpoint integrity MUST be verified (hash).
 
 State: +
