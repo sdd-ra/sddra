@@ -1,0 +1,37 @@
+Skills: JavaScript Language
+
+Purpose:
+  JavaScript language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-async-programming.sdd
+   4  @L3-nodejs-backend.sdd
+
+Modes:
+  LEARN    — learn JavaScript fundamentals
+  APPLY    — apply JavaScript patterns to code
+  REVIEW   — review JavaScript skills
+  UPGRADE  — propose JavaScript skill upgrade
+
+Rules:
+  [J1]  Use `const` by default.
+  [J2]  Use `async/await` for async operations.
+  [J3]  Use modules (import/export).
+  [J4]  Handle promise rejections.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  JavaScript: @languages/javascript/INDEX.sdd
+  JSL1: @languages/javascript/L1-fundamentals.sdd
+  JSL2: @languages/javascript/L2-async-programming.sdd
+  JSL3: @languages/javascript/L3-nodejs-backend.sdd
+
+State: +

@@ -1,0 +1,25 @@
+# Skills: CI/CD
+
+Purpose:
+  CI/CD skills for SDDRA system. Defines how code is built,
+  tested, and deployed automatically.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @pipeline.sdd
+   3  @local-validation.sdd
+
+Rules:
+  [C1] All code MUST pass CI before merge.
+  [C2] All tests MUST pass before deployment.
+  [C3] All security scans MUST pass before merge.
+  [C4] Production deployment requires human approval.
+  [C5] All changes MUST be traceable to decisions.
+
+Navigation:
+  Pipeline: @pipeline.sdd
+  LocalValidation: @local-validation.sdd
+
+State: +

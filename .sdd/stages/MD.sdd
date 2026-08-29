@@ -1,0 +1,48 @@
+﻿Spec: Stage
+
+ID:
+  @MD
+
+Purpose:
+  Mobile implementation.
+
+Entry:
+  API contract ready
+  design ready
+  applicable skills loaded
+
+Must:
+  implement mobile UI
+  handle offline state
+  add mobile tests
+  follow platform guidelines
+  ensure performance
+
+Exit:
+  mobile UI complete
+  mobile tests pass
+  offline scenarios tested
+  app store ready
+
+OnFail:
+  << MD
+
+Next:
+  TS
+  QA
+
+Review:
+  @MD/code-review
+  @QA/mobile
+
+Risk:
+  R1
+
+Skills:
+  @mobile/react-native
+  @mobile/offline-first
+  @mobile/testing
+  @mobile/performance
+
+State: +
+  

@@ -1,0 +1,100 @@
+﻿# C++ Modern Patterns
+
+Purpose:
+  C++ Modern Patterns
+
+Skill: C++ Modern Patterns
+
+ID:
+  SKILL-LANG-CPP-L2
+
+Domain:
+  languages/cpp
+
+Use:
+  modern C++ patterns with C++20/23
+
+Apply:
+  intermediate
+  senior
+  library-development
+  performance
+
+Requires:
+  SKILL-LANG-CPP-L1
+  cpp-20
+  templates
+
+Avoid:
+  raw-pointers
+  manual-memory
+  macro-abuse
+  inheritance-hell
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  cpp
+  modern c++
+  templates
+  concepts
+  ranges
+  coroutines
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/cpp/L2-modern-patterns.md
+
+Evidence:
+  - C++ Core Guidelines
+  - C++20 Features
+  - Production experience
+
+Rules:
+  [C1] Use `std::unique_ptr` and `std::shared_ptr`.
+  [C2] Use `std::optional` for nullable values.
+  [C3] Use `std::variant` for sum types.
+  [C4] Use concepts for template constraints.
+  [C5] Use ranges for algorithms.
+  [C6] Use `std::span` for view types.
+  [C7] Use coroutines for async (C++20).
+  [C8] Use modules instead of headers (C++20).
+
+Pros:
+  - Zero-cost abstractions
+  - Maximum control
+  - Modern features
+
+Cons:
+  - Template complexity
+  - Compile times
+  - Tooling
+
+Alternatives:
+  - Rust (safer)
+  - Go (simpler)
+  - Zig (modern)
+
+State: +
+

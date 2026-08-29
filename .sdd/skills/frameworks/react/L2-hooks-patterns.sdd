@@ -1,0 +1,101 @@
+﻿# React Hooks Patterns
+
+Purpose:
+  React Hooks Patterns
+
+Skill: React Hooks Patterns
+
+ID:
+  SKILL-FW-REACT-L2
+
+Domain:
+  frameworks/react
+
+Use:
+  using React hooks effectively
+
+Apply:
+  intermediate
+  senior
+  state-management
+  custom-hooks
+
+Requires:
+  SKILL-FW-REACT-L1
+  react-18+
+  typescript
+
+Avoid:
+  hook-dependency-bugs
+  unnecessary-rerenders
+  prop-drilling
+  over-using-context
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  react
+  hooks
+  useEffect
+  useState
+  useMemo
+  useCallback
+  custom hooks
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/react/L2-hooks-patterns.md
+
+Evidence:
+  - React Documentation
+  - React Hooks at a Glance
+  - Production experience
+
+Rules:
+  [R1] Use `useMemo` for expensive computations.
+  [R2] Use `useCallback` for function references passed to children.
+  [R3] Use `useRef` for mutable values that don't trigger rerenders.
+  [R4] Use `useReducer` for complex state logic.
+  [R5] Use custom hooks to extract reusable logic.
+  [R6] Follow the Rules of Hooks â€” only call at top level.
+  [R7] Use exhaustive dependency arrays for `useEffect`.
+  [R8] Use `useId` for unique IDs in SSR.
+
+Pros:
+  - Clean component logic
+  - Reusable patterns
+  - Better performance
+
+Cons:
+  - Dependency array bugs
+  - Stale closures
+  - Over-optimization
+
+Alternatives:
+  - Vue Composition API
+  - Svelte
+  - SolidJS
+
+State: +
+

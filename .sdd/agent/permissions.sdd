@@ -1,0 +1,95 @@
+﻿Permissions: Agent
+
+Purpose:
+  Defines agent permissions and command policy. Permission maps
+  capabilities to policy decisions (AUTO, APPROVAL, BLOCKED).
+
+RiskLevels:
+  R0:
+    safe: Read file, list files, search
+  R1:
+    low: Create temp file, run formatter, run unit test
+  R2:
+    moderate: Modify source, install dependency, change config
+  R3:
+    high: DB migration, change security config, Docker infra change
+  R4:
+    critical: Production deployment, secret rotation, data migration
+  R5:
+    destructive: Delete production data, drop database, destroy infra
+
+ApprovalMatrix:
+  R0:
+    AUTO
+  R1:
+    AUTO
+  R2:
+    AUTO / POLICY
+  R3:
+    APPROVAL
+  R4:
+    APPROVAL
+  R5:
+    EXPLICIT_APPROVAL
+
+CommandPolicy:
+  go test:
+    AUTO
+  go build:
+    AUTO
+  docker build:
+    AUTO
+  docker push:
+    APPROVAL
+  git commit:
+    AUTO
+  git push:
+    APPROVAL
+  production deploy:
+    EXPLICIT_APPROVAL
+
+EnvironmentPolicy:
+  LOCAL:
+    AUTO
+  TEST:
+    AUTO
+  STAGING:
+    APPROVAL
+  PRODUCTION:
+    EXPLICIT_APPROVAL
+
+DatabasePolicy:
+  SELECT:
+    AUTO
+  INSERT TEST DATA:
+    AUTO
+  UPDATE TEST:
+    AUTO
+  MIGRATION:
+    APPROVAL
+  DELETE:
+    APPROVAL
+  DROP:
+    BLOCKED
+
+SecretsPolicy:
+  SECRET:
+    NEVER_LOAD
+  TOKEN:
+    NEVER_LOAD
+  PASSWORD:
+    NEVER_LOAD
+  PRIVATE_KEY:
+    NEVER_LOAD
+  API_KEY:
+    NEVER_LOAD
+
+PermissionRules:
+  [PM1]  Permission = capability + policy + context.
+  [PM2]  Project policy overrides global policy.
+  [PM3]  Most specific policy wins (task > domain > project > global).
+  [PM4]  When in conflict, safer policy wins.
+  [PM5]  Secrets MUST NEVER be loaded into context.
+
+State: +
+  

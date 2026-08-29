@@ -1,0 +1,101 @@
+﻿# PostgreSQL Enterprise Patterns
+
+Purpose:
+  PostgreSQL Enterprise Patterns
+
+Skill: PostgreSQL Enterprise Patterns
+
+ID:
+  SKILL-DB-PG-L4
+
+Domain:
+  databases/postgresql
+
+Use:
+  implementing enterprise PostgreSQL patterns
+
+Apply:
+  lead
+  architect
+  dba
+  large-scale
+
+Requires:
+  SKILL-DB-PG-L3
+  replication
+  partitioning
+  extensions
+
+Avoid:
+  single-point-of-failure
+  over-sharding
+  missing-backup
+  tight-coupling
+
+Level:
+  L4
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  postgresql
+  enterprise
+  replication
+  high availability
+  sharding
+  extensions
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/postgresql/L4-enterprise-patterns.md
+
+Evidence:
+  - PostgreSQL High Availability
+  - Citus Documentation
+  - Production experience
+
+Rules:
+  [P1] Use streaming replication for high availability.
+  [P2] Use Patroni or repmgr for automatic failover.
+  [P3] Use Citus for horizontal sharding.
+  [P4] Use logical replication for multi-tenant architectures.
+  [P5] Use point-in-time recovery (PITR) for backup.
+  [P6] Use `pg_hba.conf` for access control.
+  [P7] Use row-level security for multi-tenancy.
+  [P8] Use PostGIS for geospatial data.
+
+Pros:
+  - High availability
+  - Horizontal scaling
+  - Data safety
+
+Cons:
+  - Operational complexity
+  - Cost
+  - Learning curve
+
+Alternatives:
+  - CockroachDB (distributed)
+  - AWS Aurora (managed)
+  - MongoDB (flexible schema)
+
+State: +
+

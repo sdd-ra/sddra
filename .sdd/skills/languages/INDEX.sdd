@@ -1,0 +1,50 @@
+Skills: Languages
+
+Purpose:
+  Programming language skills organized by competency layers (L1-L5).
+  Each language has layered skills from fundamentals to architecture.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @go/
+   3  @java/
+   4  @python/
+   5  @typescript/
+   6  @javascript/
+
+Modes:
+  LEARN    — learn language fundamentals
+  APPLY    — apply language to current task
+  REVIEW   — review language skills for updates
+  UPGRADE  — propose skill upgrade
+
+Rules:
+  [L1]  Skills MUST be organized by language.
+  [L2]  Each language MUST have L1-L5 layers.
+  [L3]  Layer MUST match developer competency level.
+  [L4]  Skills MUST be loaded on demand.
+  [L5]  Language skills MUST NOT contain framework-specific content.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    go
+    java
+    python
+    typescript
+    javascript
+
+Navigation:
+  Languages: @languages/INDEX.sdd
+  Go: @languages/go/INDEX.sdd
+  GoTesting: @languages/go/testing/INDEX.sdd
+  Java: @languages/java/INDEX.sdd
+  Python: @languages/python/INDEX.sdd
+  TypeScript: @languages/typescript/INDEX.sdd
+  JavaScript: @languages/javascript/INDEX.sdd
+
+State: +

@@ -1,0 +1,102 @@
+﻿Cache: SDD
+
+Purpose:
+  Cache technology catalog with comparison criteria, selection rules,
+  and integration patterns. Root stack/ defines reusable cache knowledge;
+  project/stack/ stores the selected cache for the project.
+
+Catalog:
+  Redis:
+    Type: In-memory Key-Value
+    Pros:
+      - Sub-millisecond latency
+      - Rich data structures
+      - Pub/Sub
+      - Lua scripting
+      - Persistence options
+    Cons:
+      - Memory-limited
+      - Not a primary store
+    BestFor:
+      - Application cache
+      - Session storage
+      - Rate limiting
+      - Leaderboards
+      - Real-time features
+    AvoidWhen:
+      - Large datasets
+      - Primary data store
+    Integration:
+      - Direct client libraries
+      - Spring Cache abstraction
+      - Laravel Cache
+    Patterns:
+      - Cache-aside
+      - Write-through
+      - Write-behind
+      - Refresh-ahead
+
+  Valkey:
+    Type: In-memory Key-Value
+    Pros:
+      - Open source fork
+      - API compatible with Redis
+      - Community-driven
+    Cons:
+      - Newer (less mature)
+      - Smaller ecosystem
+    BestFor:
+      - Redis alternative
+      - Open source preference
+    AvoidWhen:
+      - Production-critical without review
+
+  Memcached:
+    Type: In-memory Key-Value
+    Pros:
+      - Simple
+      - Multi-threaded
+      - Low memory overhead
+    Cons:
+      - Limited data types
+      - No persistence
+      - No pub/sub
+    BestFor:
+      - Simple caching
+      - Session storage
+    AvoidWhen:
+      - Complex caching needs
+
+  Varnish:
+    Type: HTTP Cache
+    Pros:
+      - High-performance HTTP cache
+      - VCL configuration
+      - Load balancing
+    Cons:
+      - HTTP only
+      - Complex configuration
+    BestFor:
+      - CDN edge cache
+      - API response caching
+    AvoidWhen:
+      - Application-level cache
+
+SelectionRules:
+  - Latency: required response time
+  - DataSize: cache dataset size
+  - Structure: need for complex data types
+  - Persistence: durability requirements
+  - Consistency: cache invalidation strategy
+  - Integration: compatibility with existing stack
+
+TechnologyScore:
+  Latency: 0-25
+  DataSize: 0-20
+  Structure: 0-15
+  Persistence: 0-10
+  Consistency: 0-10
+  Integration: 0-20
+
+State: +
+  

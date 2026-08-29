@@ -1,0 +1,107 @@
+﻿DependencyEngine: SDD
+
+Purpose:
+  Define the internal dependency graph engine of the .sdd system itself —
+  how dependencies are represented, validated, evaluated, and how they
+  interact with the state machine, scheduler, and policy engine. This is
+  NOT the project's concrete dependency graph (that lives in project/
+  dependencies/), but the reusable rules and algorithms any project
+  applies.
+
+Owns:
+  .sdd/dependencies/
+
+Components:
+
+  GRAPH:
+    path: ./graph.sdd
+    role: Dependency graph model (DAG, nodes, edges, types, metadata,
+      cycle detection, topological sort, readiness calculation, failure
+      propagation). Root-level, because this is reusable system
+      intelligence, not project-specific state.
+
+  LOCKING:
+    path: ./locking.sdd
+    role: Resource locking model (pessimistic/optimistic locks, leases,
+      timeouts, deadlock detection, lock recovery, AI task collision
+      prevention). Root-level, reusable system intelligence.
+
+  PROJECT_GRAPH:
+    path: ../project/dependencies/graph.sdd
+    role: Project-specific dependency graph (concrete nodes, edges,
+      states). Project-level, because this is concrete project state.
+
+  PROJECT_LOCKS:
+    path: ../project/dependencies/locks.sdd
+    role: Project-specific lock state (active locks, reservations,
+      conflicts). Project-level, concrete project state.
+
+  PROJECT_RESERVATIONS:
+    path: ../project/dependencies/reservations/
+    role: Resource reservation instances. Project-level, concrete state.
+
+
+Relationships:
+
+  TASK
+    -> GRAPH
+
+  GRAPH
+    -> STATE
+    -> POLICY
+    -> LOCKING
+
+  LOCKING
+    -> STATE
+    -> POLICY
+
+  PROJECT_GRAPH
+    -> PROJECT_TASKS
+    -> PROJECT_ARCHITECTURE
+
+
+Allowed:
+
+  TASK:
+    may_reference:
+      GRAPH
+
+  GRAPH:
+    may_reference:
+      STATE
+      POLICY
+      LOCKING
+
+  LOCKING:
+    may_reference:
+      STATE
+      POLICY
+
+  PROJECT_GRAPH:
+    may_reference:
+      PROJECT_TASKS
+      PROJECT_ARCHITECTURE
+
+
+Forbidden:
+
+  GRAPH:
+    must_not:
+      bypass STATE for transitions
+      mutate arbitrary state
+      execute tasks directly
+
+  LOCKING:
+    must_not:
+      bypass POLICY for lock acquisition
+      bypass STATE for lock transitions
+      execute tasks directly
+
+Note:
+  Created as dependency graph engine
+  entry point. Root .sdd/dependencies/ = reusable system intelligence
+  (graph algorithms, locking rules); .sdd/project/dependencies/ =
+  concrete project state (actual dependency graph, lock state).
+  ROOT-001 separation principle enforced.
+
+State: +

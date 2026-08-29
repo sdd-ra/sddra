@@ -1,0 +1,82 @@
+﻿Policy: Gates
+
+Purpose:
+  Defines gate engine policy and adaptive gate selection rules.
+
+UniversalLifecycle:
+  REQUIREMENT
+    ↓
+  BDD
+    ↓
+  IMPLEMENTATION
+    ↓
+  STATIC QUALITY
+    ↓
+  UNIT TEST
+    ↓
+  INTEGRATION TEST
+    ↓
+  E2E / UI
+    ↓
+  SECURITY
+    ↓
+  PERFORMANCE
+    ↓
+  INFRASTRUCTURE
+    ↓
+  REVIEW
+    ↓
+  RELEASE
+    ↓
+  DEPLOY
+    ↓
+  RUNTIME VERIFY
+
+AdaptiveGates:
+  Principle: Not all stages are mandatory for all projects.
+
+  Small landing page:
+    BDD → Code → Lint → UI → Release
+
+  Payment system:
+    BDD → Code → Unit → Integration → E2E → Security → SAST → DAST → Load → Pentest → Release
+
+  Mobile app:
+    BDD → Code → Unit → Widget → E2E → Security → Build → Store/TestFlight
+
+GateSelection:
+  Factors:
+    - Project Level (L0-L5)
+    - Technology
+    - Risk
+    - Scale
+    - Data sensitivity
+    - Business criticality
+
+GateStatuses:
+  PENDING
+  RUNNING
+  PASSED
+  FAILED
+  BLOCKED
+  SKIPPED
+  WAIVED
+  EXPIRED
+
+GateSeverity:
+  BLOCKER
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+
+GateRules:
+  [GP1]  Gates are adaptive, not one-size-fits-all.
+  [GP2]  Gate selection is based on project context.
+  [GP3]  Every gate MUST have Condition + Evidence + Threshold + Owner + Decision.
+  [GP4]  Gate failure blocks subsequent gates.
+  [GP5]  Critical gates are hard blockers.
+
+State: +
+  

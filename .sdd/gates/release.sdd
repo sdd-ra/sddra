@@ -1,0 +1,83 @@
+﻿Release: Gates
+
+Purpose:
+  Defines release gate and deployment verification rules.
+
+ReleaseGate:
+  Format: RELEASE-GATE-<ID>
+
+  Condition:
+    All required gates = PASSED
+
+  Evidence:
+    Gate results
+
+  Owner:
+    Release Manager
+
+  Decision:
+    APPROVED / BLOCKED
+
+ReleaseChain:
+  TASK
+    ↓
+  GATES
+    ↓
+  EVIDENCE
+    ↓
+  RESULT
+    ↓
+  RELEASE
+
+ReleaseNode:
+  Format: REL-YYYY-NNN
+
+  Links to:
+    - TASKS
+    - GATES
+    - COMMIT
+    - BUILD
+    - IMAGE
+    - DEPLOYMENT
+    - ENVIRONMENT
+
+DeploymentVerification:
+  DEPLOY
+    ↓
+  SMOKE TEST
+    ↓
+  HEALTH CHECK
+    ↓
+  METRICS
+    ↓
+  ERROR RATE
+    ↓
+  VERIFY
+
+AutomaticRollback:
+  Trigger:
+    - Error rate ↑
+    - Latency ↑
+    - Healthcheck FAIL
+
+  Action:
+    Release → Rollback policy
+
+DeploymentStrategies:
+  Small:
+    Direct deployment
+  Medium:
+    Rolling
+  Large:
+    Canary
+  Critical:
+    Blue/Green
+
+ReleaseRules:
+  [RS1]  Release is APPROVED only when all required gates pass.
+  [RS2]  Deployment verification MUST run after deploy.
+  [RS3]  Automatic rollback MUST trigger on health check failure.
+  [RS4]  Deployment strategy is selected based on project scale.
+
+State: +
+  

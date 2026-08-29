@@ -1,0 +1,83 @@
+﻿# Security Gates
+
+Purpose:
+  Security gate specifications for the SDDRA system.
+
+Spec: SecurityGates
+
+Gate: SC
+
+Must:
+  Critical findings = 0
+  High findings = 0
+  Required controls = passed
+  Security acceptance criteria = met
+
+May:
+  Medium findings with accepted risk (requires explicit decision)
+
+Block:
+  Critical findings
+  unresolved High findings
+  secret exposure
+  authentication bypass
+  payment double execution
+  authorization bypass
+  injection vulnerability
+  insecure deserialization
+  SSRF
+  dependency with known exploit
+
+GateCalculation:
+  Gate status is calculated after all applicable controls run:
+
+    PASS: no Critical/High findings, all required controls passed
+    CONDITIONAL: Medium findings with accepted risk, all required controls passed
+    FAIL: Critical or High findings unresolved, or required control failed
+
+  PASS or CONDITIONAL allows chain to advance to VR.
+  FAIL blocks chain and creates remediation task.
+
+GateSpecifications:
+  Individual gate specifications are in @security/gates/:
+
+    SAST.sdd       — static application security testing
+    DAST.sdd       — dynamic application security testing
+    DEPENDENCY.sdd — dependency vulnerability scanning
+    SECRETS.sdd    — secret detection
+    API.sdd        — API security verification
+    CONTAINER.sdd  — container security
+    PENTEST.sdd    — penetration testing
+    ABUSE.sdd      — abuse and load testing
+
+  Each gate specification defines: AppliesTo, When, Tools, MustPass,
+  MayPass, Block, OnFail, Exceptions.
+
+Remediation:
+  On FAIL:
+    Finding created for each Critical/High issue
+    Task created for each finding
+    Chain returns to responsible stage
+    After fix, SC re-evaluates
+
+AcceptedRisk:
+  Medium findings MAY be accepted as risk:
+    Exception ID: EXC-003
+    Finding: SEC-012
+    Reason: Temporary compatibility requirement
+    Owner: Security
+    Expires: 2026-10-01
+    Review: required
+
+  Accepted risk MUST have an explicit exception record.
+  Expired exceptions MUST be re-evaluated.
+  Accepted risks are stored in @project/security/exceptions/.
+
+State: +
+  Note:
+  This file defines the security gate
+  criteria. The gate is not a separate stage — it is a checkpoint
+  within the SC stage that must pass before the chain advances to VR.
+  moved individual gate specifications to
+  @security/gates/ directory for modularity — this file now references
+  those specifications rather than duplicating them.

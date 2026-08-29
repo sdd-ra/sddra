@@ -1,0 +1,61 @@
+Workflow: Provisioning
+
+Purpose:
+  Provision infrastructure for approved technologies.
+
+Inputs:
+  - approved_roles.json
+  - provisioning_requirements.json
+  - infrastructure-templates.sdd
+
+Outputs:
+  - provisioned_resources.json
+  - infrastructure_state.yaml
+
+Steps:
+  1. PLAN:
+     - Load approved_roles.json
+     - Load provisioning_requirements.json
+     - Determine provisioning order (dependencies first)
+     - Estimate total provisioning time
+
+  2. EXECUTE:
+     - For each resource in order:
+       - Load infrastructure template
+       - Execute terraform apply / docker compose up
+       - Wait for resource to be ready
+       - Validate resource health
+       - Record provisioning state
+     - Handle failures with retry + backoff
+
+  3. VERIFY:
+     - Verify all resources are healthy
+     - Run connectivity tests
+     - Update case state
+     - Record provisioning completion
+
+  4. REPORT:
+     - Generate provisioning report
+     - Update case.provisioning section
+     - Notify human of completion
+
+ProvisioningOrder:
+  1. Networking (VPC, subnets, security groups)
+  2. Databases (PostgreSQL, MongoDB, etc.)
+  3. Caching (Redis)
+  4. Messaging (Kafka, RabbitMQ)
+  5. Compute (Kubernetes, EC2)
+  6. Storage (S3, EBS)
+
+RetryPolicy:
+  max_attempts: 3
+  backoff: exponential
+  initial_delay: 30s
+  max_delay: 300s
+
+Validation:
+  - All resources MUST pass health checks
+  - Provisioning MUST be idempotent
+  - State MUST be tracked for rollback
+
+State: +

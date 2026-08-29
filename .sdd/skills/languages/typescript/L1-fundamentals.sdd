@@ -1,0 +1,103 @@
+﻿# TypeScript Fundamentals
+
+Purpose:
+  TypeScript Fundamentals
+
+Skill: TypeScript Fundamentals
+
+ID:
+  SKILL-LANG-TS-L1
+
+Domain:
+  languages/typescript
+
+Use:
+  writing basic TypeScript programs
+
+Apply:
+  beginner
+  learning
+  frontend
+  backend
+  nodejs
+
+Requires:
+  typescript-5+
+  nodejs-18+
+
+Avoid:
+  any-type-overuse
+  implicit-any
+  type-unsafe
+  ignoring-compiler
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  typescript
+  ts
+  basics
+  syntax
+  types
+  interfaces
+  functions
+  classes
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/typescript/L1-fundamentals.md
+
+Evidence:
+  - TypeScript Documentation
+  - TypeScript Handbook
+  - Production experience
+
+Rules:
+  [T1] Always use `strict: true` in tsconfig.json.
+  [T2] Use `interface` for object shapes, `type` for unions/aliases.
+  [T3] Use `unknown` instead of `any` for unknown values.
+  [T4] Use `readonly` for immutable properties.
+  [T5] Use `enum` sparingly â€” prefer union types.
+  [T6] Use `const` assertions for literal types.
+  [T7] Use `as const` for readonly literal types.
+  [T8] Enable `noImplicitAny` and `strictNullChecks`.
+
+Pros:
+  - Type safety
+  - Better IDE support
+  - Catches bugs at compile time
+
+Cons:
+  - Compilation overhead
+  - Learning curve
+  - Verbose for simple scripts
+
+Alternatives:
+  - JavaScript (simpler)
+  - Flow (alternative)
+  - JSDoc (lightweight)
+
+State: +
+

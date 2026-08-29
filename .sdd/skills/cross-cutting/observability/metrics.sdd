@@ -1,0 +1,99 @@
+﻿# Metrics
+
+Purpose:
+  Metrics
+
+Skill: Metrics
+
+ID:
+  SKILL-CROSS-OBS-METRICS
+
+Domain:
+  cross-cutting/observability
+
+Use:
+  implementing metrics and monitoring
+
+Apply:
+  intermediate
+  senior
+  production
+  monitoring
+
+Requires:
+  observability-fundamentals
+  prometheus-or-datadog
+
+Avoid:
+  metrics-overload
+  missing-alerts
+  no-baseline
+  high-cardinality
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  metrics
+  monitoring
+  prometheus
+  datadog
+  grafana
+  observability
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/observability/metrics.md
+
+Evidence:
+  - Prometheus Documentation
+  - RED Method
+  - Production experience
+
+Rules:
+  [M1] Use RED metrics (Rate, Errors, Duration).
+  [M2] Use histograms for latency distributions.
+  [M3] Use labels for dimensions (service, endpoint, status).
+  [M4] Set up alerts for error rate spikes.
+  [M5] Create dashboards for key services.
+  [M6] Monitor SLOs with error budget.
+  [M7] Use exemplars for trace correlation.
+  [M8] Avoid high cardinality labels.
+
+Pros:
+  - Quick insights
+  - Alerting
+  - Capacity planning
+
+Cons:
+  - Alert fatigue
+  - Storage cost
+  - Noise
+
+Alternatives:
+  - Logs only
+  - Tracing only
+  - APM tools
+
+State: +
+

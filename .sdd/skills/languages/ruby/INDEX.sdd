@@ -1,0 +1,35 @@
+Skills: Ruby Language
+
+Purpose:
+  Ruby programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-rails.sdd
+
+Modes:
+  LEARN    — learn Ruby fundamentals
+  APPLY    — apply Ruby patterns to code
+  REVIEW   — review Ruby skills
+  UPGRADE  — propose Ruby skill upgrade
+
+Rules:
+  [R1]  Use snake_case for methods.
+  [R2]  Follow Ruby style guide.
+  [R3]  Use blocks and iterators.
+  [R4]  Use Bundler for dependencies.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Ruby: @languages/ruby/INDEX.sdd
+  RubyL1: @languages/ruby/L1-fundamentals.sdd
+  RubyL2: @languages/ruby/L2-rails.sdd
+
+State: +

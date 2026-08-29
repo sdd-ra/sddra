@@ -1,0 +1,100 @@
+﻿# React Fundamentals
+
+Purpose:
+  React Fundamentals
+
+Skill: React Fundamentals
+
+ID:
+  SKILL-FW-REACT-L1
+
+Domain:
+  frameworks/react
+
+Use:
+  building basic React applications
+
+Apply:
+  beginner
+  learning
+  simple-ui
+  component-based
+
+Requires:
+  react-18+
+  typescript
+
+Avoid:
+  class-components
+  prop-drilling
+  inline-handlers
+  index-as-key
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  react
+  jsx
+  components
+  hooks
+  props
+  state
+  frontend
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/react/L1-fundamentals.md
+
+Evidence:
+  - React Documentation
+  - React Beta Docs
+  - Production experience
+
+Rules:
+  [R1] Use functional components with hooks.
+  [R2] Use TypeScript for all components.
+  [R3] Use `useState` for local component state.
+  [R4] Use `useEffect` for side effects.
+  [R5] Use `key` prop correctly in lists.
+  [R6] Use `children` prop for composition.
+  [R7] Extract reusable logic into custom hooks.
+  [R8] Use React DevTools for debugging.
+
+Pros:
+  - Component reusability
+  - Large ecosystem
+  - Strong community
+
+Cons:
+  - Bundle size
+  - Learning curve for hooks
+  - Frequent API changes
+
+Alternatives:
+  - Vue
+  - Svelte
+  - Angular
+
+State: +
+

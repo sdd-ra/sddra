@@ -1,0 +1,101 @@
+﻿# FastAPI Framework
+
+Purpose:
+  FastAPI Framework
+
+Skill: FastAPI Framework
+
+ID:
+  SKILL-FW-FASTAPI-L1
+
+Domain:
+  frameworks/fastapi
+
+Use:
+  building high-performance APIs with FastAPI
+
+Apply:
+  beginner
+  intermediate
+  api-development
+  async
+
+Requires:
+  SKILL-LANG-PYTHON-L3
+  python-3.10+
+  pydantic
+
+Avoid:
+  sync-endpoints
+  missing-validation
+  raw-sql
+  blocking-code
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  fastapi
+  python
+  async
+  api
+  pydantic
+  openapi
+  swagger
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/fastapi/L1-fundamentals.md
+
+Evidence:
+  - FastAPI Documentation
+  - Pydantic Documentation
+  - Production experience
+
+Rules:
+  [F1] Use `async def` for all endpoint functions.
+  [F2] Use Pydantic models for request/response validation.
+  [F3] Use path parameters, query parameters, and request bodies.
+  [F4] Use dependency injection for shared logic.
+  [F5] Use SQLAlchemy 2.0+ for async database access.
+  [F6] Use Alembic for database migrations.
+  [F7] Use JWT for authentication.
+  [F8] Use OpenAPI docs for API documentation.
+
+Pros:
+  - High performance
+  - Automatic docs
+  - Type safety with Pydantic
+
+Cons:
+  - Async complexity
+  - Smaller ecosystem
+  - Young framework
+
+Alternatives:
+  - Django REST Framework
+  - Flask
+  - Go (Gin/Echo)
+
+State: +
+

@@ -1,0 +1,89 @@
+﻿Mapping: Discovery
+
+Purpose:
+  Defines how discovered elements map to .sdd model and
+  documentation.
+
+SourceToSddMapping:
+  Source:
+    ./<layer>/<domain>/<module>/<artifact>
+  ↓
+  .sdd:
+    .sdd/project/tasks/<TASK-ID>.sdd
+  ↓
+  Domain:
+    <domain-name>
+  ↓
+  Component:
+    <ComponentName>
+  ↓
+  Skill:
+    <skill-name>
+  ↓
+  Test:
+    <test-path>
+  ↓
+  Doc:
+    docs/<layer>/<domain>.md
+
+DiscoveryToTaskMapping:
+  SECURITY_GAP:
+    Missing rate limit
+  ↓
+  SEC-101
+
+  DOC_GAP:
+    Missing deployment documentation
+  ↓
+  DOC-201
+
+  ARCH-CYCLE:
+    payments ↔ orders
+  ↓
+  ARCH-301
+
+DriftMapping:
+  STACK_DRIFT:
+    .sdd says Redis, source has Redis + Memcached
+  ARCHITECTURE_DRIFT:
+    .sdd says Modular Monolith, source shows microservices/
+  TASK_DRIFT:
+    Task marked DONE but source shows incomplete
+  DOC_DRIFT:
+    Doc says PostgreSQL sessions, source uses Redis
+  SECURITY_DRIFT:
+    .sdd has rate limiting, source does not
+  TEST_DRIFT:
+    .sdd claims E2E tests, none found
+  INFRA_DRIFT:
+    .sdd says AWS, source uses VPS
+  DECISION_DRIFT:
+    DEC-017 says Redis, source uses Memcached
+
+DocumentationMapping:
+  Source:
+    ./<layer>/<domain>/<module>/<artifact>
+  ↓
+  Doc:
+    docs/<layer>/<domain>.md
+
+  Source:
+    ./<layer>/migrations/
+  ↓
+  Doc:
+    docs/<layer>/database.md
+
+  Source:
+    .github/workflows/
+  ↓
+  Doc:
+    docs/<layer>/ci-cd.md
+
+MappingRules:
+  [MP1]  Every source file SHOULD map to a task or component.
+  [MP2]  Every domain SHOULD have documentation.
+  [MP3]  Every security control SHOULD be documented.
+  [MP4]  Drift MUST be reported, not silently ignored.
+
+State: +
+  

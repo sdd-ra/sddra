@@ -1,0 +1,41 @@
+Skills: Python Language
+
+Purpose:
+  Python programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-advanced-patterns.sdd
+   4  @L3-async-programming.sdd
+   5  @L4-django-fastapi.sdd
+   6  @L5-data-engineering.sdd
+
+Modes:
+  LEARN    — learn Python fundamentals
+  APPLY    — apply Python patterns to code
+  REVIEW   — review Python skills
+  UPGRADE  — propose Python skill upgrade
+
+Rules:
+  [P1]  Use type hints for function signatures.
+  [P2]  Use `snake_case` for variables and functions.
+  [P3]  Use `asyncio` for I/O-bound work.
+  [P4]  Use virtual environments.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Python: @languages/python/INDEX.sdd
+  PyL1: @languages/python/L1-fundamentals.sdd
+  PyL2: @languages/python/L2-advanced-patterns.sdd
+  PyL3: @languages/python/L3-async-programming.sdd
+  PyL4: @languages/python/L4-django-fastapi.sdd
+  PyL5: @languages/python/L5-data-engineering.sdd
+
+State: +

@@ -1,0 +1,52 @@
+# Plugin: Writing Skills Adapter
+
+Purpose:
+  Adapt Superpowers writing-skills skill for SDDRA skill creation.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\writing-skills\SKILL.md
+
+Original:
+  Methodology for creating new skills
+  Testing methodology for skills
+
+Adapted for SDDRA:
+  SDDRA skill format:
+    .sdd/skills/{category}/{technology}/{L1-L5}.sdd
+
+  Skill structure:
+    Purpose:
+      <what the skill teaches>
+    Owns: ./
+    ReadOrder:
+      1 @INDEX.sdd
+      2 @../INDEX.sdd
+      3 @{skill}.sdd
+    Rules:
+      [S1] <rule 1>
+      [S2] <rule 2>
+    State: +
+
+  Creation guidelines:
+    - One skill per file
+    - Maximum 200 lines
+    - Short IDs where possible
+    - Index references, not full paths
+    - Rules as numbered list
+
+  Testing:
+    - Skill must be resolvable from INDEX
+    - Skill must not create circular references
+    - Skill must fit within token budget
+
+Usage:
+  Referenced by:
+    .sdd/PROJECT.sdd (skills section)
+    .sdd/skills/INDEX.sdd
+
+  Triggers:
+    - New technology added to stack
+    - New pattern discovered
+    - Skill gap identified
+
+State: Adapted

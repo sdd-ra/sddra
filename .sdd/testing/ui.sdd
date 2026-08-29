@@ -1,0 +1,50 @@
+﻿UI: SDD
+
+Purpose:
+  UI testing — verify interface behavior, rendering, and user
+  interactions. UI tests validate that the frontend displays correctly
+  and responds to user input as expected.
+
+Owns: ./
+
+Scope:
+  Component rendering
+  Page layouts
+  User interactions (clicks, inputs, navigation)
+  Visual regression
+  Accessibility
+  Responsive behavior
+
+Principles:
+  Test behavior, not implementation
+  Use accessible selectors (not CSS classes)
+  Test user-visible changes only
+  Keep UI tests maintainable
+  Avoid testing third-party components
+
+Structure:
+  Every UI test MUST:
+    interact with the UI as a user would
+    verify visible outcomes
+    clean up state
+    be independent of other tests
+
+Frameworks:
+  React: Testing Library, Cypress
+  Vue: Vue Test Utils, Cypress
+  Angular: TestBed, Cypress
+  General: Playwright, Cypress, Selenium
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  E2E: @e2e.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

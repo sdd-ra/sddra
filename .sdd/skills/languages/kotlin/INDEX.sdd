@@ -1,0 +1,35 @@
+Skills: Kotlin Language
+
+Purpose:
+  Kotlin programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-android-development.sdd
+
+Modes:
+  LEARN    — learn Kotlin fundamentals
+  APPLY    — apply Kotlin patterns to code
+  REVIEW   — review Kotlin skills
+  UPGRADE  — propose Kotlin skill upgrade
+
+Rules:
+  [K1]  Use null-safe operators.
+  [K2]  Use coroutines for async.
+  [K3]  Use data classes for DTOs.
+  [K4]  Follow Kotlin coding conventions.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Kotlin: @languages/kotlin/INDEX.sdd
+  KotlinL1: @languages/kotlin/L1-fundamentals.sdd
+  KotlinL2: @languages/kotlin/L2-android-development.sdd
+
+State: +

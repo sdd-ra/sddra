@@ -1,0 +1,101 @@
+﻿# Swift Fundamentals
+
+Purpose:
+  Swift Fundamentals
+
+Skill: Swift Fundamentals
+
+ID:
+  SKILL-LANG-SWIFT-L1
+
+Domain:
+  languages/swift
+
+Use:
+  writing Swift programs and iOS applications
+
+Apply:
+  beginner
+  learning
+  ios-development
+  macos-development
+
+Requires:
+  swift-5.9+
+  xcode-or-swift-toolchain
+
+Avoid:
+  force-unwrap
+  force-try
+  mutable-global-state
+  ignoring-optionals
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  swift
+  ios
+  macos
+  apple
+  xcode
+  swiftui
+  uikit
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/swift/L1-fundamentals.md
+
+Evidence:
+  - Swift Documentation
+  - Apple Developer Documentation
+  - Production experience
+
+Rules:
+  [S1] Use `let` by default, `var` only when needed.
+  [S2] Use optionals (`?`) instead of force unwrap (`!`).
+  [S3] Use `guard` for early exits.
+  [S4] Use `defer` for cleanup.
+  [S5] Use closures with trailing syntax.
+  [S6] Use `enum` for state machines.
+  [S7] Use `struct` for value types.
+  [S8] Use protocols for interfaces.
+
+Pros:
+  - Safe by design
+  - Excellent tooling
+  - Apple ecosystem
+
+Cons:
+  - Apple ecosystem lock-in
+  - Compiler strictness
+  - Smaller job market
+
+Alternatives:
+  - Kotlin (cross-platform)
+  - Flutter (cross-platform)
+  - React Native (cross-platform)
+
+State: +
+

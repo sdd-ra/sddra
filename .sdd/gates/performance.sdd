@@ -1,0 +1,45 @@
+﻿Performance: Gates
+
+Purpose:
+  Defines performance gates including load testing and DDoS resilience.
+
+PerformanceGates:
+  LoadGate:
+    Format: LOAD-GATE-<ID>
+    Condition: System handles expected load
+    Evidence: load test report
+    Metrics:
+      - RPS
+      - P50
+      - P95
+      - P99
+      - Error rate
+      - CPU
+      - Memory
+      - DB latency
+      - Cache hit rate
+      - Queue latency
+    Threshold: Context-dependent
+    Owner: QA/DevOps
+
+  DDoSResilienceGate:
+    Format: DDOS-GATE-<ID>
+    Condition: System withstands DDoS simulation
+    Evidence: resilience test report
+    Checks:
+      - Rate limiting
+      - WAF
+      - CDN
+      - Load balancer
+      - Autoscaling
+    Owner: DevOps/Security
+    Note: Agent does NOT execute real DDoS; creates controlled test plan.
+
+PerformanceRules:
+  [PF1]  Load testing is context-dependent (not all projects need it).
+  [PF2]  DDoS gate uses controlled simulation, not real attacks.
+  [PF3]  Performance thresholds are based on project scale.
+  [PF4]  Performance gate failure blocks release for L3+.
+
+State: +
+  

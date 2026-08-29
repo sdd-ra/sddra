@@ -1,0 +1,97 @@
+﻿# Integration Testing
+
+Purpose:
+  Integration Testing
+
+Skill: Integration Testing
+
+ID:
+  SKILL-CROSS-TEST-INTEGRATION
+
+Domain:
+  cross-cutting/testing
+
+Use:
+  testing component interactions
+
+Apply:
+  intermediate
+  senior
+  integration
+  system-testing
+
+Requires:
+  testing-fundamentals
+  testcontainers-or-mocks
+
+Avoid:
+  test-pollution
+  external-dependency
+  flaky-test
+  testing-implementation
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  integration testing
+  testcontainers
+  component testing
+  api testing
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/testing/integration.md
+
+Evidence:
+  - Testcontainers Documentation
+  - Integration Testing Guide
+  - Production experience
+
+Rules:
+  [I1] Use real dependencies (test databases, services).
+  [I2] Use Testcontainers for ephemeral environments.
+  [I3] Clean up resources after each test.
+  [I4] Tests MUST be idempotent.
+  [I5] Use Docker Compose for multi-service setups.
+  [I6] Mock only external third-party APIs.
+  [I7] Set reasonable timeouts.
+  [I8] Run integration tests in CI/CD.
+
+Pros:
+  - Higher confidence
+  - Catches integration issues
+  - Real scenarios
+
+Cons:
+  - Slower execution
+  - Complex setup
+  - Maintenance
+
+Alternatives:
+  - Contract testing
+  - Component testing
+  - E2E testing
+
+State: +
+

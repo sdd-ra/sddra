@@ -1,0 +1,50 @@
+﻿Spec: Stage
+
+ID:
+  @AR
+
+Purpose:
+  Architecture analysis and design.
+
+Entry:
+  requirements resolved
+  project context loaded
+  applicable skills loaded
+
+Must:
+  analyze requirements
+  define architecture boundaries
+  identify dependencies
+  document decisions
+  create architecture diagrams
+
+Exit:
+  architecture approved
+  dependencies identified
+  risks assessed
+  decisions recorded
+
+OnFail:
+  << AR
+
+Next:
+  DB
+  BE
+  API
+  FE
+  MD
+  DO
+
+Review:
+  @AR/architecture
+
+Risk:
+  R2
+
+Skills:
+  @architecture/modularity
+  @architecture/ddd
+  @architecture/boundary
+
+State: +
+  

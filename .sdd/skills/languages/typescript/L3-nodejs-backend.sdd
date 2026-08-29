@@ -1,0 +1,101 @@
+﻿# TypeScript Node.js Backend
+
+Purpose:
+  TypeScript Node.js Backend
+
+Skill: TypeScript Node.js Backend
+
+ID:
+  SKILL-LANG-TS-L3
+
+Domain:
+  languages/typescript
+
+Use:
+  building backend services with TypeScript and Node.js
+
+Apply:
+  intermediate
+  senior
+  backend
+  api-development
+
+Requires:
+  SKILL-LANG-TS-L2
+  nodejs-18+
+  express-or-fastify
+
+Avoid:
+  callback-hell
+  unhandled-promise
+  memory-leak
+  blocking-event-loop
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  typescript
+  node.js
+  backend
+  express
+  fastify
+  api
+  server
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/typescript/L3-nodejs-backend.md
+
+Evidence:
+  - Node.js Documentation
+  - Express/Fastify Documentation
+  - Production experience
+
+Rules:
+  [T1] Use Fastify for high performance, Express for simplicity.
+  [T2] Use `async/await` instead of callbacks.
+  [T3] Implement centralized error handling middleware.
+  [T4] Use Zod for runtime validation.
+  [T5] Use Prisma for database access.
+  [T6] Implement structured logging (Pino/Winston).
+  [T7] Use environment variables with schema validation.
+  [T8] Implement graceful shutdown with signal handlers.
+
+Pros:
+  - Full-stack JavaScript
+  - Large npm ecosystem
+  - Fast development
+
+Cons:
+  - Single-threaded
+  - Memory management
+  - Callback pitfalls
+
+Alternatives:
+  - Go (performance)
+  - Python (simplicity)
+  - Java (enterprise)
+
+State: +
+

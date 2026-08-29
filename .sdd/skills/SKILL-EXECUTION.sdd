@@ -1,0 +1,178 @@
+# Skill Execution Model
+
+Purpose:
+  Define how skills are executed autonomously. Skills are not just
+  knowledge packages — they are executable units that can work
+  independently with clear input/output contracts.
+
+## Skill Structure
+
+Every skill MUST contain:
+
+  ID: Unique identifier (SKILL-XXX)
+  Domain: Technology domain
+  Level: L1-L5 competency level
+  Status: STABLE|EXPERIMENTAL|DEPRECATED
+  Version: Semantic version
+
+  Input:
+    - Required inputs (files, contexts, decisions)
+    - Optional inputs (with defaults)
+    - Input validation rules
+
+  Output:
+    - Expected outputs (files, artifacts)
+    - Output format specification
+    - Validation criteria
+
+  Execute:
+    - Step-by-step execution instructions
+    - Decision points
+    - Fallback behavior
+
+  Examples:
+    - Input example
+    - Expected output example
+    - Common usage patterns
+
+  Validation:
+    - How to verify correct execution
+    - Test criteria
+    - Quality gates
+
+  Dependencies:
+    - Required skills
+    - Required tools
+    - Required contexts
+
+  Avoid:
+    - Anti-patterns
+    - Common mistakes
+    - When NOT to use this skill
+
+## Execution Contract
+
+Input Contract:
+  - All required inputs MUST be provided
+  - Inputs MUST be validated before execution
+  - Missing inputs trigger fallback or human request
+
+Output Contract:
+  - All expected outputs MUST be produced
+  - Outputs MUST match specification
+  - Invalid outputs trigger retry or escalation
+
+Execution Contract:
+  - Skill MUST be idempotent (safe to re-run)
+  - Skill MUST be atomic (all-or-nothing)
+  - Skill MUST record token usage
+  - Skill MUST log execution steps
+
+## Autonomy Levels
+
+FULL:
+  Skill executes without human intervention
+  Use: Low-risk, well-tested skills
+  Example: L1-L2 skills, standard patterns
+
+SUPERVISED:
+  Skill executes with human oversight
+  Use: Medium-risk skills, new implementations
+  Example: L3-L4 skills, architecture decisions
+
+STRICT:
+  Skill requires human approval at each step
+  Use: High-risk skills, production changes
+  Example: L5 skills, security-critical code
+
+## Execution Modes
+
+LEARN:
+  Skill teaches the concept
+  Output: Explanation, examples, exercises
+
+APPLY:
+  Skill applies to a specific task
+  Output: Implementation, configuration, code
+
+REVIEW:
+  Skill reviews existing implementation
+  Output: Feedback, improvements, issues
+
+UPGRADE:
+  Skill proposes improvements
+  Output: Recommendations, migration path
+
+## Error Handling
+
+ValidationError:
+  - Input validation failed
+  - Action: Return error, request corrected input
+
+ExecutionError:
+  - Skill execution failed
+  - Action: Retry (max 3), then escalate to human
+
+DependencyError:
+  - Required dependency missing
+  - Action: Request dependency, or use fallback
+
+TimeoutError:
+  - Skill execution exceeded time limit
+  - Action: Retry with reduced scope, or escalate
+
+## Self-Containment
+
+A self-contained skill includes:
+  1. All necessary context (no external dependencies)
+  2. Clear examples (input → output)
+  3. Validation rules (how to verify)
+  4. Fallback behavior (what if it fails)
+  5. Documentation (how to use, when to use)
+
+## Skill Registry
+
+Skills are registered in:
+  .sdd/skills/INDEX.sdd
+
+Registry includes:
+  - Skill ID
+  - Domain
+  - Level
+  - Status
+  - Version
+  - Autonomy level
+  - Dependencies
+  - Last reviewed
+
+## Skill Discovery
+
+Discovery process:
+  1. Analyze task requirements
+  2. Match against skill registry
+  3. Select best-fit skills
+  4. Validate dependencies
+  5. Load skill context
+  6. Execute skill
+
+Discovery criteria:
+  - Domain match
+  - Level match
+  - Autonomy level match
+  - Dependency availability
+  - Status (STABLE preferred)
+
+## Skill Evolution
+
+Skills evolve through:
+  1. Usage (real-world application)
+  2. Feedback (human review)
+  3. Updates (new versions)
+  4. Deprecation (replaced by better skills)
+
+Versioning:
+  - Major: Breaking changes
+  - Minor: New features
+  - Patch: Bug fixes
+
+State: +

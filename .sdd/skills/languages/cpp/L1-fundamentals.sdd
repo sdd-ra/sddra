@@ -1,0 +1,100 @@
+﻿# C++ Fundamentals
+
+Purpose:
+  C++ Fundamentals
+
+Skill: C++ Fundamentals
+
+ID:
+  SKILL-LANG-CPP-L1
+
+Domain:
+  languages/cpp
+
+Use:
+  writing C++ programs with modern standards
+
+Apply:
+  beginner
+  learning
+  systems-programming
+  game-development
+
+Requires:
+  cpp-20
+  cmake-or-make
+
+Avoid:
+  raw-pointers
+  manual-memory
+  using-namespace-std
+  old-c-style
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  cpp
+  c++
+  systems programming
+  performance
+  game development
+  embedded
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/cpp/L1-fundamentals.md
+
+Evidence:
+  - C++ Documentation
+  - C++ Core Guidelines
+  - Production experience
+
+Rules:
+  [C1] Use `auto` for type inference.
+  [C2] Use range-based for loops.
+  [C3] Use `std::unique_ptr` for exclusive ownership.
+  [C4] Use `std::shared_ptr` for shared ownership.
+  [C5] Use `std::vector` by default.
+  [C6] Use `const` correctness.
+  [C7] Use `nullptr` instead of `NULL`.
+  [C8] Use `std::string` instead of C strings.
+
+Pros:
+  - Maximum performance
+  - Hardware control
+  - Large ecosystem
+
+Cons:
+  - Manual memory management
+  - Undefined behavior
+  - Long compile times
+
+Alternatives:
+  - Rust (safer)
+  - Go (simpler)
+  - Zig (modern)
+
+State: +
+

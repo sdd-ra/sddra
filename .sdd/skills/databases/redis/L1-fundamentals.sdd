@@ -1,0 +1,99 @@
+﻿# Redis Fundamentals
+
+Purpose:
+  Redis Fundamentals
+
+Skill: Redis Fundamentals
+
+ID:
+  SKILL-DB-REDIS-L1
+
+Domain:
+  databases/redis
+
+Use:
+  using Redis for caching and data structures
+
+Apply:
+  beginner
+  learning
+  caching
+  session-storage
+
+Requires:
+  redis-7+
+  key-value-fundamentals
+
+Avoid:
+  using-as-primary-db
+  missing-expiry
+  large-values
+  blocking-commands
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  redis
+  cache
+  key-value
+  in-memory
+  session
+  pub-sub
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/redis/L1-fundamentals.md
+
+Evidence:
+  - Redis Documentation
+  - Redis University
+  - Production experience
+
+Rules:
+  [R1] Use Redis for caching, not as primary database.
+  [R2] Use `EXPIRE` or `TTL` for cache invalidation.
+  [R3] Use appropriate data structures (String, Hash, List, Set).
+  [R4] Use `GET`/`SET` for simple key-value.
+  [R5] Use `HSET`/`HGET` for object storage.
+  [R6] Use `LPUSH`/`RPUSH` for queues.
+  [R7] Use `PUBLISH`/`SUBSCRIBE` for pub/sub messaging.
+  [R8] Use Redis Sentinel for high availability.
+
+Pros:
+  - Extremely fast
+  - Rich data structures
+  - Versatile use cases
+
+Cons:
+  - Memory cost
+  - Data loss risk
+  - Persistence limitations
+
+Alternatives:
+  - Memcached (simple cache)
+  - Valkey (open source fork)
+  - Dragonfly (modern)
+
+State: +
+

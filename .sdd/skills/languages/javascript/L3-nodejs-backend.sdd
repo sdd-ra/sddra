@@ -1,0 +1,101 @@
+﻿# JavaScript Node.js Backend
+
+Purpose:
+  JavaScript Node.js Backend
+
+Skill: JavaScript Node.js Backend
+
+ID:
+  SKILL-LANG-JS-L3
+
+Domain:
+  languages/javascript
+
+Use:
+  building backend services with Node.js and JavaScript
+
+Apply:
+  intermediate
+  senior
+  backend
+  api-development
+
+Requires:
+  SKILL-LANG-JS-L2
+  nodejs-18+
+  express-or-fastify
+
+Avoid:
+  callback-hell
+  unhandled-promise
+  memory-leak
+  blocking-event-loop
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  javascript
+  node.js
+  backend
+  express
+  fastify
+  api
+  server
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/javascript/L3-nodejs-backend.md
+
+Evidence:
+  - Node.js Documentation
+  - Express Documentation
+  - Production experience
+
+Rules:
+  [J1] Use Fastify for high performance, Express for simplicity.
+  [J2] Use `async/await` instead of callbacks.
+  [J3] Implement centralized error handling.
+  [J4] Use Joi or Zod for request validation.
+  [J5] Use Prisma or TypeORM for database access.
+  [J6] Implement structured logging (Pino/Winston).
+  [J7] Use environment variables with validation.
+  [J8] Implement graceful shutdown.
+
+Pros:
+  - Full-stack JavaScript
+  - Large npm ecosystem
+  - Fast development
+
+Cons:
+  - Single-threaded
+  - Memory management
+  - Callback pitfalls
+
+Alternatives:
+  - Go (performance)
+  - Python (simplicity)
+  - TypeScript (type safety)
+
+State: +
+

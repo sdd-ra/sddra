@@ -1,0 +1,37 @@
+﻿Decision: Schema
+
+Purpose:
+  Defines schema for decision entities.
+
+Required:
+  @decision <id>
+  topic <topic>
+  choice <choice>
+  status <status>
+
+Optional:
+  because:
+    - <reason>
+  reject:
+    - <alternative>
+  risk <LOW|MEDIUM|HIGH|CRITICAL>
+  supersedes <id>
+  owner <role>
+  evidence <evidence-list>
+
+Example:
+  @decision DEC-042
+  topic cache
+  choice redis
+  because:
+    shared-state
+    low-latency
+    existing-infra
+  reject:
+    memcached
+    db-cache
+  risk medium
+  status accepted
+
+State: +
+  

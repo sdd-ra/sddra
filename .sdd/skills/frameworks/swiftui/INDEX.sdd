@@ -1,0 +1,33 @@
+Skills: SwiftUI Framework
+
+Purpose:
+  SwiftUI framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn SwiftUI fundamentals
+  APPLY    — apply SwiftUI patterns to code
+  REVIEW   — review SwiftUI skills
+  UPGRADE  — propose SwiftUI skill upgrade
+
+Rules:
+  [S1]  Use View protocol for UI.
+  [S2]  Use state management (@State, @Binding).
+  [S3]  Use NavigationStack for routing.
+  [S4]  Follow Apple HIG guidelines.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  SwiftUI: @frameworks/swiftui/INDEX.sdd
+  SwiftUIL1: @frameworks/swiftui/L1-fundamentals.sdd
+
+State: +

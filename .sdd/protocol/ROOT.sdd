@@ -21,6 +21,10 @@ Scope:
   Failure routing
   Human approval levels
   Conflict resolution
+  SDD pyramid branching hierarchy
+  Branch naming conventions
+  Merge flow rules
+  Branch lifecycle and deletion policy
 
 DoesNotOwn:
   Project-specific architecture
@@ -63,6 +67,9 @@ Agent:
     [PR12] Read the entire repository unnecessarily.
     [PR13] Treat assumptions as facts.
     [PR14] Create project facts without a real source artifact.
+    [PR15] Add personal signatures or sign-offs to outputs.
+    [PR16] Use emojis, icons, or decorative symbols in headers or titles — these are reserved for human use only.
+    [PR17] Create branches outside the SDD pyramid hierarchy without explicit approval.
 
 
 Context:
@@ -145,6 +152,58 @@ UniversalState:
 
   AI MUST use these symbols exactly as defined. AI MUST NOT invent new
   symbols without adding them to state/state.sdd first.
+
+
+PyramidBranching:
+  hierarchy:
+    decision_{id}   — Decision branch (top level)
+      model_{id}     — Model branch
+        task_{id}    — Task branch
+          subtask_{id} — Subtask branch
+            be|fe|md|ts|sc|cr_{subtask_id} — Domain implementation branch
+              commits
+
+  merge_flow:
+    commits -> subtask branch
+    subtask branches -> task branch
+    task branches -> model branch
+    model branches -> decision branch
+    decision branch -> test -> stage -> prod (if no parent branch)
+
+  domain_codes:
+    BE  — Backend
+    FE  — Frontend
+    MD  — Mobile
+    TS  — Test
+    SC  — Security
+    CR  — Code Review
+
+  deletion_rules:
+    - After PR is merged
+    - Branch no longer needed in active development
+    - Form: decision -> commits (all intermediate branches can be deleted)
+    - Exception: master, develop, and active release branches are never deleted
+
+  branch_protection:
+    master:
+      - Require PR review
+      - Require passing tests
+      - No direct commits
+      - Protected from deletion
+
+    develop:
+      - Require passing tests
+      - Allow direct commits from owner
+      - Protected from deletion
+
+    decision branches:
+      - Require approval before merge
+      - Must have linked decision record
+      - Deleted after merge to test
+
+    model/task/subtask branches:
+      - Require passing tests
+      - Deleted after merge to parent
 
 
 UniversalStages:

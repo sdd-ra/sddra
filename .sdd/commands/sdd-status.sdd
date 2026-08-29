@@ -1,0 +1,56 @@
+﻿# /sdd-status Command Specification
+Purpose:
+  /sdd-status Command Specification
+
+
+Command: /sdd-status
+Alias: /sdd-state, /sdd-current
+
+Description:
+  Show current execution status of SDDRA system.
+  Includes token usage, decision status, next steps.
+
+Usage:
+  /sdd-status
+  /sdd-status --tokens
+  /sdd-status --decisions
+  /sdd-status --gates
+
+Behavior:
+  1. Read .sdd/chains/tokens/*.sdd
+  2. Read .sdd/project/decisions/*.sdd
+  3. Read .sdd/project/tasks/*.sdd
+  4. Generate status report
+
+Output Sections:
+  1. Token Usage
+     - Per stage: P1, D1, S1, C1, R1, DEP1
+     - Total used / budget
+     - Remaining budget
+
+  2. Decision Status
+     - Active decisions
+     - Pending approvals
+     - Recent changes
+
+  3. Task Status
+     - Ready tasks
+     - In-progress tasks
+     - Blocked tasks
+
+  4. Human Gates
+     - Pending approvals
+     - Recent approvals
+
+  5. Next Steps
+     - Ready to execute
+     - Waiting for approval
+     - Blocked by dependencies
+
+Output Format:
+  Markdown table for status
+  Plain text for next steps
+
+
+State: +
+

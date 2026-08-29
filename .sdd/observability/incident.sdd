@@ -1,0 +1,105 @@
+﻿Incident: SDD
+
+Purpose:
+  Defines incident lifecycle, structure, and response policy.
+  Incident is distinct from alert: alert = suspicion, incident =
+  confirmed business/system impact.
+
+IncidentLifecycle:
+  DETECTED:
+    ↓
+  TRIAGED:
+    - Severity assessment
+    - Impact assessment
+    - Owner assignment
+    ↓
+  INVESTIGATING:
+    - Collect signals
+    - Correlate data
+    - Identify root cause
+    ↓
+  MITIGATING:
+    - Immediate fix or workaround
+    - Stop bleeding
+    ↓
+  RESOLVED:
+    - Root cause fixed
+    - Verification
+    ↓
+  POSTMORTEM:
+    - Timeline
+    - Root cause
+    - Impact
+    - Lessons learned
+    ↓
+  PREVENTION:
+    - Task creation
+    - Architecture review
+    - Skill update
+
+IncidentStructure:
+  ID:
+    INC-YYYYMMDD-NNN
+
+  Severity:
+    S1 (Critical): System down, data loss
+    S2 (Major): Core functionality broken
+    S3 (Minor): Non-critical feature broken
+    S4 (Low): Minimal impact
+
+  Detected:
+    - alert: ALT-xxx
+    - time: timestamp
+
+  Impact:
+    - affected_services
+    - affected_users
+    - business_impact
+
+  Timeline:
+    - start
+    - detected
+    - mitigated
+    - resolved
+
+  RootCause:
+    - cause
+    - confidence
+    - evidence
+
+  Task:
+    - TASK-xxx (if created)
+
+  Status:
+    - DETECTED
+    - TRIAGED
+    - INVESTIGATING
+    - MITIGATING
+    - RESOLVED
+    - POSTMORTEM
+    - PREVENTION
+
+IncidentResponse:
+  S1:
+    - Immediate page
+    - War room
+    - All-hands if needed
+    - Rollback considered
+  S2:
+    - Page on-call
+    - Fix within SLA
+  S3:
+    - Ticket created
+    - Fix within 24h
+  S4:
+    - Next sprint
+
+CrossLayer:
+  Alerting: Alerts trigger incident detection
+  Diagnostics: Diagnostic flow feeds investigation
+  Task: Incident creates fix task
+  Architecture: Recurring incidents trigger architecture review
+  Skill: Outdated skills trigger skill update proposal
+
+State: +
+  

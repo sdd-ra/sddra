@@ -1,0 +1,230 @@
+Runtime: Architecture
+
+Purpose:
+  Define the internal compiler, validator, and execution engine
+  architecture for the SDDRA system. This is the deterministic
+  core that transforms .sdd specifications into executable plans
+  and runtime state.
+
+Owns: ./
+
+Scope:
+  .sdd parsing pipeline
+  AST generation
+  Schema and semantic validation
+  Reference resolution and symbol table
+  Dependency graph construction
+  Cycle detection and topological sort
+  Execution plan generation
+  Policy evaluation
+  Agent selection and scheduling
+  Event-driven execution state machine
+  Plan versioning and replanning
+  Drift detection and reconciliation
+
+Principles:
+  .sdd is source code, not just data.
+  AI is a reasoning engine, not the source of truth.
+  Specification, Execution, and Observation MUST be separated.
+  Deterministic rules MUST govern structure; AI governs content.
+  Events are immutable — history is append-only.
+  Execution state MUST be projectable from events.
+
+Pipeline:
+  .sdd files
+    ↓
+  Loader
+    ↓
+  Parser
+    ↓
+  AST
+    ↓
+  Validator
+    ↓
+  Resolver
+    ↓
+  Graph
+    ↓
+  Policy Engine
+    ↓
+  Planner
+    ↓
+  Execution Plan
+    ↓
+  Scheduler
+    ↓
+  Agent Runtime
+    ↓
+  Tools
+    ↓
+  Events
+    ↓
+  State Store
+    ↓
+  Reconciler
+
+Compiler:
+  Lexer:
+    input: .sdd text
+    output: tokens
+    rule: grammar errors MUST be caught before parsing
+
+  Parser:
+    input: tokens
+    output: AST
+    rule: AST MUST preserve all semantic structure
+
+  AST:
+    nodes: Task, Skill, Agent, Policy, Decision, Artifact, Requirement, Domain, Entity, API, Table, Test, Execution, Event
+    rule: every node MUST have immutable ID
+
+Validator:
+  SchemaValidator:
+    rule: required fields MUST be present
+    rule: field types MUST match schema
+
+  ReferenceValidator:
+    rule: all references MUST resolve to existing entities
+    rule: unresolved references MUST produce UNRESOLVED_REFERENCE error
+
+  DependencyValidator:
+    rule: dependency graph MUST be acyclic
+    rule: missing dependencies MUST be reported
+
+  PolicyValidator:
+    rule: all policies MUST be evaluated before execution
+    rule: policy violations MUST block execution
+
+Resolver:
+  SkillResolver:
+    input: task.requires
+    output: compatible agents
+    rule: version compatibility MUST be checked
+
+  AgentResolver:
+    input: task + skill requirements
+    output: candidate agents
+    rule: capability match MUST be exact for required skills
+
+  PolicyResolver:
+    input: task + agent + environment
+    output: ALLOW | DENY | REQUIRE_APPOVAL
+    rule: policy evaluation MUST be deterministic
+
+Graph:
+  DependencyGraph:
+    rule: MUST support forward and reverse traversal
+    rule: MUST detect cycles
+    rule: MUST compute topological order
+    rule: MUST identify parallel execution groups
+
+  TemporalGraph:
+    rule: relationship changes MUST be versioned
+    rule: historical queries MUST be supported
+    rule: graph snapshots MUST be created for executions
+
+ExecutionPlan:
+  structure:
+    steps:
+      - task: TASK-ID
+        agent: AGENT-ID
+        parallel: [TASK-IDs]
+        depends_on: [TASK-IDs]
+
+  rules:
+    plan MUST be validated against schema
+    plan MUST be validated against dependencies
+    plan MUST be validated against policies
+    plan version MUST be immutable once execution starts
+    replanning MUST create new plan version, not modify existing
+
+PlanVersioning:
+  EXEC-ID:
+    - PLAN-v1
+    - PLAN-v2
+
+  rule: execution ID never changes
+  rule: plan versions are immutable
+  rule: replanning preserves full history
+
+Replanning:
+  triggers:
+    - task failure after retry exhaustion
+    - policy change during execution
+    - dependency invalidation
+
+  protocol:
+    AI Planner proposes remediation
+    Validator checks schema
+    Dependency Validator checks graph
+    Policy Engine checks rules
+    Approved plan becomes new version
+
+EventDrivenExecution:
+  events:
+    - TaskStarted
+    - TaskCompleted
+    - TaskFailed
+    - TaskReopened
+    - ApprovalRequested
+    - ApprovalGranted
+    - AgentTimeout
+
+  rule: events are immutable
+  rule: state is projection of events
+  rule: events MUST be append-only
+
+ExecutionStateMachine:
+  states:
+    CREATED -> PLANNED -> AUTHORIZED -> RUNNING -> COMPLETED
+    RUNNING -> FAILED -> RETRYING -> RUNNING
+    FAILED -> ESCALATED
+
+StepState:
+  states:
+    PENDING
+    READY
+    RUNNING
+    WAITING
+    SUCCEEDED
+    FAILED
+    SKIPPED
+    BLOCKED
+    CANCELLED
+
+Reconciler:
+  input: Desired State + Actual State
+  output: Drift Report
+  rule: drift MUST trigger remediation task
+  rule: remediation MUST be validated before execution
+
+Navigation:
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Pipeline: @../orchestrator/pipeline.sdd
+  Workflow: @../workflow/INDEX.sdd
+  Runtime: @../runtime/INDEX.sdd
+  Graph: @../graph/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
+
+Rules:
+  [RT-ARCH-01] .sdd files are source code, not configuration data.
+  [RT-ARCH-02] AI MUST NOT determine process boundaries — SDD defines them.
+  [RT-ARCH-03] Specification, Execution, and Observation MUST be separated.
+  [RT-ARCH-04] All execution plans MUST be validated before execution.
+  [RT-ARCH-05] Policy evaluation MUST be deterministic, not AI-driven.
+  [RT-ARCH-06] Events are immutable — state is a projection of events.
+  [RT-ARCH-07] Plan versions are immutable once execution starts.
+  [RT-ARCH-08] Replanning creates new plan versions, never modifies existing.
+  [RT-ARCH-09] Dependency graph MUST be acyclic (DAG).
+  [RT-ARCH-10] Cycle detection MUST happen at compile time, not runtime.
+  [RT-ARCH-11] Context MUST be minimal and relevant — never full project dump.
+  [RT-ARCH-12] Agent scopes MUST be enforced by skill boundaries, not AI choice.
+  [RT-ARCH-13] Execution state MUST be recoverable from event log.
+  [RT-ARCH-14] Drift between specification and actual state MUST be detected.
+  [RT-ARCH-15] Human approval is REQUIRED for high-risk actions.
+  [RT-ARCH-16] Agent MUST NOT add signatures or sign-offs to any output.
+  [RT-ARCH-17] Agent MUST NOT use emojis, icons, or decorative symbols in headers, titles, or output — reserved for human use only.
+
+State: +

@@ -1,0 +1,45 @@
+Skills: Cross-Cutting Concerns
+
+Purpose:
+  Cross-cutting concerns that apply across all languages and frameworks.
+  Includes testing, security, architecture, and observability.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @testing/
+   3  @security/
+   4  @architecture/
+   5  @observability/
+
+Modes:
+  LEARN    — learn cross-cutting patterns
+  APPLY    — apply cross-cutting concerns
+  REVIEW   — review cross-cutting skills
+  UPGRADE  — propose cross-cutting skill upgrade
+
+Rules:
+  [X1]  Cross-cutting skills MUST be technology-agnostic.
+  [X2]  Skills MUST apply to all layers.
+  [X3]  Skills MUST be loaded when relevant.
+  [X4]  Skills MUST NOT contain project-specific content.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    testing
+    security
+    architecture
+    observability
+
+Navigation:
+  CrossCutting: @cross-cutting/INDEX.sdd
+  Testing: @cross-cutting/testing/INDEX.sdd
+  Security: @cross-cutting/security/INDEX.sdd
+  Architecture: @cross-cutting/architecture/INDEX.sdd
+  Observability: @cross-cutting/observability/INDEX.sdd
+
+State: +

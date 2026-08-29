@@ -1,0 +1,98 @@
+﻿# Logging
+
+Purpose:
+  Logging
+
+Skill: Logging
+
+ID:
+  SKILL-CROSS-OBS-LOGGING
+
+Domain:
+  cross-cutting/observability
+
+Use:
+  implementing logging systems
+
+Apply:
+  intermediate
+  senior
+  production
+  debugging
+
+Requires:
+  observability-fundamentals
+  structured-logging
+
+Avoid:
+  console-log-only
+  sensitive-data
+  log-spam
+  missing-context
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  logging
+  structured logging
+  elk
+  loki
+  promtail
+  observability
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/observability/logging.md
+
+Evidence:
+  - OpenTelemetry Logging
+  - ELK Stack Documentation
+  - Production experience
+
+Rules:
+  [L1] Use structured logging (JSON format).
+  [L2] Include request ID in all logs.
+  [L3] Use log levels (DEBUG, INFO, WARN, ERROR).
+  [L4] Never log sensitive data (passwords, tokens).
+  [L5] Use correlation IDs across services.
+  [L6] Log at appropriate levels.
+  [L7] Use centralized logging (ELK, Loki).
+  [L8] Implement log rotation and retention.
+
+Pros:
+  - Debugging
+  - Audit trail
+  - Monitoring
+
+Cons:
+  - Storage cost
+  - Noise
+  - Performance impact
+
+Alternatives:
+  - Metrics only
+  - Tracing only
+
+State: +
+

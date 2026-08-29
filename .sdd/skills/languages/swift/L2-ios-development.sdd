@@ -1,0 +1,100 @@
+﻿# Swift iOS Development
+
+Purpose:
+  Swift iOS Development
+
+Skill: Swift iOS Development
+
+ID:
+  SKILL-LANG-SWIFT-L2
+
+Domain:
+  languages/swift
+
+Use:
+  building iOS applications with Swift
+
+Apply:
+  intermediate
+  senior
+  ios
+  mobile
+
+Requires:
+  SKILL-LANG-SWIFT-L1
+  swiftui-or-uikit
+  xcode
+
+Avoid:
+  force-unwrap
+  massive-view-controller
+  tight-coupling
+  ignoring-lifecycle
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  swift
+  ios
+  swiftui
+  uikit
+  mobile development
+  xcode
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/swift/L2-ios-development.md
+
+Evidence:
+  - SwiftUI Documentation
+  - UIKit Documentation
+  - Production experience
+
+Rules:
+  [S1] Prefer SwiftUI for new projects.
+  [S2] Use MVVM architecture.
+  [S3] Use Combine for reactive programming.
+  [S4] Use Core Data or SwiftData for persistence.
+  [S5] Use URLSession for networking.
+  [S6] Use async/await for asynchronous code.
+  [S7] Use Swift Package Manager for dependencies.
+  [S8] Use Xcode Previews for UI development.
+
+Pros:
+  - Native performance
+  - Great tooling
+  - Apple ecosystem
+
+Cons:
+  - iOS only
+  - App Store restrictions
+  - Learning curve
+
+Alternatives:
+  - Flutter (cross-platform)
+  - React Native (cross-platform)
+  - Kotlin Multiplatform
+
+State: +
+

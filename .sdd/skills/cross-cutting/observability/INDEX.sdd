@@ -1,0 +1,45 @@
+Skills: Observability
+
+Purpose:
+  Observability skills for logging, metrics, tracing, and alerting.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @logging.sdd
+   3  @metrics.sdd
+   4  @tracing.sdd
+   5  @alerting.sdd
+
+Modes:
+  LEARN    — learn observability fundamentals
+  APPLY    — apply observability to system
+  REVIEW   — review observability skills
+  UPGRADE  — propose observability skill upgrade
+
+Rules:
+  [O1]  Every service MUST have logs, metrics, and traces.
+  [O2]  Correlate telemetry with trace IDs.
+  [O3]  Monitor golden signals.
+  [O4]  Alerts MUST have runbooks.
+
+Entry:
+  Read:
+    INDEX.sdd
+    logging.sdd
+
+  Resolve:
+    logging
+    metrics
+    tracing
+    alerting
+
+Navigation:
+  Observability: @cross-cutting/observability/INDEX.sdd
+  Logging: @cross-cutting/observability/logging.sdd
+  Metrics: @cross-cutting/observability/metrics.sdd
+  Tracing: @cross-cutting/observability/tracing.sdd
+  Alerting: @cross-cutting/observability/alerting.sdd
+
+State: +

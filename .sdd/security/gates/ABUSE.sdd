@@ -1,0 +1,57 @@
+﻿Gate: ABUSE
+
+Purpose:
+  Abuse and load testing — verify that the system can withstand
+  abusive usage patterns, DDoS attempts, and resource exhaustion.
+
+AppliesTo:
+  - Public APIs
+  - Authentication endpoints
+  - Payment endpoints
+  - Search endpoints
+  - File upload endpoints
+  - Any expensive operation
+
+When:
+  - L3 and above
+  - Before production deployment
+  - After significant architecture changes
+  - After rate limiting changes
+
+Tools:
+  - Load testing tools (k6, Gatling, JMeter)
+  - DDoS simulation tools
+  - Rate limit testing tools
+  - Custom abuse scenarios
+
+MustPass:
+  - System remains available under 2x expected load
+  - Rate limiting prevents abuse
+  - No resource exhaustion (connection pool, memory, CPU)
+  - No cache amplification attacks
+  - No expensive endpoint without protection
+  - Graceful degradation under load
+
+MayPass:
+  - MEDIUM findings with accepted risk
+  - Performance degradation within acceptable bounds
+
+Block:
+  - System unavailable under expected load
+  - Rate limiting disabled or bypassed
+  - Resource exhaustion possible
+  - Cache amplification attack vector
+  - Expensive endpoint without protection
+
+OnFail:
+  - Finding created for each vulnerability
+  - Task created for each finding
+  - Chain returns to responsible stage
+  - After fix, ABUSE re-tests
+
+Exceptions:
+  - Internal-only endpoints MAY have relaxed abuse testing
+  - Low-traffic endpoints MAY have reduced testing with explicit decision
+
+State: +
+  

@@ -1,0 +1,33 @@
+Skills: Terraform
+
+Purpose:
+  Terraform skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Terraform fundamentals
+  APPLY    — apply Terraform patterns to IaC
+  REVIEW   — review Terraform skills
+  UPGRADE  — propose Terraform skill upgrade
+
+Rules:
+  [T1]  Use `.tf` files for resource definitions.
+  [T2]  Use variables for configurable values.
+  [T3]  Use remote state backend.
+  [T4]  Use modules for reusable components.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Terraform: @platforms/terraform/INDEX.sdd
+  TerraformL1: @platforms/terraform/L1-fundamentals.sdd
+
+State: +

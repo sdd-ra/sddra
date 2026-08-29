@@ -1,0 +1,61 @@
+# Skill: Skill Discovery
+
+Purpose:
+  Automatically discover and analyze skills needed for a project.
+  Scans .sdd/skills/ registry, matches against project requirements,
+  and identifies gaps. Suggests new skills when coverage is below 80%.
+
+ID: SKILL-DISCOVERY
+
+Domain: meta
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - New project initialization
+  - Adding new features
+  - Technology stack changes
+  - Periodic skill audit
+
+Input:
+  - Project requirements
+  - Current skill registry
+  - Project domain
+  - Technology stack
+
+Output:
+  - Skill coverage report
+  - Missing skills list
+  - Skill relevance scores
+  - Recommendation plan
+
+Execute:
+  1. Analyze project requirements
+  2. Scan .sdd/skills/ registry
+  3. Match requirements against existing skills
+  4. Calculate relevance scores
+  5. Identify gaps (coverage < 80%)
+  6. Generate recommendation plan
+  7. Create DEC-XXX for skill additions
+
+Validation:
+  - All requirements mapped to skills
+  - Coverage >= 80%
+  - No duplicate skills
+  - Skills are at appropriate L1-L5 level
+
+Examples:
+  - New project: discover all needed skills
+  - Add payment: discover payment-related skills
+  - Add auth: discover auth-related skills
+  - Change DB: discover new DB skills
+
+Avoid:
+  - Adding skills with < 80% relevance
+  - Adding duplicate skills
+  - Adding skills outside project scope
+  - Adding skills without human approval
+
+State: +

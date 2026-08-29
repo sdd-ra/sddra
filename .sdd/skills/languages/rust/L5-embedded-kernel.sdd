@@ -1,0 +1,101 @@
+﻿# Rust Embedded and Kernel
+
+Purpose:
+  Rust Embedded and Kernel
+
+Skill: Rust Embedded and Kernel
+
+ID:
+  SKILL-LANG-RUST-L5
+
+Domain:
+  languages/rust
+
+Use:
+  writing low-level Rust for embedded and kernel development
+
+Apply:
+  architect
+  senior
+  embedded
+  kernel
+  bare-metal
+
+Requires:
+  SKILL-LANG-RUST-L4
+  no-std
+  embedded-hal
+
+Avoid:
+  std-in-embedded
+  unsafe-without-justification
+  platform-assumptions
+  ignoring-memory-layout
+
+Level:
+  L5
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  EMERGING
+
+Risk:
+  HIGH
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  MEDIUM
+
+SearchKeys:
+  rust
+  embedded
+  kernel
+  no-std
+  bare metal
+  firmware
+
+TechnologyLifecycle:
+  Current: ADOPTED
+
+HumanDoc:
+  docs/skills/languages/rust/L5-embedded-kernel.md
+
+Evidence:
+  - Embedded Rust Book
+  - Rust for Embedded
+  - Production experience
+
+Rules:
+  [R1] Use `#![no_std]` for embedded targets.
+  [R2] Use `embedded-hal` traits for hardware abstraction.
+  [R3] Use `heapless` for no-std data structures.
+  [R4] Minimize dynamic allocation.
+  [R5] Use `volatile` for memory-mapped registers.
+  [R6] Document all `unsafe` blocks.
+  [R7] Use `#[inline(always)]` sparingly.
+  [R8] Test on real hardware, not just QEMU.
+
+Pros:
+  - Memory safety in low-level code
+  - No segfaults
+  - Modern tooling
+
+Cons:
+  - Limited ecosystem
+  - steep learning curve
+  - Hardware-specific code
+
+Alternatives:
+  - C (traditional)
+  - C++ (RAII)
+  - Zig (simpler)
+
+State: +
+

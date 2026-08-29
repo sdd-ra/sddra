@@ -1,0 +1,44 @@
+﻿Spec: Stage
+
+ID:
+  @RV
+
+Purpose:
+  Stage-level review before advancing.
+
+Entry:
+  stage implementation complete
+  applicable skills loaded
+
+Must:
+  review implementation
+  check against requirements
+  verify quality
+  approve or request changes
+
+Exit:
+  review passed
+  feedback incorporated
+  approval recorded
+
+OnFail:
+  << RV
+
+Next:
+  VR
+  next stage
+
+Review:
+  @RV/code-review
+  @QA/review
+
+Risk:
+  R1
+
+Skills:
+  @verification/review
+  @qa/code-review
+  @architecture/review
+
+State: +
+  

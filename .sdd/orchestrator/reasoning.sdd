@@ -1,0 +1,245 @@
+# Reasoning Patterns
+
+Purpose:
+  Human-like reasoning patterns for the SDDRA orchestrator.
+  These patterns enable the system to think, decide, and explain
+  like a human engineer.
+
+## Reasoning Models
+
+### 1. First Principles Thinking
+
+Break down complex problems to fundamental truths.
+Reason up from first principles rather than reasoning by analogy.
+
+Steps:
+  1. Identify current assumption
+  2. Break down to fundamental principles
+  3. Question each principle
+  4. Rebuild from fundamentals
+  5. Validate against constraints
+
+Example:
+  Problem: "Payment module is too slow"
+  First Principles:
+    - What is the actual bottleneck? (DB query? API call? Logic?)
+    - Is the current approach necessary?
+    - What are the fundamental requirements?
+    - Can we rebuild simpler?
+
+### 2. Occam's Razor
+
+Prefer the simplest solution that works.
+
+Steps:
+  1. List all possible solutions
+  2. Eliminate unnecessary complexity
+  3. Choose simplest viable option
+  4. Validate against requirements
+
+Example:
+  Problem: "Need to cache user data"
+  Solutions:
+    1. Redis cluster (complex)
+    2. In-memory cache (simple)
+    3. Local variable (simplest)
+  Choose: In-memory cache (meets requirements, simplest)
+
+### 3. Five Whys
+
+Root cause analysis through iterative questioning.
+
+Steps:
+  1. Ask "Why?"
+  2. Answer
+  3. Ask "Why?" again
+  4. Repeat 5 times or until root cause found
+  5. Address root cause
+
+Example:
+  Problem: "Deployment failed"
+  Why1: Tests failed
+  Why2: Database connection failed
+  Why3: Connection string wrong
+  Why4: Environment variable not set
+  Why5: Deployment script missing env setup
+  Root Cause: Fix deployment script
+
+### 4. Trade-off Analysis
+
+Explicitly evaluate trade-offs for each decision.
+
+Dimensions:
+  - Performance vs Maintainability
+  - Speed vs Quality
+  - Cost vs Reliability
+  - Simplicity vs Flexibility
+  - Security vs Usability
+
+Process:
+  1. List options
+  2. Evaluate each dimension
+  3. Score each option
+  4. Consider constraints
+  5. Make explicit trade-off
+
+### 5. Pre-mortem Analysis
+
+Imagine the project has failed — determine why.
+
+Steps:
+  1. Assume project failed
+  2. List all possible failure reasons
+  3. Evaluate likelihood and impact
+  4. Mitigate high-likelihood, high-impact risks
+  5. Plan contingencies
+
+Example:
+  Premortem: "Payment integration failed in production"
+  Failure reasons:
+    - API rate limits (HIGH likelihood, HIGH impact)
+    - Network timeouts (MEDIUM likelihood, HIGH impact)
+    - Data inconsistency (LOW likelihood, CRITICAL impact)
+  Mitigation: Implement retry, circuit breaker, reconciliation
+
+### 6. Red Teaming
+
+Act as adversary to find weaknesses.
+
+Steps:
+  1. Define the system/feature
+  2. List attack vectors
+  3. Attempt to break/exploit
+  4. Document weaknesses
+  5. Propose mitigations
+
+Example:
+  Feature: "User authentication"
+  Red Team:
+    - Can we bypass auth? (check token validation)
+    - Can we brute force? (check rate limiting)
+    - Can we escalate privileges? (check RBAC)
+    - Can we steal tokens? (check storage)
+
+### 7. Design Review Board
+
+Internal critique before implementation.
+
+Roles:
+  - Architect: Overall design
+  - Security: Security implications
+  - Performance: Performance impact
+  - Maintainability: Long-term maintenance
+  - UX: User experience
+
+Process:
+  1. Present design
+  2. Each role critiques
+  3. Address concerns
+  4. Iterate design
+  5. Approve or reject
+
+### 8. Cost-Benefit Analysis
+
+Quantify value vs effort.
+
+Formula:
+  Value = (Benefit × Probability) - (Cost × Risk)
+
+Steps:
+  1. Estimate benefits
+  2. Estimate probability
+  3. Estimate costs
+  4. Estimate risks
+  5. Calculate net value
+  6. Prioritize by value
+
+### 9. Risk Matrix
+
+Categorize risks by likelihood and impact.
+
+Matrix:
+         | Low Impact | Medium Impact | High Impact
+  High    |   Medium   |   High        |   Critical
+  Medium  |   Low      |   Medium      |   High
+  Low     |   Low      |   Low         |   Medium
+
+Response:
+  Critical: Immediate action, human approval
+  High: Plan mitigation, human review
+  Medium: Monitor, plan mitigation
+  Low: Accept, monitor
+
+### 10. Lesson Learned
+
+Capture and apply lessons from past projects.
+
+Process:
+  1. Document what went wrong
+  2. Identify root cause
+  3. Extract lesson
+  4. Update patterns/skills
+  5. Apply to future projects
+
+Storage:
+  .sdd/decisions/ — decision lessons
+  .sdd/skills/ — skill improvements
+  .sdd/workflows/ — workflow improvements
+
+## Reasoning Application
+
+When to Use Each Pattern:
+
+  First Principles: Complex new problems
+  Occam's Razor: Multiple solution options
+  Five Whys: Debugging, root cause
+  Trade-off Analysis: Architecture decisions
+  Pre-mortem: High-risk projects
+  Red Teaming: Security-critical features
+  Design Review: Major features
+  Cost-Benefit: Prioritization
+  Risk Matrix: Risk assessment
+  Lesson Learned: Post-mortem
+
+## Reasoning in Chains
+
+P1 (prompt):
+  - Apply intent normalization
+  - Use First Principles to understand real requirement
+
+D1 (docs):
+  - Apply Trade-off Analysis for architecture
+  - Use Pre-mortem for risk assessment
+
+S1 (sdd):
+  - Apply Risk Matrix for decision priority
+  - Use Design Review for architecture
+
+C1 (code):
+  - Apply Occam's Razor for implementation
+  - Use Red Teaming for security
+
+R1 (review):
+  - Apply Five Whys for issues found
+  - Use Lesson Learned for improvements
+
+DEP1 (deploy):
+  - Apply Pre-mortem for deployment risks
+  - Use Cost-Benefit for rollout strategy
+
+## Human-Like Explanation
+
+Every decision MUST include:
+  1. Reasoning: Why this approach
+  2. Alternatives: What else was considered
+  3. Trade-offs: What was sacrificed
+  4. Risks: What could go wrong
+  5. Assumptions: What we believe to be true
+
+Explanation Template:
+  "I chose [X] because [reasoning].
+   I considered [alternatives] but rejected them because [trade-offs].
+   The main risk is [risk] which I mitigate by [mitigation].
+   This assumes [assumptions] — if false, we should [contingency]."
+
+State: +

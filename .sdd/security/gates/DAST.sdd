@@ -1,0 +1,61 @@
+﻿Gate: DAST
+
+Purpose:
+  Dynamic Application Security Testing — analyze running application
+  for security vulnerabilities by simulating attacks.
+
+AppliesTo:
+  - Running application (staging/production-like environment)
+  - API endpoints
+  - Web interfaces
+  - Mobile app endpoints
+
+When:
+  - L2 and above
+  - After deployment to test environment
+  - Before production deployment
+  - After significant UI/API changes
+
+Tools:
+  - OWASP ZAP
+  - Burp Suite
+  - Nuclei
+  - Nikto
+
+MustPass:
+  - No HIGH or CRITICAL vulnerabilities
+  - No authentication bypass
+  - No authorization bypass
+  - No injection vulnerabilities
+  - No XSS
+  - No CSRF
+  - No SSRF
+  - No insecure direct object references
+  - No security misconfigurations
+
+MayPass:
+  - MEDIUM vulnerabilities with accepted risk
+  - LOW vulnerabilities with accepted risk
+
+Block:
+  - Authentication bypass
+  - Authorization bypass
+  - SQL injection
+  - XSS
+  - CSRF
+  - SSRF
+  - Insecure direct object reference
+  - Security misconfiguration
+
+OnFail:
+  - Finding created for each vulnerability
+  - Task created for each finding
+  - Chain returns to responsible stage
+  - After fix, DAST re-runs
+
+Exceptions:
+  - Test endpoints MAY be excluded
+  - Internal-only endpoints MAY be excluded with decision
+
+State: +
+  

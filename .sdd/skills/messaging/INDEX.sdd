@@ -1,0 +1,41 @@
+Skills: Messaging
+
+Purpose:
+  Message broker and event streaming skills for distributed systems.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @kafka/
+   3  @rabbitmq/
+   4  @nats/
+
+Modes:
+  LEARN    — learn messaging fundamentals
+  APPLY    — apply messaging to architecture
+  REVIEW   — review messaging skills
+  UPGRADE  — propose messaging skill upgrade
+
+Rules:
+  [M1]  Choose broker based on use case.
+  [M2]  Design for failure.
+  [M3]  Implement idempotency.
+  [M4]  Monitor message flow.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    kafka
+    rabbitmq
+    nats
+
+Navigation:
+  Messaging: @messaging/INDEX.sdd
+  Kafka: @messaging/kafka/INDEX.sdd
+  RabbitMQ: @messaging/rabbitmq/INDEX.sdd
+  NATS: @messaging/nats/INDEX.sdd
+
+State: +

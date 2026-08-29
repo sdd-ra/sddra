@@ -1,0 +1,98 @@
+﻿# Go Integration Testing
+
+Purpose:
+  Go Integration Testing
+
+Skill: Go Integration Testing
+
+ID:
+  SKILL-LANG-GO-TEST-L2
+
+Domain:
+  languages/go/testing
+
+Use:
+  writing integration tests for Go services
+
+Apply:
+  intermediate
+  senior
+  integration
+  end-to-end
+
+Requires:
+  SKILL-LANG-GO-TEST-L1
+  docker
+  testcontainers
+
+Avoid:
+  test-pollution
+  external-dependency
+  flaky-test
+  slow-test
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go integration test
+  testcontainers
+  docker compose
+  database test
+  integration testing
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/testing/L2-integration-testing.md
+
+Evidence:
+  - Testcontainers documentation
+  - Docker documentation
+  - Production experience
+
+Rules:
+  [T1] Integration tests MUST use real dependencies (test databases).
+  [T2] Use Testcontainers for ephemeral test environments.
+  [T3] Clean up resources after each test.
+  [T4] Tests MUST be idempotent â€” can run in any order.
+  [T5] Use Docker Compose for multi-service test setups.
+  [T6] Mock only external third-party APIs, not internal services.
+  [T7] Set reasonable timeouts for integration tests.
+  [T8] Run integration tests in CI/CD pipeline.
+
+Pros:
+  - Higher confidence
+  - Catches integration issues
+  - Tests real scenarios
+
+Cons:
+  - Slower execution
+  - More complex setup
+  - Maintenance overhead
+
+Alternatives:
+  - Contract testing
+  - Component testing
+
+State: +
+

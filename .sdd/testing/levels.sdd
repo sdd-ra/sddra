@@ -1,0 +1,123 @@
+﻿TestLevels: SDD
+
+Purpose:
+  Define test depth levels L0-L5. These levels describe how deep testing
+  goes for a given task, not what specific test types to run. The actual
+  test types are selected based on level + impact + risk + stack.
+
+Owns: ./
+
+Levels:
+
+  L0:
+    name: Smoke
+    description: Basic sanity check that the system is up
+    scope: critical path only
+    speed: very fast (< 30s)
+    automation: automated
+    applicable_to:
+      - deployment verification
+      - environment health check
+      - post-deployment sanity
+
+  L1:
+    name: Unit
+    description: Individual components in isolation
+    scope: single function/method/component
+    speed: fast (< 1s per test)
+    automation: automated
+    applicable_to:
+      - all code changes
+      - bug fixes
+      - refactoring
+
+  L2:
+    name: Integration
+    description: Multiple components working together
+    scope: component interactions, API contracts, data flow
+    speed: medium (1-10s per test)
+    automation: automated
+    applicable_to:
+      - API changes
+      - database changes
+      - service interactions
+
+  L3:
+    name: E2E / UI / Mobile
+    description: Full user/business flows
+    scope: complete workflows, UI interactions, mobile flows
+    speed: slow (10s-5min per test)
+    automation: automated + manual
+    applicable_to:
+      - feature completion
+      - UI changes
+      - mobile app changes
+      - release candidate
+
+  L4:
+    name: Performance / Load
+    description: System behavior under stress
+    scope: load, stress, spike, endurance, scalability
+    speed: very slow (minutes to hours)
+    automation: automated
+    applicable_to:
+      - performance-critical systems
+      - high-traffic systems
+      - before production release
+
+  L5:
+    name: Security / Abuse / Disaster
+    description: Security validation and disaster recovery
+    scope: penetration, abuse, DDoS, disaster recovery
+    speed: varies
+    automation: automated + manual
+    applicable_to:
+      - security-critical systems
+      - payment systems
+      - public-facing systems
+      - regulated systems
+
+Selection:
+  AI MUST select test level based on:
+    Task risk (LOW/MEDIUM/HIGH/CRITICAL)
+    Task impact (isolated/module/project/system)
+    Stack (BE/FE/MD/DB/INFRA)
+    Security level (L0-L5 from security/levels.sdd)
+    Project scale (from PROJECT.sdd)
+
+  Examples:
+    LOW risk, isolated impact: L1
+    MEDIUM risk, module impact: L1-L2
+    HIGH risk, project impact: L1-L3
+    CRITICAL risk, system impact: L1-L5
+
+  Test level is NOT the same as SecurityLevel or ProjectLevel.
+  These are independent scales.
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  Performance: @performance.sdd
+  Load: @load.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectCoverage: @project/testing/coverage.sdd
+  ProjectRuns: @project/testing/runs/
+  ProjectFailures: @project/testing/failures/
+  ProjectExceptions: @project/testing/exceptions/
+
+State: +
+  Note:
+  L0-L5 test levels are distinct from SecurityLevel L0-L5 and
+  workflow test levels T0-T7. This file defines HOW DEEP testing
+  goes for a task. The workflow/testing.sdd defines WHEN each
+  test type runs in the SDLC.

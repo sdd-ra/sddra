@@ -1,0 +1,100 @@
+﻿# Elasticsearch Fundamentals
+
+Purpose:
+  Elasticsearch Fundamentals
+
+Skill: Elasticsearch Fundamentals
+
+ID:
+  SKILL-DB-ELASTICSEARCH-L1
+
+Domain:
+  databases/elasticsearch
+
+Use:
+  designing and using Elasticsearch for search and analytics
+
+Apply:
+  beginner
+  learning
+  search
+  analytics
+  logging
+
+Requires:
+  elasticsearch-8+
+  json-fundamentals
+
+Avoid:
+  deep-pagination
+  script-query-overuse
+  too-many-shards
+  ignoring-mapping
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  elasticsearch
+  elastic
+  search
+  full text search
+  log analytics
+  lucene
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/elasticsearch/L1-fundamentals.md
+
+Evidence:
+  - Elasticsearch Documentation
+  - Elastic Guide
+  - Production experience
+
+Rules:
+  [E1] Define explicit mappings for fields.
+  [E2] Use appropriate analyzers for text.
+  [E3] Use keyword type for exact matches.
+  [E4] Use nested type for arrays of objects.
+  [E5] Use `_source` to control returned fields.
+  [E6] Use pagination with `search_after`.
+  [E7] Use index templates for consistency.
+  [E8] Use ILM for index lifecycle.
+
+Pros:
+  - Full-text search
+  - Near real-time
+  - Scalable
+
+Cons:
+  - Resource intensive
+  - Complex tuning
+  - Operational overhead
+
+Alternatives:
+  - OpenSearch (open source fork)
+  - Meilisearch (simpler)
+  - Typesense (fast)
+
+State: +
+

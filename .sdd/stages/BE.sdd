@@ -1,0 +1,51 @@
+﻿Spec: Stage
+
+ID:
+  @BE
+
+Purpose:
+  Backend implementation.
+
+Entry:
+  architecture approved
+  database ready
+  API contract defined
+  applicable skills loaded
+
+Must:
+  implement approved behavior
+  preserve architecture boundaries
+  follow applicable skills
+  add/update tests
+  handle errors
+  log appropriately
+
+Exit:
+  code complete
+  local tests pass
+  static checks pass
+  implementation review ready
+
+OnFail:
+  << BE
+
+Next:
+  API
+  QA
+  SC
+
+Review:
+  @BE/code-review
+  @QA/unit
+
+Risk:
+  R2
+
+Skills:
+  @BE/clean-code
+  @BE/error-handling
+  @BE/observability
+  @BE/idempotency
+
+State: +
+  

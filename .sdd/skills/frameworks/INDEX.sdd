@@ -1,0 +1,54 @@
+Skills: Frameworks
+
+Purpose:
+  Framework skills organized by framework and competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @react/
+   3  @vue/
+   4  @angular/
+   5  @spring-boot/
+   6  @django/
+   7  @fastapi/
+   8  @express/
+
+Modes:
+  LEARN    — learn framework fundamentals
+  APPLY    — apply framework to current task
+  REVIEW   — review framework skills
+  UPGRADE  — propose framework skill upgrade
+
+Rules:
+  [F1]  Skills MUST be organized by framework.
+  [F2]  Each framework MUST have L1-L4 layers.
+  [F3]  Framework skills MUST reference language skills.
+  [F4]  Skills MUST be loaded on demand.
+  [F5]  Framework skills MUST NOT contain project-specific content.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    react
+    vue
+    angular
+    spring-boot
+    django
+    fastapi
+    express
+
+Navigation:
+  Frameworks: @frameworks/INDEX.sdd
+  React: @frameworks/react/INDEX.sdd
+  Vue: @frameworks/vue/INDEX.sdd
+  Angular: @frameworks/angular/INDEX.sdd
+  SpringBoot: @frameworks/spring-boot/INDEX.sdd
+  Django: @frameworks/django/INDEX.sdd
+  FastAPI: @frameworks/fastapi/INDEX.sdd
+  Express: @frameworks/express/INDEX.sdd
+
+State: +

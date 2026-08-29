@@ -1,0 +1,97 @@
+﻿# Go Fundamentals
+
+Purpose:
+  Go Fundamentals
+
+Skill: Go Fundamentals
+
+ID:
+  SKILL-LANG-GO-L1
+
+Domain:
+  languages/go
+
+Use:
+  writing basic Go programs
+
+Apply:
+  beginner
+  learning
+  simple-script
+  cli-tool
+
+Requires:
+  go-1.21+
+
+Avoid:
+  premature-optimization
+  over-engineering
+  ignoring-errors
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go
+  golang
+  basics
+  syntax
+  variables
+  functions
+  control flow
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/go/L1-fundamentals.md
+
+Evidence:
+  - Go official documentation
+  - Go Tour
+  - Production experience
+
+Rules:
+  [G1] Use `:=` for variable declaration inside functions.
+  [G2] Always handle errors explicitly â€” never ignore with `_`.
+  [G3] Use `fmt.Errorf` for error wrapping.
+  [G4] Use `defer` for cleanup operations.
+  [G5] Use `range` for iteration, not index-based loops.
+  [G6] Use `switch` instead of long `if-else` chains.
+  [G7] Use `struct` for data grouping, not maps.
+  [G8] Use `func` for small, focused functions.
+
+Pros:
+  - Fast learning curve
+  - Simple syntax
+  - Built-in tooling
+
+Cons:
+  - Verbose error handling
+  - Limited generics support
+
+Alternatives:
+  - Python (simpler)
+  - Rust (safer)
+
+State: +
+

@@ -1,0 +1,99 @@
+﻿# Apache Kafka
+
+Purpose:
+  Apache Kafka
+
+Skill: Apache Kafka
+
+ID:
+  SKILL-MSG-KAFKA-L1
+
+Domain:
+  messaging/kafka
+
+Use:
+  building event streaming systems with Apache Kafka
+
+Apply:
+  intermediate
+  senior
+  event-streaming
+  distributed-system
+
+Requires:
+  kafka-3+
+  understanding-of-events
+
+Avoid:
+  topic-overuse
+  large-messages
+  missing-monitoring
+  ignoring-offsets
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  kafka
+  event streaming
+  message broker
+  pub sub
+  distributed
+  big data
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/messaging/kafka/L1-fundamentals.md
+
+Evidence:
+  - Apache Kafka Documentation
+  - Confluent Documentation
+  - Production experience
+
+Rules:
+  [K1] Use topics for event streams.
+  [K2] Use partitions for parallelism.
+  [K3] Use consumer groups for scaling.
+  [K4] Use keys for ordering within partition.
+  [K5] Use schema registry for contracts.
+  [K6] Use exactly-once semantics when needed.
+  [K7] Monitor with Kafka Manager.
+  [K8] Size partitions for throughput.
+
+Pros:
+  - High throughput
+  - Distributed
+  - Persistent logs
+
+Cons:
+  - Operational complexity
+  - Resource intensive
+  - Learning curve
+
+Alternatives:
+  - NATS (simpler)
+  - RabbitMQ (traditional)
+  - Pulsar (modern)
+
+State: +
+

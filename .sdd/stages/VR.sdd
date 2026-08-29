@@ -1,0 +1,53 @@
+﻿Spec: Stage
+
+ID:
+  @VR
+
+Purpose:
+  Final verification and validation.
+
+Entry:
+  all stages complete
+  DO passed
+  applicable skills loaded
+
+Must:
+  verify all requirements met
+  check architecture integrity
+  validate security baseline
+  confirm documentation current
+  run final acceptance
+
+Exit:
+  all verifications passed
+  requirements satisfied
+  architecture valid
+  documentation current
+  acceptance signed off
+
+OnFail:
+  classify failure
+    requirement defect -> AR
+    architecture defect -> AR
+    code defect -> owner stage
+    documentation -> DOC
+  << VR
+
+Next:
+  DONE
+
+Review:
+  @VR/final
+  @QA/acceptance
+  @SC/final-security
+
+Risk:
+  R3
+
+Skills:
+  @verification/final
+  @qa/acceptance
+  @security/final
+
+State: +
+  

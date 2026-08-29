@@ -1,0 +1,94 @@
+# Skill: Skill Recommendation Engine
+
+Purpose:
+  Recommend skills to add to the project based on requirements.
+  Only recommends skills with >= 80% relevance to the project.
+  Creates actionable plan for skill integration.
+
+ID: SKILL-RECOMMENDATION
+
+Domain: meta
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Skill gap analysis
+  - New feature development
+  - Technology adoption
+  - Best practices integration
+
+Input:
+  - Project requirements
+  - Current skill coverage
+  - External skill sources (old/external-repo-audit/)
+  - Industry best practices
+
+Output:
+  - Recommended skills (>= 80% relevance)
+  - Integration plan
+  - Priority order
+  - Estimated effort
+
+Execute:
+  1. Analyze project requirements
+  2. Calculate relevance for each candidate skill:
+     - Domain match: 40%
+     - Technology match: 30%
+     - Use case match: 20%
+     - Maturity/status: 10%
+  3. Filter skills with score >= 80%
+  4. Rank by relevance score
+  5. Check for duplicates
+  6. Generate integration plan
+  7. Present to human for approval
+
+Relevance Calculation:
+  Domain Match (40%):
+    Exact match: 40%
+    Partial match: 20%
+    No match: 0%
+
+  Technology Match (30%):
+    Exact match: 30%
+    Partial match: 15%
+    No match: 0%
+
+  Use Case Match (20%):
+    Exact match: 20%
+    Partial match: 10%
+    No match: 0%
+
+  Maturity (10%):
+    STABLE: 10%
+    EXPERIMENTAL: 5%
+    DEPRECATED: 0%
+
+Recommendation Threshold:
+  >= 80%: Strongly recommend
+  60-79%: Consider with caution
+  < 60%: Do not recommend
+
+Integration Plan:
+  For each recommended skill:
+    1. Copy from source or create new
+    2. Adapt to project context
+    3. Add to .sdd/skills/INDEX.sdd
+    4. Create DEC-XXX for addition
+    5. Test integration
+    6. Document in README
+
+Examples:
+  - Payment module: recommend payment skills
+  - Auth system: recommend security/auth skills
+  - Performance: recommend perf/monitoring skills
+  - Mobile: recommend mobile/offline skills
+
+Avoid:
+  - Skills with < 80% relevance
+  - Skills outside project scope
+  - Duplicate skills
+  - Experimental skills for production
+
+State: +

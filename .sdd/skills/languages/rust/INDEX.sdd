@@ -1,0 +1,41 @@
+Skills: Rust Language
+
+Purpose:
+  Rust programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-advanced-patterns.sdd
+   4  @L3-async-concurrency.sdd
+   5  @L4-web-systems.sdd
+   6  @L5-embedded-kernel.sdd
+
+Modes:
+  LEARN    — learn Rust fundamentals
+  APPLY    — apply Rust patterns to code
+  REVIEW   — review Rust skills
+  UPGRADE  — propose Rust skill upgrade
+
+Rules:
+  [R1]  Use safe Rust by default.
+  [R2]  Minimize `unsafe` blocks.
+  [R3]  Use `cargo` for everything.
+  [R4]  Follow Rust API guidelines.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Rust: @languages/rust/INDEX.sdd
+  RustL1: @languages/rust/L1-fundamentals.sdd
+  RustL2: @languages/rust/L2-advanced-patterns.sdd
+  RustL3: @languages/rust/L3-async-concurrency.sdd
+  RustL4: @languages/rust/L4-web-systems.sdd
+  RustL5: @languages/rust/L5-embedded-kernel.sdd
+
+State: +

@@ -1,0 +1,100 @@
+﻿# Flutter Advanced Architecture
+
+Purpose:
+  Flutter Advanced Architecture
+
+Skill: Flutter Advanced Architecture
+
+ID:
+  SKILL-FW-FLUTTER-L2
+
+Domain:
+  frameworks/flutter
+
+Use:
+  architecting large-scale Flutter applications
+
+Apply:
+  senior
+  lead
+  enterprise
+  production
+
+Requires:
+  SKILL-FW-FLUTTER-L1
+  bloc-or-riverpod
+  clean-architecture
+
+Avoid:
+  over-engineering
+  state-management-chaos
+  platform-specific-abuse
+  tight-coupling
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  flutter
+  architecture
+  bloc
+  riverpod
+  clean architecture
+  state management
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/flutter/L2-advanced-architecture.md
+
+Evidence:
+  - Flutter Architecture Samples
+  - BLoC Documentation
+  - Production experience
+
+Rules:
+  [F1] Use Clean Architecture with domain layer.
+  [F2] Use BLoC or Riverpod for state management.
+  [F3] Use repository pattern for data access.
+  [F4] Use dependency injection (get_it).
+  [F5] Use feature-first folder structure.
+  [F6] Use equatable for value comparison.
+  [F7] Use freezed for union types.
+  [F8] Use go_router for navigation.
+
+Pros:
+  - Scalable architecture
+  - Testable code
+  - Team friendly
+
+Cons:
+  - Boilerplate
+  - Learning curve
+  - Package maturity
+
+Alternatives:
+  - React Native
+  - Kotlin Multiplatform
+  - Native development
+
+State: +
+

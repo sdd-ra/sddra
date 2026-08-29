@@ -1,0 +1,33 @@
+Skills: Google Cloud Platform
+
+Purpose:
+  Google Cloud Platform skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn GCP fundamentals
+  APPLY    — apply GCP patterns to cloud
+  REVIEW   — review GCP skills
+  UPGRADE  — propose GCP skill upgrade
+
+Rules:
+  [G1]  Use IAM for access control.
+  [G2]  Use Cloud Storage for objects.
+  [G3]  Use GKE for Kubernetes.
+  [G4]  Use service accounts for auth.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  GCP: @platforms/gcp/INDEX.sdd
+  GCPL1: @platforms/gcp/L1-fundamentals.sdd
+
+State: +

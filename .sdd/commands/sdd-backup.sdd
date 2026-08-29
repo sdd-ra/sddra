@@ -1,0 +1,61 @@
+# Command: SDD Backup
+
+Command: /sdd-backup
+Mode: READ_ONLY
+Purpose: Create timestamped backup of critical .sdd/ files
+
+Description:
+  Creates a backup of critical .sdd/ files to .runtime/backup/.
+  Backup includes file hashes for integrity verification.
+  Old backups are rotated (keeps last 10).
+
+Usage:
+  /sdd-backup
+  /sdd-backup --name=<backup-name>
+  /sdd-backup --list
+
+Options:
+  --name=<name>   Custom backup name (default: timestamp)
+  --list          List existing backups
+  --rotate        Rotate old backups (keep last 10)
+
+Backup Location:
+  .runtime/backup/
+    YYYY-MM-DDTHH-MM-SZ/
+      PROJECT.sdd
+      INDEX.sdd
+      ROOT.sdd
+      graph.sdd
+      templates/INDEX.sdd
+      manifest.json
+
+Backup Manifest:
+  {
+    "timestamp": "2026-08-28T10:00:00Z",
+    "files": [
+      {
+        "path": ".sdd/PROJECT.sdd",
+        "hash": "sha256:...",
+        "size": 1234
+      }
+    ],
+    "system_version": "1.0.0"
+  }
+
+Backup Policy:
+  [B1] Auto-backup before any modification to critical files
+  [B2] Keep last 10 backups (rotation)
+  [B3] Backup includes file hash for integrity verification
+  [B4] Backup manifest tracks timestamp, file list, and hashes
+
+Rotation:
+  - Keep last 10 backups
+  - Delete oldest when limit exceeded
+  - Archive old backups to .runtime/archive/ (optional)
+
+Exit Codes:
+  0 - Backup successful
+  1 - Backup failed
+  2 - No critical files found
+
+State: +

@@ -1,0 +1,100 @@
+﻿# Vue Fundamentals
+
+Purpose:
+  Vue Fundamentals
+
+Skill: Vue Fundamentals
+
+ID:
+  SKILL-FW-VUE-L1
+
+Domain:
+  frameworks/vue
+
+Use:
+  building basic Vue.js applications
+
+Apply:
+  beginner
+  learning
+  simple-ui
+  component-based
+
+Requires:
+  vue-3+
+  typescript
+
+Avoid:
+  options-api-overuse
+  props-mutation
+  v-if-v-for-conflict
+  key-missing
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  vue
+  vue.js
+  basics
+  components
+  directives
+  reactivity
+  frontend
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/vue/L1-fundamentals.md
+
+Evidence:
+  - Vue Documentation
+  - Vue Mastery
+  - Production experience
+
+Rules:
+  [V1] Use Composition API for new components.
+  [V2] Use `<script setup>` syntax.
+  [V3] Use `ref` and `reactive` for reactivity.
+  [V4] Use `computed` for derived state.
+  [V5] Use `watch` and `watchEffect` for side effects.
+  [V6] Use `v-for` with `:key` in lists.
+  [V7] Use `v-if`/`v-else-if`/`v-else` for conditional rendering.
+  [V8] Use props with `defineProps` and `withDefaults`.
+
+Pros:
+  - Gentle learning curve
+  - Flexible architecture
+  - Great documentation
+
+Cons:
+  - Smaller ecosystem than React
+  - Options API legacy
+  - Less enterprise adoption
+
+Alternatives:
+  - React
+  - Svelte
+  - Angular
+
+State: +
+

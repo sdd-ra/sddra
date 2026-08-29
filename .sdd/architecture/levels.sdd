@@ -1,0 +1,164 @@
+﻿ProjectScale: SDD
+
+Purpose:
+  Define project scale levels L0-L5. Scale is one of the primary inputs
+  to architecture selection — it determines what patterns, infrastructure,
+  and complexity are appropriate. Scale is NOT the only input: team size,
+  budget, compliance, and risk also matter.
+
+Owns: ./
+
+Levels:
+
+  L0:
+    name: Prototype
+    description: Throwaway or exploratory code
+    users: < 100
+    traffic: negligible
+    data: minimal
+    team: 1
+    budget: minimal
+    availability: none
+    architecture:
+      - single app
+      - local DB
+      - minimal infrastructure
+    applicable:
+      - prototypes
+      - experiments
+      - proof-of-concept
+
+  L1:
+    name: Small
+    description: Small production system
+    users: 100 - 1K
+    traffic: < 10 RPS
+    data: GB scale
+    team: 1-3
+    budget: low
+    availability: 99%
+    architecture:
+      - modular application
+      - single DB
+      - basic cache
+      - basic CI/CD
+    applicable:
+      - internal tools
+      - small SaaS
+      - MVPs
+
+  L2:
+    name: Production
+    description: Standard production system
+    users: 1K - 100K
+    traffic: 10-100 RPS
+    data: TB scale
+    team: 3-10
+    budget: medium
+    availability: 99.9%
+    architecture:
+      - modular architecture
+      - HA considerations
+      - observability
+      - backup
+      - security
+    applicable:
+      - production SaaS
+      - business platforms
+      - customer-facing apps
+
+  L3:
+    name: Large
+    description: High-scale production system
+    users: 100K - 1M
+    traffic: 100-1000 RPS
+    data: TB-PB scale
+    team: 10-50
+    budget: high
+    availability: 99.95%
+    architecture:
+      - high traffic scaling
+      - distributed components
+      - advanced caching
+      - queues
+      - multi-region optional
+    applicable:
+      - high-traffic platforms
+      - marketplaces
+      - financial systems
+
+  L4:
+    name: Critical
+    description: Mission-critical system
+    users: 1M - 10M
+    traffic: 1000-10000 RPS
+    data: PB scale
+    team: 50-200
+    budget: very high
+    availability: 99.99%
+    architecture:
+      - HA multi-zone
+      - disaster recovery
+      - strong security
+      - failure isolation
+      - advanced observability
+    applicable:
+      - payment systems
+      - authentication systems
+      - regulated systems
+
+  L5:
+    name: Massive
+    description: Massive scale, mission-critical
+    users: 10M+
+    traffic: 10000+ RPS
+    data: PB+ scale
+    team: 200+
+    budget: very high
+    availability: 99.999%
+    architecture:
+      - multi-region
+      - advanced resilience
+      - strict compliance
+      - extreme scale
+      - custom infrastructure
+    applicable:
+      - global platforms
+      - critical infrastructure
+      - government systems
+
+Selection:
+  AI MUST calculate ProjectScale from:
+    DAU/MAU
+    RPS (requests per second)
+    Peak RPS
+    Concurrent users
+    Data volume
+    Read/write ratio
+    Latency requirements
+    Availability requirements
+    Team size
+    Budget
+    Compliance requirements
+
+  ProjectScale is distinct from:
+    SecurityLevel (L0-L5 in security/levels.sdd)
+    TestLevel (L0-L5 in testing/levels.sdd)
+    ArchitecturePattern (modular monolith, microservices, etc.)
+
+  These are independent scales that together determine the architecture.
+
+Navigation:
+  Patterns: @patterns.sdd
+  Scaling: @scaling.sdd
+  Data: @data.sdd
+  Availability: @availability.sdd
+  Observability: @observability.sdd
+  Networking: @networking.sdd
+  Deployment: @deployment.sdd
+  Project: @project/project.sdd
+  ProjectArchitecture: @project/architecture/INDEX.sdd
+  Decisions: @project/decisions/INDEX.sdd
+
+State: +
+  

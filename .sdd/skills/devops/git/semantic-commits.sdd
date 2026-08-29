@@ -1,0 +1,57 @@
+# Skill: Semantic Commits
+
+Purpose:
+  Enforce semantic commit messages across the SDDRA system.
+  Every commit MUST follow the format: `<type>(<scope>): <subject>`
+
+ID: SKILL-DEVOPS-GIT-SEMANTIC-COMMITS
+
+Domain: devops/git
+
+Level: L1
+
+Status: STABLE
+
+Use:
+  - All git commits in the SDDRA system
+  - Enforced by pre-commit hook
+  - Required for all branches
+
+Input:
+  - Commit message
+  - Changed files
+  - Branch name
+
+Output:
+  - Validated commit message
+  - Commit type
+  - Commit scope
+  - Breaking change indicator
+
+Execute:
+  1. Read commit message
+  2. Validate against semantic format
+  3. Extract type and scope
+  4. Check for breaking changes
+  5. Validate scope is valid
+  6. Return validation result
+
+Validation:
+  - Matches regex: `^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)(\([a-zA-Z0-9_-]+\))?(!)?:\s.+$`
+  - Scope is one of: sdd, project, docs, chains, skills, prompts, commands, templates, patterns, workflows, decisions, gates, tests
+  - Breaking changes include footer
+
+Examples:
+  feat(sdd): add circuit breaker pattern
+  fix(chains): resolve D0 loop issue
+  docs(readme): update getting started
+  refactor(skills): simplify skill loading
+  chore(deps): update dependencies
+
+Avoid:
+  - Vague messages ("update", "fix", "changes")
+  - Missing scope
+  - Multiple changes in one commit
+  - Commits without messages
+
+State: +

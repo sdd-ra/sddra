@@ -1,0 +1,363 @@
+﻿Deployment: SDD
+
+Purpose:
+  Define deployment strategies, environment management, CI/CD pipeline
+  rules, container orchestration guidance, and release management
+  practices. Deployment strategy selection depends on risk tolerance,
+  team maturity, and project scale.
+
+Owns: ./
+
+Scope:
+  Deployment strategies (blue-green, canary, rolling, immutable)
+  Deployment environments
+  CI/CD pipeline
+  Container orchestration
+  Release management
+
+Principles:
+  Every deploy MUST be reversible.
+  Deployments MUST be automated.
+  Environments MUST mirror production as closely as possible.
+  Rollback MUST be faster than forward fix.
+  Deployments MUST be tested before production.
+
+Strategies:
+
+  BlueGreen:
+    description: Two identical environments, switch traffic atomically
+    process:
+      - deploy new version to idle (green) environment
+      - run smoke tests on green
+      - switch load balancer to green
+      - keep blue ready for instant rollback
+
+    benefits:
+      - instant rollback
+      - zero downtime
+      - full environment testing before switch
+
+    costs:
+      - double infrastructure cost
+      - database migration complexity
+      - state synchronization challenge
+
+    when_to_use:
+      - L2-L5
+      - can afford double capacity
+      - database migrations are backward-compatible
+      - low tolerance for downtime
+
+    anti_pattern:
+      switching_before_validation:
+        description: Switching before smoke tests pass
+        rule: MUST pass all smoke tests before switch
+
+  Canary:
+    description: Gradually route traffic to new version
+    process:
+      - deploy new version alongside old
+      - route small percentage (1-5%) to new
+      - monitor for errors and performance
+      - gradually increase traffic or rollback
+
+    benefits:
+      - early issue detection
+      - limited blast radius
+      - real production validation
+
+    costs:
+      - requires traffic splitting infrastructure
+      - requires robust monitoring
+      - longer deployment window
+
+    when_to_use:
+      - L3-L5
+      - high traffic services
+      - frequent deploys
+      - strong observability in place
+
+    anti_pattern:
+      no_rollback_plan:
+        description: Canary without defined rollback criteria
+        rule: MUST define error rate and latency thresholds for rollback
+
+  Rolling:
+    description: Replace instances one by one
+    process:
+      - take one instance out of rotation
+      - deploy new version
+      - verify health
+      - move to next instance
+
+    benefits:
+      - no double infrastructure
+      - gradual rollout
+      - simple to implement
+
+    costs:
+      - mixed versions during deployment
+      - database migration complexity
+      - longer deployment window
+
+    when_to_use:
+      - L2-L4
+      - stateless services
+      - backward-compatible deployments
+      - constrained infrastructure budget
+
+    anti_pattern:
+      no_health_check:
+        description: Moving to next instance without verification
+        rule: MUST verify health before proceeding
+
+  Immutable:
+    description: Replace entire infrastructure on each deploy
+    process:
+      - build new container image with version tag
+      - deploy new instances with new image
+      - terminate old instances
+      - never modify running instances
+
+    benefits:
+      - known state always
+      - no configuration drift
+      - instant rollback (redeploy previous image)
+
+    costs:
+      - requires container orchestration
+      - longer deployment time
+      - ephemeral storage requires externalization
+
+    when_to_use:
+      - L3-L5
+      - containerized infrastructure
+      - strong CI/CD maturity
+      - immutable infrastructure philosophy
+
+Environments:
+
+  required:
+    development:
+      - local developer environments
+      - shared development database
+      - mock external services
+
+    staging:
+      - mirrors production configuration
+      - production-like data (anonymized)
+      - used for integration testing
+      - deployed on every PR merge
+
+    production:
+      - real user traffic
+      - real data
+      - highest availability requirements
+      - change management controls
+
+  optional:
+    testing:
+      - automated test execution
+      - ephemeral environments per test suite
+      - destroyed after test completion
+
+    preview:
+      - deployed per PR
+      - used for manual QA
+      - destroyed after PR merge
+
+  environment_parity:
+    rule: staging MUST mirror production in:
+      - infrastructure configuration
+      - environment variables
+      - database version
+      - network configuration
+    rule: differences between environments MUST be documented and justified
+
+CI_CD:
+
+  pipeline_stages:
+    source:
+      - code commit triggers pipeline
+      - lint and static analysis
+      - unit tests
+
+    build:
+      - compile/build artifact
+      - run integration tests
+      - build container image
+      - scan image for vulnerabilities
+
+    test:
+      - deploy to ephemeral environment
+      - run automated tests
+      - security scanning
+
+    staging:
+      - deploy to staging
+      - run smoke tests
+      - run integration tests
+      - manual approval gate (optional)
+
+    production:
+      - deploy to production
+      - run smoke tests
+      - monitor for errors
+
+  rules:
+    every_commit_triggers:
+      - every commit MUST trigger CI pipeline
+      - pipeline MUST complete before merge
+
+    fail_fast:
+      - pipeline MUST fail on first stage failure
+      - failed builds MUST block deployment
+
+    artifact_immutability:
+      - built artifacts MUST be versioned and immutable
+      - same artifact MUST deploy to all environments
+
+    secrets:
+      - secrets MUST NOT be in source code
+      - secrets MUST be injected at deploy time
+      - secrets MUST be rotated regularly
+
+ContainerOrchestration:
+
+  kubernetes:
+    description: Container orchestration platform
+    when_to_use:
+      - L3 and above
+      - multiple services
+      - complex deployment requirements
+    components:
+      - pods: smallest deployable units
+      - services: network endpoints
+      - deployments: declarative updates
+      - ingress: external access
+      - configmaps: configuration
+      - secrets: sensitive data
+
+  configuration:
+    resource_limits:
+      - CPU and memory requests and limits
+      - limit ranges per namespace
+
+    replicas:
+      - minimum replicas: 2 for HA
+      - auto-scaling based on metrics
+
+    health_checks:
+      - liveness probe
+      - readiness probe
+      - startup probe
+
+  anti_patterns:
+    fat_containers:
+      description: Multiple services in one container
+      rule: one process per container
+
+    mutable_containers:
+      description: SSH into running containers to fix
+      rule: rebuild and redeploy
+
+ReleaseManagement:
+
+  versioning:
+    semantic_versioning:
+      - major: breaking changes
+      - minor: new features, backward compatible
+      - patch: bug fixes, backward compatible
+
+    rules:
+      - version MUST be in artifact tag
+      - version MUST be in deployment metadata
+      - rollback MUST specify previous version
+
+  change_management:
+    standard_change:
+      - routine deploy
+      - pre-approved runbook
+      - automated deployment
+
+    normal_change:
+      - new feature deploy
+      - requires review and approval
+      - scheduled deploy window
+
+    emergency_change:
+      - critical bug fix
+      - expedited approval
+      - post-deploy review required
+
+  deploy_windows:
+    - defined maintenance windows
+    - avoid peak user hours
+    - communication to stakeholders
+
+  rollback:
+    - rollback target MUST be defined before deploy
+    - rollback procedure MUST be tested
+    - rollback time MUST be measured
+    - rollback MUST be faster than forward fix
+
+Selection:
+
+  strategy_selection:
+    low_risk_frequent:
+      - canary or rolling
+      - strong CI/CD maturity
+      - L3-L5
+
+    high_risk_infrequent:
+      - blue-green or immutable
+      - extensive testing
+      - L2-L4
+
+    constrained_infrastructure:
+      - rolling
+      - no double capacity
+      - L2-L3
+
+AntiPatterns:
+
+  DeployOnFriday:
+    description: Deploying before weekend without monitoring
+    rule: critical deploys MUST have monitoring coverage
+
+  ManualDeploy:
+    description: Manual deployment steps
+    rule: every deployment MUST be automated
+
+  DeployToProductionFirst:
+    description: Testing in production
+    rule: MUST test in staging before production
+
+  NoRollbackPlan:
+    description: Deploying without rollback capability
+    rule: rollback plan MUST exist and be tested
+
+  ConfigurationDrift:
+    description: Manual changes to running infrastructure
+    rule: infrastructure MUST be immutable and code-defined
+
+  BigBangDeploy:
+    description: Deploying all changes at once
+    rule: deploy small, frequent changes
+
+  NoMonitoring:
+    description: Deploying without post-deploy monitoring
+    rule: deploy MUST include monitoring and alerting
+
+Navigation:
+  Levels: @levels.sdd
+  Patterns: @patterns.sdd
+  Scaling: @scaling.sdd
+  Availability: @availability.sdd
+  Networking: @networking.sdd
+  Project: @project/project.sdd
+  ProjectArchitecture: @project/architecture/INDEX.sdd
+  Decisions: @project/decisions/INDEX.sdd
+
+State: +
+  

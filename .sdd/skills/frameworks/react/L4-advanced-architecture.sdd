@@ -1,0 +1,102 @@
+﻿# React Advanced Architecture
+
+Purpose:
+  React Advanced Architecture
+
+Skill: React Advanced Architecture
+
+ID:
+  SKILL-FW-REACT-L4
+
+Domain:
+  frameworks/react
+
+Use:
+  architecting large-scale React applications
+
+Apply:
+  lead
+  architect
+  enterprise
+  production
+
+Requires:
+  SKILL-FW-REACT-L3
+  nextjs-or-remix
+  module-federation
+  monorepo
+
+Avoid:
+  over-engineering
+  premature-optimization
+  mixed-concerns
+  tight-coupling
+
+Level:
+  L4
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  react
+  architecture
+  next.js
+  remix
+  module federation
+  monorepo
+  micro-frontend
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/react/L4-advanced-architecture.md
+
+Evidence:
+  - Next.js Documentation
+  - Module Federation Documentation
+  - Production experience
+
+Rules:
+  [R1] Use Next.js for SSR/SSG and routing.
+  [R2] Use Module Federation for micro-frontend architecture.
+  [R3] Use monorepo (Turborepo/Nx) for shared packages.
+  [R4] Implement feature-based folder structure.
+  [R5] Use Atomic Design for component hierarchy.
+  [R6] Implement error boundaries for error handling.
+  [R7] Use Suspense for async data loading.
+  [R8] Implement proper SEO with metadata API.
+
+Pros:
+  - Scalable architecture
+  - Team independence
+  - Better performance
+
+Cons:
+  - Complexity
+  - Build configuration
+  - Learning curve
+
+Alternatives:
+  - Vue
+  - Angular
+  - SvelteKit
+
+State: +
+

@@ -1,0 +1,100 @@
+﻿# Laravel Framework
+
+Purpose:
+  Laravel Framework
+
+Skill: Laravel Framework
+
+ID:
+  SKILL-FW-LARAVEL-L1
+
+Domain:
+  frameworks/laravel
+
+Use:
+  building web applications with Laravel
+
+Apply:
+  beginner
+  intermediate
+  web-application
+  full-stack
+
+Requires:
+  SKILL-LANG-PHP-L2
+  php-8.2+
+  composer
+
+Avoid:
+  fat-model
+  overusing-facades
+  raw-sql
+  tight-coupling
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  laravel
+  php
+  web framework
+  mvc
+  eloquent
+  full-stack
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/laravel/L1-fundamentals.md
+
+Evidence:
+  - Laravel Documentation
+  - Laracasts
+  - Production experience
+
+Rules:
+  [L1] Use Eloquent ORM for database.
+  [L2] Use migrations for schema.
+  [L3] Use Blade for templating.
+  [L4] Use routes/web.php for web routes.
+  [L5] Use controllers for request handling.
+  [L6] Use validation for input.
+  [L7] Use middleware for auth.
+  [L8] Use Artisan for CLI tasks.
+
+Pros:
+  - Rapid development
+  - Excellent documentation
+  - Large ecosystem
+
+Cons:
+  - Magic behavior
+  - Performance overhead
+  - Facade overuse
+
+Alternatives:
+  - Symfony (enterprise)
+  - Django (Python)
+  - Rails (Ruby)
+
+State: +
+

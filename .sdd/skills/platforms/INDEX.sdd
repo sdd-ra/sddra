@@ -1,0 +1,45 @@
+Skills: Platforms
+
+Purpose:
+  Infrastructure and platform skills organized by technology and competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @docker/
+   3  @kubernetes/
+   4  @aws/
+   5  @terraform/
+
+Modes:
+  LEARN    — learn platform fundamentals
+  APPLY    — apply platform skills to infrastructure
+  REVIEW   — review platform skills
+  UPGRADE  — propose platform skill upgrade
+
+Rules:
+  [P1]  Skills MUST be organized by platform technology.
+  [P2]  Each platform MUST have L1-L4 layers.
+  [P3]  Skills MUST cover deployment and operations.
+  [P4]  Skills MUST be loaded on demand.
+  [P5]  Platform skills MUST NOT contain project-specific content.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    docker
+    kubernetes
+    aws
+    terraform
+
+Navigation:
+  Platforms: @platforms/INDEX.sdd
+  Docker: @platforms/docker/INDEX.sdd
+  Kubernetes: @platforms/kubernetes/INDEX.sdd
+  AWS: @platforms/aws/INDEX.sdd
+  Terraform: @platforms/terraform/INDEX.sdd
+
+State: +

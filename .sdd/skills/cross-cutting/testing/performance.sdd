@@ -1,0 +1,98 @@
+﻿# Performance Testing
+
+Purpose:
+  Performance Testing
+
+Skill: Performance Testing
+
+ID:
+  SKILL-CROSS-TEST-PERFORMANCE
+
+Domain:
+  cross-cutting/testing
+
+Use:
+  testing application performance
+
+Apply:
+  senior
+  lead
+  load-testing
+  production
+
+Requires:
+  testing-fundamentals
+  performance-tools
+
+Avoid:
+  synthetic-only
+  ignoring-baseline
+  testing-production
+  missing-thresholds
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  performance testing
+  load testing
+  stress testing
+  jmeter
+  k6
+  benchmarking
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/testing/performance.md
+
+Evidence:
+  - JMeter Documentation
+  - k6 Documentation
+  - Production experience
+
+Rules:
+  [P1] Define performance baselines before testing.
+  [P2] Use realistic data and traffic patterns.
+  [P3] Test at 2x expected peak load.
+  [P4] Monitor system metrics (CPU, memory, network).
+  [P5] Test with gradual ramp-up.
+  [P6] Use distributed load generators for scale.
+  [P7] Analyze bottlenecks before optimization.
+  [P8] Document performance regression thresholds.
+
+Pros:
+  - Catch performance issues
+  - Capacity planning
+  - User experience
+
+Cons:
+  - Time-consuming
+  - Complex setup
+  - Cost
+
+Alternatives:
+  - Load testing as a service
+  - Synthetic monitoring
+
+State: +
+

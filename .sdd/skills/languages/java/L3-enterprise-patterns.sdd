@@ -1,0 +1,99 @@
+﻿# Java Enterprise Patterns
+
+Purpose:
+  Java Enterprise Patterns
+
+Skill: Java Enterprise Patterns
+
+ID:
+  SKILL-LANG-JAVA-L3
+
+Domain:
+  languages/java
+
+Use:
+  implementing enterprise Java design patterns
+
+Apply:
+  senior
+  lead
+  enterprise
+  large-scale
+
+Requires:
+  SKILL-LANG-JAVA-L2
+  design-patterns
+  jpa-hibernate
+
+Avoid:
+  over-engineering
+  pattern-fanaticism
+  premature-abstraction
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  java
+  enterprise patterns
+  design patterns
+  JPA
+  Hibernate
+  CQRS
+  event sourcing
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/java/L3-enterprise-patterns.md
+
+Evidence:
+  - Pattern-Oriented Software Architecture
+  - Spring Enterprise Patterns
+  - Production experience
+
+Rules:
+  [J1] Use Repository pattern for data access abstraction.
+  [J2] Use Service layer for business logic orchestration.
+  [J3] Use DTOs for API contracts, not entities.
+  [J4] Use CQRS for write/read model separation when needed.
+  [J5] Use Event Sourcing for audit trails and state reconstruction.
+  [J6] Use Saga pattern for distributed transactions.
+  [J7] Use Circuit Breaker for resilience in microservices.
+  [J8] Use Strategy pattern for interchangeable algorithms.
+
+Pros:
+  - Maintainable architecture
+  - Testable components
+  - Clear separation of concerns
+
+Cons:
+  - Initial complexity
+  - More files/classes
+  - Learning curve
+
+Alternatives:
+  - Functional programming
+  - Actor model
+
+State: +
+

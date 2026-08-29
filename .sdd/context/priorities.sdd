@@ -1,0 +1,46 @@
+﻿Priorities: Context
+
+Purpose:
+  Defines context element priority levels and selection rules.
+
+PriorityLevels:
+  P0:
+    Description: mandatory
+    Examples:
+      - task itself
+      - parent task
+      - required skill
+      - affected source
+  P1:
+    Description: strongly relevant
+    Examples:
+      - related test
+      - architecture
+      - security skill
+  P2:
+    Description: useful
+    Examples:
+      - general documentation
+      - related incidents
+      - observability
+  P3:
+    Description: optional
+    Examples:
+      - peripheral docs
+      - unrelated modules
+  P4:
+    Description: background
+    Examples:
+      - unrelated domains
+      - unrelated infrastructure
+
+SelectionRules:
+  [PR1]  P0 MUST always be loaded.
+  [PR2]  P1 MUST be loaded if within context budget.
+  [PR3]  P2 MAY be loaded if context budget allows.
+  [PR4]  P3 and P4 MUST NOT be loaded unless explicitly requested.
+  [PR5]  If context budget exceeded, lower priority items are dropped
+          before higher priority items.
+
+State: +
+  

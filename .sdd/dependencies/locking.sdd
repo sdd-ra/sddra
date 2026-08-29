@@ -1,0 +1,245 @@
+﻿LockingModel: SDD
+
+Purpose:
+  Define the resource locking model for the .sdd system â€” how exclusive
+  and shared access to resources is managed, how locks are acquired and
+  released, how deadlocks are prevented/detected, and how AI task
+  collisions are prevented. This is reusable system intelligence;
+  concrete lock state lives in project/dependencies/locks.sdd.
+
+Owns:
+  Lock types, lock acquisition/release rules, deadlock detection,
+  lease/timeout model, lock recovery, optimistic vs pessimistic locking,
+  AI task collision prevention.
+
+DoesNotOwn:
+  Concrete lock instances (those live in project/dependencies/locks.sdd),
+  task execution (scheduler's job), resource provisioning (infrastructure's
+  job).
+
+LockTypes:
+
+  EXCLUSIVE:
+    Only one holder at a time. Blocks all other requests until released.
+    Use for: mutations, writes, deployments, infrastructure changes.
+
+  SHARED:
+    Multiple holders allowed. Blocks only exclusive requests.
+    Use for: reads, queries, analysis, documentation generation.
+
+  OPTIMISTIC:
+    No lock acquired upfront. Conflict detected at commit time.
+    Use for: low-contention resources, human-edited files, documentation.
+
+  LEASE:
+    Time-limited exclusive lock. Automatically released after expiry
+    unless renewed. Use for: long-running tasks, AI agent work.
+
+  ADVISORY:
+    Voluntary coordination. Does not block, but signals intent.
+    Use for: planned maintenance, coordinated deployments.
+
+
+LockStates:
+
+  PENDING: lock requested, waiting for acquisition
+  ACQUIRED: lock held by requester
+  RELEASED: lock was held, now free
+  EXPIRED: lease timed out, automatically released
+  CONFLICT: lock acquisition blocked by existing lock
+  DEADLOCK: lock cycle detected, resolution required
+
+
+LockAcquisition:
+
+  Request:
+    lock:
+      resource: <resource_id>
+      type: EXCLUSIVE | SHARED | OPTIMISTIC | LEASE | ADVISORY
+      requester: <task_id | agent_id>
+      duration: <seconds> (for LEASE)
+      renew: <boolean> (for LEASE)
+
+  Evaluation:
+    1. Check existing locks on resource
+    2. Check compatibility matrix
+    3. Check for deadlock potential
+    4. If compatible â†’ ACQUIRED
+    5. If conflict â†’ CONFLICT (queue or reject)
+    6. If deadlock â†’ DEADLOCK (resolve)
+
+
+CompatibilityMatrix:
+
+  Requester\Holder | EXCLUSIVE | SHARED | OPTIMISTIC | LEASE | ADVISORY
+  EXCLUSIVE        |    NO     |   NO   |     YES    |  NO   |    YES
+  SHARED           |    NO     |  YES   |     YES    |  NO   |    YES
+  OPTIMISTIC       |   YES     |  YES   |     YES    |  YES  |    YES
+  LEASE            |    NO     |   NO   |     YES    |  NO*  |    YES
+  ADVISORY         |   YES     |  YES   |     YES    |  YES  |    YES
+
+  * LEASE vs LEASE: compatible only if same requester or renew = false
+
+
+PessimisticLocking:
+
+  Lock acquired before access. Blocks until acquired or timeout.
+
+  Use when:
+    - high contention expected
+    - conflict cost is high
+    - resource is critical path
+
+  Rules:
+    [LK1] EXCLUSIVE lock MUST be acquired before mutation.
+    [LK2] SHARED lock MUST be acquired before read if consistency
+      required.
+    [LK3] Lock timeout MUST be defined for all blocking acquisitions.
+    [LK4] Failed acquisition MUST NOT block indefinitely.
+
+
+OptimisticLocking:
+
+  No lock acquired. Conflict detected at commit.
+
+  Use when:
+    - low contention expected
+    - conflict cost is low
+    - human-edited content
+
+  Rules:
+    [LK5] Optimistic access MUST include version/timestamp check at commit.
+    [LK6] Conflict MUST trigger retry or escalation, not silent overwrite.
+    [LK7] Optimistic lock is advisory â€” it signals intent but does not block.
+
+
+LeaseModel:
+
+  LEASE locks expire automatically.
+
+  Lease lifecycle:
+    ACQUIRE â†’ (active) â†’ RENEW | EXPIRE â†’ RELEASE
+
+  Rules:
+    [LK8] LEASE lock MUST have explicit duration.
+    [LK9] LEASE lock MAY be renewed if renew = true.
+    [LK10] Expired LEASE MUST be automatically released.
+    [LK11] Task using LEASE MUST handle expiration â€” cannot assume
+      lock persists beyond duration.
+
+
+DeadlockDetection:
+
+  Cycle in lock wait graph = deadlock.
+
+  Detection:
+    On each lock request:
+      1. Build wait-for graph
+      2. Run cycle detection (DFS)
+      3. If cycle found â†’ DEADLOCK
+
+  Prevention:
+    [LK12] Lock ordering: resources MUST be acquired in canonical order.
+    [LK13] Timeout: lock acquisition MUST timeout after max_wait.
+    [LK14] Deadlock detection MUST run on every lock request.
+
+  Resolution:
+    [LK15] On deadlock: abort youngest transaction (shortest hold time).
+    [LK16] Aborted task MUST release all held locks.
+    [LK17] Deadlock event MUST be logged with full graph.
+
+
+LockTimeout:
+
+  All blocking acquisitions MUST have timeout.
+
+  timeout:
+    default: <configurable>
+    max: <hard limit>
+    on_timeout: WAIT | RETRY | ESCALATE | ABORT
+
+  Rules:
+    [LK18] Timeout MUST be shorter than dependent task's deadline.
+    [LK19] Retry after timeout MUST use backoff (exponential recommended).
+    [LK20] Repeated timeout SHOULD trigger escalation to human.
+
+
+LockRecovery:
+
+  When lock holder crashes or becomes unresponsive:
+
+  1. Detect: heartbeat timeout or explicit failure
+  2. Classify: LEASE (auto-expire) vs PERSISTENT (manual recovery)
+  3. Recover:
+     LEASE â†’ wait for expiry or force-release after safety margin
+     PERSISTENT â†’ escalate to human or use recovery policy
+  4. Notify: inform waiters of lock status change
+
+  Rules:
+    [LK21] LEASE recovery MUST NOT release before safety margin.
+    [LK22] PERSISTENT lock recovery MUST require human approval unless
+      policy defines automatic recovery.
+    [LK23] Lock recovery MUST notify all waiting requesters.
+
+
+AITaskCollisionPrevention:
+
+  Multiple AI agents may attempt to work on same task/resource.
+
+  Prevention:
+    [LK24] AI agent MUST acquire lock before starting task work.
+    [LK25] Lock request includes agent_id and task_id.
+    [LK26] Second agent requesting same task/resource MUST wait or
+      select alternative task.
+    [LK27] Lock release MUST happen on task state transition to
+      DONE, FAILED, or CANCELLED.
+
+  Collision handling:
+    [LK28] Detected collision â†’ second agent receives TASK_LOCKED event.
+    [LK29] Second agent selects next candidate from scheduler.
+    [LK30] Human MAY override lock to reassign task.
+
+
+Reservation:
+
+  Reservation = planned lock acquisition.
+
+  reservation:
+    resource: <resource_id>
+    requester: <task_id>
+    type: EXCLUSIVE | SHARED
+    start: <timestamp>
+    end: <timestamp>
+    status: REQUESTED | CONFIRMED | ACTIVE | COMPLETED | CANCELLED
+
+  Rules:
+    [LK31] Reservation does not block other reservations for different
+      time windows.
+    [LK32] Overlapping reservations for same resource MUST be validated
+      for compatibility.
+    [LK33] Reservation MUST convert to lock at start time.
+    [LK34] Missed reservation (task not started) MUST be cancelled
+      after grace period.
+
+
+LockGovernance:
+
+  [LK35] Lock acquisition MUST go through policy engine.
+  [LK36] Human-requested locks have priority over AI-requested locks.
+  [LK37] System locks (maintenance, backup) have highest priority.
+  [LK38] Lock hold time SHOULD be minimized â€” acquire late, release early.
+  [LK39] Lock audit log MUST record all acquisitions, releases, timeouts,
+    conflicts, and deadlocks.
+
+
+Navigation:
+
+  LockingModel: ./INDEX.sdd
+  LockingGraph: ./graph.sdd
+  LockingModel: ./locking.sdd
+  ProjectLocks: ../project/dependencies/locks.sdd
+  ProjectReservations: ../project/dependencies/reservations/
+
+
+State: +
+

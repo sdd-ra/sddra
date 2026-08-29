@@ -1,0 +1,49 @@
+﻿Integration: SDD
+
+Purpose:
+  Integration testing — verify multiple components work together correctly.
+  Integration tests sit between unit tests and E2E tests in the pyramid.
+
+Owns: ./
+
+Scope:
+  Multiple components interacting
+  API endpoints with database
+  Service-to-service communication
+  Message queue interactions
+  External dependency integration
+
+Principles:
+  Test real interactions, not mocks (where possible)
+  Use test containers for databases
+  Clean state between tests
+  Test both success and failure paths
+  Verify contracts between components
+
+Structure:
+  Every integration test MUST:
+    involve at least two components
+    test the interaction, not individual components
+    use realistic data and configurations
+    clean up all created resources
+
+Frameworks:
+  Go: testcontainers, httptest
+  Laravel: PHPUnit + HTTP tests, Orchestra Testbench
+  Node: Jest + supertest, testcontainers
+  General: Docker Compose, Testcontainers
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

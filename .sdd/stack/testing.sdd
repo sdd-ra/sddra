@@ -1,0 +1,131 @@
+﻿Testing: SDD
+
+Purpose:
+  Testing technology catalog with framework options, selection criteria,
+  and integration patterns. Root stack/ defines reusable testing knowledge;
+  project/stack/ stores the selected testing stack for the project.
+
+Catalog:
+  Playwright:
+    Type: E2E / Integration
+    Pros:
+      - Multi-browser support
+      - Multi-language (TS, JS, Python, Java, C#)
+      - Auto-wait
+      - Trace viewer
+      - Parallel execution
+    Cons:
+      - Steeper learning curve than Cypress
+      - Heavier setup
+    BestFor:
+      - Cross-browser E2E testing
+      - Complex user flows
+      - API testing
+    AvoidWhen:
+      - Simple component testing
+    Integration:
+      - Works with all major frameworks
+      - CI/CD friendly
+
+  Cypress:
+    Type: E2E / Component
+    Pros:
+      - Excellent DX
+      - Time-travel debugging
+      - Automatic waiting
+      - Component testing
+    Cons:
+      - JavaScript/TypeScript only
+      - Multi-tab limitations
+      - No native mobile support
+    BestFor:
+      - Frontend E2E testing
+      - Component testing
+      - Teams new to testing
+    AvoidWhen:
+      - Multi-browser needs
+      - API-heavy testing
+
+  Vitest:
+    Type: Unit / Integration
+    Pros:
+      - Vite-native
+      - Fast execution
+      - ESM support
+      - Jest-compatible API
+    Cons:
+      - Newer framework
+      - Smaller ecosystem
+    BestFor:
+      - Vite projects
+      - Fast unit testing
+      - Modern JS/TS projects
+    AvoidWhen:
+      - Legacy Webpack projects
+
+  Jest:
+    Type: Unit / Integration
+    Pros:
+      - Mature ecosystem
+      - Large community
+      - Snapshot testing
+      - Good documentation
+    Cons:
+      - Slower than Vitest
+      - Configuration complexity
+    BestFor:
+      - Mature projects
+      - Snapshot testing
+      - React projects
+    AvoidWhen:
+      - New projects (prefer Vitest)
+
+  Go testing:
+    Type: Unit / Integration
+    Pros:
+      - Built-in
+      - Fast execution
+      - Table-driven tests
+      - Benchmark support
+    Cons:
+      - No mocking built-in
+      - Verbose assertions
+    BestFor:
+      - Go projects
+      - High-performance testing
+    AvoidWhen:
+      - Complex mocking needs
+
+  PHPUnit:
+    Type: Unit / Integration
+    Pros:
+      - Mature ecosystem
+      - Laravel integration
+      - Code coverage
+    Cons:
+      - Slower execution
+      - XML configuration
+    BestFor:
+      - PHP projects
+      - Laravel testing
+    AvoidWhen:
+      - Non-PHP projects
+
+SelectionRules:
+  - ProjectType: frontend, backend, mobile, full-stack
+  - TeamFit: existing testing expertise
+  - CI/CD: integration with CI pipeline
+  - Reporting: test reporting requirements
+  - Coverage: code coverage requirements
+  - Speed: test execution speed requirements
+
+TechnologyScore:
+  ProjectType: 0-25
+  TeamFit: 0-20
+  CICD: 0-15
+  Reporting: 0-10
+  Coverage: 0-15
+  Speed: 0-15
+
+State: +
+  

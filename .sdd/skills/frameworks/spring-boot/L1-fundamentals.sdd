@@ -1,0 +1,100 @@
+﻿# Spring Boot Framework
+
+Purpose:
+  Spring Boot Framework
+
+Skill: Spring Boot Framework
+
+ID:
+  SKILL-FW-SPRING-BOOT-L1
+
+Domain:
+  frameworks/spring-boot
+
+Use:
+  building Java applications with Spring Boot
+
+Apply:
+  beginner
+  intermediate
+  web-api
+  enterprise
+
+Requires:
+  SKILL-LANG-JAVA-L2
+  spring-boot-3+
+  maven-or-gradle
+
+Avoid:
+  autowired-overuse
+  god-controller
+  anemic-domain
+  raw-sql
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  spring boot
+  java
+  spring framework
+  enterprise
+  rest api
+  dependency injection
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/spring-boot/L1-fundamentals.md
+
+Evidence:
+  - Spring Boot Documentation
+  - Spring Framework Guides
+  - Production experience
+
+Rules:
+  [S1] Use `@SpringBootApplication` for main class.
+  [S2] Use `@RestController` for APIs.
+  [S3] Use `@Autowired` or constructor injection.
+  [S4] Use `application.yml` for configuration.
+  [S5] Use `@Entity` for JPA entities.
+  [S6] Use `@Repository` for data access.
+  [S7] Use `@Service` for business logic.
+  [S8] Use `@Transactional` for database transactions.
+
+Pros:
+  - Rapid development
+  - Large ecosystem
+  - Enterprise support
+
+Cons:
+  - Configuration complexity
+  - Memory overhead
+  - Learning curve
+
+Alternatives:
+  - Quarkus
+  - Micronaut
+  - Jakarta EE
+
+State: +
+

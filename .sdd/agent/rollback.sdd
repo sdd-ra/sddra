@@ -1,0 +1,56 @@
+﻿Rollback: Agent
+
+Purpose:
+  Defines rollback and recovery policies for agent actions.
+
+Checkpoint:
+  Agent MUST create checkpoint before destructive/risky actions.
+
+  Types:
+    Git diff:
+      Normal code changes
+    Checkpoint:
+      Risky migrations, large refactors
+
+RollbackFlow:
+  RUN
+    ↓
+  CHECKPOINT
+    ↓
+  ACTION
+    ↓
+  VERIFY
+
+  If fail:
+    ROLLBACK CHECKPOINT
+
+PartialFailure:
+  Task:
+    ├── BE
+    ├── FE
+    ├── MD
+    └── QA
+
+  BE = VERIFIED
+  FE = FAILED
+  MD = NOT_STARTED
+  QA = BLOCKED
+
+  Agent MUST preserve real state, not mark entire task as FAILED.
+
+Recovery:
+  Transient failures:
+    Retry
+  Permanent failures:
+    Create new task
+  Human-required:
+    Stop for approval
+
+RollbackRules:
+  [RB1]  Agent MUST create checkpoint before risky actions.
+  [RB2]  Agent MUST preserve partial success state.
+  [RB3]  Agent MUST not mark entire task as FAILED when only part failed.
+  [RB4]  Agent MUST recover from transient failures automatically.
+
+State: +
+  

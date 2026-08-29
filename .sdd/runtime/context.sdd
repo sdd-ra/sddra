@@ -1,0 +1,184 @@
+Runtime: Context
+
+Purpose:
+  Define the context engine and knowledge resolution system for
+  the SDDRA runtime. Determines which .sdd entities and project
+  knowledge are loaded for each task execution, optimizing for
+  token efficiency, relevance, and security.
+
+Owns: ./
+
+Scope:
+  Context resolution protocol
+  Graph-based knowledge retrieval
+  Semantic + graph hybrid retrieval
+  Token budget management
+  Context priority and staleness
+  Context versioning
+  Agent context isolation
+  Knowledge sharing between parallel tasks
+
+Principles:
+  Minimal context is better than full context.
+  Agent sees only authorized and relevant subgraph.
+  Context is resolved per task, not per project.
+  Stale context MUST be detected and refreshed.
+  Token budget is enforced at context injection time.
+
+ContextResolution:
+  protocol:
+    1. Receive task
+    2. Resolve task requirements
+    3. Traverse graph to required depth
+    4. Filter by permissions
+    5. Filter by relevance
+    6. Apply token budget
+    7. Prioritize by criticality
+    8. Inject into agent context
+
+  rule: context resolution is deterministic
+  rule: full project dump is NEVER sent
+
+GraphRetrieval:
+  depth_query:
+    definition: traverse graph N levels from task node
+
+    example:
+      TASK-500
+        ↓ dependencies (depth 1)
+      TASK-400, TASK-401
+        ↓ skills (depth 2)
+      SKILL-GO, SKILL-TEST
+        ↓ policies (depth 3)
+      POLICY-SEC-01
+
+  rule: default depth is 2
+  rule: depth is configurable per task type
+
+HybridRetrieval:
+  architecture:
+    User Task
+      |
+      |-- Semantic Search -> relevant documents
+      |
+      |-- Graph Search -> structurally related entities
+              |
+              ↓
+         Context Merger
+              |
+              ↓
+            Agent
+
+  rule: semantic search finds similar content
+  rule: graph search finds required relationships
+  rule: merger deduplicates and prioritizes
+
+TokenBudget:
+  definition:
+    maximum tokens allocated for context
+
+  allocation:
+    system_rules: 10%
+    project_rules: 15%
+    domain_rules: 15%
+    skill_rules: 20%
+    task_context: 30%
+    agent_context: 10%
+
+  rule: budget is enforced before injection
+  rule: overflow MUST be logged and reported
+
+ContextPriority:
+  levels:
+    CRITICAL:
+      - task requirements
+      - acceptance criteria
+      - required skills
+
+    HIGH:
+      - dependencies
+      - policies
+      - architecture constraints
+
+    MEDIUM:
+      - domain context
+      - related APIs
+      - related entities
+
+    LOW:
+      - historical context
+      - similar tasks
+      - documentation
+
+  rule: CRITICAL context is NEVER trimmed
+  rule: LOW context is first to be trimmed on budget overflow
+
+StaleContext:
+  detection:
+    - entity updated after context was loaded
+    - dependency changed
+    - policy changed
+
+  handling:
+    - invalidate cache
+    - re-resolve context
+    - re-inject fresh context
+
+  rule: stale context MUST NOT be used for execution decisions
+
+ContextVersioning:
+  rule: context snapshots are versioned with execution
+  rule: context version is recorded in execution record
+  rule: context replay MUST be possible for debugging
+
+ContextSharing:
+  parallel_tasks:
+    rule: shared context is read-only
+    rule: each task gets its own mutable context copy
+    rule: synchronization points share only required deltas
+
+KnowledgeManager:
+  responsibilities:
+    - read .sdd registry
+    - update skill cache
+    - share context between agents
+    - synchronize with .sdd/
+    - validate knowledge freshness
+
+ContextIsolation:
+  rule: agent MUST NOT see unauthorized entities
+  rule: security-sensitive entities are filtered
+  rule: context is scoped to task boundary
+
+ContextOptimization:
+  techniques:
+    - cache frequently used contexts
+    - lazy load skills
+    - compress intermediate results
+    - reuse token budgets
+    - predictive skill loading
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Agent: @agent.sdd
+  Session: @session.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+  Graph: @../graph/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
+
+Rules:
+  [RT-CTX-01] Context MUST be minimal and relevant — never full project dump.
+  [RT-CTX-02] Context resolution is deterministic — same task gets same context.
+  [RT-CTX-03] Token budget is enforced before context injection.
+  [RT-CTX-04] Stale context MUST be detected and refreshed.
+  [RT-CTX-05] Agent context isolation reduces token cost and attack surface.
+  [RT-CTX-06] Graph traversal depth is configurable per task type.
+  [RT-CTX-07] Hybrid retrieval combines semantic and graph search.
+  [RT-CTX-08] Parallel tasks share read-only context; mutable copies are isolated.
+  [RT-CTX-09] CRITICAL context is never trimmed; LOW context is first trimmed.
+  [RT-CTX-10] Context version is recorded with execution for reproducibility.
+  [RT-CTX-11] Agent MUST NOT add signatures or sign-offs to context outputs.
+  [RT-CTX-12] Agent MUST NOT use emojis, icons, or decorative symbols in context output headers or titles — reserved for human use only.
+
+State: +

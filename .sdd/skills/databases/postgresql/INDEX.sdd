@@ -1,0 +1,45 @@
+Skills: PostgreSQL
+
+Purpose:
+  PostgreSQL skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-advanced-queries.sdd
+   4  @L3-performance-tuning.sdd
+   5  @L4-enterprise-patterns.sdd
+
+Modes:
+  LEARN    — learn PostgreSQL fundamentals
+  APPLY    — apply PostgreSQL patterns to schema
+  REVIEW   — review PostgreSQL skills
+  UPGRADE  — propose PostgreSQL skill upgrade
+
+Rules:
+  [P1]  Use appropriate data types.
+  [P2]  Use constraints for data integrity.
+  [P3]  Index frequently queried columns.
+  [P4]  Avoid N+1 queries.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+  Resolve:
+    L1-fundamentals
+    L2-advanced-queries
+    L3-performance-tuning
+    L4-enterprise-patterns
+
+Navigation:
+  PostgreSQL: @databases/postgresql/INDEX.sdd
+  PgL1: @databases/postgresql/L1-fundamentals.sdd
+  PgL2: @databases/postgresql/L2-advanced-queries.sdd
+  PgL3: @databases/postgresql/L3-performance-tuning.sdd
+  PgL4: @databases/postgresql/L4-enterprise-patterns.sdd
+
+State: +

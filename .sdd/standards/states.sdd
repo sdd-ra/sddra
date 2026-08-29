@@ -1,0 +1,69 @@
+﻿States: Standards
+
+Purpose:
+  Defines standard states for .sdd entities.
+
+EntityStates:
+  DRAFT:
+    Description: Initial creation, not ready
+  EXPERIMENTAL:
+    Description: Being tested, may change
+  STABLE:
+    Description: Production-ready, stable
+  DEPRECATED:
+    Description: Being phased out
+  RETIRED:
+    Description: No longer used
+
+TaskStates:
+  DRAFT:
+    Task created, not ready
+  READY:
+    Dependencies satisfied, ready to start
+  ACTIVE:
+    Currently being worked on
+  BLOCKED:
+    Waiting for dependency or approval
+  DONE:
+    Completed and verified
+  FAILED:
+    Execution failed
+  ARCHIVED:
+    No longer relevant
+
+WorkflowStates:
+  PENDING:
+    Not started
+  RUNNING:
+    In progress
+  PASSED:
+    Completed successfully
+  FAILED:
+    Failed
+  BLOCKED:
+    Waiting for dependency
+  SKIPPED:
+    Not applicable
+  WAIVED:
+    Approved to skip
+  EXPIRED:
+    Waiver expired
+
+GateStates:
+  PENDING
+  RUNNING
+  PASSED
+  FAILED
+  BLOCKED
+  SKIPPED
+  WAIVED
+  EXPIRED
+
+StateRules:
+  [SS1]  All entities MUST have a state.
+  [SS2]  State transitions MUST follow defined flows.
+  [SS3]  ARCHIVED state preserves history, does not delete.
+  [SS4]  WAIVED state requires expiration date.
+
+State: +
+  

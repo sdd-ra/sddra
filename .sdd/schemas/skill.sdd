@@ -1,0 +1,51 @@
+﻿Skill: Schema
+
+Purpose:
+  Defines schema for skill entities.
+
+Required:
+  @skill <id>
+  domain <domain>
+  level <L0-L5>
+  version <version>
+  status <DRAFT|EXPERIMENTAL|STABLE|DEPRECATED|RETIRED>
+
+Optional:
+  use <use-case>
+  apply:
+    - <application>
+  requires:
+    - <requirement>
+  avoid:
+    - <anti-pattern>
+  maturity <UNKNOWN|EMERGING|VALIDATED|MATURE|STANDARD>
+  risk <LOW|MEDIUM|HIGH>
+  review <date>
+  evidenceLevel <LOW|MEDIUM|HIGH>
+  searchKeys:
+    - <key>
+  humanDoc <path>
+  evidence:
+    - <source>
+
+Example:
+  @skill SKILL-IDEMPOTENCY
+  domain backend
+  level L2
+  version 1.3
+  status STABLE
+  use duplicate-safe operations
+  apply:
+    - payment
+    - order
+    - webhook
+  requires:
+    - stable-key
+    - atomic-state
+  maturity MATURE
+  risk LOW
+  review 2026-08
+  evidenceLevel HIGH
+
+State: +
+  

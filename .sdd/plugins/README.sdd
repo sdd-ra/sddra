@@ -1,0 +1,57 @@
+# Plugin Integration Guide
+
+Purpose:
+  How SDDRA adapts external plugins and integrates them into the chain graph.
+
+External Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01
+  Upstream: https://github.com/obra/superpowers
+
+Adaptation Rules:
+  1. Only general-purpose skills are adapted
+  2. Domain-specific skills are rejected
+  3. External dependencies are not added
+  4. Adapted skills MUST fit SDDRA token budget
+  5. Adapted skills MUST respect human gates
+
+Adapted Plugins:
+  brainstorming -> P1 arm
+  test-driven-development -> QA chain (TS stage)
+  systematic-debugging -> Bugfix/Hotfix chains (AR stage)
+  writing-plans -> S1 arm
+  using-git-worktrees -> C1 arm
+  code-review -> R1 arm
+  verification-before-completion -> R1 arm
+  dispatching-parallel-agents -> Scheduler
+  writing-skills -> Skill creation
+
+Rejected Plugins:
+  executing-plans: superseded by chain graph
+  finishing-a-development-branch: project-specific
+  subagent-driven-development: covered by chain graph
+  using-superpowers: meta-skill, not needed
+  visual-companion: UI-specific
+  condition-based-waiting: too specific
+  defense-in-depth: covered by security rules
+  spec-document-reviewer-prompt: domain-specific
+
+Integration Points:
+  .sdd/chains/arms/prompt.sdd -> brainstorming
+  .sdd/chains/arms/sdd.sdd -> writing-plans
+  .sdd/chains/arms/code.sdd -> using-git-worktrees
+  .sdd/chains/arms/review.sdd -> code-review, verification-before-completion
+  .sdd/chains/feature.sdd -> test-driven-development, dispatching-parallel-agents
+  .sdd/chains/bugfix.sdd -> systematic-debugging
+  .sdd/chains/hotfix.sdd -> systematic-debugging
+
+Usage:
+  Plugins are referenced by chain arms in their skills section.
+  AI loads plugin adapters only when entering the relevant stage.
+  No plugin code is executed outside its designated stage.
+
+Token Impact:
+  Each plugin adapter adds ~500-2000 tokens to its stage.
+  Total plugin overhead: ~10,000 tokens across full workflow.
+   Within 70,000 token budget.
+
+State: +

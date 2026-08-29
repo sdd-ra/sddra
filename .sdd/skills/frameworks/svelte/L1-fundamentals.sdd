@@ -1,0 +1,99 @@
+﻿# Svelte Framework
+
+Purpose:
+  Svelte Framework
+
+Skill: Svelte Framework
+
+ID:
+  SKILL-FW-SVELTE-L1
+
+Domain:
+  frameworks/svelte
+
+Use:
+  building web applications with Svelte
+
+Apply:
+  beginner
+  intermediate
+  frontend
+  web-application
+
+Requires:
+  svelte-5+
+  typescript
+
+Avoid:
+  store-overuse
+  ignoring-reactivity
+  over-engineering
+  mixing-concerns
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  svelte
+  frontend
+  compiler
+  reactive
+  web components
+  kit
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/svelte/L1-fundamentals.md
+
+Evidence:
+  - Svelte Documentation
+  - SvelteKit Documentation
+  - Production experience
+
+Rules:
+  [S1] Use SvelteKit for full-stack apps.
+  [S2] Use `$state` for reactivity (Svelte 5).
+  [S3] Use `let` for component props.
+  [S4] Use `{#if}`, `{#each}`, `{#await}` for control flow.
+  [S5] Use stores for global state.
+  [S6] Use actions for DOM behavior.
+  [S7] Use transitions for animations.
+  [S8] Use TypeScript for type safety.
+
+Pros:
+  - No virtual DOM
+  - Small bundle size
+  - Simple syntax
+
+Cons:
+  - Smaller ecosystem
+  - Less enterprise adoption
+  - Rapid changes
+
+Alternatives:
+  - React
+  - Vue
+  - SolidJS
+
+State: +
+

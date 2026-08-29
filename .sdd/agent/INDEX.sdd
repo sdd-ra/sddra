@@ -1,0 +1,75 @@
+﻿Agent: SDD
+
+Purpose:
+  Agent Runtime and Tool Execution Engine. Defines what the AI
+  agent may do, how it does it, and under what policy constraints.
+  This is the execution layer that transforms .sdd specifications
+  into real actions in a Git repository.
+
+Owns: ./
+
+ReadOrder:
+   1  @capabilities.sdd
+   2  @permissions.sdd
+   3  @policies.sdd
+   4  @approvals.sdd
+   5  @execution.sdd
+   6  @rollback.sdd
+   7  @limits.sdd
+   8  @audit.sdd
+
+Modes:
+  PLAN      — plan only, no execution
+  ANALYZE   — analysis only
+  IMPLEMENT — implement changes
+  REVIEW    — review changes
+  TEST      — run tests
+  SECURITY  — security checks
+  DEPLOY    — deployment operations
+  DIAGNOSE  — diagnose issues
+  AUDIT     — full audit
+
+Rules:
+  [AG1]  AI MUST NEVER act on "I think this is okay" for production
+         actions. Intent + Context + Policy + Risk + Approval +
+         Verification required.
+  [AG2]  Agent MUST record traceability for every action.
+  [AG3]  Agent MUST create checkpoint before destructive/risky actions.
+  [AG4]  Agent MUST stop on security critical, policy violation,
+         context insufficient, unsafe command, production risk,
+         data loss risk, test failure, unexpected diff.
+  [AG5]  Agent MUST enforce BDD-first when project policy requires it.
+  [AG6]  Agent MUST pass all quality gates before marking task complete.
+  [AG7]  Agent MUST NOT push to production by default.
+  [AG8]  Agent MUST NOT load secrets into context.
+  [AG9]  Agent MUST perform multi-layer impact analysis.
+  [AG10] Agent MUST escalate after 3 failed attempts.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    capabilities
+    permissions
+    policies
+    approvals
+    execution
+    rollback
+    limits
+    audit
+
+Navigation:
+  Agent: @agent/INDEX.sdd
+  Capabilities: @agent/capabilities.sdd
+  Permissions: @agent/permissions.sdd
+  Policies: @agent/policies.sdd
+  Approvals: @agent/approvals.sdd
+  Execution: @agent/execution.sdd
+  Rollback: @agent/rollback.sdd
+  Limits: @agent/limits.sdd
+  Audit: @agent/audit.sdd
+  Runtime: @.runtime/INDEX.sdd
+
+State: +
+  

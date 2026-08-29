@@ -1,0 +1,98 @@
+﻿# BDD Testing
+
+Purpose:
+  BDD Testing
+
+Skill: BDD Testing
+
+ID:
+  SKILL-CROSS-TEST-BDD
+
+Domain:
+  cross-cutting/testing
+
+Use:
+  behavior-driven testing
+
+Apply:
+  intermediate
+  senior
+  acceptance-testing
+  collaboration
+
+Requires:
+  testing-fundamentals
+  cucumber-or-gherkin
+
+Avoid:
+  vague-scenarios
+  implementation-details
+  over-specification
+  test-pollution
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  bdd
+  cucumber
+  gherkin
+  behavior-driven
+  acceptance test
+  scenario
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/testing/bdd.md
+
+Evidence:
+  - Cucumber Documentation
+  - BDD Methodology
+  - Production experience
+
+Rules:
+  [B1] Scenarios MUST describe behavior, not implementation.
+  [B2] Use Given-When-Then format.
+  [B3] Scenarios MUST be independent.
+  [B4] Use domain language in scenarios.
+  [B5] One scenario per behavior.
+  [B6] Include edge cases and error scenarios.
+  [B7] Automate scenarios that are run frequently.
+  [B8] Review scenarios with product owners.
+
+Pros:
+  - Shared understanding
+  - Living documentation
+  - Reduced rework
+
+Cons:
+  - Writing good scenarios is hard
+  - Maintenance overhead
+
+Alternatives:
+  - TDD
+  - ATDD
+  - Property-based testing
+
+State: +
+

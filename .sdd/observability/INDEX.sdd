@@ -1,0 +1,81 @@
+﻿Observability: SDD
+
+Purpose:
+  The .sdd system's observability, runtime diagnostics and incident
+   engine component. This directory defines how production runtime will
+   be monitored, log/metrics/trace policy, alerting rules, health check
+   mechanism, and incident lifecycle. Project-specific runtime state is
+   stored in .sdd/project/observability/. Separation: root = reusable
+   observability constraints, project = concrete runtime state.
+
+Owns: ./
+
+ReadOrder:
+   1  @logging.sdd
+   2  @metrics.sdd
+   3  @tracing.sdd
+   4  @ai-observability.sdd (AI execution observability)
+   5  @alerting.sdd
+   6  @health.sdd
+   7  @diagnostics.sdd
+   8  @incident.sdd
+
+Modes:
+  MONITOR   — runtime monitoring and health check
+  ALERT     — alerting and incident detection
+  DIAGNOSE  — root cause analysis and diagnostics
+  INCIDENT  — incident lifecycle management
+  RECOVER   — recovery and rollback decision support
+
+Rules:
+  [OBS1]  Observability data MUST be treated as evidence, not assumption.
+  [OBS2]  AI MUST correlate metrics, logs, and traces before diagnosing.
+  [OBS3]  Alert severity MUST be project-contextual (payment failure
+          = CRITICAL, internal admin latency = WARNING).
+  [OBS4]  Incident MUST be distinguished from alert: alert = suspicion,
+          incident = confirmed business/system impact.
+  [OBS5]  Root cause analysis MUST include confidence level, not just
+          likely cause.
+  [OBS6]  Incident → Task flow MUST be automatic for confirmed incidents.
+  [OBS7]  Recurring failures MUST trigger ARCHITECTURE_REVIEW_REQUIRED.
+  [OBS8]  Deploy correlation MUST be maintained: incident → suspected
+          deploy → code change.
+  [OBS9]  Sensitive data (password, token, session, card, secret, PII)
+          MUST NOT appear in logs; violation = SECURITY_VIOLATION.
+  [OBS10] Rollback decisions for production MUST respect project policy
+          (AUTO or HUMAN_APPROVAL).
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    logging
+    metrics
+    tracing
+    alerting
+    health
+    diagnostics
+    incident
+
+Navigation:
+  Observability: @observability/INDEX.sdd
+  Logging: @observability/logging.sdd
+  Metrics: @observability/metrics.sdd
+  Tracing: @observability/tracing.sdd
+  AIObservability: @observability/ai-observability.sdd
+  Alerting: @observability/alerting.sdd
+  Health: @observability/health.sdd
+  Diagnostics: @observability/diagnostics.sdd
+  Incident: @observability/incident.sdd
+  ProjectObservability: @project/observability/INDEX.sdd
+
+State: +
+  Note:
+  Observability directory created as
+  the production runtime monitoring and incident response layer.
+  Root observability/ defines reusable observability knowledge
+  (logs, metrics, traces, alerting, health, diagnostics, incident);
+  project/observability/ tracks concrete project runtime state
+  (services, alerts, incidents, diagnostics). This phase completes
+  the development → runtime → feedback loop.

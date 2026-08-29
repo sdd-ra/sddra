@@ -1,0 +1,53 @@
+﻿Spec: Stage
+
+ID:
+  @SC
+
+Purpose:
+  Security validation and approval.
+
+Entry:
+  QA passed
+  security requirements known
+  applicable skills loaded
+
+Must:
+  run security tests
+  validate security requirements
+  check for vulnerabilities
+  verify auth flows
+  review security posture
+
+Exit:
+  security tests pass
+  no CRITICAL/HIGH findings
+  security review approved
+  pentest passed (if required)
+
+OnFail:
+  classify failure
+    security defect -> SC
+    code defect -> owner stage
+    requirement defect -> AR
+  << SC
+
+Next:
+  DO
+  VR
+
+Review:
+  @SC/security-review
+  @SC/pentest
+
+Risk:
+  R3
+
+Skills:
+  @security/threat-model
+  @security/sast
+  @security/dast
+  @security/pentest
+  @security/auth
+
+State: +
+  

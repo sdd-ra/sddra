@@ -1,0 +1,270 @@
+﻿Testing: SDD
+
+Purpose:
+  Define the test levels (T0-T7), test pyramid, test ownership, and
+  the BDD → test chain that connects requirements to automated tests.
+  This file is the testing lifecycle engine — it defines WHAT is tested
+  at WHAT level and WHO owns it, not HOW to write individual tests
+  (that belongs to skills/testing/).
+
+  Testing is part of STLC (Software Testing Lifecycle), which is embedded
+  inside SDLC (Software Development Lifecycle). The test pyramid ensures
+  fast feedback at the lowest possible level.
+
+
+Owns:
+  ./
+
+
+Scope:
+  Test levels T0-T7
+  Test pyramid
+  Test ownership per level
+  BDD to test chain
+  Test coverage requirements
+  Test failure routing
+
+
+DoesNotOwn:
+  Project-specific test suites (bax project/<domain>/tests/)
+  Engineering skills (bax skills/testing/)
+  Task instances (bax tasks/)
+  QA stage behavior (bax workflow/stages.sdd -> QA)
+
+
+TestLevels:
+
+  T0: Unit Test
+    Scope:     Single function, method, or component in isolation
+    Owner:     Implementer (BE/FE/MD/DB)
+    Framework: Project-specific (pytest, Jest, JUnit, etc.)
+    Speed:     fast (< 1s per test)
+    When:      during implementation, before commit
+    Gate:      all unit tests pass before stage gate
+
+  T1: Integration Test
+    Scope:     Multiple components working together
+    Owner:     Implementer (BE/FE/MD/DB)
+    Framework: Project-specific
+    Speed:     medium (1-10s per test)
+    When:      after unit tests pass, before QA stage
+    Gate:      all integration tests pass before QA stage gate
+
+  T2: Contract Test
+    Scope:     API contract, interface compatibility
+    Owner:     API + consuming stage (BE/FE/MD)
+    Framework: Pact, OpenAPI validator, custom
+    Speed:     fast-medium
+    When:      after API stage, before FE/MD
+    Gate:      all contract tests pass before FE/MD stage gate
+
+  T3: Component Test
+    Scope:     A complete feature or module in isolation
+    Owner:     Implementer (BE/FE/MD)
+    Framework: Project-specific, often same as unit
+    Speed:     medium
+    When:      after integration tests, before QA
+    Gate:      component test pass before QA stage gate
+
+  T4: E2E Test
+    Scope:     Complete user journey across all layers
+    Owner:     QA
+    Framework: Playwright, Cypress, Selenium
+    Speed:     slow (10s+ per test)
+    When:      after QA stage, before SC
+    Gate:      critical E2E paths pass before SC stage gate
+
+  T5: Performance Test
+    Scope:     Load, stress, spike, soak
+    Owner:     QA + DO
+    Framework: k6, JMeter, Gatling
+    Speed:     varies by duration
+    When:      after SC stage, before DO
+    Gate:      performance meets NFR targets before DO stage gate
+
+  T6: Security Test
+    Scope:     SAST, DAST, dependency scan, penetration test
+    Owner:     SC
+    Framework: OWASP ZAP, Snyk, Trivy, custom
+    Speed:     varies
+    When:      after QA stage, before DO
+    Gate:      no CRITICAL/HIGH findings before DO stage gate
+
+  T7: Acceptance Test
+    Scope:     Business acceptance criteria, user validation
+    Owner:     QA + Business
+    Framework: BDD runner, manual
+    Speed:     varies
+    When:      after DO, before VR
+    Gate:      all acceptance criteria met before VR stage gate
+
+
+TestPyramid:
+
+  The test pyramid defines the expected distribution of test types:
+
+        /\        T7: Acceptance (few)
+       /  \       T6: Security (as needed)
+      /    \      T5: Performance (as needed)
+     /      \     T4: E2E (some)
+    /________\    T3: Component (more)
+                 T2: Contract (more)
+                 T1: Integration (many)
+                 T0: Unit (most)
+
+  AI MUST NOT invert the pyramid — a project with more E2E tests than
+  unit tests has a testing anti-pattern (bax AntiPatterns in skills/
+  skills.sdd).
+
+  Minimum ratios (guidelines, not hard rules):
+    Unit:      60-70% of all tests
+    Integration: 15-20%
+    Component: 10-15%
+    E2E:       5-10%
+    Performance/Security/Acceptance: as needed by risk
+
+
+TestOwnership:
+
+  Each test level has a single owner responsible for its quality:
+
+    T0  Implementer (BE/FE/MD/DB) — owns unit tests for their code
+    T1  Implementer (BE/FE/MD/DB) — owns integration tests for their components
+    T2  API owner + consumer — owns contract tests for their interface
+    T3  Implementer (BE/FE/MD) — owns component tests for their feature
+    T4  QA — owns E2E test suite
+    T5  QA + DO — owns performance tests
+    T6  SC — owns security tests
+    T7  QA + Business — owns acceptance tests
+
+  AI MUST NOT write tests for a level owned by another role without
+  their involvement — tests are code, and code ownership rules apply.
+
+
+BDDToTestChain:
+
+  BDD scenarios (Given/When/Then) are the bridge between requirements
+  and automated tests:
+
+    BDD Scenario
+      |
+      v
+    T0: Unit Test (per step, per component)
+      |
+      v
+    T1: Integration Test (per scenario, across components)
+      |
+      v
+    T2: Contract Test (per API interaction)
+      |
+      v
+    T3: Component Test (per feature)
+      |
+      v
+    T4: E2E Test (per user journey)
+      |
+      v
+    T5/T6: Performance/Security (per risk)
+      |
+      v
+    T7: Acceptance Test (per business criterion)
+
+  AI MUST NOT skip levels in this chain without human approval — each
+  level catches different failure modes.
+
+
+BDDToTaskChain:
+
+  BDD scenarios drive task creation and validation:
+
+    BDD Scenario
+      |
+      v
+    Task (implementation)
+      |
+      v
+    T0-T3: Automated tests (implementer)
+      |
+      v
+    QA stage: T4-T6 (QA/SC/DO)
+      |
+      v
+    T7: Acceptance (QA + Business)
+      |
+      v
+    VR: Final verification
+
+
+TestCoverage:
+
+  AI MUST track test coverage per level:
+
+    Coverage:
+      T0:  >= 80% line coverage
+      T1:  all critical integration paths
+      T2:  all public API contracts
+      T3:  all features
+      T4:  all critical user journeys
+      T5:  all NFR targets
+      T6:  all security-critical paths
+      T7:  all acceptance criteria
+
+  Coverage thresholds are project-specific — this file defines the
+  levels, project/flows.sdd defines the thresholds.
+
+
+TestFailure:
+
+  Test failure MUST route to the responsible stage:
+
+    T0 failure   -> Implementer (code defect)
+    T1 failure   -> Implementer (integration defect)
+    T2 failure   -> API owner (contract defect)
+    T3 failure   -> Implementer (feature defect)
+    T4 failure   -> BE/FE/MD/DB (implementation defect) or QA (test gap)
+    T5 failure   -> BE/DO (performance defect)
+    T6 failure   -> SC/Implementer (security defect)
+    T7 failure   -> HUMAN (acceptance criteria not met)
+
+
+Rules:
+
+  [TEST1] Every feature MUST have at least one BDD scenario before
+          implementation begins.
+
+  [TEST2] Every BDD scenario MUST map to at least one automated test.
+
+  [TEST3] Unit tests (T0) MUST be written before or concurrently with
+          implementation — test-after is forbidden for new code.
+
+  [TEST4] Contract tests (T2) MUST be written before the consumer
+          implements against the contract.
+
+  [TEST5] E2E tests (T4) MUST cover all critical user journeys.
+
+  [TEST6] Security tests (T6) MUST be included for any feature with
+          security impact (bax ImpactMatrix in tasks/tasks.sdd).
+
+  [TEST7] Performance tests (T5) MUST be included when NFR targets are
+          defined.
+
+  [TEST8] Acceptance tests (T7) MUST be written in business language,
+          not technical language.
+
+  [TEST9] Test ownership MUST be explicit — AI MUST NOT write tests for
+          a level owned by another role without their involvement.
+
+  [TEST10] Test failure MUST route to the responsible owner, not to the
+          next test level.
+
+  [TEST11] AI MUST NOT skip test levels without human approval.
+
+  [TEST12] The test pyramid MUST NOT be inverted — more E2E tests than
+          unit tests is an anti-pattern.
+
+  [TEST13] Test code MUST follow the same quality standards as
+          production code (lint, review, etc.).
+
+
+State: +
+  

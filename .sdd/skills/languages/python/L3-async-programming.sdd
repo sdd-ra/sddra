@@ -1,0 +1,101 @@
+﻿# Python Async Programming
+
+Purpose:
+  Python Async Programming
+
+Skill: Python Async Programming
+
+ID:
+  SKILL-LANG-PYTHON-L3
+
+Domain:
+  languages/python
+
+Use:
+  writing asynchronous Python programs
+
+Apply:
+  senior
+  high-throughput
+  real-time
+  api-development
+
+Requires:
+  SKILL-LANG-PYTHON-L2
+  asyncio
+  await-async-syntax
+
+Avoid:
+  blocking-async
+  missing-timeout
+  resource-leak
+  deadlock
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  python
+  async
+  asyncio
+  await
+  coroutines
+  concurrency
+  event loop
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/python/L3-async-programming.md
+
+Evidence:
+  - Python asyncio Documentation
+  - PEP 492
+  - Production experience
+
+Rules:
+  [P1] Use `async def` for I/O-bound functions.
+  [P2] Always `await` coroutines â€” never fire-and-forget.
+  [P3] Use `asyncio.gather` for parallel I/O operations.
+  [P4] Use `asyncio.Timeout` for operation timeouts.
+  [P5] Use `asyncio.Lock` for shared state protection.
+  [P6] Use `asyncio.Queue` for producer-consumer patterns.
+  [P7] Use `anyio` for structured concurrency.
+  [P8] Always handle exceptions in async tasks.
+
+Pros:
+  - High throughput for I/O-bound work
+  - Simple syntax
+  - Good ecosystem support
+
+Cons:
+  - Debugging complexity
+  - GIL for CPU-bound work
+  - Callback-like pitfalls
+
+Alternatives:
+  - Go (better concurrency)
+  - Rust (async-std)
+  - Node.js (native async)
+
+State: +
+

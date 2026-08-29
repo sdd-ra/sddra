@@ -1,0 +1,75 @@
+﻿Gates: SDD
+
+Purpose:
+  Automated Quality, Security & Release Gate Engine. Defines
+  universal lifecycle and adaptive gates that determine when a
+  task or release is ready. Task completion ≠ Release readiness.
+
+Owns: ./
+
+ReadOrder:
+   1  @policy.sdd
+   2  @levels.sdd
+   3  @quality.sdd
+   4  @testing.sdd
+   5  @security.sdd
+   6  @performance.sdd
+   7  @infrastructure.sdd
+   8  @release.sdd
+   9  @exceptions.sdd
+   10 @evidence.sdd
+
+Modes:
+  L0 — Prototype (minimal checks)
+  L1 — Small project (basic test + lint)
+  L2 — Production application (security + integration + deployment)
+  L3 — Business-critical (performance + security + observability)
+  L4 — High-scale (resilience + DR + advanced security)
+  L5 — Mission-critical (formal controls + continuous verification)
+
+Rules:
+  [GT1]  Task completion ≠ Release readiness.
+  [GT2]  Gates are adaptive: project context determines required gates.
+  [GT3]  Every gate MUST have Condition + Evidence + Threshold + Owner + Decision.
+  [GT4]  Gate failure blocks subsequent gates in chain.
+  [GT5]  SKIPPED ≠ WAIVED: SKIPPED = not applicable, WAIVED = approved exception.
+  [GT6]  Critical gates are hard blockers.
+  [GT7]  Evidence MUST be stored for every gate result.
+  [GT8]  Gate audit MUST record Who, What, When, Why, Result, Evidence.
+  [GT9]  Waivers MUST have Reason, Owner, Expiration, Risk, Approval.
+  [GT10] Expired waivers MUST re-trigger gate.
+  [GT11] Incident feedback MUST trigger new gate requirements.
+  [GT12] Gate chain: BDD → Code → Static Quality → Unit → Integration → E2E → Security → Performance → Infrastructure → Review → Release → Deploy → Runtime Verify.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    policy
+    levels
+    quality
+    testing
+    security
+    performance
+    infrastructure
+    release
+    exceptions
+    evidence
+
+Navigation:
+  Gates: @gates/INDEX.sdd
+  Policy: @gates/policy.sdd
+  Levels: @gates/levels.sdd
+  Quality: @gates/quality.sdd
+  Testing: @gates/testing.sdd
+  Security: @gates/security.sdd
+  Performance: @gates/performance.sdd
+  Infrastructure: @gates/infrastructure.sdd
+  Release: @gates/release.sdd
+  Exceptions: @gates/exceptions.sdd
+  Evidence: @gates/evidence.sdd
+  ProjectGates: @project/gates/INDEX.sdd
+
+State: +
+  

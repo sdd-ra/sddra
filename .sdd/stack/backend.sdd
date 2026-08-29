@@ -1,0 +1,210 @@
+﻿Backend: SDD
+
+Purpose:
+  Backend technology catalog with framework options, compatibility rules,
+  and selection criteria. Root stack/ defines reusable backend knowledge;
+  project/stack/ stores the selected backend for the current project.
+
+Catalog:
+  Go:
+    net/http:
+      Type: Standard Library
+      Pros:
+        - No external dependencies
+        - Minimal footprint
+        - Battle-tested
+      Cons:
+        - Less feature-rich than frameworks
+        - Manual routing setup
+      BestFor:
+        - Simple services
+        - Minimalist architectures
+      AvoidWhen:
+        - Complex middleware needs
+    Gin:
+      Type: Framework
+      Pros:
+        - Fast performance
+        - Middleware ecosystem
+        - Simple API
+      Cons:
+        - Less opinionated
+        - Manual validation
+      BestFor:
+        - REST APIs
+        - Microservices
+      AvoidWhen:
+        - Full-stack needs
+    Echo:
+      Type: Framework
+      Pros:
+        - High performance
+        - Extensible
+        - Good middleware
+      Cons:
+        - Smaller ecosystem than Gin
+      BestFor:
+        - High-performance APIs
+      AvoidWhen:
+        - Complex routing needs
+    Fiber:
+      Type: Framework
+      Pros:
+        - Express.js-like API
+        - High performance
+        - Rapid development
+      Cons:
+        - Newer framework
+        - Smaller community
+      BestFor:
+        - Express.js migrants
+        - Rapid prototyping
+      AvoidWhen:
+        - Production-critical without review
+
+  Java:
+    Spring Boot:
+      Type: Framework
+      Pros:
+        - Mature ecosystem
+        - Excellent enterprise support
+        - Auto-configuration
+      Cons:
+        - High operational complexity
+        - Memory-heavy
+      BestFor:
+        - Enterprise services
+        - Complex business logic
+      AvoidWhen:
+        - Small teams
+        - Simple services
+
+  CSharp:
+    ASP.NET Core:
+      Type: Framework
+      Pros:
+        - Excellent performance
+        - Strong tooling
+        - Cross-platform
+      Cons:
+        - Ecosystem smaller than Spring
+      BestFor:
+        - Enterprise services
+        - Azure deployments
+      AvoidWhen:
+        - Linux-only without .NET experience
+
+  PHP:
+    Laravel:
+      Type: Framework
+      Pros:
+        - Rapid development
+        - Elegant syntax
+        - Large ecosystem
+      Cons:
+        - Performance overhead
+        - Magic behavior
+      BestFor:
+        - CRUD applications
+        - Rapid prototyping
+        - Content management
+      AvoidWhen:
+        - High-concurrency services
+    Symfony:
+      Type: Framework
+      Pros:
+        - Mature and stable
+        - Enterprise-ready
+        - Reusable bundles
+      Cons:
+        - Steeper learning curve
+        - More verbose
+      BestFor:
+        - Enterprise PHP
+        - Long-term maintenance
+      AvoidWhen:
+        - Rapid prototyping
+
+  Python:
+    FastAPI:
+      Type: Framework
+      Pros:
+        - Fast development
+        - Automatic OpenAPI docs
+        - Type hints
+      Cons:
+        - Newer framework
+        - Smaller ecosystem
+      BestFor:
+        - ML/AI APIs
+        - Rapid prototyping
+      AvoidWhen:
+        - High-throughput services
+    Django:
+      Type: Framework
+      Pros:
+        - Batteries included
+        - ORM built-in
+        - Admin interface
+      Cons:
+        - Monolithic
+        - Performance overhead
+      BestFor:
+        - Content-driven apps
+        - Admin-heavy systems
+      AvoidWhen:
+        - Microservices
+
+  Node.js:
+    Express:
+      Type: Framework
+      Pros:
+        - Minimalist
+        - Large ecosystem
+        - JavaScript everywhere
+      Cons:
+        - Callback hell (mitigated with async/await)
+        - Less opinionated
+      BestFor:
+        - I/O-bound services
+        - Real-time applications
+      AvoidWhen:
+        - CPU-intensive tasks
+    NestJS:
+      Type: Framework
+      Pros:
+        - TypeScript-first
+        - Opinionated architecture
+        - Decorator-based
+      Cons:
+        - Steeper learning curve
+        - More boilerplate
+      BestFor:
+        - Enterprise Node.js
+        - Complex APIs
+      AvoidWhen:
+        - Simple services
+
+SelectionRules:
+  - RequirementFit: architecture requirements drive selection
+  - TeamFit: existing team expertise MUST be considered
+  - Ecosystem: library maturity and community support
+  - Performance: latency and throughput requirements
+  - Security: language/framework security track record
+  - OperationalCost: hosting, monitoring, debugging complexity
+  - Maintainability: long-term maintenance burden
+  - Compatibility: integration with existing stack components
+
+TechnologyScore:
+  RequirementFit: 0-25
+  ArchitectureFit: 0-20
+  TeamFit: 0-15
+  Ecosystem: 0-10
+  Performance: 0-10
+  Security: 0-10
+  OperationalFit: 0-5
+  Cost: 0-3
+  Maintainability: 0-2
+
+State: +
+  

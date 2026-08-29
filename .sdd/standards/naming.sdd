@@ -1,0 +1,69 @@
+﻿Naming: Standards
+
+Purpose:
+  Defines naming conventions for .sdd entities and files.
+
+EntityIDs:
+  TASK:
+    Format: TASK-NNN or domain prefix (<DOMAIN>-NNN)
+    Example: TASK-<ID>, <DOMAIN>-<ID>
+  DECISION:
+    Format: DEC-NNN
+    Example: DEC-<ID>
+  SKILL:
+    Format: SKILL-NAME
+    Example: SKILL-<NAME>
+  GATE:
+    Format: GATE-TYPE-NNN
+    Example: GATE-<TYPE>-<ID>
+  WORKFLOW:
+    Format: WF-NNN
+    Example: WF-021
+  MODULE:
+    Format: MOD-NAME
+    Example: MOD-PAY
+  INCIDENT:
+    Format: INC-YYYYMMDD-NNN
+    Example: INC-091
+  RELEASE:
+    Format: REL-YYYY-NNN
+    Example: REL-2026-08
+
+FileNaming:
+  Entity files:
+    <id>.sdd
+    Example: TASK-1023.sdd, DEC-042.sdd
+
+  INDEX files:
+    INDEX.sdd
+
+  Human docs:
+    <name>.md
+    Example: idempotency.md, payment-flow.md
+
+PrefixSystem:
+  @ — entity declaration
+  > — comment
+  : — property
+  = — value
+  ? — optional
+  ! — required
+  ~ — deprecated
+
+RelationshipSyntax:
+  depends <id>
+  uses <skill>
+  blocks <id>
+  related <id>
+  implements <id>
+  supersedes <id>
+  conflicts <id>
+
+NamingRules:
+  [NM1]  IDs are immutable once assigned.
+  [NM2]  File names match entity IDs.
+  [NM3]  Prefix system is standard across all .sdd files.
+  [NM4]  Relationship syntax uses standard verbs.
+
+State: +
+  

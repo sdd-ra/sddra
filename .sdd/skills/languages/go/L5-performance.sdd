@@ -1,0 +1,103 @@
+﻿# Go Performance Optimization
+
+Purpose:
+  Go Performance Optimization
+
+Skill: Go Performance Optimization
+
+ID:
+  SKILL-LANG-GO-L5
+
+Domain:
+  languages/go
+
+Use:
+  optimizing Go application performance
+
+Apply:
+  architect
+  senior
+  production
+  high-scale
+
+Requires:
+  SKILL-LANG-GO-L4
+  profiling
+  benchmarking
+  memory-management
+
+Avoid:
+  premature-optimization
+  micro-optimization
+  ignoring-profile-data
+
+Level:
+  L5
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go
+  golang
+  performance
+  optimization
+  profiling
+  pprof
+  memory
+  CPU
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/L5-performance.md
+
+Evidence:
+  - Go Performance Blog
+  - pprof documentation
+  - Production benchmarks
+
+Rules:
+  [G1] Always profile before optimizing â€” use `go test -bench` and `pprof`.
+  [G2] Minimize allocations in hot paths â€” reuse objects with sync.Pool.
+  [G3] Use `[]byte` buffers instead of string concatenation.
+  [G4] Pre-allocate slices when size is known.
+  [G5] Use `strconv` instead of `fmt.Sprintf` for numbers.
+  [G6] Avoid mutex contention â€” use sharding or atomic operations.
+  [G7] Use `runtime.SetFinalizer` carefully for cleanup.
+  [G8] Monitor GC pauses with `GOGC` and `GOMEMLIMIT`.
+  [G9] Use `go tool trace` for CPU and goroutine analysis.
+  [G10] Benchmark with realistic data, not synthetic tests.
+
+Pros:
+  - 10-100x performance gains
+  - Lower infrastructure costs
+  - Better user experience
+
+Cons:
+  - Time-consuming
+  - Requires deep knowledge
+  - Risk of bugs
+
+Alternatives:
+  - C/C++ (maximum performance)
+  - Rust (safe performance)
+
+State: +
+

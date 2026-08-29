@@ -1,0 +1,48 @@
+﻿Spec: Stage
+
+ID:
+  @DB
+
+Purpose:
+  Database design and implementation.
+
+Entry:
+  architecture approved
+  data model known
+  applicable skills loaded
+
+Must:
+  design schema
+  define indexes
+  plan migrations
+  consider data integrity
+  plan for scale
+
+Exit:
+  schema approved
+  migrations ready
+  indexes defined
+  data access patterns documented
+
+OnFail:
+  << DB
+
+Next:
+  BE
+  API
+
+Review:
+  @DB/performance
+  @DB/schema
+
+Risk:
+  R3
+
+Skills:
+  @database/schema
+  @database/indexing
+  @database/migrations
+  @database/transactions
+
+State: +
+  

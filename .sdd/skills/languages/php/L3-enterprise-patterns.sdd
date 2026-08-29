@@ -1,0 +1,99 @@
+﻿# PHP Enterprise Patterns
+
+Purpose:
+  PHP Enterprise Patterns
+
+Skill: PHP Enterprise Patterns
+
+ID:
+  SKILL-LANG-PHP-L3
+
+Domain:
+  languages/php
+
+Use:
+  enterprise PHP architecture and patterns
+
+Apply:
+  senior
+  lead
+  enterprise
+  large-scale
+
+Requires:
+  SKILL-LANG-PHP-L2
+  ddd-or-clean-arch
+  testing
+
+Avoid:
+  over-engineering
+  pattern-fanaticism
+  premature-abstraction
+  tight-coupling
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  php
+  enterprise
+  DDD
+  CQRS
+  event sourcing
+  hexagonal architecture
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/php/L3-enterprise-patterns.md
+
+Evidence:
+  - Domain-Driven Design
+  - Laravel Enterprise Patterns
+  - Production experience
+
+Rules:
+  [P1] Use DDD for complex domains.
+  [P2] Use CQRS for write/read separation.
+  [P3] Use Event Sourcing for audit trails.
+  [P4] Use hexagonal architecture.
+  [P5] Use message brokers for async.
+  [P6] Use API Platform for HATEOAS.
+  [P7] Use static analysis (Psalm, PHPStan).
+  [P8] Use property testing (Infection for mutation).
+
+Pros:
+  - Maintainable architecture
+  - Testable code
+  - Clear separation
+
+Cons:
+  - Complexity
+  - Learning curve
+  - More code
+
+Alternatives:
+  - Go (simpler)
+  - Java (enterprise standard)
+
+State: +
+

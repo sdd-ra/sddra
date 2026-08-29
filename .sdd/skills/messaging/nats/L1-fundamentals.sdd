@@ -1,0 +1,99 @@
+﻿# NATS
+
+Purpose:
+  NATS
+
+Skill: NATS
+
+ID:
+  SKILL-MSG-NATS-L1
+
+Domain:
+  messaging/nats
+
+Use:
+  building lightweight messaging systems with NATS
+
+Apply:
+  intermediate
+  senior
+  microservices
+  edge-computing
+
+Requires:
+  nats-2+
+  understanding-of-messaging
+
+Avoid:
+  large-messages
+  ignoring-clustering
+  missing-timeouts
+  over-subscription
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  nats
+  messaging
+  lightweight
+  microservices
+  pub sub
+  edge
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/messaging/nats/L1-fundamentals.md
+
+Evidence:
+  - NATS Documentation
+  - Synadia Documentation
+  - Production experience
+
+Rules:
+  [N1] Use subjects for addressing.
+  [N2] Use publish/subscribe for fanout.
+  [N3] Use request/reply for RPC.
+  [N4] Use queue groups for load balancing.
+  [N5] Use JetStream for persistence.
+  [N6] Use wildcards for flexible routing.
+  [N7] Use clustering for high availability.
+  [N8] Use super clusters for multi-region.
+
+Pros:
+  - Simple and fast
+  - Low operational overhead
+  - Cloud native
+
+Cons:
+  - Smaller ecosystem
+  - Less enterprise adoption
+  - Fewer features than Kafka
+
+Alternatives:
+  - Kafka (event streaming)
+  - RabbitMQ (traditional)
+  - Redis Pub/Sub (simple)
+
+State: +
+

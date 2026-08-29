@@ -1,0 +1,128 @@
+﻿Mobile: SDD
+
+Purpose:
+  Mobile technology catalog with platform options, framework comparisons,
+  and selection criteria. Root stack/ defines reusable mobile knowledge;
+  project/stack/ stores the selected mobile stack for the current project.
+
+Catalog:
+  React Native:
+    Type: Cross-platform
+    Pros:
+      - JavaScript/TypeScript
+      - Large ecosystem
+      - Code sharing with web
+      - Hot reload
+    Cons:
+      - Bridge performance overhead
+      - Native module complexity
+      - Platform differences
+    BestFor:
+      - Code sharing with React web
+      - Medium complexity apps
+      - Teams with React experience
+    AvoidWhen:
+      - High-performance native features
+      - Complex animations
+    Performance:
+      - Good with Hermes engine
+      - Bridge overhead for native modules
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+
+  Flutter:
+    Type: Cross-platform
+    Pros:
+      - Single codebase
+      - Excellent performance
+      - Consistent UI across platforms
+      - Dart language
+    Cons:
+      - Smaller ecosystem
+      - Limited hiring pool
+      - Platform-specific limitations
+    BestFor:
+      - Consistent UI requirements
+      - Medium complexity apps
+      - New projects
+    AvoidWhen:
+      - Teams with React experience
+      - Heavy native integration
+    Performance:
+      - Excellent (compiled to native)
+    Ecosystem:
+      - Growing rapidly
+    Hiring:
+      - Limited availability
+
+  Swift:
+    Type: Native iOS
+    Pros:
+      - Best iOS experience
+      - Memory-safe
+      - Excellent performance
+      - Apple platform integration
+    Cons:
+      - iOS only
+      - Requires separate Android team
+      - Higher development cost
+    BestFor:
+      - iOS-first products
+      - High-performance iOS apps
+      - Apple ecosystem integration
+    AvoidWhen:
+      - Cross-platform required
+    Performance:
+      - Excellent
+    Ecosystem:
+      - Mature for iOS
+    Hiring:
+      - Moderate availability
+
+  Kotlin Multiplatform:
+    Type: Cross-platform
+    Pros:
+      - Shared business logic
+      - Native UI per platform
+      - Interoperable with Java
+      - Strong typing
+    Cons:
+      - Newer technology
+      - Smaller ecosystem
+      - Setup complexity
+    BestFor:
+      - Shared logic, native UI
+      - Android-first with iOS
+      - Teams with Kotlin experience
+    AvoidWhen:
+      - Pure cross-platform UI
+      - Teams without Kotlin
+    Performance:
+      - Excellent for shared logic
+    Ecosystem:
+      - Growing
+    Hiring:
+      - Limited availability
+
+SelectionRules:
+  - RequirementFit: platform requirements and feature needs
+  - TeamFit: existing team expertise MUST be considered
+  - CodeSharing: need for shared business logic
+  - Performance: animation and interaction requirements
+  - Ecosystem: library availability and maturity
+  - Hiring: availability of skilled developers
+  - Maintenance: long-term maintenance burden
+
+TechnologyScore:
+  RequirementFit: 0-25
+  TeamFit: 0-20
+  CodeSharing: 0-15
+  Performance: 0-10
+  Ecosystem: 0-10
+  Hiring: 0-10
+  Maintenance: 0-10
+
+State: +
+  

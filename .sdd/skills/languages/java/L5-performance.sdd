@@ -1,0 +1,99 @@
+﻿# Java Performance Tuning
+
+Purpose:
+  Java Performance Tuning
+
+Skill: Java Performance Tuning
+
+ID:
+  SKILL-LANG-JAVA-L5
+
+Domain:
+  languages/java
+
+Use:
+  optimizing Java application performance
+
+Apply:
+  architect
+  senior
+  production
+  high-scale
+
+Requires:
+  SKILL-LANG-JAVA-L4
+  jvm-tuning
+  profiling
+  gc-optimization
+
+Avoid:
+  premature-optimization
+  micro-optimization
+  ignoring-profile-data
+
+Level:
+  L5
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  java
+  performance
+  jvm
+  gc tuning
+  profiling
+  memory optimization
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/java/L5-performance.md
+
+Evidence:
+  - Java Performance Tuning Guide
+  - JVM Documentation
+  - Production benchmarks
+
+Rules:
+  [J1] Profile before optimizing â€” use JFR, async-profiler, or VisualVM.
+  [J2] Tune GC for your workload â€” G1GC for low latency, ZGC for massive heaps.
+  [J3] Use `-XX:+UseStringDeduplication` for G1GC.
+  [J4] Minimize object allocation in hot paths.
+  [J5] Use primitive collections (fastutil, trove) for numeric data.
+  [J6] Use `ThreadPoolExecutor` with bounded queues.
+  [J7] Monitor with Micrometer/Prometheus in production.
+  [J8] Use JVM flags for container-aware memory settings.
+
+Pros:
+  - 2-10x performance gains
+  - Lower infrastructure costs
+  - Better latency
+
+Cons:
+  - Deep JVM knowledge required
+  - Time-consuming
+  - Risk of regressions
+
+Alternatives:
+  - GraalVM native image
+  - Kotlin
+
+State: +
+

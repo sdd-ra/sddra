@@ -1,0 +1,132 @@
+﻿Pipeline: Orchestrator
+
+Purpose:
+  Defines orchestrator pipeline — how user input flows through
+  all engines to produce results.
+
+NewProjectPipeline:
+  USER INPUT
+    ↓
+  INTENT NORMALIZATION
+    ↓
+  PROJECT DISCOVERY
+    ↓
+  ANALYSIS
+    ↓
+  ARCHITECTURE
+    ↓
+  SKILL SELECTION
+    ↓
+  DECISION
+    ↓
+  TASK GENERATION
+    ↓
+  DEPENDENCY GRAPH
+    ↓
+  WORKFLOW ASSIGNMENT
+    ↓
+  BDD
+    ↓
+  IMPLEMENTATION
+    ↓
+  TEST
+    ↓
+  SECURITY
+    ↓
+  PERFORMANCE
+    ↓
+  INFRASTRUCTURE
+    ↓
+  RELEASE
+    ↓
+  DEPLOY
+    ↓
+  OBSERVE
+    ↓
+  LEARN
+
+ExistingProjectPipeline:
+  USER INPUT
+    ↓
+  PROJECT SCAN
+    ↓
+  CODE ANALYSIS
+    ↓
+  ARCHITECTURE DETECTION
+    ↓
+  DOMAIN DETECTION
+    ↓
+  DEPENDENCY DETECTION
+    ↓
+  SECURITY DETECTION
+    ↓
+  INFRASTRUCTURE DETECTION
+    ↓
+  DOCUMENTATION DETECTION
+    ↓
+  .sdd MAPPING
+    ↓
+  CONFLICT REPORT
+    ↓
+  BASELINE
+    ↓
+  SKILL GAP ANALYSIS
+    ↓
+  SKILL RECOMMENDATION
+    ↓
+  TASK GENERATION (from gaps)
+    ↓
+  WORKFLOW ASSIGNMENT
+    ↓
+  PARALLEL EXECUTION (where possible)
+
+SkillIntegrationPipeline:
+  REQUIREMENT ANALYSIS
+    ↓
+  SKILL DISCOVERY
+    ↓
+  RELEVANCE SCORING
+    ↓
+  GAP ANALYSIS
+    ↓
+  RECOMMENDATION (>= 80% relevance)
+    ↓
+  HUMAN APPROVAL
+    ↓
+  SKILL ACQUISITION
+    ↓
+  SKILL ADAPTATION
+    ↓
+  SKILL INTEGRATION
+    ↓
+  SKILL TESTING
+    ↓
+  SKILL DEPLOYMENT
+    ↓
+  KNOWLEDGE SHARING
+
+CrossLayerPipeline:
+  API CHANGE
+    ↓
+  IMPACT ANALYSIS
+    ↓
+  BE TASK + FE TASK + MD TASK (parallel)
+    ↓
+  INTEGRATION TEST
+    ↓
+  DOC TASK
+    ↓
+  PARALLEL EXECUTION
+    ↓
+  KNOWLEDGE SHARING
+    ↓
+  RELEASE
+
+PipelineRules:
+  [PL1]  Pipeline is adaptive, not linear.
+  [PL2]  Existing project starts with discovery, not architecture.
+  [PL3]  Cross-layer changes trigger multi-layer task creation.
+  [PL4]  Pipeline MUST support pause/resume for human approval.
+
+State: +
+  

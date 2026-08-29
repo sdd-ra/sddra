@@ -1,0 +1,350 @@
+﻿State: SDD (Workflow)
+
+Purpose:
+  Define the formal task state machine used by the workflow engine.
+  This is the full state vocabulary for tasks, distinct from the compact
+  state symbols defined in state/state.sdd.
+
+  State and Stage are distinct:
+    Stage  — which engineering discipline is currently active (BE, QA,
+             SC, etc.) — defined in workflow/stages.sdd
+    State  — the task's lifecycle condition (NEW, ANALYZING, PLANNED,
+             READY, IN_PROGRESS, BLOCKED, REVIEW, TESTING, SECURITY,
+             VERIFYING, DONE, FAILED, CANCELLED) — defined here
+
+  A task at stage BE with state BLOCKED means: "Backend implementation
+  is the current stage, but work cannot continue because a blocker
+  exists." Stage tells you WHERE you are; State tells you WHAT CONDITION
+  you are in.
+
+
+Owns:
+  ./
+
+
+Scope:
+  Task states
+  State transitions
+  NextAction engine
+  Blocker types
+  Human intervention gates
+  Risk levels
+  Task queue engine concept
+
+
+DoesNotOwn:
+  Project-specific task instances (bax tasks/)
+  Compact state symbols (bax ../state/state.sdd)
+  Engineering skills (bax skills/)
+  Project architecture (bax project/architecture.sdd)
+
+
+States:
+
+  NEW        — Task has been created but not yet analyzed
+  ANALYZING  — Task is being analyzed (scope, dependencies, risk)
+  PLANNED    — Analysis complete, plan exists, ready for implementation
+  READY      — All prerequisites met, waiting for execution slot
+  IN_PROGRESS— Work is actively being performed
+  BLOCKED    — Work cannot continue due to an unresolved blocker
+  REVIEW     — Work is under review
+  TESTING    — Work is being tested (QA stage)
+  SECURITY   — Work is under security validation (SC stage)
+  VERIFYING  — Work is under final verification (VR stage)
+  DONE       — Work is complete and verified
+  FAILED     — Work has failed and requires recovery
+  CANCELLED  — Work has been cancelled, will not proceed
+
+
+StateTransitions:
+
+  Default flow:
+
+    NEW > ANALYZING > PLANNED > READY > IN_PROGRESS > REVIEW >
+    TESTING > SECURITY > VERIFYING > DONE
+
+  Backward transitions (failure/rework):
+
+    REVIEW > IN_PROGRESS
+    TESTING > IN_PROGRESS
+    SECURITY > IN_PROGRESS
+    VERIFYING > IN_PROGRESS
+
+  Blocked overlay:
+
+    ANALYZING > BLOCKED
+    PLANNED > BLOCKED
+    READY > BLOCKED
+    IN_PROGRESS > BLOCKED
+    REVIEW > BLOCKED
+    TESTING > BLOCKED
+    SECURITY > BLOCKED
+    VERIFYING > BLOCKED
+
+    BLOCKED > IN_PROGRESS  (when blocker is resolved)
+
+  Failure transitions:
+
+    ANALYZING > FAILED
+    PLANNED > FAILED
+    READY > FAILED
+    IN_PROGRESS > FAILED
+    REVIEW > FAILED
+    TESTING > FAILED
+    SECURITY > FAILED
+    VERIFYING > FAILED
+
+    FAILED > ANALYZING  (recovery — re-analyze failure)
+
+  Terminal transitions:
+
+    DONE      (terminal — task is complete)
+    CANCELLED (terminal — task is abandoned)
+
+
+NextAction:
+
+  The NextAction engine computes the next valid action for a task
+  based on its current state, stage, dependencies, blockers, and gates:
+
+    Input:
+      - Current state
+      - Current stage
+      - Dependencies and their states
+      - Blockers (type, ref, description)
+      - Gate status for current stage
+      - Risk level
+      - Priority
+
+    Output:
+      - NextAction: <human-readable description>
+      - NextStage: <stage to advance to>
+      - NextState: <state to transition to>
+      - Blockers: <list of active blockers, or empty>
+
+  Examples:
+
+    State: NEW
+      NextAction: analyze task scope and dependencies
+      NextStage: AR
+      NextState: ANALYZING
+
+    State: ANALYZING, Stage: AR
+      NextAction: complete architecture decision
+      NextStage: BDD
+      NextState: PLANNED
+
+    State: IN_PROGRESS, Stage: BE
+      NextAction: complete backend implementation
+      NextStage: QA
+      NextState: REVIEW
+
+    State: TESTING, Stage: QA
+      NextAction: fix QA finding QA-021
+      NextStage: BE
+      NextState: IN_PROGRESS
+
+    State: TESTING, Stage: QA
+      Blockers: DEPENDENCY on PAY-039 (IN_PROGRESS)
+      NextAction: wait for PAY-039 to complete
+      NextStage: QA
+      NextState: BLOCKED
+
+
+Blocker:
+
+  A blocker is an explicit reason a task cannot advance. State BLOCKED
+  alone is insufficient — the task MUST declare what is blocking it:
+
+    BlockedBy:
+      type: DEPENDENCY
+      ref: PAY-039
+      description: PAY-039 is IN_PROGRESS, this task requires its output
+
+    BlockedBy:
+      type: DECISION
+      ref: DEC-021
+      description: Architecture decision pending for data model
+
+    BlockedBy:
+      type: SECURITY
+      ref: SC-003
+      description: Security review required before deployment
+
+  AI MUST resolve a blocker before the task can leave BLOCKED state.
+  A blocker without a type or ref is incomplete and MUST be rejected.
+
+
+BlockerTypes:
+
+  DEPENDENCY  — another task or artifact is not yet ready
+  SECURITY    — a security finding or review is pending
+  TECHNICAL   — a technical impediment (bug, infrastructure, environment)
+  ENVIRONMENT — an environment issue (deployment, config, access)
+  HUMAN       — a human decision or action is required
+  EXTERNAL    — an external system or vendor is unavailable
+  DECISION    — a decision is pending (bax ../decisions/)
+  RESOURCE    — a resource constraint (budget, capacity, license)
+
+
+Risk:
+
+  Every task declares its risk level:
+
+    LOW      — minimal impact if things go wrong
+    MEDIUM   — moderate impact, reversible with effort
+    HIGH     — significant impact, requires careful handling
+    CRITICAL — severe impact, requires human approval for execution
+
+  Risk determines which stages and gates are activated:
+
+    LOW:      minimal chain (BE > QA > VR)
+    MEDIUM:   standard chain (AR > BE > QA > SC > VR)
+    HIGH:     extended chain (AR > BDD > ARCH > DB > BE > API > FE > QA > SC > DO > VR)
+    CRITICAL: full chain + human approval gates at AR, SC, VR
+
+  AI MUST NOT execute a CRITICAL risk task without human approval.
+
+
+HumanIntervention:
+
+  Certain conditions require human intervention regardless of task state:
+
+    Architecture change
+    Database migration
+    Security exception
+    Production incident
+    Cost increase
+    Cloud migration
+    Data deletion
+    CRITICAL risk execution
+    Repeated failure (attempts >= max)
+
+  When human intervention is required:
+
+    HumanApproval: REQUIRED
+    Reason: <why human approval is needed>
+    Gate: <which gate requires approval>
+
+
+TaskQueueEngine:
+
+  The task queue engine selects the next task to execute based on:
+
+    Priority (P0 > P1 > P2 > P3)
+    Risk (CRITICAL > HIGH > MEDIUM > LOW)
+    Dependencies (READY tasks with satisfied dependencies first)
+    Business impact (higher impact first)
+    Blocked state (BLOCKED tasks are deferred)
+    State (READY > PLANNED > ANALYZING)
+
+  The engine operates on the task's current state, not its stage:
+
+    Input:  all tasks in the task registry
+    Filter: tasks in READY, PLANNED, or ANALYZING state
+            with no unresolved blockers
+            with all dependencies satisfied
+    Sort:   by Priority desc, Risk desc, BusinessImpact desc
+    Output: NextTask: <task ID>
+
+  AI MUST re-evaluate the queue after every state change.
+
+
+StateMachine:
+
+  Formal state machine definition:
+
+    States:    NEW, ANALYZING, PLANNED, READY, IN_PROGRESS, BLOCKED,
+               REVIEW, TESTING, SECURITY, VERIFYING, DONE, FAILED,
+               CANCELLED
+
+    Transitions:
+      NEW > ANALYZING
+      ANALYZING > PLANNED
+      ANALYZING > BLOCKED
+      ANALYZING > FAILED
+      PLANNED > READY
+      PLANNED > BLOCKED
+      PLANNED > FAILED
+      READY > IN_PROGRESS
+      READY > BLOCKED
+      READY > FAILED
+      IN_PROGRESS > REVIEW
+      IN_PROGRESS > BLOCKED
+      IN_PROGRESS > FAILED
+      REVIEW > TESTING
+      REVIEW > IN_PROGRESS
+      REVIEW > BLOCKED
+      REVIEW > FAILED
+      TESTING > SECURITY
+      TESTING > IN_PROGRESS
+      TESTING > BLOCKED
+      TESTING > FAILED
+      SECURITY > VERIFYING
+      SECURITY > IN_PROGRESS
+      SECURITY > BLOCKED
+      SECURITY > FAILED
+      VERIFYING > DONE
+      VERIFYING > IN_PROGRESS
+      VERIFYING > BLOCKED
+      VERIFYING > FAILED
+      BLOCKED > IN_PROGRESS
+      FAILED > ANALYZING
+      DONE (terminal)
+      CANCELLED (terminal)
+
+  AI MUST NOT transition a task to a state not listed above without
+  creating a decision (bax PROJECT.sdd -> HumanDecision, ../decisions/
+  decisions.sdd).
+
+  Compact symbols (bax ../state/state.sdd) MAY be used for inline state
+  notation, but the full state names above are the canonical vocabulary
+  for task files and the state machine.
+
+
+Rules:
+
+  [ST1]  A task MUST declare exactly one state at any given time.
+
+  [ST2]  A task MUST NOT transition directly between non-adjacent states
+         — AI MUST follow the declared transitions above.
+
+  [ST3]  BLOCKED is an overlay state, not a stage — when the blocker is
+         resolved, the task returns to its previous state, not directly
+         to IN_PROGRESS.
+
+  [ST4]  A task MUST declare its blockers when entering BLOCKED state.
+
+  [ST5]  A task MUST NOT leave BLOCKED state without resolving or
+         removing all blockers.
+
+  [ST6]  DONE is a terminal state — a DONE task MUST NOT re-enter the
+         workflow unless reopened by human decision.
+
+  [ST7]  CANCELLED is a terminal state — a CANCELLED task MUST NOT
+         re-enter the workflow.
+
+  [ST8]  FAILED MUST trigger failure analysis before recovery — AI MUST
+         NOT silently retry without identifying the failure cause.
+
+  [ST9]  Recovery from FAILED MUST return to ANALYZING, not directly to
+         IN_PROGRESS — the failure must be analyzed first.
+
+  [ST10] A CRITICAL risk task MUST receive human approval before
+         entering IN_PROGRESS state.
+
+  [ST11] The NextAction engine MUST be recalculated after every state
+         transition.
+
+  [ST12] The task queue engine MUST be recalculated after every state
+         change that affects queue ordering.
+
+  [ST13] State changes MUST be recorded as runtime events (bax
+         ../runtime/events.sdd).
+
+  [ST14] State history MUST be append-only — AI MUST NOT modify or
+         delete past state transitions.
+
+
+State: +
+  

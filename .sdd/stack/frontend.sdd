@@ -1,0 +1,139 @@
+﻿Frontend: SDD
+
+Purpose:
+  Frontend technology catalog with framework options, selection criteria,
+  and compatibility rules. Root stack/ defines reusable frontend knowledge;
+  project/stack/ stores the selected frontend for the current project.
+
+Catalog:
+  React:
+    Type: Library
+    Pros:
+      - Largest ecosystem
+      - Excellent community support
+      - Flexible architecture
+      - Strong hiring pool
+    Cons:
+      - Steep learning curve
+      - Multiple state management options
+      - Frequent ecosystem changes
+    BestFor:
+      - Complex SPAs
+      - Large teams
+      - Long-term projects
+    AvoidWhen:
+      - Simple static sites (prefer vanilla/Svelte)
+      - SEO-critical without SSR
+    Frameworks:
+      - Next.js: SSR, SSG, App Router
+      - Remix: Nested routes, web standards
+      - Vite + React: Fast development
+    Performance:
+      - Excellent with optimization
+      - Virtual DOM overhead
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+
+  Vue:
+    Type: Framework
+    Pros:
+      - Gentle learning curve
+      - Excellent documentation
+      - Flexible architecture
+      - Built-in state management
+    Cons:
+      - Smaller ecosystem than React
+      - Less enterprise adoption
+    BestFor:
+      - Medium complexity SPAs
+      - Smaller teams
+      - Rapid prototyping
+    AvoidWhen:
+      - Very large enterprise apps
+      - Teams with React experience
+    Frameworks:
+      - Nuxt: SSR, SSG, auto-routing
+      - Vite + Vue: Fast development
+    Performance:
+      - Excellent
+    Ecosystem:
+      - Moderate
+    Hiring:
+      - Moderate availability
+
+  Angular:
+    Type: Framework
+    Pros:
+      - Complete framework
+      - Strong typing with TypeScript
+      - Enterprise support
+      - Built-in everything
+    Cons:
+      - Steep learning curve
+      - Verbose
+      - Heavy bundle size
+    BestFor:
+      - Enterprise applications
+      - Large teams
+      - Long-term maintenance
+    AvoidWhen:
+      - Rapid prototyping
+      - Small teams
+    Frameworks:
+      - Standalone Angular
+    Performance:
+      - Good with optimization
+    Ecosystem:
+      - Mature
+    Hiring:
+      - Moderate availability
+
+  Svelte:
+    Type: Compiler
+    Pros:
+      - No virtual DOM
+      - Minimal bundle size
+      - Simple syntax
+      - Fast development
+    Cons:
+      - Smaller ecosystem
+      - Less mature tooling
+      - Smaller hiring pool
+    BestFor:
+      - Performance-critical SPAs
+      - Small to medium apps
+      - Static sites
+    AvoidWhen:
+      - Very complex apps
+      - Large teams needing structure
+    Frameworks:
+      - SvelteKit: SSR, SSG
+    Performance:
+      - Excellent
+    Ecosystem:
+      - Growing
+    Hiring:
+      - Limited availability
+
+SelectionRules:
+  - RequirementFit: project complexity and requirements
+  - TeamFit: existing team expertise MUST be considered
+  - Ecosystem: library maturity and community support
+  - Performance: page load and interaction requirements
+  - SEO: SSR/SSG requirements for content pages
+  - Hiring: availability of skilled developers
+  - Maintenance: long-term maintenance burden
+
+TechnologyScore:
+  RequirementFit: 0-25
+  TeamFit: 0-20
+  Ecosystem: 0-15
+  Performance: 0-10
+  SEO: 0-10
+  Hiring: 0-10
+  Maintenance: 0-10
+
+State: +
+  

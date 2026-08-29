@@ -1,0 +1,79 @@
+﻿Execution: Agent
+
+Purpose:
+  Defines agent execution lifecycle, action model, and tool
+  abstraction.
+
+ExecutionLifecycle:
+  REQUESTED:
+    ↓
+  PLANNED:
+    ↓
+  AUTHORIZED:
+    ↓
+  EXECUTING:
+    ↓
+  VERIFIED:
+    ↓
+  COMPLETED
+
+Failure:
+  EXECUTING:
+    ↓
+  FAILED:
+    ↓
+  ROLLBACK / RECOVERY
+
+  ActionModel:
+    ACTION:
+      ModifyFile
+
+    Target:
+      ./<layer>/<domain>/<module>/<artifact>
+
+    Reason:
+      <task-id>
+
+    Risk:
+      <R0-R5>
+
+    Policy:
+    ALLOWED
+
+  Verification:
+    go test ./...
+
+AgentRun:
+  RUN-YYYYMMDD-NNN
+
+  Structure:
+    INPUT
+    CONTEXT
+    PLAN
+    ACTIONS
+    VERIFICATION
+    RESULT
+    AUDIT
+
+Tools:
+  FileTool:
+    READ, SEARCH, CREATE, UPDATE, MOVE, DELETE
+  GitTool:
+    STATUS, DIFF, LOG, BRANCH, CHECKOUT, COMMIT, MERGE, TAG
+  ShellTool:
+    ALLOWLIST, DENYLIST, TIMEOUT, WORKDIR, ENVIRONMENT
+  TestTool:
+    UNIT, INTEGRATION, E2E, BDD
+  DockerTool:
+    BUILD, RUN, COMPOSE, PUSH
+  DatabaseTool:
+    MIGRATE, SEED, QUERY
+
+ToolRules:
+  [EX1]  Agent MUST use tool abstraction, not hard-code operations.
+  [EX2]  Shell commands MUST be allowlisted.
+  [EX3]  Agent MUST NOT push to production by default.
+  [EX4]  Agent MUST verify after each action.
+
+State: +
+  

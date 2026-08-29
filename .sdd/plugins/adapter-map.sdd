@@ -1,0 +1,81 @@
+﻿# Plugin Adapter Map
+
+Purpose:
+  Map external plugin skills to SDDRA chain graph arms.
+  Only general-purpose skills are adapted; domain-specific ones are excluded.
+
+External Repo:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01
+  Source: https://github.com/obra/superpowers
+
+Accepted Skills:
+  brainstorming -> P1 (prompt arm)
+    Why: Refines rough ideas into design before implementation
+    How: Used during prompt analysis phase
+    Adaptation: Keep 3 paths (Spike/Bounded/Architectural), map to chain selection
+
+  test-driven-development -> QA chain
+    Why: Enforces RED-GREEN-REFACTOR cycle
+    How: Used during test suite stage
+    Adaptation: Map to TS stage in feature/bugfix chains
+
+  systematic-debugging -> Bugfix/Hotfix chains
+    Why: 4-phase root cause investigation
+    How: Used during AR stage in bugfix chain
+    Adaptation: Replace simple "Architecture" stage with root cause investigation
+
+  writing-plans -> S1 (sdd arm)
+    Why: Breaks work into bite-sized tasks
+    How: Used during task creation
+    Adaptation: Map to task generation phase
+
+  using-git-worktrees -> C1 (code arm)
+    Why: Isolated workspace per task
+    How: Used during code implementation
+    Adaptation: Use for project isolation before code generation
+
+  requesting-code-review -> R1 (review arm)
+    Why: Pre-review checklist
+    How: Used during human review
+    Adaptation: Map to review gate checklist
+
+  receiving-code-review -> R1 (review arm)
+    Why: Responding to feedback
+    How: Used when human requests changes
+    Adaptation: Map to revision workflow
+
+  dispatching-parallel-agents -> Scheduler
+    Why: Concurrent subagent workflows
+    How: Used during task scheduling
+    Adaptation: Map to parallel execution in chain graph
+
+  writing-skills -> Skill creation
+    Why: Methodology for creating new skills
+    How: Used when creating new .sdd skills
+    Adaptation: Use for skill authoring guidelines
+
+  verification-before-completion -> R1 (review arm)
+    Why: Ensure work is actually done
+    How: Used before marking complete
+    Adaptation: Map to verification criteria
+
+Rejected Skills:
+  executing-plans: superseded by SDDRA chain graph
+  finishing-a-development-branch: project-specific
+  subagent-driven-development: covered by chain graph
+  using-superpowers: meta-skill, not needed
+  condition-based-waiting: too specific
+  defense-in-depth: covered by security rules
+  root-cause-tracing: covered by systematic-debugging
+  visual-companion: UI-specific, rejected
+  spec-document-reviewer-prompt: domain-specific
+
+Integration:
+  Each adapted skill becomes a .sdd file under:
+    .sdd/skills/plugin-adapters/{skill-name}.sdd
+
+  Chain arms reference adapted skills in their skills section.
+
+
+State: +
+

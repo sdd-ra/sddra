@@ -1,0 +1,99 @@
+﻿# NestJS Framework
+
+Purpose:
+  NestJS Framework
+
+Skill: NestJS Framework
+
+ID:
+  SKILL-FW-NESTJS-L1
+
+Domain:
+  frameworks/nestjs
+
+Use:
+  building enterprise Node.js applications with NestJS
+
+Apply:
+  intermediate
+  senior
+  enterprise
+  backend
+
+Requires:
+  SKILL-LANG-TS-L3
+  nodejs-18+
+
+Avoid:
+  god-controller
+  over-engineering
+  tight-coupling
+  missing-validation
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  nestjs
+  node.js
+  typescript
+  enterprise
+  backend
+  dependency injection
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/nestjs/L1-fundamentals.md
+
+Evidence:
+  - NestJS Documentation
+  - TypeScript Documentation
+  - Production experience
+
+Rules:
+  [N1] Use modules for organization.
+  [N2] Use controllers for routing.
+  [N3] Use services for business logic.
+  [N4] Use providers for dependencies.
+  [N5] Use DTOs for validation.
+  [N6] Use pipes for transformation.
+  [N7] Use guards for authorization.
+  [N8] Use interceptors for logging.
+
+Pros:
+  - Structured architecture
+  - Type safety
+  - Large ecosystem
+
+Cons:
+  - Boilerplate
+  - Learning curve
+  - Over-engineering risk
+
+Alternatives:
+  - Express (simpler)
+  - Fastify (faster)
+  - tRPC (type-safe)
+
+State: +
+

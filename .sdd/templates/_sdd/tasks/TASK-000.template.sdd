@@ -1,0 +1,38 @@
+﻿# Task Template
+Purpose:
+  Task Template
+
+
+Task: TASK-000
+Title: {One-line task title}
+Domain: {domain}
+Chain: default|feature|bugfix|hotfix|refactor|security|maintenance|migration|incident
+Status: ready|pending|in_progress|completed|blocked|failed
+
+Dependencies: []
+
+Skills:
+  - {skill path 1}
+  - {skill path 2}
+
+Inputs:
+  - .sdd/project/domains.sdd
+  - .sdd/project/stack/{layer}.sdd
+
+Outputs:
+  - {output file path 1}
+  - {output file path 2}
+
+Validation:
+  - {validation criterion 1}
+  - {validation criterion 2}
+
+Decision:
+  - DEC-000
+
+Created_At: <timestamp>
+Updated_At: <timestamp>
+
+
+State: +
+

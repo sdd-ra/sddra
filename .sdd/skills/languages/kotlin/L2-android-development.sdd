@@ -1,0 +1,100 @@
+﻿# Kotlin Android Development
+
+Purpose:
+  Kotlin Android Development
+
+Skill: Kotlin Android Development
+
+ID:
+  SKILL-LANG-KOTLIN-L2
+
+Domain:
+  languages/kotlin
+
+Use:
+  building Android applications with Kotlin
+
+Apply:
+  intermediate
+  senior
+  android
+  mobile
+
+Requires:
+  SKILL-LANG-KOTLIN-L1
+  jetpack-compose-or-views
+  android-studio
+
+Avoid:
+  memory-leak
+  main-thread-blocking
+  tight-coupling
+  ignoring-lifecycle
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  kotlin
+  android
+  jetpack compose
+  mobile development
+  coroutines
+  flow
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/kotlin/L2-android-development.md
+
+Evidence:
+  - Android Documentation
+  - Jetpack Compose Documentation
+  - Production experience
+
+Rules:
+  [K1] Prefer Jetpack Compose for new UI.
+  [K2] Use MVVM with ViewModel.
+  [K3] Use coroutines and Flow for async.
+  [K4] Use Room for local persistence.
+  [K5] Use Retrofit for networking.
+  [K6] Use Hilt for dependency injection.
+  [K7] Use Navigation Component for routing.
+  [K8] Follow Android architecture guidelines.
+
+Pros:
+  - Native Android performance
+  - Google support
+  - Large market share
+
+Cons:
+  - Device fragmentation
+  - Java legacy
+  - Memory constraints
+
+Alternatives:
+  - Flutter (cross-platform)
+  - React Native (cross-platform)
+  - Swift (Apple ecosystem)
+
+State: +
+

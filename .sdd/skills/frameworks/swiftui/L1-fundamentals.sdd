@@ -1,0 +1,100 @@
+﻿# SwiftUI
+
+Purpose:
+  SwiftUI
+
+Skill: SwiftUI
+
+ID:
+  SKILL-FW-SWIFTUI-L1
+
+Domain:
+  frameworks/swiftui
+
+Use:
+  building iOS/macOS UIs with SwiftUI
+
+Apply:
+  beginner
+  intermediate
+  ios
+  macos
+
+Requires:
+  SKILL-LANG-SWIFT-L1
+  ios-17+
+  xcode-15+
+
+Avoid:
+  force-unwrap
+  ignoring-preview
+  over-using-state
+  UIKit-mixing
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  swiftui
+  ios
+  macos
+  declarative ui
+  apple
+  swift
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/swiftui/L1-fundamentals.md
+
+Evidence:
+  - SwiftUI Documentation
+  - Apple Developer Documentation
+  - Production experience
+
+Rules:
+  [S1] Use `View` protocol for UI components.
+  [S2] Use `@State` for local state.
+  [S3] Use `@Binding` for two-way data flow.
+  [S4] Use `@StateObject` for reference types.
+  [S5] Use `NavigationStack` for navigation.
+  [S6] Use `List` for scrollable content.
+  [S7] Use `Form` for settings.
+  [S8] Use Xcode Previews for development.
+
+Pros:
+  - Declarative UI
+  - Live Previews
+  - Apple ecosystem
+
+Cons:
+  - iOS only
+  - Rapidly changing API
+  - Platform limitations
+
+Alternatives:
+  - UIKit (mature)
+  - Flutter (cross-platform)
+  - React Native (cross-platform)
+
+State: +
+

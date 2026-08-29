@@ -1,0 +1,40 @@
+Skills: Go Testing
+
+Purpose:
+  Go testing skills organized by test type.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-unit-testing.sdd
+   3  @L2-integration-testing.sdd
+
+Modes:
+  LEARN    — learn Go testing patterns
+  APPLY    — apply Go testing to code
+  REVIEW   — review Go testing skills
+  UPGRADE  — propose Go testing skill upgrade
+
+Rules:
+  [T1]  Tests MUST follow Go testing conventions.
+  [T2]  Use table-driven tests for multiple cases.
+  [T3]  Use subtests for related assertions.
+  [T4]  Mock external dependencies.
+  [T5]  Tests MUST be independent.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-unit-testing.sdd
+
+  Resolve:
+    L1-unit-testing
+    L2-integration-testing
+
+Navigation:
+  GoTesting: @languages/go/testing/INDEX.sdd
+  GoTestL1: @languages/go/testing/L1-unit-testing.sdd
+  GoTestL2: @languages/go/testing/L2-integration-testing.sdd
+
+State: +

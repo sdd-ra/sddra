@@ -1,0 +1,34 @@
+# Decision Rules
+
+Purpose:
+  Rules for decision creation, approval, and lifecycle.
+
+Creation:
+  [DR1] Every decision MUST have a unique ID (DEC-XXX).
+  [DR2] Every decision MUST have a type.
+  [DR3] Every decision MUST have at least 2 options.
+  [DR4] Every decision MUST have an owner.
+  [DR5] AI MAY create decisions for technical choices.
+  [DR6] Human MUST create architectural/security/business decisions.
+
+Approval:
+  [DR7] Architectural decisions require human approval.
+  [DR8] Security decisions require human approval.
+  [DR9] Business decisions require human approval.
+  [DR10] Technical decisions MAY be auto-approved.
+  [DR11] All approvals MUST be recorded with timestamp.
+  [DR12] Rejections MUST include feedback.
+
+Lifecycle:
+  [DR13] Implemented decisions MUST reference task IDs.
+  [DR14] Verified decisions MUST have passing criteria.
+  [DR15] Superseded decisions MUST reference new decision.
+  [DR16] Conflicting decisions MUST be flagged.
+  [DR17] Decision history MUST be preserved.
+
+Visibility:
+  [DR18] All decisions MUST be indexed in INDEX.sdd.
+  [DR19] Active decisions MUST be easily discoverable.
+  [DR20] Decision rationale MUST be accessible to AI.
+
+State: +

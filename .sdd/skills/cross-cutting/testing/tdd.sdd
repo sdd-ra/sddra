@@ -1,0 +1,98 @@
+﻿# TDD Testing
+
+Purpose:
+  TDD Testing
+
+Skill: TDD Testing
+
+ID:
+  SKILL-CROSS-TEST-TDD
+
+Domain:
+  cross-cutting/testing
+
+Use:
+  test-driven development
+
+Apply:
+  intermediate
+  senior
+  unit-testing
+  code-quality
+
+Requires:
+  testing-fundamentals
+  xunit-framework
+
+Avoid:
+  test-after-development
+  testing-implementation
+  over-mocking
+  test-brittleness
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  tdd
+  test driven development
+  red green refactor
+  unit test
+  xunit
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/testing/tdd.md
+
+Evidence:
+  - Test-Driven Development by Kent Beck
+  - xUnit Documentation
+  - Production experience
+
+Rules:
+  [T1] Write test before implementation.
+  [T2] Follow Red-Green-Refactor cycle.
+  [T3] Write minimal test to fail.
+  [T4] Write minimal code to pass.
+  [T5] Refactor after green.
+  [T6] Tests MUST be independent.
+  [T7] Tests MUST be fast.
+  [T8] Tests MUST be repeatable.
+
+Pros:
+  - Better design
+  - Regression prevention
+  - Living documentation
+
+Cons:
+  - Slow initial development
+  - Requires discipline
+  - Hard to learn
+
+Alternatives:
+  - BDD
+  - Property-based testing
+  - Integration testing
+
+State: +
+

@@ -1,0 +1,39 @@
+Skills: TypeScript Language
+
+Purpose:
+  TypeScript language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-advanced-types.sdd
+   4  @L3-nodejs-backend.sdd
+   5  @L4-enterprise-patterns.sdd
+
+Modes:
+  LEARN    — learn TypeScript fundamentals
+  APPLY    — apply TypeScript patterns to code
+  REVIEW   — review TypeScript skills
+  UPGRADE  — propose TypeScript skill upgrade
+
+Rules:
+  [T1]  Use `strict: true` in tsconfig.
+  [T2]  Use `interface` for object shapes.
+  [T3]  Use `unknown` instead of `any`.
+  [T4]  Use generics for reusable code.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  TypeScript: @languages/typescript/INDEX.sdd
+  TSL1: @languages/typescript/L1-fundamentals.sdd
+  TSL2: @languages/typescript/L2-advanced-types.sdd
+  TSL3: @languages/typescript/L3-nodejs-backend.sdd
+  TSL4: @languages/typescript/L4-enterprise-patterns.sdd
+
+State: +

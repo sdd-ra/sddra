@@ -1,0 +1,41 @@
+Skills: Java Language
+
+Purpose:
+  Java programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-spring-boot.sdd
+   4  @L3-enterprise-patterns.sdd
+   5  @L4-microservices.sdd
+   6  @L5-performance.sdd
+
+Modes:
+  LEARN    — learn Java fundamentals
+  APPLY    — apply Java patterns to code
+  REVIEW   — review Java skills
+  UPGRADE  — propose Java skill upgrade
+
+Rules:
+  [J1]  Use Java 17+ features (var, records, sealed classes).
+  [J2]  Use interfaces for abstractions.
+  [J3]  Use dependency injection.
+  [J4]  Handle exceptions properly.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Java: @languages/java/INDEX.sdd
+  JavaL1: @languages/java/L1-fundamentals.sdd
+  JavaL2: @languages/java/L2-spring-boot.sdd
+  JavaL3: @languages/java/L3-enterprise-patterns.sdd
+  JavaL4: @languages/java/L4-microservices.sdd
+  JavaL5: @languages/java/L5-performance.sdd
+
+State: +

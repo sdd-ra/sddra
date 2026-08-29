@@ -1,0 +1,101 @@
+﻿# JavaScript Fundamentals
+
+Purpose:
+  JavaScript Fundamentals
+
+Skill: JavaScript Fundamentals
+
+ID:
+  SKILL-LANG-JS-L1
+
+Domain:
+  languages/javascript
+
+Use:
+  writing basic JavaScript programs
+
+Apply:
+  beginner
+  learning
+  scripting
+  frontend
+  backend
+
+Requires:
+  nodejs-18+
+
+Avoid:
+  var-keyword
+  implicit-globals
+  type-coercion
+  callback-hell
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  javascript
+  js
+  basics
+  syntax
+  variables
+  functions
+  control flow
+  dom
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/javascript/L1-fundamentals.md
+
+Evidence:
+  - MDN Web Docs
+  - ECMAScript Specification
+  - Production experience
+
+Rules:
+  [J1] Use `const` by default, `let` if reassignment needed.
+  [J2] Never use `var` â€” it has function scope.
+  [J3] Use template literals for string interpolation.
+  [J4] Use arrow functions for callbacks.
+  [J5] Use `===` and `!==`, never `==` or `!=`.
+  [J6] Use `forEach`, `map`, `filter`, `reduce` for arrays.
+  [J7] Use `Promise` for async operations.
+  [J8] Use `import/export` for modules, not CommonJS.
+
+Pros:
+  - Universal (browser + server)
+  - Large ecosystem
+  - Fast development
+
+Cons:
+  - Dynamic typing
+  - Inconsistent behavior
+  - Prototype complexity
+
+Alternatives:
+  - TypeScript (type-safe)
+  - Go (simple, typed)
+
+State: +
+

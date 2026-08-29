@@ -1,0 +1,33 @@
+Skills: RabbitMQ
+
+Purpose:
+  RabbitMQ messaging skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn RabbitMQ fundamentals
+  APPLY    — apply RabbitMQ to messaging
+  REVIEW   — review RabbitMQ skills
+  UPGRADE  — propose RabbitMQ skill upgrade
+
+Rules:
+  [R1]  Use exchanges for routing.
+  [R2]  Use queues for buffering.
+  [R3]  Use acknowledgments for reliability.
+  [R4]  Use dead letter queues.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  RabbitMQ: @messaging/rabbitmq/INDEX.sdd
+  RabbitMQL1: @messaging/rabbitmq/L1-fundamentals.sdd
+
+State: +

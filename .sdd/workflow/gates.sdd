@@ -1,0 +1,260 @@
+﻿Gates: SDD
+
+Purpose:
+  Define gate criteria for each workflow stage. A gate is the minimum
+  set of conditions that must ALL pass before a stage's output is
+  accepted and the chain advances to the next stage.
+
+  A gate is a checkpoint, not a separate stage. Gate failure MUST route
+  to the responsible stage for recovery, not skip backward (bax chains/
+  chains.sdd -> Gate, Failure, VerificationFailure).
+
+
+Owns:
+  ./
+
+Scope:
+  Gate definitions per stage
+  Pass/fail criteria
+  Gate validation rules
+  Gate failure routing
+
+
+DoesNotOwn:
+  Project-specific flows (bax project/flows.sdd)
+  Project-specific chains (bax chains/chains.sdd)
+  Engineering skills (bax skills/)
+  Task instances (bax tasks/)
+  Project architecture (bax project/architecture.sdd)
+
+
+Gates:
+
+  AN — Analysis Gate:
+    Pass:
+      - Scope is documented
+      - Affected components are identified
+      - Dependencies are listed
+      - Risk level is assigned
+      - Impact matrix is defined
+    Fail:
+      - Missing scope or requirements
+      - Unidentified dependencies
+      - Routing: AR (architecture clarification) or HUMAN (requirement ambiguity)
+
+  AR — Architecture Gate:
+    Pass:
+      - Architecture decisions are recorded
+      - Module boundaries are defined
+      - Dependency direction is validated
+      - Security boundaries are identified
+      - No circular dependencies
+    Fail:
+      - Architecture conflicts
+      - Circular dependencies
+      - Routing: AR (rework) or HUMAN (architecture decision required)
+
+  BDD — BDD Gate:
+    Pass:
+      - Acceptance criteria are defined in Given/When/Then format
+      - All scenarios are covered
+      - Edge cases are identified
+      - BDD artifacts are linked to task
+    Fail:
+      - Missing acceptance criteria
+      - Ambiguous scenarios
+      - Routing: AR (requirement clarification) or QA (scenario rewrite)
+
+  ARCH — Architecture Verification Gate:
+    Pass:
+      - Implementation matches architecture decisions
+      - Module boundaries are respected
+      - No unauthorized coupling
+      - Dependency direction is correct
+    Fail:
+      - Architecture violation
+      - Unauthorized coupling
+      - Routing: BE/FE/MD/API (rework) or AR (architecture change)
+
+  DB — Database Gate:
+    Pass:
+      - Schema is valid and reviewed
+      - Migrations are reversible
+      - Indexes are justified
+      - Data integrity constraints are defined
+      - Rollback plan exists
+    Fail:
+      - Invalid schema
+      - Missing migration
+      - Routing: DB (rework) or AR (schema change requires architecture review)
+
+  BE — Backend Gate:
+    Pass:
+      - Code compiles/builds
+      - Unit tests pass
+      - Lint passes
+      - Error handling is implemented
+      - API contract is implemented
+      - Security baseline passes (SAST)
+    Fail:
+      - Compile error
+      - Test failure
+      - Security finding
+      - Routing: BE (fix), SC (security), QA (test gap)
+
+  API — API Gate:
+    Pass:
+      - Contract is defined and versioned
+      - Contract tests pass
+      - Breaking changes are documented
+      - Backward compatibility is maintained (or migration path exists)
+    Fail:
+      - Contract mismatch
+      - Missing contract tests
+      - Routing: API (fix), BE (implementation mismatch)
+
+  FE — Frontend Gate:
+    Pass:
+      - UI builds successfully
+      - Component tests pass
+      - Accessibility checks pass
+      - Responsive design validated
+      - API integration works
+    Fail:
+      - Build failure
+      - Accessibility violation
+      - Routing: FE (fix), API (contract issue)
+
+  MD — Mobile Gate:
+    Pass:
+      - App builds successfully
+      - Platform tests pass
+      - Offline behavior validated
+      - API integration works
+      - Platform guidelines followed
+    Fail:
+      - Build failure
+      - Platform violation
+      - Routing: MD (fix), API (contract issue)
+
+  QA — Quality Assurance Gate:
+    Pass:
+      - Unit tests pass
+      - Integration tests pass
+      - E2E tests pass (if applicable)
+      - No critical/high bugs open
+      - Code coverage meets threshold
+      - Performance tests pass (if applicable)
+    Fail:
+      - Test failure
+      - Bug found
+      - Routing: responsible stage (BE/FE/MD/DB/API) for fix, or QA (test gap)
+
+  SC — Security Gate:
+    Pass:
+      - No CRITICAL or HIGH findings open
+      - MEDIUM/LOW findings are tracked or accepted
+      - Threat model validated (if applicable)
+      - Dependency scan clean
+      - Secrets not exposed
+      - AuthZ/authN validated
+    Fail:
+      - CRITICAL/HIGH finding open
+      - Security baseline violation
+      - Routing: responsible stage (BE/FE/MD/DB/API/AR) for fix, or HUMAN (security exception)
+
+  DO — DevOps Gate:
+    Pass:
+      - Build succeeds
+      - Deployment succeeds
+      - Health checks pass
+      - Rollback plan is tested
+      - Monitoring is configured
+      - Infrastructure as code is validated
+    Fail:
+      - Deployment failure
+      - Infrastructure issue
+      - Routing: DO (fix), BE/FE/MD (application issue)
+
+  VR — Verification Gate:
+    Pass:
+      - All required stages passed
+      - All gates passed
+      - Documentation is current
+      - DRIFT check passes
+      - Security findings are resolved or accepted
+      - Business acceptance criteria met
+    Fail:
+      - Missing stage output
+      - Documentation stale
+      - Security finding unresolved
+      - Routing: responsible stage for rework, or HUMAN (acceptance decision)
+
+
+GateFailure:
+
+  Gate failure MUST route to FailureRouting (bax tasks/tasks.sdd ->
+  FailureRouting). The chain MUST NOT advance past an ungated stage.
+
+  Routing table:
+    code issue      -> responsible implementation stage
+    architecture    -> AR
+    database        -> DB
+    security        -> SC (finding) + responsible stage (fix)
+    test gap        -> QA
+    infrastructure  -> DO
+    requirement     -> HUMAN
+
+
+GateCriteria:
+
+  Every gate criterion MUST be:
+    - Measurable (pass/fail, not subjective)
+    - Automated where possible
+    - Documented with its evidence source
+    - Traceable to a requirement or risk
+
+
+Rules:
+
+  [G1]  Every stage MUST have a gate defined in this file.
+
+  [G2]  A gate MUST declare at least one pass criterion and one fail
+        criterion.
+
+  [G3]  ALL pass criteria MUST be satisfied before the stage is
+        considered complete.
+
+  [G4]  ANY fail criterion MUST block advancement and route to
+        FailureRouting.
+
+  [G5]  Gate criteria MUST be measurable — subjective criteria MUST NOT
+        be used as pass/fail gates.
+
+  [G6]  Gate criteria MAY be automated (test, lint, scan) or manual
+        (review, architecture check), but manual gates MUST be
+        explicitly marked as such.
+
+  [G7]  A stage MUST NOT be marked complete without its gate passing.
+
+  [G8]  Gate failure MUST route to the responsible owner, not to the
+        next stage.
+
+  [G9]  Security Gate (SC) failure at CRITICAL or HIGH MUST block VR
+        regardless of other gate results (bax chains/chains.sdd ->
+        SecurityGate, tasks/tasks.sdd -> SecuritySeverity).
+
+  [G10] VR Gate failure MUST trigger impact analysis before any
+        backward transition (bax chains/chains.sdd -> VerificationFailure,
+        transitions.sdd -> [TR10]).
+
+  [G11] A gate MAY be waived only by human decision (bax PROJECT.sdd ->
+        HumanDecision). AI MUST NOT waive a gate.
+
+  [G12] Gate criteria are defined at the system level here — project-
+        specific additions belong in project/flows.sdd or project/<domain>/
+        flows.sdd, not here (bax DoesNotOwn).
+
+
+State: +
+  

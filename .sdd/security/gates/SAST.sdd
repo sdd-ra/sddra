@@ -1,0 +1,59 @@
+﻿Gate: SAST
+
+Purpose:
+  Static Application Security Testing — analyze source code for
+  security vulnerabilities without executing it.
+
+AppliesTo:
+  - Backend code
+  - Frontend code
+  - Mobile code
+  - Infrastructure code
+
+When:
+  - All code changes
+  - Before QA stage
+  - Before SC stage
+
+Tools:
+  - Semgrep
+  - SonarQube
+  - Bandit (Python)
+  - ESLint security plugins
+  - Golangci-lint
+
+MustPass:
+  - No HIGH or CRITICAL vulnerabilities
+  - No hardcoded secrets
+  - No SQL injection patterns
+  - No command injection patterns
+  - No insecure deserialization
+  - No path traversal patterns
+  - No weak cryptography
+
+MayPass:
+  - MEDIUM vulnerabilities with accepted risk
+  - LOW vulnerabilities with accepted risk
+
+Block:
+  - CRITICAL vulnerability
+  - HIGH vulnerability
+  - Hardcoded secret
+  - SQL injection
+  - Command injection
+  - Insecure deserialization
+  - Path traversal
+  - Weak cryptography (MD5, SHA1 for security)
+
+OnFail:
+  - Finding created for each violation
+  - Task created for each finding
+  - Chain returns to responsible stage
+  - After fix, SAST re-runs
+
+Exceptions:
+  - Test code MAY contain intentional vulnerabilities (e.g., sql injection test cases)
+  - Generated code MAY be excluded with explicit decision
+
+State: +
+  

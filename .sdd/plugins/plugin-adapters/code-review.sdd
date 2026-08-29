@@ -1,0 +1,43 @@
+# Plugin: Code Review Adapter
+
+Purpose:
+  Adapt Superpowers requesting/receiving code review skills for SDDRA R1 arm.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\requesting-code-review\SKILL.md
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\receiving-code-review\SKILL.md
+
+Original:
+  Requesting: Pre-review checklist
+  Receiving: Responding to feedback
+
+Adapted for SDDRA:
+  Requesting -> AI presents code for human review:
+    Checklist:
+      - All tests pass
+      - Linter passes
+      - Decision requirements met
+      - Security review passed
+      - Documentation updated
+
+  Receiving -> Human feedback workflow:
+    Feedback types:
+      - APPROVED: proceed to next stage
+      - CHANGES_REQUESTED: create revision task
+      - REJECTED: archive task, create new decision
+
+  Integration:
+    - R1 arm handles review
+    - Feedback recorded in decisions/
+    - Revision tasks created in .sdd/project/tasks/
+
+Usage:
+  Referenced by:
+    .sdd/chains/arms/review.sdd
+
+  Triggers:
+    - C1 arm completes
+    - Code ready for review
+    - Human review requested
+
+State: Adapted

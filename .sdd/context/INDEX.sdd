@@ -1,0 +1,64 @@
+﻿Context: SDD
+
+Purpose:
+  Context Router and Token Optimization Engine. Defines how AI
+  selects minimum sufficient context for any task, request, or
+  mode. Prevents loading entire .sdd/ by using progressive context
+  loading, priority-based selection, and dependency-aware routing.
+
+Owns: ./
+
+ReadOrder:
+   1  @routing.sdd
+   2  @priorities.sdd
+   3  @budgets.sdd
+   4  @loading.sdd
+   5  @dependencies.sdd
+   6  @cache.sdd
+
+Modes:
+  TASK       — task-specific context
+  INCIDENT   — incident-specific context
+  SECURITY   — security-specific context
+  MANAGER    — manager/status context
+  DEVELOPER  — developer/implementation context
+  AUDIT      — full-project analysis (exception mode)
+
+Rules:
+  [CTX1]  AI MUST load minimum sufficient context for the current task.
+  [CTX2]  AI MUST NEVER load entire .sdd/ unless explicit audit,
+          architecture review, migration planning, or system-wide analysis.
+  [CTX3]  Context expansion MUST be progressive: P0 → P1 → P2 → ...
+  [CTX4]  Context confidence MUST be assessed before execution.
+  [CTX5]  Stale or invalidated context MUST be rebuilt, not reused.
+  [CTX6]  Context budget is determined by project level (L0-L5), not
+          by arbitrary limits.
+  [CTX7]  Context efficiency target: Relevant Context / Total Context > 80%.
+  [CTX8]  Context miss MUST trigger EXPAND_CONTEXT, not silent failure.
+  [CTX9]  Context audit metadata MUST be recorded for every session.
+  [CTX10] Full project analysis is an exception mode, not default.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    routing
+    priorities
+    budgets
+    loading
+    dependencies
+    cache
+
+Navigation:
+  Context: @context/INDEX.sdd
+  Routing: @context/routing.sdd
+  Priorities: @context/priorities.sdd
+  Budgets: @context/budgets.sdd
+  Loading: @context/loading.sdd
+  Dependencies: @context/dependencies.sdd
+  Cache: @context/cache.sdd
+  ProjectContext: @project/context/INDEX.sdd
+
+State: +
+  

@@ -10,6 +10,7 @@ Owns: ./
 ReadOrder:
    1 @INDEX.sdd
    2 @ROOT.sdd (universal rules)
+   3 @skill-execution.sdd (skill execution protocol)
 
 Rules:
   [PR1] Protocol rules are immutable unless explicitly changed.
@@ -18,5 +19,6 @@ Rules:
 
 Navigation:
   Root: @ROOT.sdd
+  SkillExecution: @skill-execution.sdd
 
 State: +

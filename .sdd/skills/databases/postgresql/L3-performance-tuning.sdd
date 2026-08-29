@@ -1,0 +1,102 @@
+﻿# PostgreSQL Performance Tuning
+
+Purpose:
+  PostgreSQL Performance Tuning
+
+Skill: PostgreSQL Performance Tuning
+
+ID:
+  SKILL-DB-PG-L3
+
+Domain:
+  databases/postgresql
+
+Use:
+  optimizing PostgreSQL database performance
+
+Apply:
+  senior
+  lead
+  dba
+  production
+
+Requires:
+  SKILL-DB-PG-L2
+  indexing
+  query-planning
+  vacuum-analyze
+
+Avoid:
+  over-indexing
+  full-table-scan
+  missing-vacuum
+  unnecessary-locks
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  postgresql
+  performance
+  tuning
+  index
+  query plan
+  vacuum
+  optimization
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/postgresql/L3-performance-tuning.md
+
+Evidence:
+  - PostgreSQL Performance Documentation
+  - PostgreSQL Index Types
+  - Production experience
+
+Rules:
+  [P1] Use `EXPLAIN ANALYZE` for query analysis.
+  [P2] Create indexes on frequently queried columns.
+  [P3] Use `UNIQUE` indexes for business keys.
+  [P4] Use `PARTITION` for large tables.
+  [P5] Use `VACUUM` and `ANALYZE` regularly.
+  [P6] Use connection pooling (PgBouncer).
+  [P7] Monitor with `pg_stat_statements`.
+  [P8] Use read replicas for read-heavy workloads.
+
+Pros:
+  - 10-100x query speedup
+  - Lower infrastructure costs
+  - Better user experience
+
+Cons:
+  - Index maintenance
+  - Storage overhead
+  - Write performance impact
+
+Alternatives:
+  - Redis (caching)
+  - Elasticsearch (search)
+  - CockroachDB (distributed)
+
+State: +
+

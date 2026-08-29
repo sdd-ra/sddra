@@ -1,0 +1,121 @@
+# Infrastructure Templates
+
+Purpose:
+  Predefined infrastructure templates for provisioning workflows.
+
+Skill: Infrastructure Templates
+
+ID:
+  PROMPT-INFRASTRUCTURE-TEMPLATES
+
+Domain:
+  prompts/provisioning
+
+Use:
+  predefined infrastructure templates for provisioning
+
+Apply:
+  provisioning
+  infrastructure-setup
+  deployment
+
+Requires:
+  terraform
+  docker
+  kubernetes
+
+Avoid:
+  hardcoded-values
+  public-networking
+  missing-security
+  over-provisioning
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  infrastructure templates
+  terraform
+  docker compose
+  kubernetes manifests
+  provisioning
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/prompts/infrastructure-templates.md
+
+Evidence:
+  - Terraform Registry
+  - Docker Documentation
+  - Production experience
+
+Rules:
+  [I1] All templates MUST use variables for configuration.
+  [I2] All templates MUST include security best practices.
+  [I3] All templates MUST be tested before use.
+  [I4] All templates MUST include monitoring setup.
+  [I5] All templates MUST be version controlled.
+
+Templates:
+  postgresql:
+    path: terraform/postgresql
+    components:
+      - RDS instance
+      - Parameter group
+      - Security group
+      - Backup policy
+  redis:
+    path: terraform/redis
+    components:
+      - ElastiCache cluster
+      - Security group
+      - Parameter group
+  kafka:
+    path: terraform/kafka
+    components:
+      - MSK cluster
+      - Security group
+      - Monitoring
+  kubernetes:
+    path: terraform/kubernetes
+    components:
+      - EKS/GKE/AKS cluster
+      - Node groups
+      - IAM roles
+      - Networking
+
+Pros:
+  - Consistent infrastructure
+  - Faster provisioning
+  - Reduced errors
+
+Cons:
+  - Template maintenance
+  - Less flexibility
+  - Learning curve
+
+Alternatives:
+  - Manual provisioning
+  - Console-based setup
+
+State: +

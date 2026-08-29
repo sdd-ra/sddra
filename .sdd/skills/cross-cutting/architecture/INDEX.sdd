@@ -1,0 +1,45 @@
+Skills: Architecture
+
+Purpose:
+  Architecture skills for system design and patterns.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @ddd.sdd
+   3  @clean-architecture.sdd
+   4  @microservices.sdd
+   5  @event-driven.sdd
+
+Modes:
+  LEARN    — learn architecture patterns
+  APPLY    — apply architecture to system
+  REVIEW   — review architecture skills
+  UPGRADE  — propose architecture skill upgrade
+
+Rules:
+  [A1]  Architecture MUST serve business goals.
+  [A2]  Simplicity over complexity.
+  [A3]  Evolution over big-bang.
+  [A4]  Trade-offs must be documented.
+
+Entry:
+  Read:
+    INDEX.sdd
+    ddd.sdd
+
+  Resolve:
+    ddd
+    clean-architecture
+    microservices
+    event-driven
+
+Navigation:
+  Architecture: @cross-cutting/architecture/INDEX.sdd
+  DDD: @cross-cutting/architecture/ddd.sdd
+  CleanArch: @cross-cutting/architecture/clean-architecture.sdd
+  Microservices: @cross-cutting/architecture/microservices.sdd
+  EventDriven: @cross-cutting/architecture/event-driven.sdd
+
+State: +

@@ -1,0 +1,101 @@
+﻿# Go Advanced Patterns
+
+Purpose:
+  Go Advanced Patterns
+
+Skill: Go Advanced Patterns
+
+ID:
+  SKILL-LANG-GO-L2
+
+Domain:
+  languages/go
+
+Use:
+  writing maintainable Go code with design patterns
+
+Apply:
+  intermediate
+  maintainability
+  code-review
+  refactoring
+
+Requires:
+  SKILL-LANG-GO-L1
+  go-1.21+
+  interfaces
+
+Avoid:
+  god-package
+  context-leak
+  naked-return-in-errors
+  anemic-domain
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go
+  golang
+  design patterns
+  OOP
+  interfaces
+  error handling
+  clean code
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/L2-patterns.md
+
+Evidence:
+  - Go Code Review Comments
+  - Go Proverbs
+  - Production experience
+
+Rules:
+  [G1] Package names MUST be short, lowercase, no underscores.
+  [G2] Function names MUST use camelCase.
+  [G3] Errors MUST be wrapped with context using `fmt.Errorf`.
+  [G4] Context MUST be passed as first argument to functions that need it.
+  [G5] Use interfaces for dependencies â€” accept interfaces, return structs.
+  [G6] Avoid naked returns in long functions.
+  [G7] Use meaningful variable names â€” avoid single letters except for indices.
+  [G8] Keep functions small and focused (under 50 lines).
+  [G9] Use `embed` for static assets instead of file systems.
+  [G10] Group related types and functions in the same package.
+
+Pros:
+  - Readable code
+  - Easy to test
+  - Maintainable
+
+Cons:
+  - Requires discipline
+  - Initial setup overhead
+
+Alternatives:
+  - Functional style
+  - Object-oriented style
+
+State: +
+

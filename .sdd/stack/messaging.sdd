@@ -1,0 +1,98 @@
+﻿Messaging: SDD
+
+Purpose:
+  Messaging technology catalog with comparison criteria, selection rules,
+  and integration patterns. Root stack/ defines reusable messaging knowledge;
+  project/stack/ stores the selected messaging for the project.
+
+Catalog:
+  RabbitMQ:
+    Type: Message Broker
+    Pros:
+      - Mature and stable
+      - Flexible routing
+      - Management UI
+      - Multi-protocol (AMQP, MQTT)
+    Cons:
+      - Lower throughput than Kafka
+      - Cluster complexity
+    BestFor:
+      - Task queues
+      - Microservice communication
+      - Reliable delivery
+    AvoidWhen:
+      - High-throughput event streaming
+    Patterns:
+      - Work queues
+      - Publish/Subscribe
+      - Routing
+      - RPC
+
+  Kafka:
+    Type: Event Streaming
+    Pros:
+      - High throughput
+      - Distributed
+      - Persistent log
+      - Stream processing
+    Cons:
+      - Complex operations
+      - Higher resource usage
+    BestFor:
+      - Event sourcing
+      - Log aggregation
+      - Real-time streaming
+    AvoidWhen:
+      - Simple task queues
+      - Low throughput
+
+  NATS:
+    Type: Message Broker
+    Pros:
+      - High performance
+      - Simple deployment
+      - JetStream for persistence
+      - Low latency
+    Cons:
+      - Smaller ecosystem
+      - Less enterprise adoption
+    BestFor:
+      - Microservice communication
+      - Real-time systems
+      - Cloud-native
+    AvoidWhen:
+      - Complex routing needs
+
+  AWS SQS/SNS:
+    Type: Managed Cloud
+    Pros:
+      - Fully managed
+      - No infrastructure
+      - AWS integration
+    Cons:
+      - Vendor lock-in
+      - Cost at scale
+    BestFor:
+      - AWS-native architectures
+      - Serverless
+    AvoidWhen:
+      - Multi-cloud
+
+SelectionRules:
+  - Throughput: message volume requirements
+  - Latency: delivery latency requirements
+  - Durability: persistence requirements
+  - Ordering: message ordering guarantees
+  - Complexity: operational overhead tolerance
+  - Integration: compatibility with existing stack
+
+TechnologyScore:
+  Throughput: 0-25
+  Latency: 0-20
+  Durability: 0-15
+  Ordering: 0-10
+  Complexity: 0-10
+  Integration: 0-20
+
+State: +
+  

@@ -1,0 +1,47 @@
+﻿Spec: Stage
+
+ID:
+  @TS
+
+Purpose:
+  Test specification and implementation.
+
+Entry:
+  implementation complete
+  applicable skills loaded
+
+Must:
+  write test specifications
+  implement unit tests
+  implement integration tests
+  implement e2e tests
+  verify coverage
+
+Exit:
+  tests written
+  tests pass
+  coverage meets threshold
+  test report generated
+
+OnFail:
+  << TS
+
+Next:
+  QA
+  SC
+
+Review:
+  @QA/test-strategy
+  @QA/automation
+
+Risk:
+  R1
+
+Skills:
+  @testing/unit
+  @testing/integration
+  @testing/e2e
+  @testing/bdd
+
+State: +
+  

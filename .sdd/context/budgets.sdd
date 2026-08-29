@@ -1,0 +1,48 @@
+﻿Budgets: Context
+
+Purpose:
+  Defines context budget by project level. Context budget determines
+  how much context can be loaded, not whether entire repository
+  should be loaded.
+
+Budgets:
+  L0:
+    context: minimal
+    max_skills: 2
+    max_docs: 1
+    max_source_files: 3
+  L1:
+    context: low
+    max_skills: 3
+    max_docs: 2
+    max_source_files: 5
+  L2:
+    context: medium
+    max_skills: 5
+    max_docs: 4
+    max_source_files: 10
+  L3:
+    context: high
+    max_skills: 8
+    max_docs: 6
+    max_source_files: 20
+  L4:
+    context: critical
+    max_skills: 12
+    max_docs: 10
+    max_source_files: 40
+  L5:
+    context: exhaustive
+    max_skills: 20
+    max_docs: 20
+    max_source_files: 100
+
+BudgetRules:
+  [BG1]  High budget does not mean load entire repository.
+  [BG2]  Budget is a limit, not a target.
+  [BG3]  If budget exceeded, AI MUST prioritize and summarize.
+  [BG4]  Budget exhaustion triggers progressive context loading,
+          not bulk loading.
+
+State: +
+  

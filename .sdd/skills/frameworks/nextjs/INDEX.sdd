@@ -1,0 +1,33 @@
+Skills: Next.js Framework
+
+Purpose:
+  Next.js framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Next.js fundamentals
+  APPLY    — apply Next.js patterns to code
+  REVIEW   — review Next.js skills
+  UPGRADE  — propose Next.js skill upgrade
+
+Rules:
+  [N1]  Use App Router for new projects.
+  [N2]  Use React Server Components.
+  [N3]  Use Server Actions for mutations.
+  [N4]  Optimize with built-in features.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  NextJS: @frameworks/nextjs/INDEX.sdd
+  NextJSL1: @frameworks/nextjs/L1-fundamentals.sdd
+
+State: +

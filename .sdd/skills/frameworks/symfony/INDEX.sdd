@@ -1,0 +1,33 @@
+Skills: Symfony Framework
+
+Purpose:
+  Symfony framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Symfony fundamentals
+  APPLY    — apply Symfony patterns to code
+  REVIEW   — review Symfony skills
+  UPGRADE  — propose Symfony skill upgrade
+
+Rules:
+  [S1]  Use bundles for modularity.
+  [S2]  Use Doctrine ORM.
+  [S3]  Use dependency injection.
+  [S4]  Follow Symfony best practices.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Symfony: @frameworks/symfony/INDEX.sdd
+  SymfonyL1: @frameworks/symfony/L1-fundamentals.sdd
+
+State: +

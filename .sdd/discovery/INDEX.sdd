@@ -1,0 +1,65 @@
+﻿Discovery: SDD
+
+Purpose:
+  Project Discovery and Reverse-Engineering Engine. Enables AI to
+  understand existing (brownfield) projects by analyzing source
+  code and inferring architecture, stack, domains, tests, security,
+  infrastructure, and documentation. Discovery NEVER modifies
+  source code — it only observes, infers, validates, and models.
+
+Owns: ./
+
+ReadOrder:
+   1  @rules.sdd
+   2  @scanners.sdd
+   3  @detectors.sdd
+   4  @mapping.sdd
+   5  @confidence.sdd
+   6  @conflicts.sdd
+   7  @baseline.sdd
+
+Modes:
+  GREENFIELD — new project from business input
+  BROWNFIELD — existing project from source code
+  HYBRID — existing project with new requirements
+
+Rules:
+  [DSC1]  Discovery MUST analyze, not modify source code.
+  [DSC2]  Discovery results MUST be classified as FACT, INFERRED,
+          UNKNOWN, or CONFLICT.
+  [DSC3]  Confidence level MUST accompany every inference.
+  [DSC4]  Discovery MUST NOT overwrite .sdd without human/agent decision.
+  [DSC5]  Discovery MUST detect drift between .sdd and source.
+  [DSC6]  Discovery MUST produce actionable backlog, not just report.
+  [DSC7]  Discovery MUST respect "Analyze ≠ Modify" principle.
+  [DSC8]  Discovery baseline MUST be created for future comparison.
+  [DSC9]  Discovery MUST detect circular dependencies.
+  [DSC10] Discovery MUST identify security gaps.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    rules
+    scanners
+    detectors
+    mapping
+    confidence
+    conflicts
+    baseline
+
+Navigation:
+  Discovery: @discovery/INDEX.sdd
+  Rules: @discovery/rules.sdd
+  Scanners: @discovery/scanners.sdd
+  Detectors: @discovery/detectors.sdd
+  Mapping: @discovery/mapping.sdd
+  Confidence: @discovery/confidence.sdd
+  Conflicts: @discovery/conflicts.sdd
+  Baseline: @discovery/baseline.sdd
+  ProjectMode: @project/mode.sdd
+  HumanDiscovery: @docs/discovery/project-analysis.md
+
+State: +
+  

@@ -1,0 +1,40 @@
+# Skills: DevOps
+
+Purpose:
+  DevOps skills for SDDRA system. These skills define how the system
+  is built, tested, deployed, and maintained. All DevOps practices
+  are encoded as immutable skills.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @git/INDEX.sdd
+   3  @ci-cd/INDEX.sdd
+   4  @security/INDEX.sdd
+   5  @testing/INDEX.sdd
+
+Rules:
+  [D1] All git operations MUST follow semantic commits.
+  [D2] All commits MUST pass pre-commit hooks.
+  [D3] All code MUST pass local validation before push.
+  [D4] All security tests MUST pass before merge.
+  [D5] All changes MUST be traceable to decisions.
+  [D6] .sdd/ changes require owner approval.
+  [D7] project/ changes require human review.
+  [D8] Production deployments require human approval.
+
+Navigation:
+  Git: @git/INDEX.sdd
+  CiCd: @ci-cd/INDEX.sdd
+  Security: @security/INDEX.sdd
+  Testing: @testing/INDEX.sdd
+  SemanticCommits: @git/semantic-commits.sdd
+  Branching: @git/branching.sdd
+  Hooks: @git/hooks.sdd
+  Pipeline: @ci-cd/pipeline.sdd
+  LocalValidation: @ci-cd/local-validation.sdd
+  SecurityTesting: @security/testing.sdd
+  TestAutomation: @testing/automation.sdd
+
+State: +

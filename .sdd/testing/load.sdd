@@ -1,0 +1,69 @@
+﻿Load: SDD
+
+Purpose:
+  Load testing — verify system behavior under expected and peak load.
+  Load tests simulate real user traffic to identify breaking points,
+  resource exhaustion, and degradation patterns.
+
+Owns: ./
+
+Scope:
+  Expected load (normal traffic)
+  Peak load (traffic spikes)
+  Stress testing (breaking point)
+  Endurance testing (sustained load)
+  Spike testing (sudden traffic increases)
+
+Principles:
+  Test with realistic traffic patterns
+  Test with production-like data volume
+  Monitor all system resources
+  Identify bottlenecks before they cause outages
+  Load tests are not just "make it fast" — they verify stability
+
+Structure:
+  Every load test MUST:
+    define load profile (users, duration, ramp-up)
+    define success criteria
+    monitor system resources
+    produce actionable results
+
+Frameworks:
+  k6
+  Gatling
+  JMeter
+  Locust
+  Artillery
+
+LoadProfiles:
+  Expected:
+    users: expected concurrent users
+    duration: 10-30 minutes
+    ramp-up: gradual
+
+  Peak:
+    users: 2-3x expected
+    duration: 5-15 minutes
+    ramp-up: moderate
+
+  Stress:
+    users: increasing until failure
+    duration: until system breaks
+    ramp-up: gradual increase
+
+  Endurance:
+    users: expected load
+    duration: 4-24 hours
+    ramp-up: immediate
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  Performance: @performance.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

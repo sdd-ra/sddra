@@ -1,0 +1,58 @@
+﻿Unit: SDD
+
+Purpose:
+  Unit testing — verify individual components in isolation. Unit tests
+  are the foundation of the test pyramid: fast, cheap, and provide
+  immediate feedback.
+
+Owns: ./
+
+Scope:
+  Single function, method, class, or component
+  Isolated from external dependencies
+  No database, network, or file system access (unless mocked)
+
+Principles:
+  One assertion per test (preferred)
+  Test behavior, not implementation
+  Fast execution (< 1s per test)
+  Deterministic (no flaky tests)
+  Independent (no test order dependency)
+
+Structure:
+  Every unit test MUST:
+    test a single unit of behavior
+    be independent of other tests
+    clean up after itself
+    fail with a clear message
+
+  Unit test naming:
+    <Function>_<Condition>_<ExpectedResult>
+    e.g. Refund_AlreadyExists_ReturnsExistingRefund
+
+Frameworks:
+  Go: testing, testify, gomock
+  Laravel: PHPUnit, Mockery
+  Node: Jest, Vitest, Sinon
+  React: Jest, React Testing Library
+  Vue: Vitest, Vue Test Utils
+  Angular: Jasmine, TestBed
+
+Coverage:
+  Minimum coverage: project-defined (typically 80%)
+  Critical path coverage: 100%
+  AI MUST NOT use coverage as the sole quality metric
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

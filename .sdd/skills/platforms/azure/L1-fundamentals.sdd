@@ -1,0 +1,100 @@
+﻿# Azure Cloud
+
+Purpose:
+  Azure Cloud
+
+Skill: Azure Cloud
+
+ID:
+  SKILL-PLAT-AZURE-L1
+
+Domain:
+  platforms/azure
+
+Use:
+  deploying applications on Microsoft Azure
+
+Apply:
+  beginner
+  learning
+  cloud
+  enterprise
+
+Requires:
+  azure-account
+  cloud-fundamentals
+
+Avoid:
+  hardcoded-credentials
+  public-resources
+  over-provisioning
+  missing-monitoring
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  azure
+  microsoft cloud
+  cloud
+  aks
+  app service
+  azure sql
+  functions
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/azure/L1-fundamentals.md
+
+Evidence:
+  - Azure Documentation
+  - Microsoft Cloud Adoption Framework
+  - Production experience
+
+Rules:
+  [A1] Use Azure AD for identity.
+  [A2] Use Blob Storage for objects.
+  [A3] Use Azure SQL for managed databases.
+  [A4] Use AKS for Kubernetes.
+  [A5] Use App Service for web apps.
+  [A6] Use Functions for serverless.
+  [A7] Use Azure Monitor for observability.
+  [A8] Use Key Vault for secrets.
+
+Pros:
+  - Enterprise integration
+  - Hybrid cloud
+  - Microsoft ecosystem
+
+Cons:
+  - Complex pricing
+  - Portal usability
+  - Regional availability
+
+Alternatives:
+  - AWS
+  - GCP
+  - DigitalOcean
+
+State: +
+

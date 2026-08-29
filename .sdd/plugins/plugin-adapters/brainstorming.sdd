@@ -1,0 +1,39 @@
+# Plugin: Brainstorming Adapter
+
+Purpose:
+  Adapt Superpowers brainstorming skill for SDDRA P1 arm.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\brainstorming\SKILL.md
+
+Original:
+  Three paths: Spike, Bounded, Architectural
+  Human approval gate before implementation
+
+Adapted for SDDRA:
+  Paths map to chain types:
+    Spike -> P1 (quick analysis)
+    Bounded -> D1 (docs generation)
+    Architectural -> D1 + S1 (full docs + sdd)
+
+  Approval gate maps to human gates:
+    P1->D1: docs approval
+    D1->S1: sdd approval
+    S1->C1: code approval
+
+  Red Flags table adapted for SDDRA context:
+    - "This is too simple to need .sdd/" -> False, minimum .sdd required
+    - "I'll skip decision ledger" -> False, decisions required
+    - "Token budget is too tight" -> False, minimum context required
+
+Usage:
+  Referenced by:
+    .sdd/chains/arms/prompt.sdd
+    .sdd/chains/arms/docs.sdd
+
+  Triggers:
+    - Human submits prompt
+    - Classification needed
+    - Design refinement needed
+
+State: Adapted

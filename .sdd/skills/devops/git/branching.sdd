@@ -1,0 +1,58 @@
+# Skill: Git Branching Strategy
+
+Purpose:
+  Define branching strategy for SDDRA system. Ensures consistent
+  branch naming, organization, and workflow.
+
+ID: SKILL-DEVOPS-GIT-BRANCHING
+
+Domain: devops/git
+
+Level: L1
+
+Status: STABLE
+
+Use:
+  - Creating feature branches
+  - Creating bug fix branches
+  - Creating hotfix branches
+  - Merging strategies
+
+Input:
+  - Task type (feature, fix, hotfix, docs, refactor)
+  - Task scope (sdd, project, chains, etc.)
+  - Task description
+
+Output:
+  - Branch name
+  - Base branch
+  - Merge strategy
+
+Execute:
+  1. Determine task type
+  2. Determine task scope
+  3. Generate branch name: `<type>(<scope>): <description>`
+  4. Select base branch:
+     - feat/fix/docs/refactor/chore -> develop
+     - hotfix -> master
+  5. Create branch from base
+  6. Return branch info
+
+Validation:
+  - Branch name follows semantic format
+  - Branch created from correct base
+  - No direct commits to master
+
+Examples:
+  feat(sdd): add circuit breaker -> develop
+  fix(chains): resolve D0 loop -> develop
+  hotfix(security): patch vulnerability -> master
+  docs(readme): update getting started -> develop
+
+Avoid:
+  - Direct commits to master
+  - Branch names without scope
+  - Multiple tasks in one branch
+  - Long-lived feature branches
+
+State: +

@@ -1,0 +1,49 @@
+# Plugin: Systematic Debugging Adapter
+
+Purpose:
+  Adapt Superpowers systematic debugging skill for SDDRA bugfix/hotfix chains.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\systematic-debugging\SKILL.md
+
+Original:
+  Four phases:
+    1. Root Cause Investigation
+    2. Hypothesis Formation
+    3. Fix Implementation
+    4. Verification
+
+  Iron Law: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+
+Adapted for SDDRA:
+  Mapped to bugfix/hotfix chain stages:
+    Phase 1 (Root Cause) -> AR (Architecture) stage
+    Phase 2 (Hypothesis) -> AR stage continuation
+    Phase 3 (Fix) -> BE (Backend) stage
+    Phase 4 (Verify) -> VR (Verify) stage
+
+  Iron Law adapted:
+    NO CODE CHANGE WITHOUT ROOT CAUSE INVESTIGATION FIRST
+
+  Integration:
+    - AR stage in bugfix chain enhanced with 4-phase investigation
+    - Decision record created for root cause
+    - Verification criteria from investigation
+
+  Evidence gathering:
+    - Error logs from .sdd/project/observability/
+    - Recent changes from .sdd/decisions/
+    - Dependency graph from .sdd/project/dependencies/
+
+Usage:
+  Referenced by:
+    .sdd/chains/bugfix.sdd (AR stage)
+    .sdd/chains/hotfix.sdd (AR stage)
+    .sdd/chains/incident.sdd (AR stage)
+
+  Triggers:
+    - Bug report
+    - Test failure
+    - Production incident
+
+State: Adapted

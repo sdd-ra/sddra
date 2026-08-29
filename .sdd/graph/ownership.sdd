@@ -1,0 +1,55 @@
+﻿Ownership: Graph
+
+Purpose:
+  Defines ownership model for graph nodes.
+
+OwnerRoles:
+  BUSINESS:
+    Requirements, business rules
+  BACKEND:
+    Backend code, APIs
+  FRONTEND:
+    Frontend code, UI
+  MOBILE:
+    Mobile code
+  QA:
+    Tests, BDD
+  SECURITY:
+    Security controls, findings
+  DEVOPS:
+    Infrastructure, CI/CD
+  DBA:
+    Database, migrations
+  SUPPORT:
+    Runbooks, incidents
+
+OwnershipRules:
+  [OW1]  Every node SHOULD have an owner.
+  [OW2]  Owner is responsible for accuracy.
+  [OW3]  Ownership enables routing: "Who should handle this?"
+  [OW4]  Secondary owners MAY be assigned.
+
+IncidentRouting:
+  Incident: INC-<ID>
+    ↓
+  Task: TASK-<ID>
+    ↓
+  Domain: <DOMAIN>
+    ↓
+  Primary: <LAYER>
+  Secondary: <LAYER>
+  Infrastructure: <LAYER>
+
+DocumentationRouting:
+  Source: ./<layer>/<domain>/<module>/<artifact>
+    ↓
+  Domain: <Domain>
+    ↓
+  Docs:
+    - docs/<layer>/<domain>.md (<AUDIENCE>)
+    - docs/<layer>/<domain>.md (<AUDIENCE>)
+    - docs/<layer>/<domain>.md (<AUDIENCE>)
+    - docs/<layer>/<domain>.md (<AUDIENCE>)
+
+State: +
+  

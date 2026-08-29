@@ -1,0 +1,34 @@
+﻿Module: Schema
+
+Purpose:
+  Defines schema for module entities.
+
+Required:
+  @module <id>
+  name <name>
+  path <source-path>
+
+Optional:
+  domain <domain>
+  owner <role>
+  reviewer <role>
+  security <role>
+  description <description>
+  dependencies:
+    - <module-id>
+  diagrams:
+    - <diagram-id>
+  docs:
+    - <doc-path>
+
+Example:
+  @module MOD-PAY
+  name payments
+  path BE/internal/payments
+  domain payments
+  owner backend
+  reviewer qa
+  security security
+
+State: +
+  

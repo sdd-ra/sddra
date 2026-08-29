@@ -1,0 +1,52 @@
+﻿Capabilities: Agent
+
+Purpose:
+  Defines agent technical capabilities. Capability is what agent
+  CAN do technically; permission is whether it MAY do it under
+  current policy.
+
+Capabilities:
+  READ:
+    Description: Read files
+    Risk: R0
+  WRITE:
+    Description: Create/update files
+    Risk: R1
+  DELETE:
+    Description: Delete files
+    Risk: R2
+  MOVE:
+    Description: Move/rename files
+    Risk: R1
+  EXECUTE:
+    Description: Run commands
+    Risk: R1
+  TEST:
+    Description: Run tests
+    Risk: R1
+  BUILD:
+    Description: Build artifacts
+    Risk: R1
+  DOCKER:
+    Description: Docker operations
+    Risk: R2
+  GIT:
+    Description: Git operations
+    Risk: R1
+  DATABASE:
+    Description: Database operations
+    Risk: R2
+  NETWORK:
+    Description: Network operations
+    Risk: R2
+  DEPLOY:
+    Description: Deployment operations
+    Risk: R4
+
+CapabilityRules:
+  [CAP1]  Capability is technical ability, not permission.
+  [CAP2]  Permission policy determines whether capability may be used.
+  [CAP3]  Risk level is inherent to capability, not context.
+
+State: +
+  

@@ -1,0 +1,62 @@
+Workflow: Docs to Project Converter
+
+Purpose:
+  Convert approved human-readable docs/ into AI-executable .sdd/project/ structure.
+
+Input:
+  Approved docs/ (all .md files)
+  .sdd/skills/ (skill catalog for reference)
+
+Output:
+  .sdd/project/PROJECT.sdd
+  .sdd/project/architecture/system.sdd
+  .sdd/project/stack/backend.sdd
+  .sdd/project/stack/frontend.sdd
+  .sdd/project/stack/database.sdd
+  .sdd/project/domains.sdd
+  .sdd/project/modules.sdd
+  .sdd/project/flows.sdd
+  .sdd/project/dependencies.sdd
+  .sdd/project/tasks/ (generated tasks)
+  .sdd/project/decisions/ (approved decisions)
+
+Steps:
+  1. PARSE_DOCS:
+     - Read all approved docs/
+     - Extract: tech_stack, architecture, domains, modules
+     - Extract: decisions, constraints, goals, scale
+
+  2. RESOLVE_TECH_STACK:
+     - Map chosen technologies to .sdd/skills/ paths
+     - Validate all skills exist
+     - Assign competency levels (L1-L5)
+
+  3. GENERATE_PROJECT_MODEL:
+     - Create PROJECT.sdd with tech_stack, scale, goals
+     - Create stack/*.sdd for each layer
+     - Create domains.sdd with business domains
+     - Create modules.sdd with technical modules
+     - Create flows.sdd with execution chains
+
+  4. GENERATE_TASKS:
+     - Break down into executable tasks
+     - Assign chains to tasks
+     - Create .sdd/project/tasks/*.sdd
+
+  5. VALIDATE:
+     - Run .sdd linter
+     - Validate all references resolve
+     - Check policy compliance
+
+  6. HUMAN_GATE:
+     - Present .sdd/project/ for final approval
+     - Human confirms before execution
+
+Rules:
+  [D2P1] All docs requirements MUST be in .sdd/project/.
+  [D2P2] All references MUST resolve to existing skills.
+  [D2P3] Tech stack MUST be consistent across all files.
+  [D2P4] Tasks MUST be executable and testable.
+  [D2P5] Human MUST approve .sdd/project/ before execution.
+
+State: +

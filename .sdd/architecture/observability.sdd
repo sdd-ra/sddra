@@ -1,0 +1,428 @@
+﻿Observability: SDD
+
+Purpose:
+  Define observability requirements for both the system being built
+  and the AI execution system itself. Observability covers logs,
+  metrics, traces, events, audit, decision provenance, cost tracking,
+  and quality analysis for AI-driven development.
+
+Owns: ./
+
+Scope:
+  System observability (logs, metrics, traces, monitoring)
+  AI execution observability (decision trace, context trace, policy trace)
+  Cost tracking and token efficiency
+  Tool and agent performance metrics
+  Skill performance metrics
+  Event architecture (event bus, envelope, versioning)
+  Audit and compliance
+  Data classification and secret redaction
+  Budget policy and alerting
+  Root cause analysis and failure taxonomy
+
+Principles:
+  Observability MUST be designed into the system, not added later.
+  Logs, metrics, and traces are complementary, not interchangeable.
+  Alert on symptoms, not causes.
+  Every service MUST expose health checks.
+  AI decision provenance MUST be reproducible.
+  Sensitive data MUST be redacted in all observability outputs.
+  Observability data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+
+SystemObservability:
+  Logs:
+    levels:
+      ERROR: system errors requiring immediate attention
+      WARN: potential problems, degraded functionality
+      INFO: significant state changes, business events
+      DEBUG: detailed diagnostic information
+
+    requirements:
+      structured: JSON format with timestamp, level, service, trace_id
+      context: include request_id, user_id (anonymized), operation
+      correlation: trace_id MUST link logs to traces
+      sensitive_data: MUST NOT log PII, secrets, tokens
+      volume: log volume MUST be bounded and monitored
+
+    retention:
+      hot: 7 days (searchable)
+      warm: 30 days (slower search)
+      cold: 1 year (compliance archive)
+
+  Metrics:
+    types:
+      counter: cumulative value (requests_total, errors_total)
+      gauge: point-in-time value (queue_depth, active_connections)
+      histogram: distribution (request_duration_seconds)
+      summary: streaming quantiles
+
+    golden_signals:
+      latency: request duration (p50, p95, p99)
+      traffic: requests per second
+      errors: error rate (4xx, 5xx)
+      saturation: resource utilization (CPU, memory, connections)
+
+    retention:
+      high resolution (1s): 1 hour
+      medium resolution (1m): 7 days
+      low resolution (5m): 90 days
+
+  Traces:
+    requirements:
+      every request MUST generate trace_id
+      trace_id MUST propagate across service boundaries
+      spans MUST include service name, operation, start/end time
+      spans MUST link to parent span_id
+      sampling rate MUST be configurable
+
+    sampling:
+      production: 1-10% of requests
+      error traces: 100% of failed requests
+
+  Monitoring:
+    health_checks:
+      liveness: process alive, basic functionality
+      readiness: dependencies available, cache warm
+      startup: migrations complete, cache populated
+
+    dashboards:
+      service_dashboard: golden signals, SLO compliance, recent deploys
+      infrastructure_dashboard: CPU, memory, disk, network
+      business_dashboard: key business metrics, user activity
+
+  Alerting:
+    principles:
+      alert_on_symptoms: SLO at risk, user experience degraded
+      actionable: every alert has runbook and owner
+      noise_reduction: group, deduplicate, suppress during deploys
+
+    severity:
+      page: SLO at risk, service down, data loss, security incident
+      warn: degraded performance, approaching SLO
+      info: deploy completed, capacity planning
+
+AIObservability:
+  DecisionTrace:
+    definition:
+      record of why AI made a specific decision
+
+    structure:
+      decision:
+        type: DATABASE_SELECTION
+        candidates: [PostgreSQL, MySQL, MongoDB]
+        selected: PostgreSQL
+        constraints: ACID required, relational model required
+        source: ADR-012
+        factors: [relational_data, transaction_support, existing_stack]
+
+    rule: system records decision summary, not full chain-of-thought
+    rule: decision trace enables reproducibility
+
+  ContextTrace:
+    definition:
+      record of what context was used for a task
+
+    structure:
+      context:
+        task: TASK-100
+        files: [user.go, repository.go]
+        docs: [auth.md]
+        decisions: [ADR-12]
+        policies: [SEC-01]
+
+    rule: context trace is recorded with execution
+
+  PolicyTrace:
+    definition:
+      record of which policies were evaluated and their decisions
+
+    structure:
+      policy_snapshot: POLICY-SNAPSHOT-20
+      decisions:
+        - policy: DEV-WRITE-01
+          result: ALLOW
+          reason: resource_in_write_scope
+
+  ContextSnapshot:
+    definition:
+      immutable snapshot of context at execution time
+
+    structure:
+      snapshot_id: CTX-100
+      execution: EXEC-500
+      sdd_version: 15
+      source_revision: abc123
+      items: [API-10, DOMAIN-AUTH, ARCH-5, auth/login.go]
+
+  PolicySnapshot:
+    definition:
+      immutable snapshot of active policies at execution time
+
+    structure:
+      snapshot_id: POLICY-SNAPSHOT-20
+      execution: EXEC-500
+      policies: [DEV-WRITE-01, SEC-AUTH-01, ...]
+
+  AIExecutionFingerprint:
+    definition:
+      hash of all execution dependencies for reproducibility
+
+    structure:
+      fingerprint:
+        agent_version: 3.2.1
+        skill_version: 2.1
+        prompt_version: 7
+        model_version: 1.5
+        context_snapshot: CTX-100
+        policy_snapshot: POLICY-SNAPSHOT-20
+
+CostTracking:
+  metrics:
+    input_tokens
+    output_tokens
+    total_tokens
+    estimated_cost
+
+  example:
+    EXEC-500:
+      input = 120k
+      output = 18k
+      cost = $0.82
+
+  cost_per_task:
+    TASK-AUTH: average_cost = $0.31
+    TASK-PAYMENT: average_cost = $2.80
+
+  cost_per_agent:
+    AGENT-CODER: $500/month
+    AGENT-QA: $180/month
+    AGENT-ARCHITECT: $220/month
+
+TokenEfficiency:
+  metric:
+    task_success / token_usage
+
+  rule: high token usage for simple tasks indicates skill/context problems
+
+ToolPerformance:
+  metrics:
+    tool_calls_total
+    tool_failures
+    average_latency
+    timeout_rate
+    retry_rate
+
+  example:
+    go_test: failure_rate = 12%
+
+AgentPerformance:
+  metrics:
+    success_rate
+    failure_rate
+    average_steps
+    average_tokens
+    average_cost
+    average_duration
+    retry_rate
+
+SkillPerformance:
+  metrics:
+    success_rate
+    average_duration
+    failure_rate
+
+  example:
+    SKILL-REPOSITORY-PATTERN: success_rate = 96%
+    SKILL-LEGACY-MIGRATION: success_rate = 61%
+
+  rule: skill performance drives improvement decisions
+
+ObservabilityFeedbackLoop:
+  flow:
+    Execution -> Observability -> Metrics -> Analysis -> Skill Improvement -> New Version -> Execution
+
+  rule: system can self-improve based on observability
+  rule: auto-changes require governance
+
+DataClassification:
+  levels:
+    PUBLIC: no restrictions
+    INTERNAL: internal use only
+    CONFIDENTIAL: restricted access
+    SECRET: highly sensitive
+
+  rule: all observability data MUST be classified
+  rule: SECRET data is never exposed in logs or traces
+
+SecretRedaction:
+  rule: secrets MUST be redacted in all outputs
+  example:
+    Authorization: Bearer eyJ... -> Authorization: [REDACTED]
+    DATABASE_URL=postgres://... -> DATABASE_URL=[REDACTED]
+
+  rule: observability system must not create security problems
+
+BudgetPolicy:
+  structure:
+    budget:
+      max_tokens: 200000
+      max_cost: $2
+      max_duration: 30m
+      max_tool_calls: 100
+
+  rule: budget exhaustion triggers PAUSE or DENY
+  rule: budget policy is enforced by policy engine
+
+EventArchitecture:
+  EventEnvelope:
+    structure:
+      event:
+        id: string
+        type: string
+        version: string
+        timestamp: ISO 8601
+        correlation_id: string
+        causation_id: string
+        actor: string
+        source: string
+        payload: object
+
+  EventVersioning:
+    rule: event schemas are versioned
+    example:
+      ToolCalled.v1
+      ToolCalled.v2
+
+    rule: consumers MUST handle old event versions
+
+  EventProducer:
+    examples:
+      Execution Engine: ExecutionStarted
+      Tool Runner: ToolCompleted
+
+  EventConsumer:
+    examples:
+      Observability Service: metrics, traces
+      Audit Service: audit log
+      Notification Service: alerts
+
+  EventBus:
+    purpose: decouple producers from consumers
+    properties:
+      ordering: per execution_id
+      delivery: at-least-once
+      retry: with backoff
+      dead-letter: DLQ for failed events
+      idempotency: event_id based deduplication
+      partitioning: by execution_id
+      retention: configurable
+
+  DuplicateEvents:
+    rule: consumers MUST be idempotent
+    rule: deduplication by event_id
+
+  DeadLetterQueue:
+    rule: failed events go to DLQ
+    rule: DLQ is monitored and reprocessed
+
+  Ordering:
+    rule: ordering is required per execution_id
+    rule: global ordering is NOT required (too expensive)
+
+  EventCategories:
+    DomainEvents:
+      UserCreated, PaymentCompleted, OrderCancelled
+
+    SystemEvents:
+      ExecutionStarted, ToolCalled, ToolFailed, AgentAssigned, PolicyDenied
+
+EndToEndTrace:
+  structure:
+    REQ-100
+      ↓
+    TASK-200
+      ↓
+    EXEC-300
+      ↓
+    ├── AGENT-10
+      │     ├── SKILL-20
+      │     ├── CTX-30
+      │     └── PROMPT-40
+      ├── POLICY-50
+      ├── ACTION-60
+      │     └── TOOL-70
+      ├── VALIDATION-80
+      └── ARTIFACT-90
+
+  rule: every node has ID, Version, Timestamp, Actor, Parent, Correlation
+
+Provenance:
+  definition:
+    record of how a result was produced
+
+  example:
+    Artifact-90:
+      created_by: EXEC-300
+      derived_from: TASK-200
+      implements: REQ-100
+
+RootCauseAnalysis:
+  flow:
+    Task failed
+      -> trace back through execution
+      -> identify root cause
+      -> example: root_cause = TOOL_TIMEOUT
+
+FailureTaxonomy:
+  categories:
+    LLM_FAILURE
+    TOOL_FAILURE
+    NETWORK_FAILURE
+    POLICY_DENIED
+    VALIDATION_FAILURE
+    TIMEOUT
+    CONTEXT_FAILURE
+    DEPENDENCY_FAILURE
+    USER_INPUT_REQUIRED
+    SYSTEM_FAILURE
+
+  rule: failures are categorized, not just logged as errors
+
+Alerting:
+  ai_specific_alerts:
+    - agent_retry_rate > 5
+    - token_usage > expected_budget
+    - execution_failure_rate > 20%
+    - production_policy_denials > threshold
+
+  rule: alerts are actionable and have owners
+
+Navigation:
+  Architecture: @../architecture/INDEX.sdd
+  Runtime: @../runtime/INDEX.sdd
+  Events: @../runtime/events.sdd
+  Execution: @../runtime/execution.sdd
+  Workflow: @../workflow/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
+
+Rules:
+  [OBS-01] Observability MUST be designed into the system, not added later.
+  [OBS-02] AI decision provenance MUST be reproducible.
+  [OBS-03] Sensitive data MUST be redacted in all observability outputs.
+  [OBS-04] Observability data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+  [OBS-05] Events are immutable and append-only.
+  [OBS-06] Event ordering is guaranteed per execution_id.
+  [OBS-07] Event consumers MUST be idempotent.
+  [OBS-08] Decision trace records summary and factors, not full chain-of-thought.
+  [OBS-09] Cost and token metrics are required for AI operations.
+  [OBS-10] Skill performance metrics drive improvement decisions.
+  [OBS-11] Failure taxonomy enables better alerting and analysis.
+  [OBS-12] Budget policy is enforced during execution.
+  [OBS-13] End-to-end trace links Requirement to Artifact.
+  [OBS-14] Root cause analysis traces failures through execution chain.
+  [OBS-15] Agent MUST NOT add signatures or sign-offs to observability outputs.
+  [OBS-16] Agent MUST NOT use emojis, icons, or decorative symbols in observability output headers or titles — reserved for human use only.
+
+State: +
+
+  

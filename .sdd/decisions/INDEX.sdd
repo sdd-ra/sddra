@@ -1,0 +1,22 @@
+# Decisions: Root Index
+
+Purpose:
+  Central decision ledger. Every human and AI decision gets a written record here.
+
+Files:
+  schema: @schema.sdd
+  template: @template.sdd
+  workflow: @workflow.sdd
+  rules: @rules.sdd
+  project: @project/INDEX.sdd
+
+Types:
+  architectural: Architecture decisions
+  technical: Tech stack choices
+  security: Security decisions
+  business: Business rule decisions
+  operational: Deployment/ops decisions
+  human: Human approvals/rejections
+  ai: AI proposals/decisions
+
+State: +

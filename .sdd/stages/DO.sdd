@@ -1,0 +1,50 @@
+﻿Spec: Stage
+
+ID:
+  @DO
+
+Purpose:
+  Deployment and DevOps validation.
+
+Entry:
+  SC passed
+  deployment plan ready
+  applicable skills loaded
+
+Must:
+  build artifact
+  run deployment
+  verify infrastructure
+  check monitoring
+  validate rollback plan
+
+Exit:
+  deployment successful
+  health checks pass
+  monitoring active
+  rollback tested
+
+OnFail:
+  classify failure
+    infrastructure -> DO
+    code defect -> owner stage
+  << DO
+
+Next:
+  VR
+
+Review:
+  @DO/deployment
+  @DO/monitoring
+
+Risk:
+  R2
+
+Skills:
+  @devops/docker
+  @devops/ci-cd
+  @devops/deployment
+  @devops/rollback
+
+State: +
+  

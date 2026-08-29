@@ -1,0 +1,98 @@
+﻿# Encryption
+
+Purpose:
+  Encryption
+
+Skill: Encryption
+
+ID:
+  SKILL-CROSS-SECURITY-ENCRYPTION
+
+Domain:
+  cross-cutting/security
+
+Use:
+  implementing encryption for data protection
+
+Apply:
+  intermediate
+  senior
+  security
+  compliance
+
+Requires:
+  security-fundamentals
+  cryptography-basics
+
+Avoid:
+  custom-crypto
+  weak-algorithms
+  hardcoded-keys
+  missing-key-rotation
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  HIGH
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  encryption
+  cryptography
+  tls
+  aes
+  rsa
+  key management
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/security/encryption.md
+
+Evidence:
+  - OWASP Cryptographic Storage
+  - NIST SP 800-57
+  - Production experience
+
+Rules:
+  [E1] Use TLS 1.3 for data in transit.
+  [E2] Use AES-256-GCM for data at rest.
+  [E3] Use RSA-2048 or ECC for asymmetric encryption.
+  [E4] Use HMAC for message integrity.
+  [E5] Store keys in HSM or key management service.
+  [E6] Rotate keys regularly.
+  [E7] Never roll your own crypto.
+  [E8] Use authenticated encryption (Encrypt-then-MAC).
+
+Pros:
+  - Data protection
+  - Compliance
+  - Trust
+
+Cons:
+  - Performance overhead
+  - Key management
+  - Complexity
+
+Alternatives:
+  - TLS (simpler)
+  - Managed encryption (cloud)
+
+State: +
+

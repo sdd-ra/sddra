@@ -1,0 +1,33 @@
+Skills: NATS
+
+Purpose:
+  NATS messaging skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn NATS fundamentals
+  APPLY    — apply NATS to messaging
+  REVIEW   — review NATS skills
+  UPGRADE  — propose NATS skill upgrade
+
+Rules:
+  [N1]  Use subjects for addressing.
+  [N2]  Use pub/sub for fanout.
+  [N3]  Use request/reply for RPC.
+  [N4]  Use JetStream for persistence.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  NATS: @messaging/nats/INDEX.sdd
+  NATSL1: @messaging/nats/L1-fundamentals.sdd
+
+State: +

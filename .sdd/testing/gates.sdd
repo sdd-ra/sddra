@@ -1,0 +1,181 @@
+﻿TestGates: SDD
+
+Purpose:
+  Define test gate criteria. Every task MUST pass required test gates
+  before advancing to DONE. Test gates are checkpoints, not separate
+  stages — they are evaluated within the QA stage.
+
+Owns: ./
+
+Gates:
+
+  BDD:
+    must_pass:
+      - all BDD scenarios pass
+      - acceptance criteria met
+      - no pending scenarios
+    may_pass:
+      - skipped scenarios with approved reason
+    block:
+      - failing BDD scenario for critical behavior
+    owner: QA/Business
+
+  Unit:
+    must_pass:
+      - all unit tests pass
+      - coverage >= project threshold
+      - no flaky tests
+    may_pass:
+      - known flaky tests with waiver
+    block:
+      - failing unit test for critical path
+    owner: Implementer
+
+  Integration:
+    must_pass:
+      - all integration tests pass
+      - no broken contracts
+      - database migrations work
+    may_pass:
+      - environment-specific failures with approved exception
+    block:
+      - failing integration test for critical path
+    owner: Implementer/QA
+
+  API:
+    must_pass:
+      - all API tests pass
+      - contract tests pass
+      - no breaking changes
+    may_pass:
+      - versioned breaking change with migration path
+    block:
+      - breaking change without versioning
+      - failing API test for public endpoint
+    owner: QA/BE
+
+  Contract:
+    must_pass:
+      - all contract tests pass
+      - consumer contracts verified
+      - provider contracts verified
+    may_pass:
+      - pending consumer update with approved plan
+    block:
+      - broken contract without migration plan
+    owner: QA/BE
+
+  E2E:
+    must_pass:
+      - all E2E tests pass
+      - critical user flows work
+      - no regression in critical paths
+    may_pass:
+      - non-critical E2E failures with approved exception
+    block:
+      - failing E2E for critical user flow
+    owner: QA
+
+  UI:
+    must_pass:
+      - all UI tests pass
+      - visual regression within threshold
+      - accessibility checks pass
+    may_pass:
+      - minor visual differences with approved exception
+    block:
+      - broken UI for critical user flow
+      - accessibility violation for critical path
+    owner: FE/QA
+
+  Mobile:
+    must_pass:
+      - all mobile tests pass
+      - offline behavior works
+      - push notifications work
+    may_pass:
+      - platform-specific issues with approved exception
+    block:
+      - broken mobile flow for critical feature
+    owner: MD/QA
+
+  Performance:
+    must_pass:
+      - response time within NFR
+      - throughput meets target
+      - resource usage within limits
+    may_pass:
+      - performance degradation with approved exception
+    block:
+      - response time > 2x NFR
+      - throughput < 50% of target
+    owner: QA/DO
+
+  Load:
+    must_pass:
+      - system handles expected load
+      - no resource exhaustion
+      - graceful degradation
+    may_pass:
+      - load issues with approved scaling plan
+    block:
+      - system unavailable under expected load
+      - resource exhaustion under normal load
+    owner: QA/DO
+
+  Security:
+    must_pass:
+      - all security tests pass
+      - no critical/high vulnerabilities
+      - security acceptance criteria met
+    may_pass:
+      - medium findings with accepted risk
+    block:
+      - critical/high vulnerability
+      - security acceptance criteria not met
+    owner: SC/QA
+
+GateCalculation:
+  Overall gate status:
+    PASS: all required gates pass
+    CONDITIONAL: some gates have accepted exceptions
+    FAIL: any required gate fails
+
+  A task MUST NOT advance to DONE while any required gate is FAIL.
+  CONDITIONAL gates require explicit human approval.
+
+Waiver:
+  A test MAY be waived with:
+    Waiver ID: WAIV-001
+    Reason: <why waived>
+    Owner: <who approved>
+    ApprovedBy: human
+    Expires: <date>
+    Compensating control: <what replaces the test>
+
+  Waived tests are tracked in @project/testing/exceptions/.
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  Performance: @performance.sdd
+  Load: @load.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectFailures: @project/testing/failures/
+  ProjectExceptions: @project/testing/exceptions/
+
+State: +
+  Note:
+  Test gates are evaluated within the QA stage of the workflow.
+  They are not separate stages themselves. A task advances from
+  QA to SC only when all required test gates pass.

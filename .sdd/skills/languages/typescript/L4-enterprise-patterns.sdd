@@ -1,0 +1,99 @@
+﻿# TypeScript Enterprise Patterns
+
+Purpose:
+  TypeScript Enterprise Patterns
+
+Skill: TypeScript Enterprise Patterns
+
+ID:
+  SKILL-LANG-TS-L4
+
+Domain:
+  languages/typescript
+
+Use:
+  implementing enterprise TypeScript architecture patterns
+
+Apply:
+  lead
+  architect
+  large-scale
+  production
+
+Requires:
+  SKILL-LANG-TS-L3
+  nestjs-or-enterprise-framework
+  microservices-patterns
+
+Avoid:
+  over-engineering
+  premature-abstraction
+  god-service
+  tight-coupling
+
+Level:
+  L4
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  typescript
+  enterprise
+  nestjs
+  microservices
+  clean architecture
+  DDD
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/typescript/L4-enterprise-patterns.md
+
+Evidence:
+  - NestJS Documentation
+  - Clean Architecture in TypeScript
+  - Production experience
+
+Rules:
+  [T1] Use NestJS for structured enterprise applications.
+  [T2] Use Clean Architecture with dependency inversion.
+  [T3] Use DDD patterns (Entity, Value Object, Repository).
+  [T4] Use CQRS for complex domain logic.
+  [T5] Use Event Sourcing for audit trails.
+  [T6] Use message brokers (Kafka/NATS) for async communication.
+  [T7] Implement distributed tracing with OpenTelemetry.
+  [T8] Use containerization (Docker) for deployment.
+
+Pros:
+  - Scalable architecture
+  - Type safety at scale
+  - Full-stack consistency
+
+Cons:
+  - Operational complexity
+  - Learning curve
+  - Tooling overhead
+
+Alternatives:
+  - Go (simpler, faster)
+  - Java (enterprise standard)
+
+State: +
+

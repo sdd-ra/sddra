@@ -1,0 +1,91 @@
+﻿Index: Workflow
+
+Purpose:
+  The .sdd system's workflow engine entry point — SDLC + STLC
+   integrating engine. This file defines how workflow will be applied,
+   which files will be read in what order, and how workflow connects to
+   other .sdd components.
+
+  Workflow combines two engines:
+    SDLC — software development lifecycle (AN > AR > DB > BE > API >
+           FE > MD > QA > SC > DO > VR)
+    STLC — software testing lifecycle (T0 > T1 > T2 > T3 > T4 > T5 >
+           T6 > T7)
+
+
+Owns:
+  ./
+
+Scope:
+  Stage registry
+  Stage transitions
+  Gate criteria
+  Test levels
+  State machine
+  Task queue engine
+  Runtime events
+
+
+DoesNotOwn:
+  Project-specific flows (bax project/flows.sdd)
+  Project-specific chains (bax chains/chains.sdd)
+  Engineering skills (bax skills/)
+  Task instances (bax tasks/)
+  Project architecture (bax project/architecture.sdd)
+
+
+ReadOrder:
+  1  @./stages.sdd        — formal stage registry
+  2  @./transitions.sdd   — default and conditional transitions
+  3  @./gates.sdd         — gate criteria for each stage
+  4  @./testing.sdd       — test levels T0-T7, test pyramid
+  5  @./state.sdd         — task state machine (STATE, not STAGE)
+  6  @../runtime/events.sdd — runtime event log format
+
+
+Navigation:
+  Stages:      @./stages.sdd
+  Transitions: @./transitions.sdd
+  Gates:       @./gates.sdd
+  Testing:     @./testing.sdd
+  State:       @./state.sdd
+  Events:      @../runtime/events.sdd
+  Chains:      @../chains/
+  Tasks:       @../tasks/
+  Skills:      @../skills/
+  State:       @../state/state.sdd
+
+
+Rules:
+
+  [W1]  AI MUST load workflow/INDEX.sdd before reading any workflow
+        component — never read workflow files blindly.
+
+  [W2]  A stage MUST be declared in stages.sdd before it can appear in
+        any chain or transition.
+
+  [W3]  A transition MUST reference valid source and target stages.
+
+  [W4]  A gate MUST declare pass/fail criteria before the stage can
+        advance.
+
+  [W5]  State (workflow/state.sdd) and Stage (stages.sdd) are distinct
+        concepts — a task at stage BE may be in state BLOCKED.
+
+  [W6]  A task MUST NOT advance past a gate without passing it.
+
+  [W7]  Test levels (T0-T7) are independent of stages — a stage MAY
+        activate multiple test levels.
+
+  [W8]  The task queue engine (NextAction) operates on task state, not
+        stage — next valid transition determines next action.
+
+  [W9]  Runtime events (events.sdd) MUST be appended, never modified —
+        history is append-only.
+
+  [W10] A workflow change (new stage, new transition, new gate) requires
+        human approval if it affects an existing project's chains.
+
+
+State: +
+  

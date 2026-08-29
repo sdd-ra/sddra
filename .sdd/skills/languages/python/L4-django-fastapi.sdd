@@ -1,0 +1,102 @@
+﻿# Python Django / FastAPI
+
+Purpose:
+  Python Django / FastAPI
+
+Skill: Python Django / FastAPI
+
+ID:
+  SKILL-LANG-PYTHON-L4
+
+Domain:
+  languages/python
+
+Use:
+  building production-grade Python web applications
+
+Apply:
+  lead
+  architect
+  web-api
+  production
+
+Requires:
+  SKILL-LANG-PYTHON-L3
+  django-or-fastapi
+  sqlalchemy
+  pydantic
+
+Avoid:
+  fat-controller
+  raw-sql
+  missing-validation
+  tight-coupling
+
+Level:
+  L4
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  python
+  django
+  fastapi
+  web framework
+  rest api
+  ORM
+  pydantic
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/python/L4-django-fastapi.md
+
+Evidence:
+  - Django Documentation
+  - FastAPI Documentation
+  - Production experience
+
+Rules:
+  [P1] Use FastAPI for new APIs, Django for full-stack apps.
+  [P2] Use Pydantic for request/response validation.
+  [P3] Use SQLAlchemy 2.0+ for database access.
+  [P4] Use dependency injection for service layer.
+  [P5] Use Celery for background task processing.
+  [P6] Use Redis for caching and session storage.
+  [P7] Implement JWT authentication with proper expiry.
+  [P8] Use Alembic for database migrations.
+
+Pros:
+  - Rapid development
+  - Excellent documentation
+  - Strong ecosystem
+
+Cons:
+  - Performance overhead
+  - Async complexity in Django
+  - Migration management
+
+Alternatives:
+  - Go (performance)
+  - Node.js (full-stack JS)
+  - Spring Boot (enterprise)
+
+State: +
+

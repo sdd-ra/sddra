@@ -1,0 +1,42 @@
+Skills: Security
+
+Purpose:
+  Security skills for authentication, authorization, and encryption.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @authentication.sdd
+   3  @authorization.sdd
+   4  @encryption.sdd
+
+Modes:
+  LEARN    — learn security fundamentals
+  APPLY    — apply security to code
+  REVIEW   — review security skills
+  UPGRADE  — propose security skill upgrade
+
+Rules:
+  [S1]  Security MUST be applied at all layers.
+  [S2]  Never trust client input.
+  [S3]  Use defense in depth.
+  [S4]  Follow principle of least privilege.
+
+Entry:
+  Read:
+    INDEX.sdd
+    authentication.sdd
+
+  Resolve:
+    authentication
+    authorization
+    encryption
+
+Navigation:
+  Security: @cross-cutting/security/INDEX.sdd
+  Authentication: @cross-cutting/security/authentication.sdd
+  Authorization: @cross-cutting/security/authorization.sdd
+  Encryption: @cross-cutting/security/encryption.sdd
+
+State: +

@@ -1,0 +1,54 @@
+Prompts: Role Assignment
+
+Purpose:
+  Map functional roles to tech stack and layers based on prompt input.
+  Enables human approval of proposed role assignments.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @role-mapper.sdd
+   3 @provisioning-trigger.sdd
+   4 @human-approval.sdd
+
+Roles:
+  BACKEND:
+    Languages: go, python, java, csharp, rust, nodejs
+    Frameworks: gin, echo, spring, django, fastapi, express, nestjs
+    Databases: postgresql, mysql, mongodb, redis
+
+  FRONTEND:
+    Languages: javascript, typescript
+    Frameworks: react, vue, angular, svelte, nextjs
+    Databases: (none)
+
+  MOBILE:
+    Languages: dart, swift, kotlin
+    Frameworks: flutter, react-native, swiftui, compose
+    Databases: (none)
+
+  DATABASE:
+    Databases: postgresql, mysql, mongodb, redis, elasticsearch, cassandra
+
+  QA:
+    Tools: jest, pytest, selenium, cypress, playwright, jmeter
+    Frameworks: (testing frameworks)
+
+  DEVOPS:
+    Platforms: docker, kubernetes, aws, azure, gcp, terraform
+    Tools: jenkins, github-actions, gitlab-ci, ansible
+
+  SECURITY:
+    Topics: authentication, authorization, encryption, owasp
+
+  ARCHITECT:
+    Topics: system-design, microservices, monolith, serverless
+
+Rules:
+  [RA1] Every tech stack element MUST map to exactly one role.
+  [RA2] Role assignments MUST be proposed to human for approval.
+  [RA3] Provisioning triggers MUST require human approval.
+  [RA4] Role changes MUST be recorded in decisions/.
+
+State: +

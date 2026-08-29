@@ -1,0 +1,33 @@
+Skills: Microsoft Azure
+
+Purpose:
+  Microsoft Azure skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Azure fundamentals
+  APPLY    — apply Azure patterns to cloud
+  REVIEW   — review Azure skills
+  UPGRADE  — propose Azure skill upgrade
+
+Rules:
+  [A1]  Use Azure AD for identity.
+  [A2]  Use Blob Storage for objects.
+  [A3]  Use AKS for Kubernetes.
+  [A4]  Use Key Vault for secrets.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Azure: @platforms/azure/INDEX.sdd
+  AzureL1: @platforms/azure/L1-fundamentals.sdd
+
+State: +

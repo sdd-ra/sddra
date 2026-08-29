@@ -1,0 +1,142 @@
+﻿Transitions: SDD
+
+Purpose:
+  Define default and conditional transitions between workflow stages.
+  A transition is a directed edge from one stage to another, with
+  conditions that must be satisfied before the transition is allowed.
+
+  This file is the authoritative transition list — chains/chains.sdd ->
+  DefaultFlow is a reference order, not the transition engine.
+
+
+Owns:
+  ./
+
+Scope:
+  Stage transitions
+  Transition conditions
+  Conditional transitions
+  Default transitions
+  Transition rules
+
+
+DoesNotOwn:
+  Project-specific flows (bax project/flows.sdd)
+  Project-specific chains (bax chains/chains.sdd)
+  Engineering skills (bax skills/)
+  Task instances (bax tasks/)
+  Project architecture (bax project/architecture.sdd)
+
+
+DefaultFlow:
+  AN > AR > DB > BE > API > FE > MD > QA > SC > DO > VR
+
+  This is the reference order for a full-feature chain. Real chains
+  skip/reorder/add stages per their own dependencies (bax chains/
+  chains.sdd -> DefaultFlow, ProjectFlow, FlowResolution).
+
+
+Transitions:
+
+  Default transitions (always allowed when source stage is complete):
+
+    AN     -> AR
+    AR     -> BDD
+    AR     -> DB
+    BDD    -> ARCH
+    ARCH   -> DB
+    DB     -> BE
+    BE     -> API
+    API    -> FE
+    FE     -> MD
+    MD     -> QA
+    BE     -> QA
+    API    -> QA
+    FE     -> QA
+    MD     -> QA
+    QA     -> SC
+    SC     -> DO
+    DO     -> VR
+    VR     -> DONE
+
+  Conditional transitions (allowed only when condition is met):
+
+    AN     -> IMPACT    (when existing work is modified)
+    IMPACT -> AR         (when architecture decisions are needed)
+    IMPACT -> BE         (when bugfix has no architecture impact)
+    AR     -> IMPACT    (when architecture decision reveals new impact)
+    QA     -> BE         (when QA fails and failure is a BE defect)
+    QA     -> API        (when QA fails and failure is an API defect)
+    QA     -> FE         (when QA fails and failure is an FE defect)
+    QA     -> MD         (when QA fails and failure is an MD defect)
+    QA     -> DB         (when QA fails and failure is a DB defect)
+    QA     -> ARCH       (when QA fails and failure is architectural)
+    SC     -> BE         (when security finding requires BE fix)
+    SC     -> API        (when security finding requires API fix)
+    SC     -> DB         (when security finding requires DB fix)
+    SC     -> ARCH       (when security finding requires architecture change)
+    VR     -> BE         (when verification fails and failure is BE)
+    VR     -> API        (when verification fails and failure is API)
+    VR     -> FE         (when verification fails and failure is FE)
+    VR     -> QA         (when verification fails and failure is QA)
+    DO     -> QA         (when deployment reveals test gap)
+    ANY    -> BLOCKED    (when dependency is unresolved or blocker exists)
+    BLOCKED -> ANY       (when blocker is resolved, return to previous stage)
+
+
+TransitionConditions:
+
+  A transition is allowed only when ALL of the following are true:
+    - Source stage has passed its gate (bax gates.sdd)
+    - All dependencies of the source stage are satisfied
+    - No blocker exists for the target stage
+    - The target stage is in the task's ImpactMatrix with `+` or `?`
+
+  AI MUST NOT force a transition that does not satisfy its conditions.
+
+
+StageSkip:
+
+  A stage MAY be skipped when:
+    - It is not in the task's ImpactMatrix (marked `-`)
+    - It is explicitly marked optional in the chain definition
+    - Human has approved the skip
+
+  AI MUST NOT silently skip a required stage (bax chains/chains.sdd ->
+  [C7], tasks/tasks.sdd -> [T12]).
+
+
+Rules:
+
+  [TR1]  Every transition MUST have a declared source and target stage.
+
+  [TR2]  Default transitions are the minimum required flow — conditional
+         transitions expand the flow, they do not replace it.
+
+  [TR3]  A task MUST NOT advance to a stage whose gate has not been
+         defined (bax gates.sdd).
+
+  [TR4]  A transition MUST NOT be taken if the source stage's output
+         has not passed validation.
+
+  [TR5]  Conditional transitions MUST declare their activation condition
+         explicitly — AI MUST NOT invent conditions.
+
+  [TR6]  A stage MAY have multiple outgoing transitions, but each MUST
+         be distinguishable by its condition.
+
+  [TR7]  A stage MUST have at least one outgoing transition.
+
+  [TR8]  Transition order is determined by dependency resolution, not
+         by the order listed in this file.
+
+  [TR9]  A BLOCKED state does not create a new transition — it suspends
+         the current stage until the blocker is resolved, then the
+         original transition continues.
+
+  [TR10] VR failure MUST trigger impact analysis before any backward
+         transition is taken (bax chains/chains.sdd -> VerificationFailure).
+
+
+State: +
+  

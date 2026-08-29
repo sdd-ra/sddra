@@ -1,0 +1,99 @@
+﻿# Domain-Driven Design
+
+Purpose:
+  Domain-Driven Design
+
+Skill: Domain-Driven Design
+
+ID:
+  SKILL-CROSS-ARCH-DDD
+
+Domain:
+  cross-cutting/architecture
+
+Use:
+  modeling complex business logic with DDD
+
+Apply:
+  senior
+  lead
+  architect
+  complex-domain
+
+Requires:
+  clean-architecture
+  oop-fundamentals
+
+Avoid:
+  anemic-domain
+  god-aggregate
+  repository-leak
+  over-abstraction
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  ddd
+  domain-driven design
+  aggregate
+  entity
+  value object
+  bounded context
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/architecture/ddd.md
+
+Evidence:
+  - Domain-Driven Design by Eric Evans
+  - Implementing DDD by Vaughn Vernon
+  - Production experience
+
+Rules:
+  [D1] Entities MUST have identity.
+  [D2] Value objects MUST be immutable.
+  [D3] Aggregates MUST protect invariants.
+  [D4] Repositories MUST return aggregates, not entities.
+  [D5] Domain events MUST describe something that happened.
+  [D6] Bounded contexts MUST be explicit.
+  [D7] Domain services MUST be stateless.
+  [D8] Factories MUST encapsulate complex creation logic.
+
+Pros:
+  - Clear business logic
+  - Testable domains
+  - Evolvable architecture
+
+Cons:
+  - Learning curve
+  - Requires domain expertise
+  - Over-engineering risk
+
+Alternatives:
+  - Transaction script
+  - Anemic domain model
+  - Clean architecture
+
+State: +
+

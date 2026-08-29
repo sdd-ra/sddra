@@ -1,0 +1,101 @@
+﻿# Next.js Framework
+
+Purpose:
+  Next.js Framework
+
+Skill: Next.js Framework
+
+ID:
+  SKILL-FW-NEXTJS-L1
+
+Domain:
+  frameworks/nextjs
+
+Use:
+  building full-stack web applications with Next.js
+
+Apply:
+  beginner
+  intermediate
+  full-stack
+  production
+
+Requires:
+  react-18+
+  typescript
+  nodejs-18+
+
+Avoid:
+  client-side-overuse
+  missing-metadata
+  ignoring-seo
+  over-fetching
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  next.js
+  nextjs
+  react
+  full-stack
+  ssr
+  ssg
+  react server components
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/nextjs/L1-fundamentals.md
+
+Evidence:
+  - Next.js Documentation
+  - Vercel Documentation
+  - Production experience
+
+Rules:
+  [N1] Use App Router for new projects.
+  [N2] Use React Server Components.
+  [N3] Use Server Actions for mutations.
+  [N4] Use `metadata` API for SEO.
+  [N5] Use `generateStaticParams` for static pages.
+  [N6] Use middleware for edge logic.
+  [N7] Use `next/image` for optimized images.
+  [N8] Use `next/font` for optimized fonts.
+
+Pros:
+  - Full-stack React
+  - Excellent SEO
+  - Vercel integration
+
+Cons:
+  - Complexity
+  - Vendor lock-in
+  - Learning curve
+
+Alternatives:
+  - Remix
+  - Astro
+  - Gatsby
+
+State: +
+

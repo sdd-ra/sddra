@@ -1,0 +1,35 @@
+Skills: C++ Language
+
+Purpose:
+  C++ programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-modern-patterns.sdd
+
+Modes:
+  LEARN    — learn C++ fundamentals
+  APPLY    — apply C++ patterns to code
+  REVIEW   — review C++ skills
+  UPGRADE  — propose C++ skill upgrade
+
+Rules:
+  [C1]  Use modern C++ (C++20).
+  [C2]  Use smart pointers.
+  [C3]  Avoid raw pointers.
+  [C4]  Follow C++ Core Guidelines.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  CPP: @languages/cpp/INDEX.sdd
+  CPPL1: @languages/cpp/L1-fundamentals.sdd
+  CPPL2: @languages/cpp/L2-modern-patterns.sdd
+
+State: +

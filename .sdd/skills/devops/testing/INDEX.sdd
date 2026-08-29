@@ -1,0 +1,23 @@
+# Skills: Testing
+
+Purpose:
+  Testing skills for SDDRA system. Defines test automation,
+  coverage requirements, and testing standards.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @automation.sdd
+
+Rules:
+  [T1] All code MUST have tests.
+  [T2] Test coverage MUST be >= 80%.
+  [T3] All tests MUST pass before push.
+  [T4] No flaky tests allowed.
+  [T5] Critical paths MUST have integration tests.
+
+Navigation:
+  Automation: @automation.sdd
+
+State: +

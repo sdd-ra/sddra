@@ -1,0 +1,33 @@
+Skills: Svelte Framework
+
+Purpose:
+  Svelte framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Svelte fundamentals
+  APPLY    — apply Svelte patterns to code
+  REVIEW   — review Svelte skills
+  UPGRADE  — propose Svelte skill upgrade
+
+Rules:
+  [S1]  Use SvelteKit for full-stack.
+  [S2]  Use reactive declarations.
+  [S3]  Use stores for state.
+  [S4]  Follow Svelte conventions.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Svelte: @frameworks/svelte/INDEX.sdd
+  SvelteL1: @frameworks/svelte/L1-fundamentals.sdd
+
+State: +

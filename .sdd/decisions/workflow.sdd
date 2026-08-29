@@ -1,0 +1,67 @@
+# Decision Workflow
+
+Purpose:
+  Lifecycle of a decision from proposal to verification.
+
+States:
+  proposed:
+    Next: review|rejected
+    Who: AI or Human
+
+  review:
+    Next: approved|rejected|revised
+    Who: Human or Agent
+    Gate: human approval required for architectural/security/business
+
+  approved:
+    Next: implemented
+    Who: Human
+    Gate: approval recorded
+
+  rejected:
+    Next: archived
+    Who: Human
+    Gate: feedback recorded
+
+  revised:
+    Next: review
+    Who: AI
+    Gate: revision feedback incorporated
+
+  implemented:
+    Next: verified
+    Who: AI or Human
+    Gate: tasks completed
+
+  verified:
+    Next: closed
+    Who: Human or QA
+    Gate: verification criteria met
+
+  superseded:
+    Next: archived
+    Who: Human
+    Gate: new decision approved
+
+  archived:
+    Final state
+
+Flow:
+  proposed -> review -> approved -> implemented -> verified -> closed
+                   -> rejected -> archived
+                   -> revised -> review
+                   -> superseded -> archived
+
+Rules:
+  [DW1] Every significant change MUST have a decision record.
+  [DW2] Architectural decisions MUST be human-approved.
+  [DW3] Security decisions MUST be human-approved.
+  [DW4] AI MAY propose technical decisions.
+  [DW5] Human MAY override AI decisions.
+  [DW6] Superseded decisions MUST reference new decision.
+  [DW7] Conflicting decisions MUST be resolved before implementation.
+  [DW8] Decision rationale MUST be recorded.
+  [DW9] Implementation MUST reference decision ID.
+  [DW10] Verification MUST reference decision criteria.
+
+State: +

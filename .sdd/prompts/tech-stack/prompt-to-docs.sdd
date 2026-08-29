@@ -1,0 +1,68 @@
+Workflow: Prompt to Docs Generator
+
+Purpose:
+  Takes a simple human prompt and generates
+  human-readable architecture docs in docs/.
+
+Input:
+  Simple text prompt
+  Example:
+    "Build an education platform for schools.
+     Video conferencing, payments, AI search should be included.
+     20K users in first 10 months, 1M in 2 years."
+
+Output:
+  docs/00-about/project.md
+  docs/10-business/requirements.md
+  docs/20-architecture/overview.md
+  docs/30-backend/overview.md
+  docs/40-frontend/overview.md
+  docs/60-database/overview.md
+  docs/70-api/overview.md
+  docs/100-devops/overview.md
+  docs/110-infrastructure/overview.md
+
+Steps:
+  1. PARSE_PROMPT:
+      - Extract: purpose, users, features, constraints
+      - Extract: scale (users, traffic)
+      - Extract: mentioned technologies
+      - Extract: non-functional requirements
+
+  2. ANALYZE_REQUIREMENTS:
+      - Map features to domains
+      - Identify core vs nice-to-have
+      - Identify technical challenges
+
+  3. SELECT_TECH_STACK:
+      - Choose backend language/framework
+      - Choose frontend framework
+      - Choose database
+      - Choose infrastructure
+      - Justify each choice in simple language
+
+  4. DESIGN_ARCHITECTURE:
+      - Choose architecture style (monolith/microservices)
+      - Define domain boundaries
+      - Define module structure
+
+  5. GENERATE_DOCS:
+      - Write each doc file in simple English
+      - Include decision rationale
+      - Include alternatives considered
+      - Include risk assessment
+
+  6. PRESENT_FOR_REVIEW:
+      - Show docs to human
+      - Collect feedback
+      - Iterate until approved
+
+Rules:
+  [PG1] Docs MUST be in simple English, no jargon.
+  [PG2] Every tech choice MUST have rationale.
+  [PG3] Every architecture decision MUST have alternatives.
+  [PG4] Scale requirements MUST drive infrastructure choices.
+  [PG5] Security and compliance MUST be addressed.
+  [PG6] Human MUST approve before .sdd/project/ generation.
+
+State: +

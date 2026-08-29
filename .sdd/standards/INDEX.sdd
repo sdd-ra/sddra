@@ -1,0 +1,59 @@
+﻿Standards: SDD
+
+Purpose:
+  .sdd system standards — naming, levels, states, relations,
+  conventions. These are the global rules that all .sdd files
+  must follow.
+
+Owns: ./
+
+ReadOrder:
+   1  @naming.sdd
+   2  @levels.sdd
+   3  @states.sdd
+   4  @relations.sdd
+   5  @conventions.sdd
+
+Modes:
+  PARSE   — parse and validate .sdd files
+  VALIDATE — validate against schemas
+  REBUILD — rebuild INDEX from entities
+
+Rules:
+  [ST1]  .sdd files are AI engineering knowledge, not documentation.
+  [ST2]  Code is source-of-truth for implementation; .sdd is source-of-truth for engineering knowledge.
+  [ST3]  docs/ is human explanation layer.
+  [ST4]  DO NOT DUPLICATE KNOWLEDGE. REFERENCE IT.
+  [ST5]  IDs are immutable; titles can change.
+  [ST6]  INDEX files are derived metadata, not source of truth.
+  [ST7]  Schema validation MUST run on every .sdd file load.
+  [ST8]  Circular dependencies MUST be detected.
+  [ST9]  Orphaned entities MUST be detected.
+  [ST10] Duplicate IDs MUST be detected.
+  [ST11] Stale references MUST be detected.
+  [ST12] .sdd files MUST be created only for knowledge entities, not every code file.
+  [ST13] Documentation level: none, summary, detailed, operational.
+  [ST14] Diagrams are .mmd files, not images.
+  [ST15] Context loading priority: L0-L6.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    naming
+    levels
+    states
+    relations
+    conventions
+
+Navigation:
+  Standards: @standards/INDEX.sdd
+  Naming: @standards/naming.sdd
+  Levels: @standards/levels.sdd
+  States: @standards/states.sdd
+  Relations: @standards/relations.sdd
+  Conventions: @standards/conventions.sdd
+
+State: +
+  

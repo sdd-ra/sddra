@@ -1,0 +1,75 @@
+﻿Dependencies: Context
+
+Purpose:
+  Defines context dependency graph, invalidation rules, and
+  context fingerprinting.
+
+ContextDependencyGraph:
+  TASK-1023
+    ↓
+  PAYMENTS
+    ↓
+  REFUND
+    ├── service.go
+    ├── repository.go
+    ├── refund_test.go
+    ├── idempotency.sdd
+    └── payment-security.sdd
+
+ContextFingerprint:
+  Format:
+    CTX-XXXX
+
+  Metadata:
+    project: <name>
+    task: <id>
+    skills: <count>
+    docs: <count>
+    source: <count>
+    workflow: <stage>
+
+ContextInvalidation:
+  Trigger:
+    - Source code change
+    - .sdd change
+    - Architecture change
+    - Skill update
+
+  Process:
+    SOURCE CHANGE
+      ↓
+    DEPENDENCY GRAPH
+      ↓
+    INVALIDATE
+      ↓
+    REBUILD CONTEXT
+
+InvalidationScope:
+  repository.go changed:
+    - repository.sdd
+    - refund docs
+    - refund tests
+    - dependent tasks
+
+ContextAudit:
+  Format:
+    CTX-<ID>
+
+  Loaded:
+    - TASK-<ID>
+    - TASK-<ID>
+    - <layer>/<domain>/<module>/<artifact>
+    - <test-path>
+    - <skill>.sdd
+    - <skill>.sdd
+
+  Excluded:
+    - frontend
+    - mobile
+    - unrelated domains
+
+  Note:
+    Full prompt/history NOT stored (token/storage saving).
+
+State: +
+  

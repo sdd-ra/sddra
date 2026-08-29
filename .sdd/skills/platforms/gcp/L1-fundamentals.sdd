@@ -1,0 +1,100 @@
+﻿# Google Cloud Platform
+
+Purpose:
+  Google Cloud Platform
+
+Skill: Google Cloud Platform
+
+ID:
+  SKILL-PLAT-GCP-L1
+
+Domain:
+  platforms/gcp
+
+Use:
+  deploying applications on Google Cloud Platform
+
+Apply:
+  beginner
+  learning
+  cloud
+  production
+
+Requires:
+  gcp-account
+  cloud-fundamentals
+
+Avoid:
+  hardcoded-credentials
+  public-buckets
+  over-provisioning
+  missing-monitoring
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  gcp
+  google cloud
+  cloud
+  gke
+  cloud run
+  bigquery
+  vertex ai
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/gcp/L1-fundamentals.md
+
+Evidence:
+  - GCP Documentation
+  - Google Cloud Architecture Framework
+  - Production experience
+
+Rules:
+  [G1] Use IAM for access control.
+  [G2] Use Cloud Storage for object storage.
+  [G3] Use Cloud SQL for managed databases.
+  [G4] Use GKE for Kubernetes.
+  [G5] Use Cloud Run for serverless containers.
+  [G6] Use BigQuery for analytics.
+  [G7] Use Cloud Monitoring for observability.
+  [G8] Use service accounts for authentication.
+
+Pros:
+  - Strong data/AI services
+  - Global network
+  - Kubernetes expertise
+
+Cons:
+  - Complex pricing
+  - Smaller ecosystem than AWS
+  - Regional availability
+
+Alternatives:
+  - AWS
+  - Azure
+  - DigitalOcean
+
+State: +
+

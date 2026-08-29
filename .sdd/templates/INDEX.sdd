@@ -1,0 +1,52 @@
+﻿Index: Templates
+
+Purpose:
+  Reusable project structure templates. These templates are consumed by
+  the project-structure skill to generate concrete project/ directories
+  from human prompts. Templates are NOT project-specific â€” they are
+  generic scaffolding instantiated per project.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd (this file)
+   2  @_sdd/docs/00-about/project.template.md
+   3  @_sdd/docs/20-architecture/overview.template.md
+   4  @_sdd/decisions/DEC-000.template.sdd
+   5  @_sdd/tasks/TASK-000.template.sdd
+   6  @_sdd/stack/LAYER.template.sdd
+   7  @_sdd/modules/module.template.sdd
+   8  @_sdd/modules/api.template.sdd
+   9  @_sdd/modules/db.template.sdd
+   10 @_sdd/modules/cases.template.sdd
+   11 @_sdd/modules/flow.template.sdd
+   12 @_sdd/architecture/system.template.md
+
+Rules:
+  [T1] Templates are READ-ONLY â€” they MUST NOT be modified per project.
+  [T2] Placeholders use {ANGLE_BRACKET} format.
+  [T3] Unsubstituted placeholders MUST be replaced with null or empty.
+  [T4] Templates MUST be consumed by the project-structure skill, not copied manually.
+  [T5] Template content is generic â€” no project-specific data here.
+
+Navigation:
+  DocsTemplates: @_sdd/docs/
+  DecisionsTemplate: @_sdd/decisions/DEC-000.template.sdd
+  TasksTemplate: @_sdd/tasks/TASK-000.template.sdd
+  StackTemplate: @_sdd/stack/LAYER.template.sdd
+  ModuleTemplate: @_sdd/modules/module.template.sdd
+  ApiTemplate: @_sdd/modules/api.template.sdd
+  DbTemplate: @_sdd/modules/db.template.sdd
+  CasesTemplate: @_sdd/modules/cases.template.sdd
+  FlowTemplate: @_sdd/modules/flow.template.md
+  ArchitectureTemplate: @_sdd/architecture/system.template.md
+
+Note:
+  This directory is the single source of truth for all reusable project
+  templates. Concrete project instances are generated into project/ by
+  the project-structure skill. Template modifications here affect all
+  future project generations.
+
+
+State: +
+

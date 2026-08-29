@@ -1,0 +1,33 @@
+Skills: Express.js Framework
+
+Purpose:
+  Express.js framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Express fundamentals
+  APPLY    — apply Express patterns to code
+  REVIEW   — review Express skills
+  UPGRADE  — propose Express skill upgrade
+
+Rules:
+  [E1]  Use `express.Router` for modular routes.
+  [E2]  Use middleware for cross-cutting concerns.
+  [E3]  Use `async/await` in route handlers.
+  [E4]  Use centralized error handling.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Express: @frameworks/express/INDEX.sdd
+  ExpressL1: @frameworks/express/L1-fundamentals.sdd
+
+State: +

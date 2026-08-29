@@ -1,0 +1,33 @@
+Skills: Apache Kafka
+
+Purpose:
+  Apache Kafka messaging skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Kafka fundamentals
+  APPLY    — apply Kafka to streaming
+  REVIEW   — review Kafka skills
+  UPGRADE  — propose Kafka skill upgrade
+
+Rules:
+  [K1]  Design topics for event streams.
+  [K2]  Use partitions for parallelism.
+  [K3]  Use consumer groups for scaling.
+  [K4]  Monitor with proper tooling.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Kafka: @messaging/kafka/INDEX.sdd
+  KafkaL1: @messaging/kafka/L1-fundamentals.sdd
+
+State: +

@@ -1,0 +1,101 @@
+﻿# MySQL Fundamentals
+
+Purpose:
+  MySQL Fundamentals
+
+Skill: MySQL Fundamentals
+
+ID:
+  SKILL-DB-MYSQL-L1
+
+Domain:
+  databases/mysql
+
+Use:
+  designing and using basic MySQL databases
+
+Apply:
+  beginner
+  learning
+  simple-application
+  relational-data
+
+Requires:
+  mysql-8+
+  sql-fundamentals
+
+Avoid:
+  enum-overuse
+  missing-index
+  n-plus-one
+  raw-sql-injection
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  mysql
+  mariadb
+  database
+  sql
+  relational
+  schema
+  tables
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/databases/mysql/L1-fundamentals.md
+
+Evidence:
+  - MySQL Documentation
+  - MySQL Tutorial
+  - Production experience
+
+Rules:
+  [M1] Use `INT AUTO_INCREMENT` for auto-incrementing IDs.
+  [M2] Use `VARCHAR(n)` for variable-length strings.
+  [M3] Use `NOT NULL` constraints for required fields.
+  [M4] Use `DEFAULT` values for columns.
+  [M5] Use `PRIMARY KEY` for unique identification.
+  [M6] Use `FOREIGN KEY` for referential integrity.
+  [M7] Use `CHECK` constraints for data validation.
+  [M8] Use `UNIQUE` constraints for business keys.
+
+Pros:
+  - Widely used
+  - Good performance
+  - Easy to deploy
+
+Cons:
+  - Feature gaps vs PostgreSQL
+  - Licensing concerns
+  - Scaling challenges
+
+Alternatives:
+  - PostgreSQL (more features)
+  - MariaDB (open source)
+  - SQLite (embedded)
+
+State: +
+

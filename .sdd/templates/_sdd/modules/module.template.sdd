@@ -1,0 +1,49 @@
+Spec: <MODULE_NAME>
+
+Purpose:
+  <Module purpose>
+
+Owns:
+  BE: <backend path>
+  FE: <frontend path>
+  MD: <mobile path>
+  QA: <test path>
+  DO: <infrastructure path>
+
+Architecture:
+  ModularMonolith
+
+Flow:
+  @flow
+
+Database:
+  @db
+
+API:
+  @api
+
+Cases:
+  @cases
+
+DependsOn:
+  <module>
+
+UsedBy:
+  <module>
+
+Produces:
+  <output>
+
+ConsumedBy:
+  <consumer>
+
+State:
+  ~
+
+Rules:
+  [S1] Module-specific knowledge MUST remain inside this directory.
+  [S2] Source code MUST be resolved through Owns.
+  [S3] Flow MUST be resolved through @flow.
+  [S4] Database information MUST be resolved through @db.
+  [S5] API information MUST be resolved through @api.
+  [S6] Business/test cases MUST be resolved through @cases.

@@ -1,0 +1,53 @@
+﻿Coverage: Graph
+
+Purpose:
+  Defines coverage tracking for tasks across multiple dimensions.
+
+CoverageDimensions:
+  Functional:
+    BDD
+    Unit
+    Integration
+    E2E
+  Security:
+    Authentication
+    Authorization
+    Input Validation
+    Idempotency
+    Rate Limit
+    Abuse Test
+    Pentest
+  Infrastructure:
+    Docker
+    CI/CD
+    Monitoring
+    Backup
+    Load Test
+    DDoS Strategy
+
+CoverageMap:
+  TASK-<ID>:
+    BDD: ✅
+    Unit: ✅
+    Integration: ✅
+    E2E: ❌
+    Security: ✅
+    Load: ❌
+
+  SEC-<ID>:
+    Authentication: ✅
+    Authorization: ✅
+    Input Validation: ✅
+    Rate Limit: ❌
+    Abuse Test: ❌
+    Pentest: ❌
+
+CoverageRules:
+  [CV1]  Every task MUST have functional coverage.
+  [CV2]  Security coverage MUST be tracked per task.
+  [CV3]  Infrastructure coverage MUST be tracked per task.
+  [CV4]  Missing coverage MUST be flagged as risk.
+  [CV5]  Coverage MUST be visible in graph.
+
+State: +
+  

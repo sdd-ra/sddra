@@ -1,0 +1,31 @@
+﻿# Stack Template
+
+Purpose:
+  Generic template for technology stack selection.
+
+Instructions:
+  Replace placeholders with actual tech choices for each layer.
+
+Template:
+  Stack: {LAYER_NAME}
+
+  Language: {language} {version}
+  Framework: {framework}
+  Architecture: {architecture pattern}
+
+  Layers:
+    - {layer 1}/      # {description}
+    - {layer 2}/     # {description}
+    - {layer 3}/   # {description}
+    - {layer 4}/  # {description}
+
+  Skills:
+    - {skill path 1}
+    - {skill path 2}
+
+  Rationale:
+    {Why these choices}
+
+
+State: +
+

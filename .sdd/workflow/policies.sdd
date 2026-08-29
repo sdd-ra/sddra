@@ -1,0 +1,401 @@
+﻿Workflow: Policies
+
+Purpose:
+  Define the governance, authorization, and policy engine for the
+  SDDRA system. Policies are deterministic rules that govern what
+  agents can do, under which conditions, with which tools, and when
+  human approval is required.
+
+Owns: ./
+
+Scope:
+  Governance model
+  Capability vs Permission vs Policy distinction
+  Rule, Constraint, Guard, Gate, Approval definitions
+  Policy Engine architecture and evaluation
+  Authorization request and decision flow
+  Decision types and precedence
+  Policy scopes (Global, Project, Domain, Task, Agent, Skill, Environment, Resource)
+  Policy composition and deny-by-default
+  Immutable policies and policy versioning
+  Policy snapshots and decision logs
+  Pre-execution and post-execution policy
+  Tool sandbox and permission matrix
+  Human-in-the-loop and approval lifecycle
+  Conditional policies and policy chains
+
+Principles:
+  Capability != Permission != Policy.
+  Agent declares what it can do; Policy Engine decides what is allowed.
+  Deny by default — explicitly allowed actions only.
+  Policy is deterministic; AI does not override policy.
+  Critical denies cannot be overridden by lower-level allows.
+  History is immutable — policy decisions are audited.
+
+Governance:
+  definition:
+    system that defines what AI agents can do, under which conditions,
+    and when human approval is required
+
+  model:
+    Capability -> Permission -> Policy -> Guard -> Gate -> Approval -> Tool -> Execution -> Validation
+
+  rule: governance is enforced by deterministic engine, not AI
+
+Capability:
+  definition:
+    concrete ability to perform specific work
+
+  examples:
+    - GO
+    - POSTGRESQL
+    - REST
+    - KUBERNETES
+    - SECURITY-REVIEW
+
+  registry:
+    CAP-GO
+    CAP-POSTGRES
+    CAP-KAFKA
+    CAP-KUBERNETES
+    CAP-SECURITY
+
+  rule: capability = can do (technical ability)
+
+Permission:
+  definition:
+    authorization to perform an action on a resource
+
+  examples:
+    CAN read source
+    CANNOT write production
+
+  rule: permission = may do (authorization)
+  rule: capability does not imply permission
+
+Policy:
+  definition:
+    rule that determines under which conditions an action is allowed
+
+  examples:
+    Production database migration -> only DevOps agent -> requires approval -> backup must exist
+
+  rule: policy = under what conditions is action allowed
+
+Rule:
+  definition:
+    concrete conditional statement
+
+  example:
+    IF environment == production
+    THEN approval_required = true
+
+Constraint:
+  definition:
+    boundary that limits an action
+
+  example:
+    write_scope: services/auth/**
+
+  rule: agent cannot modify resources outside constraint
+
+Guard:
+  definition:
+    pre-execution check that evaluates policy before action
+
+  flow:
+    Action -> Guard -> ALLOW / DENY
+
+  example:
+    DROP TABLE -> Production Guard -> DENY
+
+  rule: guard evaluation is deterministic
+
+Gate:
+  definition:
+    workflow checkpoint that must be passed before stage advancement
+
+  example:
+    Implementation -> Tests -> Security Gate -> Deployment
+
+  rule: gate MUST be passed before workflow advances
+
+Approval:
+  definition:
+    explicit authorization from human or trusted actor
+
+  flow:
+    AI -> REQUEST APPROVAL -> Human -> APPROVED -> EXECUTE
+
+  rule: approval is specific to action/resource, not general
+  rule: approval MUST have expiration
+
+PolicyEngine:
+  responsibilities:
+    - resolve applicable policies
+    - evaluate rules
+    - check constraints
+    - check permissions
+    - check approval requirements
+    - return decision
+
+  flow:
+    Request -> Resolve Policies -> Evaluate Rules -> Check Constraints -> Check Permissions -> Check Approval -> ALLOW / DENY / REQUIRE_APPROVAL
+
+AuthorizationRequest:
+  structure:
+    agent: AGENT-CODER-01
+    task: TASK-AUTH-001
+    action: WRITE
+    resource: auth/login.go
+    environment: development
+
+PolicyDecision:
+  structure:
+    result: ALLOW | DENY | REQUIRE_APPROVAL | ALLOW_WITH_CONSTRAINTS
+    policy: DEV-WRITE-001
+    reason: resource_in_write_scope
+    constraints: max_files=5
+
+DecisionTypes:
+  ALLOW:
+    description: action is permitted
+
+  DENY:
+    description: action is not permitted
+    rule: deny overrides any lower-level allow
+
+  REQUIRE_APPROVAL:
+    description: action requires explicit human approval before execution
+
+  ALLOW_WITH_CONSTRAINTS:
+    description: action is permitted with additional constraints
+    example: ALLOW but max_files=5
+
+PolicyEvaluation:
+  algorithm:
+    policies = resolve(request)
+    for policy in policies:
+      result = evaluate(policy, request)
+      if result == DENY:
+        return DENY
+      if result == REQUIRE_APPROVAL:
+        return REQUIRE_APPROVAL
+    return ALLOW
+
+  rule: first DENY wins
+  rule: deny cannot be overridden by lower-level allow
+
+PolicyPrecedence:
+  hierarchy:
+    GLOBAL -> PROJECT -> DOMAIN -> TASK -> AGENT -> SKILL -> ENVIRONMENT -> RESOURCE
+
+  rule: higher level overrides lower level
+  rule: critical deny at any level cannot be overridden
+
+DenyByDefault:
+  rule: explicitly allowed actions only
+  rule: unknown actions default to DENY
+  rule: this is especially critical for AI systems
+
+PolicyScope:
+  GLOBAL:
+    applies_to: entire system
+    example: secrets cannot be exposed
+    override: cannot be overridden by any lower level
+
+  PROJECT:
+    applies_to: entire project
+    example: all code must pass tests
+
+  DOMAIN:
+    applies_to: specific domain
+    example: PAYMENT: financial operations require audit
+
+  TASK:
+    applies_to: specific task
+    example: TASK-PAYMENT-REFUND: refund requires approval
+
+  AGENT:
+    applies_to: specific agent
+    example: AGENT-QA: read-only source access
+
+  SKILL:
+    applies_to: specific skill
+    example: SKILL-DEPLOY: production deployment requires approval
+
+  ENVIRONMENT:
+    applies_to: specific environment
+    example:
+      development: autonomous
+      staging: autonomous + tests
+      production: approval required
+
+  RESOURCE:
+    applies_to: specific resource
+    example:
+      resource: production/database
+      policy: DELETE = DENY
+
+PolicyComposition:
+  flow:
+    Global -> Project -> Domain -> Task -> Agent -> Skill -> Environment -> Resource
+
+  rule: all policies contribute to final decision
+  rule: deny at any level cannot be overridden
+
+ImmutablePolicies:
+  examples:
+    - GLOBAL_SECURITY_POLICY
+    - DATA_PROTECTION_POLICY
+
+  rule: AI cannot modify immutable policies
+  rule: not even ARCHITECT agent can override immutable policies
+
+PolicyVersioning:
+  rule: policies are versioned
+  example:
+    SECURITY-001 v1
+    SECURITY-001 v2
+
+  rule: execution records which policy version was applied
+
+PolicySnapshot:
+  rule: execution creates policy snapshot
+  example:
+    EXEC-100 -> POLICY-SNAPSHOT-100
+
+  rule: snapshot records all active policies at execution time
+  rule: snapshot enables answering "Why was this action denied?"
+
+PolicyDecisionLog:
+  structure:
+    decision:
+      id: DEC-100
+      agent: AGENT-001
+      task: TASK-100
+      action: WRITE
+      resource: auth/login.go
+      result: ALLOW
+      policy: DEV-WRITE-01
+      timestamp: ...
+
+  rule: every critical authorization MUST be logged
+  rule: decision log is append-only
+
+PreExecutionPolicy:
+  flow:
+    Agent -> Tool Request -> Policy Engine -> ALLOW -> Tool
+
+  rule: policy is evaluated BEFORE tool execution
+  rule: this is the primary security guard
+
+PostExecutionPolicy:
+  flow:
+    Tool -> Output -> Policy Validator -> ACCEPT / REJECT
+
+  example:
+    Agent adds source code -> Tool succeeds -> Post-policy detects SECRET -> REJECT
+
+  rule: output validation can reject successful tool execution
+
+ToolSandbox:
+  definition:
+    restricted environment where tools operate
+
+  example:
+    ALLOWED: read, write, git, test
+    BLOCKED: network, production-db
+
+  rule: tool sandbox enforces permission boundaries
+
+ToolPermissionMatrix:
+  | Tool         | Dev | Staging | Prod |
+  | ------------ | --: | ------: | ---: |
+  | Read         |   ✅ |       ✅ |    ✅ |
+  | Write        |   ✅ |       ✅ |   ⚠️ |
+  | Test         |   ✅ |       ✅ |   ⚠️ |
+  | Git push     |   ✅ |      ⚠️ |    ❌ |
+  | Deploy       |   ❌ |      ⚠️ |   ⚠️ |
+  | DB migration |   ✅ |      ⚠️ |   🔒 |
+
+HumanInTheLoop:
+  flow:
+    AI -> Policy Engine -> REQUIRE_APPROVAL -> Human -> Approve -> Tool
+
+  rule: critical actions REQUIRE human approval
+  rule: production, financial, security, data deletion require approval
+
+ApprovalScope:
+  rule: approval MUST be specific to action and resource
+  example:
+    APPROVE: AGENT-001, TASK-100, WRITE, production/config.yaml
+
+  rule: approval does not grant blanket permissions
+
+ApprovalExpiration:
+  rule: approval MUST have expiration
+  example: approved for next 30 minutes
+
+  rule: expired approvals require re-approval
+
+ApprovalReplayProtection:
+  rule: approval is bound to specific request
+  rule: approval cannot be reused for different actions
+
+ConditionalPolicy:
+  example:
+    IF tests_passed
+    AND security_scan_passed
+    AND environment == staging
+    THEN ALLOW
+
+  rule: policies can have multiple conditions
+
+PolicyChain:
+  definition:
+    sequence of policy checks required for workflow advancement
+
+  example:
+    TASK -> BUILD -> UNIT TEST -> INTEGRATION TEST -> SECURITY SCAN -> APPROVAL -> DEPLOY
+
+  rule: all gates in chain MUST pass
+
+PolicyVsValidation:
+  Policy:
+    definition: is this action allowed?
+    example: Can agent modify auth/login.go?
+
+  Validation:
+    definition: is the result correct?
+    example: Does code compile?
+
+  rule: policy and validation are separate layers
+
+Navigation:
+  Workflow: @../workflow/INDEX.sdd
+  Gates: @../workflow/gates.sdd
+  Runtime: @../runtime/INDEX.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
+
+Rules:
+  [WP-01] Capability does not imply permission — policy engine enforces authorization.
+  [WP-02] Deny by default — explicitly allowed actions only.
+  [WP-03] Critical deny cannot be overridden by lower-level allow.
+  [WP-04] Policy evaluation is deterministic — AI does not override policy.
+  [WP-05] Immutable policies cannot be modified by any agent.
+  [WP-06] Policy decisions are logged for audit trail.
+  [WP-07] Pre-execution policy is the primary security guard.
+  [WP-08] Post-execution policy can reject successful tool output.
+  [WP-09] Tool sandbox enforces permission boundaries.
+  [WP-10] Human approval is REQUIRED for critical actions.
+  [WP-11] Approval is specific to action/resource and has expiration.
+  [WP-12] Policy version is recorded with execution for reproducibility.
+  [WP-13] Conditional policies MUST have explicit conditions.
+  [WP-14] Policy chain MUST be passed before workflow advancement.
+  [WP-15] Policy and validation are separate layers.
+  [WP-16] Agent MUST NOT add signatures or sign-offs to any output.
+  [WP-17] Agent MUST NOT use emojis, icons, or decorative symbols in headers, titles, or messages — reserved for human use only.
+
+State: +

@@ -1,0 +1,412 @@
+# SDDRA Evolution Plan: L0 to L5
+
+Purpose:
+  Define the SDDRA system maturity levels from L0 (initial) to L5 (optimized).
+  Each level builds on the previous one. The system is designed to evolve
+  through these levels without breaking changes.
+
+## Maturity Levels
+
+### L0: Initial (MVP)
+
+Goal: Basic system works end-to-end
+
+Characteristics:
+  - Manual .sdd/ file creation
+  - Simple chain execution (P1->D1->S1->C1)
+  - No automation
+  - No resilience patterns
+  - Basic documentation
+
+Capabilities:
+  - Create .sdd/ files manually
+  - Execute simple chains
+  - Generate basic docs
+  - Generate basic code
+
+Limitations:
+  - No skill execution model
+  - No resilience
+  - No automation
+  - No optimization
+  - No monitoring
+
+Files:
+  - PROJECT.sdd
+  - INDEX.sdd
+  - protocol/ROOT.sdd
+  - chains/graph.sdd
+  - templates/ (basic)
+  - project/ (basic)
+
+### L1: Managed
+
+Goal: Repeatable process with basic structure
+
+Characteristics:
+  - Template-based .sdd/ generation
+  - Standardized chain execution
+  - Basic skill definitions
+  - Manual human gates
+  - Basic documentation
+
+Capabilities:
+  - Generate .sdd/ from templates
+  - Execute standard chains
+  - Define basic skills
+  - Human approval gates
+  - Token tracking
+
+Limitations:
+  - No skill execution
+  - No resilience
+  - No optimization
+  - No self-healing
+  - Limited automation
+
+Files:
+  - All L0 files
+  - templates/ (expanded)
+  - skills/ (basic L1-L2)
+  - commands/ (basic)
+  - workflows/ (basic)
+
+### L2: Defined
+
+Goal: Documented and standardized
+
+Characteristics:
+  - Documented processes
+  - Defined skill execution model
+  - Basic resilience patterns
+  - Semantic versioning
+  - Comprehensive documentation
+
+Capabilities:
+  - Execute skills autonomously (L1-L2)
+  - Circuit breaker for failures
+  - Basic checkpoint/restore
+  - Semantic commits
+  - Git workflow
+  - Health checks
+
+Limitations:
+  - No advanced resilience
+  - No intelligent automation
+  - No self-healing
+  - No predictive features
+  - Limited optimization
+
+Files:
+  - All L1 files
+  - skills/SKILL-EXECUTION.sdd
+  - patterns/circuit-breaker.sdd
+  - commands/sdd-health.sdd
+  - .git/hooks/commit-msg
+  - GIT-WORKFLOW.sdd
+
+### L3: Quantified
+
+Goal: Measured and optimized
+
+Characteristics:
+  - Metrics and monitoring
+  - Token optimization
+  - Performance tracking
+  - Advanced resilience
+  - Intelligent automation
+
+Capabilities:
+  - Token budget optimization
+  - Context caching with metrics
+  - Checkpoint/restore with metrics
+  - Graceful degradation
+  - Predictive token budgeting
+  - Automated decision suggestions
+  - Smart context loading
+
+Limitations:
+  - No self-healing
+  - No advanced reasoning
+  - No predictive maintenance
+  - Limited learning
+
+Files:
+  - All L2 files
+  - patterns/checkpoint-restore.sdd
+  - patterns/graceful-degradation.sdd
+  - context/cache.sdd (with metrics)
+  - orchestrator/reasoning.sdd
+  - RESILIENCE.md
+
+### L4: Optimized
+
+Goal: Continuously improving
+
+Characteristics:
+  - Self-healing capabilities
+  - Advanced reasoning patterns
+  - Predictive maintenance
+  - Resource registry with auto-update
+  - Learning from past decisions
+
+Capabilities:
+  - Auto-detect corruption
+  - Attempt self-repair
+  - Escalate to human if needed
+  - Learn from approvals/rejections
+  - Predict dependencies
+  - Pre-load resources
+  - Intelligent gate management
+  - Pattern matching for decisions
+
+Limitations:
+  - No autonomous architecture changes
+  - No self-modification
+  - Human still controls critical decisions
+
+Files:
+  - All L3 files
+  - RESOURCES.sdd (with auto-update)
+  - orchestrator/reasoning.sdd (advanced)
+  - patterns/self-healing.sdd (if added)
+  - patterns/intelligent-gates.sdd (if added)
+
+### L5: Optimized (Peak)
+
+Goal: Fully autonomous with human oversight
+
+Characteristics:
+  - Near-full autonomy for routine tasks
+  - Advanced AI reasoning
+  - Self-improving system
+  - Minimal human intervention
+  - Continuous optimization
+
+Capabilities:
+  - Autonomous skill execution (all levels)
+  - Self-modifying templates (with approval)
+  - Predictive architecture optimization
+  - Automatic knowledge extraction
+  - Continuous learning
+  - Zero-touch operations for routine tasks
+  - Automatic dependency resolution
+  - Intelligent prioritization
+
+Limitations:
+  - Human still approves architecture changes
+  - Human still approves production deployments
+  - Human still controls security policies
+
+Files:
+  - All L4 files
+  - patterns/autonomous-execution.sdd (if added)
+  - patterns/self-improvement.sdd (if added)
+  - Full automation of all routine tasks
+
+## Evolution Path
+
+### L0 -> L1: Foundation
+
+Focus: Templates and basic automation
+
+Tasks:
+  - Create basic templates
+  - Standardize chain execution
+  - Add basic skills (L1-L2)
+  - Add basic commands
+
+Duration: 2-4 weeks
+
+Deliverables:
+  - templates/ with 10+ templates
+  - skills/ with 20+ L1-L2 skills
+  - commands/ with 5+ commands
+  - Basic documentation
+
+### L1 -> L2: Structure
+
+Focus: Documentation and standards
+
+Tasks:
+  - Document all processes
+  - Define skill execution model
+  - Add resilience patterns
+  - Add semantic commits
+  - Add git workflow
+
+Duration: 2-4 weeks
+
+Deliverables:
+  - SKILL-EXECUTION.sdd
+  - patterns/ (circuit-breaker, checkpoint-restore, graceful-degradation)
+  - commands/sdd-health.sdd
+  - GIT-WORKFLOW.sdd
+  - .git/hooks/commit-msg
+  - Comprehensive documentation
+
+### L2 -> L3: Measurement
+
+Focus: Metrics and optimization
+
+Tasks:
+  - Add metrics collection
+  - Optimize token usage
+  - Add performance tracking
+  - Add predictive features
+  - Add intelligent automation
+
+Duration: 4-6 weeks
+
+Deliverables:
+  - context/cache.sdd with metrics
+  - Token optimization algorithms
+  - Predictive token budgeting
+  - Automated decision suggestions
+  - Smart context loading
+
+### L3 -> L4: Intelligence
+
+Focus: Self-healing and learning
+
+Tasks:
+  - Add self-healing mechanisms
+  - Add learning from past decisions
+  - Add resource registry with auto-update
+  - Add intelligent gate management
+  - Add pattern matching
+
+Duration: 6-8 weeks
+
+Deliverables:
+  - RESOURCES.sdd with auto-update
+  - Self-healing patterns
+  - Decision learning system
+  - Intelligent gate management
+  - Dependency pre-loading
+
+### L4 -> L5: Autonomy
+
+Focus: Near-full autonomy
+
+Tasks:
+  - Autonomous skill execution
+  - Self-modifying templates (with approval)
+  - Predictive architecture optimization
+  - Continuous learning
+  - Zero-touch operations
+
+Duration: 8-12 weeks
+
+Deliverables:
+  - Autonomous execution engine
+  - Self-improvement patterns
+  - Advanced reasoning system
+  - Zero-touch automation
+  - Continuous optimization
+
+## Current State
+
+Current Level: L2 (Defined)
+
+Evidence:
+  - Documented processes
+  - Defined skill execution model
+  - Basic resilience patterns
+  - Semantic versioning
+  - Comprehensive documentation
+  - Git workflow with hooks
+  - Health checks
+
+Gap to L3:
+  - Need metrics collection
+  - Need token optimization
+  - Need predictive features
+  - Need intelligent automation
+
+Gap to L4:
+  - Need self-healing
+  - Need learning system
+  - Need auto-update
+  - Need intelligent gates
+
+Gap to L5:
+  - Need autonomous execution
+  - Need self-improvement
+  - Need zero-touch operations
+
+## Evolution Checklist
+
+### L0 Checklist
+- [x] Basic .sdd/ structure
+- [x] Chain graph works
+- [x] Basic templates
+- [x] Basic skills
+
+### L1 Checklist
+- [x] Template-based generation
+- [x] Standardized execution
+- [x] Basic skills (L1-L2)
+- [x] Human gates
+
+### L2 Checklist
+- [x] Documented processes
+- [x] Skill execution model
+- [x] Resilience patterns
+- [x] Semantic commits
+- [x] Git workflow
+- [x] Health checks
+
+### L3 Checklist (Target: Q4 2026)
+- [ ] Metrics collection
+- [ ] Token optimization
+- [ ] Predictive features
+- [ ] Intelligent automation
+- [ ] Performance dashboards
+
+### L4 Checklist (Target: Q1 2027)
+- [ ] Self-healing mechanisms
+- [ ] Decision learning
+- [ ] Auto-update registry
+- [ ] Intelligent gates
+- [ ] Pattern matching
+
+### L5 Checklist (Target: Q2 2027)
+- [ ] Autonomous execution
+- [ ] Self-improvement
+- [ ] Zero-touch operations
+- [ ] Continuous optimization
+- [ ] Advanced reasoning
+
+## Backward Compatibility
+
+All evolution MUST maintain backward compatibility:
+  - Old .sdd/ files must still load
+  - Old prompts must still work
+  - Old projects must still build
+  - Deprecation warnings, not errors
+  - Migration guides provided
+
+## Migration Strategy
+
+When moving between levels:
+  1. Add new features without breaking old ones
+  2. Mark old features as DEPRECATED
+  3. Provide migration path
+  4. Keep old version available for 6 months
+  5. Notify users of changes
+
+## Success Metrics
+
+- System uptime (chains completed / attempted)
+- Mean time to recovery (MTTR)
+- Token efficiency
+- Cache hit rate
+- Decision accuracy
+- Failure rate per stage
+- Recovery success rate
+- Human intervention rate
+- Automation coverage
+- Learning effectiveness
+
+State: +

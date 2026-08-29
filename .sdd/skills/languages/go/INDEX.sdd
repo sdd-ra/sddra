@@ -1,0 +1,51 @@
+Skills: Go Language
+
+Purpose:
+  Go programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-patterns.sdd
+   4  @L3-concurrency.sdd
+   5  @L4-microservices.sdd
+   6  @L5-performance.sdd
+   7  @testing/INDEX.sdd
+
+Modes:
+  LEARN    — learn Go fundamentals
+  APPLY    — apply Go patterns to code
+  REVIEW   — review Go skills
+  UPGRADE  — propose Go skill upgrade
+
+Rules:
+  [G1]  Skills MUST follow Go idioms.
+  [G2]  Skills MUST use Go tooling (go fmt, go vet).
+  [G3]  Skills MUST handle errors explicitly.
+  [G4]  Skills MUST use context for cancellation.
+  [G5]  Skills MUST avoid shared mutable state.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+  Resolve:
+    L1-fundamentals
+    L2-patterns
+    L3-concurrency
+    L4-microservices
+    L5-performance
+
+Navigation:
+  Go: @languages/go/INDEX.sdd
+  GoL1: @languages/go/L1-fundamentals.sdd
+  GoL2: @languages/go/L2-patterns.sdd
+  GoL3: @languages/go/L3-concurrency.sdd
+  GoL4: @languages/go/L4-microservices.sdd
+  GoL5: @languages/go/L5-performance.sdd
+  GoTesting: @languages/go/testing/INDEX.sdd
+
+State: +

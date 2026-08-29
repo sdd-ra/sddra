@@ -1,0 +1,72 @@
+# Skill: CI/CD Pipeline
+
+Purpose:
+  Define CI/CD pipeline for SDDRA system. Ensures every change
+  is tested, validated, and deployed safely.
+
+ID: SKILL-DEVOPS-CICD-PIPELINE
+
+Domain: devops/ci-cd
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - Automated testing
+  - Automated validation
+  - Automated deployment
+  - Quality gates
+
+Input:
+  - Pull request
+  - Branch name
+  - Commit message
+
+Output:
+  - Test results
+  - Validation results
+  - Deployment status
+
+Execute:
+  1. Trigger on pull request or push
+  2. Checkout code
+  3. Install dependencies
+  4. Run linters:
+     - .sdd/ file validation
+     - Reference resolution
+     - No Azerbaijani content
+  5. Run tests:
+     - Unit tests
+     - Integration tests
+     - Chain graph validation
+  6. Run security scans:
+     - Secret detection
+     - Dependency vulnerabilities
+  7. Run validation:
+     - Semantic commit check
+     - .sdd/ structure check
+  8. Deploy if all checks pass:
+     - Staging deployment
+     - Production deployment (with approval)
+  9. Notify results
+
+Validation:
+  - All tests pass
+  - All validations pass
+  - Security scans pass
+  - Approval received for production
+
+Examples:
+  - PR with failing tests -> block merge
+  - PR with broken references -> block merge
+  - PR with secrets -> block and alert
+  - PR approved -> merge and deploy
+
+Avoid:
+  - Skipping tests
+  - Deploying without approval
+  - Merging with failing checks
+  - Ignoring security alerts
+
+State: +

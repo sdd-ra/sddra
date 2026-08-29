@@ -1,0 +1,71 @@
+﻿Traceability: Graph
+
+Purpose:
+  Defines traceability requirements and chain validation.
+
+TraceabilityChain:
+  PROMPT
+    ↓
+  REQUIREMENT
+    ↓
+  DECISION
+    ↓
+  TASK
+    ↓
+  WORKFLOW
+    ↓
+  SKILL
+    ↓
+  CODE
+    ↓
+  BDD
+    ↓
+  TEST
+    ↓
+  SECURITY
+    ↓
+  INFRA
+    ↓
+  DEPLOYMENT
+    ↓
+  RUNTIME
+    ↓
+  INCIDENT
+    ↓
+  DOCUMENT
+
+ReverseTraceability:
+  INCIDENT
+    ↓
+  CODE
+    ↓
+  TASK
+    ↓
+  DECISION
+
+TraceabilityScore:
+  Overall: <percentage>
+  Code → Task: <percentage>
+  Task → Requirement: <percentage>
+  Task → Test: <percentage>
+  Task → Security: <percentage>
+  Decision → Code: <percentage>
+  Incident → Code: <percentage>
+  Docs → Code: <percentage>
+
+BrokenChain:
+  TRACE-BROKEN:
+    Chain incomplete between nodes
+  WORKFLOW-BROKEN:
+    Workflow stage not completed
+
+TraceabilityRules:
+  [TR1]  Every task MUST trace to a requirement.
+  [TR2]  Every code change MUST trace to a task.
+  [TR3]  Every test MUST trace to a task.
+  [TR4]  Every incident MUST trace to code.
+  [TR5]  Broken chains MUST be detected and reported.
+  [TR6]  Traceability score MUST be calculated regularly.
+
+State: +
+  

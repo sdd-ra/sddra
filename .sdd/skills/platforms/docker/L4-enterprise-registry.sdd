@@ -1,0 +1,102 @@
+﻿# Docker Enterprise Registry
+
+Purpose:
+  Docker Enterprise Registry
+
+Skill: Docker Enterprise Registry
+
+ID:
+  SKILL-PLAT-DOCKER-L4
+
+Domain:
+  platforms/docker
+
+Use:
+  managing enterprise Docker registries and supply chain
+
+Apply:
+  lead
+  architect
+  devops
+  enterprise
+
+Requires:
+  SKILL-PLAT-DOCKER-L3
+  registry-management
+  security-scanning
+  ci-cd
+
+Avoid:
+  public-registry-for-secrets
+  unsigned-images
+  no-vulnerability-scan
+  missing-provenance
+
+Level:
+  L4
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  docker
+  registry
+  enterprise
+  supply chain
+  security
+  sigstore
+  provenance
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/docker/L4-enterprise-registry.md
+
+Evidence:
+  - Docker Registry Documentation
+  - Sigstore Documentation
+  - Production experience
+
+Rules:
+  [D1] Use private registry (Harbor, ECR, GCR, ACR).
+  [D2] Scan all images for vulnerabilities (Trivy, Grype).
+  [D3] Sign images with Sigstore/Cosign.
+  [D4] Use provenance attestations for supply chain.
+  [D5] Implement registry access controls.
+  [D6] Use image retention policies.
+  [D7] Cache images in registry mirrors.
+  [D8] Use SBOM (Software Bill of Materials).
+
+Pros:
+  - Secure supply chain
+  - Compliance
+  - Audit trail
+
+Cons:
+  - Operational overhead
+  - Cost
+  - Complexity
+
+Alternatives:
+  - GHCR (GitHub)
+  - Docker Hub (cloud)
+  - AWS ECR
+
+State: +
+

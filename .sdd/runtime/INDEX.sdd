@@ -11,7 +11,9 @@ ReadOrder:
    2 @agent.sdd (agent capabilities and limits)
    3 @session.sdd (session management)
    4 @current.sdd (current execution state)
-   5 @events.sdd (runtime event log)
+   5 @context.sdd (context engine and knowledge resolution)
+   6 @execution.sdd (execution engine and state machine)
+   7 @events.sdd (runtime event log)
 
 Rules:
   [RT1] Runtime state MUST be preserved across chain stages.
@@ -22,6 +24,8 @@ Navigation:
   Agent: @agent.sdd
   Session: @session.sdd
   Current: @current.sdd
+  Context: @context.sdd
+  Execution: @execution.sdd
   Events: @events.sdd
   Checkpoints: @checkpoints/
 

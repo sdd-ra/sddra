@@ -1,0 +1,37 @@
+Skills: PHP Language
+
+Purpose:
+  PHP programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-modern-development.sdd
+   4  @L3-enterprise-patterns.sdd
+
+Modes:
+  LEARN    — learn PHP fundamentals
+  APPLY    — apply PHP patterns to code
+  REVIEW   — review PHP skills
+  UPGRADE  — propose PHP skill upgrade
+
+Rules:
+  [P1]  Use strict types.
+  [P2]  Follow PSR standards.
+  [P3]  Use Composer for dependencies.
+  [P4]  Use modern PHP features.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  PHP: @languages/php/INDEX.sdd
+  PHPL1: @languages/php/L1-fundamentals.sdd
+  PHPL2: @languages/php/L2-modern-development.sdd
+  PHPL3: @languages/php/L3-enterprise-patterns.sdd
+
+State: +

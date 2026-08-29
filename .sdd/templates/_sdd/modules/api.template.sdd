@@ -1,0 +1,25 @@
+﻿# API Template
+
+Purpose:
+  Template for module API specifications.
+
+API: <MODULE_NAME>
+
+Endpoints:
+  - <method> <path>
+
+Contracts:
+  <endpoint>:
+    request:
+      - <field>: <type>
+    response:
+      - <field>: <type>
+
+Rules:
+  [A1] API contracts MUST be defined before FE implementation.
+  [A2] Versioning MUST be explicit.
+  [A3] Breaking changes MUST be documented.
+
+
+State: +
+

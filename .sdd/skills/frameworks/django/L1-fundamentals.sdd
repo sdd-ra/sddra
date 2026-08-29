@@ -1,0 +1,100 @@
+﻿# Django Framework
+
+Purpose:
+  Django Framework
+
+Skill: Django Framework
+
+ID:
+  SKILL-FW-DJANGO-L1
+
+Domain:
+  frameworks/django
+
+Use:
+  building web applications with Django
+
+Apply:
+  beginner
+  intermediate
+  full-stack
+  web-application
+
+Requires:
+  SKILL-LANG-PYTHON-L2
+  python-3.10+
+  sqlite-or-postgresql
+
+Avoid:
+  fat-model
+  raw-sql
+  tight-coupling
+  missing-migrations
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  django
+  python
+  web framework
+  ORM
+  MTV
+  full-stack
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/django/L1-fundamentals.md
+
+Evidence:
+  - Django Documentation
+  - Django Girls Tutorial
+  - Production experience
+
+Rules:
+  [D1] Use Django MTV pattern (Model-Template-View).
+  [D2] Use Django ORM for database access.
+  [D3] Use class-based views for reusable patterns.
+  [D4] Use Django forms for validation.
+  [D5] Use Django templates for server-side rendering.
+  [D6] Use Django admin for CRUD operations.
+  [D7] Use Django migrations for schema changes.
+  [D8] Use Django settings with environment variables.
+
+Pros:
+  - Rapid development
+  - Batteries included
+  - Excellent documentation
+
+Cons:
+  - Monolithic
+  - ORM limitations
+  - Performance overhead
+
+Alternatives:
+  - Flask (lightweight)
+  - FastAPI (async)
+  - Ruby on Rails
+
+State: +
+

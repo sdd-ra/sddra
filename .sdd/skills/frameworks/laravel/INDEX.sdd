@@ -1,0 +1,33 @@
+Skills: Laravel Framework
+
+Purpose:
+  Laravel framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Laravel fundamentals
+  APPLY    — apply Laravel patterns to code
+  REVIEW   — review Laravel skills
+  UPGRADE  — propose Laravel skill upgrade
+
+Rules:
+  [L1]  Use Eloquent ORM.
+  [L2]  Use Blade templating.
+  [L3]  Use Artisan for CLI.
+  [L4]  Follow Laravel conventions.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Laravel: @frameworks/laravel/INDEX.sdd
+  LaravelL1: @frameworks/laravel/L1-fundamentals.sdd
+
+State: +

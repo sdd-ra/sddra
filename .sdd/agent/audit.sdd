@@ -1,0 +1,84 @@
+﻿Audit: Agent
+
+Purpose:
+  Defines agent audit trail and traceability requirements.
+
+AuditTrail:
+  Every action MUST be recorded with:
+    - Execution ID
+    - Timestamp
+    - Actor (agent/user)
+    - Action type
+    - Target
+    - Risk level
+    - Policy decision
+    - Approval status
+    - Result
+    - Duration
+
+Traceability:
+  Every action MUST link to:
+    - User request
+    - Task
+    - Workflow
+    - Skill
+    - Decision
+    - Source
+    - Test
+    - Result
+
+ExecutionID:
+  Format:
+    RUN-YYYYMMDD-NNN
+
+  ActionID:
+    RUN-YYYYMMDD-NNN/A01
+    RUN-YYYYMMDD-NNN/A02
+
+AgentResult:
+  Format:
+    TASK: TASK-<ID>
+
+    Status:
+      VERIFIED
+
+    Changed:
+      <N> files
+
+    Tests:
+      BDD PASS
+      Unit PASS
+      Integration PASS
+      Security PASS
+
+    Risk:
+      Medium
+
+    Remaining:
+      None
+
+SelfReview:
+  Agent MUST analyze after each change:
+    - What changed?
+    - Why?
+    - What could break?
+    - What dependencies changed?
+    - What tests cover it?
+    - What security risks exist?
+
+DiffReview:
+  Reviewer sees:
+    - Git diff
+    - Impact graph
+    - Tests
+    - Security result
+
+AuditRules:
+  [AU1]  Every action MUST be auditable.
+  [AU2]  Audit trail MUST include full traceability chain.
+  [AU3]  Audit data MUST be immutable.
+  [AU4]  Agent MUST provide concise summary to user, detailed logs to audit layer.
+  [AU5]  Full prompt/history MUST NOT be stored (token/storage saving).
+
+State: +
+  

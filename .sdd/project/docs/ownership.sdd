@@ -1,0 +1,49 @@
+﻿Ownership: Documentation
+
+Purpose:
+  Defines documentation ownership rules and routing.
+
+OwnerRoles:
+  DEVELOPER:
+    docs/developer/*
+    docs/architecture/*
+  QA:
+    docs/testing/*
+  SECURITY:
+    docs/security/*
+  DEVOPS:
+    docs/infrastructure/*
+    docs/deployment/*
+    docs/operations/*
+  SUPPORT:
+    docs/support/*
+  BUSINESS:
+    docs/business/*
+  ARCHITECT:
+    docs/architecture/*
+    docs/decisions/*
+
+OwnershipRules:
+  [DOC1]  Every document MUST have exactly one PRIMARY owner.
+  [DOC2]  Document owner is responsible for keeping it CURRENT.
+  [DOC3]  When code changes, the relevant document owner MUST verify
+          the doc is still accurate.
+  [DOC4]  Stale documentation MUST be flagged by the agent during
+          code review.
+  [DOC5]  Documentation lint checks MUST run as part of quality gates.
+
+Routing:
+  DB latency:
+    PRIMARY: DEVOPS
+    SECONDARY: BACKEND
+
+  Broken UI:
+    PRIMARY: FRONTEND
+    SECONDARY: QA
+
+  Payment security issue:
+    PRIMARY: SECURITY
+    SECONDARY: BACKEND, QA
+
+State: +
+  

@@ -1,0 +1,45 @@
+Skills: Docker
+
+Purpose:
+  Docker skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-multi-stage-builds.sdd
+   4  @L3-kubernetes.sdd
+   5  @L4-enterprise-registry.sdd
+
+Modes:
+  LEARN    — learn Docker fundamentals
+  APPLY    — apply Docker patterns to containers
+  REVIEW   — review Docker skills
+  UPGRADE  — propose Docker skill upgrade
+
+Rules:
+  [D1]  Use specific image versions, not latest.
+  [D2]  Minimize layers and image size.
+  [D3]  Run as non-root user.
+  [D4]  Scan images for vulnerabilities.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+  Resolve:
+    L1-fundamentals
+    L2-multi-stage-builds
+    L3-kubernetes
+    L4-enterprise-registry
+
+Navigation:
+  Docker: @platforms/docker/INDEX.sdd
+  DockerL1: @platforms/docker/L1-fundamentals.sdd
+  DockerL2: @platforms/docker/L2-multi-stage-builds.sdd
+  DockerL3: @platforms/docker/L3-kubernetes.sdd
+  DockerL4: @platforms/docker/L4-enterprise-registry.sdd
+
+State: +
