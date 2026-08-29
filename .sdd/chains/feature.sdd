@@ -48,7 +48,7 @@ Gates:
   VR: all-verified
 
 Retry: 3
-Token: @projects/sddra.ai/tokens/F1.sdd
+Token: @projects/vkard.az/tokens/F1.sdd
 Rule: @rules/chain-rules.sdd
 Skills:
   TS: plugins/plugin-adapters/test-driven-development.sdd

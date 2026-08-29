@@ -1,0 +1,19 @@
+# Token Record: D1
+Purpose:
+  Token Record: D1
+
+
+Stage: D1
+RunID: RUN-TC2
+Timestamp: 2026-08-27T19:00:00Z
+TokensIn: 2000
+TokensOut: 4000
+TokensDelta: 2000
+Status: completed
+Parent: D0
+DurationMs: 0
+RetryCount: 0
+ Error: None
+
+State: +
+

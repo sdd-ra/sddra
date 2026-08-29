@@ -8,7 +8,7 @@ Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @sddra.ai/INDEX.sdd
+   2 @vkard.az/INDEX.sdd
    3 @prompts/INDEX.sdd
 
 Rules:
@@ -17,10 +17,12 @@ Rules:
   [PRJ3] Project state MUST be tracked in projects/<name>/, not in project/.
   [PRJ4] The project/ folder contains reusable schemas only; concrete data
         belongs here.
+  [PRJ5] Migration commands MUST be run after any .sdd/ schema update.
 
 Navigation:
   Prompts: @prompts/INDEX.sdd
   ProjectModel: @../project/INDEX.sdd
-  SDDRAAI: @sddra.ai/INDEX.sdd
+  VKARD: @vkard.az/INDEX.sdd
+  Migration: @../commands/sdd-migrate.sdd
 
 State: +

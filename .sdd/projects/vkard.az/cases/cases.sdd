@@ -1,0 +1,50 @@
+Cases: default
+
+Purpose:
+  Define what needs to be built. Each case is a complete specification
+  for a feature, bugfix, or change.
+
+Lifecycle:
+  DRAFT > READY > ACTIVE > DONE | ARCHIVED
+
+Structure:
+  <case-id>.sdd:
+    id: <CASE-ID>
+    type: feature|bugfix|change|task
+    title: <title>
+    purpose: <why>
+    status: DRAFT|READY|ACTIVE|DONE|ARCHIVED
+    state: ~
+    created: <timestamp>
+    updated: <timestamp>
+
+    depends_on:
+      - <case-id>
+
+    produces:
+      - <output>
+
+    chain: @chain
+
+    template: @template
+
+    stages:
+      - AN: ~
+      - AR: ~
+      - DB: ~
+      - BE: ~
+      - API: ~
+      - FE: ~
+      - MD: ~
+      - QA: ~
+      - DO: ~
+      - VR: ~
+
+Rules:
+  [C1] Every case MUST have a unique ID.
+  [C2] Every case MUST declare its chain.
+  [C3] Every case MUST declare its template.
+  [C4] Case state MUST be updated after each stage.
+   [C5] Cases MUST be resolved before execution starts.
+
+State: +

@@ -22,7 +22,7 @@ Mapping:
 
 Task Creation:
   When decision approved:
-    1. Create tasks in .sdd/projects/sddra.ai/tasks/
+    1. Create tasks in .sdd/projects/vkard.az/tasks/
     2. Link tasks to decision ID
     3. Assign chain type
     4. Set dependencies

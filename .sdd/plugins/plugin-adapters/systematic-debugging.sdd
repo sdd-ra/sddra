@@ -4,7 +4,7 @@ Purpose:
   Adapt Superpowers systematic debugging skill for SDDRA bugfix/hotfix chains.
 
 Source:
-  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\systematic-debugging\SKILL.md
+  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01\skills\systematic-debugging\SKILL.md
 
 Original:
   Four phases:
@@ -31,9 +31,9 @@ Adapted for SDDRA:
     - Verification criteria from investigation
 
   Evidence gathering:
-    - Error logs from .sdd/projects/sddra.ai/observability/
+    - Error logs from .sdd/projects/vkard.az/observability/
     - Recent changes from .sdd/decisions/
-    - Dependency graph from .sdd/projects/sddra.ai/dependencies/
+    - Dependency graph from .sdd/projects/vkard.az/dependencies/
 
 Usage:
   Referenced by:

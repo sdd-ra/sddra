@@ -1,0 +1,30 @@
+# Workflow: Migration
+
+Purpose:
+  Execute project migrations after .sdd/ schema updates.
+  Ensures project instances stay consistent with the current
+  .sdd/ structure and conventions.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @../commands/sdd-migrate.sdd
+   3 @../projects/vkard.az/migrations/INDEX.sdd
+
+Steps:
+  1. List pending migrations from migrations/INDEX.sdd
+  2. Validate each pending migration (idempotency, dependencies)
+  3. Apply migrations in order (001, 002, 003, ...)
+  4. Update migration state (PENDING -> APPLIED)
+  5. Validate project instance after migration
+  6. Report results
+
+Rules:
+  [MW1] Migrations MUST be applied in numerical order.
+  [MW2] If a migration fails, the pipeline MUST halt.
+  [MW3] Migrations MUST be idempotent — safe to re-run.
+  [MW4] Failed migrations MUST be manually resolved before re-running.
+  [MW5] Migration state MUST be persisted in migrations/INDEX.sdd.
+
+State: +

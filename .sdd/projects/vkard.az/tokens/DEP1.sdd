@@ -1,0 +1,19 @@
+# Token Record: DEP1
+Purpose:
+  Token Record: DEP1
+
+
+Stage: DEP1
+RunID: RUN-TC2
+Timestamp: 2026-08-27T19:00:00Z
+TokensIn: 6000
+TokensOut: 12000
+TokensDelta: 6000
+Status: completed
+Parent: D0
+DurationMs: 0
+RetryCount: 0
+ Error: None
+
+State: +
+

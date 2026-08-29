@@ -33,7 +33,7 @@ Gates:
   VR: data-integrity-ok
 
 Retry: 2
-Token: @projects/sddra.ai/tokens/MG1.sdd
+Token: @projects/vkard.az/tokens/MG1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

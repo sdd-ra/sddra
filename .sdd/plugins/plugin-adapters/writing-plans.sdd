@@ -4,7 +4,7 @@ Purpose:
   Adapt Superpowers writing-plans skill for SDDRA S1 arm.
 
 Source:
-  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\writing-plans\SKILL.md
+  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01\skills\writing-plans\SKILL.md
 
 Original:
   Breaks work into bite-sized tasks
@@ -13,7 +13,7 @@ Original:
 Adapted for SDDRA:
   Mapped to S1 arm task generation:
     Input: approved docs/
-    Output: .sdd/projects/sddra.ai/tasks/*.sdd
+    Output: .sdd/projects/vkard.az/tasks/*.sdd
 
   Task structure:
     id: TASK-XXX

@@ -1,11 +1,11 @@
-﻿# Plugin Adapter Map
+# Plugin Adapter Map
 
 Purpose:
   Map external plugin skills to SDDRA chain graph arms.
   Only general-purpose skills are adapted; domain-specific ones are excluded.
 
 External Repo:
-  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01
+  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01
   Source: https://github.com/obra/superpowers
 
 Accepted Skills:

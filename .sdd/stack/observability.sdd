@@ -3,7 +3,7 @@ Observability: SDD
 Purpose:
   Observability technology catalog with monitoring, logging, tracing,
   and alerting options. Root stack/ defines reusable observability knowledge;
-  projects/sddra.ai/stack/ stores the selected observability stack for the project.
+  projects/vkard.az/stack/ stores the selected observability stack for the project.
 
 Catalog:
   Prometheus:

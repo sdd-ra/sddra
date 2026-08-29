@@ -1,0 +1,74 @@
+Case: PAYMENT-INTEGRATION
+
+id: PAYMENT-INTEGRATION
+type: feature
+title: Payment Integration
+purpose: Enable payment processing with escrow calculations
+status: ACTIVE
+state: ~
+created: 2026-08-27
+updated: 2026-08-27
+
+depends_on:
+  - USER-AUTH
+
+produces:
+  - backend/payment
+  - frontend/payment
+  - mobile/payment
+  - tests/payment
+
+chain: default
+
+template: modular-feature
+
+stages:
+  AN: ~
+  AR: ~
+  DB: ~
+  BE: ~
+  API: ~
+  FE: ~
+  MD: ~
+  QA: ~
+  DO: ~
+  VR: ~
+
+rules:
+  [P1] Payment calculations MUST be deterministic.
+  [P2] All transactions MUST be logged.
+  [P3] Refund flows MUST be tested.
+  [P4] Payment state MUST be idempotent.
+
+tech_stack:
+  languages:
+    - go (L2-patterns)
+    - typescript (L1-fundamentals)
+  frameworks:
+    - react (L1-fundamentals)
+    - rest-api
+  databases:
+    - postgresql (L1-fundamentals)
+  cross-cutting:
+    - testing: tdd, bdd
+    - security: authentication, authorization
+    - architecture: ddd
+    - observability: logging
+
+decisions:
+  - id: PAY-001
+    title: Payment gateway selection
+    status: pending
+    options:
+      - stripe
+      - paypal
+      - adyen
+
+approval_required:
+  - PAY-001
+
+provisioning:
+   triggers:
+     - postgresql
+
+State: +

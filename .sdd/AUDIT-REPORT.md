@@ -1,7 +1,7 @@
 # .sdd/ Audit Report
 
 Date: 2026-08-28
-Scope: All .sdd/ files in D:\Tasks\ai_code\sddra.ai\.sdd\
+Scope: All .sdd/ files in D:\Tasks\ai_code\vkard.az\.sdd\
 
 ## Executive Summary
 
@@ -115,7 +115,7 @@ All case files have `state: -` instead of `State: +` (different format).
    - decisions/schema.sdd
    - decisions/template.sdd
    - project/README.sdd
-   - projects/sddra.ai/decisions/INDEX.sdd
+   - projects/vkard.az/decisions/INDEX.sdd
    - project/map.sdd
    - workflows/agent-workflow.sdd
    - workflows/chain-implementation.sdd
@@ -135,9 +135,9 @@ The following files already had State: + and required no changes:
 - All orchestrator/*.sdd files (except those noted above)
 - RESOURCES.sdd
 - WORK-PLAN.sdd
-- projects/sddra.ai/docs/mappings.sdd
-- projects/sddra.ai/tasks/INDEX.sdd
-- projects/sddra.ai/architecture/INDEX.sdd
+- projects/vkard.az/docs/mappings.sdd
+- projects/vkard.az/tasks/INDEX.sdd
+- projects/vkard.az/architecture/INDEX.sdd
 - workflows/recovery.sdd
 - workflows/example-prompt-to-code.sdd
 - workflows/backup-integrity.sdd

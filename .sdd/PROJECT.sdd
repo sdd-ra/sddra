@@ -45,7 +45,7 @@ Directories:
     root: ../prompts
     root_purpose: Root-level prompt inbox (user submissions)
     formalized: ../projects/prompts
-    documented: ../projects/sddra.ai/docs/prompts
+    documented: ../projects/vkard.az/docs/prompts
 
   workflows:
     path: ./workflows

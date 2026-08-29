@@ -1,0 +1,27 @@
+# Project: Workflow
+
+Purpose:
+  Project-specific workflow state and active instances.
+  Tracks active workflow executions, exceptions, and
+  lifecycle state for the current project.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @lifecycle.sdd
+   3 @active.sdd
+   4 @exceptions.sdd
+
+Rules:
+  [PW1] Active workflows MUST be tracked.
+  [PW2] Exceptions MUST be resolved before continuation.
+  [PW3] Workflow state MUST be persisted.
+
+Navigation:
+  Lifecycle: @lifecycle.sdd
+  Active: @active.sdd
+  Exceptions: @exceptions.sdd
+  RootWorkflow: @../workflow/INDEX.sdd
+
+State: +
