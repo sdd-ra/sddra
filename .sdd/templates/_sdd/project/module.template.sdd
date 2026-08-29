@@ -1,0 +1,32 @@
+# Module Template
+
+Purpose:
+  Template for business logic modules.
+
+Schema:
+  id: MOD-XXX
+  name: <module name>
+  owner: <team or agent>
+  bounded_context: <ddd.bounded-context>
+
+  purpose: <one line>
+
+  aggregates:
+    - AGG-XXX
+
+  services:
+    - SVC-XXX
+
+  components:
+    - COMP-XXX
+
+  api:
+    - API-XXX
+
+  dependencies:
+    - MOD-XXX
+
+  files:
+    - path/to/file
+
+State: +

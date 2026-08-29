@@ -1,0 +1,44 @@
+# Project Structure Template
+
+Purpose:
+  Defines the AI-readable project structure under
+  .sdd/projects/{project_name}/project/. Every module, component,
+  API, and data model is declared here with clear ownership.
+
+Owns: ./
+
+Structure:
+  modules/:
+    purpose: Business logic modules
+    format: module.sdd per bounded context
+
+  components/:
+    purpose: Reusable UI/logic components
+    format: component.sdd per component
+
+  api/:
+    purpose: External API contracts
+    format: api.sdd per endpoint group
+
+  data/:
+    purpose: Data models and schemas
+    format: schema.sdd per aggregate
+
+Rules:
+  [PRJ1] Every module MUST have an owner.
+  [PRJ2] Every component MUST be mapped to a module.
+  [PRJ3] Every API MUST reference a module.
+  [PRJ4] Every data model MUST reference an aggregate.
+  [PRJ5] project/ is AI-readable, docs/ is human-readable.
+  [PRJ6] project/ and docs/ MUST have 1:1 mapping.
+  [PRJ7] Every change MUST be recorded in git with rationale.
+  [PRJ8] Commit messages MUST follow: what changed, why, impact.
+
+Navigation:
+  Modules: @modules/
+  Components: @components/
+  API: @api/
+  Data: @data/
+  Docs: @../docs/
+
+State: +

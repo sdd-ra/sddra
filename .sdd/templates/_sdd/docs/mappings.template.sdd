@@ -1,0 +1,30 @@
+# Docs Mapping
+
+Purpose:
+  1:1 mapping between AI-readable project/ and human-readable docs/.
+  Every file in project/ has a corresponding doc in docs/.
+
+Mapping:
+  project/modules/ → docs/10-business/modules/
+  project/components/ → docs/20-architecture/components/
+  project/api/ → docs/30-backend/api/
+  project/data/ → docs/60-database/schemas/
+
+Rules:
+  [DM1] Every project/ file MUST have a docs/ counterpart.
+  [DM2] docs/ MUST be human-readable Markdown.
+  [DM3] project/ MUST be AI-readable .sdd format.
+  [DM4] Changes to project/ MUST update docs/ simultaneously.
+  [DM5] Docs MUST explain WHY, not just WHAT.
+  [DM6] Docs MUST include business context.
+  [DM7] Docs MUST be versioned with project/.
+
+Navigation:
+  Project: @project/INDEX.sdd
+  Docs: @docs/INDEX.sdd
+  Modules: @project/modules/
+  Components: @project/components/
+  API: @project/api/
+  Data: @project/data/
+
+State: +

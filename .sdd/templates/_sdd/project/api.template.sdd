@@ -1,0 +1,26 @@
+# API Template
+
+Purpose:
+  Template for external API contracts.
+
+Schema:
+  id: API-XXX
+  name: <API name>
+  module: MOD-XXX
+  owner: <team or agent>
+
+  purpose: <one line>
+
+  endpoints:
+    - path: /path
+      method: GET|POST|PUT|DELETE
+      request: schema
+      response: schema
+
+  authentication: <auth type>
+  rate_limit: <limit>
+
+  files:
+    - path/to/file
+
+State: +
