@@ -9,7 +9,7 @@ Purpose:
 1. Read .sdd/PROJECT.sdd
 2. Read .sdd/chains/graph.sdd
 3. Read .sdd/chains/selector.sdd
-4. Read .sdd/chains/rules/INDEX.sdd
+4. Read .sdd/chains/rules/chain-rules.sdd
 5. Read .sdd/chains/tokens/INDEX.sdd
 ```
 

@@ -1,77 +1,24 @@
 # Chain Rules
 
 Purpose:
-  Laws that flow through every chain node. Unbreakable.
+  Unbreakable laws for chain execution. Flows through every node.
 
 Rules:
-  CR1:
-    id: CR1
-    text: Every arm MUST return to parent D0 after completion.
-    applies_to: P1,D1,S1,C1,R1,DEP1
+  CR1: Every arm MUST return to parent D0 after completion.
+  CR2: Human MUST approve before entering S1 from D1.
+  CR3: Human MUST approve before entering C1 from S1.
+  CR4: Token delta MUST be recorded for every stage.
+  CR5: AI MUST NOT read project/ before S1 approval.
+  CR6: Every output MUST be validated before returning to D0.
+  CR7: If a stage fails, retry max 3 times before escalating.
+  CR8: Project root is source of truth for code; .sdd is source of truth for intent.
+  CR9: docs/ is human language; .sdd/project/ is AI language.
+  CR10: Chain execution MUST be idempotent.
+  CR11: Every significant change MUST have a decision record (DEC-XXX).
+  CR12: AI MUST check decisions/ before proposing changes.
+  CR13: Conflicting decisions MUST block execution until resolved.
+  CR14: Implementation MUST reference approved decision IDs.
 
-  CR2:
-    id: CR2
-    text: Human MUST approve before entering S1 from D1.
-    applies_to: D1,S1
-
-  CR3:
-    id: CR3
-    text: Human MUST approve before entering C1 from S1.
-    applies_to: S1,C1
-
-  CR4:
-    id: CR4
-    text: Token delta MUST be recorded for every stage.
-    applies_to: P1,D1,S1,C1,R1,DEP1
-
-  CR5:
-    id: CR5
-    text: AI MUST NOT read project/ before S1 approval.
-    applies_to: C1
-
-  CR6:
-    id: CR6
-    text: Every output MUST be validated before returning to D0.
-    applies_to: P1,D1,S1,C1,R1,DEP1
-
-  CR7:
-    id: CR7
-    text: If a stage fails, it MUST retry max 3 times before escalating.
-    applies_to: P1,D1,S1,C1,R1,DEP1
-
-  CR8:
-    id: CR8
-    text: Project root is source of truth for code; .sdd is source of truth for intent.
-    applies_to: C1
-
-  CR9:
-    id: CR9
-    text: docs/ is human language; .sdd/project/ is AI language.
-    applies_to: D1,S1
-
-  CR10:
-    id: CR10
-    text: Chain execution MUST be idempotent.
-    applies_to: P1,D1,S1,C1,R1,DEP1
-
-  CR11:
-    id: CR11
-    text: Every significant change MUST have a decision record (DEC-XXX).
-    applies_to: D1,S1,C1,R1,DEP1
-
-  CR12:
-    id: CR12
-    text: AI MUST check decisions/ before proposing changes.
-    applies_to: D1,S1,C1
-
-  CR13:
-    id: CR13
-    text: Conflicting decisions MUST block execution until resolved.
-    applies_to: S1,C1
-
-  CR14:
-    id: CR14
-    text: Implementation MUST reference approved decision IDs.
-    applies_to: C1
+AppliesTo: P1,D1,S1,C1,R1,DEP1,F1,B1,H1,RF1,SEC1,M1,MG1,I1
 
 State: +

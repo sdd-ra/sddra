@@ -1,11 +1,7 @@
 # Chain Graph
 
 Purpose:
-  Unbreakable chain graph for SDDRA. Every execution path is a branch of `default`.
-  Arms return to parent; rules and tokens flow through every node.
-
-Node ID short rules:
-  2-6 chars. Example: `D0`, `P1`, `S1`, `C1`, `R1`, `DEP1`.
+  Execution graph for SDDRA. Every path branches from D0; arms return to D0.
 
 Nodes:
   D0  default
@@ -17,25 +13,13 @@ Nodes:
   DEP1 deploy
 
 Edges:
-  D0->P1
-  D0->D1
-  D0->S1
-  D0->C1
-  D0->R1
-  D0->DEP1
-  P1->D0
-  D1->D0
-  S1->D0
-  C1->D0
-  R1->D0
-  DEP1->D0
+  D0->P1, D0->D1, D0->S1, D0->C1, D0->R1, D0->DEP1
+  P1->D0, D1->D0, S1->D0, C1->D0, R1->D0, DEP1->D0
 
-Property:
-  graph.type = cyclic
-  graph.root = D0
-  graph.arms = P1,D1,S1,C1,R1,DEP1
-  graph.rules = ./rules/INDEX.sdd
-  graph.tokens = ../../projects/{project_name}/tokens/INDEX.sdd
+Properties:
+  type: cyclic
+  root: D0
+  arms: P1,D1,S1,C1,R1,DEP1
+  rules: ./rules/chain-rules.sdd
 
 State: +
-

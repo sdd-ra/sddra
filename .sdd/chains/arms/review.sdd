@@ -3,14 +3,9 @@
 Purpose:
   Human review gate after code execution. Minimal tokens.
 
-Parent: D0
-Returns: D0
-
 Stage:
   id: R1
   name: review
-  parent: D0
-  returns_to: D0
   inputs:
     - project/
   outputs:
@@ -21,10 +16,7 @@ Stage:
     - plugins/plugin-adapters/verification-before-completion.sdd
   token:
     - ../../projects/{project_name}/tokens/R1.sdd
-  rule:
-    - ./rules/INDEX.sdd
   gate:
      - human
 
 State: +
-

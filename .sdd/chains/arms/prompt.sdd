@@ -3,14 +3,9 @@
 Purpose:
   Parse human prompt -> docs/. Minimal tokens.
 
-Parent: D0
-Returns: D0
-
 Stage:
   id: P1
   name: prompt
-  parent: D0
-  returns_to: D0
   inputs:
     - prompt
   outputs:
@@ -21,10 +16,7 @@ Stage:
     - plugins/plugin-adapters/brainstorming.sdd
   token:
     - ../../projects/{project_name}/tokens/P1.sdd
-  rule:
-    - ./rules/INDEX.sdd
   gate:
      - human
 
 State: +
-

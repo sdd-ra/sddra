@@ -2,21 +2,21 @@
 
 Purpose:
   Execution chains for SDDRA. Root D0 branches to arms; arms return to D0.
+  Chain definitions: @INDEX.sdd
+  Chain rules: @rules/chain-rules.sdd
 
 Files:
   INDEX: @INDEX.sdd
-  graph: @graph.sdd
   default: @default.sdd
   arms: @arms/
   rules: @rules/
-  tokens: @tokens/
   feature: @feature.sdd
   bugfix: @bugfix.sdd
   hotfix: @hotfix.sdd
   refactor: @refactor.sdd
+  security: @security.sdd
   maintenance: @maintenance.sdd
   migration: @migration.sdd
-  security: @security.sdd
-   incident: @incident.sdd
+  incident: @incident.sdd
 
 State: +
