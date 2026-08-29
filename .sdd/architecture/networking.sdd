@@ -1,24 +1,8 @@
 Networking: SDD
 
 Purpose:
-  Define networking patterns, CDN configuration, WAF rules, load
-  balancer types, API gateway responsibilities, service mesh guidance,
-  DNS management, TLS requirements, network security, and firewall
-  rules. Networking is the foundation for all inter-component and
-  external communication.
-
-Owns: ./
-
-Scope:
-  CDN
-  WAF
-  Load balancer
-  API gateway
-  Service mesh
-  DNS
-  TLS
-  Network security
-  Firewall rules
+  Define networking principles, CDN, load balancer, API gateway,
+  DNS, TLS, and network security rules.
 
 Principles:
   All external traffic MUST be encrypted with TLS.
@@ -28,288 +12,62 @@ Principles:
   All inter-service communication MUST use DNS names, never IPs.
 
 CDN:
-
   description: Content Delivery Network for static assets and API caching
-  when_to_use:
-    - L1 and above
-    - static assets (images, JS, CSS, video)
-    - global or regional user base
-    - DDoS protection needed
-
+  when_to_use: L1+, static assets, global user base, DDoS protection
   configuration:
-    cache_rules:
-      - immutable assets: 1 year TTL with content hash
-      - versioned assets: 1 year TTL
-      - HTML: no cache or short TTL
-      - API responses: respect Cache-Control headers
-
-    origin_security:
-      - origin MUST allow only CDN IP ranges
-      - origin shield for cache hit ratio improvement
-
-  benefits:
-    - reduced origin load
-    - lower user latency
-    - DDoS absorption at edge
-    - geographic distribution
-
-WAF:
-
-  description: Web Application Firewall for HTTP/HTTPS traffic
-  rules:
-    owasp_top10:
-      - SQL injection
-      - XSS
-      - CSRF
-      - SSRF
-      - broken authentication
-      - sensitive data exposure
-      - security misconfiguration
-
-    rate_limiting:
-      - per IP: prevent brute force
-      - per endpoint: prevent abuse
-      - per user: account-specific limits
-
-    geo_blocking:
-      - block high-risk regions
-      - allow only expected traffic origins
-
-  placement:
-    edge: Cloudflare, AWS WAF (global protection)
-    ingress: NGINX, Envoy (application-level rules)
+    cache_rules: immutable assets 1 year TTL, HTML no cache,
+                 API responses respect Cache-Control
+    origin_security: origin MUST allow only CDN IP ranges
 
 LoadBalancer:
-
   types:
-    L4:
-      description: Transport layer (TCP, UDP)
-      use_when:
-        - non-HTTP protocols
-        - maximum performance needed
-        - TLS passthrough required
-
-    L7:
-      description: Application layer (HTTP, HTTPS, gRPC)
-      use_when:
-        - HTTP services
-        - path-based routing
-        - header-based routing
-        - TLS termination
-
-  configuration:
-    health_checks:
-      - active: periodic probe with configurable interval
-      - passive: monitor response errors and timeouts
-      - slow_start: gradual traffic ramp for new instances
-
-    algorithms:
-      round_robin: equal capacity nodes
-      least_connections: variable request duration
-      weighted: heterogeneous node capacity
-      ip_hash: session affinity (avoid when possible)
-
-    high_availability:
-      - deploy at least 2 load balancers
-      - use anycast or DNS failover
-      - health check MUST be independent of service health
+    L4: transport layer (TCP/UDP)
+    L7: application layer (HTTP/HTTPS)
+  algorithms: round-robin, least-connections, weighted, ip-hash
+  health_checks: active periodic probe, passive error monitoring
+  high_availability: deploy at least 2 load balancers
 
 APIGateway:
-
   description: Entry point for external API traffic
-  responsibilities:
-    routing:
-      - path-based routing to services
-      - version routing (/v1/, /v2/)
-
-    authentication:
-      - API key validation
-      - JWT validation
-      - OAuth2 flow orchestration
-
-    rate_limiting:
-      - per client rate limits
-      - burst handling
-      - quota enforcement
-
-    transformation:
-      - request/response transformation
-      - protocol translation
-
-    documentation:
-      - OpenAPI spec serving
-      - developer portal
-
-  when_to_use:
-    - external API exposure
-    - multiple client types
-    - unified authentication layer
-    - L2 and above
-
-  anti_patterns:
-    gateway_as_bottleneck:
-      description: Gateway becomes single point of failure
-      rule: deploy multiple gateway instances
-
-    business_logic_in_gateway:
-      description: Moving business logic to gateway
-      rule: gateway MUST handle only cross-cutting concerns
-
-ServiceMesh:
-
-  description: Infrastructure layer for service-to-service communication
-  components:
-    sidecar_proxy: intercepts all service traffic
-    control_plane: manages proxy configuration
-    data_plane: proxies handling traffic
-
-  capabilities:
-    traffic_management:
-      - retries, timeouts, circuit breaking
-      - load balancing
-      - traffic splitting (canary)
-
-    security:
-      - mTLS between services
-      - certificate management
-      - access control policies
-
-    observability:
-      - distributed tracing
-      - metrics
-      - access logging
-
-  when_to_use:
-    - L3-L5
-    - many microservices
-    - complex traffic patterns
-    - strong security requirements
-
-  when_to_avoid:
-    - L0-L2
-    - monolithic architecture
-    - small number of services
-    - insufficient operational maturity
+  responsibilities: routing, authentication, rate limiting, transformation
+  when_to_use: external API exposure, multiple client types, L2+
+  rule: gateway MUST handle only cross-cutting concerns
 
 DNS:
-
-  management:
-    internal_dns:
-      - service discovery
-      - consistent naming convention
-      - TTL: 60 seconds for dynamic services
-
-    external_dns:
-      - domain registrar with low TTL (300s) for failover
-      - health-checked DNS for critical endpoints
-      - geographic DNS for multi-region
-
+  internal: service discovery, TTL 60s for dynamic services
+  external: low TTL (300s) for failover, geographic DNS for multi-region
   anti_patterns:
-    hardcoded_ips:
-      description: Using IP addresses instead of DNS names
-      rule: all inter-service communication MUST use DNS names
-
-    long_ttl:
-      description: Long TTL preventing failover
-      rule: critical services MUST have TTL <= 60 seconds
+    hardcoded_ips: MUST use DNS names
+    long_ttl: critical services MUST have TTL <= 60s
 
 TLS:
-
-  requirements:
-    external_traffic:
-      - all external HTTP MUST use HTTPS
-      - TLS 1.3 minimum
-      - strong cipher suites only
-      - certificate rotation automated
-
-    internal_traffic:
-      - mTLS for service mesh
-      - TLS for sensitive internal APIs
-      - certificate rotation automated
-
-  certificate_management:
-    - use managed certificate service (ACM, Let's Encrypt)
-    - certificate expiry monitoring
-    - automated renewal before expiry
+  external_traffic: HTTPS mandatory, TLS 1.3 minimum, strong ciphers
+  internal_traffic: mTLS for service mesh, TLS for sensitive APIs
+  certificate_management: managed service, automated renewal
 
 NetworkSecurity:
-
-  zero_trust:
-    description: Never trust, always verify
-    principles:
-      - authenticate every request
-      - authorize minimum required access
-      - encrypt all traffic
-      - inspect all traffic
-      - log all access
-
-  segmentation:
-    - separate networks by sensitivity
-    - restrict cross-network traffic
-    - use private subnets for internal services
-    - public subnets only for load balancers
-
-  DDoS:
-    - CDN for DDoS absorption
-    - rate limiting at edge
-    - traffic scrubbing services
-    - capacity overprovisioning
+  zero_trust: authenticate every request, authorize minimum access,
+              encrypt all traffic, inspect all traffic, log all access
+  segmentation: separate networks by sensitivity, private subnets for internal
+  DDoS: CDN absorption, rate limiting at edge, traffic scrubbing
 
 FirewallRules:
-
   principles:
-    deny_by_default:
-      - default deny all inbound
-      - explicit allow for required ports
-      - explicit deny for known bad IPs
-
-    least_privilege:
-      - allow only required ports
-      - allow only required source IPs
-      - restrict database access to application tier only
-
-    outbound:
-      - restrict outbound to required destinations
-      - monitor unexpected outbound traffic
-      - block known malicious destinations
-
-  configuration:
-    - firewall rules MUST be version controlled
-    - firewall rules MUST be reviewed on change
-    - firewall rule changes MUST be audited
+    deny_by_default: default deny all inbound, explicit allow required
+    least_privilege: allow only required ports and source IPs
+    outbound: restrict to required destinations, monitor unexpected traffic
+  configuration: rules MUST be version controlled and audited
 
 AntiPatterns:
-
-  OpenFirewall:
-    description: Wide open firewall rules
-    rule: MUST deny by default, allow explicitly
-
-  UnencryptedInternal:
-    description: Internal traffic without encryption
-    rule: sensitive internal traffic MUST be encrypted
-
-  IPHardcoding:
-    description: Hardcoded IP addresses in configuration
-    rule: MUST use DNS names with TTL
-
-  SingleRegion:
-    description: Production in single region without network redundancy
-    rule: L99.95 and above MUST span regions
-
-  MonitoringBlindSpots:
-    description: No visibility into east-west traffic
-    rule: internal traffic MUST be monitored
+  OpenFirewall: MUST deny by default, allow explicitly
+  UnencryptedInternal: sensitive internal traffic MUST be encrypted
+  IPHardcoding: MUST use DNS names with TTL
+  SingleRegion: L99.95+ MUST span regions
+  MonitoringBlindSpots: internal traffic MUST be monitored
 
 Navigation:
   Levels: @levels.sdd
   Patterns: @patterns.sdd
   Scaling: @scaling.sdd
-  Availability: @availability.sdd
-  Observability: @observability.sdd
-  Deployment: @deployment.sdd
-  Project: @project/project.sdd
-  ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
-  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
-  

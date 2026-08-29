@@ -9,16 +9,16 @@ Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @architecture.sdd (architecture overview)
-   3 @levels.sdd (ProjectScale L0-L5)
-   4 @patterns.sdd (architecture patterns)
-   5 @principles.sdd (architecture principles)
-   6 @scaling.sdd (scaling rules)
-   7 @availability.sdd (availability/RTO/RPO)
-   8 @data.sdd (data architecture)
-   9 @observability.sdd (observability)
-   10 @networking.sdd (networking)
-   11 @deployment.sdd (deployment)
+   2 @architecture.sdd
+   3 @levels.sdd
+   4 @patterns.sdd
+   5 @principles.sdd
+   6 @scaling.sdd
+   7 @availability.sdd
+   8 @data.sdd
+   9 @observability.sdd
+   10 @networking.sdd
+   11 @deployment.sdd
 
 Rules:
   [AR1] Architecture MUST be defined before implementation.
@@ -28,7 +28,6 @@ Rules:
   [AR5] Data architecture MUST include storage, flow, and retention.
 
 Navigation:
-  Architecture: @architecture.sdd
   Levels: @levels.sdd
   Patterns: @patterns.sdd
   Principles: @principles.sdd
@@ -38,6 +37,5 @@ Navigation:
   Observability: @observability.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
-  ProjectArchitecture: @../projects/{project_name}/architecture/INDEX.sdd
 
 State: +

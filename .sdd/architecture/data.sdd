@@ -3,21 +3,7 @@ Data: SDD
 Purpose:
   Define data architecture patterns, database selection rules, data
   modeling guidelines, migration strategies, consistency models,
-  partitioning approaches, retention policies, backup rules, and
-  encryption requirements. Data architecture is selected based on
-  access patterns, consistency requirements, and scale.
-
-Owns: ./
-
-Scope:
-  Database selection (SQL vs NoSQL)
-  Data modeling
-  Migrations
-  Data consistency (strong vs eventual)
-  Data partitioning
-  Data retention
-  Data backup
-  Data encryption
+  partitioning approaches, retention policies, and encryption.
 
 Principles:
   Choose database based on data characteristics, not familiarity.
@@ -30,338 +16,86 @@ DatabaseSelection:
 
   SQL:
     description: Relational database with ACID transactions
-    strengths:
-      - strong consistency
-      - complex queries and joins
-      - mature ecosystem
-      - ACID transactions
-    weaknesses:
-      - scaling challenges at high write volume
-      - rigid schema
-      - expensive at massive scale
-    when_to_use:
-      - financial transactions
-      - complex relationships
-      - strong consistency required
-      - reporting with complex queries
-    examples:
-      - PostgreSQL
-      - MySQL
-      - SQL Server
+    strengths: strong consistency, complex queries, ACID
+    when_to_use: financial transactions, complex relationships,
+                 strong consistency, complex reporting
+    examples: PostgreSQL, MySQL, SQL Server
 
   NoSQL:
-    description: Non-relational database optimized for specific access patterns
+    description: Non-relational database for specific access patterns
     types:
-      document:
-        description: JSON-like documents
-        examples: MongoDB, Couchbase
-        when_to_use:
-          - flexible schema
-          - hierarchical data
-          - rapid iteration
+      document: JSON-like documents (MongoDB)
+      key_value: simple lookups (Redis, DynamoDB)
+      column_family: time-series, high write throughput (Cassandra)
+      graph: highly connected data (Neo4j)
+    when_to_use: massive scale, flexible schema, eventual consistency OK
 
-      key_value:
-        description: Simple key-value pairs
-        examples: Redis, DynamoDB
-        when_to_use:
-          - session storage
-          - caching
-          - high throughput simple lookups
-
-      column_family:
-        description: Wide-column stores
-        examples: Cassandra, Bigtable
-        when_to_use:
-          - time-series data
-          - high write throughput
-          - massive scale
-          - eventual consistency acceptable
-
-      graph:
-        description: Nodes and relationships
-        examples: Neo4j, Neptune
-        when_to_use:
-          - highly connected data
-          - relationship-heavy queries
-          - social networks
-          - recommendation engines
-
-    when_to_use_general:
-      - massive scale
-      - flexible schema
-      - specific access patterns
-      - eventual consistency acceptable
-
-  GraphModel:
-    description: .sdd internal knowledge graph for entities and relationships
-    purpose: semantic queries, impact analysis, context retrieval
-    storage: logical graph over PostgreSQL
-    navigation: @../graph/model.sdd
-    rule: filesystem is for navigation, graph is for semantics
-
-  HybridModel:
-    description: SDDRA uses three complementary storage layers
-    layers:
-      - filesystem: git-friendly, human-editable .sdd representations
-      - postgresql: ACID transactions, versioning, audit, constraints
-      - graph_abstraction: semantic queries, traversal, impact analysis
-    rule: physical storage and domain model are decoupled
-    rule: graph is logical model, PostgreSQL is physical storage
-
-  EntityIdentity:
-    rule: every entity MUST have immutable ID
-    rule: entity identity is separate from version
-    rule: TASK-100 v1, v2, v3 are the same entity
-
-  RelationshipVersioning:
-    rule: relationship changes MUST be versioned
-    rule: historical graph queries MUST be supported
-    rule: graph snapshots MUST be created for executions
-
-  SelectionCriteria:
-    consistency_requirement: strong -> SQL, eventual -> NoSQL candidate
+  Selection:
+    consistency: strong -> SQL, eventual -> NoSQL candidate
     query_complexity: complex joins -> SQL, simple lookups -> NoSQL
     schema_stability: stable -> SQL, evolving -> NoSQL candidate
     scale: moderate -> SQL, massive -> NoSQL candidate
-    transaction_volume: high ACID -> SQL, high throughput -> NoSQL candidate
+    transaction_volume: high ACID -> SQL, high throughput -> NoSQL
 
 DataModeling:
-
   EntityRelationship:
-    description: Define entities, attributes, and relationships
     rule: every entity MUST have a single owner domain
     rule: relationships MUST use explicit foreign keys or references
 
   SchemaDesign:
-    normalization:
-      - normalize to 3NF for OLTP systems
-      - denormalize for read-optimized reporting
-      - avoid over-normalization that hurts performance
-
-    indexing:
-      - index foreign keys
-      - index frequently queried columns
-      - avoid over-indexing (write penalty)
-      - composite indexes for common query patterns
-
-  AntiPatterns:
-    sparse_columns:
-      description: Many nullable columns
-      rule: consider vertical partitioning or separate table
-
-    entity_attribute_value:
-      description: EAV pattern for schema flexibility
-      rule: avoid unless truly dynamic schema required
-
-    json_everything:
-      description: Storing all data as JSON in SQL
-      rule: use structured columns for queryable data
+    normalization: 3NF for OLTP, denormalize for read-optimized reporting
+    indexing: index foreign keys and frequently queried columns
+    avoid: over-indexing, sparse columns, EAV pattern, json_everything
 
 Migrations:
-
   principles:
-    backward_compatible:
-      - new columns MUST be nullable or have defaults
-      - removed columns MUST not be referenced before removal
-      - renamed columns MUST support old name temporarily
-
-    atomic:
-      - each migration MUST be a single atomic operation
-      - no multi-step migrations that leave DB in inconsistent state
-
-    reversible:
-      - every migration MUST have a rollback path
-      - test rollback before production deploy
-
-    zero_downtime:
-      - long-running migrations MUST use expand/contract pattern
-      - background migration for large tables
-
-  process:
-    - migration reviewed in PR
-    - migration tested on staging copy
-    - migration applied during deploy window
-    - post-migration verification
+    backward_compatible: new columns nullable/default, removed columns phased out
+    atomic: each migration is a single atomic operation
+    reversible: every migration MUST have a rollback path
+    zero_downtime: long-running migrations use expand/contract pattern
+  process: review in PR, test on staging, apply in deploy window, verify
 
 DataConsistency:
-
-  StrongConsistency:
-    description: All reads return the latest written value
-    guarantee: linearizability
-    cost: higher latency, lower availability
-    use_when:
-      - financial transactions
-      - inventory management
-      - any domain where stale data causes errors
-    implementation:
-      - synchronous replication
-      - distributed locks
-      - consensus protocols (Raft, Paxos)
-
-  EventualConsistency:
-    description: Reads may return stale values temporarily
-    guarantee: convergence
-    cost: lower latency, higher availability
-    use_when:
-      - social feeds
-      - analytics
-      - non-critical user data
-      - cache layers
-    implementation:
-      - asynchronous replication
-      - conflict resolution on read
-      - version vectors
-
-  Selection:
-    rule: default to strong consistency
-    rule: eventual consistency MUST be explicitly justified
-    rule: eventual consistency boundaries MUST be documented
+  StrongConsistency: all reads return latest value (financial, inventory)
+  EventualConsistency: reads may return stale values (social feeds, analytics)
+  rule: default to strong consistency
+  rule: eventual consistency MUST be explicitly justified
 
 DataPartitioning:
-
-  VerticalPartitioning:
-    description: Split table by columns
-    when_to_use:
-      - wide tables with hot/cold columns
-      - separating PII from business data
-      - access pattern separation
-
-  HorizontalPartitioning:
-    description: Split table by rows
-    strategies:
-      range: date ranges, ID ranges
-      hash: hash of key modulo N
-      list: discrete values (tenant_id, region)
-    when_to_use:
-      - large tables (100M+ rows)
-      - time-series data
-      - multi-tenant isolation
-
-  Selection:
-    rule: partition by most common query filter
-    rule: avoid cross-partition queries
-    rule: consider partition key immutability
+  VerticalPartitioning: split table by columns (hot/cold separation)
+  HorizontalPartitioning: split table by rows (range, hash, list)
+  rule: partition by most common query filter
+  rule: avoid cross-partition queries
 
 DataRetention:
-
-  policy:
-    - every data type MUST have defined retention period
-    - retention MUST comply with regulatory requirements
-    - retention MUST be enforced automatically
-
+  policy: every data type MUST have defined retention period
   strategies:
-    archive:
-      - move old data to cheaper storage
-      - keep searchable but slower access
-      - applicable: logs, historical transactions
-
-    delete:
-      - permanently remove after retention period
-      - applicable: temporary data, sessions
-
-    anonymize:
-      - remove PII but keep structure
-      - applicable: analytics, ML training data
+    archive: move old data to cheaper storage
+    delete: permanently remove after retention period
+    anonymize: remove PII but keep structure
 
 DataBackup:
-
-  frequency:
-    - critical data: continuous replication
-    - important data: hourly incremental
-    - standard data: daily full + hourly incremental
-
-  storage:
-    - off-site storage (different region/cloud)
-    - immutable backups (WORM storage)
-    - encrypted at rest and in transit
-
-  testing:
-    - restore test quarterly minimum
-    - measure restoration time against RTO
-    - validate backup completeness
-
-  anti_patterns:
-    untested_backups:
-      description: Backups never restored
-      rule: MUST test restoration
-
-    single_location:
-      description: Backups in same location as primary
-      rule: MUST store off-site
-
-    unencrypted_backups:
-      description: Backups without encryption
-      rule: MUST encrypt all backups
+  frequency: critical -> continuous, important -> hourly, standard -> daily
+  storage: off-site, immutable, encrypted
+  testing: restore test quarterly minimum
 
 DataEncryption:
-
-  at_rest:
-    - database storage encryption
-    - backup encryption
-    - file storage encryption
-    - key management: use KMS, not application code
-
-  in_transit:
-    - TLS for all connections
-    - certificate validation required
-    - no plaintext protocols
-
-  application:
-    - sensitive fields encrypted at application layer
-    - key rotation policy
-    - separate encryption keys per data classification
-
-  key_management:
-    - use managed KMS when possible
-    - key rotation: annually minimum
-    - access to keys: strictly controlled
-    - never store keys in source code or config files
+  at_rest: database, backup, file storage encryption
+  in_transit: TLS for all connections
+  key_management: use managed KMS, rotate annually
 
 AntiPatterns:
-
-  DatabasePerDeveloper:
-    description: Each developer uses own DB instance
-    rule: shared development DB with migration-managed schema
-
-  NoMigrations:
-    description: Schema changes applied manually
-    rule: ALL schema changes MUST use versioned migrations
-
-  SharedDatabase:
-    description: Multiple services share one database
-    rule: each domain MUST own its data store
-
-  OverIndexing:
-    description: Index on every column
-    rule: index based on actual query patterns
-
-  NoRetentionPolicy:
-    description: Data grows without bounds
-    rule: every data store MUST have retention policy
-
-  UnencryptedSensitiveData:
-    description: PII or sensitive data stored plaintext
-    rule: sensitive data MUST be encrypted at rest and in transit
-
-  PrematureSharding:
-    description: Sharding before exhausting simpler options
-    rule: MUST optimize, add replicas, partition before sharding
-
-  InconsistentNaming:
-    description: Inconsistent column/table naming
-    rule: follow established naming convention
+  DatabasePerDeveloper: shared development DB with migration-managed schema
+  NoMigrations: ALL schema changes MUST use versioned migrations
+  SharedDatabase: each domain MUST own its data store
+  OverIndexing: index based on actual query patterns
+  NoRetentionPolicy: every data store MUST have retention policy
+  UnencryptedSensitiveData: sensitive data MUST be encrypted
+  PrematureSharding: MUST optimize, add replicas, partition before sharding
 
 Navigation:
   Levels: @levels.sdd
   Patterns: @patterns.sdd
   Scaling: @scaling.sdd
-  Availability: @availability.sdd
-  Observability: @observability.sdd
-  Networking: @networking.sdd
-  Deployment: @deployment.sdd
-  Project: @project/project.sdd
-  ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
-  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
-  

@@ -1,7 +1,8 @@
-﻿Architecture: sddra
+﻿Architecture: SDD
 
 Purpose:
   Define the internal architecture of the .sdd system.
+  This is the meta layer: how .sdd itself is built.
 
 Principles:
   - Separation of concerns
@@ -67,6 +68,10 @@ Relationships:
 Rules:
   [AR1] Components MUST NOT create circular dependencies.
   [AR2] References MUST be explicit and resolvable.
-   [AR3] AI MUST follow declared relationships.
+  [AR3] AI MUST follow declared relationships.
+
+Note:
+  This file describes .sdd's own component graph. For code architecture
+  principles applied to projects, see @principles.sdd.
 
 State: +

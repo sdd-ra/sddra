@@ -1,21 +1,9 @@
 Availability: SDD
 
 Purpose:
-  Define availability levels, RTO/RPO targets, HA patterns, disaster
-  recovery strategies, backup rules, and failover mechanisms. Availability
-  is a non-functional requirement that must be selected based on business
-  criticality, not defaulted to the highest level.
-
-Owns: ./
-
-Scope:
-  Availability levels (99% to 99.999%)
-  RTO (Recovery Time Objective)
-  RPO (Recovery Point Objective)
-  HA patterns (active-passive, active-active, multi-zone, multi-region)
-  Disaster recovery
-  Backup strategies
-  Failover mechanisms
+  Define availability levels, RTO/RPO targets, and HA patterns.
+  Availability is selected based on business criticality, not defaulted
+  to the highest level.
 
 Principles:
   Availability MUST be selected based on business criticality.
@@ -29,314 +17,85 @@ AvailabilityLevels:
   L99:
     name: Standard
     downtime_year: 3.65 days
-    downtime_month: 7.31 hours
     rto: 24 hours
     rpo: 24 hours
-    applicable:
-      - internal tools
-      - non-critical systems
-      - prototypes
-    pattern:
-      - single instance
-      - daily backups
-      - manual recovery
+    pattern: single instance, daily backups, manual recovery
 
   L99_9:
     name: Production
     downtime_year: 8.76 hours
-    downtime_month: 43.83 minutes
     rto: 4 hours
     rpo: 1 hour
-    applicable:
-      - production SaaS
-      - business platforms
-      - customer-facing apps
-    pattern:
-      - multi-instance
-      - automated backups
-      - automated failover
+    pattern: multi-instance, automated backups, automated failover
 
   L99_95:
     name: High Availability
     downtime_year: 4.38 hours
-    downtime_month: 21.92 minutes
     rto: 1 hour
     rpo: 15 minutes
-    applicable:
-      - financial systems
-      - payment processing
-      - critical business functions
-    pattern:
-      - multi-zone
-      - active-passive
-      - near-real-time replication
+    pattern: multi-zone, active-passive, near-real-time replication
 
   L99_99:
     name: Critical
     downtime_year: 52.56 minutes
-    downtime_month: 4.38 minutes
     rto: 15 minutes
     rpo: 5 minutes
-    applicable:
-      - payment systems
-      - authentication systems
-      - regulated systems
-    pattern:
-      - multi-zone active-active
-      - automated failover
-      - real-time replication
+    pattern: multi-zone active-active, automated failover
 
   L99_999:
     name: Mission Critical
     downtime_year: 5.26 minutes
-    downtime_month: 26.30 seconds
     rto: 1 minute
     rpo: seconds
-    applicable:
-      - global platforms
-      - critical infrastructure
-      - government systems
-    pattern:
-      - multi-region active-active
-      - automated failover
-      - real-time synchronous replication
-      - chaos engineering
+    pattern: multi-region active-active, real-time replication
 
 RTO_RPO:
-
-  RTO:
-    description: Maximum acceptable downtime
-    measurement: time from failure to service restoration
-    selection_factors:
-      - business impact of downtime
-      - revenue loss per hour
-      - user experience impact
-      - regulatory requirements
-
-  RPO:
-    description: Maximum acceptable data loss
-    measurement: time between last backup and failure
-    selection_factors:
-      - data criticality
-      - transaction volume
-      - regulatory requirements
-      - recovery feasibility
-
-  relationship:
-    RPO <= backup frequency
-    RTO >= estimated recovery time
-    both MUST be documented in ../projects/{project_name}/decisions/INDEX.sdd
+  RTO: Maximum acceptable downtime (time from failure to restoration)
+  RPO: Maximum acceptable data loss (time between last backup and failure)
+  rule: RPO <= backup frequency, RTO >= estimated recovery time
 
 HAPatterns:
-
-  ActivePassive:
-    description: Primary handles traffic, standby takes over on failure
-    use_when:
-      - simple failover
-      - stateful applications
-      - L99.9 and below
-    failover:
-      - automated: health check failure triggers promotion
-      - manual: human decision required
-    data_sync:
-      - synchronous: no data loss, higher latency
-      - asynchronous: possible data loss, lower latency
-
-  ActiveActive:
-    description: Multiple nodes handle traffic simultaneously
-    use_when:
-      - stateless services
-      - high availability requirements
-      - L99.99 and above
-    requirements:
-      - shared state in distributed cache or DB
-      - conflict resolution for writes
-      - session affinity avoidance
-    benefits:
-      - zero downtime failover
-      - load distribution
-      - geographic distribution
-
-  MultiZone:
-    description: Deploy across multiple availability zones within a region
-    use_when:
-      - L99.95 and above
-      - single region acceptable
-    requirements:
-      - zone-independent design
-      - cross-zone data replication
-      - zone-aware load balancing
-    failure_mode:
-      - zone failure: traffic shifts to healthy zones
-      - automatic detection and routing
-
-  MultiRegion:
-    description: Deploy across multiple geographic regions
-    use_when:
-      - L99.999
-      - global user base
-      - disaster recovery requirements
-    requirements:
-      - region-independent design
-      - cross-region data replication
-      - geographic DNS routing
-    benefits:
-      - disaster recovery
-      - latency reduction
-      - regulatory compliance
+  ActivePassive: primary handles traffic, standby takes over on failure
+  ActiveActive: multiple nodes handle traffic simultaneously
+  MultiZone: deploy across multiple availability zones
+  MultiRegion: deploy across multiple geographic regions
 
 BackupStrategies:
-
-  FullBackup:
-    description: Complete copy of all data
-    frequency:
-      - L99: daily
-      - L99.9: every 12 hours
-      - L99.95: every 6 hours
-      - L99.99: every hour
-      - L99.999: real-time replication
-    storage:
-      - off-site storage
-      - immutable backups
-      - encrypted in transit and at rest
-
-  IncrementalBackup:
-    description: Only changed data since last backup
-    frequency: hourly or more frequent
-    benefit: faster backup, less storage
-    requirement: full backup as baseline
-
-  ContinuousBackup:
-    description: Real-time backup via replication
-    use_when: L99.99 and above
-    method: write-ahead log shipping or synchronous replication
-
-  BackupValidation:
-    rule: backups MUST be tested by restoration at least quarterly
-    rule: restoration time MUST be measured and compared to RTO
-    rule: backup failures MUST alert immediately
+  FullBackup: complete copy, frequency based on availability level
+  IncrementalBackup: changed data since last backup
+  ContinuousBackup: real-time via replication (L99.99+)
+  rule: backups MUST be tested by restoration at least quarterly
 
 FailoverMechanisms:
-
-  AutomatedFailover:
-    description: Automatic detection and promotion of standby
-    when_to_use:
-      - L99.9 and above
-      - stateless or active-active
-    requirements:
-      - health check interval < 30 seconds
-      - promotion time < RTO
-      - data consistency verification
-    anti_pattern:
-      - split-brain: MUST prevent dual-primary
-
-  ManualFailover:
-    description: Human-initiated failover
-    when_to_use:
-      - L99 and below
-      - complex stateful systems
-    requirement: runbook MUST exist
-    requirement: drill MUST be performed quarterly
-
-  GracefulDegradation:
-    description: Reduce functionality rather than fail completely
-    examples:
-      - disable non-critical features
-      - serve cached responses
-      - queue requests for later processing
-    rule: degraded mode MUST be explicitly designed
+  AutomatedFailover: automatic detection and promotion (L99.9+)
+  ManualFailover: human-initiated, requires tested runbook
+  GracefulDegradation: reduce functionality rather than fail completely
 
 DisasterRecovery:
-
-  DRPlan:
-    description: Documented procedure for disaster recovery
-    must_include:
-      - RTO and RPO targets
-      - recovery procedures by failure type
-      - escalation contacts
-      - communication plan
-      - rollback procedure
-
-  DRTesting:
-    frequency:
-      - L99: annually
-      - L99.9: semi-annually
-      - L99.95: quarterly
-      - L99.99: monthly
-      - L99.999: continuous (chaos engineering)
-    rule: test results MUST be documented and reviewed
-
+  DRPlan: documented procedure with RTO/RPO, recovery procedures, escalation
+  DRTesting: frequency based on availability level (quarterly to continuous)
   DRTypes:
-    backup_restore:
-      - restore from backup to new infrastructure
-      - longest RTO, lowest cost
-      - applicable: L99-L99.9
-
-    pilot_light:
-      - minimal infrastructure running, scale up on failure
-      - medium RTO, medium cost
-      - applicable: L99.95
-
-    warm_standby:
-      - scaled-down version running, scale up on failure
-      - low RTO, high cost
-      - applicable: L99.99
-
-    multi_site_active:
-      - full infrastructure running in multiple regions
-      - lowest RTO, highest cost
-      - applicable: L99.999
+    backup_restore: restore from backup (L99-L99.9)
+    warm_standby: scaled-down version running (L99.99)
+    multi_site_active: full infrastructure in multiple regions (L99.999)
 
 Selection:
-
   AI MUST select availability level based on:
-    business criticality
-    revenue impact of downtime
-    data loss tolerance
-    regulatory requirements
-    budget
-    team capability
+    business criticality, revenue impact, data loss tolerance,
+    regulatory requirements, budget, team capability
 
-  Availability MUST NOT be selected at maximum level by default —
-  it MUST be proportional to actual business need.
+  Availability MUST NOT be selected at maximum level by default.
 
 AntiPatterns:
-
-  MaximumByDefault:
-    description: Selecting 99.999% without business justification
-    rule: MUST have documented business case for L99.999
-
-  BackupAsHA:
-    description: Relying on backups instead of HA infrastructure
-    rule: backups complement HA, they do not replace it
-
-  UntestedFailover:
-    description: Failover mechanism never tested
-    rule: MUST test failover per DRTesting frequency above
-
-  SingleRegionProduction:
-    description: Production in single region without DR plan
-    rule: L99.95 and above MUST have documented DR plan
-
-  SilentDegradation:
-    description: Degradation without alerting
-    rule: degraded mode MUST generate alerts
-
-  NoRunbook:
-    description: Manual failover without documented procedure
-    rule: manual failover MUST have tested runbook
+  MaximumByDefault: MUST have documented business case for L99.999
+  BackupAsHA: backups complement HA, they do not replace it
+  UntestedFailover: MUST test failover per DRTesting frequency
+  SingleRegionProduction: L99.95+ MUST have documented DR plan
+  SilentDegradation: degraded mode MUST generate alerts
+  NoRunbook: manual failover MUST have tested runbook
 
 Navigation:
   Levels: @levels.sdd
   Patterns: @patterns.sdd
-  Scaling: @scaling.sdd
-  Data: @data.sdd
-  Observability: @observability.sdd
-  Networking: @networking.sdd
-  Deployment: @deployment.sdd
-  Project: @project/project.sdd
-  ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
-  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
-  

@@ -1,25 +1,8 @@
 Scaling: SDD
 
 Purpose:
-  Define scaling rules for all system tiers. Scaling is the capacity
-  management dimension of architecture — how the system handles growth
-  in users, traffic, and data. Scaling decisions are driven by
-  ProjectScale (../levels.sdd) and must be validated against actual
-  load, not projected maximums.
-
-Owns: ./
-
-Scope:
-  Horizontal scaling
-  Vertical scaling
-  Auto-scaling
-  Database scaling
-  Cache scaling
-  Queue scaling
-  CDN scaling
-  Load balancing
-  Scaling triggers
-  Anti-patterns
+  Define scaling rules for all system tiers. Scaling decisions are
+  driven by ProjectScale and validated against actual load.
 
 Principles:
   Scale horizontally before vertically.
@@ -29,274 +12,72 @@ Principles:
   Measure before scaling.
 
 VerticalScaling:
-
-  description: Increase capacity of a single node (CPU, RAM, disk)
-  when_to_use:
-    - low scale (L0-L1)
-    - simple deployment
-    - temporary traffic spikes
-    - legacy systems
-  pros:
-    - simple
-    - no architecture changes
-    - fast to implement
-  cons:
-    - single point of failure
-    - hard limits
-    - expensive at high end
-    - downtime during upgrade
-  trigger:
-    - CPU consistently > 70%
-    - RAM consistently > 80%
-    - response time degradation
-  limit:
-    - vertical scaling has physical limits
-    - beyond limits, horizontal is mandatory
+  description: Increase capacity of a single node
+  when_to_use: L0-L1, temporary spikes
+  trigger: CPU > 70%, RAM > 80%, response time degradation
+  limit: beyond limits, horizontal is mandatory
 
 HorizontalScaling:
-
   description: Add more nodes to distribute load
-  when_to_use:
-    - L2 and above
-    - stateless services
-    - high traffic
-    - HA requirements
-  pros:
-    - near-infinite scale
-    - fault tolerance
-    - cost effective at scale
-  cons:
-    - architectural complexity
-    - state management challenges
-    - network overhead
-  trigger:
-    - CPU consistently > 60% across nodes
-    - request queue depth growing
-    - response time p95 increasing
-  requirement:
-    - application MUST be stateless or externalize state
-    - session state MUST be in shared cache or DB
-    - file uploads MUST go to shared storage
+  when_to_use: L2+, stateless services, high traffic
+  requirement: application MUST be stateless or externalize state
+  trigger: CPU > 60% across nodes, request queue depth growing
 
 AutoScaling:
-
   description: Automatic scaling based on metrics
-  when_to_use:
-    - variable traffic patterns
-    - L2 and above
-    - cloud infrastructure
-  metrics:
-    - CPU utilization (target: 60-70%)
-    - request count per second
-    - queue depth
-    - memory utilization
-    - custom business metrics
-  scaling_policy:
-    - scale_up_when: metric > threshold for 2 consecutive minutes
-    - scale_down_when: metric < threshold for 5 consecutive minutes
-    - cooldown: 2 minutes after scaling action
-    - max_nodes: defined per tier
-    - min_nodes: at least 2 for HA
-  anti_patterns:
-    - scaling on transient spikes (use buffer/cache instead)
-    - scaling too aggressively (cost)
-    - scaling too slowly (performance)
+  when_to_use: variable traffic, L2+, cloud infrastructure
+  metrics: CPU (target 60-70%), request count, queue depth, memory
+  policy:
+    scale_up_when: metric > threshold for 2 minutes
+    scale_down_when: metric < threshold for 5 minutes
+    cooldown: 2 minutes
+    min_nodes: 2 for HA
 
 DatabaseScaling:
-
   ReadReplicas:
     description: Replicate primary DB to read-only replicas
-    when_to_use:
-      - read-heavy workloads (read:write > 10:1)
-      - reporting separated from OLTP
-      - L2 and above
-    routing:
-      - writes -> primary
-      - reads -> replica pool (round-robin or least-connections)
-    limitations:
-      - replication lag (eventual consistency)
-      - replica count limits
-      - failover complexity
-    trigger:
-      - primary CPU > 70%
-      - read latency p95 > target
-      - connection pool exhaustion on primary
+    when_to_use: read-heavy (read:write > 10:1), L2+
+    routing: writes -> primary, reads -> replica pool
+    trigger: primary CPU > 70%, read latency p95 > target
 
   Sharding:
     description: Partition data across multiple database instances
-    when_to_use:
-      - data volume exceeds single node capacity
-      - write throughput exceeds single node capacity
-      - L3-L4 and above
-    shard_key:
-      - MUST be chosen carefully (immutable, evenly distributed)
-      - MUST support all query patterns
-      - cross-shard queries are expensive
-    anti_patterns:
-      - sharding before exhausting other options
-      - uneven shard distribution
-      - shard key changes requiring re-sharding
-    trigger:
-      - single DB write throughput maxed
-      - data size approaching storage limit
-      - single region latency unacceptable
+    when_to_use: data volume exceeds single node, L3+
+    rule: MUST optimize queries, add replicas, partition before sharding
 
   Partitioning:
     description: Split table data within a single database
-    when_to_use:
-      - large tables (100M+ rows)
-      - time-series data
-      - multi-tenant data
-    strategies:
-      - range: by date, ID range
-      - hash: by key hash
-      - list: by discrete values
-    benefit:
-      - query performance on subset
-      - maintenance per partition
-      - archive old partitions
+    when_to_use: large tables (100M+ rows), time-series, multi-tenant
+    strategies: range, hash, list
 
 CacheScaling:
-
   description: Scale caching layers to reduce DB load
-  layers:
-    - CDN: static assets, edge caching
-    - reverse proxy cache: API responses
-    - application cache: hot data in memory
-    - distributed cache: shared session/state
-  scaling_triggers:
-    - cache hit rate < 90%
-    - cache memory utilization > 80%
-    - eviction rate increasing
-  anti_patterns:
-    - caching without invalidation strategy
-    - caching everything (diminishing returns)
-    - cache as primary data store
+  layers: CDN, reverse proxy cache, application cache, distributed cache
+  trigger: cache hit rate < 90%, memory > 80%
 
 QueueScaling:
-
   description: Scale message queues for async processing
-  when_to_use:
-    - async workflows
-    - event-driven architecture
-    - L2 and above
-  scaling:
-    - partition count based on throughput
-    - consumer count based on processing time
-    - dead-letter queue for failures
-  trigger:
-    - consumer lag increasing
-    - queue depth growing
-    - processing time exceeding SLA
-
-CDN:
-
-  description: Content Delivery Network for static assets
-  when_to_use:
-    - global user base
-    - static assets (images, JS, CSS, video)
-    - L1 and above
-  benefits:
-    - reduced origin load
-    - lower latency for users
-    - DDoS protection
-  configuration:
-    - cache TTL based on asset type
-    - cache invalidation on deploy
-    - origin shield for cache hit ratio
+  when_to_use: async workflows, event-driven, L2+
+  trigger: consumer lag increasing, queue depth growing
 
 LoadBalancing:
-
   description: Distribute traffic across healthy nodes
-  types:
-    - L4: transport layer (TCP/UDP)
-    - L7: application layer (HTTP/HTTPS)
-  algorithms:
-    - round-robin: simple, equal capacity nodes
-    - least-connections: variable request duration
-    - weighted: heterogeneous node capacity
-    - ip-hash: session affinity (avoid when possible)
-  health_checks:
-    - active: periodic health probe
-    - passive: monitor response errors/timeouts
-  anti_patterns:
-    - load balancer as single point of failure (use multiple)
-    - sticky sessions without need (hinders scaling)
-    - ignoring health checks
-
-ScalingTriggers:
-
-  compute:
-    - CPU > 70% for 2 minutes
-    - memory > 80% for 2 minutes
-    - request queue depth growing
-    - p95 latency increasing
-
-  database:
-    - connection pool > 80%
-    - query time p95 > target
-    - replication lag > threshold
-    - storage > 80%
-
-  cache:
-    - hit rate < 90%
-    - memory > 80%
-    - eviction rate increasing
-
-  queue:
-    - consumer lag > threshold
-    - queue depth growing
-    - processing time > SLA
+  types: L4 (TCP/UDP), L7 (HTTP/HTTPS)
+  algorithms: round-robin, least-connections, weighted, ip-hash
+  health_checks: active periodic probe, passive error monitoring
 
 AntiPatterns:
-
-  PrematureScaling:
-    description: Scaling before measuring actual load
-    rule: MUST measure for at least one full load cycle before scaling
-
-  VerticalOnly:
-    description: Relying only on vertical scaling
-    rule: horizontal scaling MUST be planned before vertical limits
-
-  Overprovisioning:
-    description: Provisioning for theoretical maximum
-    rule: scale to measured needs with 20% headroom
-
-  Underprovisioning:
-    description: Insufficient capacity for current load
-    rule: capacity planning MUST include growth projection
-
-  ScalingWithoutMonitoring:
-    description: Scaling without metrics
-    rule: all scaling decisions MUST be metric-driven
-
-  CacheWithoutStrategy:
-    description: Caching without invalidation/expiration
-    rule: every cache MUST have explicit TTL and invalidation
-
-  ShardingTooEarly:
-    description: Sharding before exhausting other options
-    rule: MUST optimize queries, add replicas, use partitioning before sharding
-
-  IgnoringState:
-    description: Scaling stateless without addressing stateful bottlenecks
-    rule: identify and scale the slowest tier first
-
-  SingleAZ:
-    description: Running critical tiers in single availability zone
-    rule: production MUST span multiple AZs for HA
+  PrematureScaling: MUST measure for at least one full load cycle
+  VerticalOnly: horizontal scaling MUST be planned before vertical limits
+  Overprovisioning: scale to measured needs with 20% headroom
+  Underprovisioning: capacity planning MUST include growth projection
+  ScalingWithoutMonitoring: all scaling decisions MUST be metric-driven
+  ShardingTooEarly: MUST optimize before sharding
+  IgnoringState: identify and scale the slowest tier first
+  SingleAZ: production MUST span multiple AZs for HA
 
 Navigation:
   Levels: @levels.sdd
   Patterns: @patterns.sdd
-  Data: @data.sdd
-  Availability: @availability.sdd
-  Observability: @observability.sdd
-  Networking: @networking.sdd
-  Deployment: @deployment.sdd
-  Project: @project/project.sdd
-  ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
-  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
-  
