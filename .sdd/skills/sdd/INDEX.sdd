@@ -2,10 +2,10 @@ Skills: SDD Ecosystem
 
 Purpose:
   SDDRA ecosystem-specific skills for integration, event processing,
-  field mapping, notification dispatch, and scheduled sync. These skills
-  are derived from production codebases under ./tmp/ and encode the
-  concrete patterns used across sweeps-integrations, pultapaz, and
-  rovio-matchmaking.
+  field mapping, notification dispatch, scheduled sync, and gamification.
+  Gamification skills are derived from CaptainUp industry best practices
+  and encode patterns for player profiles, rule engines, leaderboards,
+  points economy, and anti-cheat systems.
 
 Owns: ./
 
@@ -16,6 +16,9 @@ ReadOrder:
     4  @SKILL-FIELD-MAPPING.sdd
     5  @SKILL-NOTIFICATION.sdd
     6  @SKILL-SCHEDULED-SYNC.sdd
+    7  @SKILL-GAMIFICATION-RULES.sdd
+    8  @SKILL-PLAYER-PROFILE.sdd
+    9  @SKILL-LEADERBOARD.sdd
 
 Modes:
   LEARN    — learn SDD ecosystem patterns
@@ -29,11 +32,17 @@ Rules:
   [S3] Field mapping MUST be config-driven, not hardcoded.
   [S4] Notifications MUST support multi-channel dispatch with daily limits.
   [S5] Scheduled sync MUST be idempotent and observable.
+  [S6] Gamification rules MUST be declarative, async, and non-blocking.
+  [S7] Player profiles MUST use immutable external IDs and async sync.
+  [S8] Leaderboards MUST separate write and read models with caching.
+  [S9] Point awards MUST be idempotent and fully auditable.
+  [S10] Anti-cheat MUST be async, non-blocking, and support rollback.
 
 Entry:
   Read:
     INDEX.sdd
     SKILL-INTEGRATION-MODULE.sdd
+    SKILL-GAMIFICATION-RULES.sdd
 
   Resolve:
     integration-module
@@ -41,6 +50,9 @@ Entry:
     field-mapping
     notification
     scheduled-sync
+    gamification-rules
+    player-profile
+    leaderboard
 
 Navigation:
   IntegrationModule: @SKILL-INTEGRATION-MODULE.sdd
@@ -48,5 +60,8 @@ Navigation:
   FieldMapping: @SKILL-FIELD-MAPPING.sdd
   Notification: @SKILL-NOTIFICATION.sdd
   ScheduledSync: @SKILL-SCHEDULED-SYNC.sdd
+  GamificationRules: @SKILL-GAMIFICATION-RULES.sdd
+  PlayerProfile: @SKILL-PLAYER-PROFILE.sdd
+  Leaderboard: @SKILL-LEADERBOARD.sdd
 
 State: +

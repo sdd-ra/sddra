@@ -1,7 +1,7 @@
 # Patterns
 
 Purpose:
-  Reusable resilience and reliability patterns for the SDDRA system.
+  Reusable resilience, reliability, and gamification patterns for the SDDRA system.
   These patterns are applied across all stages and components.
 
 Owns: ./
@@ -11,6 +11,7 @@ ReadOrder:
    2  @circuit-breaker.sdd
    3  @checkpoint-restore.sdd
    4  @graceful-degradation.sdd
+   5  @gamification.sdd
 
 Rules:
   [P1] Patterns are READ-ONLY — they MUST NOT be modified.
@@ -22,6 +23,7 @@ Navigation:
   CircuitBreaker: @circuit-breaker.sdd
   CheckpointRestore: @checkpoint-restore.sdd
   GracefulDegradation: @graceful-degradation.sdd
+  Gamification: @gamification.sdd
   Resilience: @RESILIENCE.md
 
 State: +

@@ -17,7 +17,7 @@ Domains:
   Integration:
     purpose: External system connectivity — banks, MFOs, gamification platforms, notification providers
     bounded_contexts:
-      - sweeps-integrations (CaptainUp gamification)
+      - captainup-gamification (CaptainUp: points, badges, leaderboards, player profiles)
       - pultapaz (Bank/MFO credit integrations)
     owns:
       - Integration configuration (endpoints, auth, field mapping)
@@ -26,6 +26,8 @@ Domains:
       - Status polling and webhook processing
       - Retry and error handling policies
       - Daily limits and rate limiting
+      - Gamification event ingestion (point awards, badge unlocks)
+      - Player identity mapping (internal user <-> CaptainUp auid)
     shared_kernel:
       - Field mapping engine (internal_field -> external_field, field_path, transforms)
       - Integration conditions (amount, duration, employment status rules)
@@ -35,6 +37,34 @@ Domains:
       - uses: Notification
       - uses: EventProcessing
       - uses: Scheduling
+      - uses: Gamification
+
+  Gamification:
+    purpose: Player engagement system — points, badges, leaderboards, rules
+    bounded_contexts:
+      - gamification-rules (rule engine for points, badges, achievements)
+      - gamification-leaderboard (ranked lists, scopes, caching)
+      - gamification-player (player profile, identity, progression)
+      - gamification-anticheat (validation, anomaly detection, rollback)
+    owns:
+      - Rule definitions (points, badges, achievements, campaigns)
+      - Rule evaluation engine (async, idempotent, auditable)
+      - Player state (balance, badges, streak, level)
+      - Leaderboard write and read models
+      - Anti-cheat detection and enforcement
+      - Real-time event delivery (WebSocket firehose)
+      - Time-window aggregation (daily, weekly, monthly)
+    shared_kernel:
+      - Event envelope (action_performed, user_id, context, timestamp)
+      - Correlation ID propagation
+      - Daily limit enforcement
+      - Audit trail for all gamification actions
+    relationships:
+      - uses: Integration (external CaptainUp API)
+      - uses: EventProcessing (action events, point events)
+      - uses: Notification (badge unlock, rank change alerts)
+      - uses: Scheduling (batch leaderboard rebuild, badge evaluation)
+      - used_by: User (player attributes, progression)
 
   Notification:
     purpose: Multi-channel outbound messaging — email, SMS, Telegram, Slack
@@ -54,7 +84,7 @@ Domains:
   EventProcessing:
     purpose: Event/message intake, dispatch, and lifecycle management
     bounded_contexts:
-      - websocket-events (CaptainUp firehose via WebSocket)
+      - gamification-firehose (CaptainUp real-time events via WebSocket)
       - rabbitmq-consumers (async mail/batch processing)
       - polling-fallback (Supabase DB-based queue)
     owns:
@@ -63,36 +93,42 @@ Domains:
       - Retry policy (count, backoff, dead-letter)
       - Correlation ID tracking
       - Batch completion and status updates
+      - Gamification event routing (points, badges, leaderboards)
     relationships:
       - uses: Integration
       - uses: Notification
+      - uses: Gamification
 
   Scheduling:
     purpose: Periodic and delayed task execution
     bounded_contexts:
-      - node-cron (sweeps-integrations periodic sync)
+      - gamification-sync (CaptainUp periodic player/leaderboard sync)
       - yii2-delayed-task (pultapaz batch operations)
     owns:
       - Cron job registration and execution
       - Delayed task queue management
       - Batch orchestration (pre-check, sync)
+      - Gamification batch jobs (leaderboard rebuild, badge evaluation)
     relationships:
       - uses: Integration
       - uses: EventProcessing
+      - uses: Gamification
 
   User:
-    purpose: User identity and profile across external systems
+    purpose: User identity and profile across internal and external systems
     bounded_contexts:
       - quiz-user (pultapaz — QuizParams, QuizRedirects)
-      - captainup-player (sweeps-integrations — CaptainUp player profile)
+      - gamification-player (CaptainUp — player profile, auid mapping, progression)
       - external-mapping (cross-system user ID mapping)
     owns:
       - User profile data (FIN, phone, name, document)
       - External service user mapping (internal ID -> external ID)
       - User-level daily limits
+      - Gamification attributes (level, experience, badges)
     relationships:
       - used_by: Integration
       - used_by: Notification
+      - used_by: Gamification
 
 Rules:
   [D1] Each domain MUST have an identifiable bounded context.

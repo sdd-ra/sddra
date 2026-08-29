@@ -1,0 +1,280 @@
+Skill: Gamification Rules Engine
+
+ID:
+  SKILL-SDD-GAMIFICATION-RULES
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+   2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  gamification rules engine
+  badge rules
+  point rules
+  achievement rules
+  declarative rules
+  rule evaluation
+  condition evaluation
+  action triggering
+  rule versioning
+  campaign rules
+  time-window rules
+  streak rules
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Implementing dynamic gamification rules (points, badges, achievements)
+  - Building campaign-based rule systems
+  - Evaluating user conditions against rule definitions
+  - Triggering actions based on rule outcomes
+  - Versioning and rolling out gamification rules
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  gamification-engineer
+
+Requires:
+  sdd-event-processor
+  sdd-integration-module
+  sdd-field-mapping
+
+Avoid:
+  hardcoded-rules
+  infinite-rule-loops
+  blocking-evaluation
+  no-rule-timeout
+  missing-audit
+  rule-chaos
+
+HumanDoc:
+  docs/skills/sdd/gamification-rules.md
+
+Evidence:
+  - Gamification Best Practices (Gartner 2025)
+  - Building Gamification Engines (O'Reilly 2024)
+  - Rule Engine Patterns (Microsoft Learn 2025)
+  - Event-Driven Gamification (IEEE 2024)
+  - CaptainUp gamification platform documentation
+
+Overview:
+  The Gamification Rules Engine evaluates declarative rule definitions
+  against user state and events to determine point awards, badge unlocks,
+  and other gamification actions. Rules are versioned, auditable, and
+  support time-window conditions, streak tracking, and dependency chains.
+  The engine is async and non-blocking: it consumes events and emits
+  outcomes without delaying the main user flow.
+
+Rules:
+
+  [GR1] All gamification rules MUST be declarative (JSON/YAML), not hardcoded.
+
+  [GR2] Rules MUST have unique IDs and semantic versioning (rule_id, version).
+
+  [GR3] Rule evaluation MUST be async and non-blocking with bounded timeout (max 5s).
+
+  [GR4] Rules MUST be idempotent: same input + same rule version = same output.
+
+  [GR5] Every rule evaluation MUST be logged: rule_id, user_id, input, output, timestamp.
+
+  [GR6] Rules MAY depend on other rules (prerequisites) but MUST NOT create cycles.
+
+  [GR7] Time-window rules MUST use server time, not client time.
+
+  [GR8] Rules MUST support graceful degradation: if evaluation fails, emit default outcome.
+
+  [GR9] Rule authors MUST validate rules before activation (syntax, logic, performance).
+
+  [GR10] Deprecated rules MUST be archived, not deleted, for auditability.
+
+  [GR11] Rule changes MUST be gradual: shadow mode, then canary, then full rollout.
+
+  [GR12] Rules MUST NOT access external systems directly; use integration modules.
+
+  [GR13] Streak rules MUST handle timezone-aware day boundaries.
+
+  [GR14] Daily limit rules MUST be evaluated before point awards, not after.
+
+  [GR15] Rule conflicts MUST be resolved by explicit priority or last-write-wins with audit.
+
+Architecture:
+
+  RulesEngine:
+    owns:
+      - Rule registry and versioning
+      - Condition evaluation
+      - Action execution
+      - Rule dependency resolution
+      - Audit logging
+      - Campaign management
+
+    api:
+      - evaluate(event, userState) -> {actions: [{type, params}]}
+      - activate(ruleId, version) -> void
+      - deactivate(ruleId) -> void
+      - getStatus(ruleId) -> {active, version, stats}
+
+    deps:
+      - event-processor (input events)
+      - integration-module (external data)
+      - cache (user state, rate limits)
+
+RuleStructure:
+  rule:
+    id: string (unique)
+    version: string (semver)
+    name: string
+    description: string
+    status: draft | active | shadow | deprecated
+    priority: number (higher wins on conflict)
+    conditions:
+      - type: action_count | user_attribute | time_window | streak | external
+        operator: eq | neq | gt | lt | gte | lte | in | not_in | exists
+        field: string
+        value: any
+        window: daily | weekly | monthly | all_time | custom
+        timezone: string (IANA)
+    actions:
+      - type: award_points | unlock_badge | notify | unlock_content
+        params: object
+        limit: { per: user | action | day, max: number }
+    dependencies:
+      - rule_id: string
+        version: string (optional, defaults to latest active)
+    metadata:
+      campaign_id: string
+      author: string
+      created_at: ISO8601
+      valid_from: ISO8601
+      valid_until: ISO8601
+
+EvaluationWorkflow:
+  1. Receive event (action_performed, user_id, context)
+  2. Load user state from cache/DB (attributes, recent actions, badges)
+  3. Filter active rules by event type match
+  4. Evaluate conditions in priority order
+  5. Resolve dependencies (evaluate prerequisite rules first)
+  6. Execute actions for matched rules (async)
+  7. Log evaluation result with rule_id, version, outcome
+  8. Emit outcome events for downstream processing
+  9. Update rule statistics (evaluations, matches, errors)
+
+TimeWindowRules:
+  daily:
+    boundary: midnight-to-midnight in user timezone
+    storage: Redis sorted set with date key
+    aggregation: count, sum, max, min
+  weekly:
+    boundary: Monday-to-Sunday in user timezone
+    storage: Redis sorted set with week key
+  monthly:
+    boundary: 1st-to-last day in user timezone
+    storage: Redis sorted set with month key
+  custom:
+    boundary: defined in rule config (start_hour, start_day)
+    storage: Redis sorted set with custom key
+
+StreakRules:
+  definition: consecutive days with qualifying action
+  calculation:
+    - fetch last N action dates for user
+    - check continuity with today/yesterday
+    - handle timezone-aware day boundaries
+  storage:
+    - current_streak: number
+    - longest_streak: number
+    - last_action_date: ISO8601 date
+    - streak_frozen: boolean (pause protection)
+  maintenance:
+    - recalculate on each qualifying action
+    - reset if gap > 1 day (unless frozen)
+    - snapshot at season end
+
+CampaignManagement:
+  campaign:
+    id: string
+    name: string
+    rules: [rule_id]
+    status: draft | scheduled | active | paused | ended
+    start_date: ISO8601
+    end_date: ISO8601
+    targeting:
+      user_segments: [segment_id]
+      countries: [ISO3166]
+      platforms: [ios, android, web]
+    allocation:
+      variant_a: 50%
+      variant_b: 50%
+    measurement:
+      metrics: [participation_rate, completion_rate, retention]
+      success_criteria: object
+
+RuleConflicts:
+  detection:
+    - same event type matches multiple active rules
+    - same action triggered by multiple rules
+  resolution:
+    - priority field (higher wins)
+    - explicit conflict resolution config
+    - last-write-wins with full audit trail
+  logging:
+    - conflict_id
+    - competing rules
+    - resolution strategy
+    - timestamp
+
+Performance:
+  rule_evaluation_p99: < 50ms
+  rules_per_event: < 10 (default), max 50
+  rule_cache_ttl: 5m (active rules), 1h (deprecated rules)
+  batch_evaluation: up to 1000 events per batch
+  parallel_evaluation: per-user parallelism enabled
+
+Best Practices:
+
+  - Use rule templates for common patterns (daily_login, referral, purchase)
+  - Implement rule dry-run mode for testing before activation
+  - Cache compiled rules in Redis for hot-path performance
+  - Use feature flags for rule activation per user segment
+  - Monitor rule evaluation latency and error rates
+  - Implement circuit breaker for rules requiring external data
+  - Support rule inheritance and composition (base rules + overrides)
+  - Log rule evaluation with full context for debugging
+  - Implement gradual rollout: 1% -> 10% -> 50% -> 100%
+  - Support A/B testing with rule variants and allocation groups
+
+Anti-Patterns:
+
+  - Hardcoded rules in application code
+  - Synchronous rule evaluation in user-facing paths
+  - Rules with side effects on external systems
+  - Circular rule dependencies
+  - Rules without timeout or circuit breaker
+  - Deleted rules (must archive)
+  - Rule evaluation without audit logging
+  - Global rules without user segmentation
+
+State: +

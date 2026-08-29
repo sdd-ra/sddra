@@ -73,7 +73,7 @@ Evidence:
   - Error Handling Patterns in Kafka (Confluent 2024)
   - Handling Failures in Queues in Event-Based Architecture (Medium 2024)
   - Event Sourcing Patterns Best Practices (GitScrum 2026)
-  - Production experience: sweeps-integrations, pultapaz
+  - Production experience: CaptainUp gamification event processing, pultapaz
 
 Overview:
   The Event Processor pattern defines how events/messages are ingested,

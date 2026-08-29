@@ -20,44 +20,45 @@ Note:
 
 Modules:
 
-  sweeps-integrations:
-    purpose: CaptainUp gamification event processor and notification dispatcher
-    domain: Integration + Notification + EventProcessing + Scheduling
-    path: ./tmp/sweeps-integrations
+  captainup-gamification:
+    purpose: CaptainUp gamification platform integration — points, badges, leaderboards, player profiles
+    domain: Integration + Notification + EventProcessing + Scheduling + Gamification
+    path: (external platform — no local codebase)
     bounded_contexts:
-      - websocket-events (CaptainUp firehose via WebSocket)
-      - polling-fallback (Supabase DB queue fallback)
+      - gamification-rules (rule engine for points, badges, achievements)
+      - gamification-leaderboard (ranked lists, scopes, caching)
+      - gamification-player (player profile, auid mapping, progression)
+      - gamification-anticheat (validation, anomaly detection, rollback)
     owns:
-      - WebSocket event ingestion and deduplication
-      - Polling-based event claiming and batch processing
-      - ActionHandlerFactory (service + event_type dispatch)
-      - Encryption/Decryption service (base64, xor, aes-256-gcm)
+      - Event ingestion (WebSocket firehose, async queue)
+      - Rule evaluation engine (declarative, async, idempotent)
+      - Point award processing (idempotent, auditable)
+      - Badge unlock evaluation (time-window, streak, dependencies)
+      - Leaderboard write/read models (CQRS, sorted sets, snapshots)
+      - Player profile sync (async, bidirectional mapping)
+      - Anti-cheat detection (async, rate limiting, anomaly detection)
       - CaptainUp HTTP and WebSocket clients
-      - Scheduled sync jobs (levels, avatars, tournaments, missions)
-      - Mailgun email provider
-      - Slack webhook notification provider
+      - Scheduled sync jobs (leaderboard rebuild, badge evaluation, profile sync)
+      - Mailgun/Slack notification providers for gamification events
     api:
-      - getHandler(service, event_type) -> Handler
-      - getService(serviceKey) -> Service
-      - processEvent(eventRow) -> {status, http_response}
-      - sendEmail(payload) -> {success, http_response}
-      - sendSlack(payload) -> {status, http_response}
-      - syncCaptainUp(appConfig) -> void
+      - evaluateRules(event, userState) -> {actions}
+      - getLeaderboard(scope, page) -> {entries}
+      - getUserRank(userId, scope) -> {rank, score}
+      - getPlayerProfile(userId) -> PlayerProfile
+      - syncPlayerProfile(userId) -> void
+      - awardPoints(userId, amount, reason) -> PointEvent
+      - unlockBadge(userId, badgeId) -> BadgeEvent
+      - processAction(userId, actionType, context) -> void
     deps:
       - supabase (database + RPC functions)
       - captainup (external gamification API)
       - mailgun (email provider)
       - slack (notification webhook)
+      - redis (cache, sorted sets, rate limits)
     files:
-      - src/app.js
-      - src/config.js
-      - src/constants/endpoints.js
-      - src/core/**/*
-      - src/modules/captainup/**/*
-      - src/modules/email/**/*
-      - src/modules/slack/**/*
+      - (module boundary defined by bounded contexts above)
     tests:
-      - scripts/tests.sh
+      - (tests defined per bounded context)
     state: active
 
   pultapaz:
