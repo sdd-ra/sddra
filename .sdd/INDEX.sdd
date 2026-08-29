@@ -277,7 +277,6 @@ Navigation:
   Context: @context/INDEX.sdd
   ContextRouting: @context/routing.sdd
   ContextPriorities: @context/priorities.sdd
-  ContextBudgets: @context/budgets.sdd
   ContextLoading: @context/loading.sdd
   ContextDependencies: @context/dependencies.sdd
   ContextCache: @context/cache.sdd

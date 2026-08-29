@@ -1,46 +1,43 @@
 ﻿Priorities: Context
 
 Purpose:
-  Defines context element priority levels and selection rules.
+  Define context priority levels and budget by project scale.
+  This is the single source of truth for context limits.
 
 PriorityLevels:
   P0:
-    Description: mandatory
-    Examples:
-      - task itself
-      - parent task
-      - required skill
-      - affected source
+    mandatory: task itself, required skill, affected source
   P1:
-    Description: strongly relevant
-    Examples:
-      - related test
-      - architecture
-      - security skill
+    strongly relevant: related tests, security, architecture
   P2:
-    Description: useful
-    Examples:
-      - general documentation
-      - related incidents
-      - observability
+    useful: docs, related incidents, observability
   P3:
-    Description: optional
-    Examples:
-      - peripheral docs
-      - unrelated modules
+    optional: peripheral docs, unrelated modules
   P4:
-    Description: background
-    Examples:
-      - unrelated domains
-      - unrelated infrastructure
+    background: unrelated domains, infrastructure
 
-SelectionRules:
+ContextBudget:
+  L0:
+    max_skills: 2, max_docs: 1, max_source: 3
+  L1:
+    max_skills: 3, max_docs: 2, max_source: 5
+  L2:
+    max_skills: 5, max_docs: 4, max_source: 10
+  L3:
+    max_skills: 8, max_docs: 6, max_source: 20
+  L4:
+    max_skills: 12, max_docs: 10, max_source: 40
+  L5:
+    max_skills: 20, max_docs: 20, max_source: 100
+
+Rules:
   [PR1]  P0 MUST always be loaded.
-  [PR2]  P1 MUST be loaded if within context budget.
-  [PR3]  P2 MAY be loaded if context budget allows.
+  [PR2]  P1 MUST be loaded if within budget.
+  [PR3]  P2 MAY be loaded if budget allows.
   [PR4]  P3 and P4 MUST NOT be loaded unless explicitly requested.
-  [PR5]  If context budget exceeded, lower priority items are dropped
-          before higher priority items.
+  [PR5]  If budget exceeded, lower priority items are dropped first.
+  [PR6]  High budget does not mean load entire repository.
+  [PR7]  Budget is a limit, not a target.
+  [PR8]  Budget exhaustion triggers progressive loading, not bulk loading.
 
 State: +
-  

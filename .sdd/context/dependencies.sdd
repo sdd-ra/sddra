@@ -1,32 +1,17 @@
 ﻿Dependencies: Context
 
 Purpose:
-  Defines context dependency graph, invalidation rules, and
+  Define context dependency graph, invalidation rules, and
   context fingerprinting.
 
 ContextDependencyGraph:
-  TASK-1023
-    ↓
-  PAYMENTS
-    ↓
-  REFUND
-    ├── service.go
-    ├── repository.go
-    ├── refund_test.go
-    ├── idempotency.sdd
-    └── payment-security.sdd
+  Task → Domain → Module → Artifacts
+  Task → Skills → Sections
+  Task → Decisions → Implementation
 
 ContextFingerprint:
-  Format:
-    CTX-XXXX
-
-  Metadata:
-    project: <name>
-    task: <id>
-    skills: <count>
-    docs: <count>
-    source: <count>
-    workflow: <stage>
+  Format: CTX-XXXX
+  Metadata: project, task, skills, docs, source, workflow
 
 ContextInvalidation:
   Trigger:
@@ -45,31 +30,16 @@ ContextInvalidation:
     REBUILD CONTEXT
 
 InvalidationScope:
-  repository.go changed:
-    - repository.sdd
-    - refund docs
-    - refund tests
+  source.go changed:
+    - module.sdd
+    - related docs
+    - related tests
     - dependent tasks
 
 ContextAudit:
-  Format:
-    CTX-<ID>
-
-  Loaded:
-    - TASK-<ID>
-    - TASK-<ID>
-    - <layer>/<domain>/<module>/<artifact>
-    - <test-path>
-    - <skill>.sdd
-    - <skill>.sdd
-
-  Excluded:
-    - frontend
-    - mobile
-    - unrelated domains
-
-  Note:
-    Full prompt/history NOT stored (token/storage saving).
+  Format: CTX-<ID>
+  Loaded: tasks, layers, skills, tests
+  Excluded: unrelated domains, unrelated infrastructure
+  Note: Full prompt/history NOT stored (token/storage saving).
 
 State: +
-  
