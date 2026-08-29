@@ -1,11 +1,7 @@
 # Chain: Refactor
-Purpose:
-  Chain: Refactor
-
 
 ID: RF1
 Parent: D0
-MapTo: C1
 
 Stages:
   AR: Architecture
@@ -21,18 +17,6 @@ Dependencies:
   QA -> [TS]
   VR -> [QA]
 
-Parallel: []
-Gates:
-  AR: plan-approved
-  BE: refactor-done
-  TS: tests-pass
-  QA: no-regression
-  VR: behavior-same
-
 Retry: 2
-Token: @projects/{project_name}/tokens/RF1.sdd
-   Rule: @rules/chain-rules.sdd
 
 State: +
-
-

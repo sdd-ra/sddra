@@ -3,6 +3,8 @@
 Purpose:
   Record token usage per chain stage for cost control.
 
+Schema: @calculator.sdd
+
 Index:
   P1: @projects/{project_name}/tokens/P1.sdd
   D1: @projects/{project_name}/tokens/D1.sdd
@@ -11,18 +13,5 @@ Index:
   R1: @projects/{project_name}/tokens/R1.sdd
   DEP1: @projects/{project_name}/tokens/DEP1.sdd
   D0: @projects/{project_name}/tokens/D0.sdd
-
-Schema:
-  stage: P1|D1|S1|C1|R1|DEP1|D0
-  run_id: RUN-001
-  timestamp: 2026-08-27T19:00:00Z
-  tokens_in: 1200
-  tokens_out: 3400
-  tokens_delta: 2200
-  status: started|completed|failed|retried
-  parent: D0
-  duration_ms: 1200
-  retry_count: 0
-   error: null
 
 State: +

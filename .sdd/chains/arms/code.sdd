@@ -3,14 +3,9 @@
 Purpose:
   Execute .sdd/project/ tasks to code. Minimal tokens.
 
-Parent: D0
-Returns: D0
-
 Stage:
   id: C1
   name: code
-  parent: D0
-  returns_to: D0
   inputs:
     - .sdd/project/
     - .sdd/projects/{project_name}/decisions/ (approved decisions)
@@ -22,8 +17,6 @@ Stage:
     - plugins/plugin-adapters/using-git-worktrees.sdd
   token:
     - ../../projects/{project_name}/tokens/C1.sdd
-  rule:
-    - ./rules/INDEX.sdd
   decision:
     - Implement tasks linked to approved decisions
     - Update decision status to implemented
@@ -31,4 +24,3 @@ Stage:
      - human_review
 
 State: +
-

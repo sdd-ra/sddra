@@ -1,36 +1,40 @@
-# Token Calculator
+# Token Estimator
 
 Purpose:
-  Estimate and record token usage per chain stage.
+  Estimate and record token usage per chain stage for cost control.
 
-Estimation:
-  prompt: ~1200 in, ~3400 out
-  docs: ~3400 in, ~8200 out
-  sdd: ~8200 in, ~12100 out
-  code: ~12100 in, ~35400 out
-  review: ~35400 in, ~36100 out
-  deploy: ~36100 in, ~36500 out
+Schema:
+  stage: P1|D1|S1|C1|R1|DEP1|D0
+  run_id: RUN-001
+  timestamp: ISO8601
+  tokens_in: number
+  tokens_out: number
+  tokens_delta: number
+  status: started|completed|failed|retried
+  parent: D0
+  duration_ms: number
+  retry_count: number
+  error: null|string
+
+Rates:
+  small:
+    prompt: 2000, docs: 5000, sdd: 8000, code: 20000,
+    review: 3000, deploy: 2000, total: 40000
+  medium:
+    prompt: 3000, docs: 8000, sdd: 12000, code: 35000,
+    review: 5000, deploy: 3000, total: 66000
+  large:
+    prompt: 5000, docs: 12000, sdd: 18000, code: 60000,
+    review: 8000, deploy: 5000, total: 108000
 
 Optimization:
-  - Use short node IDs (2-6 chars)
-  - Use indexes instead of full file reads
-  - Lazy load skills
-  - Cache resolved references
-  - Minimize context duplication
-Tracking:
+  If over budget:
+    1. Use shorter skill paths
+    2. Skip optional stages
+    3. Reduce context loading
+    4. Use cached results
 
-  File: .sdd/projects/{project_name}/tokens/{node}.sdd
-  Fields:
-    stage
-    run_id
-    timestamp
-    tokens_in
-    tokens_out
-    tokens_delta
-    status
-    parent
-    duration_ms
-    retry_count
-     error
+Tracking:
+  File: projects/{project_name}/tokens/{node}.sdd
 
 State: +

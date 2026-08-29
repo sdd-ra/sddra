@@ -1,44 +1,24 @@
 # Chain: Security
-Purpose:
-  Chain: Security
-
 
 ID: SEC1
 Parent: D0
-MapTo: C1
 
 Stages:
   AR: Architecture
-  SC1: Security-Assess
-  BE?: Backend
-  DB?: Database
+  SC: Security
+  BE: Backend
+  DB: Database
   QA: QA
-  SC2: Security-Final
   VR: Verify
 
 Dependencies:
   AR -> []
-  SC1 -> [AR]
-  BE -> [SC1]
-  DB -> [SC1]
+  SC -> [AR]
+  BE -> [SC]
+  DB -> [SC]
   QA -> [BE,DB]
-  SC2 -> [QA]
-  VR -> [SC2]
-
-Parallel: []
-Gates:
-  AR: threat-model-ok
-  SC1: assessment-passed
-  BE: fix-ok
-  DB: db-secure
-  QA: security-tests-pass
-  SC2: final-ok
-  VR: verified
+  VR -> [QA]
 
 Retry: 2
-Token: @projects/{project_name}/tokens/SEC1.sdd
-   Rule: @rules/chain-rules.sdd
 
 State: +
-
-

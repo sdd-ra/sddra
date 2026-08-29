@@ -3,14 +3,9 @@
 Purpose:
   Generate human docs from prompt. Minimal tokens.
 
-Parent: D0
-Returns: D0
-
 Stage:
   id: D1
   name: docs
-  parent: D0
-  returns_to: D0
   inputs:
     - prompt
   outputs:
@@ -26,8 +21,6 @@ Stage:
     - prompts/tech-stack/prompt-to-docs.sdd
   token:
     - ../../projects/{project_name}/tokens/D1.sdd
-  rule:
-    - ./rules/INDEX.sdd
   decision:
     - Create decision records for architectural/tech choices
     - Status: proposed
@@ -35,4 +28,3 @@ Stage:
      - human
 
 State: +
-

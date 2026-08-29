@@ -22,6 +22,6 @@ Map:
 Selector:
   input: type
   output: node_id
-   fallback: D0
+  fallback: D0
 
 State: +
