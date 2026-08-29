@@ -18,7 +18,8 @@ Steps:
   3. Apply migrations in order (001, 002, 003, ...)
   4. Update migration state (PENDING -> APPLIED)
   5. Validate project instance after migration
-  6. Report results
+  6. Validate shared registries (projects/prompts/)
+  7. Report results
 
 Rules:
   [MW1] Migrations MUST be applied in numerical order.
@@ -26,5 +27,7 @@ Rules:
   [MW3] Migrations MUST be idempotent — safe to re-run.
   [MW4] Failed migrations MUST be manually resolved before re-running.
   [MW5] Migration state MUST be persisted in migrations/INDEX.sdd.
+  [MW6] Shared registries (projects/prompts/) MUST be validated after project migrations.
+  [MW7] Shared registries are NOT project instances and MUST NOT be migrated as such.
 
 State: +

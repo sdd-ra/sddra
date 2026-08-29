@@ -1,0 +1,35 @@
+# Migration 004: Prompts Registry Migration
+
+ID: 004-prompts-registry
+Status: PENDING
+AppliedAt: null
+
+Description:
+  Ensure .sdd/projects/prompts/ is properly recognized as a shared
+  prompt registry, not a project instance. Update references and
+  validate prompt-to-project linking.
+
+Before:
+  .sdd/projects/prompts/ treated as potential project instance
+  prompts/INDEX.sdd references project paths ambiguously
+
+After:
+  .sdd/projects/prompts/ recognized as shared formalized prompt registry
+  prompts/INDEX.sdd explicitly references vkard.az project instance
+  Each prompt has clear link to its project context
+
+Actions:
+  1. Audit .sdd/projects/prompts/ structure
+  2. Update prompts/INDEX.sdd to explicitly exclude itself from project instances
+  3. Add prompt-to-project linking rules
+  4. Validate all prompt-001, prompt-002 references resolve correctly
+  5. Update migration registry to include prompts/ in validation scope
+
+Validation:
+  - prompts/INDEX.sdd excludes itself from project instance rules
+  - All prompt subdirectories have valid prompt.md and skill references
+  - No prompts/ paths are incorrectly routed through project migration
+
+Rollback: NOT SUPPORTED
+
+State: ~

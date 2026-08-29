@@ -10,6 +10,9 @@ Description:
   This command MUST be run after any .sdd/ update that changes
   file locations, schemas, or project structure.
 
+  Shared registries (projects/prompts/) are validated but not migrated
+  as project instances — they have their own migration rules.
+
 Usage:
   /sdd-migrate
   /sdd-migrate --list
@@ -28,6 +31,10 @@ Migration Location:
     001-project-separation.sdd  — Move project/ state to projects/vkard.az/
     002-path-references.sdd     — Update path references after restructuring
     003-schema-updates.sdd      — Schema version updates
+    004-prompts-registry.sdd    — Validate prompts/ shared registry
+
+  Shared registries (validated but not migrated as instances):
+    .sdd/projects/prompts/     — Formalized prompt registry
 
 Migration Registry:
   {
