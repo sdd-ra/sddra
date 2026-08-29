@@ -1,0 +1,48 @@
+# Workflow: Feature Planning
+
+Purpose:
+  Analyze prompts, evaluate features, assign layers, and create
+  implementation plans. This workflow runs when new feature requests
+  arrive after MVP completion.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @../features/INDEX.sdd
+   3 @../projects/{project_name}/MAP.md
+   4 @../projects/{project_name}/STRUCTURE.md
+
+Steps:
+  1. Receive prompt/feature request
+  2. Read project MAP.md and STRUCTURE.md
+  3. Analyze current layer state (L0 completed, L1 in progress, etc.)
+  4. Evaluate feature against layer definitions
+  5. Assign feature to appropriate layer
+  6. Identify affected components and files
+  7. Create decision record (DEC-XXX) for feature
+  8. Break down into tasks
+  9. Update project state
+  10 Report plan to human for approval
+
+Rules:
+  [FP1] L0 features MUST NOT be modified without human approval.
+  [FP2] L1 features MUST be approved by human before implementation.
+  [FP3] Feature assignment MUST be documented in decisions/.
+  [FP4] MAP.md and STRUCTURE.md MUST be consulted before planning.
+  [FP5] Cross-layer features MUST be explicitly documented.
+  [FP6] Implementation order MUST follow layer priority.
+
+Input:
+  - User prompt/feature request
+  - Current project state (MAP.md, STRUCTURE.md)
+  - Layer definitions (features/INDEX.sdd)
+
+Output:
+  - Layer assignment
+  - Affected components
+  - Decision record
+  - Task breakdown
+  - Implementation plan
+
+State: +

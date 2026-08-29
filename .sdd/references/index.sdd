@@ -1,0 +1,67 @@
+@references
+
+Purpose:
+  Reusable engineering knowledge. AI loads these once and references
+  them across projects instead of re-deriving concepts.
+
+Use this index before introducing any conceptual approach.
+
+Navigation:
+  DDD: @ddd
+  Architecture: @architecture
+  Patterns: @patterns
+  Database: @database
+  Engineering: @engineering
+  BestPractices: @best-practices
+
+DecisionGuide:
+  Need domain modeling?
+    → @ddd
+
+  Need system structure?
+    → @architecture
+
+  Need reusable solution?
+    → @patterns
+
+  Need data management?
+    → @database
+
+  Need engineering principles?
+    → @engineering
+
+  Need default heuristics?
+    → @best-practices
+
+Applicability:
+  CoreBanking:
+    ddd: STRONG
+    architecture: STRONG
+    patterns: MEDIUM
+    database: STRONG
+
+  Payment:
+    ddd: STRONG
+    architecture: STRONG
+    patterns: STRONG
+    database: STRONG
+
+  OrderManagement:
+    ddd: STRONG
+    architecture: MEDIUM
+    patterns: MEDIUM
+    database: MEDIUM
+
+  SimpleCRUD:
+    ddd: LOW
+    architecture: LOW
+    patterns: LOW
+    database: LOW
+
+  LandingPage:
+    ddd: NONE
+    architecture: NONE
+    patterns: NONE
+    database: NONE
+
+State: +

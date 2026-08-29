@@ -1,0 +1,61 @@
+@best-practices
+
+Purpose:
+  Default engineering heuristics.
+
+Use this index as a quick checklist before implementation.
+
+Practices:
+  @best-practices.solid
+      Object oriented design principles.
+
+  @best-practices.kiss
+      Prefer simpler solution.
+
+  @best-practices.dry
+      Avoid accidental duplication.
+
+  @best-practices.yagni
+      Avoid speculative features.
+
+  @best-practices.clean-code
+      Readable and maintainable code.
+
+  @best-practices.fail-fast
+      Detect errors as early as possible.
+
+  @best-practices.least-knowledge
+      Minimize coupling between modules.
+
+  @best-practices.composition-over-inheritance
+      Prefer composition for flexibility.
+
+DecisionGuide:
+  Need design guidance?
+    → @best-practices.solid
+
+  Need simplicity?
+    → @best-practices.kiss
+
+  Need to avoid duplication?
+    → @best-practices.dry
+
+  Need to avoid over-engineering?
+    → @best-practices.yagni
+
+  Need code quality?
+    → @best-practices.clean-code
+
+  Need early error detection?
+    → @best-practices.fail-fast
+
+  Need loose coupling?
+    → @best-practices.least-knowledge
+
+  Need flexible extension?
+    → @best-practices.composition-over-inheritance
+
+RelatedReferences:
+  @engineering
+
+State: +

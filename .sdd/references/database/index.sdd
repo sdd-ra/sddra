@@ -1,0 +1,50 @@
+@database
+
+Purpose:
+  Data management references.
+
+Use this index before making database decisions.
+
+Concepts:
+  @database.transaction
+      Unit of work with ACID guarantees.
+
+  @database.locking
+      Concurrency control mechanisms.
+
+  @database.indexing
+      Performance optimization for queries.
+
+  @database.migration
+      Schema change management.
+
+  @database.sharding
+      Horizontal data partitioning.
+
+  @database.replication
+      Data copies for availability.
+
+DecisionGuide:
+  Need data consistency?
+    → @database.transaction
+
+  Need concurrency control?
+    → @database.locking
+
+  Need query performance?
+    → @database.indexing
+
+  Need schema evolution?
+    → @database.migration
+
+  Need horizontal scaling?
+    → @database.sharding
+
+  Need high availability?
+    → @database.replication
+
+RelatedReferences:
+  @patterns.repository
+  @architecture.hexagonal
+
+State: +

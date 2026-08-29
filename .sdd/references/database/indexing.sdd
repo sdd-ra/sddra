@@ -1,0 +1,38 @@
+@database.indexing
+
+Purpose:
+  Performance optimization for queries.
+
+UseWhen:
+  - slow query performance
+  - large dataset
+  - frequent search operations
+
+AvoidWhen:
+  - small dataset
+  - write-heavy with rare reads
+
+Why:
+  Reduces query time from linear to logarithmic.
+
+Types:
+  btree:
+      General purpose, sorted.
+
+  hash:
+      Exact match only.
+
+  gin:
+      Full text and arrays.
+
+  gist:
+      Geometric and range.
+
+Related:
+  @database.transaction
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

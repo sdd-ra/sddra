@@ -1,0 +1,42 @@
+@engineering.solid
+
+Purpose:
+  Object oriented design principles.
+
+Principles:
+  srp:
+      Single responsibility.
+
+  ocp:
+      Open for extension, closed for modification.
+
+  lsp:
+      Liskov substitution.
+
+  isp:
+      Interface segregation.
+
+  dip:
+      Dependency inversion.
+
+UseWhen:
+  - object oriented design
+  - maintainable code
+  - extensible systems
+
+AvoidWhen:
+  - trivial scripts
+  - functional-first approach
+
+Why:
+  Foundation of maintainable OOP design.
+
+Related:
+  @engineering.dependency-inversion
+  @engineering.composition-over-inheritance
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

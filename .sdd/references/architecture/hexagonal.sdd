@@ -1,0 +1,33 @@
+@architecture.hexagonal
+
+Purpose:
+  Ports and adapters, dependency inversion.
+
+UseWhen:
+  - need high testability
+  - want framework independence
+  - complex domain logic
+
+AvoidWhen:
+  - very simple CRUD
+  - team unfamiliar with DDD
+
+Why:
+  Domain is isolated from external concerns.
+
+TradeOffs:
+  + Highly testable
+  + Framework agnostic
+  - More initial structure
+  - Learning curve
+
+Related:
+  @architecture.layered
+  @architecture.clean
+  @patterns.repository
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

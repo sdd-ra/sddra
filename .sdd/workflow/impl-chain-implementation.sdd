@@ -1,0 +1,125 @@
+# Chain Graph Implementation
+
+Purpose:
+  Practical guide for implementing the chain graph in an AI agent.
+
+## Agent Startup Sequence
+
+```text
+1. Read .sdd/PROJECT.sdd
+2. Read .sdd/chains/graph.sdd
+3. Read .sdd/chains/selector.sdd
+4. Read .sdd/chains/rules/chain-rules.sdd
+5. Read .sdd/chains/tokens/INDEX.sdd
+```
+
+## Minimal Context Loading
+
+DO NOT load everything at once. Use this order:
+
+```text
+1. PROJECT.sdd (root only)
+2. chains/graph.sdd (graph structure)
+3. chains/selector.sdd (mapping)
+4. Required arm only (e.g., arms/prompt.sdd)
+5. Required chain rules only
+6. Required skills for current stage
+```
+
+## Token Budget Per Run
+
+```text
+Total Budget: 70,000 tokens
+
+Breakdown:
+  P1 (prompt):    5,000
+  D1 (docs):     10,000
+  S1 (sdd):      15,000
+  C1 (code):     40,000
+  R1 (review):    5,000
+  DEP1 (deploy):  5,000
+  Overhead:      5,000
+```
+
+## Optimization Rules
+
+1. **Short IDs**: Use 2-6 char node IDs (P1, D1, S1, C1, R1, DEP1)
+2. **Indexes**: Use INDEX.sdd files, don't scan directories
+3. **Lazy Skills**: Load skills only when entering a stage
+4. **Cache**: Cache resolved references
+5. **Skip Optional**: If stage not needed, skip entirely
+
+## Agent Memory
+
+```text
+Working Memory:
+  - Current node ID
+  - Current stage
+  - Token budget remaining
+  - Parent node
+  - Next nodes
+
+Session Memory:
+  - Run ID
+  - Token history
+  - Approval history
+  - Error history
+```
+
+## Practical Example
+
+```text
+Input: "Build an education platform for schools"
+
+Agent:
+  1. Read PROJECT.sdd
+  2. Read graph.sdd -> D0 is root
+  3. Read selector.sdd -> "prompt" maps to P1
+  4. Enter P1 arm
+  5. Execute prompt-to-docs.sdd
+  6. Record tokens: in=1200, out=3400, delta=2200
+  7. Return to D0
+  8. Next: D1 (docs arm)
+  9. Execute docs generation
+  10. Record tokens
+  11. Return to D0
+  12. ... continue through all arms
+```
+
+## Error Recovery
+
+```text
+If stage fails:
+  1. Retry (max 3)
+  2. If retry fails: return to D0 with error
+  3. D0 decides: retry different arm or escalate
+  4. Human notified if escalation
+```
+
+## Human Interaction Points
+
+```text
+P1 complete -> Human reviews docs -> Approve/Revise
+D1 complete -> Human reviews .sdd/project/ -> Approve/Revise
+C1 complete -> Human reviews code -> Approve/Revise
+DEP1 -> Human approves production deploy
+```
+
+## Testing the System
+
+```bash
+# Test 1: Token tracking
+Run: prompt -> verify tokens recorded
+
+# Test 2: Chain graph
+Run: full flow D0->P1->D0->D1->D0...
+Verify: all arms return to D0
+
+# Test 3: Human gates
+Run: P1 -> check human approval required
+
+# Test 4: Minimal context
+   Run: P1 only -> verify only P1 files loaded
+```
+
+State: +

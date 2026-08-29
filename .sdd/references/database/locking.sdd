@@ -1,0 +1,36 @@
+@database.locking
+
+Purpose:
+  Concurrency control mechanisms.
+
+UseWhen:
+  - concurrent access to same data
+  - need to prevent race conditions
+  - need serializability
+
+AvoidWhen:
+  - read-only workloads
+  - low concurrency expected
+
+Why:
+  Prevents data corruption in concurrent environments.
+
+Types:
+  pessimistic:
+      Lock before access.
+
+  optimistic:
+      Detect conflicts at commit.
+
+  multiversion:
+      Multiple versions for readers.
+
+Related:
+  @database.transaction
+  @database.replication
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

@@ -1,0 +1,78 @@
+@ddd
+
+Purpose:
+  Domain Driven Design references.
+
+Use this index before introducing DDD concepts.
+
+Concepts:
+  @ddd.entity
+      Identity-based domain object.
+
+  @ddd.value-object
+      Immutable value without identity.
+
+  @ddd.aggregate
+      Consistency boundary.
+
+  @ddd.aggregate-root
+      Entry point to aggregate.
+
+  @ddd.repository
+      Aggregate persistence abstraction.
+
+  @ddd.domain-service
+      Domain operation that does not naturally belong to an entity/value object.
+
+  @ddd.domain-event
+      Event representing a domain fact.
+
+  @ddd.bounded-context
+      Explicit domain model boundary.
+
+DecisionGuide:
+  Need identity?
+    → @ddd.entity
+
+  Need immutable value?
+    → @ddd.value-object
+
+  Need transaction/consistency boundary?
+    → @ddd.aggregate
+
+  Need persistence abstraction?
+    → @ddd.repository
+
+  Need domain operation without natural owner?
+    → @ddd.domain-service
+
+  Need business fact/event?
+    → @ddd.domain-event
+
+  Need separate model/language boundary?
+    → @ddd.bounded-context
+
+SuitableProjectTypes:
+  GoodCandidates:
+    @project.payment
+    @project.order-management
+    @project.core-banking
+
+  UsuallyUnnecessary:
+    @project.simple-crud
+    @project.admin-panel
+
+LayerMapping:
+  L0: strategic/domain decisions
+  L1: bounded contexts
+  L2: aggregates/entities/value objects
+  L3: application/domain services
+  L4: infrastructure implementation
+
+RelatedReferences:
+  @architecture.layered
+  @architecture.hexagonal
+  @architecture.clean
+  @patterns.repository
+
+State: +

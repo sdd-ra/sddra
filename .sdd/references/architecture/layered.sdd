@@ -1,0 +1,33 @@
+@architecture.layered
+
+Purpose:
+  Traditional layered architecture.
+
+UseWhen:
+  - simple to medium complexity
+  - small team
+  - well-understood domain
+
+AvoidWhen:
+  - need high testability
+  - framework coupling is a concern
+  - complex domain logic
+
+Why:
+  Simple, familiar, and sufficient for many applications.
+
+TradeOffs:
+  + Easy to understand
+  + Quick to implement
+  - Framework coupling
+  - Hard to test in isolation
+
+Related:
+  @architecture.clean
+  @architecture.hexagonal
+
+Examples:
+  @project.simple-crud
+  @project.admin-panel
+
+State: +

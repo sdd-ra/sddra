@@ -1,0 +1,26 @@
+@ddd.bounded-context
+
+Purpose:
+  Explicit domain model boundary.
+
+UseWhen:
+  - large complex domain
+  - different teams/models for subdomains
+  - terminology conflicts exist
+
+AvoidWhen:
+  - small simple domain
+  - single model sufficient
+
+Why:
+  Prevents model pollution by keeping contexts separate.
+
+Related:
+  @ddd.aggregate
+  @architecture.modular-monolith
+
+Examples:
+  @project.core-banking
+  @project.payment
+
+State: +

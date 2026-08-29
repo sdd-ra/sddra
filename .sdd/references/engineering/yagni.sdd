@@ -1,0 +1,26 @@
+@engineering.yagni
+
+Purpose:
+  You aren't gonna need it.
+
+UseWhen:
+  - building for current requirements only
+  - future needs are speculative
+  - simplicity is preferred
+
+AvoidWhen:
+  - extension point is obvious and cheap
+  - future need is highly probable
+
+Why:
+  Delaying complexity until it is needed reduces maintenance burden.
+
+Related:
+  @engineering.kiss
+  @engineering.dry
+
+Examples:
+  @project.startup
+  @project.mvp
+
+State: +

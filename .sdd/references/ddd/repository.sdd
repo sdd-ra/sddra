@@ -1,0 +1,26 @@
+@ddd.repository
+
+Purpose:
+  Aggregate persistence abstraction.
+
+UseWhen:
+  - aggregate needs persistence
+  - domain should not know about storage details
+  - testability is required
+
+AvoidWhen:
+  - simple CRUD without domain logic
+  - no persistence layer
+
+Why:
+  Decouples domain model from infrastructure concerns.
+
+Related:
+  @ddd.aggregate
+  @patterns.repository
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

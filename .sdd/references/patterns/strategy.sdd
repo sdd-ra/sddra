@@ -1,0 +1,25 @@
+@patterns.strategy
+
+Purpose:
+  Interchangeable algorithm family.
+
+UseWhen:
+  - multiple variants of algorithm
+  - need to switch algorithms at runtime
+  - avoid conditional complexity
+
+AvoidWhen:
+  - only one algorithm
+  - simple variation
+
+Why:
+  Encapsulates each algorithm and makes them interchangeable.
+
+Related:
+  @patterns.factory
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

@@ -1,63 +1,70 @@
-﻿Index: Workflow
+﻿# Workflow
 
 Purpose:
-  The .sdd system's workflow engine entry point — SDLC + STLC
-   integrating engine. This file defines how workflow will be applied,
-   which files will be read in what order, and how workflow connects to
-   other .sdd components.
+  The .sdd system's workflow layer. Contains the workflow engine
+  (stages, transitions, gates, state machine) and workflow
+  implementations (migration, feature-planning, agent-workflow, etc.).
 
-  Workflow combines two engines:
-    SDLC — software development lifecycle (AN > AR > DB > BE > API >
-           FE > MD > QA > SC > DO > VR)
-    STLC — software testing lifecycle (T0 > T1 > T2 > T3 > T4 > T5 >
-           T6 > T7)
-
-
-Owns:
-  ./
-
-Scope:
-  Stage registry
-  Stage transitions
-  Gate criteria
-  Test levels
-  State machine
-  Task queue engine
-  Runtime events
-
-
-DoesNotOwn:
-  Project-specific flows (bax project/flows.sdd)
-  Project-specific chains (bax chains/chains.sdd)
-  Engineering skills (bax skills/)
-  Task instances (bax tasks/)
-  Project architecture (bax project/architecture.sdd)
-
+Owns: ./
 
 ReadOrder:
-  1  @./stages.sdd        — formal stage registry
-  2  @./transitions.sdd   — default and conditional transitions
-  3  @./gates.sdd         — gate criteria for each stage
-  4  @./testing.sdd       — test levels T0-T7, test pyramid
-  5  @./state.sdd         — task state machine (STATE, not STAGE)
-  6  @../runtime/events.sdd — runtime event log format
-
+   1 @INDEX.sdd
+   2 @stages.sdd (formal stage registry)
+   3 @transitions.sdd (default and conditional transitions)
+   4 @gates.sdd (gate criteria for each stage)
+   5 @state.sdd (task state machine)
+   6 @lifecycle.sdd (workflow lifecycle)
+   7 @policies.sdd (workflow policies)
+   8 @testing.sdd (test levels T0-T7, test pyramid)
+   9 @dependencies.sdd (workflow dependencies)
+   10 @engine-recovery.sdd (workflow engine recovery)
+   11 @impl-migration.sdd (migration workflow)
+   12 @impl-feature-planning.sdd (feature planning workflow)
+   13 @impl-agent-workflow.sdd (agent workflow)
+   14 @impl-agent-implementation.sdd (agent implementation workflow)
+   15 @impl-chain-implementation.sdd (chain implementation workflow)
+   16 @impl-task-execution.sdd (task execution workflow)
+   17 @impl-recovery.sdd (task execution recovery)
+   18 @impl-parallel-execution.sdd (parallel execution workflow)
+   19 @impl-knowledge-sharing.sdd (knowledge sharing workflow)
+   20 @impl-intelligent-runtime.sdd (intelligent runtime workflow)
+   21 @impl-backup-integrity.sdd (backup integrity workflow)
+   22 @impl-skill-auto-integration.sdd (skill auto-integration workflow)
+   23 @impl-example-prompt-to-code.sdd (example prompt-to-code workflow)
 
 Navigation:
-  Stages:      @./stages.sdd
-  Transitions: @./transitions.sdd
-  Gates:       @./gates.sdd
-  Testing:     @./testing.sdd
-  State:       @./state.sdd
-  Events:      @../runtime/events.sdd
-  Chains:      @../chains/
-  Tasks:       @../tasks/
-  Skills:      @../skills/
-  State:       @../state/state.sdd
-
+  Engine:
+    Stages: @stages.sdd
+    Transitions: @transitions.sdd
+    Gates: @gates.sdd
+    State: @state.sdd
+    Lifecycle: @lifecycle.sdd
+    Policies: @policies.sdd
+    Testing: @testing.sdd
+    Dependencies: @dependencies.sdd
+    Recovery: @engine-recovery.sdd
+  Implementations:
+    Migration: @impl-migration.sdd
+    FeaturePlanning: @impl-feature-planning.sdd
+    AgentWorkflow: @impl-agent-workflow.sdd
+    AgentImplementation: @impl-agent-implementation.sdd
+    ChainImplementation: @impl-chain-implementation.sdd
+    TaskExecution: @impl-task-execution.sdd
+    Recovery: @impl-recovery.sdd
+    ParallelExecution: @impl-parallel-execution.sdd
+    KnowledgeSharing: @impl-knowledge-sharing.sdd
+    IntelligentRuntime: @impl-intelligent-runtime.sdd
+    BackupIntegrity: @impl-backup-integrity.sdd
+    SkillAutoIntegration: @impl-skill-auto-integration.sdd
+    ExamplePromptToCode: @impl-example-prompt-to-code.sdd
+  External:
+    Chains: @../chains/
+    Tasks: @../tasks/
+    Skills: @../skills/
+    State: @../state/state.sdd
+    Runtime: @../runtime/INDEX.sdd
 
 Rules:
-
   [W1]  AI MUST load workflow/INDEX.sdd before reading any workflow
         component — never read workflow files blindly.
 
@@ -86,6 +93,4 @@ Rules:
   [W10] A workflow change (new stage, new transition, new gate) requires
         human approval if it affects an existing project's chains.
 
-
 State: +
-  

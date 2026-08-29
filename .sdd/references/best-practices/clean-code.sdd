@@ -1,0 +1,33 @@
+@best-practices.clean-code
+
+Purpose:
+  Readable and maintainable code.
+
+Guidelines:
+  naming:
+      Use intention-revealing names.
+
+  functions:
+      Small, do one thing.
+
+  comments:
+      Explain why, not what.
+
+  formatting:
+      Consistent and readable.
+
+  error-handling:
+      Fail fast, report clearly.
+
+Default:
+  Write code for humans first, machines second.
+
+Related:
+  @best-practices.solid
+  @best-practices.kiss
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

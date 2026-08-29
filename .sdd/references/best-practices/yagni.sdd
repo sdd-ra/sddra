@@ -1,0 +1,20 @@
+@best-practices.yagni
+
+Purpose:
+  You aren't gonna need it.
+
+Default:
+  Build only for current requirements.
+
+Unless:
+  Extension point is obvious and cheap.
+
+Related:
+  @best-practices.kiss
+  @best-practices.dry
+
+Examples:
+  @project.startup
+  @project.mvp
+
+State: +

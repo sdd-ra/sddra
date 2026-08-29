@@ -1,0 +1,28 @@
+@ddd.aggregate
+
+Purpose:
+  Consistency boundary.
+
+UseWhen:
+  - invariant spans multiple objects
+  - atomic consistency is required
+  - complex business rules exist
+
+AvoidWhen:
+  - simple CRUD
+  - no business invariant
+  - single entity operation
+
+Why:
+  Prevents unrelated objects from participating in the same consistency boundary.
+
+Related:
+  @ddd.entity
+  @ddd.value-object
+  @ddd.repository
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

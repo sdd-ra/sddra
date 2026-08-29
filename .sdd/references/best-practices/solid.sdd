@@ -1,0 +1,36 @@
+@best-practices.solid
+
+Purpose:
+  Object oriented design principles.
+
+Principles:
+  srp:
+      Single responsibility - a class should have one reason to change.
+
+  ocp:
+      Open for extension, closed for modification.
+
+  lsp:
+      Liskov substitution - subtypes must be substitutable for base types.
+
+  isp:
+      Interface segregation - many specific interfaces better than one general.
+
+  dip:
+      Dependency inversion - depend on abstractions, not concretions.
+
+Default:
+  Prefer SOLID principles in OOP design.
+
+Unless:
+  Principle introduces unnecessary complexity for current requirements.
+
+Related:
+  @best-practices.clean-code
+  @engineering.solid
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

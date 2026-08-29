@@ -1,0 +1,23 @@
+@best-practices.fail-fast
+
+Purpose:
+  Detect errors as early as possible.
+
+UseWhen:
+  - input validation
+  - configuration errors
+  - dependency checks
+  - precondition verification
+
+Why:
+  Early failure reduces debugging time and prevents cascading errors.
+
+Related:
+  @best-practices.clean-code
+  @engineering.fail-fast
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

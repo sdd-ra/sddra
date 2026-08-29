@@ -1,0 +1,29 @@
+@engineering.dry
+
+Purpose:
+  Don't repeat yourself.
+
+UseWhen:
+  - same logic appears multiple times
+  - change in one place should affect all
+  - duplication causes bugs
+
+AvoidWhen:
+  - duplication is intentional and safe
+  - coupling would be worse than duplication
+
+Why:
+  Every piece of knowledge must have a single representation.
+
+Exception:
+  If merging introduces stronger coupling, intentional duplication is acceptable.
+
+Related:
+  @engineering.kiss
+  @engineering.composition-over-inheritance
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

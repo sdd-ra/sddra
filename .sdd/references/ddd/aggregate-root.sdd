@@ -1,0 +1,26 @@
+@ddd.aggregate-root
+
+Purpose:
+  Entry point to aggregate.
+
+UseWhen:
+  - aggregate exists
+  - external access needed
+  - invariants must be enforced
+
+AvoidWhen:
+  - no aggregate boundary
+  - simple entity without aggregate
+
+Why:
+  Only the root can be directly referenced from outside the aggregate.
+
+Related:
+  @ddd.aggregate
+  @ddd.entity
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

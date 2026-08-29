@@ -1,0 +1,26 @@
+@ddd.domain-event
+
+Purpose:
+  Event representing a domain fact.
+
+UseWhen:
+  - other parts of system need to know about state change
+  - decoupling producers from consumers
+  - eventual consistency is acceptable
+
+AvoidWhen:
+  - synchronous operation required
+  - internal-only state change
+
+Why:
+  Enables loose coupling between bounded contexts and modules.
+
+Related:
+  @ddd.bounded-context
+  @architecture.event-driven
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +
