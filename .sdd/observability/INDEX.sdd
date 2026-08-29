@@ -5,7 +5,7 @@ Purpose:
    engine component. This directory defines how production runtime will
    be monitored, log/metrics/trace policy, alerting rules, health check
    mechanism, and incident lifecycle. Project-specific runtime state is
-   stored in .sdd/projects/vkard.az/observability/. Separation: root = reusable
+   stored in .sdd/instances/vkard.az/observability/. Separation: root = reusable
    observability constraints, project = concrete runtime state.
 
 Owns: ./
@@ -68,7 +68,7 @@ Navigation:
   Health: @observability/health.sdd
   Diagnostics: @observability/diagnostics.sdd
   Incident: @observability/incident.sdd
-  ProjectObservability: @projects/vkard.az/observability/INDEX.sdd
+  ProjectObservability: @instances/vkard.az/observability/INDEX.sdd
 
 State: +
   Note:
@@ -76,6 +76,6 @@ State: +
   the production runtime monitoring and incident response layer.
   Root observability/ defines reusable observability knowledge
   (logs, metrics, traces, alerting, health, diagnostics, incident);
-  projects/vkard.az/observability/ tracks concrete project runtime state
+  instances/vkard.az/observability/ tracks concrete project runtime state
   (services, alerts, incidents, diagnostics). This phase completes
   the development ? runtime ? feedback loop.

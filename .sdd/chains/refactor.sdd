@@ -30,7 +30,7 @@ Gates:
   VR: behavior-same
 
 Retry: 2
-Token: @projects/vkard.az/tokens/RF1.sdd
+Token: @instances/vkard.az/tokens/RF1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

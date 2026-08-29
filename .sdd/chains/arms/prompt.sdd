@@ -20,7 +20,7 @@ Stage:
     - prompts/tech-stack/prompt-to-docs.sdd
     - plugins/plugin-adapters/brainstorming.sdd
   token:
-    - ../../projects/vkard.az/tokens/P1.sdd
+    - ../../instances/vkard.az/tokens/P1.sdd
   rule:
     - ./rules/INDEX.sdd
   gate:

@@ -46,7 +46,7 @@ Navigation:
   Unit: @unit.sdd
   E2E: @e2e.sdd
   UI: @ui.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @instances/vkard.az/testing/INDEX.sdd
 
 State: +
   

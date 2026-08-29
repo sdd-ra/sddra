@@ -83,35 +83,35 @@ ReadOrder:
    37 @dependencies/INDEX.sdd (dependency graph engine)
    38 @dependencies/graph.sdd (DAG, topological sort, cycle detection)
    39 @dependencies/locking.sdd (locking model, deadlock, lease)
-   40 @projects/vkard.az/decisions/decisions.sdd
-   41 @projects/vkard.az/decisions/ (decision instances, when present)
-   42 @projects/vkard.az/decisions/INDEX.sdd (project decision registry)
-   43 @projects/vkard.az/dependencies/INDEX.sdd (project dependency state)
-   44 @projects/vkard.az/dependencies/graph.sdd (project dependency graph)
-   45 @projects/vkard.az/dependencies/locks.sdd (project lock state)
-   46 @projects/vkard.az/dependencies/reservations/ (resource reservations)
+   40 @instances/vkard.az/decisions/decisions.sdd
+   41 @instances/vkard.az/decisions/ (decision instances, when present)
+   42 @instances/vkard.az/decisions/INDEX.sdd (project decision registry)
+   43 @instances/vkard.az/dependencies/INDEX.sdd (project dependency state)
+   44 @instances/vkard.az/dependencies/graph.sdd (project dependency graph)
+   45 @instances/vkard.az/dependencies/locks.sdd (project lock state)
+   46 @instances/vkard.az/dependencies/reservations/ (resource reservations)
    47 @stack/INDEX.sdd          (stack technology knowledge base)
    48 @stack/ (technology catalogs, when present)
-   49 @projects/vkard.az/stack/INDEX.sdd  (project stack selection)
-   50 @projects/vkard.az/stack/ (project technology instances, when present)
+   49 @instances/vkard.az/stack/INDEX.sdd  (project stack selection)
+   50 @instances/vkard.az/stack/ (project technology instances, when present)
    51 @observability/INDEX.sdd  (observability and incident engine)
    52 @observability/ (observability catalogs, when present)
-    53 @projects/vkard.az/observability/INDEX.sdd (project observability state)
-    54 @projects/vkard.az/observability/ (project runtime instances, when present)
+    53 @instances/vkard.az/observability/INDEX.sdd (project observability state)
+    54 @instances/vkard.az/observability/ (project runtime instances, when present)
     55 @commands/INDEX.sdd (CLI commands for SDDRA)
     56 @commands/ (command definitions, when present)
     57 @plugins/INDEX.sdd (plugin adapters)
     58 @plugins/ (plugin adapter definitions, when present)
-    59 @projects/vkard.az/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
+    59 @instances/vkard.az/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
    56 @project/INDEX.sdd       (project map)
    57 @project/PROJECT.sdd     (project model)
-   58 @projects/vkard.az/architecture/INDEX.sdd (project architecture map)
-   59 @projects/vkard.az/architecture/system.sdd (system architecture)
-   60 @projects/vkard.az/architecture/components.sdd (component architecture)
-   61 @projects/vkard.az/architecture/data.sdd (data architecture)
-   62 @projects/vkard.az/architecture/infrastructure.sdd (infrastructure)
-   63 @projects/vkard.az/tasks/INDEX.sdd (task scheduler map)
-   64 @projects/vkard.az/tasks/          (project task instances)
+   58 @instances/vkard.az/architecture/INDEX.sdd (project architecture map)
+   59 @instances/vkard.az/architecture/system.sdd (system architecture)
+   60 @instances/vkard.az/architecture/components.sdd (component architecture)
+   61 @instances/vkard.az/architecture/data.sdd (data architecture)
+   62 @instances/vkard.az/architecture/infrastructure.sdd (infrastructure)
+   63 @instances/vkard.az/tasks/INDEX.sdd (task scheduler map)
+   64 @instances/vkard.az/tasks/          (project task instances)
    65 @workflow/INDEX.sdd
    66 @workflow/ (workflow engine: stages, transitions, gates, testing, state)
    67 @runtime/events.sdd (runtime event log)
@@ -168,12 +168,12 @@ Navigation:
   ArchitectureObservability: @architecture/observability.sdd
   ArchitectureNetworking: @architecture/networking.sdd
   ArchitectureDeployment: @architecture/deployment.sdd
-  ProjectArchitecture: @projects/vkard.az/architecture/INDEX.sdd
-  ProjectArchitectureSystem: @projects/vkard.az/architecture/system.sdd
-  ProjectArchitectureComponents: @projects/vkard.az/architecture/components.sdd
-  ProjectArchitectureData: @projects/vkard.az/architecture/data.sdd
-  ProjectArchitectureInfrastructure: @projects/vkard.az/architecture/infrastructure.sdd
-  ProjectArchitectureDiagrams: @projects/vkard.az/architecture/diagrams/
+  ProjectArchitecture: @instances/vkard.az/architecture/INDEX.sdd
+  ProjectArchitectureSystem: @instances/vkard.az/architecture/system.sdd
+  ProjectArchitectureComponents: @instances/vkard.az/architecture/components.sdd
+  ProjectArchitectureData: @instances/vkard.az/architecture/data.sdd
+  ProjectArchitectureInfrastructure: @instances/vkard.az/architecture/infrastructure.sdd
+  ProjectArchitectureDiagrams: @instances/vkard.az/architecture/diagrams/
   Graph:      @graph/graph.sdd
   DomainGraph: @project/graph/
   Skills:     @skills/INDEX.sdd
@@ -195,10 +195,10 @@ Navigation:
   DependencyEngine: @dependencies/INDEX.sdd
   DependencyGraph: @dependencies/graph.sdd
   DependencyLocking: @dependencies/locking.sdd
-  ProjectDependencies: @projects/vkard.az/dependencies/INDEX.sdd
-  ProjectDependencyGraph: @projects/vkard.az/dependencies/graph.sdd
-  ProjectLocks: @projects/vkard.az/dependencies/locks.sdd
-  ProjectReservations: @projects/vkard.az/dependencies/reservations/
+  ProjectDependencies: @instances/vkard.az/dependencies/INDEX.sdd
+  ProjectDependencyGraph: @instances/vkard.az/dependencies/graph.sdd
+  ProjectLocks: @instances/vkard.az/dependencies/locks.sdd
+  ProjectReservations: @instances/vkard.az/dependencies/reservations/
   Stack: @stack/INDEX.sdd
   StackLanguages: @stack/languages.sdd
   StackBackend: @stack/backend.sdd
@@ -210,20 +210,20 @@ Navigation:
   StackTesting: @stack/testing.sdd
   StackInfrastructure: @stack/infrastructure.sdd
   StackObservability: @stack/observability.sdd
-  ProjectStack: @projects/vkard.az/stack/INDEX.sdd
-  ProjectStackBackend: @projects/vkard.az/stack/backend.sdd
-  ProjectStackFrontend: @projects/vkard.az/stack/frontend.sdd
-  ProjectStackMobile: @projects/vkard.az/stack/mobile.sdd
-  ProjectStackDatabase: @projects/vkard.az/stack/database.sdd
-  ProjectStackTesting: @projects/vkard.az/stack/testing.sdd
-  ProjectStackInfrastructure: @projects/vkard.az/stack/infrastructure.sdd
-  Decisions:  @projects/vkard.az/decisions/decisions.sdd
-  DecisionInstances: @projects/vkard.az/decisions/
-   DomainDecisions: @projects/vkard.az/decisions/INDEX.sdd
-   DecisionHumanDocs: @projects/vkard.az/docs/decisions/INDEX.md
-  TaskEngine: @projects/vkard.az/tasks/tasks.sdd
-  TaskInstances: @projects/vkard.az/tasks/
-  TaskScheduler: @projects/vkard.az/tasks/INDEX.sdd
+  ProjectStack: @instances/vkard.az/stack/INDEX.sdd
+  ProjectStackBackend: @instances/vkard.az/stack/backend.sdd
+  ProjectStackFrontend: @instances/vkard.az/stack/frontend.sdd
+  ProjectStackMobile: @instances/vkard.az/stack/mobile.sdd
+  ProjectStackDatabase: @instances/vkard.az/stack/database.sdd
+  ProjectStackTesting: @instances/vkard.az/stack/testing.sdd
+  ProjectStackInfrastructure: @instances/vkard.az/stack/infrastructure.sdd
+  Decisions:  @instances/vkard.az/decisions/decisions.sdd
+  DecisionInstances: @instances/vkard.az/decisions/
+   DomainDecisions: @instances/vkard.az/decisions/INDEX.sdd
+   DecisionHumanDocs: @instances/vkard.az/docs/decisions/INDEX.md
+  TaskEngine: @instances/vkard.az/tasks/tasks.sdd
+  TaskInstances: @instances/vkard.az/tasks/
+  TaskScheduler: @instances/vkard.az/tasks/INDEX.sdd
   Workflow:   @workflow/INDEX.sdd
   WorkflowStages: @workflow/stages.sdd
   WorkflowTransitions: @workflow/transitions.sdd
@@ -234,10 +234,10 @@ Navigation:
   WorkflowDependencies: @workflow/dependencies.sdd
   WorkflowRecovery: @workflow/recovery.sdd
   WorkflowPolicies: @workflow/policies.sdd
-  ProjectWorkflow: @projects/vkard.az/workflow/INDEX.sdd
-  ProjectWorkflowLifecycle: @projects/vkard.az/workflow/lifecycle.sdd
-  ProjectWorkflowActive: @projects/vkard.az/workflow/active.sdd
-  ProjectWorkflowExceptions: @projects/vkard.az/workflow/exceptions.sdd
+  ProjectWorkflow: @instances/vkard.az/workflow/INDEX.sdd
+  ProjectWorkflowLifecycle: @instances/vkard.az/workflow/lifecycle.sdd
+  ProjectWorkflowActive: @instances/vkard.az/workflow/active.sdd
+  ProjectWorkflowExceptions: @instances/vkard.az/workflow/exceptions.sdd
   Observability: @observability/INDEX.sdd
   Logging: @observability/logging.sdd
   Metrics: @observability/metrics.sdd
@@ -246,15 +246,15 @@ Navigation:
   Health: @observability/health.sdd
   Diagnostics: @observability/diagnostics.sdd
   Incident: @observability/incident.sdd
-  ProjectObservability: @projects/vkard.az/observability/INDEX.sdd
-  ProjectRuntime: @projects/vkard.az/observability/runtime.sdd
-  ProjectServices: @projects/vkard.az/observability/services.sdd
-  ProjectAlerts: @projects/vkard.az/observability/alerts.sdd
-  ProjectIncidents: @projects/vkard.az/observability/incidents/
-  ProjectDiagnostics: @projects/vkard.az/observability/diagnostics/
-  Docs: @projects/vkard.az/docs/INDEX.sdd
-  DocsMappings: @projects/vkard.az/docs/mappings.sdd
-  DocsOwnership: @projects/vkard.az/docs/ownership.sdd
+  ProjectObservability: @instances/vkard.az/observability/INDEX.sdd
+  ProjectRuntime: @instances/vkard.az/observability/runtime.sdd
+  ProjectServices: @instances/vkard.az/observability/services.sdd
+  ProjectAlerts: @instances/vkard.az/observability/alerts.sdd
+  ProjectIncidents: @instances/vkard.az/observability/incidents/
+  ProjectDiagnostics: @instances/vkard.az/observability/diagnostics/
+  Docs: @instances/vkard.az/docs/INDEX.sdd
+  DocsMappings: @instances/vkard.az/docs/mappings.sdd
+  DocsOwnership: @instances/vkard.az/docs/ownership.sdd
   Context: @context/INDEX.sdd
   ContextRouting: @context/routing.sdd
   ContextPriorities: @context/priorities.sdd
@@ -262,9 +262,9 @@ Navigation:
   ContextLoading: @context/loading.sdd
   ContextDependencies: @context/dependencies.sdd
   ContextCache: @context/cache.sdd
-  ProjectContext: @projects/vkard.az/context/INDEX.sdd
-  ProjectContextMap: @projects/vkard.az/context/map.sdd
-  ProjectContextActive: @projects/vkard.az/context/active.sdd
+  ProjectContext: @instances/vkard.az/context/INDEX.sdd
+  ProjectContextMap: @instances/vkard.az/context/map.sdd
+  ProjectContextActive: @instances/vkard.az/context/active.sdd
   Agent: @agent/INDEX.sdd
   AgentCapabilities: @agent/capabilities.sdd
   AgentPermissions: @agent/permissions.sdd
@@ -304,9 +304,9 @@ Navigation:
   GatesRelease: @gates/release.sdd
   GatesExceptions: @gates/exceptions.sdd
   GatesEvidence: @gates/evidence.sdd
-  ProjectGates: @projects/vkard.az/gates/INDEX.sdd
-  ProjectGatePolicy: @projects/vkard.az/gates/policy.sdd
-  ProjectGateActive: @projects/vkard.az/gates/active.sdd
+  ProjectGates: @instances/vkard.az/gates/INDEX.sdd
+  ProjectGatePolicy: @instances/vkard.az/gates/policy.sdd
+  ProjectGateActive: @instances/vkard.az/gates/active.sdd
   Skills: @skills/INDEX.sdd
   SkillsLanguages: @skills/languages/INDEX.sdd
   SkillsGo: @skills/languages/go/INDEX.sdd
@@ -385,11 +385,11 @@ Navigation:
    SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
    Reasoning: @orchestrator/reasoning.sdd
    FastPath: @chains/fast-path.sdd
-   BugTracking: @projects/vkard.az/bugs/INDEX.sdd
+   BugTracking: @instances/vkard.az/bugs/INDEX.sdd
    ParallelExecution: @workflows/parallel-execution.sdd
    KnowledgeSharing: @workflows/knowledge-sharing.sdd
    IntelligentRuntime: @workflows/intelligent-runtime.sdd
-  HumanSkills: @projects/vkard.az/docs/skills/
+  HumanSkills: @instances/vkard.az/docs/skills/
   Orchestrator: @orchestrator/INDEX.sdd
   OrchestratorIntent: @orchestrator/intent.sdd
   OrchestratorModes: @orchestrator/modes.sdd
@@ -417,14 +417,14 @@ Navigation:
   TestLevels: @testing/levels.sdd
   TestTypes:  @testing/types.sdd
   TestGates:  @testing/gates.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
-  ProjectCoverage: @projects/vkard.az/testing/coverage.sdd
-  ProjectTestRuns: @projects/vkard.az/testing/runs/
-  ProjectTestFailures: @projects/vkard.az/testing/failures/
-  ProjectTestExceptions: @projects/vkard.az/testing/exceptions/
-   Docs:       @projects/vkard.az/docs/INDEX.sdd
-   DocsTasks:  @projects/vkard.az/docs/tasks/
-   DocsDecisions: @projects/vkard.az/docs/decisions/
+  ProjectTesting: @instances/vkard.az/testing/INDEX.sdd
+  ProjectCoverage: @instances/vkard.az/testing/coverage.sdd
+  ProjectTestRuns: @instances/vkard.az/testing/runs/
+  ProjectTestFailures: @instances/vkard.az/testing/failures/
+  ProjectTestExceptions: @instances/vkard.az/testing/exceptions/
+   Docs:       @instances/vkard.az/docs/INDEX.sdd
+   DocsTasks:  @instances/vkard.az/docs/tasks/
+   DocsDecisions: @instances/vkard.az/docs/decisions/
     Commands:   @commands/INDEX.sdd
     CommandSDD: @commands/sdd.sdd
     CommandAnalyze: @commands/sdd-analyze.sdd
@@ -469,30 +469,30 @@ Note:
     Added architecture and decisions sections to ReadOrder and Navigation.
     Architecture knowledge base includes levels.sdd, patterns.sdd, scaling.sdd,
     availability.sdd, data.sdd, observability.sdd, networking.sdd, deployment.sdd.
-    Project architecture state lives in projects/vkard.az/architecture/ with 1:1 mapping
-    to human docs. Decisions registry lives in projects/vkard.az/decisions/ with 1:1
+    Project architecture state lives in instances/vkard.az/architecture/ with 1:1 mapping
+    to human docs. Decisions registry lives in instances/vkard.az/decisions/ with 1:1
     mapping to docs/decisions/.
 
     Added dependency graph engine and locking model sections to ReadOrder
     and Navigation. Root dependencies/ = reusable system intelligence (graph
-    algorithms, locking rules); projects/vkard.az/dependencies/ = concrete project state
+    algorithms, locking rules); instances/vkard.az/dependencies/ = concrete project state
     (actual dependency graph, lock state, reservations).
 
     Added stack technology knowledge base sections to ReadOrder and Navigation.
     Root stack/ = reusable technology knowledge (languages, frameworks,
     databases, caches, messaging, testing, infrastructure, observability);
-    projects/vkard.az/stack/ = concrete project state (selected technology instances).
+    instances/vkard.az/stack/ = concrete project state (selected technology instances).
     Technology selection follows architecture, not precedes it.
 
     Added workflow lifecycle engine sections to ReadOrder and Navigation.
     Root workflow/ = reusable workflow knowledge (lifecycle, stages,
-    dependencies, recovery, policies); projects/vkard.az/workflow/ = concrete project
+    dependencies, recovery, policies); instances/vkard.az/workflow/ = concrete project
     workflow state (active instances, exceptions).
 
     Added observability and incident engine sections to ReadOrder and
     Navigation. Root observability/ = reusable observability knowledge
     (logging, metrics, tracing, alerting, health, diagnostics, incident);
-    projects/vkard.az/observability/ = concrete project runtime state (services, alerts,
+    instances/vkard.az/observability/ = concrete project runtime state (services, alerts,
     incidents, diagnostics). This completes the development → runtime →
     feedback loop.
 

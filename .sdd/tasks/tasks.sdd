@@ -264,7 +264,7 @@ Rules:
 Navigation:
   Tasks: @tasks.sdd
   Decomposition: @decomposition.sdd
-  ProjectTasks: @../projects/vkard.az/tasks/INDEX.sdd
+  ProjectTasks: @../instances/vkard.az/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Graph: @../graph/INDEX.sdd

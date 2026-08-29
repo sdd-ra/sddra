@@ -35,7 +35,7 @@ Property:
   graph.root = D0
   graph.arms = P1,D1,S1,C1,R1,DEP1
   graph.rules = ./rules/INDEX.sdd
-  graph.tokens = ../../projects/vkard.az/tokens/INDEX.sdd
+  graph.tokens = ../../instances/vkard.az/tokens/INDEX.sdd
 
 State: +
 

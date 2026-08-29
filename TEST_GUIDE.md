@@ -109,7 +109,7 @@ Claude-a verilən kontekst:
 .sdd/chains/graph.sdd — D0 root + 6 arm
 .sdd/chains/arms/*.sdd — hər armın tərifi
 .sdd/decisions/schema.sdd — qərar strukturu
-.sdd/projects/vkard.az/docs/00-about/project.md — insan dili təsvir
+.sdd/instances/vkard.az/docs/00-about/project.md — insan dili təsvir
 ```
 
 **Addım 2:** Claude-dan chain graph-i icra etməyi tələb et
@@ -120,7 +120,7 @@ Prompt:
 1. .sdd/PROJECT.sdd oxu
 2. .sdd/chains/graph.sdd oxu
 3. .sdd/chains/arms/prompt.sdd (P1) oxu
-4. .sdd/projects/vkard.az/docs/00-about/project.md oxu
+4. .sdd/instances/vkard.az/docs/00-about/project.md oxu
 5. .sdd/decisions/DEC-001.sdd oxu
 6.Chain graph-i izah et: D0-dan hansı arm-a gedəcəyik, nə üçün, token izah et"
 ```
@@ -142,7 +142,7 @@ Prompt:
 "Qərar qeydi sistemini izah et:
 1. .sdd/decisions/DEC-001.sdd oxu
 2. .sdd/decisions/workflow.sdd oxu
-3. .sdd/projects/vkard.az/decisions/task-map.sdd oxu
+3. .sdd/instances/vkard.az/decisions/task-map.sdd oxu
 4. DEC-001 → hansı tasklara bağlı?
 5. Qərar həyat dövrü necə işləyir?"
 ```
@@ -237,7 +237,7 @@ Yoxla:
 - [ ] `.sdd/chains/graph.sdd` oxunur, D0 root başa düşülür
 - [ ] `.sdd/chains/arms/*.sdd` oxunur, 6 arm müəyyənləşdir
 - [ ] `.sdd/decisions/DEC-001..DEC-007.sdd` oxunur
-- [ ] `.sdd/projects/vkard.az/docs/` insan dili sənədləri oxunur
+- [ ] `.sdd/instances/vkard.az/docs/` insan dili sənədləri oxunur
 
 ### Token Budget
 - [ ] P1: <= 5,000

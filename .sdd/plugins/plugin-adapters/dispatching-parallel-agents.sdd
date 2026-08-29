@@ -23,7 +23,7 @@ Adapted for SDDRA:
 
   Integration:
     - Chain graph parallel section
-    - Task scheduler in .sdd/projects/vkard.az/tasks/
+    - Task scheduler in .sdd/instances/vkard.az/tasks/
     - Token budget shared across parallel tasks
 
 Usage:

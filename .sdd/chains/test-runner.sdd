@@ -6,7 +6,7 @@ Purpose:
 Test Cases:
   TC1: Token tracking
     Input: "Test prompt"
-    Expected: projects/vkard.az/tokens/P1.sdd created
+    Expected: instances/vkard.az/tokens/P1.sdd created
     Budget: <= 5000 tokens
 
   TC2: Chain graph

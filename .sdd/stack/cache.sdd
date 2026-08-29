@@ -3,7 +3,7 @@ Cache: SDD
 Purpose:
   Cache technology catalog with comparison criteria, selection rules,
   and integration patterns. Root stack/ defines reusable cache knowledge;
-  projects/vkard.az/stack/ stores the selected cache for the project.
+  instances/vkard.az/stack/ stores the selected cache for the project.
 
 Catalog:
   Redis:

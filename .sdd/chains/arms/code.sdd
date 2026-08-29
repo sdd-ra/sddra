@@ -13,15 +13,15 @@ Stage:
   returns_to: D0
   inputs:
     - .sdd/project/
-    - .sdd/projects/vkard.az/decisions/ (approved decisions)
+    - .sdd/instances/vkard.az/decisions/ (approved decisions)
   outputs:
     - project/
-    - .sdd/projects/vkard.az/decisions/DEC-XXX.sdd (updated status)
+    - .sdd/instances/vkard.az/decisions/DEC-XXX.sdd (updated status)
   skills:
     - workflows/task-execution.sdd
     - plugins/plugin-adapters/using-git-worktrees.sdd
   token:
-    - ../../projects/vkard.az/tokens/C1.sdd
+    - ../../instances/vkard.az/tokens/C1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

@@ -9,16 +9,16 @@ Input:
 
 Output:
   .sdd/project/PROJECT.sdd
-  .sdd/projects/vkard.az/architecture/system.sdd
-  .sdd/projects/vkard.az/stack/backend.sdd
-  .sdd/projects/vkard.az/stack/frontend.sdd
-  .sdd/projects/vkard.az/stack/database.sdd
+  .sdd/instances/vkard.az/architecture/system.sdd
+  .sdd/instances/vkard.az/stack/backend.sdd
+  .sdd/instances/vkard.az/stack/frontend.sdd
+  .sdd/instances/vkard.az/stack/database.sdd
   .sdd/project/domains.sdd
   .sdd/project/modules.sdd
   .sdd/project/flows.sdd
   .sdd/project/dependencies.sdd
-  .sdd/projects/vkard.az/tasks/ (generated tasks)
-  .sdd/projects/vkard.az/decisions/ (approved decisions)
+  .sdd/instances/vkard.az/tasks/ (generated tasks)
+  .sdd/instances/vkard.az/decisions/ (approved decisions)
 
 Steps:
   1. PARSE_DOCS:
@@ -41,7 +41,7 @@ Steps:
   4. GENERATE_TASKS:
      - Break down into executable tasks
      - Assign chains to tasks
-     - Create .sdd/projects/vkard.az/tasks/*.sdd
+     - Create .sdd/instances/vkard.az/tasks/*.sdd
 
   5. VALIDATE:
      - Run .sdd linter

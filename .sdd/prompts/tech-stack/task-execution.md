@@ -38,7 +38,7 @@ task:
 
   inputs:
     - .sdd/project/domains.sdd
-    - .sdd/projects/vkard.az/stack/backend.sdd
+    - .sdd/instances/vkard.az/stack/backend.sdd
 
   outputs:
     - backend/domain/auth/
@@ -75,7 +75,7 @@ Fix → Test → Emergency Review → Deploy
 ## Execution Steps
 
 ### 1. Task Discovery
-AI reads `.sdd/projects/vkard.az/tasks/` and finds ready tasks:
+AI reads `.sdd/instances/vkard.az/tasks/` and finds ready tasks:
 - `status: ready`
 - `dependencies: []` (all dependencies satisfied)
 
@@ -121,7 +121,7 @@ artifacts: [list of created files]
 
 1. **AI loads context:**
    - `.sdd/project/domains.sdd` (auth domain)
-   - `.sdd/projects/vkard.az/stack/backend.sdd` (Go, Gin)
+   - `.sdd/instances/vkard.az/stack/backend.sdd` (Go, Gin)
    - Skills: `languages/go/L2-patterns`
 
 2. **AI plans:**
