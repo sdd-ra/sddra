@@ -69,6 +69,10 @@ obj/
 target/
 Cargo.lock
 
+# AI coding tool configs
+.claude/
+.kilo/
+
 # General
 *.pid
 *.seed
