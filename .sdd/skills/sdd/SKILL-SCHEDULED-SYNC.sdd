@@ -72,7 +72,7 @@ Evidence:
   - Best Practices for Background Jobs (Azure Architecture Center 2026)
   - Batch processing best practices (Vlad Mihalcea)
   - Scheduling background jobs patterns (AppMaster 2026)
-  - Production experience: CaptainUp gamification sync, pultapaz yii2-delayed-task
+  - Production experience: scheduled sync systems
 
 Overview:
   Scheduled Sync covers periodic and delayed task execution: cron jobs for

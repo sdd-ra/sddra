@@ -75,7 +75,7 @@ Evidence:
   - Multi-Channel Alert Delivery Best Practices (Upstat 2025)
   - Notification Architecture Design Pattern (TechShitAnshu 2024)
   - Best practices for Slack notifications (Knock 2024)
-  - Production experience: pultapaz MailIntegrationService, CaptainUp gamification notifications
+  - Production experience: notification systems
 
 Overview:
   Notification Dispatch is the pattern for sending outbound messages through

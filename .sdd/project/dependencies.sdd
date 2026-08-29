@@ -1,7 +1,7 @@
 ﻿Spec: Project/Dependencies
 
 Purpose:
-  Define the concrete dependency relationships between SDDRA ecosystem
+  Define the generic dependency relationships between SDDRA ecosystem
   modules. This is the project-level instance — not a reusable schema.
 
 Owns:
@@ -20,41 +20,38 @@ RelationTypes:
 
 DependencyGraph:
 
-  captainup-gamification:
+  gamification-module:
     depends_on:
-      - supabase (database + RPC)
-      - captainup (external gamification API)
-      - mailgun (email provider)
-      - slack (webhook provider)
-      - redis (cache, sorted sets, rate limits)
-  does_not_depend_on:
-    - pultapaz
-    - rovio-matchmaking
-
-  pultapaz:
-    depends_on:
-      - mysql (primary database)
-      - redis (cache + session)
-      - rabbitmq (async messaging)
-      - guzzle (HTTP client for bank/MFO APIs)
+      - database (persistence)
+      - external-api (third-party gamification service)
+      - cache (sorted sets, rate limits)
+      - message-broker (async event processing)
     does_not_depend_on:
-      - captainup-gamification
-      - rovio-matchmaking
+      - credit-module
 
-  rovio-matchmaking:
+  credit-module:
     depends_on:
-      - postgres (durable game config)
-      - redis (queues, tickets, sessions, locks)
-      - efcore (ORM)
+      - database (primary storage)
+      - cache (session, rate limiting)
+      - message-broker (async messaging)
+      - http-client (external API calls)
     does_not_depend_on:
-      - captainup-gamification
-      - pultapaz
+      - gamification-module
+
+  matchmaking-module:
+    depends_on:
+      - database (durable config)
+      - cache (queues, sessions, locks)
+      - orm (data access)
+    does_not_depend_on:
+      - gamification-module
+      - credit-module
 
 CrossModuleContracts:
 
   gamification-field-mapping:
-    purpose: Field mapping between internal gamification events and CaptainUp API
-    owned_by: captainup-gamification (GamificationEventMapper) + integration (IntegrationField model)
+    purpose: Field mapping between internal gamification events and external API
+    owned_by: gamification-module + integration-module
     contract:
       - internal_event_type -> external_event_type mapping
       - field_path for nested payloads
@@ -62,11 +59,11 @@ CrossModuleContracts:
       - static_field support for fixed API parameters
 
   gamification-audit-log:
-    purpose: Audit trail for all gamification actions (points, badges, rank changes)
-    owned_by: captainup-gamification (GamificationAuditLog) + pultapaz (IntegrationLog model)
+    purpose: Audit trail for all gamification actions
+    owned_by: gamification-module + integration-module
     contract:
       - correlation_id (links to point event, badge event)
-      - user_id / auid
+      - user_id / external_id
       - action_type (POINT_AWARD, BADGE_UNLOCK, RANK_CHANGE)
       - request_data / response_data
       - execution_time_ms
@@ -75,7 +72,7 @@ CrossModuleContracts:
 
   gamification-event-pattern:
     purpose: Common event processing pattern for gamification actions
-    owned_by: captainup-gamification (GamificationEventProcessor) + pultapaz (RabbitMQ consumers)
+    owned_by: gamification-module + event-processor
     contract:
       - event claiming (idempotent lock by event_id)
       - handler dispatch (action_type -> processor)
@@ -85,18 +82,18 @@ CrossModuleContracts:
       - dead-letter queue for failed events
 
   player-identity-mapping:
-    purpose: Bidirectional mapping between internal user ID and CaptainUp auid
-    owned_by: captainup-gamification (PlayerIdentityService) + user (User domain)
+    purpose: Bidirectional mapping between internal user ID and external platform ID
+    owned_by: gamification-module + user-service
     contract:
-      - internal_user_id <-> auid mapping
-      - provider identifier (captainup)
+      - internal_user_id <-> external_id mapping
+      - provider identifier
       - status (active, merged, deprecated)
       - TTL-based cache invalidation
       - merge support for user migration
 
   shared-field-mapping:
     purpose: Common field mapping engine used by Integration domain
-    owned_by: captainup-gamification (EventMapper) + pultapaz (IntegrationField model)
+    owned_by: integration-module + gamification-module
     contract:
       - internal_field -> external_field mapping
       - field_path (dot notation for nested objects)
@@ -105,7 +102,7 @@ CrossModuleContracts:
 
   shared-http-client:
     purpose: HTTP client abstraction for external API calls
-    owned_by: captainup-gamification (BaseHttpService) + pultapaz (Guzzle client)
+    owned_by: integration-module + gamification-module
     contract:
       - content-type handling (json, form-data, form-urlencoded)
       - auth header injection
@@ -114,12 +111,12 @@ CrossModuleContracts:
 
   shared-audit-log:
     purpose: Integration request/response audit trail
-    owned_by: captainup-gamification (IntegrationLog) + pultapaz (IntegrationLog model)
+    owned_by: integration-module + gamification-module
     contract:
       - request_id (correlation ID)
       - integration_id / target_service
       - request_body / request_data
-      - response_body / api_response
+      - response_body / response_data
       - execution_time_ms
       - is_successful flag
 
@@ -139,5 +136,3 @@ Navigation:
   Architecture: @../../architecture/principles.sdd
 
 State: +
-
-

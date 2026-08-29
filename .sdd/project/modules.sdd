@@ -1,7 +1,7 @@
 ﻿Spec: Project/Modules
 
 Purpose:
-  Declare each concrete module in the SDDRA ecosystem — what it owns,
+  Declare each generic module in the SDDRA ecosystem — what it owns,
   its public API surface, and its direct dependencies. Modules are the
   deployable/code-boundary units that implement domains.
 
@@ -14,144 +14,145 @@ Rules:
   A module MAY declare `tests` (owned test paths) — routing pointers only.
   A module MAY declare `bounded_contexts` when a domain spans multiple implementations.
 
-Note:
-  This file contains CONCRETE module declarations for the SDDRA ecosystem.
-  Each module maps to a real codebase under ./tmp/.
-
 Modules:
 
-  captainup-gamification:
-    purpose: CaptainUp gamification platform integration — points, badges, leaderboards, player profiles
-    domain: Integration + Notification + EventProcessing + Scheduling + Gamification
-    path: (external platform — no local codebase)
+  integration-module:
+    purpose: External system integration with config-driven field mapping and retry
+    domain: Integration
     bounded_contexts:
-      - gamification-rules (rule engine for points, badges, achievements)
-      - gamification-leaderboard (ranked lists, scopes, caching)
-      - gamification-player (player profile, auid mapping, progression)
-      - gamification-anticheat (validation, anomaly detection, rollback)
-    owns:
-      - Event ingestion (WebSocket firehose, async queue)
-      - Rule evaluation engine (declarative, async, idempotent)
-      - Point award processing (idempotent, auditable)
-      - Badge unlock evaluation (time-window, streak, dependencies)
-      - Leaderboard write/read models (CQRS, sorted sets, snapshots)
-      - Player profile sync (async, bidirectional mapping)
-      - Anti-cheat detection (async, rate limiting, anomaly detection)
-      - CaptainUp HTTP and WebSocket clients
-      - Scheduled sync jobs (leaderboard rebuild, badge evaluation, profile sync)
-      - Mailgun/Slack notification providers for gamification events
-    api:
-      - evaluateRules(event, userState) -> {actions}
-      - getLeaderboard(scope, page) -> {entries}
-      - getUserRank(userId, scope) -> {rank, score}
-      - getPlayerProfile(userId) -> PlayerProfile
-      - syncPlayerProfile(userId) -> void
-      - awardPoints(userId, amount, reason) -> PointEvent
-      - unlockBadge(userId, badgeId) -> BadgeEvent
-      - processAction(userId, actionType, context) -> void
-    deps:
-      - supabase (database + RPC functions)
-      - captainup (external gamification API)
-      - mailgun (email provider)
-      - slack (notification webhook)
-      - redis (cache, sorted sets, rate limits)
-    files:
-      - (module boundary defined by bounded contexts above)
-    tests:
-      - (tests defined per bounded context)
-    state: active
-
-  pultapaz:
-    purpose: Bank and MFO credit integration platform with quiz-based routing
-    domain: Integration + User + Notification + Scheduling
-    path: ./tmp/pultapaz
-    bounded_contexts:
-      - integration-execution (HTTP calls to bank/MFO APIs)
-      - pre-check-validation (identity verification before submission)
+      - http-client (external API communication)
+      - field-mapping (request/response transformation)
+      - pre-check (identity validation)
       - status-polling (application status tracking)
-      - mail-integration (async email via RabbitMQ)
-      - batch-pre-check (multi-integration batch validation)
-      - condition-evaluation (dynamic routing rules)
+      - webhook-processing (incoming webhook handling)
     owns:
-      - IntegrationService (HTTP execution, retry, response mapping)
-      - MailIntegrationService (template rendering, daily limits)
-      - BatchPreCheckService (batch identity validation)
-      - IntegrationConditionService (dynamic routing rules)
-      - RabbitMQ consumers (mail, batch, realtime)
-      - IntegrationField model (request/response mapping, transforms)
-      - IntegrationCondition model (amount, duration, employment rules)
-      - Delayed task commands (add, add_batch, execute)
-      - SMS and Telegram notification providers
+      - HTTP client configuration (base_url, timeout, auth, content_type)
+      - Request field mapping and transformation
+      - Response field mapping and transformation
+      - Retry policy (max_attempts, backoff, dead-letter)
+      - Audit log (request/response/execution_time)
+      - Pre-check execution (optional, config-driven)
+      - Status polling (optional, config-driven)
+      - Webhook processing (optional, signature validation)
+      - Daily limit enforcement
     api:
-      - processIntegration(quizParams, redirectId, alias) -> {results}
+      - execute(integration, payload) -> {success, data, error}
       - executePreCheck(integration, values) -> {passed, message}
-      - checkApplicationStatus(integration, externalId, redirectId) -> {status, code}
-      - processWebhookResponse(integrationName, data) -> {mapped_fields}
-      - evaluateConditions(integrationId, redirect, params) -> {passed}
-      - sendIntegrationMail(integration, quizParams, redirectId) -> {success}
+      - checkStatus(integration, externalId) -> {status, code}
+      - processWebhook(integrationName, data) -> {mapped_fields}
     deps:
-      - mysql (primary database)
-      - redis (cache, session, queue)
-      - rabbitmq (async message processing)
-      - guzzle (HTTP client for external APIs)
+      - external-api (third-party service)
+      - database (persistence)
+      - cache (rate limits, config)
     files:
-      - backend/**/*
-      - api/**/*
-      - common/**/*
-      - console/**/*
-      - frontend/**/*
       - src/integration/**/*
-      - src/consumer/**/*
-      - src/event/**/*
-      - src/delayed_task/**/*
-      - src/sms/**/*
-      - src/telegram/**/*
-      - src/salesdoubler/**/*
     tests:
-      - tests/**/*
+      - tests/integration/**/*
     state: active
 
-  rovio-matchmaking:
-    purpose: Multi-game queue and matchmaking microservice
-    domain: Integration (game infrastructure) + EventProcessing
-    path: ./tmp/Rovio.Matchmaking
+  event-processor:
+    purpose: Event/message intake, dispatch, and lifecycle management
+    domain: EventProcessing
     bounded_contexts:
-      - queue-management (enqueue, cancel, poll)
-      - session-formation (match creation, late join)
-      - game-config (durable config in Postgres, hot projection to Redis)
+      - websocket-ingestion (real-time event intake)
+      - queue-consumer (async message processing)
+      - polling-fallback (DB-based queue fallback)
     owns:
-      - QueueService (ticket enqueue, cancel, poll)
-      - SessionService (session formation, late join)
-      - GameConfigService (CRUD, Redis projection)
-      - MatchmakingEngine (ticket selection, session formation)
-      - MatchingService (latency + wait-time compatibility)
-      - Redis adapters (ticket store, session store, shard lock, config runtime)
-      - Postgres repository (game match config)
+      - Event claiming and deduplication
+      - Handler dispatch (service + event_type routing)
+      - Retry policy (count, backoff, dead-letter)
+      - Correlation ID tracking
+      - Batch completion and status updates
     api:
-      - enqueue(gameId, playerId, region, latencyMs) -> TicketDto
-      - getTicket(gameId, ticketId) -> TicketDto
-      - cancelTicket(gameId, ticketId) -> void
-      - getSession(sessionId) -> SessionDto
-      - lateJoin(sessionId, playerId, region, latencyMs) -> SessionDto
-      - upsertGameConfig(gameId, config) -> GameMatchConfigDto
-      - getGameConfig(gameId) -> GameMatchConfigDto
+      - claim(batchSize) -> [eventRows]
+      - handle(eventRow) -> {status, result}
+      - complete(eventId, status, retryCount) -> void
+      - completeBatch(updates) -> void
     deps:
-      - postgres (durable game config)
-      - redis (queues, tickets, sessions, locks, projected config)
-      - efcore (ORM for Postgres)
+      - message-broker (RabbitMQ/Kafka)
+      - database (event persistence)
+      - cache (deduplication, rate limits)
     files:
-      - src/Rovio.Domain.Common/**/*
-      - src/Rovio.Matchmaking.Domain/**/*
-      - src/Rovio.Matchmaking.Application/**/*
-      - src/Rovio.Matchmaking.Infrastructure/**/*
-      - src/Rovio.Matchmaking.Api/**/*
-      - src/Rovio.Matchmaking.Worker/**/*
+      - src/event/**/*
     tests:
-      - tests/Rovio.Domain.Common.Tests.Unit/**/*
-      - tests/Rovio.Matchmaking.Domain.Tests.Unit/**/*
-      - tests/Rovio.Matchmaking.Application.Tests.Unit/**/*
-      - tests/Rovio.Matchmaking.Infrastructure.Tests.Integration/**/*
-      - tests/Rovio.Matchmaking.Api.Tests.Integration/**/*
+      - tests/event/**/*
+    state: active
+
+  notification-service:
+    purpose: Multi-channel outbound messaging
+    domain: Notification
+    bounded_contexts:
+      - email (template rendering and delivery)
+      - sms (provider abstraction)
+      - telegram (bot API)
+      - slack (webhook-based rich messages)
+    owns:
+      - Template engine (placeholder replacement, HTML rendering)
+      - Provider abstraction (send via configured channel)
+      - Daily limits per integration
+      - Retry logic for failed sends
+    api:
+      - send(integration, payload) -> {success, log_id, error}
+      - queue(integration, payload) -> {queued, request_id}
+      - retry(logId) -> {success, error}
+      - renderTemplate(templateName, data) -> renderedContent
+    deps:
+      - email-provider (Mailgun/SMTP)
+      - messaging-provider (Slack/Telegram/SMS)
+      - database (notification log)
+      - cache (template cache)
+    files:
+      - src/notification/**/*
+    tests:
+      - tests/notification/**/*
+    state: active
+
+  scheduled-sync:
+    purpose: Periodic and delayed task execution
+    domain: Scheduling
+    bounded_contexts:
+      - cron-jobs (periodic external sync)
+      - delayed-tasks (batch operations)
+    owns:
+      - Cron job registration and execution
+      - Delayed task queue management
+      - Batch orchestration (pre-check, sync)
+    api:
+      - registerCron(schedule, handler) -> jobId
+      - executeDelayed(task) -> void
+      - getJobStatus(jobId) -> {status, result}
+    deps:
+      - integration-module (external API calls)
+      - event-processor (async processing)
+      - database (job state)
+    files:
+      - src/scheduling/**/*
+    tests:
+      - tests/scheduling/**/*
+    state: active
+
+  user-service:
+    purpose: User identity and profile management
+    domain: User
+    bounded_contexts:
+      - profile (core user attributes)
+      - identity-mapping (cross-system ID mapping)
+    owns:
+      - User profile data
+      - External service user mapping (internal ID -> external ID)
+      - User-level daily limits
+    api:
+      - getProfile(userId) -> UserProfile
+      - updateProfile(userId, attributes) -> void
+      - mapExternalId(userId, externalId, provider) -> void
+      - resolveInternalId(externalId) -> userId
+    deps:
+      - database (user storage)
+      - cache (profile cache)
+    files:
+      - src/user/**/*
+    tests:
+      - tests/user/**/*
     state: active
 
 Rules:

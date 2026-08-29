@@ -77,7 +77,7 @@ Evidence:
   - Redis Sorted Sets for Ranking (Redis Labs 2025)
   - Leaderboard Design Patterns (InfoQ 2024)
   - Scalable Ranking Systems (ACM 2025)
-  - CaptainUp leaderboard architecture
+  - Industry leaderboard architecture
 
 Overview:
   The Leaderboard pattern provides ranked player lists with multiple

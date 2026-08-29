@@ -3,7 +3,7 @@ Skills: SDD Ecosystem
 Purpose:
   SDDRA ecosystem-specific skills for integration, event processing,
   field mapping, notification dispatch, scheduled sync, and gamification.
-  Gamification skills are derived from CaptainUp industry best practices
+  Gamification skills are derived from industry best practices
   and encode patterns for player profiles, rule engines, leaderboards,
   points economy, and anti-cheat systems.
 
