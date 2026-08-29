@@ -1,54 +1,26 @@
-﻿Session: Runtime
+﻿Runtime: Session
 
 Purpose:
   Defines runtime session management for orchestrator.
 
 Session:
-  ID:
-    SESSION-<timestamp>-<random>
-
-  Started:
-    <timestamp>
-
-  Ended:
-    <timestamp> | null
-
-  Mode:
-    AUTO | SUPERVISED | STRICT | AUDIT | READ_ONLY
-
-  Project:
-    <project-name>
-
-  User:
-    <user-id>
+  ID: SESSION-<timestamp>-<random>
+  Started: <timestamp>
+  Ended: <timestamp> | null
+  Mode: AUTO | SUPERVISED | STRICT | AUDIT | READ_ONLY
+  Project: <project-name>
+  User: <user-id>
 
 SessionState:
-  CurrentTask:
-    <task-id>
+  CurrentTask: <task-id>
+  CurrentPhase: <phase>
+  LastStep: <last-successful-step>
+  NextAction: <next-action>
+  Status: ACTIVE | PAUSED | COMPLETED | FAILED
 
-  CurrentPhase:
-    <phase>
-
-  LastStep:
-    <last-successful-step>
-
-  NextAction:
-    <next-action>
-
-  Status:
-    ACTIVE | PAUSED | COMPLETED | FAILED
-
-SessionHistory:
-  - SESSION-<ID>:
-      Started: <ISO-8601>
-      Ended: <ISO-8601>
-      Tasks: TASK-<ID>, TASK-<ID>
-      Status: COMPLETED
-
-SessionRules:
-  [SS1]  Session MUST be persisted on every state change.
-  [SS2]  Session MUST be resumable after crash.
-  [SS3]  Session history MUST be retained for audit.
+Rules:
+  [SS1] Session MUST be persisted on every state change.
+  [SS2] Session MUST be resumable after crash.
+  [SS3] Session history MUST be retained for audit.
 
 State: +
-  
