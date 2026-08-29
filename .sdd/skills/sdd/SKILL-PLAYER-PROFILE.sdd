@@ -29,7 +29,7 @@ EvidenceLevel:
 
 SearchKeys:
   player profile
-  captainup player
+  external player
   player state
   profile sync
   player attributes
@@ -78,7 +78,7 @@ Evidence:
   - Identity Resolution Patterns (Microsoft Learn 2024)
   - CQRS and Event Sourcing for Player State (DDD Europe 2024)
   - Caching Strategies for User Profiles (High Scalability 2025)
-  - CaptainUp player API documentation
+  - Industry player API documentation
 
 Overview:
   The Player Profile pattern manages player identity, attributes, and
@@ -148,7 +148,7 @@ ProfileStructure:
       avatar_url: string
       custom_attributes: object
     metadata:
-      source: string (internal | captainup | synced)
+      source: string (internal | external | synced)
       last_synced_at: ISO8601
       version: number (optimistic locking)
       created_at: ISO8601
@@ -158,7 +158,7 @@ IdentityMapping:
   mapping:
     user_id: string (internal PK)
     auid: string (external ID)
-    provider: string (captainup | internal | other)
+      provider: string (external | internal | other)
     status: active | merged | deprecated
     created_at: ISO8601
     last_used_at: ISO8601

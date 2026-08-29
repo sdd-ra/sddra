@@ -72,7 +72,7 @@ Evidence:
   - Data Mapping and Transformation (Software Patterns Lexicon 2024)
   - 7 Data Mapping Best Practices (Elvity 2026)
   - API Data Mapping Comprehensive Guide (Adeptia 2024)
-  - Production experience: pultapaz IntegrationField model
+  - Production experience: field mapping models
 
 Overview:
   Field Mapping is the engine that translates data between internal domain

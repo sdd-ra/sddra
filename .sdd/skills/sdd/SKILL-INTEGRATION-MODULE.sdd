@@ -74,11 +74,11 @@ Evidence:
   - Building robust external integration architectures (WJARR 2025)
   - Microservices Architecture and API Management (2025)
   - Enterprise Integration Patterns (Hohpe & Woolf)
-  - Production experience: CaptainUp gamification integration, pultapaz
+  - Production experience: integration systems
 
 Overview:
   An Integration Module encapsulates all communication with one external
-  system (bank, MFO, CaptainUp, Mailgun, Slack). It owns request building,
+   system (bank, MFO, gamification, email, messaging). It owns request building,
   response parsing, error handling, retry, audit logging, and configuration.
   The module exposes a clean API to the rest of the system and hides all
   external API details behind explicit boundaries.

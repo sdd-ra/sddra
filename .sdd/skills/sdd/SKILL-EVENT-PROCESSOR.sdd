@@ -73,7 +73,7 @@ Evidence:
   - Error Handling Patterns in Kafka (Confluent 2024)
   - Handling Failures in Queues in Event-Based Architecture (Medium 2024)
   - Event Sourcing Patterns Best Practices (GitScrum 2026)
-  - Production experience: CaptainUp gamification event processing, pultapaz
+  - Production experience: event processing systems
 
 Overview:
   The Event Processor pattern defines how events/messages are ingested,
@@ -215,8 +215,8 @@ Correlation ID:
 
   format: {service}-{timestamp}-{random}
   examples:
-    - captainup-auid-1234567890-abc123
-    - pultapaz-request_id-42
+    - provider-auid-1234567890-abc123
+    - service-request_id-42
   propagation:
     - Generated at ingestion
     - Passed through all handler calls

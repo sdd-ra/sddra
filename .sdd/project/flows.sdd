@@ -3,69 +3,35 @@ Spec: Project/Flows
 Purpose:
   Define how THIS project normally moves work between engineering
   stages — the concrete, project-level instance of the chain engine.
-  This is NOT the chain engine itself (bax chains/chains.sdd, ENGINE
-  layer) and NOT a domain's real flow (bax project/<domain>/flows.sdd,
+  This is NOT the chain engine itself (see chains/chains.sdd, ENGINE
+  layer) and NOT a domain's real flow (see project/<domain>/flows.sdd,
   not yet created — forward reference, no domain exists yet).
-
-  Three layers, not to be confused:
-
-    chains/chains.sdd            -> "HOW DOES THE CHAIN WORK?" (generic engine)
-    project/flows.sdd            -> "WHAT IS THIS PROJECT'S DEFAULT FLOW?" (this file)
-    project/<domain>/flows.sdd   -> "WHAT IS THE REAL FLOW FOR <DOMAIN>?" (concrete, future)
-
 
 Owns:
   This project's default stage sequence
   Project-level flow rules
-
 
 DoesNotOwn:
   Chain lifecycle rules and stage definitions   (see ../chains/chains.sdd)
   Domain-specific flow overrides                (see project/<domain>/flows.sdd, future)
   Feature-level chain type selection            (see ./project.sdd -> [PM4])
 
-
 Stages:
 
   AN, AR, DB, BE, API, FE, MD, QA, DO, VR
-
-  (reusing chains/chains.sdd's own Stages vocabulary — discipline stages
-  DB/BE/API/FE/MD/QA/DO, orchestration stages AN/AR, final verification
-  VR — not redefined here, bax chains/chains.sdd -> Stages.)
-
 
 Default:
 
   AN > AR > DB > BE > API > FE > MD > QA > DO > VR
 
-
 Rules:
 
-  [F1]
-  This file defines this project's default flow, not the chain engine
-  itself.
-
-  [F2]
-  Global chain lifecycle rules remain owned by chains/chains.sdd — this
-  file MUST NOT redefine them.
-
-  [F3]
-  A domain flow (project/<domain>/flows.sdd) MAY override the default
-  sequence above when justified by that domain's own dependencies.
-
-  [F4]
-  A feature flow MAY add or remove stages from the default sequence
-  based on its own dependency analysis.
-
-  [F5]
-  VR MUST remain the final verification stage in any resolved flow,
-  regardless of domain/feature overrides.
-
-  [F6]
-  Flow changes (default sequence, domain overrides, feature overrides)
-  MUST be traceable — recorded via decisions/decisions.sdd or state/
-  state.sdd, not silently changed.
-
+  [F1] This file defines this project's default flow, not the chain engine itself.
+  [F2] Global chain lifecycle rules remain owned by chains/chains.sdd — this file MUST NOT redefine them.
+  [F3] A domain flow (project/<domain>/flows.sdd) MAY override the default sequence above when justified by that domain's own dependencies.
+  [F4] A feature flow MAY add or remove stages from the default sequence based on its own dependency analysis.
+  [F5] VR MUST remain the final verification stage in any resolved flow, regardless of domain/feature overrides.
+  [F6] Flow changes MUST be traceable — recorded via decisions/decisions.sdd or state/state.sdd, not silently changed.
 
 FlowResolution:
 
@@ -75,73 +41,27 @@ FlowResolution:
     > Feature-specific stage overrides
     > Final executable chain
 
-  (mirrors the ENGINE > MODEL resolution pattern already used by
-  chains/chains.sdd -> FlowResolution and architecture/principles.sdd
-  -> Resolution — root stays reusable, the project model carries the
-  concrete instance.)
-
-
 Portability:
 
   This file's Default sequence is this project's own instance and is
   NOT expected to be reusable as-is across other projects — unlike
   chains/chains.sdd, which MUST remain project-agnostic.
 
-
 Navigation:
   Chain engine:     @../chains/chains.sdd
   Project model:     @./project.sdd
   Domain flow:        @./<domain>/flows.sdd (future, no domain exists yet)
 
-
-State: STEP 14
-
-Note:
-  (prompt/new/36.md — source labeled this "STEP 13", the same
-  third-consecutive mislabel collision noted in ./project.sdd -> Note;
-  this repo's own sequential count treats it as STEP 14, bax
-  ../PROJECT.sdd -> Note.)
-
-  This file resolves a double dangling forward-reference that existed
-  since STEP 11/12: chains/chains.sdd -> ProjectFlow already pointed at
-  `@../project/flows.sdd`, and project/map.sdd -> Navigation already
-  routed through a flow step, but no such file existed yet (bax
-  chains/chains.sdd -> ProjectFlow's own prior note, now stale and
-  corrected as part of this same STEP — bax ../chains/chains.sdd ->
-  Note). This file is the first genuinely new file this STEP creates
-  with no existing-file collision (contrast ./project.sdd, which
-  collided with domains.sdd/modules.sdd's territory, and map.sdd/
-  dependencies.sdd/indexes.sdd, left untouched — bax ./project.sdd ->
-  Note).
-
-  Rule IDs: the source's bare `[F1]-[F6]` range was confirmed free
-  against every other prefix in this repo ([R] PROJECT, [C] chains,
-  [T] tasks, [D] decisions, [S] state, [AP] architecture principles,
-  [P] prompts, [PM] project model) — kept as-is, no renumbering needed.
-
-  Deliberate departures from the source spec, per the standing "apply,
-  don't copy" rule: added an explicit Owns/DoesNotOwn pair (absent from
-  the source) stating this file does NOT redefine chain lifecycle rules
-   or domain-level overrides, matching this repo's established per-file
-  convention (see architecture/principles.sdd -> DoesNotOwn); added a
-  FlowResolution section mirroring chains.sdd's own FlowResolution and
-  principles.sdd -> Resolution, since the source described this
-  three-layer relationship only in prose (see "Most important point" in
-  the source chunk) without a matching structured Resolution block; folded
-  the source's separate "AN/AR/.../VR" Stages list into a one-line
-  reference to chains.sdd's own Stages vocabulary rather than
-  redeclaring it a second time (see NoDuplication, architecture/
-  architecture.sdd -> Principles).
+State: +
 
 BusinessFlows:
 
   IntegrationExecution:
     purpose: End-to-end flow for executing an external integration call
     applies_to:
-      - captainup-gamification
-      - pultapaz
+      - integration-module
     steps:
-      - receive_event: Event/message arrives (WebSocket, RabbitMQ, HTTP webhook, or polling claim)
+      - receive_event: Event/message arrives (WebSocket, message queue, HTTP webhook, or polling claim)
       - validate_payload: Validate required fields (target_service, event_type, action_json)
       - check_conditions: Evaluate integration conditions (amount, duration, employment status)
       - execute_precheck: Validate identity against external API (optional, config-driven)
@@ -149,84 +69,80 @@ BusinessFlows:
       - call_external_api: Execute HTTP request with auth, timeout, content-type handling
       - process_response: Map external response back to internal fields
       - log_result: Persist request/response/execution_time to integration_log
-      - notify_if_needed: Dispatch notification if integration triggers one (email, slack, sms)
+      - notify_if_needed: Dispatch notification if integration triggers one
     error_handling:
       - retry_on_failure: Increment retry_count, schedule retry with backoff
       - dead_letter: After max retries, mark as failed and alert
       - partial_success: Batch operations may partially succeed
     variants:
-      - proactive_forward: pultapaz sends quiz data to bank without prior request
+      - proactive_forward: send data to external system without prior request
       - reactive_webhook: External system calls back with result
       - status_poll: Periodic check of application status
 
   NotificationDispatch:
     purpose: Send outbound notifications through configured channels
     applies_to:
-      - captainup-gamification
-      - pultapaz
+      - notification-service
     steps:
-      - resolve_template: Load template config from settings (html_template, fields_to_replace)
+      - resolve_template: Load template config from settings
       - render_content: Replace placeholders with actual data values
       - check_daily_limit: Verify integration has not exceeded daily send limit
-      - send_via_provider: Execute send through configured provider (Mailgun, SMTP, Slack webhook, SMS, Telegram)
+      - send_via_provider: Execute send through configured provider
       - log_result: Record send status, provider response, execution time
     error_handling:
-      - retry_on_failure: Queue for retry (async via RabbitMQ or direct retry)
+      - retry_on_failure: Queue for retry (async via message queue or direct retry)
       - daily_limit_skip: Log and skip, do not retry
       - provider_fallback: Try alternative provider if primary fails
     variants:
-      - async_mail: Queued via RabbitMQ for background processing
-      - sync_notify: Immediate send (Slack webhook, Telegram)
+      - async_mail: Queued via message broker for background processing
+      - sync_notify: Immediate send (webhook, bot API)
       - template_email: HTML template with dynamic field replacement
 
   ScheduledSync:
     purpose: Periodic synchronization of external configuration data
     applies_to:
-      - captainup-gamification
+      - scheduled-sync
     steps:
-      - fetch_config_once: Single API call to retrieve full app configuration
+      - fetch_config_once: Single API call to retrieve full configuration
       - execute_handlers_sequentially: Run sync handlers one by one to avoid DB contention
       - log_results: Record sync statistics (counts, errors, duration)
     handlers:
-      - sync_levels: User level definitions
-      - sync_avatars: Player avatar assets
-      - sync_tournaments: Tournament configurations
-      - sync_missions: Mission/badge definitions
+      - sync_config: External configuration data
+      - sync_metadata: Reference data
     variants:
       - full_sync: All handlers run on every cycle
-      - incremental_sync: Only changed items updated (future)
+      - incremental_sync: Only changed items updated
 
   WebSocketEventIngestion:
     purpose: Real-time event intake via WebSocket with database persistence
     applies_to:
-      - captainup-gamification
+      - event-processor
     steps:
-      - connect: Establish WebSocket connection with auth (app_id + secret)
+      - connect: Establish WebSocket connection with auth
       - heartbeat: Send periodic ping, expect pong response
-      - receive_message: Parse incoming JSON message (auid + events array)
-      - deduplicate: Check auid against acknowledged set to prevent duplicates
-      - persist_to_db: Store raw event in websocket_events table via RPC
-      - acknowledge: Send auid back to provider to confirm receipt
-      - auto_restart: Periodic reconnect every 24h to prevent stale connections
+      - receive_message: Parse incoming JSON message
+      - deduplicate: Check event ID against acknowledged set to prevent duplicates
+      - persist_to_db: Store raw event via persistence layer
+      - acknowledge: Send event ID back to provider to confirm receipt
+      - auto_restart: Periodic reconnect to prevent stale connections
     error_handling:
       - reconnect_on_close: Exponential backoff up to max attempts
       - fallback_to_polling: If WebSocket fails, activate polling loop
       - db_triggers: Database triggers auto-process persisted events
 
   BatchPreCheck:
-    purpose: Validate customer identity against multiple integrations in parallel
+    purpose: Validate identity against multiple integrations in parallel
     applies_to:
-      - pultapaz
+      - integration-module
     steps:
-      - receive_job: BatchPreCheckResult job created with identity values (phone, fin, seria)
-      - discover_integrations: Find all active integrations with pre_check configured
+      - receive_job: Batch validation job created with identity values
+      - discover_integrations: Find all active integrations with pre-check configured
       - execute_checks: Run pre-check for each integration sequentially or in parallel
       - aggregate_results: Collect pass/fail counts per integration
-      - update_job_status: Mark BatchPreCheckResult as completed with statistics
+      - update_job_status: Mark job as completed with statistics
     error_handling:
       - integration_failure: Individual integration failure does not block others
-      - timeout_per_integration: Each pre-check has its own timeout (10-30s)
+      - timeout_per_integration: Each pre-check has its own timeout
       - partial_results: Store whatever results were collected
 
 State: +
-
