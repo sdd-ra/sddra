@@ -8,6 +8,11 @@ Purpose:
 Owns: ./
 
 Structure:
+  README.md:
+    purpose: Human-readable project overview
+    format: Markdown
+    template: README.template.md
+
   modules/:
     purpose: Business logic modules
     format: module.sdd per bounded context
@@ -23,6 +28,11 @@ Structure:
   data/:
     purpose: Data models and schemas
     format: schema.sdd per aggregate
+
+  docs/:
+    purpose: Human-readable documentation
+    format: Markdown
+    mirror: .sdd/projects/{project_name}/docs/
 
 Rules:
   [PRJ1] Every module MUST have an owner.
