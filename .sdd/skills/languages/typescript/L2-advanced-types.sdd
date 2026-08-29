@@ -1,0 +1,99 @@
+﻿# TypeScript Advanced Types
+
+Purpose:
+  TypeScript Advanced Types
+
+Skill: TypeScript Advanced Types
+
+ID:
+  SKILL-LANG-TS-L2
+
+Domain:
+  languages/typescript
+
+Use:
+  using advanced TypeScript type features
+
+Apply:
+  intermediate
+  senior
+  library-development
+  type-safety
+
+Requires:
+  SKILL-LANG-TS-L1
+  generics
+  conditional-types
+
+Avoid:
+  over-engineering-types
+  any-type
+  type-unsafe-casts
+  complex-type-magic
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  typescript
+  advanced types
+  generics
+  conditional types
+  mapped types
+  utility types
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/typescript/L2-advanced-types.md
+
+Evidence:
+  - TypeScript Handbook
+  - TypeScript Deep Dive
+  - Production experience
+
+Rules:
+  [T1] Use generics for reusable type-safe functions.
+  [T2] Use conditional types for type-level logic.
+  [T3] Use mapped types for type transformations.
+  [T4] Use template literal types for string patterns.
+  [T5] Use `satisfies` operator for type checking without widening.
+  [T6] Use `infer` keyword for type inference.
+  [T7] Use `never` for exhaustiveness checking.
+  [T8] Use utility types (`Pick`, `Omit`, `Partial`, `Required`).
+
+Pros:
+  - Maximum type safety
+  - Reusable type patterns
+  - Better developer experience
+
+Cons:
+  - Complex syntax
+  - Compile time impact
+  - Steep learning curve
+
+Alternatives:
+  - Plain TypeScript
+  - Runtime validation (Zod)
+
+State: +
+

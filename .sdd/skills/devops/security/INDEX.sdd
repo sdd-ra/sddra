@@ -1,0 +1,23 @@
+# Skills: Security
+
+Purpose:
+  Security skills for SDDRA system. Defines security testing,
+  scanning, and compliance requirements.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @testing.sdd
+
+Rules:
+  [S1] All code MUST pass security scans before merge.
+  [S2] All dependencies MUST be scanned for vulnerabilities.
+  [S3] No secrets allowed in code.
+  [S4] All security issues MUST be resolved before deployment.
+  [S5] Security testing is mandatory before production.
+
+Navigation:
+  Testing: @testing.sdd
+
+State: +

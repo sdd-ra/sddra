@@ -1,0 +1,100 @@
+﻿# React Native
+
+Purpose:
+  React Native
+
+Skill: React Native
+
+ID:
+  SKILL-FW-REACT-NATIVE-L1
+
+Domain:
+  frameworks/react-native
+
+Use:
+  building cross-platform mobile apps with React Native
+
+Apply:
+  beginner
+  intermediate
+  mobile
+  cross-platform
+
+Requires:
+  react-native-0.73+
+  react-18+
+  typescript
+
+Avoid:
+  platform-specific-abuse
+  overusing-packages
+  ignoring-performance
+  tight-coupling
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  react native
+  mobile
+  cross-platform
+  ios
+  android
+  expo
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/react-native/L1-fundamentals.md
+
+Evidence:
+  - React Native Documentation
+  - Expo Documentation
+  - Production experience
+
+Rules:
+  [R1] Use functional components with hooks.
+  [R2] Use TypeScript for type safety.
+  [R3] Use `StyleSheet` for styling.
+  [R4] Use `FlatList` for lists.
+  [R5] Use `useState` and `useEffect`.
+  [R6] Use React Navigation for routing.
+  [R7] Use Expo for easier setup.
+  [R8] Use native modules sparingly.
+
+Pros:
+  - JavaScript everywhere
+  - Hot reloading
+  - Large ecosystem
+
+Cons:
+  - Performance issues
+  - Native module complexity
+  - Platform differences
+
+Alternatives:
+  - Flutter
+  - Kotlin Multiplatform
+  - Native development
+
+State: +
+

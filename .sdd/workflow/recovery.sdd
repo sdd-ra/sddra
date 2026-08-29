@@ -1,0 +1,74 @@
+﻿WorkflowRecovery: SDD
+
+Purpose:
+  Defines how the workflow engine recovers from failures. Recovery
+  is not retry — it is root cause analysis and appropriate response.
+
+RecoveryFlow:
+  FailureDetected:
+    ↓
+  AnalyzeFailure:
+    ↓
+  KnownIssue:
+    ├── YES → ApplyExistingFix
+    │         ↓
+    │       ResumeWorkflow
+    │
+    └── NO → RootCauseAnalysis
+              ↓
+            NewTask
+              ↓
+            ResumeWorkflow
+
+FailureClassification:
+  Transient:
+    - Network timeout
+    - Temporary CI failure
+    - Container startup race
+    - Rate limit hit
+    Action: RETRY (max 3 attempts, exponential backoff)
+
+  Permanent:
+    - Compile error
+    - Assertion failure
+    - Security violation
+    - Wrong architecture
+    - Missing requirement
+    Action: NEW_TASK + STOP
+
+  HumanRequired:
+    - Production database migration
+    - Architecture change
+    - Security exception
+    - Data loss risk
+    Action: HUMAN_APPROVAL + STOP
+
+RetryPolicy:
+  MaxAttempts: 3
+  Backoff: exponential
+  TransientOnly: yes
+  PermanentNeverRetry: yes
+
+HumanIntervention:
+  AUTO:
+    - Code formatting
+    - Lint fixes
+    - Test re-run
+
+  AUTO_REWORK:
+    - Unit test failure (known fix)
+    - Integration test flake
+
+  REVIEW_REQUIRED:
+    - Architecture change
+    - API contract change
+    - Performance degradation
+
+  HUMAN_APPROVAL:
+    - Production database migration
+    - Security exception
+    - Data deletion
+    - Rollback decision
+
+State: +
+  

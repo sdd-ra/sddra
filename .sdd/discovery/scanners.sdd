@@ -1,0 +1,107 @@
+﻿Scanners: Discovery
+
+Purpose:
+  Defines repository scanners that observe source code structure.
+
+Scanners:
+  StructureScanner:
+    Scans:
+      - Directory layout
+      - File organization
+      - Module boundaries
+    Output:
+      - Structure map
+      - Module list
+
+  StackScanner:
+    Scans:
+      - go.mod, package.json, requirements.txt, composer.json
+      - Dockerfile, docker-compose
+      - CI/CD configs
+    Output:
+      - Language
+      - Framework
+      - Runtime
+      - Database
+      - Cache
+      - Queue
+      - Testing
+      - CI/CD
+      - Container
+      - Cloud
+
+  ArchitectureScanner:
+    Scans:
+      - Handler/Controller/Service/Repository patterns
+      - Layer organization
+      - Dependency injection
+    Output:
+      - Architecture pattern
+      - Layer map
+      - Dependency graph
+
+  DomainScanner:
+    Scans:
+      - internal/ directory structure
+      - Package organization
+      - Import relationships
+    Output:
+      - Domain list
+      - Domain boundaries
+      - Domain dependency graph
+
+  TestScanner:
+    Scans:
+      - *_test.go, *.test.ts, *.spec.ts
+      - test/ directories
+      - BDD feature files
+      - E2E configs
+    Output:
+      - Test types
+      - Test frameworks
+      - Coverage map
+
+  SecurityScanner:
+    Scans:
+      - Auth middleware
+      - RBAC implementations
+      - JWT/OAuth usage
+      - Input validation
+      - Rate limiting
+      - Encryption
+      - Secrets management
+    Output:
+      - Security model
+      - Security gaps
+
+  InfrastructureScanner:
+    Scans:
+      - Dockerfile, docker-compose
+      - Kubernetes manifests
+      - Terraform, Ansible
+      - Nginx configs
+      - CI/CD pipelines
+      - Environment files
+    Output:
+      - Infrastructure map
+      - Environment list
+      - Cloud provider
+
+  DocumentationScanner:
+    Scans:
+      - README files
+      - docs/ directories
+      - ADR files
+      - Wiki
+    Output:
+      - Documentation map
+      - Documentation gaps
+
+ScannerRules:
+  [SC1]  Scanners MUST be read-only.
+  [SC2]  Scanners MUST classify findings with confidence.
+  [SC3]  Scanners MUST detect conflicts with existing .sdd.
+  [SC4]  Scanners MUST not infer beyond evidence.
+
+State: +
+  

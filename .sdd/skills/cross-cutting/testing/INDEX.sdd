@@ -1,0 +1,48 @@
+Skills: Testing
+
+Purpose:
+  Testing skills for all test types and methodologies.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @tdd.sdd
+   3  @bdd.sdd
+   4  @performance.sdd
+   5  @integration.sdd
+   6  @e2e.sdd
+
+Modes:
+  LEARN    — learn testing fundamentals
+  APPLY    — apply testing to code
+  REVIEW   — review testing skills
+  UPGRADE  — propose testing skill upgrade
+
+Rules:
+  [T1]  Tests MUST be independent.
+  [T2]  Tests MUST be repeatable.
+  [T3]  Tests MUST be fast.
+  [T4]  Tests MUST be self-validating.
+
+Entry:
+  Read:
+    INDEX.sdd
+    tdd.sdd
+
+  Resolve:
+    tdd
+    bdd
+    performance
+    integration
+    e2e
+
+Navigation:
+  Testing: @cross-cutting/testing/INDEX.sdd
+  TDD: @cross-cutting/testing/tdd.sdd
+  BDD: @cross-cutting/testing/bdd.sdd
+  Performance: @cross-cutting/testing/performance.sdd
+  Integration: @cross-cutting/testing/integration.sdd
+  E2E: @cross-cutting/testing/e2e.sdd
+
+State: +

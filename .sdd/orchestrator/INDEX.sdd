@@ -1,0 +1,50 @@
+﻿Orchestrator: SDD
+
+Purpose:
+  Autonomous Project Orchestrator. Unifies all previous engines
+  into a single agent lifecycle. Handles both new project (greenfield)
+  and existing project (brownfield) modes. Transforms user intent
+  into architecture, tasks, workflow, implementation, and release.
+
+Owns: ./
+
+ReadOrder:
+   1  @intent.sdd
+   2  @modes.sdd
+   3  @state.sdd
+   4  @pipeline.sdd
+   5  @boundary.sdd
+   6  @routing.sdd (agent selection and routing)
+
+Modes:
+  AUTO       — AI decides low-risk items
+  SUPERVISED — AI recommends, human approves major decisions
+  STRICT     — Human approval required for architecture, security, DB migration, release
+  AUDIT      — Analysis only, no modifications
+  READ_ONLY  — Project analysis, no code changes
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    intent
+    modes
+    state
+    pipeline
+    boundary
+
+Navigation:
+  Orchestrator: @orchestrator/INDEX.sdd
+  Intent: @orchestrator/intent.sdd
+  Modes: @orchestrator/modes.sdd
+  State: @orchestrator/state.sdd
+  Pipeline: @orchestrator/pipeline.sdd
+  Boundary: @orchestrator/boundary.sdd
+  Routing: @orchestrator/routing.sdd
+  RuntimeAgent: @runtime/agent.sdd
+  RuntimeSession: @runtime/session.sdd
+  RuntimeCurrent: @runtime/current.sdd
+
+State: +
+  

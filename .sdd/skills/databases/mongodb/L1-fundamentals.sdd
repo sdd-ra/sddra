@@ -1,0 +1,99 @@
+﻿# MongoDB Fundamentals
+
+Purpose:
+  MongoDB Fundamentals
+
+Skill: MongoDB Fundamentals
+
+ID:
+  SKILL-DB-MONGO-L1
+
+Domain:
+  databases/mongodb
+
+Use:
+  designing and using basic MongoDB databases
+
+Apply:
+  beginner
+  learning
+  flexible-schema
+  document-store
+
+Requires:
+  mongodb-6+
+  json-fundamentals
+
+Avoid:
+  unbounded-documents
+  deep-nesting
+  missing-index
+  schema-less-abuse
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  mongodb
+  nosql
+  document
+  json
+  database
+  schema-less
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/mongodb/L1-fundamentals.md
+
+Evidence:
+  - MongoDB Documentation
+  - MongoDB University
+  - Production experience
+
+Rules:
+  [M1] Use `_id` as primary key (auto-generated ObjectId).
+  [M2] Use embedded documents for one-to-few relationships.
+  [M3] Use references for one-to-many or many-to-many.
+  [M4] Use proper data types (ISODate, ObjectId).
+  [M5] Use `$set` for partial updates.
+  [M6] Use `$push` for array operations.
+  [M7] Use `$lookup` for joins (sparingly).
+  [M8] Use `$text` for full-text search.
+
+Pros:
+  - Flexible schema
+  - Horizontal scaling
+  - JSON-like documents
+
+Cons:
+  - No joins (limited)
+  - Memory usage
+  - Consistency model
+
+Alternatives:
+  - PostgreSQL (ACID)
+  - CouchDB (HTTP API)
+  - DynamoDB (managed)
+
+State: +
+

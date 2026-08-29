@@ -1,0 +1,72 @@
+﻿# Decision Template
+Purpose:
+  Decision Template
+
+
+Decision: DEC-XXX
+
+Type: architectural|technical|security|business|operational|human|ai
+Status: proposed
+
+Title: <one line>
+
+Context:
+  <background, why this decision is needed>
+
+Problem:
+  <specific problem statement>
+
+Options:
+  1. <Option A>
+     Pros:
+       - <pro>
+     Cons:
+       - <con>
+     Cost: <estimate>
+
+  2. <Option B>
+     Pros:
+       - <pro>
+     Cons:
+       - <con>
+     Cost: <estimate>
+
+  3. <No change>
+     Pros:
+       - <pro>
+     Cons:
+       - <con>
+     Cost: <estimate>
+
+Decision:
+  <chosen option>
+
+Rationale:
+  <why this option over others>
+
+Impact:
+  Files: [list]
+  Modules: [list]
+  Risks: [R0-R5 list]
+
+Owner: <human or agent>
+Reviewers: [list]
+
+Implementation:
+  Tasks: [TASK ids]
+  Chain: <chain type>
+  Status: pending
+
+Verification:
+  Criteria: [list]
+  Status: pending
+
+Supersedes: null
+Conflicts: null
+Depends_On: null
+
+   Created_At: <timestamp>
+   Updated_At: <timestamp>
+
+State: +
+

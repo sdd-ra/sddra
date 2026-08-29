@@ -1,0 +1,33 @@
+Skills: AWS Cloud
+
+Purpose:
+  AWS cloud skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn AWS fundamentals
+  APPLY    — apply AWS patterns to cloud
+  REVIEW   — review AWS skills
+  UPGRADE  — propose AWS skill upgrade
+
+Rules:
+  [A1]  Use IAM roles, not access keys.
+  [A2]  Use S3 for object storage.
+  [A3]  Use RDS for managed databases.
+  [A4]  Use CloudFormation for IaC.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  AWS: @platforms/aws/INDEX.sdd
+  AWSL1: @platforms/aws/L1-fundamentals.sdd
+
+State: +

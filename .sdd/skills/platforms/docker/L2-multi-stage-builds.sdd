@@ -1,0 +1,99 @@
+﻿# Docker Multi-Stage Builds
+
+Purpose:
+  Docker Multi-Stage Builds
+
+Skill: Docker Multi-Stage Builds
+
+ID:
+  SKILL-PLAT-DOCKER-L2
+
+Domain:
+  platforms/docker
+
+Use:
+  optimizing Docker images with multi-stage builds
+
+Apply:
+  intermediate
+  senior
+  production
+  image-optimization
+
+Requires:
+  SKILL-PLAT-DOCKER-L1
+  docker-24+
+
+Avoid:
+  single-stage-build
+  dev-deps-in-production
+  large-images
+  cache-busting
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  docker
+  multi-stage
+  image optimization
+  build
+  layers
+  cache
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/docker/L2-multi-stage-builds.md
+
+Evidence:
+  - Docker Multi-Stage Builds Documentation
+  - Docker Best Practices
+  - Production experience
+
+Rules:
+  [D1] Use separate stages for build and runtime.
+  [D2] Use builder stage for compilation.
+  [D3] Use runtime stage with minimal base image.
+  [D4] Copy only artifacts from builder to runtime.
+  [D5] Use `--target` for specific stage builds.
+  [D6] Use BuildKit cache mounts for package managers.
+  [D7] Use `.dockerignore` to exclude build artifacts.
+  [D8] Scan images with Trivy or Grype.
+
+Pros:
+  - Smaller images
+  - Faster deployments
+  - Better security
+
+Cons:
+  - Complex Dockerfiles
+  - Debugging difficulty
+  - Build time
+
+Alternatives:
+  - Buildpacks
+  - Nixpacks
+  - Kaniko
+
+State: +
+

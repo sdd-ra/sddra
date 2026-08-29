@@ -1,0 +1,33 @@
+Skills: React Native Framework
+
+Purpose:
+  React Native framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn React Native fundamentals
+  APPLY    — apply React Native patterns to code
+  REVIEW   — review React Native skills
+  UPGRADE  — propose React Native skill upgrade
+
+Rules:
+  [R1]  Use functional components with hooks.
+  [R2]  Use TypeScript for type safety.
+  [R3]  Use React Navigation for routing.
+  [R4]  Follow React Native best practices.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  ReactNative: @frameworks/react-native/INDEX.sdd
+  RNL1: @frameworks/react-native/L1-fundamentals.sdd
+
+State: +

@@ -1,0 +1,99 @@
+﻿# PostgreSQL Advanced Queries
+
+Purpose:
+  PostgreSQL Advanced Queries
+
+Skill: PostgreSQL Advanced Queries
+
+ID:
+  SKILL-DB-PG-L2
+
+Domain:
+  databases/postgresql
+
+Use:
+  writing advanced PostgreSQL queries
+
+Apply:
+  intermediate
+  senior
+  complex-queries
+  reporting
+
+Requires:
+  SKILL-DB-PG-L1
+  sql-joins
+  subqueries
+
+Avoid:
+  select-star
+  missing-join-condition
+  correlated-subquery-overuse
+  missing-index
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  postgresql
+  advanced queries
+  joins
+  subqueries
+  CTE
+  window functions
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/postgresql/L2-advanced-queries.md
+
+Evidence:
+  - PostgreSQL Documentation
+  - SQL Performance Explained
+  - Production experience
+
+Rules:
+  [P1] Use explicit `JOIN` syntax, not comma-separated tables.
+  [P2] Use `INNER JOIN` for matching rows, `LEFT JOIN` for optional data.
+  [P3] Use CTEs (`WITH` clause) for complex queries.
+  [P4] Use window functions for ranking and analytics.
+  [P5] Use `GROUP BY` with aggregate functions.
+  [P6] Use `HAVING` for filtering aggregated data.
+  [P7] Use `CASE` for conditional logic in queries.
+  [P8] Use `DISTINCT` only when necessary.
+
+Pros:
+  - Powerful querying
+  - Single source of truth
+  - Complex analytics
+
+Cons:
+  - Performance tuning required
+  - Query complexity
+  - Lock contention
+
+Alternatives:
+  - NoSQL (flexibility)
+  - Graph databases (relationships)
+
+State: +
+

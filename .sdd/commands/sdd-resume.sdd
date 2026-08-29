@@ -1,0 +1,50 @@
+# Command: SDD Resume
+
+Command: /sdd-resume
+Mode: SUPERVISED
+Purpose: Resume chain execution from last checkpoint
+
+Description:
+  Resumes a failed or interrupted chain execution from the
+  last successful checkpoint. Skips completed stages and
+  continues from where execution stopped.
+
+Usage:
+  /sdd-resume
+  /sdd-resume --chain=<chain-id>
+  /sdd-resume --checkpoint=<checkpoint-id>
+  /sdd-resume --list
+
+Options:
+  --chain=<id>        Resume specific chain
+  --checkpoint=<id>   Resume from specific checkpoint
+  --list              List available checkpoints
+  --force             Skip confirmation
+
+Resume Process:
+  1. Load latest checkpoint (or specified)
+  2. Verify checkpoint integrity
+  3. Identify last successful stage
+  4. Skip completed stages
+  5. Resume from next stage
+  6. Continue chain execution
+
+Checkpoint Validation:
+  - Checkpoint hash matches
+  - Stage outputs are valid
+  - Dependencies are met
+  - No conflicting state
+
+Safety:
+  - Current state backed up before resume
+  - Human confirmation required
+  - Resume logged in audit trail
+  - Can abort and restore if needed
+
+Exit Codes:
+  0 - Resume successful
+  1 - Resume failed
+  2 - No checkpoint found
+  3 - Checkpoint corrupted
+
+State: +

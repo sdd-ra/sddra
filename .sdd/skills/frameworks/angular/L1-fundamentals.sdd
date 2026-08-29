@@ -1,0 +1,99 @@
+﻿# Angular Fundamentals
+
+Purpose:
+  Angular Fundamentals
+
+Skill: Angular Fundamentals
+
+ID:
+  SKILL-FW-ANGULAR-L1
+
+Domain:
+  frameworks/angular
+
+Use:
+  building basic Angular applications
+
+Apply:
+  beginner
+  learning
+  enterprise
+  full-stack
+
+Requires:
+  angular-17+
+  typescript
+
+Avoid:
+  any-type
+  logic-in-templates
+  large-components
+  missing-change-detection
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  angular
+  typescript
+  components
+  services
+  modules
+  frontend
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/angular/L1-fundamentals.md
+
+Evidence:
+  - Angular Documentation
+  - Angular Style Guide
+  - Production experience
+
+Rules:
+  [A1] Use standalone components (Angular 14+).
+  [A2] Use TypeScript strict mode.
+  [A3] Use `@Input` and `@Output` for component communication.
+  [A4] Use services for business logic.
+  [A5] Use `*ngIf`, `*ngFor`, `*ngSwitch` for structural directives.
+  [A6] Use `{{ }}` interpolation for text content.
+  [A7] Use `[property]` binding for DOM properties.
+  [A8] Use `(event)` binding for DOM events.
+
+Pros:
+  - Full-featured framework
+  - Strong typing
+  - Enterprise support
+
+Cons:
+  - Steep learning curve
+  - Verbose boilerplate
+  - Heavy bundle size
+
+Alternatives:
+  - React
+  - Vue
+  - Svelte
+
+State: +
+

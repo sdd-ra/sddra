@@ -1,0 +1,72 @@
+﻿Nodes: Graph
+
+Purpose:
+  Defines node types and ID conventions for the knowledge graph.
+
+NodeTypes:
+  PROMPT:
+    Format: PROMPT-NNN
+    Description: User input or AI prompt
+  REQUIREMENT:
+    Format: REQ-NNN
+    Description: Business or technical requirement
+  DECISION:
+    Format: DEC-NNN
+    Description: Architecture or technology decision
+  TASK:
+    Format: TASK-NNN or domain prefix (PAY-NNN)
+    Description: Work item
+  WORKFLOW:
+    Format: WF-NNN
+    Description: Workflow instance
+  SKILL:
+    Format: SKILL-NAME
+    Description: Reusable knowledge package
+  PROJECT:
+    Format: PROJECT
+    Description: Project node
+  DOMAIN:
+    Format: DOMAIN-NAME
+    Description: Business domain
+  MODULE:
+    Format: MODULE-NAME
+    Description: Code module
+  COMPONENT:
+    Format: COMPONENT-NAME
+    Description: Code component
+  CODE:
+    Format: CODE-PREFIX-NAME
+    Description: Source code file or function
+  BDD:
+    Format: BDD-TASK-NNN
+    Description: BDD scenario
+  TEST:
+    Format: TEST-TASK-NNN
+    Description: Test case
+  SECURITY:
+    Format: SEC-NNN
+    Description: Security control or finding
+  INFRA:
+    Format: INFRA-NAME
+    Description: Infrastructure component
+  DEPLOYMENT:
+    Format: DEPLOY-NNN
+    Description: Deployment instance
+  RUNTIME:
+    Format: RUNTIME
+    Description: Runtime state
+  INCIDENT:
+    Format: INC-YYYYMMDD-NNN
+    Description: Production incident
+  DOCUMENT:
+    Format: DOC-NAME
+    Description: Human-readable document
+
+NodeRules:
+  [ND1]  Every major object MUST be a node.
+  [ND2]  Node IDs MUST be standardized and unique.
+  [ND3]  Node IDs enable short references instead of long paths.
+  [ND4]  Graph is index, not copy.
+
+State: +
+  

@@ -1,0 +1,33 @@
+Skills: Elasticsearch
+
+Purpose:
+  Elasticsearch skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Elasticsearch fundamentals
+  APPLY    — apply Elasticsearch to search
+  REVIEW   — review Elasticsearch skills
+  UPGRADE  — propose Elasticsearch skill upgrade
+
+Rules:
+  [E1]  Define explicit mappings.
+  [E2]  Use appropriate analyzers.
+  [E3]  Avoid deep pagination.
+  [E4]  Monitor cluster health.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Elasticsearch: @databases/elasticsearch/INDEX.sdd
+  ESL1: @databases/elasticsearch/L1-fundamentals.sdd
+
+State: +

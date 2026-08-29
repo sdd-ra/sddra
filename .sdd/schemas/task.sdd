@@ -1,0 +1,34 @@
+﻿Task: Schema
+
+Purpose:
+  Defines schema for task entities.
+
+Required:
+  @task <id>
+  title "<title>"
+  state <state>
+
+Optional:
+  domain <domain>
+  risk <LOW|MEDIUM|HIGH|CRITICAL>
+  level <L0-L5>
+  depends <id>
+  skills <skill-list>
+  flow <workflow>
+  owner <role>
+  priority <P0-P4>
+  evidence <evidence-list>
+
+Example:
+  @task TASK-1023
+  title "Prevent duplicate refund"
+  domain payments
+  risk high
+  level L2
+  depends 999
+  skills idempotency transaction payment-security
+  flow BDD>BE>QA>SEC>VR
+  state ready
+
+State: +
+  

@@ -1,0 +1,161 @@
+﻿WorkflowLifecycle: SDD
+
+Purpose:
+  Defines the standard workflow lifecycle for SDD-driven projects.
+  This is the DEFAULT catalog — projects select the stages they need
+  based on scale, security, and complexity. Minimum sufficient process
+  is enforced: small projects get minimal workflows, large projects
+  get full validation.
+
+DefaultLifecycle:
+  DISCOVER:
+    Purpose: Understand existing system or requirements
+    Owner: ANALYST
+    Input: User request, existing code, documentation
+    Output: Analysis report, domain map
+    Activation: Always first stage for new projects
+    Next: ANALYZE
+
+  ANALYZE:
+    Purpose: Deep analysis of requirements and constraints
+    Owner: ANALYST
+    Input: DISCOVER output
+    Output: Analysis document, risk assessment
+    Next: ARCHITECT or DECIDE (for simple changes)
+
+  ARCHITECT:
+    Purpose: Define or validate architecture
+    Owner: ARCHITECT
+    Input: ANALYSIS output
+    Output: Architecture decision, ADR
+    Next: DECIDE
+
+  DECIDE:
+    Purpose: Make project-level decisions
+    Owner: HUMAN + AI
+    Input: Architecture proposal, stack options
+    Output: Approved decisions, DEC-xxx records
+    Next: PLAN
+
+  PLAN:
+    Purpose: Create implementation plan
+    Owner: AI
+    Input: DECIDE output, architecture
+    Output: Task breakdown, BDD scenarios
+    Next: BDD
+
+  BDD:
+    Purpose: Define business behavior
+    Owner: QA
+    Input: PLAN output
+    Output: BDD scenarios, acceptance criteria
+    Next: DEVELOP
+
+  DEVELOP:
+    Purpose: Implement the solution
+    Owner: BE/FE/MD/DB
+    Input: BDD output, tasks
+    Output: Code, tests
+    Next: REVIEW
+
+  REVIEW:
+    Purpose: Code review and quality check
+    Owner: REVIEWER
+    Input: DEVELOP output
+    Output: Review feedback, approved code
+    Next: TEST
+
+  TEST:
+    Purpose: Execute test suite
+    Owner: QA
+    Input: REVIEW output
+    Output: Test results, coverage report
+    Next: SECURITY
+
+  SECURITY:
+    Purpose: Security validation
+    Owner: SECURITY
+    Input: TEST output
+    Output: Security scan results, pentest report
+    Next: DEPLOY
+
+  DEPLOY:
+    Purpose: Deploy to target environment
+    Owner: DEVOPS
+    Input: SECURITY output
+    Output: Deployed artifact, release notes
+    Next: OBSERVE
+
+  OBSERVE:
+    Purpose: Monitor production behavior
+    Owner: DEVOPS
+    Input: DEPLOY output
+    Output: Metrics, logs, traces
+    Next: VERIFY
+
+  VERIFY:
+    Purpose: Final verification against requirements
+    Owner: QA
+    Input: OBSERVE output
+    Output: Verification report
+    Next: DONE
+
+  DONE:
+    Purpose: Work completed and verified
+    Owner: AI
+    Input: VERIFY output
+    Output: Closed tasks, updated state
+    Terminal: YES
+
+WorkflowSelection:
+  SmallProject:
+    - ANALYZE
+    - PLAN
+    - BDD
+    - DEVELOP
+    - TEST
+    - VERIFY
+
+  MediumProject:
+    - ANALYZE
+    - ARCHITECT
+    - DECIDE
+    - PLAN
+    - BDD
+    - DEVELOP
+    - REVIEW
+    - TEST
+    - SECURITY
+    - DEPLOY
+    - VERIFY
+
+  LargeProject:
+    - DISCOVER
+    - ANALYZE
+    - ARCHITECT
+    - DECIDE
+    - PLAN
+    - BDD
+    - DEVELOP
+    - REVIEW
+    - TEST
+    - SECURITY
+    - LOAD
+    - PENTEST
+    - DEPLOY
+    - OBSERVE
+    - VERIFY
+
+Budget:
+  ExecutionBudget:
+    small: 5 stages maximum
+    medium: 10 stages maximum
+    large: unlimited
+
+  ContextBudget:
+    low: L0-L1 context loading
+    medium: L0-L2 context loading
+    high: L0-L3 context loading
+
+State: +
+  

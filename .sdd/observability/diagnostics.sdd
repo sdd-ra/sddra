@@ -1,0 +1,68 @@
+﻿Diagnostics: SDD
+
+Purpose:
+  Defines runtime diagnostics policy — how AI analyzes runtime
+  problems, correlates signals, and identifies root causes.
+
+DiagnosticFlow:
+  Alert/Incident
+    ↓
+  CollectSignals:
+    - Metrics (RED/USE/business)
+    - Logs (structured, time-range)
+    - Traces (request path)
+    - Deploy history
+    - Code changes
+    - Dependency status
+    ↓
+  CorrelateSignals:
+    - Time correlation
+    - Service dependency correlation
+    - Deploy correlation
+    ↓
+  IdentifyPattern:
+    - Known pattern match
+    - Anomaly detection
+    - Regression detection
+    ↓
+  RootCause:
+    - Confirmed root cause
+    - Confidence level
+    - Evidence chain
+
+ConfidenceLevels:
+  CONFIRMED:
+    - Multiple evidence sources agree
+    - Reproducible
+    - Action clear
+  HIGH_CONFIDENCE:
+    - Strong evidence
+    - Likely correct
+    - Action clear
+  LIKELY:
+    - Good evidence
+    - Probable cause
+    - Action proposed
+  POSSIBLE:
+    - Weak evidence
+    - Multiple candidates
+    - Further investigation needed
+  UNKNOWN:
+    - Insufficient data
+    - Escalate to human
+
+DiagnosticTools:
+  - Metric analysis (trends, anomalies)
+  - Log analysis (error patterns, correlation)
+  - Trace analysis (bottleneck identification)
+  - Deploy diff (code change impact)
+  - Dependency graph (cascade analysis)
+
+CrossLayer:
+  Incident: Diagnostic output feeds incident record
+  Task: Root cause creates task for fix
+  Architecture: Recurring patterns trigger architecture review
+  Security: Security events feed security incident process
+
+State: +
+  

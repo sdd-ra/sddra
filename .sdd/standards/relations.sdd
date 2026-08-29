@@ -1,0 +1,51 @@
+﻿Relations: Standards
+
+Purpose:
+  Defines standard relation types for .sdd knowledge graph.
+
+RelationTypes:
+  CREATED_BY:
+    Node was created by another node
+  IMPLEMENTS:
+    Node implements another node
+  DEPENDS_ON:
+    Node depends on another node
+  BLOCKED_BY:
+    Node is blocked by another node
+  USES:
+    Node uses another node
+  TESTED_BY:
+    Node is tested by another node
+  VERIFIED_BY:
+    Node is verified by another node
+  SECURED_BY:
+    Node is secured by another node
+  DEPLOYED_BY:
+    Node is deployed by another node
+  RUNS_ON:
+    Node runs on another node
+  DOCUMENTED_BY:
+    Node is documented by another node
+  CAUSED_BY:
+    Node was caused by another node
+  AFFECTS:
+    Node affects another node
+  OWNS:
+    Node owns another node
+  RELATED_TO:
+    Node is related to another node
+  REPLACES:
+    Node replaces another node
+  SUPERSEDES:
+    Node supersedes another node
+  CONFLICTS_WITH:
+    Node conflicts with another node
+
+RelationRules:
+  [RL1]  Relations are directional.
+  [RL2]  Relations use standard types.
+  [RL3]  Multiple relations between nodes are allowed.
+  [RL4]  Relations enable forward and reverse traversal.
+
+State: +
+  

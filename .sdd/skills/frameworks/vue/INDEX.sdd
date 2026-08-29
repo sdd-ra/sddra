@@ -1,0 +1,33 @@
+Skills: Vue Framework
+
+Purpose:
+  Vue.js framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Vue fundamentals
+  APPLY    — apply Vue patterns to code
+  REVIEW   — review Vue skills
+  UPGRADE  — propose Vue skill upgrade
+
+Rules:
+  [V1]  Use Composition API for new components.
+  [V2]  Use `<script setup>` syntax.
+  [V3]  Use TypeScript for type safety.
+  [V4]  Use Vue Router for navigation.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Vue: @frameworks/vue/INDEX.sdd
+  VueL1: @frameworks/vue/L1-fundamentals.sdd
+
+State: +

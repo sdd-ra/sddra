@@ -1,0 +1,91 @@
+﻿# Human Approval
+
+Purpose:
+  Human Approval
+
+Skill: Human Approval
+
+ID:
+  PROMPT-HUMAN-APPROVAL
+
+Domain:
+  prompts/role-assignment
+
+Use:
+  human approval interface for role assignments
+
+Apply:
+  all-cases
+  production-changes
+  architecture-changes
+
+Requires:
+  approval-workflow
+  human-reviewer
+
+Avoid:
+  auto-approval
+  missing-feedback
+  silent-rejection
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  HIGH
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  human approval
+  review
+  sign-off
+  governance
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/prompts/human-approval.md
+
+Evidence:
+  - SDDRA approval matrix
+  - Production experience
+
+Rules:
+  [H1] All architectural changes require human approval.
+  [H2] Production deployments require explicit approval.
+  [H3] Approval MUST include reviewer identity.
+  [H4] Rejection MUST include revision feedback.
+  [H5] Approval timeout MUST be configurable.
+  [H6] Approval decisions MUST be auditable.
+
+Pros:
+  - Human oversight
+  - Quality control
+  - Risk mitigation
+
+Cons:
+  - Process overhead
+  - Potential bottlenecks
+  - Requires coordination
+
+Alternatives:
+  - Auto-approval for low-risk
+  - Automated policy checks
+
+State: +
+

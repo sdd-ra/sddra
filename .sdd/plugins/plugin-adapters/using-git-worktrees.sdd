@@ -1,0 +1,39 @@
+# Plugin: Using Git Worktrees Adapter
+
+Purpose:
+  Adapt Superpowers using-git-worktrees skill for SDDRA C1 arm.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\using-git-worktrees\SKILL.md
+
+Original:
+  Creates isolated workspace on new branch
+  Runs project setup, verifies clean test baseline
+
+Adapted for SDDRA:
+  Context isolation instead of git worktrees:
+    - AI works in .sdd/ context
+    - Human works in project/ context
+    - No direct code access until S1 approval
+
+  Isolation layers:
+    Layer 1: .sdd/ (AI context)
+    Layer 2: .sdd/project/ (AI project model)
+    Layer 3: project/ (human code)
+
+  Branch strategy:
+    - feature/* for new features
+    - bugfix/* for bug fixes
+    - hotfix/* for emergency fixes
+    - Each branch linked to task ID
+
+Usage:
+  Referenced by:
+    .sdd/chains/arms/code.sdd
+
+  Triggers:
+    - S1 arm approved
+    - C1 arm execution
+    - Code generation needed
+
+State: Adapted

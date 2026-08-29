@@ -1,0 +1,117 @@
+# Provisioning Trigger
+
+Purpose:
+  Trigger infrastructure provisioning for approved tech stacks.
+
+Skill: Provisioning Trigger
+
+ID:
+  PROMPT-PROVISIONING-TRIGGER
+
+Domain:
+  prompts/provisioning
+
+Use:
+  triggering infrastructure provisioning for approved tech
+
+Apply:
+  approved-cases
+  infrastructure-setup
+  deployment
+
+Requires:
+  approved-role-assignments
+  infrastructure-templates
+
+Avoid:
+  provisioning-before-approval
+  missing-templates
+  unverified-provisioning
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  provisioning
+  infrastructure
+  server setup
+  terraform
+  kubernetes
+  docker
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/prompts/provisioning-trigger.md
+
+Evidence:
+  - Infrastructure as Code practices
+  - Production experience
+
+Rules:
+  [P1] Provisioning MUST only trigger after human approval.
+  [P2] Each approved tech MUST have a provisioning template.
+  [P3] Provisioning MUST be idempotent.
+  [P4] Use Terraform for infrastructure provisioning.
+  [P5] Use Docker for containerization.
+  [P6] Use Kubernetes for orchestration.
+  [P7] Provisioning state MUST be tracked.
+  [P8] Failed provisioning MUST be retried with backoff.
+
+ProvisioningTemplates:
+  postgresql:
+    template: terraform/postgresql
+    estimated_time: 15m
+  mongodb:
+    template: terraform/mongodb
+    estimated_time: 10m
+  redis:
+    template: terraform/redis
+    estimated_time: 5m
+  elasticsearch:
+    template: terraform/elasticsearch
+    estimated_time: 15m
+  kafka:
+    template: terraform/kafka
+    estimated_time: 20m
+  kubernetes:
+    template: terraform/kubernetes
+    estimated_time: 30m
+  docker:
+    template: docker-compose
+    estimated_time: 5m
+
+Pros:
+  - Automated infrastructure
+  - Consistent environments
+  - Repeatable deployments
+
+Cons:
+  - Template maintenance
+  - Cost management
+  - Access control
+
+Alternatives:
+  - Manual provisioning
+  - GUI-based deployment
+
+State: +

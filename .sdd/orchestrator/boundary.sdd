@@ -1,0 +1,78 @@
+﻿Boundary: Orchestrator
+
+Purpose:
+  Defines human ↔ AI boundary and stop conditions.
+
+HumanAIBoundary:
+  HUMAN:
+    - Intent / Business Decision
+    - Critical Approval
+    - Architecture approval (HIGH/CRITICAL risk)
+    - Security policy approval
+    - Production destructive operation approval
+
+  AI:
+    - Analysis
+    - Architecture (LOW/MEDIUM risk)
+    - Planning
+    - Implementation
+    - Verification
+    - Evidence collection
+
+StopConditions:
+  CRITICAL ambiguity:
+    AI cannot proceed without clarification
+  SECURITY uncertainty:
+    Security impact unclear
+  DESTRUCTIVE migration:
+    Data loss possible
+  PRODUCTION destructive action:
+    Delete production data, drop DB, etc.
+  HIGH-risk architecture decision:
+    Requires human approval
+  Missing required credential:
+    Cannot proceed without secret
+
+StopActions:
+  WAIT_FOR_HUMAN:
+    Pause execution, request input
+  REPORT:
+    Report issue to user
+  ABORT:
+    Abort current operation
+
+Resume:
+  Human provides approval:
+    Resume from exact state
+    Workflow does NOT restart
+
+ManagerCommands:
+  analyze project:
+    Run discovery, generate report
+  plan project:
+    Generate architecture and task plan
+  show blockers:
+    Show current blockers
+  continue:
+    Resume from paused state
+  review architecture:
+    Review current architecture
+  review security:
+    Review security posture
+  why is task <id> blocked:
+    Explain task blockers
+  what changed:
+    Show recent changes
+  what can break:
+    Show blast radius
+  prepare release:
+    Run release gates
+
+BoundaryRules:
+  [BD1]  AI MUST stop on critical ambiguity.
+  [BD2]  AI MUST request human approval for HIGH/CRITICAL risk decisions.
+  [BD3]  AI MUST NOT restart workflow on resume.
+  [BD4]  AI MUST preserve exact state for crash recovery.
+
+State: +
+  

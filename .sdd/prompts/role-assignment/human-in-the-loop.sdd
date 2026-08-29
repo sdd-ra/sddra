@@ -1,0 +1,62 @@
+Spec: Human in the Loop
+
+Purpose:
+  Define the human review and approval gates in the
+  prompt-to-code pipeline. Ensures human oversight at critical points.
+
+Gates:
+  GATE-1: Prompt to Docs
+    Trigger: AI generates docs from prompt
+    Action: Human reviews generated docs
+    Decision: Approve / Request Changes / Reject
+    Output: approved docs/ or revision feedback
+
+  GATE-2: Docs to SDD
+    Trigger: AI generates .sdd/project/ from docs
+    Action: Human reviews .sdd/project/
+    Decision: Approve / Request Changes / Reject
+    Output: approved .sdd/project/ or revision feedback
+
+  GATE-3: SDD to Code
+    Trigger: AI executes chains based on .sdd/project/
+    Action: Human reviews generated code
+    Decision: Approve / Request Changes / Reject
+    Output: approved code/ or revision feedback
+
+  GATE-4: Code to Production
+    Trigger: AI prepares deployment
+    Action: Human reviews deployment plan
+    Decision: Approve / Request Changes / Reject
+    Output: deployed system or revision feedback
+
+ApprovalMatrix:
+  docs_changes:
+    - architectural_changes: HUMAN_APPROVAL
+    - tech_stack_changes: HUMAN_APPROVAL
+    - requirements_changes: HUMAN_APPROVAL
+
+  sdd_changes:
+    - structural_changes: HUMAN_APPROVAL
+    - dependency_changes: HUMAN_APPROVAL
+    - policy_changes: HUMAN_APPROVAL
+
+  code_changes:
+    - new_feature: AUTO (review after)
+    - refactor: AUTO (review after)
+    - security_fix: HUMAN_APPROVAL
+
+  deployment:
+    - staging: AUTO
+    - production: HUMAN_APPROVAL
+
+Rules:
+  [H1] Human MUST approve docs before .sdd/project/ generation.
+  [H2] Human MUST approve .sdd/project/ before code execution.
+  [H3] Human MUST approve production deployment.
+  [H4] All approvals MUST be recorded in audit log.
+  [H5] Rejected proposals MUST include revision feedback.
+  [H6] AI MUST NOT skip human gates.
+  [H7] Human feedback MUST be incorporated before proceeding.
+  [H8] Approval MUST be scoped (what, when, expires).
+
+State: +

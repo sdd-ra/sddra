@@ -1,0 +1,108 @@
+﻿Detectors: Discovery
+
+Purpose:
+  Defines detectors that identify specific patterns, technologies,
+  and issues in source code.
+
+StackDetectors:
+  GoDetector:
+    Indicators:
+      - go.mod
+      - *.go files
+      - cmd/, internal/
+    Frameworks:
+      - Gin (import "github.com/gin-gonic/gin")
+      - Echo (import "github.com/labstack/echo")
+      - Fiber (import "github.com/gofiber/fiber")
+      - Chi (import "github.com/go-chi/chi")
+      - net/http (standard library)
+
+  TypeScriptDetector:
+    Indicators:
+      - package.json with "typescript"
+      - tsconfig.json
+      - *.ts, *.tsx files
+    Frameworks:
+      - React (import "react")
+      - Vue (import "vue")
+      - Angular (@angular/core)
+
+  DatabaseDetectors:
+    PostgreSQLDetector:
+      Indicators:
+        - pgx, lib/pq imports
+        - migration files
+        - schema.sql
+    RedisDetector:
+      Indicators:
+        - go-redis, redis imports
+        - redis.conf
+        - cache usage
+
+ArchitectureDetectors:
+  LayeredArchitecture:
+    Indicators:
+      - handler/controller/service/repository layers
+      - clear separation of concerns
+  ModularMonolith:
+    Indicators:
+      - single deployment unit
+      - internal modules with boundaries
+  Microservices:
+    Indicators:
+      - multiple services
+      - service communication
+      - separate deployments
+
+SecurityDetectors:
+  AuthenticationDetector:
+    Indicators:
+      - JWT, OAuth, session middleware
+  AuthorizationDetector:
+    Indicators:
+      - RBAC, ABAC, middleware checks
+  RateLimitDetector:
+    Indicators:
+      - rate limiter middleware
+      - token bucket, sliding window
+  EncryptionDetector:
+    Indicators:
+      - encryption at rest
+      - TLS configuration
+
+IssueDetectors:
+  CircularDependencyDetector:
+    Detects:
+      - Import cycles
+      - Domain cycles
+    Output:
+      - ARCH-CYCLE
+  SecurityGapDetector:
+    Detects:
+      - Missing authentication
+      - Missing authorization
+      - Missing rate limiting
+      - Missing input validation
+      - Missing audit logs
+    Output:
+      - SECURITY_GAP
+  DriftDetector:
+    Detects:
+      - Stack drift
+      - Architecture drift
+      - Security drift
+      - Test drift
+      - Infrastructure drift
+      - Documentation drift
+      - Decision drift
+    Output:
+      - *_DRIFT
+
+DetectorRules:
+  [DT1]  Detectors MUST use multiple indicators, not single file names.
+  [DT2]  Detectors MUST report confidence with each finding.
+  [DT3]  Detectors MUST distinguish FACT from INFERRED.
+  [DT4]  Detectors MUST flag circular dependencies as ARCH-CYCLE.
+
+State: +
+  

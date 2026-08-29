@@ -1,0 +1,60 @@
+Workflow: Tech Stack Analysis
+
+Purpose:
+  Analyze case tech_stack and produce structured tech_map
+  for role assignment and provisioning.
+
+Inputs:
+  - case.tech_stack
+  - skills/INDEX.sdd
+
+Outputs:
+  - tech_map.json
+  - role_assignments.json
+  - provisioning_requirements.json
+
+Steps:
+  1. LOAD_CASE:
+     - Read case file
+     - Extract tech_stack section
+     - Validate tech_stack exists
+
+  2. RESOLVE_SKILLS:
+     - For each tech in tech_stack:
+       - Resolve to skill path in .sdd/skills/
+       - Validate skill file exists
+       - Extract competency level (L1-L5)
+     - Group by category:
+       - languages
+       - frameworks
+       - databases
+       - platforms
+       - messaging
+       - cross-cutting
+
+  3. MAP_ROLES:
+     - For each resolved tech:
+       - Map to primary role using role-mapper.sdd
+       - Identify secondary roles if applicable
+       - Estimate competency level required
+     - Produce role_assignments.json
+
+  4. IDENTIFY_PROVISIONING:
+     - For each platform/database tech:
+       - Check if provisioning template exists
+       - Estimate provisioning time
+       - Identify dependencies
+     - Produce provisioning_requirements.json
+
+  5. PROPOSE_TO_HUMAN:
+     - Generate role assignment proposal
+     - Include tech_stack summary
+     - Include provisioning requirements
+     - Send to human for approval
+
+Validation:
+  - All tech_stack entries MUST resolve to valid skills
+  - All roles MUST be defined in role-mapper.sdd
+  - All provisioning templates MUST exist
+
+State: +

@@ -1,0 +1,100 @@
+﻿# Kubernetes Fundamentals
+
+Purpose:
+  Kubernetes Fundamentals
+
+Skill: Kubernetes Fundamentals
+
+ID:
+  SKILL-PLAT-K8S-L1
+
+Domain:
+  platforms/kubernetes
+
+Use:
+  deploying applications to Kubernetes
+
+Apply:
+  beginner
+  learning
+  container-orchestration
+  production
+
+Requires:
+  kubernetes-1.28+
+  docker-fundamentals
+  yaml-fundamentals
+
+Avoid:
+  latest-tag
+  privileged-pods
+  host-network
+  resource-unlimits
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  kubernetes
+  k8s
+  pods
+  services
+  deployments
+  containers
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/kubernetes/L1-fundamentals.md
+
+Evidence:
+  - Kubernetes Documentation
+  - Kubernetes Basics
+  - Production experience
+
+Rules:
+  [K1] Use Deployments for stateless applications.
+  [K2] Use Services for internal load balancing.
+  [K3] Use ConfigMaps for configuration.
+  [K4] Use Secrets for sensitive data.
+  [K5] Use `kubectl apply` for declarative management.
+  [K6] Use namespaces for resource isolation.
+  [K7] Use labels and selectors for organization.
+  [K8] Use `kubectl get` and `kubectl describe` for debugging.
+
+Pros:
+  - Automated deployment
+  - Self-healing
+  - Large ecosystem
+
+Cons:
+  - Complex
+  - Resource intensive
+  - Steep learning curve
+
+Alternatives:
+  - Docker Swarm
+  - Nomad
+  - ECS
+
+State: +
+

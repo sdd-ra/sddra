@@ -1,0 +1,27 @@
+# Skills: Meta
+
+Purpose:
+  Meta-skills for the SDDRA system. These skills manage other skills —
+  discovery, recommendation, gap analysis, and integration.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL-DISCOVERY.sdd
+   3  @SKILL-RECOMMENDATION.sdd
+   4  @SKILL-GAP-ANALYSIS.sdd
+   5  @SKILL-EXTERNAL-REFERENCES.sdd
+
+Rules:
+  [M1] Meta-skills analyze, do not execute domain logic.
+  [M2] Recommendations require >= 80% relevance.
+  [M3] Gap analysis must be run before new feature development.
+  [M4] Skill additions require human approval.
+
+Navigation:
+  SkillDiscovery: @SKILL-DISCOVERY.sdd
+  SkillRecommendation: @SKILL-RECOMMENDATION.sdd
+  SkillGapAnalysis: @SKILL-GAP-ANALYSIS.sdd
+
+State: +

@@ -1,0 +1,73 @@
+# Skill: Local Validation
+
+Purpose:
+  Define local validation checks that run before push.
+  Ensures code quality and catches issues early.
+
+ID: SKILL-DEVOPS-CICD-LOCAL-VALIDATION
+
+Domain: devops/ci-cd
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - Before git push
+  - Before creating PR
+  - Before committing
+  - Quality assurance
+
+Input:
+  - Staged files
+  - Current branch
+  - Commit message
+
+Output:
+  - Validation result
+  - Error list
+  - Warning list
+
+Execute:
+  1. Run .sdd/ validation:
+     - Check all .sdd/ files have required fields
+     - Validate @references resolve
+     - Check for Azerbaijani content
+     - Check for stale references
+  2. Run semantic commit check:
+     - Validate commit message format
+     - Validate type and scope
+  3. Run local tests:
+     - Unit tests
+     - Integration tests
+     - Chain graph tests
+  4. Run security checks:
+     - Secret detection
+     - Dependency vulnerabilities
+  5. Run linting:
+     - .sdd/ file formatting
+     - Code formatting
+  6. Return validation result
+
+Validation:
+  - All .sdd/ files valid
+  - Commit message valid
+  - All tests pass
+  - No security issues
+  - No lint errors
+
+Examples:
+  - Invalid .sdd/ file -> error
+  - Broken reference -> error
+  - Failing test -> error
+  - Security issue -> error
+  - Lint error -> error
+  - All pass -> success
+
+Avoid:
+  - Pushing without validation
+  - Ignoring validation errors
+  - Skipping tests
+  - Committing secrets
+
+State: +

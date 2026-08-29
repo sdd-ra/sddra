@@ -1,0 +1,100 @@
+﻿# C# Fundamentals
+
+Purpose:
+  C# Fundamentals
+
+Skill: C# Fundamentals
+
+ID:
+  SKILL-LANG-CSHARP-L1
+
+Domain:
+  languages/csharp
+
+Use:
+  writing C# programs and .NET applications
+
+Apply:
+  beginner
+  learning
+  enterprise
+  game-development
+
+Requires:
+  dotnet-8+
+  visual-studio-or-vscode
+
+Avoid:
+  var-overuse
+  empty-catch
+  magic-numbers
+  tight-coupling
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  csharp
+  .net
+  dotnet
+  microsoft
+  object oriented
+  windows
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/csharp/L1-fundamentals.md
+
+Evidence:
+  - Microsoft Documentation
+  - .NET Documentation
+  - Production experience
+
+Rules:
+  [C1] Use `var` when type is obvious from RHS.
+  [C2] Use `async/await` for asynchronous operations.
+  [C3] Use `using` statements for disposable resources.
+  [C4] Use properties, not public fields.
+  [C5] Use `string.IsNullOrEmpty` for null checks.
+  [C6] Use `nameof` for refactoring safety.
+  [C7] Use string interpolation ($"...") for formatting.
+  [C8] Use nullable reference types (`string?`).
+
+Pros:
+  - Excellent tooling
+  - Strong typing
+  - Cross-platform with .NET Core
+
+Cons:
+  - Windows-centric history
+  - Verbose syntax
+  - Memory management
+
+Alternatives:
+  - Go (simpler)
+  - Java (similar)
+  - Rust (safer)
+
+State: +
+

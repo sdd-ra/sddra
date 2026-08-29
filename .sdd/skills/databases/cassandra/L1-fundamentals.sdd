@@ -1,0 +1,99 @@
+﻿# Cassandra Fundamentals
+
+Purpose:
+  Cassandra Fundamentals
+
+Skill: Cassandra Fundamentals
+
+ID:
+  SKILL-DB-CASSANDRA-L1
+
+Domain:
+  databases/cassandra
+
+Use:
+  designing and using Apache Cassandra databases
+
+Apply:
+  beginner
+  learning
+  distributed-system
+  time-series
+
+Requires:
+  cassandra-4+
+  cql-fundamentals
+
+Avoid:
+  secondary-index-abuse
+  unbounded-partitions
+  missing-replication
+  single-dc-deployment
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  cassandra
+  nosql
+  distributed
+  wide column
+  time series
+  big data
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/databases/cassandra/L1-fundamentals.md
+
+Evidence:
+  - Apache Cassandra Documentation
+  - DataStax Documentation
+  - Production experience
+
+Rules:
+  [C1] Design tables for queries, not relationships.
+  [C2] Use partition keys for data distribution.
+  [C3] Use clustering keys for sorting.
+  [C4] Avoid secondary indexes on high-cardinality columns.
+  [C5] Use `TTL` for automatic expiration.
+  [C6] Use lightweight transactions sparingly.
+  [C7] Use appropriate replication factor.
+  [C8] Monitor with `nodetool`.
+
+Pros:
+  - Linear scalability
+  - High availability
+  - No single point of failure
+
+Cons:
+  - eventual consistency
+  - Limited query flexibility
+  - Operational complexity
+
+Alternatives:
+  - ScyllaDB (faster)
+  - DynamoDB (managed)
+  - HBase (Hadoop)
+
+State: +
+

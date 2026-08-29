@@ -1,0 +1,173 @@
+﻿SecurityLevels: SDD
+
+Purpose:
+  Define the security levels (L0-L5) that determine which security
+  controls, gates, and tests are applied to a project. Security level
+  is NOT a global setting — it is calculated from project characteristics
+  and must be explicitly set per project.
+
+Owns: ./
+
+Levels:
+
+  L0:
+    name: Prototype
+    description: No production exposure, no sensitive data
+    controls: none
+    gates: none
+    tests: none
+    applicable_to:
+      - internal prototypes
+      - throwaway experiments
+      - non-production environments
+
+  L1:
+    name: Internal
+    description: Internal tools, no external access, minimal sensitive data
+    controls:
+      - SecretScan
+      - DependencyScan
+      - SAST
+    gates:
+      - SECRETS
+      - DEPENDENCY
+      - SAST
+    tests:
+      - basic security tests
+
+  L2:
+    name: Standard Production
+    description: Production systems with standard security requirements
+    controls:
+      - SecretScan
+      - DependencyScan
+      - SAST
+      - DAST
+      - API Security
+      - ContainerScan
+    gates:
+      - SECRETS
+      - DEPENDENCY
+      - SAST
+      - DAST
+      - API
+      - CONTAINER
+    tests:
+      - security unit tests
+      - integration security tests
+      - API security tests
+
+  L3:
+    name: High-Risk Production
+    description: High-risk systems with sensitive data or financial impact
+    controls:
+      - L2 controls
+      - ThreatModel
+      - PenTest
+      - LoadTest
+      - AbuseTest
+    gates:
+      - L2 gates
+      - THREAT
+      - PENTEST
+      - LOAD
+      - ABUSE
+    tests:
+      - L2 tests
+      - penetration tests
+      - load/abuse tests
+      - threat model validation
+
+  L4:
+    name: Critical System
+    description: Mission-critical systems with maximum security requirements
+    controls:
+      - L3 controls
+      - DDoSProtection
+      - IncidentResponse
+      - SecurityArchitectureReview
+      - ContinuousMonitoring
+    gates:
+      - L3 gates
+      - DDOS
+      - INCIDENT
+      - ARCHITECTURE
+    tests:
+      - L3 tests
+      - DDoS simulation
+      - incident response drills
+      - architecture security review
+
+  L5:
+    name: Regulated / Mission-Critical
+    description: Regulated industries, government, critical infrastructure
+    controls:
+      - L4 controls
+      - ExternalAssessment
+      - ComplianceAudit
+      - SupplyChainSecurity
+      - RuntimeSecurity
+    gates:
+      - L4 gates
+      - EXTERNAL
+      - COMPLIANCE
+      - SUPPLY_CHAIN
+      - RUNTIME
+    tests:
+      - L4 tests
+      - external pentest
+      - compliance audit
+      - supply chain audit
+      - runtime security validation
+
+Selection:
+  AI MUST calculate SecurityLevel from project characteristics:
+
+    DataSensitivity:
+      none -> L0-L1
+      internal -> L1-L2
+      PII -> L2-L3
+      financial -> L3-L4
+      health -> L3-L4
+      classified -> L5
+
+    Exposure:
+      prototype -> L0
+      internal -> L1-L2
+      public -> L2-L4
+      internet -> L3-L5
+
+    TransactionVolume:
+      low -> L1-L2
+      medium -> L2-L3
+      high -> L3-L4
+      critical -> L4-L5
+
+    Compliance:
+      none -> L0-L2
+      PCI-DSS -> L3-L4
+      HIPAA -> L3-L4
+      GDPR -> L2-L3
+      SOC2 -> L3-L4
+      classified -> L5
+
+  SecurityLevel is a project-specific value stored in project/security/INDEX.sdd.
+  Root levels.sdd defines the scale, not the project's actual level.
+
+Navigation:
+  Project: @project/security/INDEX.sdd
+  Findings: @project/security/findings/
+  Threats: @project/security/threats/
+  Exceptions: @project/security/exceptions/
+  Gates: @security/gates/
+  Controls: @security/controls.sdd
+  Scanners: @security/scanners.sdd
+  Policy: @security/SECURITY.sdd
+
+State: +
+  Note:
+  Security levels are root-based standards
+  that define WHAT controls apply at each level. The actual security
+  level for a specific project is stored in project/security/INDEX.sdd.
+  This separation keeps security knowledge reusable (root) while
+  project security state remains project-specific (project/).

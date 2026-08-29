@@ -1,0 +1,374 @@
+DependencyGraph: SDD
+
+Purpose:
+  Define the dependency graph engine — how dependencies are represented,
+  validated, evaluated, and how they drive task readiness and scheduling.
+  This is the reusable system intelligence; concrete project graphs live
+  in project/dependencies/graph.sdd.
+
+Owns:
+  Dependency graph model, DAG rules, topological sort, cycle detection,
+  readiness calculation, failure propagation, edge metadata, dependency
+  types, validation invariants.
+
+DoesNotOwn:
+  Concrete project dependency instances (those live in project/
+  dependencies/), task execution (that is the scheduler's job), resource
+  allocation (that is locking.sdd's job).
+
+Graph:
+
+  G = (V, E)
+
+  V = nodes (TASK, SKILL, WORKFLOW, MODULE, SERVICE, RESOURCE,
+    ENVIRONMENT, TEST, DEPLOYMENT)
+
+  E = edges (directed, typed, conditional)
+
+
+Principles:
+
+  Directed:
+    Edges have direction: A → B means B depends on A. A → B ≠ B → A.
+
+  Acyclic:
+    Graph MUST be a DAG (Directed Acyclic Graph). Cycles are forbidden
+    and MUST be rejected at validation time.
+
+  Dependency is constraint, not sequence:
+    Dependency defines what must be satisfied before execution, not
+    the execution order itself. Scheduler derives order from graph.
+
+  Readiness is derived:
+    Task is READY only when all dependencies are satisfied. Readiness
+    is computed, not stored.
+
+  Failure propagates:
+    Dependency failure propagates to dependents according to policy
+    (BLOCKED, SKIPPED, CANCELLED, or READY depending on type).
+
+  Local + Global views:
+    Task carries local dependencies; flows/graph carries global graph.
+    AI reads local when working on a task, global when planning.
+
+
+DependencyDirection:
+  from: source (the dependency)
+  to: target (the dependent)
+  meaning: target cannot proceed until source satisfies condition
+
+  Example:
+    A → B
+    B depends on A
+    A must complete before B can start
+
+
+DependencyTypes:
+
+  BLOCKING:
+    Target cannot start until source satisfies condition. Failure
+    blocks target.
+
+  REQUIRED:
+    Same as BLOCKING for execution. Source must satisfy condition
+    or target is rejected.
+
+  CONDITIONAL:
+    Dependency is active only when a condition is met. If condition
+    is false, dependency is ignored.
+
+  OPTIONAL:
+    Target can start without source, but performance/quality may
+    degrade. Failure does not block target.
+
+  SOFT:
+    Target can start even if source fails. Warning is logged but
+    execution continues.
+
+  RESOURCE:
+    Target depends on a resource being available (not a task/skill).
+    Resource unavailability blocks target.
+
+
+EdgeMetadata:
+
+  edge:
+    from: node_id
+    to: node_id
+    type: BLOCKING | REQUIRED | CONDITIONAL | OPTIONAL | SOFT | RESOURCE
+    condition:
+      state: COMPLETED | SKIPPED | SUCCESS
+      field: path.to.field
+      operator: == | != | > | < | >= | <= | in | not_in
+      value: any
+    since: version
+    status: ACTIVE | SUSPENDED | REMOVED
+    created_by: human | ai:<session>
+    approved_by: human_id (if required)
+
+
+DependencyValidation:
+
+  On CREATE_TASK or ADD_DEPENDENCY:
+    1. referenced node must exist
+    2. edge type must be valid
+    3. self-dependency forbidden (A → A)
+    4. cross-project dependency requires allow_cross_project = true
+    5. cycle detection MUST pass
+    6. policy MUST allow the dependency
+
+  On DELETE node:
+    1. find all dependents
+    2. if dependents exist:
+       a. DENY delete, or
+       b. REQUIRE_APPROVAL for cascade delete, or
+       c. update dependents to remove dependency
+    3. only delete when dependents == 0 or approval granted
+
+
+CycleDetection:
+
+  Algorithm: DFS-based cycle detection on directed graph.
+
+  On adding edge A → B:
+    1. run DFS from B
+    2. if A is reachable from B:
+       cycle detected → REJECT edge
+    3. else:
+       ACCEPT edge
+
+  Self-dependency A → A is always REJECT.
+
+
+TopologicalSort:
+
+  Purpose: Determine valid execution order from DAG.
+
+  Algorithm: Kahn's algorithm or DFS-based topological sort.
+
+  Output: Ordered list of nodes where every node appears after all
+  its dependencies.
+
+  Properties:
+    - Multiple valid orders may exist for the same graph
+    - Parallel branches can be reordered relative to each other
+    - Topological sort does not imply sequential execution
+
+
+Readiness:
+
+  ready(task) =
+    all(dependencies.satisfied)
+    AND state == NEW | PLANNED | BLOCKED
+    AND not_locked
+    AND policy_allows
+
+  dependency.satisfied =
+    dependency.type in [BLOCKING, REQUIRED]:
+      source.state in [COMPLETED, SKIPPED]
+      AND condition.evaluate() == true
+
+    dependency.type == CONDITIONAL:
+      condition.evaluate() == false → satisfied (ignored)
+      condition.evaluate() == true → same as BLOCKING
+
+    dependency.type == OPTIONAL | SOFT:
+      always satisfied (warnings may apply)
+
+    dependency.type == RESOURCE:
+      resource.available == true
+
+
+FailurePropagation:
+
+  When source fails:
+    BLOCKING → target becomes BLOCKED
+    REQUIRED → target becomes BLOCKED
+    CONDITIONAL → re-evaluate condition
+    OPTIONAL → target remains READY (warning logged)
+    SOFT → target remains READY (warning logged)
+    RESOURCE → target remains BLOCKED until resource recovers
+
+  Retry:
+    If source is retried and succeeds:
+      target re-evaluated → may become READY
+
+  Policy can override default propagation behavior.
+
+
+CriticalPath:
+
+  longest_path = max(sum(weights) for all paths from root to leaf)
+
+  Critical path tasks cannot be delayed without delaying the project.
+
+  Priority boost: critical_path tasks MAY receive higher scheduler
+  priority.
+
+
+DependencyDepth:
+
+  depth(node) = max(depth(dependencies)) + 1
+
+  Deep dependency chains:
+    - may slow execution
+    - make debugging harder
+    - increase coupling
+
+  AI SHOULD flag dependency depth > threshold for review.
+
+
+CrossProjectDependency:
+
+  Default: forbidden
+
+  When allowed:
+    dependency:
+      from: project:<project_id>:<node_id>
+      to: <node_id>
+      type: BLOCKING | REQUIRED
+      cross_project: true
+
+  Requires:
+    dependency.allow_cross_project = true on both projects
+    policy approval
+    explicit dependency record
+
+
+ResourceDependency:
+
+  Task depends on resource availability:
+
+    dependency:
+      to: <resource_id>
+      type: RESOURCE
+      condition:
+        resource.available == true
+
+  Resource states:
+    AVAILABLE → task can start
+    UNAVAILABLE → task is BLOCKED
+    DEPLETED → task is BLOCKED, escalation required
+
+
+SkillDependency:
+
+  Knowledge/capability dependency, not execution dependency:
+
+    dependency:
+      from: skill:<skill_id>
+      to: <task_id>
+      type: SOFT
+
+  Skill dependency:
+    - does not block execution
+    - AI uses it for skill selection and context loading
+    - missing skill → warning, not BLOCKED
+
+
+WorkflowDependency:
+
+  Workflow depends on another workflow's completion:
+
+    dependency:
+      from: workflow:<workflow_id>
+      to: <task_id>
+      type: BLOCKING
+      condition:
+        workflow.state == COMPLETED
+
+
+DependencyStates:
+
+  PENDING: dependency declared, not yet evaluated
+  SATISFIED: condition met, target can proceed
+  UNSATISFIED: condition not met, target blocked
+  SKIPPED: dependency bypassed by policy
+  FAILED: source failed, propagation applied
+  CANCELLED: dependency cancelled
+
+
+DependencyEvents:
+
+  DEPENDENCY_ADDED: new edge created
+  DEPENDENCY_REMOVED: edge removed
+  DEPENDENCY_SATISFIED: condition met
+  DEPENDENCY_UNSATISFIED: condition not met
+  DEPENDENCY_FAILED: source failed
+  DEPENDENCY_CYCLE_DETECTED: cycle would be created
+  TASK_READY: all dependencies satisfied
+  TASK_BLOCKED: dependency unsatisfied
+
+
+DependencyConsistency:
+
+  Invariants:
+    1. referenced node must exist
+    2. invalid edge type forbidden
+    3. cycles forbidden
+    4. self-dependency forbidden
+    5. unauthorized cross-project dependency forbidden
+    6. immutable dependencies cannot be changed (requires approval)
+
+  On violation:
+    - REJECT operation
+    - log violation
+    - escalate to human if policy requires
+
+
+DependencyEngineResponsibility:
+
+  DO:
+    graph validation
+    dependency evaluation
+    readiness calculation
+    cycle detection
+    dependency events
+    failure propagation
+
+  DO NOT:
+    execute task
+    bypass policy
+    mutate arbitrary state
+    change task state directly (requests transition, state machine decides)
+
+
+Rules:
+
+  [DG1] Dependency graph MUST be a DAG. Cycles MUST be rejected.
+
+  [DG2] Self-dependency (A → A) is FORBIDDEN.
+
+  [DG3] Cross-project dependencies require explicit allow_cross_project
+    flag and policy approval.
+
+  [DG4] Dependency validation MUST run before any edge is added:
+    existence, type, self, cross-project, cycle.
+
+  [DG5] Readiness is derived from dependency satisfaction, not stored.
+
+  [DG6] Failure propagation follows dependency type policy unless
+    overridden by explicit policy rule.
+
+  [DG7] Dependency Engine MUST NOT change task state directly.
+    It requests transitions; state machine approves/denies.
+
+  [DG8] Topological sort is deterministic when multiple valid orders
+    exist: use stable tie-breaking (task ID, creation time).
+
+  [DG9] Critical path is recalculated when graph changes or task
+    duration estimates change.
+
+  [DG10] Dependency depth > threshold SHOULD trigger architecture
+    review for excessive coupling.
+
+
+Navigation:
+
+  DependencyEngine: ./INDEX.sdd
+  DependencyGraph: ./graph.sdd
+  DependencyLocking: ./locking.sdd
+  ProjectDependencies: ../project/dependencies/INDEX.sdd
+  ProjectDependencyGraph: ../project/dependencies/graph.sdd
+  ProjectLocks: ../project/dependencies/locks.sdd
+  ProjectReservations: ../project/dependencies/reservations/

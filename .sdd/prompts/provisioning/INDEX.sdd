@@ -1,0 +1,45 @@
+Prompts: Provisioning Trigger
+
+Purpose:
+  Define when and how automated provisioning is triggered
+  after human approval of role assignments.
+
+Triggers:
+  SERVER_PROVISIONING:
+    Condition: Backend role assigned AND scale > 1000 users
+    Action: Provision cloud servers (AWS/GCP/Azure)
+    Requires: Human approval
+    Auto-select: Instance type based on scale
+
+  DATABASE_PROVISIONING:
+    Condition: Database role assigned
+    Action: Provision database cluster
+    Requires: Human approval
+    Auto-select: DB type, size, replication
+
+  CDN_PROVISIONING:
+    Condition: Frontend role assigned AND global users
+    Action: Provision CDN (CloudFront/Cloudflare)
+    Requires: Human approval
+    Auto-select: Regions based on user geography
+
+  VIDEO_INFRASTRUCTURE:
+    Condition: Video conferencing feature detected
+    Action: Provision STUN/TURN servers
+    Requires: Human approval
+    Auto-select: Provider (Twilio/AWS/self-hosted)
+
+  MONITORING:
+    Condition: Production deployment
+    Action: Provision monitoring (Prometheus/Grafana)
+    Requires: Auto (no approval needed)
+    Auto-select: Based on stack
+
+Rules:
+  [PT1] Provisioning MUST only trigger after human approval.
+  [PT2] Provisioning MUST be logged in audit trail.
+  [PT3] Provisioning MUST be reversible (terraform/destroy).
+  [PT4] Cost estimates MUST be shown before provisioning.
+  [PT5] Provisioning MUST follow security best practices.
+
+State: +

@@ -1,0 +1,58 @@
+﻿Levels: Standards
+
+Purpose:
+  Defines project and entity complexity levels L0-L5.
+
+ProjectLevels:
+  L0:
+    Name: Prototype
+    Description: Minimal viable product
+    Gates: Minimal checks
+    Context: minimal
+  L1:
+    Name: Small project
+    Description: Simple application
+    Gates: Basic test + lint
+    Context: low
+  L2:
+    Name: Production application
+    Description: Production-ready with security
+    Gates: Security + integration + deployment
+    Context: medium
+  L3:
+    Name: Business-critical
+    Description: High availability required
+    Gates: Performance + security + observability
+    Context: high
+  L4:
+    Name: High-scale
+    Description: Millions of users
+    Gates: Resilience + DR + advanced security
+    Context: critical
+  L5:
+    Name: Mission-critical
+    Description: Formal controls required
+    Gates: Formal controls + continuous verification
+    Context: exhaustive
+
+EntityLevels:
+  L0:
+    Simple helper, utility
+  L1:
+    Basic feature
+  L2:
+    Business feature
+  L3:
+    Critical business feature
+  L4:
+    System-critical feature
+  L5:
+    Security/Compliance critical
+
+LevelRules:
+  [LV1]  Project level determines required gates.
+  [LV2]  Entity level determines documentation depth.
+  [LV3]  Higher levels include all lower level requirements.
+
+State: +
+  

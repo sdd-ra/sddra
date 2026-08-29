@@ -1,0 +1,6 @@
+# CODEOWNERS
+# .sdd system files are owner-controlled.
+# Only the repository owner may approve changes to .sdd files.
+# Other contributors may propose changes, but approval is restricted.
+
+.sdd/    @RasimAghayev

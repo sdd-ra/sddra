@@ -1,0 +1,33 @@
+Skills: Angular Framework
+
+Purpose:
+  Angular framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Angular fundamentals
+  APPLY    — apply Angular patterns to code
+  REVIEW   — review Angular skills
+  UPGRADE  — propose Angular skill upgrade
+
+Rules:
+  [A1]  Use standalone components (Angular 14+).
+  [A2]  Use TypeScript strict mode.
+  [A3]  Use `@Input` and `@Output` for component communication.
+  [A4]  Use services for business logic.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Angular: @frameworks/angular/INDEX.sdd
+  AngularL1: @frameworks/angular/L1-fundamentals.sdd
+
+State: +

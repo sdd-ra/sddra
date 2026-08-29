@@ -1,0 +1,53 @@
+﻿E2E: SDD
+
+Purpose:
+  End-to-End testing — verify complete user/business flows work across
+  the entire system. E2E tests validate the system from the user's
+  perspective, including all integrated components.
+
+Owns: ./
+
+Scope:
+  Complete user workflows
+  Multi-step business processes
+  Cross-component interactions
+  Real databases and services
+  Production-like environment
+
+Principles:
+  Test real user journeys, not technical paths
+  Use production-like data and configuration
+  Keep E2E suite small and focused on critical paths
+  E2E tests are slow — use them sparingly
+  E2E failures require immediate investigation
+
+Structure:
+  Every E2E test MUST:
+    represent a real user journey
+    include all steps from start to finish
+    verify business outcomes, not UI details
+    clean up after itself
+
+Frameworks:
+  Playwright
+  Cypress
+  Selenium
+  Detox (mobile E2E)
+  Appium (mobile)
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

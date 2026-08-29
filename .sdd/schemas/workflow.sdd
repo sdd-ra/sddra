@@ -1,0 +1,31 @@
+﻿Workflow: Schema
+
+Purpose:
+  Defines schema for workflow entities.
+
+Required:
+  @workflow <id>
+  name <name>
+  stages <stage-list>
+  state <state>
+
+Optional:
+  domain <domain>
+  conditions <condition-list>
+  gates <gate-list>
+  owner <role>
+
+Example:
+  @workflow WF-021
+  name "Feature Development"
+  stages:
+    - BDD
+    - CODE
+    - UNIT
+    - INTEGRATION
+    - SECURITY
+    - REVIEW
+  state active
+
+State: +
+  

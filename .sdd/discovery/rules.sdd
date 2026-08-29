@@ -1,0 +1,75 @@
+﻿Rules: Discovery
+
+Purpose:
+  Defines discovery engine rules and principles.
+
+Principles:
+  SOURCE CODE:
+    ↓
+  OBSERVE:
+    ↓
+  INFER:
+    ↓
+  VALIDATE:
+    ↓
+  MODEL:
+
+FactClassification:
+  FACT:
+    Directly proven from source code
+  INFERRED:
+    Logical conclusion from source code
+  UNKNOWN:
+    No information available
+  CONFLICT:
+    .sdd differs from source
+
+DiscoveryModes:
+  GREENFIELD:
+    New project from business input
+  BROWNFIELD:
+    Existing project from source code
+  HYBRID:
+    Existing project with new requirements
+
+AnalysisScope:
+  Structure:
+    Directory layout, module organization
+  Stack:
+    Languages, frameworks, runtimes
+  Architecture:
+    Patterns, layers, dependencies
+  Domains:
+    Business domains, boundaries
+  Testing:
+    Test types, frameworks, coverage
+  Security:
+    Authentication, authorization, gaps
+  Infrastructure:
+    Deployment, environments, cloud
+  Documentation:
+    Existing docs, gaps
+  Workflow:
+    CI/CD, pipelines
+
+QualityGate:
+  DISCOVERY COMPLETE requires:
+    - Structure known
+    - Stack known
+    - Architecture sufficiently known
+    - Critical dependencies known
+    - Security baseline known
+    - Testing baseline known
+
+DiscoveryRules:
+  [DR1]  Discovery MUST analyze, not modify source code.
+  [DR2]  Discovery MUST classify all findings.
+  [DR3]  Discovery MUST assign confidence to inferences.
+  [DR4]  Discovery MUST detect drift between .sdd and source.
+  [DR5]  Discovery MUST produce actionable backlog.
+  [DR6]  Discovery MUST create baseline for future comparison.
+  [DR7]  Discovery MUST detect circular dependencies.
+  [DR8]  Discovery MUST identify security gaps.
+
+State: +
+  

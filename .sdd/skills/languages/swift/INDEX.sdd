@@ -1,0 +1,35 @@
+Skills: Swift Language
+
+Purpose:
+  Swift programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-ios-development.sdd
+
+Modes:
+  LEARN    — learn Swift fundamentals
+  APPLY    — apply Swift patterns to code
+  REVIEW   — review Swift skills
+  UPGRADE  — propose Swift skill upgrade
+
+Rules:
+  [S1]  Use value types by default.
+  [S2]  Use optionals safely.
+  [S3]  Use protocols for abstraction.
+  [S4]  Follow Swift API design guidelines.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Swift: @languages/swift/INDEX.sdd
+  SwiftL1: @languages/swift/L1-fundamentals.sdd
+  SwiftL2: @languages/swift/L2-ios-development.sdd
+
+State: +

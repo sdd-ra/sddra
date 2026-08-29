@@ -1,0 +1,100 @@
+﻿# Rust Async and Concurrency
+
+Purpose:
+  Rust Async and Concurrency
+
+Skill: Rust Async and Concurrency
+
+ID:
+  SKILL-LANG-RUST-L3
+
+Domain:
+  languages/rust
+
+Use:
+  writing asynchronous and concurrent Rust programs
+
+Apply:
+  senior
+  high-throughput
+  real-time
+  distributed-system
+
+Requires:
+  SKILL-LANG-RUST-L2
+  tokio-or-async-std
+
+Avoid:
+  blocking-async
+  missing-timeout
+  resource-leak
+  deadlock
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  rust
+  async
+  tokio
+  concurrency
+  futures
+  await
+  parallel
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/rust/L3-async-concurrency.md
+
+Evidence:
+  - Tokio Documentation
+  - Rust Async Book
+  - Production experience
+
+Rules:
+  [R1] Use `async fn` for asynchronous functions.
+  [R2] Use `tokio` for async runtime.
+  [R3] Use `tokio::spawn` for concurrent tasks.
+  [R4] Use `tokio::join!` for parallel execution.
+  [R5] Use `Mutex<T>` for shared mutable state.
+  [R6] Use `mpsc` channels for message passing.
+  [R7] Always handle task cancellation.
+  [R8] Use `tracing` for async observability.
+
+Pros:
+  - Fearless concurrency
+  - High performance
+  - No data races
+
+Cons:
+  - Async complexity
+  - Compile times
+  - Ecosystem fragmentation
+
+Alternatives:
+  - Go (simpler concurrency)
+  - C++ (manual threads)
+  - Erlang (actor model)
+
+State: +
+

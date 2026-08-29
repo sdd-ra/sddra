@@ -1,0 +1,100 @@
+﻿# Authentication
+
+Purpose:
+  Authentication
+
+Skill: Authentication
+
+ID:
+  SKILL-CROSS-SECURITY-AUTH
+
+Domain:
+  cross-cutting/security
+
+Use:
+  implementing authentication systems
+
+Apply:
+  intermediate
+  senior
+  security
+  access-control
+
+Requires:
+  security-fundamentals
+  jwt-or-oauth
+
+Avoid:
+  plaintext-passwords
+  weak-tokens
+  session-fixation
+  password-in-url
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  HIGH
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  authentication
+  auth
+  jwt
+  oauth
+  oidc
+  password
+  login
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/security/authentication.md
+
+Evidence:
+  - OWASP Authentication Guide
+  - JWT RFC 7519
+  - Production experience
+
+Rules:
+  [A1] Use bcrypt or Argon2 for password hashing.
+  [A2] Use HTTPS for all authentication endpoints.
+  [A3] Use JWT with short expiry and refresh tokens.
+  [A4] Implement rate limiting on login endpoints.
+  [A5] Use multi-factor authentication (MFA).
+  [A6] Store tokens in HttpOnly cookies for web apps.
+  [A7] Implement account lockout after failed attempts.
+  [A8] Use OAuth 2.0 / OIDC for third-party auth.
+
+Pros:
+  - Secure access
+  - User trust
+  - Compliance
+
+Cons:
+  - Complexity
+  - User friction
+  - Token management
+
+Alternatives:
+  - Session-based auth
+  - Magic links
+  - Passkeys
+
+State: +
+

@@ -1,0 +1,100 @@
+﻿# Kotlin Fundamentals
+
+Purpose:
+  Kotlin Fundamentals
+
+Skill: Kotlin Fundamentals
+
+ID:
+  SKILL-LANG-KOTLIN-L1
+
+Domain:
+  languages/kotlin
+
+Use:
+  writing Kotlin programs for Android and multiplatform
+
+Apply:
+  beginner
+  learning
+  android
+  multiplatform
+
+Requires:
+  kotlin-1.9+
+  intellij-or-android-studio
+
+Avoid:
+  java-interop-abuse
+  null-pointer-unsafe
+  overusing-extensions
+  ignoring-coroutines
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  kotlin
+  android
+  multiplatform
+  jvm
+  jetpack compose
+  coroutines
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/kotlin/L1-fundamentals.md
+
+Evidence:
+  - Kotlin Documentation
+  - Android Documentation
+  - Production experience
+
+Rules:
+  [K1] Use `val` by default, `var` only when needed.
+  [K2] Use null-safe operators (`?.`, `?:`).
+  [K3] Use `when` expression instead of `switch`.
+  [K4] Use string templates.
+  [K5] Use data classes for DTOs.
+  [K6] Use extension functions sparingly.
+  [K7] Use coroutines for async.
+  [K8] Use sealed classes for state.
+
+Pros:
+  - Concise syntax
+  - Null safety
+  - Java interop
+
+Cons:
+  - Compile times
+  - Tooling maturity
+  - Learning curve
+
+Alternatives:
+  - Java (mature)
+  - Flutter (cross-platform)
+  - Swift (Apple ecosystem)
+
+State: +
+

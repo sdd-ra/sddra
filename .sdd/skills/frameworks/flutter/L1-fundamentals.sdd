@@ -1,0 +1,99 @@
+﻿# Flutter Framework
+
+Purpose:
+  Flutter Framework
+
+Skill: Flutter Framework
+
+ID:
+  SKILL-FW-FLUTTER-L1
+
+Domain:
+  frameworks/flutter
+
+Use:
+  building cross-platform mobile and desktop apps with Flutter
+
+Apply:
+  beginner
+  intermediate
+  mobile
+  cross-platform
+
+Requires:
+  flutter-3+
+  dart-3+
+
+Avoid:
+  platform-specific-abuse
+  overusing-packages
+  ignoring-performance
+  state-management-overload
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  flutter
+  dart
+  cross-platform
+  mobile
+  desktop
+  widgets
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/flutter/L1-fundamentals.md
+
+Evidence:
+  - Flutter Documentation
+  - Dart Documentation
+  - Production experience
+
+Rules:
+  [F1] Use widgets for UI composition.
+  [F2] Use `StatelessWidget` when possible.
+  [F3] Use `StatefulWidget` for mutable state.
+  [F4] Use `const` constructors for performance.
+  [F5] Use `MaterialApp` or `CupertinoApp`.
+  [F6] Use `Scaffold` for page structure.
+  [F7] Use `Theme` for consistent styling.
+  [F8] Use `pubspec.yaml` for dependencies.
+
+Pros:
+  - Single codebase
+  - Fast development
+  - Good performance
+
+Cons:
+  - Large app size
+  - Platform limitations
+  - Dart ecosystem
+
+Alternatives:
+  - React Native
+  - Kotlin Multiplatform
+  - Native development
+
+State: +
+

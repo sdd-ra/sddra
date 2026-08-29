@@ -1,0 +1,289 @@
+﻿Patterns: SDD
+
+Purpose:
+  Define architecture patterns available for selection. Patterns are
+  reusable solutions to common architectural problems. AI MUST select
+  a pattern based on project requirements, constraints, and trade-offs —
+  not by default or preference.
+
+Owns: ./
+
+Patterns:
+
+  Monolith:
+    name: Monolith
+    description: Single deployable application
+    complexity: Low
+    scale_fit: L0-L1
+    pros:
+      - simple deployment
+      - easy development
+      - low operational cost
+    cons:
+      - scaling limitations
+      - team coordination challenges
+      - technology lock-in
+    when_to_use:
+      - small team
+      - low traffic
+      - simple domain
+      - prototype/MVP
+    when_to_avoid:
+      - high traffic
+      - multiple teams
+      - complex domain
+      - independent scaling needs
+
+  ModularMonolith:
+    name: Modular Monolith
+    description: Single deployable application with internal module boundaries
+    complexity: Medium
+    scale_fit: L1-L3
+    pros:
+      - simple deployment
+      - clear module boundaries
+      - easier than microservices
+      - can extract modules later
+    cons:
+      - still single deployable
+      - module boundaries require discipline
+      - scaling limited to whole app
+    when_to_use:
+      - medium team
+      - medium traffic
+      - clear domain boundaries
+      - want microservice benefits without complexity
+    when_to_avoid:
+      - very high traffic
+      - independent scaling requirements
+      - multiple autonomous teams
+
+  Microservices:
+    name: Microservices
+    description: Multiple independently deployable services
+    complexity: High
+    scale_fit: L3-L5
+    pros:
+      - independent scaling
+      - independent deployment
+      - technology diversity
+      - team autonomy
+    cons:
+      - operational complexity
+      - distributed system challenges
+      - higher infrastructure cost
+      - network latency
+    when_to_use:
+      - large team
+      - high traffic
+      - clear domain boundaries
+      - independent scaling needs
+      - organizational alignment
+    when_to_avoid:
+      - small team
+      - low traffic
+      - simple domain
+      - insufficient DevOps maturity
+
+  EventDriven:
+    name: Event-Driven Architecture
+    description: Components communicate via events
+    complexity: Medium-High
+    scale_fit: L2-L5
+    pros:
+      - loose coupling
+      - scalability
+      - async processing
+      - audit trail
+    cons:
+      - eventual consistency
+      - debugging complexity
+      - event schema evolution
+      - ordering challenges
+    when_to_use:
+      - async workflows
+      - event sourcing needed
+      - multiple consumers
+      - audit requirements
+    when_to_avoid:
+      - simple CRUD
+      - strong consistency required
+      - low complexity domain
+
+  CQRS:
+    name: Command Query Responsibility Segregation
+    description: Separate read and write models
+    complexity: Medium-High
+    scale_fit: L2-L5
+    pros:
+      - optimized read/write paths
+      - scalability
+      - security (read/write separation)
+    cons:
+      - complexity
+      - eventual consistency
+      - more code
+    when_to_use:
+      - high read/write ratio difference
+      - scaling bottlenecks
+      - complex domain
+    when_to_avoid:
+      - simple domain
+      - low traffic
+      - strong consistency required
+
+  EventSourcing:
+    name: Event Sourcing
+    description: State derived from event stream
+    complexity: High
+    scale_fit: L3-L5
+    pros:
+      - complete audit trail
+      - temporal queries
+      - event replay
+      - consistent state
+    cons:
+      - complexity
+      - learning curve
+      - event schema evolution
+      - storage requirements
+    when_to_use:
+      - audit requirements
+      - temporal queries needed
+      - event replay needed
+      - complex state transitions
+    when_to_avoid:
+      - simple CRUD
+      - no audit requirements
+      - small team
+
+  Serverless:
+    name: Serverless
+    description: Function-as-a-Service, no server management
+    complexity: Medium
+    scale_fit: L1-L4
+    pros:
+      - no infrastructure management
+      - automatic scaling
+      - pay-per-use
+      - fast deployment
+    cons:
+      - cold starts
+      - vendor lock-in
+      - debugging difficulty
+      - cost unpredictability
+    when_to_use:
+      - variable traffic
+      - event-driven workloads
+      - small team
+      - rapid prototyping
+    when_to_avoid:
+      - consistent high traffic
+      - long-running processes
+      - low latency requirements
+
+  Hexagonal:
+    name: Hexagonal Architecture
+    description: Ports and adapters, domain-centric
+    complexity: Medium
+    scale_fit: L1-L3
+    pros:
+      - testability
+      - domain focus
+      - infrastructure independence
+      - clean boundaries
+    cons:
+      - more abstraction
+      - learning curve
+      - over-engineering for simple apps
+    when_to_use:
+      - complex domain
+      - multiple adapters needed
+      - high testability requirements
+    when_to_avoid:
+      - simple CRUD
+      - small team
+      - tight deadlines
+
+  CleanArchitecture:
+    name: Clean Architecture
+    description: Dependency rule, outer circles depend on inner
+    complexity: Medium-High
+    scale_fit: L2-L4
+    pros:
+      - testability
+      - framework independence
+      - clear dependency direction
+    cons:
+      - complexity
+      - more files
+      - over-engineering risk
+    when_to_use:
+      - complex business logic
+      - long-lived systems
+      - multiple interfaces
+    when_to_avoid:
+      - simple apps
+      - small team
+      - MVP
+
+  Layered:
+    name: Layered Architecture
+    description: Traditional layered approach (UI, Business, Data)
+    complexity: Low-Medium
+    scale_fit: L0-L2
+    pros:
+      - familiar
+      - simple
+      - easy to understand
+    cons:
+      - can become messy
+      - dependency direction violations
+      - scaling limitations
+    when_to_use:
+      - simple applications
+      - small teams
+      - standard CRUD
+    when_to_avoid:
+      - complex domain
+      - high scalability needs
+
+Selection:
+  AI MUST select architecture pattern based on:
+    ProjectScale (L0-L5)
+    Team size
+    Domain complexity
+    Traffic patterns
+    Scaling requirements
+    Deployment constraints
+    Budget
+    Team capability
+
+  OverengineeringGate:
+    AI MUST flag OVERENGINEERING when:
+      pattern complexity > project scale justifies
+      team size < pattern requires
+      traffic < pattern requires
+      budget < pattern requires
+
+  UnderengineeringGate:
+    AI MUST flag UNDERENGINEERING when:
+      availability requirements > pattern provides
+      security requirements > pattern provides
+      traffic > pattern can handle
+      compliance requirements > pattern supports
+
+Navigation:
+  Project: @project/project.sdd
+  Levels: @levels.sdd
+  Scaling: @scaling.sdd
+  Data: @data.sdd
+  Availability: @availability.sdd
+  Observability: @observability.sdd
+  Networking: @networking.sdd
+  Deployment: @deployment.sdd
+  ProjectArchitecture: @project/architecture/INDEX.sdd
+  Decisions: @project/decisions/INDEX.sdd
+
+State: +
+  

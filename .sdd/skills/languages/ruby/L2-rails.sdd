@@ -1,0 +1,100 @@
+﻿# Ruby on Rails
+
+Purpose:
+  Ruby on Rails
+
+Skill: Ruby on Rails
+
+ID:
+  SKILL-LANG-RUBY-L2
+
+Domain:
+  languages/ruby
+
+Use:
+  building web applications with Ruby on Rails
+
+Apply:
+  intermediate
+  senior
+  web-application
+  full-stack
+
+Requires:
+  SKILL-LANG-RUBY-L1
+  rails-7+
+  postgresql
+
+Avoid:
+  fat-model
+  callbacks-overuse
+  n-plus-one
+  tight-coupling
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  ruby
+  rails
+  web framework
+  mvc
+  active record
+  full-stack
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/ruby/L2-rails.md
+
+Evidence:
+  - Ruby on Rails Documentation
+  - GoRails
+  - Production experience
+
+Rules:
+  [R1] Use Rails conventions over configuration.
+  [R2] Use Active Record for ORM.
+  [R3] Use RESTful routing.
+  [R4] Use service objects for business logic.
+  [R5] Use concerns for shared code.
+  [R6] Use Hotwire for interactivity.
+  [R7] Use Sidekiq for background jobs.
+  [R8] Use RSpec for testing.
+
+Pros:
+  - Rapid development
+  - Convention over configuration
+  - Large ecosystem
+
+Cons:
+  - Performance
+  - Magic behavior
+  - Monolithic tendency
+
+Alternatives:
+  - Django (Python)
+  - Laravel (PHP)
+  - Phoenix (Elixir)
+
+State: +
+

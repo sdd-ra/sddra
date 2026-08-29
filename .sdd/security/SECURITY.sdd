@@ -1,0 +1,39 @@
+﻿# Security
+
+Purpose:
+  Security specifications for the SDDRA system.
+
+Security: sddra
+
+Principles:
+  - Deny by Default
+  - Least Privilege
+  - Defense in Depth
+  - Tenant Isolation
+  - Audit Everything
+
+Layers:
+  API:
+    - Authentication required for all endpoints
+    - Rate limiting per tenant
+    - Input validation
+
+  Application:
+    - Authorization checks per action
+    - Tenant context propagation
+    - Business rule validation
+
+  Data:
+    - Row-level security
+    - Encryption at rest
+    - Audit logging
+
+Rules:
+  [SEC1] All requests MUST be authenticated.
+  [SEC2] All actions MUST be authorized.
+  [SEC3] Tenant data MUST be isolated.
+  [SEC4] Secrets MUST be referenced via vault, not stored.
+  [SEC5] All critical actions MUST be logged.
+   [SEC6] API contracts MUST define security requirements.
+
+State: +

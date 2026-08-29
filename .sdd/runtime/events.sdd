@@ -1,0 +1,300 @@
+﻿Events: SDD
+
+Purpose:
+  Define the runtime event architecture for the .sdd system. Events
+  are the historical record of every state change, action, policy
+  decision, and system occurrence. Events are append-only and MUST
+  NEVER be modified or deleted.
+
+Owns: ./
+
+Scope:
+  Event format and envelope
+  Event types and categories
+  Event fields and metadata
+  Event storage convention
+  Event append rules
+  Event bus architecture
+  Event versioning
+  Event producer/consumer model
+  Duplicate event handling
+  Dead letter queue
+  Ordering guarantees
+  Correlation and causation IDs
+  Domain events vs system events
+  Event retention and archival
+
+Principles:
+  Events are immutable — history is append-only.
+  Events are the source of truth for audit and debugging.
+  State can be reconstructed from events.
+  Events are classified and redacted for security.
+  Event ordering is guaranteed per execution_id.
+
+EventEnvelope:
+  structure:
+    event:
+      id: string (unique event ID)
+      type: string (event type)
+      version: string (event schema version)
+      timestamp: ISO 8601 with timezone
+      correlation_id: string (links related events)
+      causation_id: string (parent event that caused this)
+      actor: string (who/what caused the event)
+      source: string (system component that produced event)
+      payload: object (event-specific data)
+
+  rule: every event MUST follow this envelope
+  rule: event ID is unique across all events
+
+EventTypes:
+  STATE:
+    description: task or execution state changed
+    example: ExecutionStarted, ExecutionCompleted
+
+  STAGE:
+    description: task stage changed
+    example: StageChanged AR -> BDD
+
+  GATE:
+    description: gate pass/fail result
+    example: SecurityGatePassed, TestGateFailed
+
+  ACTION:
+    description: agent action taken
+    example: FileWritten, TestExecuted
+
+  APPROVAL:
+    description: approval requested, granted, or rejected
+    example: ApprovalRequested, ApprovalGranted
+
+  POLICY:
+    description: policy evaluated
+    example: PolicyEvaluated, PolicyDenied
+
+  TOOL:
+    description: tool called or completed
+    example: ToolCalled, ToolCompleted, ToolFailed
+
+  CHECKPOINT:
+    description: checkpoint created
+    example: CheckpointCreated
+
+  ERROR:
+    description: error occurred
+    example: ToolTimeout, NetworkError
+
+  METRIC:
+    description: metric recorded
+    example: TokenUsageRecorded, CostRecorded
+
+EventCategories:
+  DomainEvents:
+    description: business-level events
+    examples:
+      - UserCreated
+      - PaymentCompleted
+      - OrderCancelled
+      - RequirementAdded
+
+  SystemEvents:
+    description: execution and system-level events
+    examples:
+      - ExecutionStarted
+      - ToolCalled
+      - ToolFailed
+      - AgentAssigned
+      - PolicyDenied
+      - CheckpointCreated
+
+EventFormat:
+  minimal_event:
+    2026-08-26T07:35:00+04:00 STATE EXEC-500 agent ExecutionStarted
+
+  full_event:
+    event:
+      id: EVT-100
+      type: STATE
+      version: 1.0
+      timestamp: 2026-08-26T07:35:00+04:00
+      correlation_id: CORR-500
+      causation_id: EVT-099
+      actor: AGENT-CODER-01
+      source: ExecutionEngine
+      payload:
+        execution_id: EXEC-500
+        state_from: PENDING
+        state_to: RUNNING
+        reason: all prerequisites met
+
+EventStorage:
+  storage_location: .sdd/runtime/events.sdd
+
+  format:
+    # Task: TASK-100
+    # Execution: EXEC-500
+    # State: RUNNING
+
+    2026-08-26T07:35:00+04:00 STATE EXEC-500 agent PENDING > RUNNING
+      reason: all prerequisites met
+      actor: ExecutionEngine
+
+    2026-08-26T07:36:00+04:00 TOOL EXEC-500 agent ToolCalled
+      tool: read_file
+      resource: auth/login.go
+      actor: AGENT-CODER-01
+
+  rule: events are stored in a single append-only structure
+  rule: events are organized by task/execution
+
+EventRetention:
+  rule: events are retained indefinitely for audit
+  rule: events MAY be archived to cold storage
+  rule: archive MUST remain queryable
+  rule: events MUST NOT be deleted or compacted
+
+EventVersioning:
+  rule: event schemas are versioned
+  example:
+    ToolCalled.v1
+    ToolCalled.v2
+
+  rule: consumers MUST handle old event versions
+  rule: schema changes require migration
+
+EventProducer:
+  examples:
+    ExecutionEngine: ExecutionStarted, ExecutionCompleted
+    ToolRunner: ToolCalled, ToolCompleted, ToolFailed
+    PolicyEngine: PolicyEvaluated, PolicyDenied
+    AgentRuntime: ActionProposed
+
+EventConsumer:
+  examples:
+    ObservabilityService: metrics, traces
+    AuditService: audit log
+    NotificationService: alerts
+    MetricsService: aggregations
+
+EventBus:
+  purpose: decouple producers from consumers
+
+  properties:
+    ordering: per execution_id
+    delivery: at-least-once
+    retry: with exponential backoff
+    dead-letter: DLQ for permanently failed events
+    idempotency: deduplication by event_id
+    partitioning: by execution_id
+    retention: configurable per event type
+
+DuplicateEvents:
+  rule: consumers MUST handle duplicate events
+  rule: deduplication is by event_id
+  rule: processing the same event twice MUST NOT cause side effects
+
+DeadLetterQueue:
+  rule: events that cannot be processed go to DLQ
+  rule: DLQ is monitored and reprocessed
+  rule: DLQ events are analyzed for systemic issues
+
+Ordering:
+  rule: ordering is guaranteed per execution_id
+  rule: global ordering across executions is NOT required
+  rule: ordering is implemented via partitioning
+
+CorrelationID:
+  definition:
+    ID that links all events in a workflow
+
+  example:
+    CORR-500 flows through:
+      API -> Task -> Execution -> Agent -> Tool -> Validation
+
+  rule: correlation_id is set at workflow start
+  rule: all subsequent events inherit correlation_id
+
+CausationID:
+  definition:
+    ID of the event that caused this event
+
+  example:
+    EVENT-10: ExecutionStarted
+    EVENT-11: ToolCalled (caused_by: EVENT-10)
+    EVENT-12: ToolCompleted (caused_by: EVENT-11)
+
+  rule: causation_id creates causal chain
+  rule: causation_id enables root cause analysis
+
+CorrelationVsCausation:
+  correlation:
+    definition: events belong to same workflow
+    example: CORR-500 links all events in a request
+
+  causation:
+    definition: event A caused event B
+    example: ToolCalled caused ToolCompleted
+
+Security:
+  rule: sensitive data MUST be redacted in events
+  rule: SECRET classified events are never logged in plain text
+  rule: event access is controlled by policy
+
+DataClassification:
+  levels:
+    PUBLIC: no restrictions
+    INTERNAL: internal use only
+    CONFIDENTIAL: restricted access
+    SECRET: highly sensitive, never in plain text
+
+  rule: all event payloads MUST be classified
+  rule: SECRET data is replaced with [REDACTED]
+
+EventImmutability:
+  rule: events cannot be modified after creation
+  rule: corrections create new events, not modifications
+  example:
+    TOOL_FAILED
+    TOOL_RETRIED
+    TOOL_COMPLETED
+
+  rule: event history is never rewritten
+
+AIReadRestriction:
+  rule: AI MUST NOT read the entire events file
+  rule: AI MUST filter by task ID or time range
+  rule: AI MUST only read events relevant to current task
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Execution: @execution.sdd
+  Context: @context.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Workflow: @../workflow/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
+
+Rules:
+  [E1] Every state change MUST produce a STATE event.
+  [E2] Every stage change MUST produce a STAGE event.
+  [E3] Every gate result MUST produce a GATE event.
+  [E4] Every policy evaluation MUST produce a POLICY event.
+  [E5] Every tool call MUST produce a TOOL event.
+  [E6] Every approval request MUST produce an APPROVAL event.
+  [E7] Every checkpoint MUST produce a CHECKPOINT event.
+  [E8] Every error MUST produce an ERROR event.
+  [E9] Every metric MUST produce a METRIC event.
+  [E10] Events are immutable and append-only.
+  [E11] Event ordering is guaranteed per execution_id.
+  [E12] Event consumers MUST be idempotent.
+  [E13] Duplicate events MUST be handled gracefully.
+  [E14] Failed events go to Dead Letter Queue.
+  [E15] Sensitive data MUST be redacted in all events.
+  [E16] Events MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+  [E17] AI MUST NOT read the entire events file — only relevant events.
+  [E18] Event schemas are versioned; consumers handle old versions.
+  [E19] Correlation ID links workflow events; Causation ID links causal chain.
+  [E20] Events are retained indefinitely; archive remains queryable.
+  [E21] Agent MUST NOT add signatures or sign-offs to event outputs.
+  [E22] Agent MUST NOT use emojis, icons, or decorative symbols in event output headers or titles — reserved for human use only.
+
+State: +

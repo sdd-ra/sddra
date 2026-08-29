@@ -1,0 +1,76 @@
+# Skill: Skill Gap Analysis
+
+Purpose:
+  Analyze current skill coverage and identify gaps.
+  Compares project requirements against available skills
+  and generates actionable gap report.
+
+ID: SKILL-GAP-ANALYSIS
+
+Domain: meta
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Project initialization
+  - Feature development
+  - Technology stack changes
+  - Periodic audits
+
+Input:
+  - Project requirements
+  - Current skill registry
+  - Technology stack
+  - Domain context
+
+Output:
+  - Coverage percentage
+  - Gap list
+  - Priority matrix
+  - Action plan
+
+Execute:
+  1. Extract requirements from project
+  2. Map requirements to skill domains
+  3. Check each requirement against existing skills
+  4. Calculate coverage:
+     coverage = (covered_requirements / total_requirements) * 100
+  5. Identify gaps (uncovered requirements)
+  6. Prioritize gaps by impact
+  7. Generate action plan
+
+Coverage Thresholds:
+  >= 80%: Adequate coverage
+  60-79%: Partial coverage, plan improvements
+  < 60%: Insufficient coverage, urgent action needed
+
+Gap Priority:
+  CRITICAL: Core functionality missing
+  HIGH: Important feature missing
+  MEDIUM: Nice-to-have missing
+  LOW: Optional enhancement missing
+
+Action Plan:
+  For each gap:
+    1. Search external sources (old/external-repo-audit/)
+    2. Check if skill can be adapted
+    3. If not, create new skill
+    4. Add to .sdd/skills/
+    5. Update registry
+    6. Create DEC-XXX
+
+Examples:
+  - Payment module: check payment skills exist
+  - Auth system: check auth/security skills exist
+  - Mobile app: check mobile skills exist
+  - Performance: check monitoring/observability skills exist
+
+Avoid:
+  - Adding skills for one-time use
+  - Adding skills outside project scope
+  - Adding experimental skills for production
+  - Adding duplicate skills
+
+State: +

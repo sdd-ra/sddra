@@ -1,0 +1,59 @@
+﻿Gate: API
+
+Purpose:
+  API security verification — ensure APIs follow security best
+  practices and are protected against common API attacks.
+
+AppliesTo:
+  - REST APIs
+  - GraphQL APIs
+  - gRPC APIs
+  - WebSocket APIs
+  - Webhook endpoints
+
+When:
+  - All API changes
+  - After BE/API stage
+  - Before QA stage
+  - Before production deployment
+
+Tools:
+  - OWASP ZAP (API scan)
+  - Postman/Newman (security tests)
+  - Burp Suite
+  - custom security test suites
+
+MustPass:
+  - Authentication required for protected endpoints
+  - Authorization enforced (no IDOR)
+  - Rate limiting active
+  - Input validation on all parameters
+  - Output encoding prevents injection
+  - No sensitive data in URLs
+  - CORS properly configured
+  - API versioning enforced
+
+MayPass:
+  - MEDIUM findings with accepted risk
+  - LOW findings
+
+Block:
+  - Authentication bypass
+  - Authorization bypass / IDOR
+  - Mass assignment
+  - Rate limiting disabled
+  - CORS misconfiguration allowing all origins
+  - Sensitive data in URLs/logs
+
+OnFail:
+  - Finding created for each vulnerability
+  - Task created for each finding
+  - Chain returns to BE/API stage
+  - After fix, API security re-tested
+
+Exceptions:
+  - Public endpoints MAY have relaxed auth requirements with explicit decision
+  - Internal APIs MAY have relaxed CORS with explicit decision
+
+State: +
+  

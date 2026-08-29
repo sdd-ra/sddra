@@ -1,0 +1,101 @@
+﻿# JavaScript Async Programming
+
+Purpose:
+  JavaScript Async Programming
+
+Skill: JavaScript Async Programming
+
+ID:
+  SKILL-LANG-JS-L2
+
+Domain:
+  languages/javascript
+
+Use:
+  writing asynchronous JavaScript code
+
+Apply:
+  intermediate
+  senior
+  frontend
+  backend
+  api-development
+
+Requires:
+  SKILL-LANG-JS-L1
+  promises
+  async-await
+
+Avoid:
+  callback-hell
+  unhandled-promise
+  blocking-event-loop
+  async-await-overuse
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  javascript
+  async
+  promises
+  async await
+  event loop
+  concurrency
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/javascript/L2-async-programming.md
+
+Evidence:
+  - MDN Async Documentation
+  - You Don't Know JS
+  - Production experience
+
+Rules:
+  [J1] Use `async/await` for asynchronous operations.
+  [J2] Always handle promise rejections with `try/catch`.
+  [J3] Use `Promise.all` for parallel independent operations.
+  [J4] Use `Promise.allSettled` when partial failure is acceptable.
+  [J5] Use `AbortController` for cancellable operations.
+  [J6] Use event loop phases knowledge for performance.
+  [J7] Avoid blocking the event loop with CPU-heavy tasks.
+  [J8] Use Web Workers for CPU-intensive work in browser.
+
+Pros:
+  - Simple async syntax
+  - Good ecosystem
+  - Non-blocking I/O
+
+Cons:
+  - Single-threaded
+  - Unhandled rejections
+  - Memory leaks from closures
+
+Alternatives:
+  - Go (goroutines)
+  - Rust (async-std)
+  - Python (asyncio)
+
+State: +
+

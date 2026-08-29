@@ -1,0 +1,99 @@
+﻿# .NET Framework
+
+Purpose:
+  .NET Framework
+
+Skill: .NET Framework
+
+ID:
+  SKILL-FW-DOTNET-L1
+
+Domain:
+  frameworks/dotnet
+
+Use:
+  building applications with .NET and C#
+
+Apply:
+  intermediate
+  senior
+  enterprise
+  web-api
+
+Requires:
+  SKILL-LANG-CSHARP-L2
+  dotnet-8+
+
+Avoid:
+  windows-only
+  tight-coupling
+  blocking-code
+  ignoring-async
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  .net
+  dotnet
+  csharp
+  asp.net core
+  entity framework
+  microsoft
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/dotnet/L1-fundamentals.md
+
+Evidence:
+  - .NET Documentation
+  - Microsoft Documentation
+  - Production experience
+
+Rules:
+  [N1] Use ASP.NET Core for web APIs.
+  [N2] Use Entity Framework Core for data.
+  [N3] Use dependency injection.
+  [N4] Use minimal APIs for simple endpoints.
+  [N5] Use controllers for complex APIs.
+  [N6] Use middleware for cross-cutting.
+  [N7] Use ILogger for logging.
+  [N8] Use appsettings.json for config.
+
+Pros:
+  - Excellent performance
+  - Strong typing
+  - Cross-platform
+
+Cons:
+  - Memory usage
+  - Ecosystem fragmentation
+  - Learning curve
+
+Alternatives:
+  - Go (simpler)
+  - Java (similar)
+  - Node.js (lighter)
+
+State: +
+

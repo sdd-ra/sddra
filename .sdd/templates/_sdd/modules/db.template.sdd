@@ -1,0 +1,29 @@
+﻿# Database Template
+
+Purpose:
+  Template for module database specifications.
+
+Database: <MODULE_NAME>
+
+Tables:
+  - <table_name>
+
+Schema:
+  <table_name>:
+    columns:
+      - <column_name>: <type>
+
+Relationships:
+  - <table_name> belongs_to <other_table>
+
+Migrations:
+  - <migration_file>
+
+Rules:
+  [D1] Database changes MUST be validated before BE implementation.
+  [D2] Migration files MUST be versioned.
+  [D3] Schema changes MUST be backward compatible when possible.
+
+
+State: +
+

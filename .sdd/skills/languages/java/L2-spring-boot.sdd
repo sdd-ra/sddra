@@ -1,0 +1,100 @@
+﻿# Java Spring Boot
+
+Purpose:
+  Java Spring Boot
+
+Skill: Java Spring Boot
+
+ID:
+  SKILL-LANG-JAVA-L2
+
+Domain:
+  languages/java
+
+Use:
+  building enterprise Java applications with Spring Boot
+
+Apply:
+  intermediate
+  enterprise
+  web-api
+  microservice
+
+Requires:
+  SKILL-LANG-JAVA-L1
+  spring-boot-3+
+  maven-or-gradle
+
+Avoid:
+  god-controller
+  anemic-domain
+  autowired-overuse
+  unchecked-exceptions
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  java
+  spring boot
+  spring framework
+  enterprise
+  rest api
+  dependency injection
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/java/L2-spring-boot.md
+
+Evidence:
+  - Spring Boot Documentation
+  - Spring Framework Guides
+  - Production experience
+
+Rules:
+  [J1] Use constructor injection, not field injection.
+  [J2] Use `@RestController` for APIs, `@Controller` for views.
+  [J3] Use `@Service` for business logic, not in controllers.
+  [J4] Use `@Repository` for data access layer.
+  [J5] Use `@Transactional` for database transactions.
+  [J6] Use `@Valid` for request validation.
+  [J7] Use `@ExceptionHandler` for global exception handling.
+  [J8] Use `application.yml` for configuration, not hardcoded values.
+
+Pros:
+  - Rapid development
+  - Large ecosystem
+  - Enterprise support
+
+Cons:
+  - Configuration complexity
+  - Memory overhead
+  - Learning curve
+
+Alternatives:
+  - Quarkus
+  - Micronaut
+  - Jakarta EE
+
+State: +
+

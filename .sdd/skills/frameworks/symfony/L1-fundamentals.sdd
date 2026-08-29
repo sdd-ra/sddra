@@ -1,0 +1,100 @@
+﻿# Symfony Framework
+
+Purpose:
+  Symfony Framework
+
+Skill: Symfony Framework
+
+ID:
+  SKILL-FW-SYMFONY-L1
+
+Domain:
+  frameworks/symfony
+
+Use:
+  building enterprise web applications with Symfony
+
+Apply:
+  intermediate
+  senior
+  enterprise
+  web-api
+
+Requires:
+  SKILL-LANG-PHP-L2
+  php-8.2+
+  composer
+
+Avoid:
+  over-engineering
+  bundle-hell
+  tight-coupling
+  ignoring-best-practices
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  symfony
+  php
+  enterprise
+  web framework
+  bundles
+  doctrine
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/symfony/L1-fundamentals.md
+
+Evidence:
+  - Symfony Documentation
+  - Symfony Best Practices
+  - Production experience
+
+Rules:
+  [S1] Use bundles for modularity.
+  [S2] Use Doctrine ORM for database.
+  [S3] Use Twig for templating.
+  [S4] Use dependency injection.
+  [S5] Use Symfony Security for auth.
+  [S6] Use Symfony Forms for validation.
+  [S7] Use Messenger for async.
+  [S8] Use API Platform for REST/GraphQL.
+
+Pros:
+  - Enterprise-grade
+  - Highly modular
+  - Long-term support
+
+Cons:
+  - Complexity
+  - Learning curve
+  - Verbosity
+
+Alternatives:
+  - Laravel (simpler)
+  - Django (Python)
+  - Spring Boot (Java)
+
+State: +
+

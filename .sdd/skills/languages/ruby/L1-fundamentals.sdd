@@ -1,0 +1,100 @@
+﻿# Ruby Fundamentals
+
+Purpose:
+  Ruby Fundamentals
+
+Skill: Ruby Fundamentals
+
+ID:
+  SKILL-LANG-RUBY-L1
+
+Domain:
+  languages/ruby
+
+Use:
+  writing Ruby programs and scripts
+
+Apply:
+  beginner
+  learning
+  scripting
+  web-development
+
+Requires:
+  ruby-3.2+
+  bundler
+
+Avoid:
+  monkey-patching
+  global-variables
+  rescue-none
+  metaprogramming-overuse
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  ruby
+  scripting
+  web development
+  rails
+  bundler
+  gem
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/ruby/L1-fundamentals.md
+
+Evidence:
+  - Ruby Documentation
+  - Ruby Style Guide
+  - Production experience
+
+Rules:
+  [R1] Use `snake_case` for methods and variables.
+  [R2] Use `CamelCase` for classes and modules.
+  [R3] Use symbols for identifiers.
+  [R4] Use blocks and iterators.
+  [R5] Use string interpolation.
+  [R6] Use `require_relative` for local files.
+  [R7] Use Bundler for dependencies.
+  [R8] Follow Ruby style guide.
+
+Pros:
+  - Elegant syntax
+  - Rapid development
+  - Great for scripting
+
+Cons:
+  - Slow performance
+  - Global method pollution
+  - Memory usage
+
+Alternatives:
+  - Go (faster)
+  - Python (similar)
+  - Crystal (typed Ruby)
+
+State: +
+

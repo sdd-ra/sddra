@@ -1,0 +1,129 @@
+# Pattern: Graceful Degradation
+
+Purpose:
+  Define degradation modes for the SDDRA system when components
+  fail or resources are limited. Ensures system remains partially
+  operational rather than completely failing.
+
+## Degradation Modes
+
+FULL:
+  Description: All features operational
+  Requirements: All components healthy
+  Capabilities:
+    - Full chain execution
+    - All skills available
+    - Full context loading
+    - Human gates active
+
+REDUCED:
+  Description: Non-critical features disabled
+  Trigger: Minor component failure, resource pressure
+  Capabilities:
+    - Chain execution (skip optional stages)
+    - Core skills only
+    - Reduced context (lazy loading)
+    - Human gates active for critical items
+  Restrictions:
+    - Skip observability stages
+    - Skip optional testing stages
+    - Use cached contexts only
+
+MINIMAL:
+  Description: Essential features only
+  Trigger: Major component failure, resource exhaustion
+  Capabilities:
+    - Basic chain execution (P1->D1->S1->C1 only)
+    - Essential skills only
+    - Minimal context
+    - Human approval for all gates
+  Restrictions:
+    - No R1 (review) - human reviews manually
+    - No DEP1 (deploy) - human deploys manually
+    - No parallel execution
+    - No caching
+
+READ_ONLY:
+  Description: Analysis only, no modifications
+  Trigger: System instability, audit mode
+  Capabilities:
+    - Read .sdd/ files
+    - Analyze project structure
+    - Generate reports
+  Restrictions:
+    - No file creation
+    - No modifications
+    - No chain execution
+    - No state changes
+
+## Degradation Triggers
+
+Resource-Based:
+  - Memory > 90%: REDUCED
+  - Memory > 95%: MINIMAL
+  - Disk < 1GB: READ_ONLY
+  - Token budget < 10%: MINIMAL
+
+Component-Based:
+  - Skill registry unavailable: REDUCED
+  - Context cache corrupted: REDUCED
+  - Graph engine failed: MINIMAL
+  - State tracker failed: READ_ONLY
+
+Failure-Based:
+  - 1-2 stage failures: REDUCED
+  - 3+ stage failures: MINIMAL
+  - Critical component failure: READ_ONLY
+
+## Degradation Actions
+
+On Degradation:
+  1. Detect degradation condition
+  2. Determine appropriate mode
+  3. Disable non-essential features
+  4. Notify human of degraded state
+  5. Continue with reduced capabilities
+  6. Log degradation event
+
+On Recovery:
+  1. Detect component recovery
+  2. Verify component health
+  3. Restore previous mode
+  4. Notify human of recovery
+  5. Resume full capabilities
+
+## Fallback Strategies
+
+Stage Fallbacks:
+  P1: Use cached analysis or ask human
+  D1: Use template defaults or cached docs
+  S1: Use template or cached .sdd/ state
+  C1: Generate minimal code, human completes
+  R1: Skip automated review, human reviews
+  DEP1: Skip automated deploy, human deploys
+
+Skill Fallbacks:
+  - If specific skill missing: use generic skill
+  - If skill fails: use manual process
+  - If skill unavailable: skip stage
+
+Context Fallbacks:
+  - If context cache corrupted: rebuild from scratch
+  - If context too large: reduce to essential only
+  - If context missing: use defaults
+
+## Monitoring
+
+Metrics:
+  current_mode: FULL|REDUCED|MINIMAL|READ_ONLY
+  degradation_count: integer
+  recovery_count: integer
+  time_in_degraded: duration
+  skipped_stages: list
+
+Alerts:
+  Mode change: notify human
+  Extended degradation: escalate
+  Recovery: log and notify
+
+State: +

@@ -1,0 +1,30 @@
+# Plugins: Index
+
+Purpose:
+  Plugin adapters for external skills mapped to SDDRA chain graph.
+  Only general-purpose skills are adapted; domain-specific ones are excluded.
+
+Files:
+  adapter-map: @adapter-map.sdd
+  brainstorming: @plugin-adapters/brainstorming.sdd
+  test-driven-development: @plugin-adapters/test-driven-development.sdd
+  systematic-debugging: @plugin-adapters/systematic-debugging.sdd
+  writing-plans: @plugin-adapters/writing-plans.sdd
+  using-git-worktrees: @plugin-adapters/using-git-worktrees.sdd
+  code-review: @plugin-adapters/code-review.sdd
+  dispatching-parallel-agents: @plugin-adapters/dispatching-parallel-agents.sdd
+  writing-skills: @plugin-adapters/writing-skills.sdd
+  verification-before-completion: @plugin-adapters/verification-before-completion.sdd
+
+External Repo:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01
+  Source: https://github.com/obra/superpowers
+
+Rules:
+  [PL1] Only general-purpose skills are adapted.
+  [PL2] Domain-specific skills are rejected.
+  [PL3] External dependencies are not added.
+  [PL4] Adapted skills MUST fit SDDRA token budget.
+  [PL5] Adapted skills MUST respect human gates.
+
+State: +

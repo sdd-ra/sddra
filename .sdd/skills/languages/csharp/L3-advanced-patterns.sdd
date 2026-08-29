@@ -1,0 +1,100 @@
+﻿# C# Advanced Patterns
+
+Purpose:
+  C# Advanced Patterns
+
+Skill: C# Advanced Patterns
+
+ID:
+  SKILL-LANG-CSHARP-L3
+
+Domain:
+  languages/csharp
+
+Use:
+  advanced C# patterns and performance optimization
+
+Apply:
+  senior
+  lead
+  architect
+  production
+
+Requires:
+  SKILL-LANG-CSHARP-L2
+  linq
+  async-programming
+
+Avoid:
+  premature-optimization
+  over-abstraction
+  ignoring-async
+  memory-leaks
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  csharp
+  advanced patterns
+  linq
+  async
+  performance
+  memory management
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/csharp/L3-advanced-patterns.md
+
+Evidence:
+  - C# Documentation
+  - .NET Performance Guide
+  - Production experience
+
+Rules:
+  [C1] Use LINQ for data queries.
+  [C2] Use `IAsyncEnumerable` for async streams.
+  [C3] Use `Span<T>` for memory efficiency.
+  [C4] Use `Memory<T>` for buffer management.
+  [C5] Avoid boxing/unboxing.
+  [C6] Use `ArrayPool<T>` for buffer pooling.
+  [C7] Profile with dotTrace/dotMemory.
+  [C8] Use `ValueTask` for high-performance async.
+
+Pros:
+  - Rich language features
+  - Good performance
+  - LINQ expressiveness
+
+Cons:
+  - Complex abstractions
+  - Memory pressure
+  - Learning curve
+
+Alternatives:
+  - Rust (safer)
+  - Go (simpler)
+  - C++ (manual control)
+
+State: +
+

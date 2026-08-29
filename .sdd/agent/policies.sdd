@@ -1,0 +1,80 @@
+﻿Policies: Agent
+
+Purpose:
+  Defines agent execution policies including policy inheritance,
+  conflict resolution, and stop conditions.
+
+PolicyHierarchy:
+  Global:
+    Applies to all projects
+  Project:
+    Applies to current project
+  Environment:
+    Applies to current environment (LOCAL, TEST, STAGING, PRODUCTION)
+  Domain:
+    Applies to current domain
+  Task:
+    Applies to current task
+  Action:
+    Applies to specific action
+
+ConflictResolution:
+  Most specific policy wins.
+  When in conflict, safer policy wins.
+
+StopConditions:
+  SECURITY_CRITICAL:
+    Stop immediately
+  POLICY_VIOLATION:
+    Stop immediately
+  CONTEXT_INSUFFICIENT:
+    Stop and request more context
+  UNSAFE_COMMAND:
+    Stop and report
+  PRODUCTION_RISK:
+    Stop and request approval
+  DATA_LOSS_RISK:
+    Stop and request approval
+  TEST_FAILURE:
+    Stop and report
+  UNEXPECTED_DIFF:
+    Stop and review
+
+StopActions:
+  STOP:
+    Halt execution
+  REPORT:
+    Report to user
+  WAIT:
+    Wait for human input
+
+QualityGates:
+  BUILD:
+    PASS / FAIL
+  TEST:
+    PASS / FAIL
+  BDD:
+    PASS / FAIL
+  SECURITY:
+    PASS / FAIL
+  LINT:
+    PASS / FAIL
+  TYPECHECK:
+    PASS / FAIL
+
+All gates MUST pass before marking task READY.
+
+BDDFirstEnforcement:
+  If project policy requires BDD:
+    Agent MUST create BDD scenario before implementation.
+
+PolicyRules:
+  [PL1]  Policy hierarchy: Global → Project → Environment → Domain → Task → Action.
+  [PL2]  Most specific policy wins.
+  [PL3]  When in conflict, safer policy wins.
+  [PL4]  Agent MUST stop on any stop condition.
+  [PL5]  All quality gates MUST pass before task completion.
+  [PL6]  BDD-first enforcement when project policy requires it.
+
+State: +
+  

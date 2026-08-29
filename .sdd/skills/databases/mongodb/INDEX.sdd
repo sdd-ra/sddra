@@ -1,0 +1,33 @@
+Skills: MongoDB
+
+Purpose:
+  MongoDB skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn MongoDB fundamentals
+  APPLY    — apply MongoDB patterns to schema
+  REVIEW   — review MongoDB skills
+  UPGRADE  — propose MongoDB skill upgrade
+
+Rules:
+  [M1]  Use embedded documents for one-to-few.
+  [M2]  Use references for one-to-many.
+  [M3]  Use appropriate data types.
+  [M4]  Use indexes for query performance.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  MongoDB: @databases/mongodb/INDEX.sdd
+  MongoL1: @databases/mongodb/L1-fundamentals.sdd
+
+State: +

@@ -1,0 +1,43 @@
+# Plugin: Writing Plans Adapter
+
+Purpose:
+  Adapt Superpowers writing-plans skill for SDDRA S1 arm.
+
+Source:
+  D:\Tasks\ai_code\sddra.ai\tmp\external-repo-audit\repo-01\skills\writing-plans\SKILL.md
+
+Original:
+  Breaks work into bite-sized tasks
+  Each task has exact file paths, complete code, verification steps
+
+Adapted for SDDRA:
+  Mapped to S1 arm task generation:
+    Input: approved docs/
+    Output: .sdd/project/tasks/*.sdd
+
+  Task structure:
+    id: TASK-XXX
+    title: <one line>
+    decision: DEC-XXX (linked decision)
+    chain: <chain type>
+    dependencies: [TASK IDs]
+    skills: [skill paths]
+    inputs: [references]
+    outputs: [file paths]
+    verification: [criteria]
+
+  Integration:
+    - Tasks created from approved decisions
+    - Each task references parent decision ID
+    - Dependencies resolved from project graph
+
+Usage:
+  Referenced by:
+    .sdd/chains/arms/sdd.sdd
+
+  Triggers:
+    - Human approves docs
+    - S1 arm execution
+    - Task generation needed
+
+State: Adapted

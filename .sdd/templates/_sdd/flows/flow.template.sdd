@@ -1,0 +1,147 @@
+﻿# Flow Template
+
+Purpose:
+  Template for module flow specifications.
+
+Flow: <MODULE_NAME>
+
+Chain:
+  AN > AR > DB > BE > API > FE > MD > QA > DO > VR
+
+Stages:
+
+  AN:
+    name: Analyze
+    input:
+      requirement
+      related_cases
+      existing_model
+    output:
+      analysis
+      affected_parts
+      required_stages
+    next:
+      AR
+    fail:
+      AN
+
+  AR:
+    name: Architecture
+    input:
+      analysis
+      dependencies
+      applicable_skills
+    output:
+      architecture_decision
+    next:
+      DB
+    fail:
+      AR
+
+  DB:
+    name: Database
+    condition:
+      database-impact
+    input:
+      data_requirements
+      existing_database_model
+    output:
+      database_decision
+    next:
+      BE
+    skip:
+      BE
+    fail:
+      DB
+
+  BE:
+    name: Backend
+    input:
+      architecture
+      database
+      backend_skills
+    output:
+      backend_implementation
+      tests
+    next:
+      API
+    fail:
+      BE
+
+  API:
+    name: API
+    condition:
+      api-impact
+    input:
+      backend_output
+    output:
+      api_contract
+    next:
+      FE
+    fail:
+      API
+
+  FE:
+    name: Frontend
+    input:
+      api_contract
+      frontend_skills
+    output:
+      frontend_implementation
+    next:
+      MD
+    fail:
+      FE
+
+  MD:
+    name: Mobile
+    condition:
+      mobile-impact
+    input:
+      api_contract
+      mobile_skills
+    output:
+      mobile_implementation
+    next:
+      QA
+    fail:
+      MD
+
+  QA:
+    name: Quality Assurance
+    input:
+      implementation
+      test_skills
+    output:
+      test_results
+    next:
+      DO
+    fail:
+      QA
+
+  DO:
+    name: DevOps
+    input:
+      implementation
+      devops_skills
+    output:
+      infrastructure
+    next:
+      VR
+    fail:
+      DO
+
+  VR:
+    name: Verify
+    input:
+      all_outputs
+    output:
+      verification_report
+    next:
+      DONE
+    fail:
+      VR
+
+
+State: +
+

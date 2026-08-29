@@ -1,0 +1,106 @@
+﻿# Security Controls
+
+Purpose:
+  Security control specifications for the SDDRA system.
+
+Spec: SecurityControls
+
+Controls:
+
+  SEC.SECRET:
+    detect exposed secrets
+    scan: truffleHog, gitleaks, detect-secrets
+    scope: source code, config, environment
+
+  SEC.DEP:
+    detect vulnerable dependencies
+    scan: npm audit, snyk, osv-scanner, grype
+    scope: package.json, go.mod, requirements.txt
+
+  SEC.SAST:
+    static code security analysis
+    scan: semgrep, bandit, eslint-plugin-security, gosec
+    scope: source code
+
+  SEC.DAST:
+    runtime application security testing
+    scan: owasp-zap, burp, nuclei
+    scope: running application
+
+  SEC.AUTH:
+    authentication/authorization validation
+    scan: custom tests, OWASP ASVS
+    scope: auth flows, session management
+
+  SEC.INPUT:
+    input validation
+    scan: custom tests, fuzzing
+    scope: API endpoints, forms, file uploads
+
+  SEC.RATE:
+    rate limiting
+    scan: custom tests, load testing
+    scope: API endpoints, public resources
+
+  SEC.AUDIT:
+    security-sensitive audit logging
+    scan: custom tests, log review
+    scope: auth, payment, admin actions
+
+  SEC.THREAT:
+    threat model review
+    scan: manual review, PASTA, STRIDE
+    scope: architecture, data flow, trust boundaries
+
+  SEC.PENTEST:
+    penetration testing
+    scan: manual pentest, automated tools
+    scope: public-facing components, auth, payment
+
+  SEC.CONTAINER:
+    container/image security
+    scan: trivy, anchore, docker scout
+    scope: Dockerfile, base images, runtime
+
+  SEC.SUPPLY:
+    software supply-chain security
+    scan: sigstore, slsa, dependency review
+    scope: build pipeline, dependencies, artifacts
+
+  SEC.DDOS:
+    DDoS readiness
+    scan: load testing, architecture review
+    scope: public endpoints, CDN, WAF, autoscaling
+
+  SEC.BUSINESS:
+    business logic security
+    scan: custom tests, BDD security scenarios
+    scope: payment, refund, auth, admin
+
+ControlSelection:
+  Controls are selected based on:
+    SecurityLevel (L0-L5)
+    Task risk (R0-R5)
+    Affected layers
+    Data sensitivity
+    External exposure
+
+  Mandatory controls (all projects):
+    SEC.SECRET
+    SEC.DEP
+    SEC.SAST
+
+  Conditional controls (based on risk/level):
+    R2+ → SEC.SAST, SEC.DEP, SEC.AUTH
+    R3+ → SEC.THREAT, SEC.DAST
+    R4+ → SEC.PENTEST, SEC.AUDIT
+    L3+ → SEC.DAST, SEC.THREAT
+    L4+ → SEC.PENTEST
+    L5+ → SEC.SUPPLY, SEC.CONTAINER, external assessment
+
+State: +
+  Note:
+  This file is the security controls
+  catalog. Each control has a unique ID, purpose, scan tools, and
+  scope. Controls are selected based on SecurityLevel and task risk,
+  not applied uniformly.

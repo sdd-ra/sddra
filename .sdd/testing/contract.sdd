@@ -1,0 +1,49 @@
+﻿Contract: SDD
+
+Purpose:
+  Contract testing — verify that service-to-service contracts are
+  honored. Contract tests ensure that providers and consumers agree
+  on the API schema and behavior, enabling independent deployment.
+
+Owns: ./
+
+Scope:
+  Provider contracts (what the service provides)
+  Consumer contracts (what the consumer expects)
+  Message schemas (events, commands, queries)
+  Schema evolution and compatibility
+
+Principles:
+  Contracts are shared agreements, not implementation details
+  Provider and consumer tests are separate
+  Contract changes require coordination
+  Breaking changes must be versioned
+
+Structure:
+  Every contract MUST define:
+    request/response schema
+    error responses
+    authentication requirements
+    rate limiting constraints
+    versioning strategy
+
+Frameworks:
+  Pact (provider/consumer)
+  Spring Cloud Contract
+  Schemathesis (OpenAPI)
+  GraphQL schema testing
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

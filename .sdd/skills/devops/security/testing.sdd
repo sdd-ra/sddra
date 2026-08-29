@@ -1,0 +1,70 @@
+# Skill: Security Testing
+
+Purpose:
+  Define security testing requirements for SDDRA system.
+  Ensures all code is tested for security vulnerabilities.
+
+ID: SKILL-DEVOPS-SECURITY-TESTING
+
+Domain: devops/security
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Before merging to master
+  - Before production deployment
+  - Regular security audits
+  - Vulnerability scanning
+
+Input:
+  - Code changes
+  - Dependencies
+  - Configuration
+
+Output:
+  - Security test results
+  - Vulnerability report
+  - Approval status
+
+Execute:
+  1. Run static analysis:
+     - SAST (Static Application Security Testing)
+     - Secret detection
+     - Dependency vulnerabilities
+  2. Run dynamic analysis:
+     - DAST (Dynamic Application Security Testing)
+     - API security testing
+  3. Run dependency scan:
+     - Check for known vulnerabilities
+     - Check for outdated dependencies
+  4. Run configuration audit:
+     - Check for insecure configurations
+     - Check for exposed secrets
+  5. Run penetration test:
+     - Test common attack vectors
+     - Test authentication/authorization
+  6. Generate security report
+  7. Return approval status
+
+Validation:
+  - No critical vulnerabilities
+  - No high vulnerabilities
+  - No exposed secrets
+  - Dependencies up to date
+  - Configuration secure
+
+Examples:
+  - Critical vulnerability found -> block
+  - Secret exposed -> block and alert
+  - Outdated dependency -> warn
+  - All secure -> approve
+
+Avoid:
+  - Skipping security tests
+  - Ignoring vulnerabilities
+  - Deploying with exposed secrets
+  - Using outdated dependencies
+
+State: +

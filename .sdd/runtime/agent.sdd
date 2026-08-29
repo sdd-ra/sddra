@@ -1,0 +1,57 @@
+﻿Agent: Runtime
+
+Purpose:
+  Defines agent runtime state for crash recovery and session
+  management.
+
+AgentConfig:
+  Mode:
+    AUTO | SUPERVISED | STRICT | AUDIT | READ_ONLY
+
+  Project:
+    <project-name>
+
+  SessionID:
+    <session-id>
+
+Session:
+  Started:
+    <timestamp>
+
+  CurrentTask:
+    <task-id>
+
+  CurrentPhase:
+    <phase>
+
+  LastStep:
+    <last-successful-step>
+
+  NextAction:
+    <next-action>
+
+Checkpoint:
+  Format:
+    CHECKPOINT-<timestamp>-<task-id>
+
+  Contents:
+    - Task state
+    - Phase state
+    - Generated files
+    - Test results
+    - Gate results
+
+Recovery:
+  On crash:
+    Read .sdd/runtime/current.sdd
+    Resume from exact state
+    Do NOT restart workflow
+
+RuntimeRules:
+  [RT1]  Agent state MUST be persisted after each step.
+  [RT2]  Crash recovery MUST resume from exact state.
+  [RT3]  Agent MUST NOT restart workflow on recovery.
+  [RT4]  Checkpoints MUST be created before risky operations.
+
+State: +
+  

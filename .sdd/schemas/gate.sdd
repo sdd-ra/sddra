@@ -1,0 +1,34 @@
+﻿Gate: Schema
+
+Purpose:
+  Defines schema for gate entities.
+
+Required:
+  @gate <id>
+  condition <condition>
+  evidence <evidence>
+  threshold <threshold>
+  owner <role>
+  decision <PASS|FAIL|BLOCKED|SKIPPED|WAIVED>
+
+Optional:
+  severity <BLOCKER|CRITICAL|HIGH|MEDIUM|LOW|INFO>
+  status <PENDING|RUNNING|PASSED|FAILED|BLOCKED|SKIPPED|WAIVED|EXPIRED>
+  waiver:
+    reason <reason>
+    approved <approver>
+    expires <date>
+  related <task-id>
+
+Example:
+  @gate SEC-GATE-001
+  condition No critical vulnerability
+  evidence SAST report
+  threshold Critical=0 High=0
+  owner Security
+  decision PASSED
+  severity BLOCKER
+  status PASSED
+
+State: +
+  

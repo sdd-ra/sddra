@@ -1,0 +1,101 @@
+﻿# Docker Kubernetes Integration
+
+Purpose:
+  Docker Kubernetes Integration
+
+Skill: Docker Kubernetes Integration
+
+ID:
+  SKILL-PLAT-DOCKER-L3
+
+Domain:
+  platforms/docker
+
+Use:
+  deploying Docker containers to Kubernetes
+
+Apply:
+  senior
+  lead
+  devops
+  production
+
+Requires:
+  SKILL-PLAT-DOCKER-L2
+  kubernetes-1.28+
+  kubectl
+
+Avoid:
+  privileged-containers
+  host-network
+  latest-tag
+  resource-unlimits
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  docker
+  kubernetes
+  k8s
+  container orchestration
+  deployment
+  pods
+  services
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/docker/L3-kubernetes.md
+
+Evidence:
+  - Kubernetes Documentation
+  - Docker Documentation
+  - Production experience
+
+Rules:
+  [D1] Use specific image digests in Kubernetes manifests.
+  [D2] Set resource requests and limits for all containers.
+  [D3] Use `readinessProbe` and `livenessProbe`.
+  [D4] Use `ConfigMap` and `Secret` for configuration.
+  [D5] Use `ServiceAccount` for pod identity.
+  [D6] Never run containers as root (`runAsNonRoot`).
+  [D7] Use `imagePullPolicy: IfNotPresent` for production.
+  [D8] Use `SecurityContext` to restrict capabilities.
+
+Pros:
+  - Automated deployment
+  - Self-healing
+  - Scalability
+
+Cons:
+  - Operational complexity
+  - Steep learning curve
+  - Resource overhead
+
+Alternatives:
+  - Docker Swarm (simpler)
+  - Nomad
+  - ECS
+
+State: +
+

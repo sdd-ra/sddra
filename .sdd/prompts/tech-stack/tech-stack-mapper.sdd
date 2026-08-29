@@ -1,0 +1,91 @@
+﻿# Tech Stack Mapper
+
+Purpose:
+  Tech Stack Mapper
+
+Skill: Tech Stack Mapper
+
+ID:
+  PROMPT-TECH-STACK-MAPPER
+
+Domain:
+  prompts/tech-stack
+
+Use:
+  extracting and mapping technologies from case.tech_stack
+
+Apply:
+  all-cases
+  role-assignment
+  provisioning
+
+Requires:
+  case-with-tech_stack
+
+Avoid:
+  missing-tech_stack
+  invalid-tech
+  ambiguous-mapping
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  tech stack
+  technology mapping
+  role assignment
+  skill resolution
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/prompts/tech-stack-mapper.md
+
+Evidence:
+  - SDDRA tech stack definitions
+  - Production experience
+
+Rules:
+  [T1] Extract all technologies from case.tech_stack.
+  [T2] Group technologies by category (language, framework, database, platform, messaging, cross-cutting).
+  [T3] Resolve each technology to its skill path in .sdd/skills/.
+  [T4] Identify primary and secondary roles per technology.
+  [T5] Identify provisioning requirements per technology.
+  [T6] Validate all skill paths exist before proceeding.
+  [T7] Flag missing or ambiguous technologies for human review.
+  [T8] Output structured tech_map for role assignment.
+
+Pros:
+  - Accurate skill resolution
+  - Clear role mapping
+  - Automated provisioning prep
+
+Cons:
+  - Requires complete tech_stack
+  - New tech needs manual mapping
+
+Alternatives:
+  - Manual skill loading
+  - Agent-based discovery
+
+State: +
+

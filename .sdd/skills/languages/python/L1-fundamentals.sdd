@@ -1,0 +1,100 @@
+﻿# Python Fundamentals
+
+Purpose:
+  Python Fundamentals
+
+Skill: Python Fundamentals
+
+ID:
+  SKILL-LANG-PYTHON-L1
+
+Domain:
+  languages/python
+
+Use:
+  writing basic Python programs
+
+Apply:
+  beginner
+  learning
+  scripting
+  automation
+
+Requires:
+  python-3.10+
+
+Avoid:
+  mutable-default-args
+  bare-except
+  global-variables
+  wildcard-import
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  python
+  basics
+  syntax
+  variables
+  functions
+  control flow
+  data types
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/python/L1-fundamentals.md
+
+Evidence:
+  - Python Official Documentation
+  - PEP 8 Style Guide
+  - Production experience
+
+Rules:
+  [P1] Use `snake_case` for variables and functions.
+  [P2] Use `PascalCase` for classes.
+  [P3] Use type hints for function signatures (Python 3.10+).
+  [P4] Use f-strings for string formatting.
+  [P5] Use list comprehensions for simple transformations.
+  [P6] Use `with` statement for file and resource handling.
+  [P7] Use `pathlib` instead of `os.path`.
+  [P8] Use `__init__.py` for package initialization.
+
+Pros:
+  - Easy to learn
+  - Large ecosystem
+  - Rapid development
+
+Cons:
+  - Slow execution
+  - GIL limitations
+  - Dynamic typing risks
+
+Alternatives:
+  - Go (faster, typed)
+  - Rust (safe, fast)
+  - TypeScript (web)
+
+State: +
+

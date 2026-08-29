@@ -1,0 +1,98 @@
+﻿# Terraform Fundamentals
+
+Purpose:
+  Terraform Fundamentals
+
+Skill: Terraform Fundamentals
+
+ID:
+  SKILL-PLAT-TERRAFORM-L1
+
+Domain:
+  platforms/terraform
+
+Use:
+  managing infrastructure as code with Terraform
+
+Apply:
+  beginner
+  intermediate
+  devops
+  infrastructure
+
+Requires:
+  terraform-1.5+
+  cloud-account
+
+Avoid:
+  hardcoded-values
+  state-file-in-git
+  resource-drift
+  manual-changes
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  terraform
+  iac
+  infrastructure as code
+  cloud
+  provisioning
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/terraform/L1-fundamentals.md
+
+Evidence:
+  - Terraform Documentation
+  - Terraform Best Practices
+  - Production experience
+
+Rules:
+  [T1] Use `.tf` files for resource definitions.
+  [T2] Use variables for configurable values.
+  [T3] Use outputs for important values.
+  [T4] Use `terraform.tfvars` for variable values.
+  [T5] Use remote state backend (S3, GCS, Azure Blob).
+  [T6] Use state locking (DynamoDB).
+  [T7] Use modules for reusable components.
+  [T8] Use `terraform plan` before `apply`.
+
+Pros:
+  - Declarative syntax
+  - Multi-cloud support
+  - Large provider ecosystem
+
+Cons:
+  - State management
+  - Learning curve
+  - Plan/apply cycle
+
+Alternatives:
+  - Pulumi
+  - CloudFormation
+  - CDK
+
+State: +
+

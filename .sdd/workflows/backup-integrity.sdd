@@ -1,0 +1,104 @@
+# Workflow: Backup & Integrity
+
+Purpose:
+  Define backup and integrity verification workflows for the .sdd/ system.
+  Ensures system can recover from corruption, accidental deletion,
+  or failed modifications.
+
+## Backup Strategy
+
+### Critical Files (Always Backed Up)
+  - .sdd/PROJECT.sdd
+  - .sdd/INDEX.sdd
+  - .sdd/protocol/ROOT.sdd
+  - .sdd/chains/graph.sdd
+  - .sdd/templates/INDEX.sdd
+  - .sdd/decisions/workflow.sdd
+  - .sdd/decisions/schema.sdd
+
+### Backup Location
+  .runtime/backup/
+    YYYY-MM-DDTHH-MM-SZ/
+      PROJECT.sdd
+      INDEX.sdd
+      ROOT.sdd
+      graph.sdd
+      templates/INDEX.sdd
+      manifest.json
+
+### Backup Policy
+  [B1] Auto-backup before any modification to critical files
+  [B2] Keep last 10 backups (rotation)
+  [B3] Backup includes file hash for integrity verification
+  [B4] Backup manifest tracks timestamp, file list, and hashes
+
+### Backup Command
+  /sdd-backup
+    Creates timestamped backup of critical files
+    Updates manifest
+    Rotates old backups (keeps last 10)
+
+### Restore Command
+  /sdd-restore --backup=YYYY-MM-DDTHH-MM-SZ
+    Restores critical files from backup
+    Validates hashes
+    Updates current state
+
+## Integrity Verification
+
+### Verification Points
+  1. On system load (read .sdd/ files)
+  2. Before chain execution (/sdd command)
+  3. After modification (write .sdd/ files)
+  4. Periodic health check (/sdd-health)
+
+### Verification Method
+  - Compute SHA-256 hash of each critical file
+  - Compare with stored hash in manifest
+  - Alert on mismatch
+  - Optionally auto-restore from backup
+
+### Integrity Levels
+  CRITICAL:
+    Files: PROJECT.sdd, INDEX.sdd, ROOT.sdd, graph.sdd
+    Action: FAIL if corrupted, auto-restore from backup
+
+  IMPORTANT:
+    Files: templates/INDEX.sdd, decisions/workflow.sdd
+    Action: WARN if corrupted, prompt for restore
+
+  STANDARD:
+    Files: All other .sdd/ files
+    Action: LOG corruption, continue with caution
+
+## Recovery Workflow
+
+### Recovery Triggers
+  - File not found
+  - Hash mismatch
+  - Parse error
+  - Reference resolution failure
+
+### Recovery Steps
+  1. Detect corruption
+  2. Check for backup
+  3. If backup exists: restore and verify
+  4. If no backup: escalate to human
+  5. Log recovery action
+  6. Update state
+
+### Recovery States
+  RECOVERED:
+    Backup restored successfully
+    System operational
+
+  DEGRADED:
+    Partial recovery
+    Some features unavailable
+    Human notified
+
+  FAILED:
+    Cannot recover
+    Human intervention required
+
+## State: +

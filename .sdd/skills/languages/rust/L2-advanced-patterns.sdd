@@ -1,0 +1,101 @@
+﻿# Rust Advanced Patterns
+
+Purpose:
+  Rust Advanced Patterns
+
+Skill: Rust Advanced Patterns
+
+ID:
+  SKILL-LANG-RUST-L2
+
+Domain:
+  languages/rust
+
+Use:
+  writing idiomatic Rust with advanced patterns
+
+Apply:
+  intermediate
+  senior
+  library-development
+  maintainability
+
+Requires:
+  SKILL-LANG-RUST-L1
+  lifetimes
+  traits
+
+Avoid:
+  fighting-borrow-checker
+  over-abstraction
+  clone-everywhere
+  unsafe-abuse
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  rust
+  advanced patterns
+  traits
+  lifetimes
+  generics
+  smart pointers
+  error handling
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/rust/L2-advanced-patterns.md
+
+Evidence:
+  - Rust API Guidelines
+  - Rustonomicon
+  - Production experience
+
+Rules:
+  [R1] Use `derive` macros for common traits.
+  [R2] Use `Arc<T>` for shared ownership across threads.
+  [R3] Use `Rc<T>` for shared ownership in single-threaded contexts.
+  [R4] Use `Box<T>` for heap allocation.
+  [R5] Use `thiserror` for error types.
+  [R6] Use `anyhow` for application-level errors.
+  [R7] Use `Cow<'a, T>` for clone-on-write.
+  [R8] Use builder pattern for complex structs.
+
+Pros:
+  - Type-safe abstractions
+  - Zero-cost patterns
+  - Excellent tooling
+
+Cons:
+  - Complex syntax
+  - Learning curve
+  - Compile times
+
+Alternatives:
+  - Go (simpler)
+  - Haskell (pure FP)
+  - C++ (manual control)
+
+State: +
+

@@ -1,0 +1,100 @@
+﻿# PHP Fundamentals
+
+Purpose:
+  PHP Fundamentals
+
+Skill: PHP Fundamentals
+
+ID:
+  SKILL-LANG-PHP-L1
+
+Domain:
+  languages/php
+
+Use:
+  writing basic PHP programs and web scripts
+
+Apply:
+  beginner
+  learning
+  web-development
+  scripting
+
+Requires:
+  php-8.2+
+  composer
+
+Avoid:
+  global-state
+  raw-sql-injection
+  mixing-logic-view
+  deprecated-features
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  php
+  web development
+  scripting
+  laravel
+  composer
+  backend
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/php/L1-fundamentals.md
+
+Evidence:
+  - PHP Documentation
+  - PHP The Right Way
+  - Production experience
+
+Rules:
+  [P1] Use strict types (`declare(strict_types=1)`).
+  [P2] Use `match` expressions (PHP 8.0+).
+  [P3] Use `readonly` properties (PHP 8.1+).
+  [P4] Use `enum` for fixed value sets (PHP 8.1+).
+  [P5] Use `nullsafe` operator (`?->`).
+  [P6] Use named arguments for clarity.
+  [P7] Use Composer for dependency management.
+  [P8] Use PSR standards (PSR-1, PSR-4, PSR-12).
+
+Pros:
+  - Easy deployment
+  - Large ecosystem
+  - Mature frameworks
+
+Cons:
+  - Inconsistent standard library
+  - Legacy codebases
+  - Security history
+
+Alternatives:
+  - Go (simpler, faster)
+  - Python (cleaner)
+  - Rust (safer)
+
+State: +
+

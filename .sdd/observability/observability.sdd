@@ -1,0 +1,35 @@
+# Observability
+
+Purpose:
+  Observability pillars and requirements for the SDDRA system.
+
+Observability: sddra
+
+Pillars:
+  - Logs: Structured logging with correlation IDs
+  - Metrics: Business and technical metrics
+  - Traces: Distributed tracing across services
+
+Requirements:
+  Logs:
+    - All errors MUST be logged
+    - All security events MUST be logged
+    - Logs MUST include tenant_id, correlation_id, actor_id
+
+  Metrics:
+    - Request latency per endpoint
+    - Error rate per service
+    - Business metrics (payments, enrollments)
+
+  Traces:
+    - Every request MUST have trace_id
+    - Trace MUST span all services
+    - Trace MUST include .sdd stage information
+
+Rules:
+  [OBS1] All production services MUST emit metrics.
+  [OBS2] All errors MUST be logged with context.
+  [OBS3] Distributed tracing MUST be enabled.
+   [OBS4] Alerts MUST be defined for critical paths.
+
+State: +

@@ -1,0 +1,131 @@
+﻿Observability: SDD
+
+Purpose:
+  Observability technology catalog with monitoring, logging, tracing,
+  and alerting options. Root stack/ defines reusable observability knowledge;
+  project/stack/ stores the selected observability stack for the project.
+
+Catalog:
+  Prometheus:
+    Type: Metrics
+    Pros:
+      - Open source
+      - Pull-based
+      - Multi-dimensional data model
+      - Alertmanager integration
+    Cons:
+      - No long-term storage
+      - No native distributed tracing
+    BestFor:
+      - Container metrics
+      - Service monitoring
+      - Alerting
+    AvoidWhen:
+      - Long-term metrics storage
+    Integration:
+      - Node exporter
+      - Grafana
+      - Alertmanager
+
+  Grafana:
+    Type: Visualization
+    Pros:
+      - Rich dashboards
+      - Multi-datasource
+      - Alerting
+      - Open source
+    Cons:
+      - Learning curve for complex dashboards
+    BestFor:
+      - Metrics visualization
+      - Operations dashboards
+      - SLA monitoring
+    AvoidWhen:
+      - Simple metrics
+
+  Loki:
+    Type: Logging
+    Pros:
+      - LogQL query language
+      - Grafana integration
+      - Cost-effective
+      - Labels for indexing
+    Cons:
+      - Full-text search limited
+      - Newer than ELK
+    BestFor:
+      - Application logs
+      - Kubernetes logs
+      - Cost-sensitive logging
+    AvoidWhen:
+      - Complex log analytics
+
+  Jaeger:
+    Type: Distributed Tracing
+    Pros:
+      - Open source
+      - CNCF project
+      - OpenTracing compatible
+      - Kubernetes native
+    Cons:
+      - Storage overhead
+      - Sampling complexity
+    BestFor:
+      - Microservice tracing
+      - Performance debugging
+      - Distributed systems
+    AvoidWhen:
+      - Simple monoliths
+
+  OpenTelemetry:
+    Type: Observability Framework
+    Pros:
+      - Vendor-neutral
+      - Signals: metrics, logs, traces
+      - Wide language support
+      - CNCF project
+    Cons:
+      - Still maturing
+      - Setup complexity
+    BestFor:
+      - Modern observability
+      - Vendor portability
+      - Multi-signal correlation
+    AvoidWhen:
+      - Simple single-signal needs
+
+  Sentry:
+    Type: Error Tracking
+    Pros:
+      - Excellent error grouping
+      - Release tracking
+      - Performance monitoring
+      - Multi-language
+    Cons:
+      - Cost at scale
+      - Data retention limits
+    BestFor:
+      - Application error tracking
+      - Performance monitoring
+      - Release health
+    AvoidWhen:
+      - Free tier only
+
+SelectionRules:
+  - Metrics: need for metrics collection and alerting
+  - Logs: logging volume and retention requirements
+  - Traces: distributed tracing needs
+  - Budget: observability budget constraints
+  - Integration: compatibility with existing stack
+  - TeamFit: existing observability expertise
+
+TechnologyScore:
+  Metrics: 0-25
+  Logs: 0-20
+  Traces: 0-15
+  Budget: 0-10
+  Integration: 0-15
+  TeamFit: 0-15
+
+State: +
+  

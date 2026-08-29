@@ -1,0 +1,100 @@
+﻿# PHP Modern Development
+
+Purpose:
+  PHP Modern Development
+
+Skill: PHP Modern Development
+
+ID:
+  SKILL-LANG-PHP-L2
+
+Domain:
+  languages/php
+
+Use:
+  modern PHP development with frameworks and best practices
+
+Apply:
+  intermediate
+  senior
+  web-api
+  enterprise
+
+Requires:
+  SKILL-LANG-PHP-L1
+  laravel-or-symfony
+  php-8.2+
+
+Avoid:
+  global-state
+  raw-sql
+  god-class
+  mixing-concerns
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  php
+  laravel
+  symfony
+  modern php
+  dependency injection
+  eloquent
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/php/L2-modern-development.md
+
+Evidence:
+  - Laravel Documentation
+  - Symfony Documentation
+  - PHP The Right Way
+
+Rules:
+  [P1] Use Laravel or Symfony framework.
+  [P2] Use dependency injection.
+  [P3] Use Eloquent ORM or Doctrine.
+  [P4] Use repositories for data access.
+  [P5] Use services for business logic.
+  [P6] Use form requests for validation.
+  [P7] Use resource classes for API responses.
+  [P8] Use events and listeners for decoupling.
+
+Pros:
+  - Rapid development
+  - Large ecosystem
+  - Good documentation
+
+Cons:
+  - Magic behavior
+  - Performance overhead
+  - Learning curve
+
+Alternatives:
+  - Go (simpler)
+  - Node.js (JS everywhere)
+  - Python (cleaner)
+
+State: +
+

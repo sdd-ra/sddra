@@ -1,0 +1,70 @@
+﻿Graph: SDD
+
+Purpose:
+  Engineering Knowledge Graph and Traceability Engine. Connects
+  all .sdd system elements into a single traceable engineering
+  model. Graph stores relationships, indexes, traces, and impact
+  — NOT copies of source files.
+
+Owns: ./
+
+ReadOrder:
+   1  @model.sdd (entity and relationship data model)
+   2  @nodes.sdd
+   3  @relations.sdd
+   4  @traceability.sdd
+   5  @impact.sdd
+   6  @ownership.sdd
+   7  @dependencies.sdd
+   8  @coverage.sdd
+   9  @drift.sdd
+
+Modes:
+  IMPLEMENT — task implementation context
+  DEBUG     — incident debugging context
+  SECURITY  — security analysis context
+  SUPPORT   — support/troubleshooting context
+  AUDIT     — full traceability audit
+
+Rules:
+  [GR1]  Graph stores relationships, NOT copies of source files.
+  [GR2]  Every major object is a node with standardized ID.
+  [GR3]  Every relationship uses standard relation types.
+  [GR4]  Task execution order comes from dependency graph, NOT task ID.
+  [GR5]  Graph MUST detect cycles (TASK-CYCLE).
+  [GR6]  Graph MUST support forward and reverse impact analysis.
+  [GR7]  Graph MUST calculate blast radius for changes.
+  [GR8]  Graph MUST track coverage (BDD, Unit, Integration, Security, etc.).
+  [GR9]  Graph MUST detect drift between .sdd and source.
+  [GR10] Graph MUST detect untraceable changes.
+  [GR11] Decision history MUST be preserved (SUPERSEDES).
+  [GR12] Graph MUST support scale-aware analysis.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    nodes
+    relations
+    traceability
+    impact
+    ownership
+    dependencies
+    coverage
+    drift
+
+Navigation:
+  Graph: @graph/INDEX.sdd
+  Model: @graph/model.sdd
+  Nodes: @graph/nodes.sdd
+  Relations: @graph/relations.sdd
+  Traceability: @graph/traceability.sdd
+  Impact: @graph/impact.sdd
+  Ownership: @graph/ownership.sdd
+  Dependencies: @graph/dependencies.sdd
+  Coverage: @graph/coverage.sdd
+  Drift: @graph/drift.sdd
+
+State: +
+  

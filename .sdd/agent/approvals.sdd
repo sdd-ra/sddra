@@ -1,0 +1,49 @@
+﻿Approvals: Agent
+
+Purpose:
+  Defines approval requirements and escalation rules.
+
+ApprovalLevels:
+  AUTO:
+    No approval required
+  AUTO_REWORK:
+    Auto-execute, rework on failure
+  REVIEW_REQUIRED:
+    Human review required after execution
+  HUMAN_APPROVAL:
+    Human approval required before execution
+  EXPLICIT_APPROVAL:
+    Explicit human approval with confirmation
+
+ApprovalMatrix:
+  R0:
+    AUTO
+  R1:
+    AUTO
+  R2:
+    AUTO / POLICY
+  R3:
+    APPROVAL
+  R4:
+    APPROVAL
+  R5:
+    EXPLICIT_APPROVAL
+
+Escalation:
+  AUTO:
+    Execute
+  RETRY:
+    Retry up to 3 times
+  ALTERNATIVE:
+    Try alternative approach
+  HUMAN_REVIEW:
+    Escalate to human
+
+EscalationRules:
+  [AP1]  After 3 failed attempts, agent MUST escalate to human.
+  [AP2]  Production actions ALWAYS require explicit approval.
+  [AP3]  Agent MUST NOT auto-approve actions with data loss risk.
+  [AP4]  Agent MUST record approval decision in audit log.
+
+State: +
+  

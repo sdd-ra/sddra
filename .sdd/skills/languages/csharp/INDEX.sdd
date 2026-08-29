@@ -1,0 +1,37 @@
+Skills: C# Language
+
+Purpose:
+  C# programming language skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-enterprise-development.sdd
+   4  @L3-advanced-patterns.sdd
+
+Modes:
+  LEARN    — learn C# fundamentals
+  APPLY    — apply C# patterns to code
+  REVIEW   — review C# skills
+  UPGRADE  — propose C# skill upgrade
+
+Rules:
+  [C1]  Use async/await for async code.
+  [C2]  Use nullable reference types.
+  [C3]  Use dependency injection.
+  [C4]  Follow .NET conventions.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  CSharp: @languages/csharp/INDEX.sdd
+  CSL1: @languages/csharp/L1-fundamentals.sdd
+  CSL2: @languages/csharp/L2-enterprise-development.sdd
+  CSL3: @languages/csharp/L3-advanced-patterns.sdd
+
+State: +

@@ -1,0 +1,100 @@
+﻿# Rust Web and Systems
+
+Purpose:
+  Rust Web and Systems
+
+Skill: Rust Web and Systems
+
+ID:
+  SKILL-LANG-RUST-L4
+
+Domain:
+  languages/rust
+
+Use:
+  building production-grade Rust systems and web services
+
+Apply:
+  lead
+  architect
+  production
+  high-performance
+
+Requires:
+  SKILL-LANG-RUST-L3
+  axum-or-actix
+  sqlx-or-diesel
+
+Avoid:
+  over-engineering
+  premature-optimization
+  ignoring-ergonomics
+  blocking-runtime
+
+Level:
+  L4
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  rust
+  web services
+  axum
+  actix
+  systems programming
+  high performance
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/rust/L4-web-systems.md
+
+Evidence:
+  - Axum Documentation
+  - Actix Web Documentation
+  - Production experience
+
+Rules:
+  [R1] Use Axum for web frameworks.
+  [R2] Use SQLx for database access.
+  [R3] Use `serde` for serialization.
+  [R4] Use `tracing` for structured logging.
+  [R5] Implement health checks.
+  [R6] Use graceful shutdown.
+  [R7] Use configuration management.
+  [R8] Use containerization for deployment.
+
+Pros:
+  - Extreme performance
+  - Memory safety
+  - Small binaries
+
+Cons:
+  - Ecosystem maturity
+  - Developer availability
+  - Compile times
+
+Alternatives:
+  - Go (simpler)
+  - C++ (manual control)
+  - Zig (simpler than Rust)
+
+State: +
+

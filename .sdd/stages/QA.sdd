@@ -1,0 +1,53 @@
+﻿Spec: Stage
+
+ID:
+  @QA
+
+Purpose:
+  Quality assurance and testing.
+
+Entry:
+  implementation complete
+  tests written
+  applicable skills loaded
+
+Must:
+  run all tests
+  verify quality gates
+  check architecture constraints
+  validate security baseline
+  generate QA report
+
+Exit:
+  all tests pass
+  quality gates met
+  architecture constraints verified
+  security baseline passed
+  QA report approved
+
+OnFail:
+  classify failure
+    code defect -> owner stage
+    requirement defect -> AR
+    infrastructure -> DO
+  << QA
+
+Next:
+  SC
+  DO
+
+Review:
+  @QA/test-report
+  @SC/security-review
+
+Risk:
+  R2
+
+Skills:
+  @qa/testing
+  @qa/automation
+  @qa/bdd
+  @qa/performance
+
+State: +
+  

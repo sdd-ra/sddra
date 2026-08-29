@@ -1,0 +1,102 @@
+﻿# Python Data Engineering
+
+Purpose:
+  Python Data Engineering
+
+Skill: Python Data Engineering
+
+ID:
+  SKILL-LANG-PYTHON-L5
+
+Domain:
+  languages/python
+
+Use:
+  building data pipelines and analytics systems
+
+Apply:
+  architect
+  senior
+  data-engineering
+  machine-learning
+
+Requires:
+  SKILL-LANG-PYTHON-L4
+  pandas
+  pyspark
+  airflow
+
+Avoid:
+  unbounded-queries
+  memory-overflow
+  missing-data-quality
+  tight-coupling
+
+Level:
+  L5
+
+Status:
+  EXPERIMENTAL
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  python
+  data engineering
+  pandas
+  pyspark
+  airflow
+  etl
+  data pipeline
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/python/L5-data-engineering.md
+
+Evidence:
+  - Apache Spark Documentation
+  - Airflow Documentation
+  - Production experience
+
+Rules:
+  [P1] Use Pandas for in-memory data processing.
+  [P2] Use PySpark for large-scale distributed processing.
+  [P3] Use Airflow for workflow orchestration.
+  [P4] Implement data quality checks at every pipeline stage.
+  [P5] Use Parquet for columnar storage.
+  [P6] Implement idempotent data pipelines.
+  [P7] Use Dask for parallel computing in Python.
+  [P8] Monitor pipeline latency and data freshness.
+
+Pros:
+  - Rich data ecosystem
+  - Rapid prototyping
+  - ML integration
+
+Cons:
+  - Memory limitations
+  - GIL for CPU-bound work
+  - Dependency management
+
+Alternatives:
+  - Scala/Spark (big data)
+  - Rust (performance)
+  - SQL (declarative)
+
+State: +
+

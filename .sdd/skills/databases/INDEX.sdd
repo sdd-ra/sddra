@@ -1,0 +1,45 @@
+Skills: Databases
+
+Purpose:
+  Database technology skills organized by technology and competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @postgresql/
+   3  @mongodb/
+   4  @redis/
+   5  @mysql/
+
+Modes:
+  LEARN    — learn database fundamentals
+  APPLY    — apply database skills to schema
+  REVIEW   — review database skills
+  UPGRADE  — propose database skill upgrade
+
+Rules:
+  [D1]  Skills MUST be organized by database technology.
+  [D2]  Each database MUST have L1-L4 layers.
+  [D3]  Skills MUST cover schema design and optimization.
+  [D4]  Skills MUST be loaded on demand.
+  [D5]  Database skills MUST NOT contain project-specific content.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    postgresql
+    mongodb
+    redis
+    mysql
+
+Navigation:
+  Databases: @databases/INDEX.sdd
+  PostgreSQL: @databases/postgresql/INDEX.sdd
+  MongoDB: @databases/mongodb/INDEX.sdd
+  Redis: @databases/redis/INDEX.sdd
+  MySQL: @databases/mysql/INDEX.sdd
+
+State: +

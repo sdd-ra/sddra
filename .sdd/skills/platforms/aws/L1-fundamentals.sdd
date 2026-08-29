@@ -1,0 +1,100 @@
+﻿# AWS Cloud Fundamentals
+
+Purpose:
+  AWS Cloud Fundamentals
+
+Skill: AWS Cloud Fundamentals
+
+ID:
+  SKILL-PLAT-AWS-L1
+
+Domain:
+  platforms/aws
+
+Use:
+  deploying applications on AWS
+
+Apply:
+  beginner
+  learning
+  cloud
+  production
+
+Requires:
+  aws-account
+  cloud-fundamentals
+
+Avoid:
+  hardcoded-credentials
+  public-buckets
+  over-provisioning
+  missing-monitoring
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  aws
+  amazon web services
+  cloud
+  ec2
+  s3
+  rds
+  lambda
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/aws/L1-fundamentals.md
+
+Evidence:
+  - AWS Documentation
+  - AWS Well-Architected Framework
+  - Production experience
+
+Rules:
+  [A1] Use IAM roles, not access keys.
+  [A2] Use S3 for object storage.
+  [A3] Use RDS for managed databases.
+  [A4] Use Lambda for serverless functions.
+  [A5] Use CloudFormation/Terraform for IaC.
+  [A6] Use CloudWatch for monitoring.
+  [A7] Use VPC for network isolation.
+  [A8] Use IAM policies for least privilege.
+
+Pros:
+  - Wide service range
+  - Global infrastructure
+  - Pay-as-you-go
+
+Cons:
+  - Cost management
+  - Complexity
+  - Vendor lock-in
+
+Alternatives:
+  - Azure
+  - GCP
+  - DigitalOcean
+
+State: +
+

@@ -1,0 +1,53 @@
+﻿Gate: DEPENDENCY
+
+Purpose:
+  Dependency security scan — check third-party dependencies for
+  known vulnerabilities.
+
+AppliesTo:
+  - All dependencies
+  - Package manifests (package.json, go.mod, requirements.txt, etc.)
+  - Lock files
+  - Container images
+
+When:
+  - All code changes that modify dependencies
+  - Before QA stage
+  - Before SC stage
+  - CI/CD pipeline
+
+Tools:
+  - OWASP Dependency-Check
+  - Snyk
+  - Trivy
+  - Grype
+  - npm audit / yarn audit
+  - govulncheck
+
+MustPass:
+  - No CRITICAL vulnerabilities
+  - No HIGH vulnerabilities with exploit
+  - No dependencies with known active exploitation
+
+MayPass:
+  - HIGH vulnerabilities without exploit, with accepted risk
+  - MEDIUM vulnerabilities with accepted risk
+  - LOW vulnerabilities
+
+Block:
+  - CRITICAL vulnerability with exploit
+  - HIGH vulnerability with active exploitation
+  - Dependency with CVE actively exploited in the wild
+
+OnFail:
+  - Finding created for each vulnerable dependency
+  - Task created for each finding
+  - Chain returns to responsible stage
+  - After fix/update, DEPENDENCY re-scans
+
+Exceptions:
+  - Dev dependencies MAY have higher tolerance
+  - Transitive dependencies MAY be accepted if direct dependency cannot be updated
+
+State: +
+  

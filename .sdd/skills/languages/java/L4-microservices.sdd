@@ -1,0 +1,100 @@
+﻿# Java Microservices
+
+Purpose:
+  Java Microservices
+
+Skill: Java Microservices
+
+ID:
+  SKILL-LANG-JAVA-L4
+
+Domain:
+  languages/java
+
+Use:
+  building production-grade Java microservices
+
+Apply:
+  lead
+  architect
+  distributed-system
+  production
+
+Requires:
+  SKILL-LANG-JAVA-L3
+  spring-cloud
+  kubernetes
+  message-broker
+
+Avoid:
+  shared-database
+  tight-coupling
+  synchronous-chains
+  monolith-in-disguise
+
+Level:
+  L4
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  java
+  microservices
+  spring cloud
+  kubernetes
+  resilience
+  distributed tracing
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/java/L4-microservices.md
+
+Evidence:
+  - Spring Cloud Documentation
+  - Kubernetes Documentation
+  - Production experience
+
+Rules:
+  [J1] Use Spring Cloud for service discovery and configuration.
+  [J2] Use Resilience4j for circuit breaking and rate limiting.
+  [J3] Use Spring Cloud Gateway for API gateway.
+  [J4] Implement distributed tracing with Micrometer Tracing.
+  [J5] Use Kubernetes for deployment and scaling.
+  [J6] Implement health checks with Spring Boot Actuator.
+  [J7] Use message brokers (Kafka/RabbitMQ) for async communication.
+  [J8] Implement graceful shutdown with shutdown hooks.
+
+Pros:
+  - Scalable architecture
+  - Independent deployment
+  - Enterprise ecosystem
+
+Cons:
+  - Operational complexity
+  - Memory footprint
+  - Network latency
+
+Alternatives:
+  - Quarkus (lower memory)
+  - Go (simpler concurrency)
+
+State: +
+

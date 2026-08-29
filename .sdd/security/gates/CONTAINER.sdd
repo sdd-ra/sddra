@@ -1,0 +1,58 @@
+﻿Gate: CONTAINER
+
+Purpose:
+  Container security — ensure container images and deployments
+  follow security best practices.
+
+AppliesTo:
+  - Docker images
+  - Kubernetes deployments
+  - Container registries
+  - Container runtime configurations
+
+When:
+  - All infrastructure changes
+  - Before DO stage
+  - Before production deployment
+  - CI/CD pipeline
+
+Tools:
+  - Trivy
+  - Grype
+  - Docker Bench
+  - kube-bench
+  - kube-hunter
+
+MustPass:
+  - No CRITICAL vulnerabilities in base image
+  - No HIGH vulnerabilities in base image
+  - No secrets in environment variables
+  - No root user in container
+  - No privileged mode
+  - No host namespace sharing
+  - Resource limits defined
+  - Read-only root filesystem where possible
+
+MayPass:
+  - MEDIUM vulnerabilities with accepted risk
+  - LOW vulnerabilities
+
+Block:
+  - CRITICAL vulnerability in base image
+  - HIGH vulnerability with exploit in base image
+  - Running as root
+  - Privileged mode
+  - Secrets in environment variables
+  - Host namespace sharing
+
+OnFail:
+  - Finding created for each violation
+  - Task created for each finding
+  - Chain returns to DO stage
+  - After fix, CONTAINER re-scans
+
+Exceptions:
+  - Legacy images MAY be accepted with explicit decision and migration plan
+
+State: +
+  

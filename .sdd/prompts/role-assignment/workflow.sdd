@@ -1,0 +1,49 @@
+Workflow: Role Assignment
+
+Purpose:
+  Propose role assignments for each technology in tech_stack,
+  wait for human approval, then trigger provisioning.
+
+Inputs:
+  - tech_map.json
+  - role_assignments.json
+  - human approval
+
+Outputs:
+  - approved_roles.json
+  - provisioning_plan.json
+
+Steps:
+  1. PROPOSE:
+     - Load tech_map.json
+     - For each technology:
+       - Propose primary role
+       - Propose secondary roles if applicable
+       - Estimate required skill level
+     - Generate human-readable proposal
+     - Include reasoning for each assignment
+
+  2. HUMAN_REVIEW:
+     - Present proposal to human
+     - Collect feedback
+     - If approved → proceed to APPROVED
+     - If rejected → return to PROPOSE with feedback
+
+  3. APPROVED:
+     - Record approval in case.decisions
+     - Mark approval_required items as approved
+     - Generate approved_roles.json
+
+  4. TRIGGER_PROVISIONING:
+     - For each approved technology:
+       - Check if provisioning required
+       - Load provisioning template
+       - Execute provisioning in dependency order
+     - Track provisioning state
+
+Validation:
+  - All roles MUST be approved before provisioning
+  - Approval MUST be recorded with reviewer identity
+  - Provisioning MUST be idempotent
+
+State: +

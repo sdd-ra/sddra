@@ -1,0 +1,55 @@
+﻿State: Orchestrator
+
+Purpose:
+  Defines orchestrator state machine and crash recovery.
+
+AgentStates:
+  DISCOVERING:
+    Analyzing project structure and stack
+  ANALYZING:
+    Understanding requirements and context
+  PLANNING:
+    Creating task plan and architecture
+  WAITING:
+    Waiting for human approval
+  IMPLEMENTING:
+    Writing code
+  TESTING:
+    Running tests and gates
+  VERIFYING:
+    Verifying quality and security
+  RELEASING:
+    Preparing release
+  DEPLOYING:
+    Deploying to environment
+  OBSERVING:
+    Monitoring runtime
+  COMPLETED:
+    Task finished successfully
+  FAILED:
+    Task failed, recovery needed
+
+StatePersistence:
+  .sdd/runtime/agent.sdd:
+    Agent configuration and mode
+  .sdd/runtime/session.sdd:
+    Current session info
+  .sdd/runtime/current.sdd:
+    Current task, phase, last step, next action
+  .sdd/runtime/checkpoints/:
+    Recovery checkpoints
+
+CrashRecovery:
+  On restart:
+    Read .sdd/runtime/current.sdd
+    Resume from exact state
+    Do NOT restart entire workflow
+
+StateRules:
+  [ST1]  Agent state MUST be persisted after each step.
+  [ST2]  Crash recovery MUST resume from exact state, not restart.
+  [ST3]  Agent MUST NOT restart workflow on recovery.
+  [ST4]  State MUST include current task, phase, last step, next action.
+
+State: +
+  

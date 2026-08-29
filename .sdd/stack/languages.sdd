@@ -1,0 +1,319 @@
+﻿Languages: SDD
+
+Purpose:
+  Programming language catalog with metadata for AI-driven technology
+  selection. Each language entry provides objective decision criteria,
+  not preferences.
+
+Catalog:
+  Go:
+    Pros:
+      - Strong concurrency model (goroutines)
+      - Simple deployment (single binary)
+      - Good performance for I/O-bound workloads
+      - Strong standard library
+    Cons:
+      - Smaller ecosystem than Java/Node
+      - Less mature ORM options
+      - Steeper learning curve for OOP developers
+    BestFor:
+      - High-concurrency services
+      - Microservices and APIs
+      - CLI tools and DevOps utilities
+    AvoidWhen:
+      - Heavy DOM manipulation required
+      - Complex enterprise integration patterns
+    Performance:
+      - Fast compilation
+      - Low memory footprint
+      - Excellent for network services
+    Ecosystem:
+      - Moderate (growing rapidly)
+      - Strong in cloud-native space
+    Hiring:
+      - Moderate availability
+      - Strong community support
+    Testing:
+      - Built-in testing framework
+      - Strong table-driven test pattern
+    Security:
+      - Memory-safe by design
+      - Strong typing
+    OperationalCost:
+      - Low (single binary, minimal runtime)
+
+  Java:
+    Pros:
+      - Mature enterprise ecosystem
+      - Strong typing and tooling
+      - Excellent for large teams
+      - Battle-tested at scale
+    Cons:
+      - Higher operational complexity
+      - Slower startup time
+      - Verbose configuration
+    BestFor:
+      - Large enterprise systems
+      - Complex business logic
+      - High-throughput services
+    AvoidWhen:
+      - Small teams with simple requirements
+      - Rapid prototyping
+    Performance:
+      - Excellent with JIT optimization
+      - Higher memory footprint
+    Ecosystem:
+      - Very large and mature
+      - Spring ecosystem dominant
+    Hiring:
+      - Widely available
+    Testing:
+      - JUnit ecosystem mature
+    Security:
+      - Strong security track record
+    OperationalCost:
+      - Moderate to high
+
+  Kotlin:
+    Pros:
+      - Interoperable with Java
+      - Modern language features
+      - Concise syntax
+      - Coroutines for async
+    Cons:
+      - Smaller talent pool
+      - Compilation overhead
+    BestFor:
+      - Android development
+      - JVM-based services
+      - Gradual Java migration
+    AvoidWhen:
+      - Standalone services (prefer Go)
+    Performance:
+      - Comparable to Java
+    Ecosystem:
+      - Growing rapidly
+    Hiring:
+      - Limited availability
+    Testing:
+      - Kotest, JUnit 5
+    Security:
+      - Null safety by design
+    OperationalCost:
+      - Similar to Java
+
+  CSharp:
+    Pros:
+      - Excellent tooling (Visual Studio, Rider)
+      - Strong async/await support
+      - Good performance
+      - Cross-platform with .NET Core
+    Cons:
+      - Historically Windows-centric
+      - Smaller open-source ecosystem
+    BestFor:
+      - Enterprise services on Azure
+      - Cross-platform APIs
+      - Game backends
+    AvoidWhen:
+      - Linux-only environments (prefer Go)
+    Performance:
+      - Very good with modern runtime
+    Ecosystem:
+      - Moderate
+    Hiring:
+      - Moderate availability
+    Testing:
+      - xUnit, NUnit
+    Security:
+      - Strong type safety
+    OperationalCost:
+      - Low with containers
+
+  PHP:
+    Pros:
+      - Fast development velocity
+      - Large ecosystem (Laravel, Symfony)
+      - Easy hosting
+      - Large talent pool
+    Cons:
+      - Inconsistent standard library
+      - Legacy codebase issues
+    BestFor:
+      - CRUD-heavy applications
+      - Rapid prototyping
+      - Content management systems
+    AvoidWhen:
+      - High-concurrency services
+      - Complex domain logic
+    Performance:
+      - Improved significantly in PHP 8+
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+    Testing:
+      - PHPUnit mature
+    Security:
+      - Improved in recent versions
+    OperationalCost:
+      - Low
+
+  Python:
+    Pros:
+      - Fast prototyping
+      - Large ecosystem
+      - Strong data/ML libraries
+      - Easy to read
+    Cons:
+      - GIL limits concurrency
+      - Slower execution
+      - Runtime errors
+    BestFor:
+      - Data processing
+      - ML/AI services
+      - Scripting and automation
+    AvoidWhen:
+      - High-throughput APIs
+      - Real-time systems
+    Performance:
+      - Slower than compiled languages
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+    Testing:
+      - pytest mature
+    Security:
+      - Good for data science
+    OperationalCost:
+      - Low to moderate
+
+  Rust:
+    Pros:
+      - Memory safety without GC
+      - Zero-cost abstractions
+      - Excellent performance
+      - Strong type system
+    Cons:
+      - Steep learning curve
+      - Longer development time
+      - Smaller ecosystem
+    BestFor:
+      - Performance-critical services
+      - Systems programming
+      - Security-critical code
+    AvoidWhen:
+      - Rapid prototyping
+      - Small teams with Rust expertise
+    Performance:
+      - Excellent
+    Ecosystem:
+      - Growing rapidly
+    Hiring:
+      - Very limited
+    Testing:
+      - Built-in testing strong
+    Security:
+      - Memory-safe by design
+    OperationalCost:
+      - Low
+
+  TypeScript:
+    Pros:
+      - JavaScript with types
+      - Large ecosystem
+      - Excellent tooling
+      - Gradual adoption
+    Cons:
+      - Compilation step
+      - Type system complexity
+    BestFor:
+      - Frontend development
+      - Node.js backends
+      - Cross-platform code
+    AvoidWhen:
+      - Simple scripts
+    Performance:
+      - Runtime same as JS
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+    Testing:
+      - Jest, Vitest, Cypress
+    Security:
+      - Type safety helps
+    OperationalCost:
+      - Low
+
+  Dart:
+    Pros:
+      - Flutter ecosystem
+      - Good performance
+      - Single codebase for mobile/web
+    Cons:
+      - Smaller ecosystem
+      - Limited server-side adoption
+    BestFor:
+      - Flutter mobile apps
+      - Cross-platform UI
+    AvoidWhen:
+      - Backend services (prefer Go/Node)
+    Performance:
+      - Good with AOT compilation
+    Ecosystem:
+      - Moderate
+    Hiring:
+      - Limited
+    Testing:
+      - Built-in testing
+    Security:
+      - Memory-safe
+    OperationalCost:
+      - Low
+
+  Swift:
+    Pros:
+      - Memory-safe
+      - Excellent performance
+      - Native iOS/macOS development
+      - Modern language design
+    Cons:
+      - Apple ecosystem only
+      - Limited server-side adoption
+    BestFor:
+      - iOS/macOS applications
+      - Apple platform services
+    AvoidWhen:
+      - Cross-platform (prefer Flutter/React Native)
+    Performance:
+      - Excellent
+    Ecosystem:
+      - Growing on server side
+    Hiring:
+      - Moderate for Apple platforms
+    Testing:
+      - XCTest
+    Security:
+      - Memory-safe
+    OperationalCost:
+      - Low
+
+TechnologyLifecycle:
+  CANDIDATE:
+    ↓
+  EVALUATING:
+    ↓
+  SELECTED:
+    ↓
+  SUPPORTED:
+    ↓
+  DEPRECATED:
+    ↓
+  MIGRATION:
+    ↓
+  RETIRED
+
+State: +
+  

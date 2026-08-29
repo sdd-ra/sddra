@@ -1,0 +1,65 @@
+# Skill: Test Automation
+
+Purpose:
+  Define test automation strategy for SDDRA system.
+  Ensures all code changes are tested automatically.
+
+ID: SKILL-DEVOPS-TESTING-AUTOMATION
+
+Domain: devops/testing
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - Before committing
+  - Before pushing
+  - Before merging
+  - Continuous testing
+
+Input:
+  - Code changes
+  - Test suite
+  - Configuration
+
+Output:
+  - Test results
+  - Coverage report
+  - Approval status
+
+Execute:
+  1. Run unit tests:
+     - All unit tests pass
+     - Coverage >= 80%
+  2. Run integration tests:
+     - All integration tests pass
+     - Critical paths tested
+  3. Run chain tests:
+     - Chain graph validation
+     - Chain execution tests
+  4. Run .sdd/ tests:
+     - .sdd/ file validation
+     - Reference resolution tests
+  5. Generate coverage report
+  6. Return approval status
+
+Validation:
+  - All tests pass
+  - Coverage >= 80%
+  - No flaky tests
+  - Chain tests pass
+
+Examples:
+  - Failing unit test -> block
+  - Low coverage -> warn
+  - Broken chain -> block
+  - All pass -> approve
+
+Avoid:
+  - Skipping tests
+  - Ignoring failures
+  - Committing flaky tests
+  - Reducing coverage
+
+State: +

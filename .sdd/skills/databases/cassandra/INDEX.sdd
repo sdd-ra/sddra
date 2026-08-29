@@ -1,0 +1,33 @@
+Skills: Apache Cassandra
+
+Purpose:
+  Apache Cassandra skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Cassandra fundamentals
+  APPLY    — apply Cassandra patterns to schema
+  REVIEW   — review Cassandra skills
+  UPGRADE  — propose Cassandra skill upgrade
+
+Rules:
+  [C1]  Design for queries.
+  [C2]  Use appropriate partition keys.
+  [C3]  Avoid secondary indexes.
+  [C4]  Monitor cluster health.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Cassandra: @databases/cassandra/INDEX.sdd
+  CassandraL1: @databases/cassandra/L1-fundamentals.sdd
+
+State: +

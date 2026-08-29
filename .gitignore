@@ -1,7 +1,6 @@
 # SDDRA .gitignore
 
-# SDD system files (immutable, owner-controlled)
-.sdd/
+# SDD system files are tracked by git and owner-controlled via CODEOWNERS
 
 # Old/archived files
 old/

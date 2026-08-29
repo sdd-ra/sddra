@@ -1,0 +1,103 @@
+Provisioning Mapping: Technology to Infrastructure
+
+Purpose:
+  Maps each technology to its provisioning requirements.
+
+Mappings:
+  databases:
+    postgresql:
+      template: terraform/postgresql
+      estimated_time: 15m
+      dependencies: [networking]
+      resources:
+        - RDS instance
+        - Parameter group
+        - Security group
+        - Backup policy
+    mongodb:
+      template: terraform/mongodb
+      estimated_time: 10m
+      dependencies: [networking]
+      resources:
+        - MongoDB Atlas cluster
+        - Security group
+    redis:
+      template: terraform/redis
+      estimated_time: 5m
+      dependencies: [networking]
+      resources:
+        - ElastiCache cluster
+        - Security group
+    elasticsearch:
+      template: terraform/elasticsearch
+      estimated_time: 15m
+      dependencies: [networking]
+      resources:
+        - Elasticsearch domain
+        - Security group
+
+  platforms:
+    docker:
+      template: docker-compose
+      estimated_time: 5m
+      dependencies: []
+      resources:
+        - Docker daemon
+        - Registry access
+    kubernetes:
+      template: terraform/kubernetes
+      estimated_time: 30m
+      dependencies: [networking]
+      resources:
+        - EKS/GKE/AKS cluster
+        - Node groups
+        - IAM roles
+        - Networking
+    terraform:
+      template: terraform/backend
+      estimated_time: 5m
+      dependencies: []
+      resources:
+        - S3 bucket
+        - DynamoDB table (locking)
+
+  messaging:
+    kafka:
+      template: terraform/kafka
+      estimated_time: 20m
+      dependencies: [networking]
+      resources:
+        - MSK cluster
+        - Security group
+        - Monitoring
+    rabbitmq:
+      template: terraform/rabbitmq
+      estimated_time: 10m
+      dependencies: [networking]
+      resources:
+        - RabbitMQ instance
+        - Security group
+    nats:
+      template: terraform/nats
+      estimated_time: 10m
+      dependencies: [networking]
+      resources:
+        - NATS instance
+        - Security group
+
+ProvisioningOrder:
+  1. Networking (VPC, subnets, security groups)
+  2. Databases (PostgreSQL, MongoDB, etc.)
+  3. Caching (Redis)
+  4. Messaging (Kafka, RabbitMQ)
+  5. Compute (Kubernetes, EC2)
+  6. Storage (S3, EBS)
+
+Rules:
+  [PR1] Provisioning MUST follow dependency order.
+  [PR2] Dependencies MUST be provisioned before dependents.
+  [PR3] Provisioning MUST be idempotent.
+  [PR4] Failed provisioning MUST be retried with backoff.
+  [PR5] Provisioning state MUST be tracked.
+
+State: +

@@ -1,0 +1,33 @@
+Skills: Spring Boot Framework
+
+Purpose:
+  Spring Boot framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Spring Boot fundamentals
+  APPLY    — apply Spring Boot patterns to code
+  REVIEW   — review Spring Boot skills
+  UPGRADE  — propose Spring Boot skill upgrade
+
+Rules:
+  [S1]  Use constructor injection, not field injection.
+  [S2]  Use `@RestController` for APIs.
+  [S3]  Use `@Service` for business logic.
+  [S4]  Use `application.yml` for configuration.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  SpringBoot: @frameworks/spring-boot/INDEX.sdd
+  SpringBootL1: @frameworks/spring-boot/L1-fundamentals.sdd
+
+State: +

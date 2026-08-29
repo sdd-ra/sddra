@@ -1,0 +1,35 @@
+Skills: Flutter Framework
+
+Purpose:
+  Flutter framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-advanced-architecture.sdd
+
+Modes:
+  LEARN    — learn Flutter fundamentals
+  APPLY    — apply Flutter patterns to code
+  REVIEW   — review Flutter skills
+  UPGRADE  — propose Flutter skill upgrade
+
+Rules:
+  [F1]  Use widgets for UI composition.
+  [F2]  Use stateless widgets when possible.
+  [F3]  Use state management (BLoC/Riverpod).
+  [F4]  Follow Flutter style guide.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Flutter: @frameworks/flutter/INDEX.sdd
+  FlutterL1: @frameworks/flutter/L1-fundamentals.sdd
+  FlutterL2: @frameworks/flutter/L2-advanced-architecture.sdd
+
+State: +

@@ -1,0 +1,58 @@
+﻿Limits: Agent
+
+Purpose:
+  Defines agent execution limits and constraints.
+
+ExecutionLimits:
+  MaxActionsPerRun:
+    50
+  MaxFileSize:
+    10MB
+  MaxContextTokens:
+    100000
+  MaxRetries:
+    3
+  MaxParallelTasks:
+    5
+  MaxRuntimePerTask:
+    30 minutes
+
+ResourceLimits:
+  Memory:
+    512MB
+  Disk:
+    1GB (temporary)
+  Network:
+    Allowlisted domains only
+
+Timeouts:
+  ShellCommand:
+    30 seconds
+  TestRun:
+    5 minutes
+  Build:
+    10 minutes
+  Deployment:
+    30 minutes
+
+LoopPrevention:
+  MaxAttempts:
+    3
+
+  After max attempts:
+    ESCALATE
+
+RateLimits:
+  API Calls:
+    100 per minute
+  GitOperations:
+    50 per minute
+
+LimitRules:
+  [LM1]  Agent MUST respect all limits.
+  [LM2]  Agent MUST escalate when limits exceeded.
+  [LM3]  Agent MUST NOT bypass limits for convenience.
+  [LM4]  Agent MUST report limit exhaustion clearly.
+
+State: +
+  

@@ -1,0 +1,99 @@
+﻿# Python Advanced Patterns
+
+Purpose:
+  Python Advanced Patterns
+
+Skill: Python Advanced Patterns
+
+ID:
+  SKILL-LANG-PYTHON-L2
+
+Domain:
+  languages/python
+
+Use:
+  writing maintainable Python code with advanced patterns
+
+Apply:
+  intermediate
+  senior
+  maintainability
+  code-review
+
+Requires:
+  SKILL-LANG-PYTHON-L1
+  type-hints
+  dataclasses
+
+Avoid:
+  mutable-default-args
+  magic-methods-overuse
+  inheritance-abuse
+  global-state
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  python
+  advanced patterns
+  dataclasses
+  decorators
+  context managers
+  generators
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/python/L2-advanced-patterns.md
+
+Evidence:
+  - Python Design Patterns
+  - PEP 8 / PEP 20
+  - Production experience
+
+Rules:
+  [P1] Use `@dataclass` for data containers.
+  [P2] Use `@property` for computed attributes.
+  [P3] Use decorators for cross-cutting concerns.
+  [P4] Use context managers (`with` statement) for resource management.
+  [P5] Use generators for lazy evaluation of large datasets.
+  [P6] Use `match` statements (Python 3.10+) for pattern matching.
+  [P7] Use `Protocol` classes for structural subtyping.
+  [P8] Use `TypedDict` for dictionary type hints.
+
+Pros:
+  - Clean code
+  - Easy testing
+  - Flexible design
+
+Cons:
+  - Requires discipline
+  - Dynamic typing risks
+  - Performance overhead
+
+Alternatives:
+  - Go (simpler, typed)
+  - Rust (safe, fast)
+
+State: +
+

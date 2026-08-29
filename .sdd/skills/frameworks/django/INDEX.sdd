@@ -1,0 +1,33 @@
+Skills: Django Framework
+
+Purpose:
+  Django framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Django fundamentals
+  APPLY    — apply Django patterns to code
+  REVIEW   — review Django skills
+  UPGRADE  — propose Django skill upgrade
+
+Rules:
+  [D1]  Use Django MTV pattern.
+  [D2]  Use Django ORM for database access.
+  [D3]  Use class-based views for reusable patterns.
+  [D4]  Use Django forms for validation.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Django: @frameworks/django/INDEX.sdd
+  DjangoL1: @frameworks/django/L1-fundamentals.sdd
+
+State: +

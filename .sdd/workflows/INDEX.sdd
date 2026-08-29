@@ -1,0 +1,37 @@
+# Workflows
+
+Purpose:
+  Execution workflows for SDDRA.
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @agent-workflow.sdd
+   3 @chain-implementation.sdd
+   4 @agent-implementation.sdd
+   5 @task-execution.sdd
+   6 @recovery.sdd
+   7 @parallel-execution.sdd
+   8 @knowledge-sharing.sdd
+   9 @intelligent-runtime.sdd
+   10 @example-prompt-to-code.sdd
+   11 @backup-integrity.sdd
+
+Workflows:
+  AgentWorkflow: @agent-workflow.sdd
+  ChainImplementation: @chain-implementation.sdd
+  AgentImplementation: @agent-implementation.sdd
+  TaskExecution: @task-execution.sdd
+  Recovery: @recovery.sdd
+  ParallelExecution: @parallel-execution.sdd
+  KnowledgeSharing: @knowledge-sharing.sdd
+  IntelligentRuntime: @intelligent-runtime.sdd
+  ExamplePromptToCode: @example-prompt-to-code.sdd
+  BackupIntegrity: @backup-integrity.sdd
+  SkillAutoIntegration: @skill-auto-integration.sdd
+
+External:
+  PromptToDocs: @../prompts/tech-stack/prompt-to-docs.sdd
+  DocsToProject: @../prompts/tech-stack/docs-to-project.sdd
+  HumanInTheLoop: @../prompts/role-assignment/human-in-the-loop.sdd
+
+State: +

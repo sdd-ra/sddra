@@ -1,0 +1,49 @@
+﻿Performance: SDD
+
+Purpose:
+  Performance testing — verify system performance meets non-functional
+  requirements. Performance tests measure response time, throughput,
+  resource usage, and scalability.
+
+Owns: ./
+
+Scope:
+  Response time
+  Throughput (requests per second)
+  Resource usage (CPU, memory, disk, network)
+  Database query performance
+  Cache hit rates
+  Concurrency behavior
+
+Principles:
+  Test against defined NFRs, not arbitrary thresholds
+  Measure baselines before optimizing
+  Test in production-like environment
+  Profile before optimizing
+  Performance regressions block release
+
+Structure:
+  Every performance test MUST:
+    define clear NFR targets
+    measure against those targets
+    produce actionable results
+    compare against baseline
+
+Frameworks:
+  k6
+  Gatling
+  JMeter
+  Lighthouse (frontend)
+  Xdebug/pprof (profiling)
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  Load: @load.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

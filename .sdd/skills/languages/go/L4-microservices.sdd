@@ -1,0 +1,104 @@
+﻿# Go Microservices
+
+Purpose:
+  Go Microservices
+
+Skill: Go Microservices
+
+ID:
+  SKILL-LANG-GO-L4
+
+Domain:
+  languages/go
+
+Use:
+  building production-grade Go microservices
+
+Apply:
+  lead
+  architect
+  distributed-system
+  production
+
+Requires:
+  SKILL-LANG-GO-L3
+  gRPC
+  message-broker
+  distributed-tracing
+
+Avoid:
+  shared-database
+  tight-coupling
+  synchronous-chains
+  monolith-in-disguise
+
+Level:
+  L4
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go
+  golang
+  microservices
+  gRPC
+  service mesh
+  distributed system
+  resilience
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/L4-microservices.md
+
+Evidence:
+  - gRPC documentation
+  - Go Micro framework
+  - Production experience
+
+Rules:
+  [G1] Use gRPC for internal service communication.
+  [G2] Use REST/GraphQL only for external APIs.
+  [G3] Implement circuit breakers for external calls.
+  [G4] Use structured logging with request IDs.
+  [G5] Implement health checks (liveness and readiness).
+  [G6] Use message brokers (Kafka/NATS) for async communication.
+  [G7] Implement distributed tracing with OpenTelemetry.
+  [G8] Use service mesh (Istio/Linkerd) for production.
+  [G9] Implement graceful shutdown with signal handling.
+  [G10] Use config management (Vault/env) for secrets.
+
+Pros:
+  - Scalable architecture
+  - Independent deployment
+  - Technology flexibility
+
+Cons:
+  - Operational complexity
+  - Network latency
+  - Debugging distributed systems
+
+Alternatives:
+  - Monolith
+  - Modular monolith
+  - Serverless
+
+State: +
+

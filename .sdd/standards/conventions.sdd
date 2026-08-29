@@ -1,0 +1,48 @@
+﻿Conventions: Standards
+
+Purpose:
+  Defines conventions for .sdd file structure, content, and
+  maintenance.
+
+FileStructure:
+  Every .sdd file SHOULD contain:
+    - Purpose
+    - Owns
+    - ReadOrder (if composite)
+    - Modes (if applicable)
+    - Rules
+    - Entry
+    - Navigation
+    - State
+
+ContentConventions:
+  - Keep AI Core short (30-200 tokens)
+  - Expand only on demand
+  - Reference, don't duplicate
+  - Use standard prefixes
+  - Use standard states
+  - Use standard relation types
+
+Maintenance:
+  - Review critical skills every 30 days
+  - Review normal skills every 90 days
+  - Review stable skills every 180 days
+  - Trigger review on: major framework release, security advisory, breaking API, new standard, production incident
+
+AntiPatterns:
+  - Too broad skill
+  - Too vague skill
+  - Outdated skill
+  - Contradictory skill
+  - Duplicated skill
+  - Unsupported skill
+  - Over-engineered skill
+
+ConventionRules:
+  [CN1]  .sdd files MUST follow standard structure.
+  [CN2]  Content MUST be token-efficient.
+  [CN3]  Knowledge MUST be referenced, not duplicated.
+  [CN4]  Anti-patterns MUST be detected and flagged.
+
+State: +
+  

@@ -1,0 +1,99 @@
+﻿# RabbitMQ
+
+Purpose:
+  RabbitMQ
+
+Skill: RabbitMQ
+
+ID:
+  SKILL-MSG-RABBITMQ-L1
+
+Domain:
+  messaging/rabbitmq
+
+Use:
+  building message-based systems with RabbitMQ
+
+Apply:
+  beginner
+  intermediate
+  task-queue
+  microservices
+
+Requires:
+  rabbitmq-3+
+  amqp-fundamentals
+
+Avoid:
+  queue-overuse
+  message-loss
+  missing-acks
+  tight-coupling
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  rabbitmq
+  amqp
+  message queue
+  task queue
+  microservices
+  pub sub
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/messaging/rabbitmq/L1-fundamentals.md
+
+Evidence:
+  - RabbitMQ Documentation
+  - AMQP Specification
+  - Production experience
+
+Rules:
+  [R1] Use exchanges for routing.
+  [R2] Use queues for buffering.
+  [R3] Use bindings for routing rules.
+  [R4] Use acknowledgments for reliability.
+  [R5] Use dead letter exchanges for failures.
+  [R6] Use topic exchanges for flexibility.
+  [R7] Use competing consumers for scaling.
+  [R8] Monitor with RabbitMQ Management.
+
+Pros:
+  - Flexible routing
+  - Reliable delivery
+  - Good tooling
+
+Cons:
+  - Operational overhead
+  - Clustering complexity
+  - Memory usage
+
+Alternatives:
+  - Kafka (event streaming)
+  - NATS (simpler)
+  - AWS SQS (managed)
+
+State: +
+

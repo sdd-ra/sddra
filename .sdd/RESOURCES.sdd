@@ -1,0 +1,206 @@
+# Resource Registry
+
+Purpose:
+  Central registry for all system resources. Enables self-updating
+  knowledge, resource discovery, and future-proofing. Resources
+  are versioned, indexed, and discoverable.
+
+## Resource Types
+
+SKILL:
+  Engineering skills (L1-L5)
+  Location: .sdd/skills/
+  Registry: .sdd/skills/INDEX.sdd
+
+TEMPLATE:
+  Project structure templates
+  Location: .sdd/templates/
+  Registry: .sdd/templates/INDEX.sdd
+
+WORKFLOW:
+  Execution workflows
+  Location: .sdd/workflows/
+  Registry: .sdd/workflows/INDEX.sdd
+
+COMMAND:
+  CLI commands
+  Location: .sdd/commands/
+  Registry: .sdd/commands/INDEX.sdd
+
+PATTERN:
+  Resilience patterns
+  Location: .sdd/patterns/
+  Registry: .sdd/patterns/INDEX.sdd
+
+DECISION:
+  Decision records
+  Location: .sdd/decisions/
+  Registry: .sdd/decisions/INDEX.sdd
+
+GATE:
+  Quality/security gates
+  Location: .sdd/gates/
+  Registry: .sdd/gates/INDEX.sdd
+
+SCHEMA:
+  Canonical schemas
+  Location: .sdd/schemas/
+  Registry: .sdd/schemas/INDEX.sdd
+
+## Resource Properties
+
+Every resource MUST have:
+  ID: Unique identifier
+  Type: Resource type (from above)
+  Version: Semantic version
+  Status: STABLE|EXPERIMENTAL|DEPRECATED
+  Created: Timestamp
+  Updated: Timestamp
+  Author: Owner
+  Reviewers: [list]
+  Dependencies: [list of resource IDs]
+  Tags: [searchable keywords]
+
+## Resource Discovery
+
+Discovery process:
+  1. Analyze task requirements
+  2. Query resource registry
+  3. Filter by type, status, version
+  4. Rank by relevance
+  5. Validate dependencies
+  6. Return matching resources
+
+Discovery criteria:
+  - Type match
+  - Status (STABLE > EXPERIMENTAL > DEPRECATED)
+  - Version compatibility
+  - Dependency availability
+  - Tag relevance
+
+## Resource Indexing
+
+Primary Index:
+  .sdd/INDEX.sdd — master routing table
+
+Secondary Indexes:
+  .sdd/skills/INDEX.sdd — skills by domain
+  .sdd/commands/INDEX.sdd — commands by function
+  .sdd/patterns/INDEX.sdd — patterns by problem
+  .sdd/templates/INDEX.sdd — templates by use case
+
+Index Structure:
+  - Resource ID
+  - Type
+  - Path
+  - Version
+  - Status
+  - Dependencies
+  - Tags
+
+## Resource Versioning
+
+Semantic Versioning:
+  MAJOR.MINOR.PATCH
+
+  MAJOR: Breaking changes
+  MINOR: New features (backward compatible)
+  PATCH: Bug fixes (backward compatible)
+
+Version Resolution:
+  - Exact match preferred
+  - Minor version range allowed
+  - Major version changes require review
+
+## Resource Updates
+
+Update Process:
+  1. Detect new resource version
+  2. Validate compatibility
+  3. Update registry
+  4. Notify dependents
+  5. Test integration
+  6. Deploy update
+
+Update Triggers:
+  - New version available
+  - Dependency updated
+  - Security patch
+  - Performance improvement
+
+## Resource Dependencies
+
+Dependency Graph:
+  - Resources can depend on other resources
+  - Dependencies are validated before use
+  - Circular dependencies are forbidden
+  - Missing dependencies trigger fallback
+
+Dependency Resolution:
+  1. Check local availability
+  2. Check registry
+  3. Check fallback resources
+  4. Request human if unavailable
+
+## Resource Fallback
+
+Fallback Chain:
+  1. Primary resource (exact match)
+  2. Compatible resource (same type, older version)
+  3. Generic resource (same type, default)
+  4. Human intervention
+
+Fallback Rules:
+  - Fallback MUST be logged
+  - Fallback MUST be reviewed
+  - Fallback MUST NOT break functionality
+
+## Resource Retirement
+
+Retirement Process:
+  1. Mark as DEPRECATED
+  2. Notify dependents
+  3. Provide migration path
+  4. Keep available for 6 months
+  5. Archive after retirement
+
+Retirement Criteria:
+  - Replaced by better resource
+  - No longer maintained
+  - Security issues
+  - Performance issues
+
+## Self-Updating System
+
+Auto-Discovery:
+  - Scan .sdd/ for new resources
+  - Update registry automatically
+  - Notify human of new resources
+
+Auto-Update:
+  - Check for resource updates
+  - Validate compatibility
+  - Update registry
+  - Notify human of updates
+
+Auto-Retirement:
+  - Detect unused resources
+  - Suggest retirement
+  - Archive after approval
+
+## Resource Registry File
+
+Registry: .sdd/RESOURCES.sdd
+
+Format:
+  Resources:
+    - ID: <resource-id>
+      Type: <type>
+      Path: <path>
+      Version: <version>
+      Status: <status>
+      Dependencies: [<dep1>, <dep2>]
+      Tags: [<tag1>, <tag2>]
+      Updated: <timestamp>
+
+State: +

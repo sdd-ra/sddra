@@ -1,0 +1,187 @@
+Graph: Model
+
+Purpose:
+  Define the formal data model for .sdd entities and relationships.
+  This is the semantic layer that maps .sdd files to a queryable
+  knowledge graph. Files are storage; entities are identity;
+  relationships are meaning.
+
+Owns: ./
+
+Scope:
+  Entity definition and lifecycle
+  Relationship types and metadata
+  Node and edge typing
+  Cardinality rules
+  Identity vs version separation
+  Hybrid storage model (filesystem + PostgreSQL + graph)
+  Temporal graph and snapshots
+  Graph schema constraints
+
+Principles:
+  Entity ≠ File. File is representation; entity is identity.
+  Relationships use IDs, not text names.
+  Graph is logical model; storage is physical concern.
+  History is immutable — entities and relationships are versioned.
+  Schema constraints are machine-checkable.
+
+Entity:
+  structure:
+    id: string (immutable, e.g. TASK-100, REQ-001)
+    type: string (Task, Requirement, Skill, Agent, Policy, Decision, Artifact, Domain, Entity, API, Table, Test, Execution, Event)
+    version: string (semver: MAJOR.MINOR.PATCH)
+    status: string (DRAFT, ACTIVE, DEPRECATED, ARCHIVED)
+    created_at: timestamp
+    updated_at: timestamp
+
+  lifecycle:
+    DRAFT -> ACTIVE -> DEPRECATED -> ARCHIVED
+
+  identity:
+    rule: ID never changes
+    rule: version changes do not change identity
+    rule: TASK-100 v1, v2, v3 are the same entity
+
+Relationship:
+  structure:
+    from_id: string
+    relation: string (implements, requires, assigned_to, depends_on, produces, verifies, affects, governed_by, supersedes, exposes, owns, uses, executes, emitted_by, belongs_to)
+    to_id: string
+    metadata: object
+    version: string
+
+  types:
+    implements: Requirement -> Task
+    requires: Task -> Skill
+    assigned_to: Task -> Agent
+    depends_on: Task -> Task
+    produces: Task -> Artifact
+    verifies: Test -> Requirement
+    affects: Decision -> Domain | API | Task
+    governed_by: Task -> Policy
+    supersedes: Decision -> Decision
+    exposes: Domain -> API
+    owns: Domain -> Entity | Table
+    uses: Execution -> Plan
+    executes: Execution -> Task
+    emitted_by: Event -> Agent
+    belongs_to: Event -> Execution
+
+  metadata:
+    reason: string
+    blocking: boolean
+    mandatory: boolean
+    environment: string
+
+GraphSchema:
+  node_types:
+    - Requirement
+    - Feature
+    - Domain
+    - Entity
+    - API
+    - Table
+    - Task
+    - Skill
+    - Agent
+    - Workflow
+    - Policy
+    - Decision
+    - Test
+    - Artifact
+    - Execution
+    - Event
+
+  edge_types:
+    - implements
+    - requires
+    - assigned_to
+    - depends_on
+    - produces
+    - verifies
+    - affects
+    - governed_by
+    - supersedes
+    - exposes
+    - owns
+    - uses
+    - executes
+    - emitted_by
+    - belongs_to
+
+  cardinality:
+    Task -> assigned_to -> Agent: 1..1
+    Task -> requires -> Skill: 0..N
+    Task -> depends_on -> Task: 0..N
+    Requirement -> implemented_by -> Task: 0..N
+
+StorageModel:
+  filesystem:
+    purpose: human navigation and git-friendly editing
+    rule: folders are navigation, not domain model
+    rule: .sdd files are entity representations
+
+  postgresql:
+    purpose: transactions, versioning, audit, constraints, structured queries
+    tables:
+      - entities (id, type, version, status, data JSONB)
+      - relationships (from_id, relation, to_id, metadata JSONB, version)
+      - events (id, type, data JSONB, timestamp)
+      - executions (id, plan_version, state)
+
+  graph_abstraction:
+    purpose: semantic queries, impact analysis, traversal
+    rule: graph is logical layer over PostgreSQL
+    rule: physical storage and domain model are decoupled
+
+TemporalGraph:
+  rule: relationship changes are versioned
+  rule: historical queries MUST be supported
+  rule: graph snapshots MUST be created for executions
+
+  example:
+    2026-08-01: TASK-100 depends_on TASK-90
+    2026-08-10: TASK-100 depends_on TASK-95
+
+  query: "What was the dependency on August 5?"
+
+Snapshot:
+  rule: execution creates graph snapshot
+  rule: snapshot is immutable
+  rule: snapshot ID is recorded in execution record
+
+Security:
+  rule: graph relationships are permission-aware
+  rule: agents see only authorized subgraphs
+  rule: SECURITY_POLICY and SECRETS nodes are never exposed to low-trust agents
+
+GraphIntegrity:
+  rule: impossible relationships MUST be detected
+  rule: typed edge rules MUST be enforced
+  rule: orphan nodes MUST be flagged (unless intentional: tech debt, research)
+
+Navigation:
+  Graph: @graph/INDEX.sdd
+  Nodes: @graph/nodes.sdd
+  Relations: @graph/relations.sdd
+  Traceability: @graph/traceability.sdd
+  Impact: @graph/impact.sdd
+  Ownership: @graph/ownership.sdd
+  Dependencies: @graph/dependencies.sdd
+  Coverage: @graph/coverage.sdd
+  Drift: @graph/drift.sdd
+  Data: @../architecture/data.sdd
+
+Rules:
+  [GR-MODEL-01] Every entity MUST have immutable ID.
+  [GR-MODEL-02] Relationships MUST reference IDs, not text names.
+  [GR-MODEL-03] Entity identity is separate from version.
+  [GR-MODEL-04] Graph stores relationships, not file copies.
+  [GR-MODEL-05] Relationship types MUST have explicit source and target node types.
+  [GR-MODEL-06] Cardinality rules MUST be enforced.
+  [GR-MODEL-07] Relationship changes MUST be versioned.
+  [GR-MODEL-08] Graph snapshots MUST be created for reproducibility.
+  [GR-MODEL-09] Permission boundaries MUST be enforced on graph traversal.
+  [GR-MODEL-10] Orphan nodes MUST be explicitly allowed or flagged.
+
+State: +

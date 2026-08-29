@@ -1,0 +1,66 @@
+# Skill: External References
+
+Purpose:
+  External skill repositories and SDD research references.
+  Provides catalog of known external skill ecosystems and
+  authoritative SDD resources for comparison and learning.
+
+ID: SKILL-EXTERNAL-REFERENCES
+
+Domain: meta
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - External skill audit
+  - Capability comparison
+  - Research and learning
+  - Best practice discovery
+
+Input:
+  - External repository URLs
+  - Research article URLs
+  - Audit requirements
+
+Output:
+  - Reference catalog
+  - Capability comparison data
+  - Integration candidates
+
+External Skill Repositories:
+  [SR1] https://github.com/obra/superpowers
+  [SR2] https://github.com/mattpocock/skills
+  [SR3] https://github.com/anthropics/skills
+  [SR4] https://github.com/addyosmani/agent-skills
+  [SR5] https://github.com/ComposioHQ/awesome-claude-skills
+  [SR6] https://github.com/sickn33/agentic-awesome-skills
+  [SR7] https://github.com/alirezarezvani/claude-skills
+  [SR8] https://github.com/Graphify-Labs/graphify
+  [SR9] https://github.com/trailofbits/skills
+  [SR10] https://github.com/vercel-labs/skills
+
+SDD Research References:
+  [RR1] https://planu.dev/en/blog/
+  [RR2] https://www.pluralsight.com/resources/blog/software-development/spec-driven-development-with-AI-SDD
+  [RR3] https://codelabs.developers.google.com/sdd-adk-antigravity#0
+  [RR4] https://path.kilo.ai/introduction/patterns/spec-driven-development/
+  [RR5] https://medium.com/product-management-aspects/core-concept-spec-driven-development-sdd-agents-1ae3d1ea786d
+  [RR6] https://www.augmentcode.com/guides/what-is-spec-driven-development
+  [RR7] https://medium.com/@dave-patten/spec-driven-development-with-ai-agents-from-build-to-runtime-diagnostics-415025fb1d62
+  [RR8] https://blog.allegro.tech/2026/06/spec-driven-development-best-practices.html
+  [RR9] https://arxiv.org/html/2602.00180v1
+  [RR10] https://developer.microsoft.com/blog/spec-driven-development-spec-kit/
+  [RR11] https://medium.com/@dominikus.nold/from-chaos-to-clarity-how-sdd-and-multi-agent-workflows-transformed-our-ai-assisted-development-4d16b5742031
+  [RR12] https://www.ibm.com/think/topics/spec-driven-development
+  [RR13] https://amux.io/guides/spec-driven-development/
+
+Audit Rules:
+  [AR1] Compare external capabilities against internal skills
+  [AR2] Identify gaps and overlaps
+  [AR3] Propose integration only for superior external components
+  [AR4] Never blindly merge external into internal
+  [AR5] Maintain internal system priority
+
+State: +

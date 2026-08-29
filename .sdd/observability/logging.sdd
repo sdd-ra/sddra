@@ -1,0 +1,71 @@
+﻿Logging: SDD
+
+Purpose:
+  Defines logging policy and structured log format. .sdd does not
+  store logs — it stores the policy that governs how logs are
+  generated, what they contain, and how they are secured.
+
+StructuredLog:
+  Required:
+    - timestamp
+    - level
+    - service
+    - environment
+    - request_id
+    - trace_id
+    - operation
+    - duration
+    - error_code (if error)
+
+  Optional:
+    - user_id
+    - session_id
+    - correlation_id
+    - component
+    - version
+
+LogLevels:
+  DEBUG:
+    - Development only
+    - MUST NOT appear in production
+  INFO:
+    - Normal operation events
+    - Business events
+  WARN:
+    - Recoverable issues
+    - Degraded performance
+  ERROR:
+    - Failures that affect functionality
+    - Requires attention
+  FATAL:
+    - System-critical failures
+    - Immediate action required
+
+SensitiveDataProtection:
+  Forbidden:
+    - password
+    - token
+    - session
+    - card
+    - secret
+    - PII (email, phone, SSN)
+    - Authorization headers
+    - Cookie values
+
+  Action:
+    - Redact before logging
+    - Hash or tokenize if needed for debugging
+    - Violation = SECURITY_VIOLATION
+
+LogRetention:
+  Development: 7 days
+  Production: 30 days
+  Compliance: As required by regulation
+
+CrossLayer:
+  Security: Sensitive data protection rules
+  Observability: Log aggregation and analysis
+  Incident: Log correlation for root cause analysis
+
+State: +
+  

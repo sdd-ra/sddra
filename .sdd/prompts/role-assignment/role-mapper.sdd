@@ -1,0 +1,73 @@
+Role Mapping: Technology to Functional Role
+
+Purpose:
+  Maps each technology to its primary functional role.
+
+Mappings:
+  languages:
+    go: Backend
+    rust: Backend
+    java: Backend
+    php: Backend
+    python: Backend
+    csharp: Backend
+    cpp: Backend/Systems
+    typescript: Backend or Frontend
+    javascript: Frontend or Backend
+    swift: Mobile
+    kotlin: Mobile
+    ruby: Backend
+
+  frameworks:
+    react: Frontend
+    vue: Frontend
+    angular: Frontend
+    svelte: Frontend
+    nextjs: Frontend
+    flutter: Mobile
+    react-native: Mobile
+    swiftui: Mobile
+    kotlin-multiplatform: Mobile
+    spring-boot: Backend
+    django: Backend
+    fastapi: Backend
+    express: Backend
+    nestjs: Backend
+    dotnet: Backend
+    laravel: Backend
+    symfony: Backend
+
+  databases:
+    postgresql: Database
+    mongodb: Database
+    redis: Database/Infrastructure
+    mysql: Database
+    cassandra: Database
+    elasticsearch: Database/Infrastructure
+
+  platforms:
+    docker: DevOps
+    kubernetes: DevOps
+    aws: DevOps
+    gcp: DevOps
+    azure: DevOps
+    terraform: DevOps
+
+  messaging:
+    kafka: Backend/DevOps
+    rabbitmq: Backend/DevOps
+    nats: Backend/DevOps
+
+  cross-cutting:
+    testing: QA
+    security: Security
+    architecture: Architect
+    observability: DevOps
+
+Rules:
+  [RM1] Each technology MUST have exactly one primary role.
+  [RM2] Technologies MAY have secondary roles for cross-cutting concerns.
+  [RM3] Role assignment MUST consider case context.
+  [RM4] Ambiguous assignments MUST be flagged for human review.
+
+State: +

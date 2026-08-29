@@ -1,0 +1,33 @@
+Skills: Redis
+
+Purpose:
+  Redis skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Redis fundamentals
+  APPLY    — apply Redis patterns to caching
+  REVIEW   — review Redis skills
+  UPGRADE  — propose Redis skill upgrade
+
+Rules:
+  [R1]  Use Redis for caching, not primary database.
+  [R2]  Use EXPIRE for cache invalidation.
+  [R3]  Use appropriate data structures.
+  [R4]  Use Redis Sentinel for HA.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Redis: @databases/redis/INDEX.sdd
+  RedisL1: @databases/redis/L1-fundamentals.sdd
+
+State: +

@@ -1,0 +1,25 @@
+﻿# Cases Template
+
+Purpose:
+  Template for module case specifications.
+
+Cases: <MODULE_NAME>
+
+Scenarios:
+  - <scenario_name>:
+      given: <precondition>
+      when: <action>
+      then: <expected_result>
+
+Examples:
+  - input: <input_data>
+    output: <expected_output>
+
+Rules:
+  [C1] All critical paths MUST have BDD scenarios.
+  [C2] Edge cases MUST be documented.
+  [C3] Security scenarios MUST be included.
+
+
+State: +
+

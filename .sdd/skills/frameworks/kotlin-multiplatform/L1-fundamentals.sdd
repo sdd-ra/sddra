@@ -1,0 +1,99 @@
+﻿# Kotlin Multiplatform
+
+Purpose:
+  Kotlin Multiplatform
+
+Skill: Kotlin Multiplatform
+
+ID:
+  SKILL-FW-KMP-L1
+
+Domain:
+  frameworks/kotlin-multiplatform
+
+Use:
+  building cross-platform applications with Kotlin Multiplatform
+
+Apply:
+  intermediate
+  senior
+  cross-platform
+  mobile
+
+Requires:
+  kotlin-1.9+
+  kotlin-multiplatform
+
+Avoid:
+  expect-actual-abuse
+  platform-specific-overuse
+  ignoring-differences
+  tight-coupling
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  kotlin multiplatform
+  kmp
+  cross-platform
+  shared code
+  mobile
+  compose multiplatform
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/kotlin-multiplatform/L1-fundamentals.md
+
+Evidence:
+  - Kotlin Multiplatform Documentation
+  - JetBrains Documentation
+  - Production experience
+
+Rules:
+  [K1] Use `expect/actual` for platform-specific code.
+  [K2] Use shared Kotlin code for business logic.
+  [K3] Use Compose Multiplatform for UI.
+  [K4] Use Ktor for networking.
+  [K5] Use SQLDelight for database.
+  [K6] Use Flow for reactive streams.
+  [K7] Use kotlinx.coroutines for async.
+  [K8] Keep platform-specific code minimal.
+
+Pros:
+  - Shared business logic
+  - Native UI option
+  - Good performance
+
+Cons:
+  - iOS support maturity
+  - Tooling complexity
+  - Learning curve
+
+Alternatives:
+  - Flutter
+  - React Native
+  - Native development
+
+State: +
+

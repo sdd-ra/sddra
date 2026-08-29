@@ -1,0 +1,598 @@
+Runtime: Execution
+
+Purpose:
+  Define the execution engine and state machine for task execution
+  in the SDDRA system. Execution is the runtime layer where tasks
+  are actually performed, state is managed, and results are validated.
+
+Owns: ./
+
+Scope:
+  Execution vs Task distinction
+  Execution ID and lifecycle
+  Execution state machine
+  State transitions and rules
+  Event-driven execution
+  Execution events and immutability
+  Action IDs and tool calls
+  Execution traces
+  Checkpoints and resume
+  Durable execution
+  Crash recovery
+  Unknown state handling
+  Retry policies and backoff
+  Timeouts and cancellation
+  Compensation and rollback
+  Idempotency and idempotency keys
+  Execution locks and leases
+  Heartbeats and stuck execution detection
+  Agent runtime flow
+  Action proposals
+  Deterministic boundary
+  Completion criteria and validation
+  Execution artifacts and provenance
+  Execution budget
+
+Principles:
+  Task is specification; Execution is actual run.
+  LLM proposes actions; Execution Engine manages state.
+  State machine is deterministic; LLM does not change state directly.
+  Events are immutable — history is append-only.
+  Unknown result is NOT failure.
+  Execution state persists in DB, not RAM.
+
+Execution:
+  definition:
+    actual runtime run of a task with full state management
+
+  relationship_to_task:
+    one task can have multiple executions
+    example:
+      TASK-100 -> EXEC-1 (failed)
+      TASK-100 -> EXEC-2 (retry)
+      TASK-100 -> EXEC-3 (success)
+
+  structure:
+    execution_id: string (unique, e.g. EXEC-2026-00125)
+    task_id: string
+    state: string
+    current_action: string
+    checkpoint: string
+    worker_id: string
+    lease: string
+    context_snapshot: string
+    policy_snapshot: string
+    retry_count: integer
+    budget:
+      tokens: integer
+      cost: float
+      duration: string
+      tool_calls: integer
+
+ExecutionID:
+  rule: every execution has unique ID
+  rule: execution ID is used in all events
+  rule: execution ID never changes
+
+ExecutionLifecycle:
+  PENDING -> READY -> RUNNING -> VALIDATING -> COMPLETED
+  RUNNING -> WAITING_APPROVAL -> RUNNING
+  RUNNING -> WAITING_INPUT -> RUNNING
+  RUNNING -> PAUSED -> RUNNING
+  RUNNING -> FAILED -> RETRYING -> RUNNING
+  RUNNING -> CANCELLED
+  RUNNING -> BLOCKED
+
+ExecutionStates:
+  PENDING:
+    description: execution created but not ready
+    transitions: -> READY
+
+  READY:
+    description: all prerequisites met
+    prerequisites:
+      - context resolved
+      - agent assigned
+      - skill resolved
+      - policy evaluated
+      - dependencies resolved
+    transitions: -> RUNNING
+
+  RUNNING:
+    description: agent is actively working
+    transitions:
+      -> WAITING_APPROVAL
+      -> WAITING_INPUT
+      -> PAUSED
+      -> VALIDATING
+      -> FAILED
+      -> CANCELLED
+      -> BLOCKED
+
+  PAUSED:
+    description: execution temporarily suspended
+    transitions: -> RUNNING
+
+  WAITING_APPROVAL:
+    description: waiting for human approval
+    transitions:
+      -> RUNNING (approved)
+      -> CANCELLED (rejected)
+
+  WAITING_INPUT:
+    description: waiting for user input
+    example: "Which payment provider should be used?"
+    transitions: -> RUNNING
+
+  VALIDATING:
+    description: validating acceptance criteria
+    transitions:
+      -> COMPLETED (pass)
+      -> FAILED (fail)
+
+  COMPLETED:
+    description: acceptance criteria met
+    transitions: none (terminal)
+
+  FAILED:
+    description: execution failed
+    transitions:
+      -> RETRYING
+      -> ESCALATED
+
+  CANCELLED:
+    description: execution cancelled by user or orchestrator
+    transitions: none (terminal)
+
+  BLOCKED:
+    description: execution blocked by dependency or external factor
+    transitions: -> RUNNING (when unblocked)
+
+StateTransitionRules:
+  allowed_transitions:
+    PENDING -> READY
+    READY -> RUNNING
+    RUNNING -> WAITING_APPROVAL
+    RUNNING -> WAITING_INPUT
+    RUNNING -> PAUSED
+    RUNNING -> VALIDATING
+    RUNNING -> FAILED
+    RUNNING -> CANCELLED
+    RUNNING -> BLOCKED
+    VALIDATING -> COMPLETED
+    VALIDATING -> FAILED
+    WAITING_APPROVAL -> RUNNING
+    WAITING_APPROVAL -> CANCELLED
+    PAUSED -> RUNNING
+    FAILED -> RETRYING
+    RETRYING -> RUNNING
+    BLOCKED -> RUNNING
+
+  forbidden_transitions:
+    COMPLETED -> RUNNING
+    CANCELLED -> RUNNING
+
+EventDrivenExecution:
+  events:
+    - ExecutionCreated
+    - AgentAssigned
+    - ContextResolved
+    - ExecutionStarted
+    - ToolCalled
+    - ToolCompleted
+    - ToolFailed
+    - ApprovalRequested
+    - ApprovalGranted
+    - ApprovalRejected
+    - ValidationStarted
+    - ExecutionCompleted
+    - ExecutionFailed
+    - ExecutionCancelled
+    - ExecutionPaused
+    - ExecutionResumed
+    - CheckpointCreated
+
+EventLog:
+  example:
+    EXEC-500
+      1. ExecutionCreated
+      2. AgentAssigned
+      3. ContextResolved
+      4. ExecutionStarted
+      5. ToolCalled
+      6. ToolCompleted
+      7. ValidationStarted
+      8. ExecutionCompleted
+
+  rule: events are immutable
+  rule: events are append-only
+  rule: events MUST be in chronological order
+
+StateDerivedFromEvents:
+  principle:
+    current state can be reconstructed from event log
+
+  example:
+    ExecutionCreated + ExecutionStarted + ToolCompleted -> RUNNING
+
+EventSourcing:
+  definition:
+    storing state changes as events rather than current state
+
+  practical_model:
+    Current State + Immutable Event Log
+
+  rule: event log is source of truth for history
+  rule: current state is optimized for queries
+
+EventImmutability:
+  rule: events cannot be modified after creation
+  rule: corrections create new events, not modifications
+  example:
+    TOOL_FAILED
+    TOOL_RETRIED
+    TOOL_COMPLETED
+
+Action:
+  definition:
+    discrete unit of work within execution
+
+  structure:
+    action_id: string (ACTION-001)
+    execution_id: string
+    type: string (READ, WRITE, TEST, DEPLOY, etc.)
+    tool: string
+    parameters: object
+    idempotency_key: string
+
+ActionID:
+  rule: every action has unique ID within execution
+  rule: action ID is used in events and traces
+
+ToolCall:
+  flow:
+    Action -> Tool Call -> Tool Result -> Event
+
+  structure:
+    tool_call_id: string
+    action_id: string
+    tool: string
+    arguments: object
+    result: object
+    status: success | failure | unknown
+    duration: timestamp
+
+ExecutionTrace:
+  structure:
+    EXEC-500
+      ├── ACTION-001
+      │     └── read(file)
+      ├── ACTION-002
+      │     └── write(file)
+      ├── ACTION-003
+      │     └── test()
+      └── ACTION-004
+            └── git.diff()
+
+  rule: every execution has complete trace
+
+Idempotency:
+  definition:
+    operation can be retried without side effects
+
+  problem:
+    network timeout -> agent doesn't know if action completed
+    retry without idempotency -> duplicate results
+
+  solution:
+    idempotency_key: EXEC-500-ACTION-17
+
+  rule: tool calls MUST support idempotency keys
+  rule: retry uses same idempotency key
+
+Checkpoint:
+  definition:
+    saved state that can be resumed from
+
+  example:
+    Checkpoint 1: Architecture ready
+    Checkpoint 2: Implementation ready
+    Checkpoint 3: Tests passed
+
+  rule: checkpoints are created before risky operations
+  rule: checkpoints are immutable once created
+
+Resume:
+  flow:
+    Crash -> Restart -> Load Checkpoint -> Restore Context -> Resume
+
+  rule: execution can resume from last checkpoint
+  rule: context is restored from snapshot
+
+DurableExecution:
+  principle:
+    execution state lives in persistent storage, not RAM
+
+  rule: execution state survives process crash
+  rule: execution state survives server restart
+
+CrashRecovery:
+  flow:
+    Find interrupted executions
+      -> Inspect last known action
+      -> Check tool result
+      -> Resume / Retry / Fail
+
+ToolResultUncertainty:
+  principle:
+    unknown result is NOT failure
+
+  states:
+    - SUCCESS: tool completed successfully
+    - FAILURE: tool failed definitively
+    - UNKNOWN: result is uncertain (timeout, network issue)
+
+  rule: UNKNOWN requires investigation, not blind retry
+
+RetryPolicy:
+  retry_types:
+    IMMEDIATE: retry immediately
+    FIXED_DELAY: retry after fixed delay
+    EXPONENTIAL_BACKOFF: retry with increasing delay
+    MANUAL: requires human intervention
+    NO_RETRY: do not retry
+
+  exponential_backoff:
+    retry 1 -> 1 sec
+    retry 2 -> 2 sec
+    retry 3 -> 4 sec
+    retry 4 -> 8 sec
+
+  rule: retry is only for transient failures
+  rule: non-retryable failures do not retry
+
+RetryLimit:
+  rule: max_retries = 3 (configurable per task)
+  rule: after exhaustion -> FAILED or ESCALATED
+
+Timeout:
+  types:
+    - Task timeout
+    - Action timeout
+    - Tool timeout
+    - Approval timeout
+
+  example:
+    tool_timeout = 30 sec
+
+  rule: timeouts are configurable per task type
+
+Cancellation:
+  flow:
+    RUNNING -> CANCELLING -> CANCELLED
+
+  rule: cancellation is graceful
+  rule: running tools are interrupted
+
+Compensation:
+  definition:
+    compensating action for irreversible previous action
+
+  example:
+    Create Order -> Reserve Inventory -> Charge Payment -> Create Shipment
+    Shipment failed -> Release Inventory -> Refund Payment -> Cancel Order
+
+  rule: compensation is used when rollback is impossible
+
+Rollback:
+  definition:
+    return to previous state
+
+  vs_compensation:
+    Rollback: return to previous state
+    Compensation: counter-action for irreversible action
+
+  rule: rollback is preferred when possible
+  rule: compensation is used for distributed systems
+
+Saga:
+  definition:
+    sequence of actions with compensating actions for each
+
+  example:
+    Create Order -> Reserve Inventory -> Charge Payment -> Create Shipment
+    Compensation: Release Inventory -> Refund Payment -> Cancel Order
+
+ExecutionTransaction:
+  principle:
+    entire AI workflow cannot be in single DB transaction
+
+  reason:
+    - LLM calls are long
+    - Tools touch external systems
+
+  practical_model:
+    short DB transactions + durable execution state + compensation
+
+ExecutionLock:
+  rule: two workers cannot take same execution
+  solution: distributed lock or DB-based claiming
+
+Lease:
+  structure:
+    execution: EXEC-500
+    worker: WORKER-01
+    lease_until: 12:05
+
+  rule: worker must renew lease before expiration
+  rule: expired lease allows recovery by another worker
+
+Heartbeat:
+  flow:
+    Worker -> heartbeat -> heartbeat -> heartbeat
+
+  rule: long executions MUST send heartbeats
+  rule: heartbeat interval is configurable
+
+StuckExecution:
+  detection:
+    state = RUNNING
+    last_heartbeat = 30 min ago
+
+  rule: stuck execution triggers recovery
+
+ExecutionOwnership:
+  structure:
+    execution:
+      worker_id: WORKER-01
+      agent_id: AGENT-CODER-01
+      lease: 12:05
+
+  rule: ownership is always known
+
+AgentRuntime:
+  definition:
+    intelligence layer that proposes actions
+
+  separation:
+    Agent = intelligence
+    Execution Engine = orchestration/state
+
+  flow:
+    Execution Engine -> Agent Runtime -> LLM -> Decision -> Action Proposal -> Policy Engine -> Tool
+
+AgentActionProposal:
+  structure:
+    action:
+      type: WRITE_FILE
+      resource: auth/login.go
+      operation: modify
+
+  rule: proposal is NOT immediate execution
+  rule: proposal goes through policy and validation
+
+DeterministicBoundary:
+  principle:
+    LLM is non-deterministic; state machine, policy, permissions, transitions are deterministic
+
+  rule: LLM does not change state directly
+  rule: Execution Engine manages all state transitions
+
+CompletionCriteria:
+  rule: "Done" is not sufficient
+  rule: acceptance criteria must be validated
+
+  example:
+    - Tests passed
+    - API contract matches
+    - No security violations
+    - Required files updated
+
+Validation:
+  flow:
+    EXECUTION -> VALIDATOR -> Acceptance Criteria -> PASS / FAIL
+
+  result:
+    PASS -> COMPLETED
+    FAIL -> FAILED or RETRY
+
+ExecutionArtifact:
+  types:
+    - code changes
+    - documents
+    - tests
+    - migrations
+    - logs
+    - reports
+
+  rule: artifacts are linked to execution
+
+ArtifactProvenance:
+  structure:
+    artifact:
+      id: ART-700
+      execution: EXEC-500
+      agent: AGENT-001
+      action: ACTION-12
+      source_revision: abc123
+
+  rule: every artifact records its origin
+
+ExecutionBudget:
+  structure:
+    budget:
+      tokens: 200000
+      cost: $2
+      duration: 30m
+      tool_calls: 100
+
+  rule: budget is enforced during execution
+  rule: budget exhaustion triggers PAUSE or DENY
+
+ExecutionEngine:
+  responsibilities:
+    - start
+    - pause
+    - resume
+    - cancel
+    - retry
+    - recover
+    - checkpoint
+    - transition
+
+  rule: Execution Engine is deterministic
+  rule: Execution Engine manages state, not LLM
+
+ExecutionEngineArchitecture:
+  TASK
+    ↓
+  EXECUTION ENGINE
+    ↓
+  ┌────────────┼────────────┐
+  ▼            ▼            ▼
+STATE MACHINE  EVENT LOG   CHECKPOINT
+    ↓
+  ACTION
+    ↓
+  POLICY ENGINE
+    ↓
+  TOOL
+    ↓
+  RESULT
+    ↓
+  VALIDATOR
+    ↓
+  NEXT STATE
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Context: @context.sdd
+  Agent: @agent.sdd
+  Session: @session.sdd
+  Events: @events.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Workflow: @../workflow/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+
+Rules:
+  [RT-EXEC-01] Task is specification; Execution is actual run.
+  [RT-EXEC-02] One task can have multiple executions.
+  [RT-EXEC-03] Execution state machine is deterministic — LLM does not change state directly.
+  [RT-EXEC-04] Events are immutable and append-only.
+  [RT-EXEC-05] Unknown result is NOT failure — requires investigation.
+  [RT-EXEC-06] Execution state persists in DB, not RAM.
+  [RT-EXEC-07] Execution can resume from last checkpoint after crash.
+  [RT-EXEC-08] Retry is only for transient failures; non-retryable failures do not retry.
+  [RT-EXEC-09] Idempotency keys prevent duplicate effects on retry.
+  [RT-EXEC-10] Checkpoints are created before risky operations.
+  [RT-EXEC-11] Compensation is used when rollback is impossible.
+  [RT-EXEC-12] Execution lock prevents two workers from taking same execution.
+  [RT-EXEC-13] Lease and heartbeat detect stuck executions.
+  [RT-EXEC-14] Agent proposes actions; Execution Engine validates and executes.
+  [RT-EXEC-15] Completion requires validation, not just agent "Done".
+  [RT-EXEC-16] Execution budget is enforced during execution.
+  [RT-EXEC-17] Artifacts record provenance for traceability.
+  [RT-EXEC-18] Agent MUST NOT add signatures or sign-offs to execution outputs.
+  [RT-EXEC-19] Agent MUST NOT use emojis, icons, or decorative symbols in execution output headers or titles.
+
+State: +

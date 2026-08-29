@@ -1,0 +1,27 @@
+﻿Runtime: SDD
+
+Purpose:
+  Agent runtime temporary workspace. This is NOT part of the
+  source project. It contains temporary files, caches, locks,
+  and run artifacts.
+
+Owns: ./
+
+Structure:
+  runs/:
+    Agent run artifacts
+  cache/:
+    Context cache
+  temp/:
+    Temporary files
+  locks/:
+    Resource locks
+
+Rules:
+  [RT1]  Runtime files are temporary and MUST be cleaned up.
+  [RT2]  Runtime is NOT part of source control.
+  [RT3]  Sensitive data in runtime MUST be encrypted.
+  [RT4]  Runtime MUST be isolated per project.
+
+State: +
+  

@@ -1,0 +1,171 @@
+﻿Infrastructure: SDD
+
+Purpose:
+  Infrastructure technology catalog with deployment targets, containerization,
+  orchestration, and IaC options. Root stack/ defines reusable infrastructure
+  knowledge; project/stack/ stores the selected infrastructure for the project.
+
+Catalog:
+  Docker:
+    Type: Containerization
+    Pros:
+      - Standardized packaging
+      - Consistent environments
+      - Rapid deployment
+      - Resource efficiency
+    Cons:
+      - Learning curve
+      - Security surface
+      - Storage overhead
+    BestFor:
+      - All containerized deployments
+      - Microservices
+      - Development environments
+    AvoidWhen:
+      - Simple single-binary deployments
+
+  Kubernetes:
+    Type: Orchestration
+    Pros:
+      - Auto-scaling
+      - Self-healing
+      - Service discovery
+      - Rolling updates
+    Cons:
+      - High complexity
+      - Operational overhead
+      - Overkill for small projects
+    BestFor:
+      - Large microservice deployments
+      - High availability requirements
+      - Auto-scaling needs
+    AvoidWhen:
+      - Small projects (prefer Docker Compose)
+
+  Nomad:
+    Type: Orchestration
+    Pros:
+      - Simpler than Kubernetes
+      - Flexible (VMs, containers)
+      - HashiCorp ecosystem
+    Cons:
+      - Smaller ecosystem
+      - Less community support
+    BestFor:
+      - HashiCorp shops
+      - Mixed workloads
+    AvoidWhen:
+      - Teams with Kubernetes experience
+
+  Terraform:
+    Type: IaC
+    Pros:
+      - Multi-cloud
+      - Declarative
+      - Large provider ecosystem
+      - State management
+    Cons:
+      - State file management
+      - Learning curve
+    BestFor:
+      - Infrastructure automation
+      - Multi-cloud deployments
+    AvoidWhen:
+      - Simple deployments
+
+  Ansible:
+    Type: Configuration Management
+    Pros:
+      - Agentless
+      - Simple YAML
+      - Large ecosystem
+    Cons:
+      - Slower execution
+      - Less declarative than Terraform
+    BestFor:
+      - Configuration management
+      - Legacy infrastructure
+    AvoidWhen:
+      - Cloud-native IaC
+
+  VPS:
+    Type: Bare Metal / VPS
+    Pros:
+      - Simple
+      - Full control
+      - Low cost for small projects
+    Cons:
+      - Manual scaling
+      - No built-in HA
+    BestFor:
+      - Small projects
+      - Prototypes
+      - Low traffic
+    AvoidWhen:
+      - High availability requirements
+
+  AWS:
+    Type: Cloud Provider
+    Pros:
+      - Comprehensive services
+      - Global infrastructure
+      - Strong ecosystem
+    Cons:
+      - Complex pricing
+      - Vendor lock-in
+      - Learning curve
+    BestFor:
+      - Enterprise cloud
+      - Global scale
+      - Managed services
+    AvoidWhen:
+      - Multi-cloud requirements
+
+  GCP:
+    Type: Cloud Provider
+    Pros:
+      - Strong data/AI services
+      - Kubernetes-native
+      - Global network
+    Cons:
+      - Smaller ecosystem than AWS
+      - Less enterprise adoption
+    BestFor:
+      - Data-heavy workloads
+      - Kubernetes-native
+    AvoidWhen:
+      - AWS expertise exists
+
+  Azure:
+    Type: Cloud Provider
+    Pros:
+      - Enterprise integration
+      - Windows support
+      - Hybrid cloud
+    Cons:
+      - Complex pricing
+      - Inconsistent UX
+    BestFor:
+      - Enterprise Microsoft shops
+      - Hybrid cloud
+    AvoidWhen:
+      - Non-Microsoft ecosystems
+
+SelectionRules:
+  - Scale: project size and traffic expectations
+  - Complexity: team operational capability
+  - Cost: infrastructure budget constraints
+  - Availability: uptime requirements
+  - Compliance: regulatory requirements
+  - TeamFit: existing infrastructure expertise
+
+TechnologyScore:
+  Scale: 0-25
+  Complexity: 0-20
+  Cost: 0-15
+  Availability: 0-15
+  Compliance: 0-10
+  TeamFit: 0-15
+
+State: +
+  

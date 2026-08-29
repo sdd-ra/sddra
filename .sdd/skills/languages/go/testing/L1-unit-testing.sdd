@@ -1,0 +1,97 @@
+﻿# Go Unit Testing
+
+Purpose:
+  Go Unit Testing
+
+Skill: Go Unit Testing
+
+ID:
+  SKILL-LANG-GO-TEST-L1
+
+Domain:
+  languages/go/testing
+
+Use:
+  writing unit tests for Go code
+
+Apply:
+  beginner
+  intermediate
+  tdd
+  test-driven-development
+
+Requires:
+  SKILL-LANG-GO-L1
+  go-test
+
+Avoid:
+  test-pollution
+  external-dependency
+  flaky-test
+  testing-implementation
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go testing
+  unit test
+  go test
+  testify
+  mock
+  table-driven test
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/testing/L1-unit-testing.md
+
+Evidence:
+  - Go testing package documentation
+  - Testify documentation
+  - Production experience
+
+Rules:
+  [T1] Every public function MUST have tests.
+  [T2] Test function names MUST describe what is being tested.
+  [T3] Use table-driven tests for multiple cases.
+  [T4] Use subtests for related assertions (`t.Run`).
+  [T5] Mock external dependencies.
+  [T6] Tests MUST be independent â€” no shared state.
+  [T7] Use testify for assertions.
+  [T8] Test files MUST be named `*_test.go`.
+
+Pros:
+  - Confidence in changes
+  - Living documentation
+  - Regression prevention
+
+Cons:
+  - Maintenance cost
+  - Initial time investment
+
+Alternatives:
+  - Manual testing
+  - Property-based testing
+
+State: +
+

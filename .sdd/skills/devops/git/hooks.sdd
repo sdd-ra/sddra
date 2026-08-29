@@ -1,0 +1,64 @@
+# Skill: Git Hooks
+
+Purpose:
+  Define git hooks for SDDRA system. Hooks enforce quality,
+  security, and consistency before commits and pushes.
+
+ID: SKILL-DEVOPS-GIT-HOOKS
+
+Domain: devops/git
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - Pre-commit validation
+  - Commit message validation
+  - Pre-push validation
+  - Automated checks
+
+Input:
+  - Staged files
+  - Commit message
+  - Branch name
+
+Output:
+  - Validation result
+  - Error messages
+  - Warnings
+
+Execute:
+  1. Run pre-commit checks:
+     - Lint .sdd/ files
+     - Validate .sdd/ references
+     - Check for secrets
+     - Check for Azerbaijani content
+  2. Validate commit message:
+     - Semantic format
+     - Valid type and scope
+     - Breaking change footer if applicable
+  3. Run pre-push checks:
+     - Run tests
+     - Validate chain graph
+     - Check documentation
+  4. Return validation result
+
+Validation:
+  - All pre-commit checks pass
+  - Commit message is valid
+  - All pre-push checks pass
+
+Examples:
+  - Commit with invalid message -> reject
+  - Commit with secrets -> reject
+  - Commit with broken references -> warn
+  - Push without tests -> reject
+
+Avoid:
+  - Skipping hooks
+  - Committing secrets
+  - Committing broken .sdd/ files
+  - Pushing without tests
+
+State: +

@@ -1,0 +1,100 @@
+﻿# Rust Fundamentals
+
+Purpose:
+  Rust Fundamentals
+
+Skill: Rust Fundamentals
+
+ID:
+  SKILL-LANG-RUST-L1
+
+Domain:
+  languages/rust
+
+Use:
+  writing safe and concurrent Rust programs
+
+Apply:
+  beginner
+  learning
+  systems-programming
+  performance-critical
+
+Requires:
+  rust-1.75+
+  cargo
+
+Avoid:
+  unsafe-code
+  ignoring-compiler
+  fighting-borrow-checker
+  premature-optimization
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  rust
+  systems programming
+  memory safety
+  ownership
+  borrowing
+  cargo
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/rust/L1-fundamentals.md
+
+Evidence:
+  - Rust Documentation
+  - The Rust Programming Language Book
+  - Production experience
+
+Rules:
+  [R1] Use `let` for variable bindings.
+  [R2] Use `mut` only when mutation is needed.
+  [R3] Use `match` for pattern matching.
+  [R4] Use `Result<T, E>` for error handling.
+  [R5] Use `Option<T>` for nullable values.
+  [R6] Use `struct` for data structures.
+  [R7] Use `impl` blocks for methods.
+  [R8] Use `cargo` for build and dependency management.
+
+Pros:
+  - Memory safety without GC
+  - Zero-cost abstractions
+  - Fearless concurrency
+
+Cons:
+  - Steep learning curve
+  - Compile times
+  - Borrow checker complexity
+
+Alternatives:
+  - Go (simpler)
+  - C++ (manual control)
+  - Zig (simpler than Rust)
+
+State: +
+

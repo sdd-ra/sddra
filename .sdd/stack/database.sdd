@@ -1,0 +1,155 @@
+﻿Database: SDD
+
+Purpose:
+  Database technology catalog with comparison criteria, selection rules,
+  and compatibility requirements. Root stack/ defines reusable database
+  knowledge; project/stack/ stores the selected database for the project.
+
+Catalog:
+  PostgreSQL:
+    Type: Relational
+    Pros:
+      - ACID compliance
+      - Rich data types (JSON, arrays, ranges)
+      - Excellent query planner
+      - Strong consistency
+      - Extensible (PostGIS, pgvector)
+    Cons:
+      - Higher operational complexity than SQLite
+      - Vertical scaling limits
+    BestFor:
+      - Complex relational data
+      - ACID requirements
+      - JSON alongside relational
+      - Geospatial data
+    AvoidWhen:
+      - Simple key-value (prefer Redis)
+      - Document-heavy (prefer MongoDB)
+    Performance:
+      - Excellent with proper indexing
+      - MVCC overhead
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+
+  MySQL:
+    Type: Relational
+    Pros:
+      - Widely deployed
+      - Simple replication
+      - Large ecosystem
+      - Good read performance
+    Cons:
+      - Less feature-rich than PostgreSQL
+      - Weaker JSON support
+    BestFor:
+      - Simple relational data
+      - Read-heavy workloads
+      - WordPress-style applications
+    AvoidWhen:
+      - Complex queries
+      - JSON-heavy schemas
+    Performance:
+      - Good for simple queries
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+
+  MongoDB:
+    Type: Document
+    Pros:
+      - Flexible schema
+      - Horizontal scaling
+      - Document-oriented
+      - Aggregation pipeline
+    Cons:
+      - No ACID across documents
+      - Memory-hungry
+      - Data duplication
+    BestFor:
+      - Unstructured data
+      - Rapid prototyping
+      - Content management
+    AvoidWhen:
+      - Complex transactions
+      - Relational data
+    Performance:
+      - Good for document workloads
+    Ecosystem:
+      - Large
+    Hiring:
+      - Moderate availability
+
+  Redis:
+    Type: Key-Value / Cache
+    Pros:
+      - In-memory speed
+      - Rich data structures
+      - Pub/Sub
+      - Lua scripting
+    Cons:
+      - Memory-limited
+      - Not for large datasets
+    BestFor:
+      - Caching
+      - Session storage
+      - Rate limiting
+      - Pub/Sub messaging
+    AvoidWhen:
+      - Primary data store
+      - Large datasets
+    Performance:
+      - Excellent (in-memory)
+    Ecosystem:
+      - Very large
+    Hiring:
+      - Widely available
+
+  SQLite:
+    Type: Embedded Relational
+    Pros:
+      - Zero configuration
+      - Single file
+      - ACID compliant
+      - Embedded
+    Cons:
+      - No network access
+      - Limited concurrency
+      - No built-in replication
+    BestFor:
+      - Prototypes
+      - Edge devices
+      - Simple applications
+      - Testing
+    AvoidWhen:
+      - High-concurrency production
+      - Distributed systems
+    Performance:
+      - Excellent for local access
+    Ecosystem:
+      - Large
+    Hiring:
+      - Widely available
+
+SelectionRules:
+  - RequirementFit: data model requirements
+  - Consistency: ACID requirements
+  - Scale: read/write patterns and volume
+  - QueryComplexity: query patterns and complexity
+  - OperationalFit: team expertise and operational burden
+  - Cost: licensing and infrastructure cost
+  - Compatibility: integration with other stack components
+
+TechnologyScore:
+  RequirementFit: 0-25
+  Consistency: 0-20
+  Scale: 0-15
+  QueryComplexity: 0-10
+  OperationalFit: 0-10
+  Cost: 0-10
+  Compatibility: 0-10
+
+State: +
+  

@@ -1,0 +1,45 @@
+Skills: React Framework
+
+Purpose:
+  React framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+   3  @L2-hooks-patterns.sdd
+   4  @L3-state-management.sdd
+   5  @L4-advanced-architecture.sdd
+
+Modes:
+  LEARN    — learn React fundamentals
+  APPLY    — apply React patterns to code
+  REVIEW   — review React skills
+  UPGRADE  — propose React skill upgrade
+
+Rules:
+  [R1]  Use functional components with hooks.
+  [R2]  Use TypeScript for all components.
+  [R3]  Extract reusable logic into custom hooks.
+  [R4]  Use proper key props in lists.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+  Resolve:
+    L1-fundamentals
+    L2-hooks-patterns
+    L3-state-management
+    L4-advanced-architecture
+
+Navigation:
+  React: @frameworks/react/INDEX.sdd
+  ReactL1: @frameworks/react/L1-fundamentals.sdd
+  ReactL2: @frameworks/react/L2-hooks-patterns.sdd
+  ReactL3: @frameworks/react/L3-state-management.sdd
+  ReactL4: @frameworks/react/L4-advanced-architecture.sdd
+
+State: +

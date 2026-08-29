@@ -1,0 +1,52 @@
+﻿API: SDD
+
+Purpose:
+  API testing — verify API endpoints behave correctly according to
+  their contracts. API tests validate request/response formats,
+  status codes, error handling, and business logic at the API layer.
+
+Owns: ./
+
+Scope:
+  REST API endpoints
+  GraphQL queries/mutations
+  gRPC services
+  WebSocket endpoints
+  Webhook handlers
+
+Principles:
+  Test the contract, not the implementation
+  Verify both success and error paths
+  Test authentication and authorization
+  Test rate limiting and validation
+  Test with realistic payloads
+
+Structure:
+  Every API test MUST:
+    specify the endpoint and method
+    define request payload/headers
+    define expected response status
+    define expected response body
+    test error cases
+
+Frameworks:
+  Postman/Newman
+  REST Assured (Java)
+  Supertest (Node)
+  Pact (contract testing)
+  Schemathesis (property-based)
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  Contract: @contract.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

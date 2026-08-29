@@ -1,0 +1,27 @@
+# Skills: Git
+
+Purpose:
+  Git skills for SDDRA system. Defines how git is used,
+  including branching, commits, and hooks.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @semantic-commits.sdd
+   3  @branching.sdd
+   4  @hooks.sdd
+
+Rules:
+  [G1] All commits MUST follow semantic format.
+  [G2] All branches MUST follow naming convention.
+  [G3] All commits MUST pass pre-commit hooks.
+  [G4] Never commit directly to master.
+  [G5] All .sdd/ changes require owner approval.
+
+Navigation:
+  SemanticCommits: @semantic-commits.sdd
+  Branching: @branching.sdd
+  Hooks: @hooks.sdd
+
+State: +

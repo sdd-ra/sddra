@@ -1,0 +1,98 @@
+﻿# Docker Fundamentals
+
+Purpose:
+  Docker Fundamentals
+
+Skill: Docker Fundamentals
+
+ID:
+  SKILL-PLAT-DOCKER-L1
+
+Domain:
+  platforms/docker
+
+Use:
+  containerizing applications with Docker
+
+Apply:
+  beginner
+  learning
+  development
+  deployment
+
+Requires:
+  docker-24+
+  linux-fundamentals
+
+Avoid:
+  running-as-root
+  latest-tag
+  unnecessary-privileges
+  secret-in-image
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  docker
+  container
+  dockerfile
+  image
+  containerization
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/platforms/docker/L1-fundamentals.md
+
+Evidence:
+  - Docker Documentation
+  - Docker Get Started
+  - Production experience
+
+Rules:
+  [D1] Use specific image versions, not `latest`.
+  [D2] Use official base images (alpine, debian, distroless).
+  [D3] Use `.dockerignore` to reduce build context.
+  [D4] Combine `RUN` commands to reduce layers.
+  [D5] Use `WORKDIR` to set working directory.
+  [D6] Use `COPY` instead of `ADD` for local files.
+  [D7] Use `EXPOSE` to document ports.
+  [D8] Use `CMD` or `ENTRYPOINT` for container startup.
+
+Pros:
+  - Consistent environments
+  - Isolation
+  - Portability
+
+Cons:
+  - Learning curve
+  - Image size
+  - Security complexity
+
+Alternatives:
+  - Podman
+  - Containerd
+  - Buildpacks
+
+State: +
+

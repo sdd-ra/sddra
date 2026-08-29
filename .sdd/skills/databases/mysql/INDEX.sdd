@@ -1,0 +1,33 @@
+Skills: MySQL
+
+Purpose:
+  MySQL skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn MySQL fundamentals
+  APPLY    — apply MySQL patterns to schema
+  REVIEW   — review MySQL skills
+  UPGRADE  — propose MySQL skill upgrade
+
+Rules:
+  [M1]  Use appropriate storage engines (InnoDB).
+  [M2]  Use indexes for frequently queried columns.
+  [M3]  Use transactions for data integrity.
+  [M4]  Use EXPLAIN for query analysis.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  MySQL: @databases/mysql/INDEX.sdd
+  MySQLL1: @databases/mysql/L1-fundamentals.sdd
+
+State: +

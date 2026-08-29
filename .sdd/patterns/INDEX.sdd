@@ -1,0 +1,27 @@
+# Patterns
+
+Purpose:
+  Reusable resilience and reliability patterns for the SDDRA system.
+  These patterns are applied across all stages and components.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @circuit-breaker.sdd
+   3  @checkpoint-restore.sdd
+   4  @graceful-degradation.sdd
+
+Rules:
+  [P1] Patterns are READ-ONLY — they MUST NOT be modified.
+  [P2] Patterns are applied automatically by the orchestrator.
+  [P3] Pattern violations are logged and reported.
+  [P4] Patterns can be disabled per-chain if needed.
+
+Navigation:
+  CircuitBreaker: @circuit-breaker.sdd
+  CheckpointRestore: @checkpoint-restore.sdd
+  GracefulDegradation: @graceful-degradation.sdd
+  Resilience: @RESILIENCE.md
+
+State: +

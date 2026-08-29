@@ -1,0 +1,99 @@
+﻿# Distributed Tracing
+
+Purpose:
+  Distributed Tracing
+
+Skill: Distributed Tracing
+
+ID:
+  SKILL-CROSS-OBS-TRACING
+
+Domain:
+  cross-cutting/observability
+
+Use:
+  implementing distributed tracing
+
+Apply:
+  senior
+  lead
+  architect
+  distributed-system
+
+Requires:
+  observability-fundamentals
+  opentelemetry
+
+Avoid:
+  trace-overhead
+  missing-context
+  no-sampling
+  tight-coupling
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  tracing
+  distributed tracing
+  opentelemetry
+  jaeger
+  zipkin
+  observability
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/cross-cutting/observability/tracing.md
+
+Evidence:
+  - OpenTelemetry Documentation
+  - Distributed Tracing Guide
+  - Production experience
+
+Rules:
+  [T1] Use OpenTelemetry for vendor-neutral tracing.
+  [T2] Propagate trace context across service boundaries.
+  [T3] Use consistent trace ID format.
+  [T4] Sample traces appropriately (1-10% in production).
+  [T5] Add span attributes for context.
+  [T6] Use span events for notable occurrences.
+  [T7] Implement trace-to-logs correlation.
+  [T8] Monitor trace latency and error rates.
+
+Pros:
+  - Distributed debugging
+  - Performance insights
+  - Dependency mapping
+
+Cons:
+  - Overhead
+  - Storage cost
+  - Privacy concerns
+
+Alternatives:
+  - Metrics only
+  - Logs only
+  - APM
+
+State: +
+

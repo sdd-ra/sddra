@@ -1,0 +1,101 @@
+﻿# PostgreSQL Fundamentals
+
+Purpose:
+  PostgreSQL Fundamentals
+
+Skill: PostgreSQL Fundamentals
+
+ID:
+  SKILL-DB-PG-L1
+
+Domain:
+  databases/postgresql
+
+Use:
+  designing and using basic PostgreSQL databases
+
+Apply:
+  beginner
+  learning
+  simple-application
+  relational-data
+
+Requires:
+  postgresql-14+
+  sql-fundamentals
+
+Avoid:
+  enum-overuse
+  missing-index
+  n-plus-one
+  raw-sql-injection
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  postgresql
+  postgres
+  database
+  sql
+  relational
+  schema
+  tables
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/databases/postgresql/L1-fundamentals.md
+
+Evidence:
+  - PostgreSQL Documentation
+  - PostgreSQL Tutorial
+  - Production experience
+
+Rules:
+  [P1] Use `SERIAL` or `BIGSERIAL` for auto-incrementing IDs.
+  [P2] Use `VARCHAR(n)` for variable-length strings.
+  [P3] Use `NOT NULL` constraints for required fields.
+  [P4] Use `DEFAULT` values for columns.
+  [P5] Use `PRIMARY KEY` for unique identification.
+  [P6] Use `FOREIGN KEY` for referential integrity.
+  [P7] Use `CHECK` constraints for data validation.
+  [P8] Use `UNIQUE` constraints for business keys.
+
+Pros:
+  - ACID compliance
+  - Rich data types
+  - Open source
+
+Cons:
+  - Setup complexity
+  - Memory usage
+  - Scaling challenges
+
+Alternatives:
+  - MySQL (simpler)
+  - SQLite (embedded)
+  - MongoDB (NoSQL)
+
+State: +
+

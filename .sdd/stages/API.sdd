@@ -1,0 +1,49 @@
+﻿Spec: Stage
+
+ID:
+  @API
+
+Purpose:
+  API surface implementation and contract validation.
+
+Entry:
+  backend ready
+  contract defined
+  applicable skills loaded
+
+Must:
+  implement API endpoints
+  validate contracts
+  add API tests
+  document endpoints
+  handle auth
+
+Exit:
+  endpoints implemented
+  contract tests pass
+  API docs updated
+  security review passed
+
+OnFail:
+  << API
+
+Next:
+  FE
+  MD
+  QA
+
+Review:
+  @API/contract
+  @SC/api-security
+
+Risk:
+  R2
+
+Skills:
+  @api/rest
+  @api/contract
+  @api/versioning
+  @api/auth
+
+State: +
+  

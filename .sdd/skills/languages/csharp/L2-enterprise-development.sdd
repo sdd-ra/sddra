@@ -1,0 +1,100 @@
+﻿# C# Enterprise Development
+
+Purpose:
+  C# Enterprise Development
+
+Skill: C# Enterprise Development
+
+ID:
+  SKILL-LANG-CSHARP-L2
+
+Domain:
+  languages/csharp
+
+Use:
+  building enterprise C# applications with .NET
+
+Apply:
+  intermediate
+  senior
+  enterprise
+  web-api
+
+Requires:
+  SKILL-LANG-CSHARP-L1
+  dotnet-8+
+  entity-framework
+
+Avoid:
+  god-controller
+  anemic-domain
+  tight-coupling
+  blocking-code
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  csharp
+  .net
+  entity framework
+  asp.net core
+  enterprise
+  web api
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/csharp/L2-enterprise-development.md
+
+Evidence:
+  - .NET Documentation
+  - Entity Framework Documentation
+  - Production experience
+
+Rules:
+  [C1] Use ASP.NET Core for web APIs.
+  [C2] Use Entity Framework Core for data access.
+  [C3] Use dependency injection.
+  [C4] Use repository pattern.
+  [C5] Use DTOs for API contracts.
+  [C6] Use MediatR for CQRS.
+  [C7] Use FluentValidation for validation.
+  [C8] Use Serilog for logging.
+
+Pros:
+  - Excellent IDE support
+  - Strong ecosystem
+  - Good performance
+
+Cons:
+  - Memory usage
+  - Framework complexity
+  - Learning curve
+
+Alternatives:
+  - Go (simpler)
+  - Java (similar)
+  - Node.js (lighter)
+
+State: +
+

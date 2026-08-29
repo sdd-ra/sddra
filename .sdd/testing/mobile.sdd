@@ -1,0 +1,52 @@
+﻿Mobile: SDD
+
+Purpose:
+  Mobile testing — verify mobile app behavior across platforms and
+  devices. Mobile tests cover native features, gestures, offline
+  behavior, and platform-specific concerns.
+
+Owns: ./
+
+Scope:
+  Native features (camera, GPS, notifications)
+  Gestures and touch interactions
+  Offline behavior and sync
+  Push notifications
+  Deep linking
+  App lifecycle (background/foreground)
+  Platform-specific behavior (iOS/Android)
+
+Principles:
+  Test on real devices when possible
+  Test offline and online behavior
+  Test platform-specific features separately
+  Keep platform-specific tests organized
+  Test app lifecycle events
+
+Structure:
+  Every mobile test MUST:
+    test a specific mobile feature or behavior
+    clean up app state
+    handle platform differences explicitly
+    be independent of other tests
+
+Frameworks:
+  React Native: Jest, Detox
+  Flutter: flutter_test, integration_test
+  iOS: XCTest, XCUITest
+  Android: Espresso, UI Automator
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  

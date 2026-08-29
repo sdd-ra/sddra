@@ -1,0 +1,92 @@
+﻿Spec: SecurityScanners
+
+Purpose:
+  Security scanner configuration and execution rules. Scanners are the
+  tools that implement security controls. This file defines which
+  scanner runs when, how it is configured, and how its output is
+  interpreted.
+
+Scanners:
+
+  SEC.SECRET:
+    truffleHog:
+      command: trufflehog --regex --entropy=False .
+      on_failure: block
+    gitleaks:
+      command: gitleaks detect --source .
+      on_failure: block
+    detect-secrets:
+      command: detect-secrets scan
+      on_failure: block
+
+  SEC.DEP:
+    snyk:
+      command: snyk test --severity-threshold=high
+      on_failure: block
+    npm-audit:
+      command: npm audit --audit-level=high
+      on_failure: block
+    grype:
+      command: grype .
+      on_failure: block
+
+  SEC.SAST:
+    semgrep:
+      command: semgrep --config=p/security .
+      on_failure: block
+    bandit:
+      command: bandit -r .
+      on_failure: block
+
+  SEC.DAST:
+    owasp-zap:
+      command: zap-baseline.py -t https://staging.example.com
+      on_failure: block
+    nuclei:
+      command: nuclei -u https://staging.example.com
+      on_failure: warn
+
+  SEC.CONTAINER:
+    trivy:
+      command: trivy image .
+      on_failure: block
+    docker-scout:
+      command: docker scout cves .
+      on_failure: block
+
+  SEC.SUPPLY:
+    slsa:
+      command: slsa-verifier
+      on_failure: block
+    sigstore:
+      command: cosign verify
+      on_failure: block
+
+ScannerExecution:
+  Scanners run at defined points in the pipeline:
+    pre-commit: SEC.SECRET (local)
+    CI: SEC.DEP, SEC.SAST, SEC.CONTAINER
+    post-deploy: SEC.DAST (staging)
+    release: SEC.PENTEST (if triggered)
+
+  Scanner results feed into gates.sdd for gate calculation.
+
+ScannerOutput:
+  Scanner output MUST be structured:
+    scanner
+    timestamp
+    findings
+      severity
+      description
+      location
+      recommendation
+
+  Unstructured output MUST be parsed into this format before
+  being used by gates.sdd.
+
+State: +
+  Note:
+  This file defines the security scanners
+  and their execution rules. Scanners are tools that implement security
+  controls. This file configures which scanner runs when and how its
+  output is interpreted.

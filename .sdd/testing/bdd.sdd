@@ -1,0 +1,112 @@
+﻿BDD: SDD
+
+Purpose:
+  Behavior-Driven Development — define business behavior in executable
+  specifications before implementation starts. BDD is the bridge between
+  business requirements and technical implementation.
+
+Owns: ./
+
+Scope:
+  Business behavior definition
+  Acceptance criteria
+  Scenario design
+  BDD test structure
+  BDD execution
+
+DoesNotOwn:
+  Test implementation code (stays in project test directories)
+  Unit/integration/e2e test definitions (bax unit.sdd, integration.sdd, e2e.sdd)
+
+Principles:
+
+  BDD is not testing, it is specification:
+    BDD describes WHAT the system should do, not HOW it works internally.
+    Unit tests verify HOW; BDD verifies WHAT.
+
+  BDD comes before code:
+    No implementation starts before BDD scenarios are defined and accepted.
+    This is the business mindset: behavior first, code second.
+
+  BDD is shared understanding:
+    Business, QA, and development MUST agree on BDD scenarios.
+    Scenarios are written in business language, not technical jargon.
+
+  BDD is executable:
+    Scenarios are not documentation — they are executable tests.
+    They MUST run and pass before the task can advance.
+
+Format:
+  Standard Given/When/Then:
+
+    Given <precondition>
+    When <action>
+    Then <expected outcome>
+
+  AI compact form:
+
+    BDD:
+      balance>=refund
+      refund(req)=once
+
+  Human form:
+
+    Given customer has sufficient balance
+    When customer requests refund
+    Then refund is created once
+
+Structure:
+  Every BDD feature MUST contain:
+    Feature: <business capability>
+    Scenario: <specific behavior>
+    Given: <preconditions>
+    When: <actions>
+    Then: <expected outcomes>
+    And: <additional conditions>
+
+Examples:
+
+  Feature: Refund Idempotency
+
+  Scenario: Duplicate refund request
+    Given a refund request exists for transaction TX-123
+    When the same refund request is submitted again
+    Then no second refund is created
+    And the original refund result is returned
+
+  Scenario: Concurrent refund requests
+    Given a refund request exists for transaction TX-123
+    When two identical refund requests arrive simultaneously
+    Then only one refund is created
+    And both requests receive the same refund result
+
+Ownership:
+  Business: defines scenarios and acceptance criteria
+  QA: writes executable BDD tests
+  Development: implements to make BDD pass
+
+Gate:
+  BDD gate MUST pass before implementation starts:
+    All scenarios defined
+    All scenarios accepted by business
+    Executable BDD framework in place
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  E2E: @e2e.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  Note:
+  BDD is a first-class citizen in the .sdd system. Every task with
+  business behavior MUST have BDD scenarios before implementation.
+  BDD scenarios are stored in the project's BDD framework (e.g.,
+  Behave, Cucumber, SpecFlow) — not in .sdd/. The .sdd system
+  references BDD artifacts, it does not store them.

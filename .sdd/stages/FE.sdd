@@ -1,0 +1,48 @@
+﻿Spec: Stage
+
+ID:
+  @FE
+
+Purpose:
+  Frontend implementation.
+
+Entry:
+  API contract ready
+  design ready
+  applicable skills loaded
+
+Must:
+  implement UI
+  follow design system
+  add component tests
+  handle state
+  ensure accessibility
+
+Exit:
+  UI complete
+  component tests pass
+  accessibility checks pass
+  integration with API verified
+
+OnFail:
+  << FE
+
+Next:
+  TS
+  QA
+
+Review:
+  @FE/code-review
+  @QA/ui
+
+Risk:
+  R1
+
+Skills:
+  @frontend/react
+  @frontend/state
+  @frontend/accessibility
+  @frontend/testing
+
+State: +
+  

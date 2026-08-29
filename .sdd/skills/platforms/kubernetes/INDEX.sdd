@@ -1,0 +1,33 @@
+Skills: Kubernetes
+
+Purpose:
+  Kubernetes skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn Kubernetes fundamentals
+  APPLY    — apply Kubernetes patterns to deployment
+  REVIEW   — review Kubernetes skills
+  UPGRADE  — propose Kubernetes skill upgrade
+
+Rules:
+  [K1]  Use Deployments for stateless apps.
+  [K2]  Use Services for load balancing.
+  [K3]  Use ConfigMaps and Secrets.
+  [K4]  Set resource requests and limits.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  Kubernetes: @platforms/kubernetes/INDEX.sdd
+  K8sL1: @platforms/kubernetes/L1-fundamentals.sdd
+
+State: +

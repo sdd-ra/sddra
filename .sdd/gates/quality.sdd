@@ -1,0 +1,63 @@
+﻿Quality: Gates
+
+Purpose:
+  Defines static quality gates for all supported technology stacks.
+
+StaticQualityGates:
+  Go:
+    - gofmt
+    - go vet
+    - staticcheck
+    - tests
+  TypeScript:
+    - eslint
+    - tsc
+    - tests
+  Flutter:
+    - dart analyze
+    - flutter test
+  React Native:
+    - eslint
+    - tsc
+    - jest
+  PHP:
+    - phpcs
+    - psalm
+    - tests
+  Java:
+    - checkstyle
+    - spotbugs
+    - tests
+  Python:
+    - black
+    - flake8
+    - mypy
+    - tests
+
+QualityGate:
+  Format:
+    QUALITY-GATE-<ID>
+
+    Condition:
+      No lint errors
+
+    Evidence:
+      linter report
+
+    Threshold:
+      Errors = 0
+
+    Owner:
+      Developer
+
+    Decision:
+      PASS / FAIL
+
+QualityRules:
+  [QL1]  Static quality checks MUST run before unit tests.
+  [QL2]  Quality gate MUST use stack-appropriate tools.
+  [QL3]  Quality gate failure blocks subsequent gates.
+  [QL4]  Quality gate evidence MUST be stored.
+
+State: +
+  

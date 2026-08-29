@@ -1,0 +1,43 @@
+﻿Exceptions: Gates
+
+Purpose:
+  Defines gate exception (waiver) rules and management.
+
+Waiver:
+  Format: WAIVER-NNN
+
+  Fields:
+    Gate: <gate-id>
+    Reason: <why waiver is needed>
+    Owner: <who approved>
+    Expiration: <datetime>
+    Risk: <risk assessment>
+    Approval: <approval authority>
+
+WaiverRules:
+  [WVR1] Waiver MUST have Reason, Owner, Expiration, Risk, Approval.
+  [WVR2] Waiver is temporary; expired waivers re-trigger gate.
+  [WVR3] Waiver does not bypass gate permanently.
+  [WVR4] Waiver MUST be recorded in graph.
+
+ExpiredWaiver:
+  WAIVER-009
+    ↓
+  EXPIRED
+    ↓
+  Gate re-required
+
+SkipVsWaive:
+  SKIPPED:
+    Gate not applicable to project
+  WAIVED:
+    Gate applicable but approved to skip
+
+ExceptionRules:
+  [EX1]  SKIPPED ≠ WAIVED.
+  [EX2]  Waivers require explicit approval.
+  [EX3]  Waivers have expiration dates.
+  [EX4]  Expired waivers MUST be renewed or gate re-run.
+
+State: +
+  

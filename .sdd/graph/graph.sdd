@@ -1,0 +1,267 @@
+﻿Spec: ProjectGraph
+
+Version:
+  1
+
+Purpose:
+  Graph layer that maintains what the project is related to, who owns
+   what, and which impact areas a change will cover. This directory is
+   only a semantic map — it is not a second copy of the source code.
+   AI uses this graph to resolve without traversing the repository.
+
+Owns: ./
+
+Types:
+  DependencyGraph  — "What is A dependent on?"
+  ImpactGraph      — "What is affected when A changes?"
+  OwnershipGraph   — "Who is responsible for this work?"
+
+
+Graph:
+  Nodes:
+    @users
+    @payments
+    @payments/refund
+    @api/refund
+    @db/refunds
+    @FE/payments
+    @MD/payments
+    @QA/payments
+    @SC/payment
+    @DO/payment
+
+  Edges:
+    @payments/refund -> @db/refunds
+      type: dependency
+      risk: R3
+      required: true
+
+    @payments/refund -> @api/refund
+      type: dependency
+      risk: R3
+      required: true
+
+    @payments/refund -> @payment-gateway
+      type: dependency
+      risk: R2
+      required: true
+
+    @api/refund -> @FE/payments
+      type: calls
+      protocol: HTTP
+      contract: @api/refund
+
+    @api/refund -> @MD/payments
+      type: calls
+      protocol: HTTP
+      contract: @api/refund
+
+    @FE/payments -> @QA/payments
+      type: tests
+      framework: playwright
+
+    @MD/payments -> @QA/payments
+      type: tests
+      framework: detox
+
+    @QA/payments -> @SC/payment
+      type: security-review
+      required: true
+
+    @SC/payment -> @DO/payment
+      type: deploys
+      required: true
+
+    @DO/payment -> @VR
+      type: verifies
+      required: true
+
+  Ownership:
+    @payments/refund: BE
+    @api/refund: API
+    @FE/payments: FE
+    @MD/payments: MD
+    @QA/payments: QA
+    @SC/payment: SC
+    @DO/payment: DO
+
+
+DependencyGraph:
+  Answers the question "What is A dependent on?"
+
+  Example:
+    @payments/refund
+      ├──> @db/refunds
+      ├──> @api/refund
+      └──> @payment-gateway
+
+  AI MUST load this graph before touching any node's implementation
+   so it knows what must exist first (see TokenEconomy in ../architecture/
+   architecture.sdd -> Principles).
+
+
+ImpactGraph:
+  Answers the question "What is affected when A changes?"
+
+  Example:
+    @db/refunds
+      │
+      ↓
+     @BE/payments/refund
+      │
+      ↓
+     @api/refund
+      │
+      ┌────┴────┐
+      ↓         ↓
+     @FE        @MD
+      │         │
+      └────┬────┘
+           ↓
+          @TS
+           ↓
+          @QA
+           ↓
+          @VR
+
+  Impact levels (from protocol/ROOT.sdd -> ImpactTokens):
+    I0 = isolated
+    I1 = local
+    I2 = module
+    I3 = domain
+    I4 = project
+    I5 = system
+
+  AI MUST consult this graph before claiming a change is complete —
+  "BE ✓" does not mean DONE while FE, MD, QA, SC, DO, VR are still
+  pending (bax chains/chains.sdd -> Completion).
+
+
+OwnershipGraph:
+  Answers the question "Who is responsible for this work?"
+
+  Example:
+    @payments/refund   owner: BE
+    @api/refund        owner: API
+    @FE/payments       owner: FE
+    @MD/payments       owner: MD
+    @QA/payments       owner: QA
+    @SC/payment        owner: SC
+    @DO/payment        owner: DO
+
+  This graph is the basis for failure routing (bax tasks/tasks.sdd ->
+  FailureRouting, protocol/ROOT.sdd -> FailureRouting).
+
+
+EdgeMetadata:
+  Every graph edge MAY carry metadata:
+
+    type:        dependency | calls | uses | writes | tests |
+                 secures | deploys | verifies | produces | consumes
+    protocol:    HTTP | gRPC | CLI | Event | ...
+    contract:    @api/refund
+    risk:        R0-R5
+    required:    true | false
+    direction:   inbound | outbound
+    since:       <version or date>
+    status:      + | ~ | ! | ?
+
+  Edge metadata makes the graph usable for architecture intelligence,
+  not just navigation. AI MUST NOT create edges without metadata when
+  the information is available (bax architecture/architecture.sdd ->
+  SourceOfTruth).
+
+
+GraphDrift:
+  Graph drift is a subset of project drift (bax project/project.sdd ->
+  Declared/Observed/Drift). When the graph says:
+
+    @payments/refund -> @db/refunds
+
+  but the actual code has:
+
+    @payments/refund -> @db/refunds
+    @payments/refund -> @redis/cache
+
+  AI MUST:
+    1. Detect the drift
+    2. Create a DRIFT finding
+    3. Create a task to reconcile the graph
+    4. NOT silently update the graph without human approval for
+       significant changes (bax PROJECT.sdd -> HumanDecision)
+
+  Drift severity:
+    D0 = no drift
+    D1 = minor (new optional dependency)
+    D2 = significant (missing dependency, wrong owner)
+    D3 = critical (security gap, architecture violation)
+
+
+FallbackDiscovery:
+  Graph is the primary source of truth for relationships. When the
+  graph says nothing about a node, AI MUST fall back to discovery:
+
+    GRAPH MISSING
+      ↓
+    DISCOVER
+      ↓
+    OBSERVE
+      ↓
+    DRAFT UPDATE
+      ↓
+    HUMAN APPROVAL (if significant)
+      ↓
+    UPDATE GRAPH
+
+  AI MUST NOT silently update the global graph. Domain-local graph
+  updates MAY be proposed automatically, but MUST be reviewed before
+  being accepted (bax HumanDecision in PROJECT.sdd).
+
+
+DomainGraph:
+  Each domain MAY have its own local graph:
+
+    .sdd/project/payments/graph.sdd
+
+  containing only the nodes and edges relevant to that domain. The
+  global graph at .sdd/graph/graph.sdd contains only high-level
+  domain-to-domain relationships.
+
+  Resolution order:
+    1. Global graph (.sdd/graph/graph.sdd)
+    2. Domain graph (.sdd/project/<domain>/graph.sdd)
+    3. Component graph (.sdd/project/<domain>/<component>.sdd)
+    4. Fallback discovery (if all graphs are silent)
+
+  This keeps the global graph small and the domain graph detailed —
+  context locality (bax TokenEconomy in architecture/architecture.sdd
+  -> Principles).
+
+
+Navigation:
+  AI SHOULD resolve, top to bottom, before touching source code:
+
+    INDEX.sdd
+      -> PROJECT.sdd
+        -> project/PROJECT.sdd
+          -> domain graph
+            -> component graph
+              -> source code
+
+  This is the primary resolution path. AI MUST NOT skip to source
+  code without first resolving the graph (bax TokenEconomy in
+  architecture/architecture.sdd -> Principles).
+
+State: +
+  Note:
+  This file is the entry point for the
+  project graph layer. It does not duplicate content from project/
+  project.sdd — it references the project model and provides the
+  relationship layer on top of it. The source proposed splitting the
+  graph into dependencies.sdd, ownership.sdd, impact.sdd, api.sdd,
+  db.sdd; that structure is noted in the Types section above but a
+  single graph.sdd is kept as the authoritative entry point to avoid
+  fragmentation at this phase (NoDuplication, skeleton + rule engine
+  precedent). Domain-level graph files are created once real project
+  analysis justifies them (bax ./instantiation.sdd -> CorePrinciple,
+  "PROJECT IS GENERATED, NOT PREDEFINED").

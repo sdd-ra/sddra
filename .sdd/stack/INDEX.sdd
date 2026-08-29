@@ -1,0 +1,89 @@
+﻿Stack: SDD
+
+Purpose:
+  The .sdd system's technology selection and stack information layer.
+   This directory defines technology constraints, compatibility rules,
+   and selection mechanisms. Project-specific selected stack is stored
+   in .sdd/project/stack/. Separation: root = reusable technology
+   constraints, project = concrete selection.
+
+Owns: ./
+
+ReadOrder:
+   1  @languages.sdd
+   2  @backend.sdd
+   3  @frontend.sdd
+   4  @mobile.sdd
+   5  @database.sdd
+   6  @cache.sdd
+   7  @messaging.sdd
+   8  @testing.sdd
+   9  @infrastructure.sdd
+   10  @observability.sdd
+
+Modes:
+  ANALYZE   — technology selection and fit analysis
+  PLAN      — stack decision and technology mapping
+  WORK      — technology-based implementation
+  VERIFY    — stack compliance check
+  REVIEW    — technology decision execution
+
+Rules:
+  [STK1]  Technology selection MUST follow architecture, not precede it.
+  [STK2]  AI MUST NOT hard-code universal technology preferences — all
+          scores are decision aids, not mandates.
+  [STK3]  Technology decisions MUST be recorded with rationale and
+          alternatives considered.
+  [STK4]  Stack compatibility (BE + FE + MD + DB + Cache + Messaging +
+          Testing + Security + DevOps + Observability) MUST be validated
+          before finalizing selection.
+  [STK5]  Version policies MUST be recorded as current stable / current
+          supported / LTS, never as hard-coded versions.
+  [STK6]  AI MUST NOT modify stack knowledge without TECH_UPDATE_PROPOSAL
+          and human approval.
+  [STK7]  Cross-layer impact MUST be analyzed when stack changes.
+  [STK8]  Breaking changes in API contracts MUST trigger FE/MD/API test
+          task creation.
+  [STK9]  Contextual skill loading MUST be based on task impact, not
+          loading all stack skills for every task.
+  [STK10] Project stack MUST be traceable to architecture decisions and
+          project requirements.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    languages
+    backend
+    frontend
+    mobile
+    database
+    cache
+    messaging
+    testing
+    infrastructure
+    observability
+
+Navigation:
+  Stack: @stack/INDEX.sdd
+  Languages: @stack/languages.sdd
+  Backend: @stack/backend.sdd
+  Frontend: @stack/frontend.sdd
+  Mobile: @stack/mobile.sdd
+  Database: @stack/database.sdd
+  Cache: @stack/cache.sdd
+  Messaging: @stack/messaging.sdd
+  Testing: @stack/testing.sdd
+  Infrastructure: @stack/infrastructure.sdd
+  Observability: @stack/observability.sdd
+  ProjectStack: @project/stack/INDEX.sdd
+
+State: +
+  Note:
+  Stack directory created as the technology
+  selection and knowledge layer. Root stack/ defines reusable technology
+  constraints and compatibility rules; project/stack/ stores the selected
+  technology instances for the current project. Separation follows
+  ROOT-001: root = reusable system intelligence, project = concrete
+  project state.

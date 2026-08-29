@@ -2,10 +2,221 @@
 
 Purpose:
   Manage executable work generated from prompts, analysis,
-  decisions and project changes.
+  decisions and project changes. Define task contracts,
+  decomposition rules, dependency types, granularity guidelines,
+  and coverage requirements.
+
+Owns: ./
+
+Scope:
+  Task definition and contract
+  Task lifecycle and state
+  Task decomposition engine
+  Dependency types and DAG enforcement
+  Task granularity and atomicity
+  Task scope boundaries
+  Acceptance criteria
+  Task coverage matrix
+  Scope expansion protocol
+  Plan versioning
+  SDD pyramid branching hierarchy
+  Branch naming and merge flow
+  Branch lifecycle and deletion policy
+
+Principles:
+  Task is specification, not execution.
+  Task = Goal + Scope + Input + Dependencies + Acceptance + Output.
+  Task MUST be atomic, not implementation-detail-level.
+  Task graph MUST be a DAG.
+  AI proposes tasks; engine validates structure.
+  Acceptance criteria are behavioral, not implementation.
 
 Lifecycle:
-  CREATED > ANALYZED > READY > ACTIVE > REVIEW > VERIFIED > DONE
+  DRAFT -> READY -> IN_PROGRESS -> BLOCKED -> DONE
+  CANCELLED
+  FAILED (execution state, not task state)
+
+TaskContract:
+  structure:
+    id: string (immutable, e.g. TASK-AUTH-001)
+    title: string
+    type: string (FEATURE, BUGFIX, REFACTOR, MIGRATION, TEST, DOCUMENTATION, SECURITY, INFRASTRUCTURE, RESEARCH)
+    domain: string
+    goal: string
+    scope:
+      allowed: [paths]
+      forbidden: [paths]
+    inputs:
+      - API-AUTH-LOGIN
+    dependencies:
+      - TASK-AUTH-000
+    skills:
+      - SKILL-API-IMPLEMENT
+    acceptance:
+      - valid credentials return token
+      - invalid credentials return 401
+    outputs:
+      - source_code
+      - tests
+    estimated: duration
+    risk: low | medium | high | critical
+
+TaskTypes:
+  FEATURE:
+    purpose: new capability
+    outputs: code, tests, docs
+
+  BUGFIX:
+    purpose: fix defect
+    outputs: fix, regression test
+
+  REFACTOR:
+    purpose: improve structure without behavior change
+    outputs: refactored code, same tests
+
+  MIGRATION:
+    purpose: data or schema change
+    outputs: migration, rollback, verification
+
+  TEST:
+    purpose: testing work
+    outputs: tests, reports
+
+  DOCUMENTATION:
+    purpose: documentation
+    outputs: docs
+
+  SECURITY:
+    purpose: security improvement
+    outputs: fix, test, policy update
+
+  INFRASTRUCTURE:
+    purpose: infra change
+    outputs: config, script, verification
+
+  RESEARCH:
+    purpose: analysis and decision
+    outputs: decision document, not code
+
+TaskGranularity:
+  levels:
+    EPIC:
+      description: large initiative
+      decomposes_to: FEATURE
+
+    FEATURE:
+      description: capability
+      decomposes_to: TASK
+
+    TASK:
+      description: single goal, defined scope
+      decomposes_to: SUBTASK (only when necessary)
+
+    SUBTASK:
+      description: implementation detail
+      rule: MUST NOT be created unless truly necessary
+
+  anti_patterns:
+    too_large:
+      description: "Build entire payment system"
+      rule: decompose to atomic tasks
+
+    too_small:
+      description: "Create file", "Add import"
+      rule: these are implementation details, not tasks
+
+DependencyTypes:
+  BLOCKING:
+    definition: task cannot start until dependency completes
+    example: database migration before repository implementation
+
+  NON_BLOCKING:
+    definition: informational dependency, task can start
+    example: documentation dependency
+
+  DATA:
+    definition: task requires output artifact of dependency
+    example: migration produces schema, repository requires schema
+
+  CONTRACT:
+    definition: task requires contract stability, not implementation
+    example: frontend can mock API before backend completes
+
+  RESOURCE:
+    definition: task requires shared resource
+    example: deployment window, environment
+
+  SEQUENCE:
+    definition: ordered execution for correctness
+    example: security review after implementation
+
+DependencyGraph:
+  rule: MUST be DAG (Directed Acyclic Graph)
+  rule: cycle detection MUST happen at validation time
+  rule: parallel tasks MUST have no blocking dependencies between them
+  rule: critical path MUST be identifiable
+
+TaskDecomposition:
+  protocol:
+    1. Read Requirement
+    2. Resolve Domain
+    3. Resolve Architecture
+    4. Identify Business Capabilities
+    5. Identify Technical Work
+    6. Propose Tasks
+    7. Define Dependencies
+    8. Define Acceptance Criteria
+    9. Map Skills
+    10. Validate Coverage
+    11. Detect Cycles
+    12. Validate Scope
+    13. Produce Task Graph
+
+  rule: AI proposes, engine validates
+  rule: engine checks coverage, cycles, schema, policies, permissions
+  rule: decomposition MUST NOT create more tasks than necessary
+
+TaskCoverage:
+  matrix:
+    requirement: [tasks] | [tests]
+
+  rule: every requirement MUST map to at least one task
+  rule: orphan tasks MUST be explicitly justified (tech debt, research)
+
+ScopeBoundary:
+  rule: task MUST define allowed and forbidden scopes
+  rule: agent MUST NOT modify files outside task scope
+  rule: scope expansion MUST go through formal request
+
+ScopeExpansion:
+  protocol:
+    1. Agent detects need for out-of-scope change
+    2. Agent creates SCOPE_EXPANSION_REQUEST
+    3. Architect or human reviews request
+    4. If approved: task scope is updated, new version created
+    5. If denied: agent continues within original scope
+
+TaskPriority:
+  levels:
+    - low
+    - medium
+    - high
+    - critical
+
+  rule: priority MUST NOT override blocking dependencies
+
+TaskRisk:
+  levels:
+    - low
+    - medium
+    - high
+    - critical
+
+  mapping:
+    low -> autonomous
+    medium -> autonomous + review
+    high -> approval required
+    critical -> human required
 
 Directories:
   active:
@@ -36,6 +247,26 @@ Rules:
   [T1] Tasks MUST be resolved from .sdd before execution.
   [T2] Task state MUST be updated after each stage.
   [T3] Blocked tasks MUST have explicit blockers.
-   [T4] Completed tasks MUST be archived with outputs.
+  [T4] Completed tasks MUST be archived with outputs.
+  [T5] Task graph MUST be a DAG — cycles are compile-time errors.
+  [T6] Task MUST have exactly one primary goal.
+  [T7] Task MUST have defined scope (allowed and forbidden).
+  [T8] Task MUST have acceptance criteria.
+  [T9] Task MUST declare dependencies and required skills.
+  [T10] Task state is separate from execution state.
+  [T11] AI proposes tasks; engine validates structure and constraints.
+  [T12] Task decomposition MUST NOT be overly granular.
+  [T13] Scope expansion MUST be formally requested and approved.
+  [T14] Task coverage MUST map requirements to tasks and tests.
+  [T15] Agent MUST NOT add signatures or sign-offs to task outputs.
+  [T16] Agent MUST NOT use emojis, icons, or decorative symbols in task output headers or titles.
+
+Navigation:
+  Tasks: @tasks.sdd
+  Decomposition: @decomposition.sdd
+  ProjectTasks: @../project/tasks/INDEX.sdd
+  Runtime: @../runtime/INDEX.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Graph: @../graph/INDEX.sdd
 
 State: +

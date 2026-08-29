@@ -1,0 +1,102 @@
+﻿# React State Management
+
+Purpose:
+  React State Management
+
+Skill: React State Management
+
+ID:
+  SKILL-FW-REACT-L3
+
+Domain:
+  frameworks/react
+
+Use:
+  managing application state in React
+
+Apply:
+  intermediate
+  senior
+  large-scale
+  state-management
+
+Requires:
+  SKILL-FW-REACT-L2
+  react-18+
+  typescript
+
+Avoid:
+  prop-drilling
+  global-state-overuse
+  unnecessary-rerenders
+  state-sync-bugs
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  react
+  state management
+  redux
+  zustand
+  jotai
+  context api
+  server state
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/frameworks/react/L3-state-management.md
+
+Evidence:
+  - Redux Documentation
+  - Zustand Documentation
+  - React Query Documentation
+  - Production experience
+
+Rules:
+  [R1] Use React Query for server state (caching, refetching).
+  [R2] Use Zustand or Jotai for client state (UI state).
+  [R3] Use Context API sparingly â€” only for truly global state.
+  [R4] Use Redux Toolkit for complex state logic.
+  [R5] Normalize state shape for relational data.
+  [R6] Use selectors for derived state.
+  [R7] Use optimistic updates for better UX.
+  [R8] Use state machines (XState) for complex UI flows.
+
+Pros:
+  - Predictable state
+  - Better debugging
+  - Improved performance
+
+Cons:
+  - Added complexity
+  - Learning curve
+  - Boilerplate
+
+Alternatives:
+  - Vue Pinia
+  - Angular NgRx
+  - Svelte stores
+
+State: +
+

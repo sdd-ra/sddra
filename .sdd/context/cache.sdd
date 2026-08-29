@@ -1,0 +1,61 @@
+﻿Cache: Context
+
+Purpose:
+  Defines context caching policy, invalidation, and optimization
+  metrics.
+
+CacheStructure:
+  context-id:
+    source: <list of sources>
+    hash: <content hash>
+    last-used: <timestamp>
+    dependencies: <list of dependent contexts>
+
+CacheRules:
+  [CC1]  Context MUST be cached to avoid re-analysis.
+  [CC2]  Cache hit occurs when source unchanged (hash matches).
+  [CC3]  Cache miss triggers re-build from scratch.
+  [CC4]  Cache invalidation follows dependency graph.
+
+CacheHit:
+  Source unchanged
+    ↓
+  CACHE HIT
+    ↓
+  Reuse cached context
+
+CacheMiss:
+  Source changed
+    ↓
+  CACHE MISS
+    ↓
+  Rebuild context
+
+OptimizationMetrics:
+  ContextTokens:
+    Total tokens loaded
+  RelevantTokens:
+    Tokens actually used
+  UnusedTokens:
+    Tokens loaded but not used
+  ContextHitRate:
+    Cache hits / total requests
+  ContextMissRate:
+    Cache misses / total requests
+  ExpansionCount:
+    Number of progressive expansions
+  CacheHitRate:
+    Cached contexts reused / total contexts
+
+ContextEfficiency:
+  Formula:
+    Relevant Context / Total Context
+
+  Target:
+    > 80%
+
+  Note:
+    Safety-critical tasks MUST NOT sacrifice relevance for efficiency.
+
+State: +
+  

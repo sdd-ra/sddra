@@ -1,0 +1,33 @@
+Skills: FastAPI Framework
+
+Purpose:
+  FastAPI framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn FastAPI fundamentals
+  APPLY    — apply FastAPI patterns to code
+  REVIEW   — review FastAPI skills
+  UPGRADE  — propose FastAPI skill upgrade
+
+Rules:
+  [F1]  Use `async def` for all endpoints.
+  [F2]  Use Pydantic for validation.
+  [F3]  Use dependency injection.
+  [F4]  Use SQLAlchemy 2.0+ for async.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  FastAPI: @frameworks/fastapi/INDEX.sdd
+  FastAPIL1: @frameworks/fastapi/L1-fundamentals.sdd
+
+State: +

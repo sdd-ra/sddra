@@ -1,0 +1,33 @@
+Skills: Kotlin Multiplatform
+
+Purpose:
+  Kotlin Multiplatform framework skills organized by competency layers.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @L1-fundamentals.sdd
+
+Modes:
+  LEARN    — learn KMP fundamentals
+  APPLY    — apply KMP patterns to code
+  REVIEW   — review KMP skills
+  UPGRADE  — propose KMP skill upgrade
+
+Rules:
+  [K1]  Use expect/actual for platform code.
+  [K2]  Share business logic across platforms.
+  [K3]  Use Compose Multiplatform for UI.
+  [K4]  Keep platform-specific code minimal.
+
+Entry:
+  Read:
+    INDEX.sdd
+    L1-fundamentals.sdd
+
+Navigation:
+  KMP: @frameworks/kotlin-multiplatform/INDEX.sdd
+  KMPL1: @frameworks/kotlin-multiplatform/L1-fundamentals.sdd
+
+State: +

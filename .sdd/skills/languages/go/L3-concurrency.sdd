@@ -1,0 +1,105 @@
+﻿# Go Concurrency
+
+Purpose:
+  Go Concurrency
+
+Skill: Go Concurrency
+
+ID:
+  SKILL-LANG-GO-L3
+
+Domain:
+  languages/go
+
+Use:
+  writing concurrent Go programs
+
+Apply:
+  senior
+  high-throughput
+  real-time
+  distributed-system
+
+Requires:
+  SKILL-LANG-GO-L2
+  goroutines
+  channels
+  sync-package
+
+Avoid:
+  race-condition
+  deadlock
+  context-leak
+  goroutine-leak
+
+Level:
+  L3
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  go
+  golang
+  concurrency
+  goroutines
+  channels
+  sync
+  parallelism
+  race condition
+
+TechnologyLifecycle:
+  Current: MATURE
+
+HumanDoc:
+  docs/skills/languages/go/L3-concurrency.md
+
+Evidence:
+  - Go Concurrency Patterns
+  - Go Memory Model
+  - Production experience
+
+Rules:
+  [G1] Use goroutines for I/O-bound work, not CPU-bound.
+  [G2] Always pass a `context.Context` to goroutines for cancellation.
+  [G3] Use channels for communication, not shared memory.
+  [G4] Close channels from the sender side, never the receiver.
+  [G5] Use `sync.WaitGroup` to wait for goroutine completion.
+  [G6] Use `sync.Mutex` or `sync.RWMutex` for shared state protection.
+  [G7] Use `select` with `done` channel for graceful shutdown.
+  [G8] Never start a goroutine without knowing how it will stop.
+  [G9] Use `errgroup.Group` for error propagation in goroutines.
+  [G10] Profile goroutines with `runtime.NumGoroutine()` in health checks.
+
+Pros:
+  - High throughput
+  - Efficient resource usage
+  - Simple mental model
+
+Cons:
+  - Debugging complexity
+  - Race conditions are subtle
+  - Deadlock risk
+
+Alternatives:
+  - Async/await (Node.js)
+  - Threads (Java)
+  - Tokio (Rust)
+
+State: +
+

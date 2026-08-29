@@ -1,0 +1,100 @@
+﻿# Java Fundamentals
+
+Purpose:
+  Java Fundamentals
+
+Skill: Java Fundamentals
+
+ID:
+  SKILL-LANG-JAVA-L1
+
+Domain:
+  languages/java
+
+Use:
+  writing basic Java programs
+
+Apply:
+  beginner
+  learning
+  simple-application
+  android
+
+Requires:
+  jdk-17+
+
+Avoid:
+  raw-types
+  mutable-static-state
+  checked-exception-overuse
+
+Level:
+  L1
+
+Status:
+  STABLE
+
+Maturity:
+  MATURE
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  java
+  jdk
+  basics
+  syntax
+  classes
+  objects
+  inheritance
+  collections
+
+TechnologyLifecycle:
+  Current: MATURE
+  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+
+HumanDoc:
+  docs/skills/languages/java/L1-fundamentals.md
+
+Evidence:
+  - Oracle Java Documentation
+  - OpenJDK Documentation
+  - Production experience
+
+Rules:
+  [J1] Use `var` for local variable type inference (Java 10+).
+  [J2] Use `String.format` or `printf` instead of string concatenation.
+  [J3] Use `final` for immutable references.
+  [J4] Use `List`, `Map`, `Set` interfaces, not implementations.
+  [J5] Use enhanced for-loop for iteration.
+  [J6] Use `switch` expressions (Java 14+).
+  [J7] Use `record` for data carriers (Java 16+).
+  [J8] Always close resources with try-with-resources.
+
+Pros:
+  - Mature ecosystem
+  - Strong typing
+  - Platform independence
+
+Cons:
+  - Verbose syntax
+  - Memory consumption
+  - Slow startup time
+
+Alternatives:
+  - Kotlin (concise)
+  - Go (simple)
+  - Rust (safe)
+
+State: +
+

@@ -1,0 +1,112 @@
+﻿Index: ProjectArchitecture
+
+Purpose:
+  Project-specific architecture state. Root .sdd/architecture/ defines
+  reusable architecture knowledge (levels, patterns, scaling, availability,
+  data, observability, networking, deployment). This file tracks the
+  project's actual architecture decisions, components, data flow, and
+  infrastructure.
+
+  Architecture templates live at @../../../templates/_sdd/architecture/.
+
+Owns: ./
+
+ReadOrder:
+   1  INDEX.sdd (this file — project architecture map)
+   2  system.sdd (system architecture)
+   3  components.sdd (component architecture)
+   4  data.sdd (data architecture)
+   5  infrastructure.sdd (infrastructure architecture)
+   6  diagrams/ (architecture diagrams)
+   7  ../../architecture/ (architecture knowledge base)
+
+Rules:
+  [PA1] Architecture decisions MUST be recorded in @../decisions/INDEX.sdd.
+  [PA2] Architecture MUST match ProjectScale (bax ../../architecture/levels.sdd).
+  [PA3] Architecture MUST satisfy SecurityLevel requirements (bax ../../security/levels.sdd).
+  [PA4] Architecture MUST NOT violate overengineering/underengineering gates.
+  [PA5] Component boundaries MUST align with domain boundaries.
+  [PA6] Data flow MUST be explicitly documented.
+  [PA7] Infrastructure MUST be specified for production deployments.
+  [PA8] Architecture MUST be kept in sync with actual code (drift detection).
+
+Components:
+  System components and their relationships:
+
+    Format:
+      <component>:
+        type: <BE|FE|MD|DB|INFRA>
+        path: <code_path>
+        responsibility: <description>
+        depends_on: [<components>]
+        api: [<endpoints>]
+        data: [<data_stores>]
+
+System:
+  System-level architecture:
+
+    Format:
+      name: <system_name>
+      description: <purpose>
+      components: [<component_list>]
+      data_flow: <description>
+      external_dependencies: [<list>]
+      deployment: <deployment_model>
+
+Infrastructure:
+  Infrastructure architecture:
+
+    Format:
+      provider: <VPS|AWS|Azure|GCP|On-prem|Hybrid>
+      compute: <specification>
+      network: <specification>
+      database: <specification>
+      cache: <specification>
+      storage: <specification>
+      monitoring: <specification>
+      backup: <specification>
+
+Diagrams:
+  Architecture diagrams are stored here. Diagrams are generated FROM
+  the architecture model, never hand-maintained as a second source
+  of truth (bax ../../architecture/architecture.sdd -> DiagramAsOutput).
+
+  Diagram types:
+    #CTX   Context diagram
+    #ARCH  Architecture diagram
+    #FLOW  Data flow diagram
+    #DEP   Dependency diagram
+    #NET   Network diagram
+    #DEPLOY Deployment diagram
+    #CI    CI/CD diagram
+    #OBS   Observability diagram
+    #SEC   Security diagram
+
+Navigation:
+  Root: @../INDEX.sdd
+  Project: @../PROJECT.sdd
+  ArchitectureKnowledge: @../../architecture/INDEX.sdd
+  Levels: @../../architecture/levels.sdd
+  Patterns: @../../architecture/patterns.sdd
+  Scaling: @../../architecture/scaling.sdd
+  Data: @../../architecture/data.sdd
+  Availability: @../../architecture/availability.sdd
+  Observability: @../../architecture/observability.sdd
+  Networking: @../../architecture/networking.sdd
+  Deployment: @../../architecture/deployment.sdd
+  System: @system.sdd
+  Components: @components.sdd
+  DataArchitecture: @data.sdd
+  Infrastructure: @infrastructure.sdd
+  Diagrams: @diagrams/
+  Template: @../../../templates/_sdd/architecture/system.template.md
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Security: @../security/INDEX.sdd
+
+State: +
+  Note:
+  This file is the project-specific architecture map. It points to
+  detailed architecture files and references the root architecture
+  knowledge base. Architecture decisions are recorded separately in
+  @../decisions/INDEX.sdd.

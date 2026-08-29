@@ -1,0 +1,41 @@
+Prompts: Approval Workflow
+
+Purpose:
+  Human approval workflow for role assignments and provisioning.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @approval-workflow.sdd
+   3  @human-approval.sdd
+
+Modes:
+  PROPOSE  — AI proposes role assignments
+  REVIEW   — human reviews proposals
+  APPROVE  — human approves
+  REJECT   — human rejects with feedback
+  REVISE   — AI revises based on feedback
+
+Rules:
+  [AW1] Role assignments MUST be approved before provisioning.
+  [AW2] Production deployments ALWAYS require explicit approval.
+  [AW3] Multiple approvers MAY be required for critical systems.
+  [AW4] Approval decisions MUST be recorded in audit log.
+  [AW5] Rejected proposals MUST include revision feedback.
+  [AW6] Approval timeout MUST be configurable per case.
+
+Entry:
+  Read:
+    INDEX.sdd
+    approval-workflow.sdd
+
+  Resolve:
+    approval-workflow
+    human-approval
+
+Navigation:
+  ApprovalWorkflow: @prompts/role-assignment/approval-workflow.sdd
+  HumanApproval: @prompts/role-assignment/human-approval.sdd
+
+State: +

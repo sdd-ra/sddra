@@ -1,0 +1,48 @@
+# Skill: Directory Reorganization
+
+Purpose:
+  Safely reorganize .sdd/ directories in alphabetical order
+  while maintaining all references and system integrity.
+
+ID: SKILL-REORGANIZATION
+
+Domain: meta
+
+Level: L4
+
+Status: EXPERIMENTAL
+
+Use:
+  - Reorganizing .sdd/ structure
+  - Migrating to alphabetical order
+  - Refactoring directory layout
+
+Input:
+  - Current .sdd/ structure
+  - Target alphabetical structure
+  - Reference map
+
+Output:
+  - Migration plan
+  - Reference updates
+  - Validation report
+
+Execute:
+  1. Analyze current structure
+  2. Generate alphabetical mapping
+  3. Identify all references
+  4. Create migration script
+  5. Backup .sdd/
+  6. Execute migration
+  7. Update all references
+  8. Validate system
+  9. Rollback if needed
+
+Migration Rules:
+  [R1] Backup before migration
+  [R2] Update all @references
+  [R3] Update INDEX.sdd navigation
+  [R4] Validate after each move
+  [R5] Rollback on failure
+
+State: EXPERIMENTAL

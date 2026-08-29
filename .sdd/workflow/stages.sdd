@@ -1,0 +1,147 @@
+﻿Stages: SDD
+
+Purpose:
+  Formal registry of all engineering stages used by the SDLC and STLC.
+  A stage is a named engineering responsibility with defined inputs,
+  outputs, and gate criteria. Stages are the building blocks of chains
+  (bax chains/chains.sdd -> Stages, DefaultFlow).
+
+  This file is the authoritative stage list — chains/chains.sdd ->
+  Stages is a summary copy for chain context, not the registry itself.
+
+
+Owns:
+  ./
+
+Scope:
+  Stage definitions
+  Stage purposes
+  Stage inputs/outputs
+  Stage ownership
+  Stage activation conditions
+
+
+DoesNotOwn:
+  Project-specific flows (bax project/flows.sdd)
+  Project-specific chains (bax chains/chains.sdd)
+  Engineering skills (bax skills/)
+  Task instances (bax tasks/)
+  Project architecture (bax project/architecture.sdd)
+
+
+Stages:
+
+  Orchestration stages — analysis/decision points that begin or redirect
+  a chain:
+
+    AN:     Analysis
+      Purpose:  Initial scope, requirement, and constraint analysis.
+      Owner:    AR
+      Input:    prompt, decision, finding
+      Output:   analysis document, scope definition
+      Activates: when new work is initiated or existing work is impacted
+
+    AR:     Architecture
+      Purpose:  Architecture decisions, boundary drawing, modularity.
+      Owner:    AR
+      Input:    analysis document, project model
+      Output:   architecture decision, module boundaries
+      Activates: when new feature requires architecture decisions or
+                 existing architecture is impacted
+
+    IMPACT: Impact Analysis
+      Purpose:  Determine what a bug or change actually affects before
+                touching it.
+      Owner:    AR
+      Input:    bug report, change request, affected components
+      Output:   impact scope, affected stages
+      Activates: when existing work is modified (bugfix, change, hotfix)
+
+  Engineering discipline stages — one responsibility each, reusable
+  across every project:
+
+    BDD:    Behavior-Driven Development
+      Purpose:  Define acceptance criteria in Given/When/Then format.
+                Bridge between requirements and implementation.
+      Owner:    QA
+      Input:    requirements, analysis
+      Output:   BDD scenarios, acceptance criteria
+      Activates: when requirements need formal acceptance criteria
+
+    ARCH:   Architecture Verification
+      Purpose:  Verify that implementation conforms to architecture
+                decisions and principles.
+      Owner:    AR
+      Input:    implementation, architecture decision
+      Output:   architecture review, compliance report
+      Activates: after BE/API/FE/MD implementation, before QA
+
+    DB:     Database
+      Purpose:  Schema, data, and migration changes.
+      Owner:    DB
+      Input:    requirements, architecture
+      Output:   schema, migrations, seed data
+      Activates: when data model changes are required
+
+    BE:     Backend
+      Purpose:  Backend service and business-logic implementation.
+      Owner:    BE
+      Input:    requirements, BDD, DB schema
+      Output:   backend code, API endpoints
+      Activates: when backend implementation is required
+
+    API:    API / Contract
+      Purpose:  API contract, integration, and compatibility.
+      Owner:    API
+      Input:    requirements, backend implementation
+      Output:   API contract, integration tests
+      Activates: when API surface changes or integration is required
+
+    FE:     Frontend
+      Purpose:  Web frontend implementation.
+      Owner:    FE
+      Input:    requirements, API contract
+      Output:   frontend code, UI components
+      Activates: when UI changes are required
+
+    MD:     Mobile
+      Purpose:  Mobile application implementation.
+      Owner:    MD
+      Input:    requirements, API contract
+      Output:   mobile code, platform-specific components
+      Activates: when mobile changes are required
+
+    QA:     Quality Assurance
+      Purpose:  Testing and quality validation.
+      Owner:    QA
+      Input:    implementation, BDD scenarios
+      Output:   test results, quality report
+      Activates: after implementation, before SC
+
+    SC:     Security
+      Purpose:  Security validation (cross-cutting gate, not just
+                another implementation stage).
+      Owner:    SC
+      Input:    implementation, threat model
+      Output:   security findings, remediation tasks
+      Activates: after QA, before DO — and continuously during
+                 implementation for security-impacting work
+
+    DO:     DevOps
+      Purpose:  Build, deployment, infrastructure validation.
+      Owner:    DO
+      Input:    implementation, QA results
+      Output:   deployment, infrastructure config
+      Activates: after QA/SC pass, before VR
+
+    VR:     Verification
+      Purpose:  Final system verification and acceptance.
+      Owner:    VR
+      Input:    all stage outputs, test results
+      Output:   verification report, acceptance decision
+      Activates: after all required stages complete — VR is the final
+                 stage of any chain (bax chains/chains.sdd -> Important)
+
+
+State: +
+  

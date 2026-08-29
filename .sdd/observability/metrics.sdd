@@ -1,0 +1,45 @@
+﻿Metrics: SDD
+
+Purpose:
+  Defines metrics collection policy, standard metric categories,
+  and project-specific metric selection rules.
+
+Categories:
+  RED (Service):
+    - Rate: requests per second
+    - Errors: error rate percentage
+    - Duration: p50, p95, p99 latency
+
+  USE (Infrastructure):
+    - Utilization: CPU, memory, disk, network
+    - Saturation: queue depth, connection pool
+    - Errors: system error rate
+
+  Business:
+    - payment_attempts
+    - payment_success
+    - payment_failed
+    - refund_attempts
+    - refund_success
+    - user_signups
+    - active_sessions
+
+  Security:
+    - failed_login_attempts
+    - rate_limit_hits
+    - auth_failures
+    - blocked_requests
+
+CollectionRules:
+  - Metrics MUST be collected for all production services
+  - Business metrics MUST be defined per domain
+  - Metric names MUST follow convention: <domain>_<action>_<status>
+  - Tags/labels MUST include: service, environment, version, region
+
+AlertIntegration:
+  - Metrics feed into alerting engine
+  - Thresholds defined in alerting.sdd
+  - Business metric anomalies trigger incident review
+
+State: +
+  

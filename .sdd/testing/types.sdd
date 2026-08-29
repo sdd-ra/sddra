@@ -1,0 +1,173 @@
+﻿TestTypes: SDD
+
+Purpose:
+  Define the test types available in the system. Each test type has a
+  specific purpose, scope, and ownership. AI selects applicable test
+  types based on task impact, risk, and stack.
+
+Owns: ./
+
+Types:
+
+  BDD:
+    name: Behavior-Driven Development
+    purpose: Define business behavior before implementation
+    scope: business rules, user flows, acceptance criteria
+    owner: Business/QA/Product
+    format: Given/When/Then
+    when: before implementation starts
+    stack_agnostic: true
+    first_class: true
+
+  Unit:
+    name: Unit Test
+    purpose: Verify individual components in isolation
+    scope: single function, method, class, component
+    owner: Implementer
+    frameworks:
+      Go: testing, testify
+      Laravel: PHPUnit
+      Node: Jest, Vitest
+      React: Jest, Vitest
+      Vue: Vitest, Jest
+    when: during implementation
+    speed: fast
+
+  Integration:
+    name: Integration Test
+    purpose: Verify components work together
+    scope: API endpoints, database interactions, service calls
+    owner: Implementer/QA
+    frameworks:
+      Go: testcontainers
+      Laravel: PHPUnit + HTTP tests
+      Node: Jest + supertest
+    when: after unit tests pass
+    speed: medium
+
+  API:
+    name: API Test
+    purpose: Verify API contracts and behavior
+    scope: REST/GraphQL/gRPC endpoints
+    owner: QA/BE
+    frameworks:
+      Postman/Newman
+      REST Assured
+      Pact (contract testing)
+    when: after BE stage
+    speed: medium
+
+  Contract:
+    name: Contract Test
+    purpose: Verify service-to-service contracts
+    scope: API contracts, message schemas, event schemas
+    owner: QA/BE
+    frameworks:
+      Pact
+      Spring Cloud Contract
+      Schemathesis
+    when: after integration tests
+    speed: medium
+
+  E2E:
+    name: End-to-End Test
+    purpose: Verify complete user/business flows
+    scope: full system, real dependencies
+    owner: QA
+    frameworks:
+      Playwright
+      Cypress
+      Selenium
+      Detox (mobile)
+    when: before release
+    speed: slow
+
+  UI:
+    name: UI Test
+    purpose: Verify interface behavior
+    scope: components, pages, user interactions
+    owner: FE/QA
+    frameworks:
+      React: Testing Library, Cypress
+      Vue: Vue Test Utils, Cypress
+      Angular: Jasmine, Cypress
+    when: during FE implementation
+    speed: medium
+
+  Mobile:
+    name: Mobile Test
+    purpose: Verify mobile app behavior
+    scope: native features, gestures, offline behavior
+    owner: MD/QA
+    frameworks:
+      React Native: Jest, Detox
+      Flutter: flutter_test, integration_test
+      iOS: XCTest
+      Android: Espresso
+    when: during MD implementation
+    speed: slow
+
+  Performance:
+    name: Performance Test
+    purpose: Verify system performance meets NFRs
+    scope: response time, throughput, resource usage
+    owner: QA/DO
+    frameworks:
+      k6
+      Gatling
+      JMeter
+      Lighthouse
+    when: before production
+    speed: varies
+
+  Load:
+    name: Load Test
+    purpose: Verify system behavior under expected load
+    scope: concurrent users, request rates, sustained load
+    owner: QA/DO
+    frameworks:
+      k6
+      Gatling
+      JMeter
+      Locust
+    when: before production
+    speed: slow
+
+Selection:
+  AI MUST select test types based on:
+    Task impact (from task ImpactMatrix)
+    Task risk (LOW/MEDIUM/HIGH/CRITICAL)
+    Stack (BE/FE/MD/DB/INFRA)
+    Security level (L0-L5)
+    Project scale
+
+  Not all test types apply to every task:
+    DB-only task: Unit, Integration
+    FE task: Unit, UI, E2E
+    MD task: Unit, Mobile, E2E
+    BE task: Unit, Integration, API
+    Infrastructure: Load, Performance
+
+Navigation:
+  Project: @project/project.sdd
+  Workflow: @workflow/testing.sdd
+  TestLevels: @levels.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  Performance: @performance.sdd
+  Load: @load.sdd
+  ProjectTesting: @project/testing/INDEX.sdd
+
+State: +
+  Note:
+  Test types are stack-agnostic principles. Adapters for specific
+  languages/frameworks are selected at execution time based on
+  PROJECT.sdd -> Stack. This keeps testing knowledge reusable
+  across projects.
