@@ -1,0 +1,58 @@
+@knowledge
+
+Purpose:
+  Newly learned knowledge from tasks and projects.
+  Knowledge lifecycle: observe → extract → normalize → classify →
+  validate → promote → reference.
+
+Owns: ./
+
+Directories:
+  candidates:
+    path: ./candidates
+    purpose: Unvalidated knowledge candidates
+
+  lessons:
+    path: ./lessons
+    purpose: Validated lessons learned from tasks
+
+Lifecycle:
+  OBSERVE
+    ↓
+  EXTRACT
+    ↓
+  NORMALIZE
+    ↓
+  CLASSIFY
+    ↓
+  COMPARE
+    ↓
+  VALIDATE
+    ↓
+  PROMOTE
+    ↓
+  LINK
+    ↓
+  USE
+    ↓
+  REVIEW
+    ↓
+  LEARN AGAIN
+
+Rules:
+  [K1] Every task MAY produce knowledge candidates.
+  [K2] Candidates MUST be validated before promotion.
+  [K3] Promoted knowledge MUST be linked to references/.
+  [K4] Lessons MUST include source task ID.
+  [K5] Knowledge MUST be classified by domain.
+  [K6] Conflicting knowledge MUST be flagged.
+  [K7] Obsolete knowledge MUST be deprecated, not deleted.
+  [K8] AI MUST NOT auto-promote without validation.
+
+Navigation:
+  Candidates: @candidates/
+  Lessons: @lessons/
+  References: @../references/INDEX.sdd
+  Insights: @../insights/INDEX.sdd
+
+State: +

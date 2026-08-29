@@ -1,0 +1,45 @@
+@insights
+
+Purpose:
+  AI-discovered observations about the system and project.
+  Insights are patterns, gaps, smells, and repeated decisions
+  observed during task execution.
+
+Owns: ./
+
+Directories:
+  gaps:
+    path: ./gaps.sdd
+    purpose: Missing knowledge or capabilities
+
+  patterns:
+    path: ./patterns.sdd
+    purpose: Repeated patterns observed
+
+  smells:
+    path: ./smells.sdd
+    purpose: Architecture or code smells detected
+
+  repeated-decisions:
+    path: ./repeated-decisions.sdd
+    purpose: Decisions that recur across tasks
+
+Rules:
+  [I1] Insights MUST be based on evidence, not speculation.
+  [I2] Patterns MUST appear in 3+ occurrences before recording.
+  [I3] Gaps MUST include impact assessment.
+  [I4] Smells MUST include severity and recommendation.
+  [I5] Repeated decisions MUST include context.
+  [I6] Insights MAY be promoted to references/ after validation.
+  [I7] Insights MUST be timestamped.
+  [I8] Insights are append-only.
+
+Navigation:
+  Gaps: @gaps.sdd
+  Patterns: @patterns.sdd
+  Smells: @smells.sdd
+  RepeatedDecisions: @repeated-decisions.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  References: @../references/INDEX.sdd
+
+State: +
