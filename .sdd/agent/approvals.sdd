@@ -1,35 +1,10 @@
 ﻿Approvals: Agent
 
 Purpose:
-  Defines approval requirements and escalation rules.
+  Defines agent escalation and approval workflow rules.
+  Approval levels and matrix are defined in policies.sdd.
 
-ApprovalLevels:
-  AUTO:
-    No approval required
-  AUTO_REWORK:
-    Auto-execute, rework on failure
-  REVIEW_REQUIRED:
-    Human review required after execution
-  HUMAN_APPROVAL:
-    Human approval required before execution
-  EXPLICIT_APPROVAL:
-    Explicit human approval with confirmation
-
-ApprovalMatrix:
-  R0:
-    AUTO
-  R1:
-    AUTO
-  R2:
-    AUTO / POLICY
-  R3:
-    APPROVAL
-  R4:
-    APPROVAL
-  R5:
-    EXPLICIT_APPROVAL
-
-Escalation:
+EscalationFlow:
   AUTO:
     Execute
   RETRY:
@@ -46,4 +21,3 @@ EscalationRules:
   [AP4]  Agent MUST record approval decision in audit log.
 
 State: +
-  

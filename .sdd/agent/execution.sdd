@@ -24,20 +24,20 @@ Failure:
     ↓
   ROLLBACK / RECOVERY
 
-  ActionModel:
-    ACTION:
-      ModifyFile
+ActionModel:
+  ACTION:
+    ModifyFile
 
-    Target:
-      ./<layer>/<domain>/<module>/<artifact>
+  Target:
+    ./<layer>/<domain>/<module>/<artifact>
 
-    Reason:
-      <task-id>
+  Reason:
+    <task-id>
 
-    Risk:
-      <R0-R5>
+  Risk:
+    <R0-R5>
 
-    Policy:
+  Policy:
     ALLOWED
 
   Verification:
@@ -76,4 +76,3 @@ ToolRules:
   [EX4]  Agent MUST verify after each action.
 
 State: +
-  

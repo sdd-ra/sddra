@@ -35,13 +35,6 @@ Timeouts:
   Deployment:
     30 minutes
 
-LoopPrevention:
-  MaxAttempts:
-    3
-
-  After max attempts:
-    ESCALATE
-
 RateLimits:
   API Calls:
     100 per minute
@@ -55,4 +48,3 @@ LimitRules:
   [LM4]  Agent MUST report limit exhaustion clearly.
 
 State: +
-  

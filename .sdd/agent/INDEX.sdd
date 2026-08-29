@@ -10,12 +10,12 @@ Owns: ./
 
 ReadOrder:
    1  @capabilities.sdd
-   2  @permissions.sdd
-   3  @policies.sdd
+   2  @policies.sdd
+   3  @permissions.sdd
    4  @approvals.sdd
    5  @execution.sdd
-   6  @rollback.sdd
-   7  @limits.sdd
+   6  @limits.sdd
+   7  @rollback.sdd
    8  @audit.sdd
 
 Modes:
@@ -51,25 +51,24 @@ Entry:
 
   Resolve:
     capabilities
-    permissions
     policies
+    permissions
     approvals
     execution
-    rollback
     limits
+    rollback
     audit
 
 Navigation:
   Agent: @agent/INDEX.sdd
   Capabilities: @agent/capabilities.sdd
-  Permissions: @agent/permissions.sdd
   Policies: @agent/policies.sdd
+  Permissions: @agent/permissions.sdd
   Approvals: @agent/approvals.sdd
   Execution: @agent/execution.sdd
-  Rollback: @agent/rollback.sdd
   Limits: @agent/limits.sdd
+  Rollback: @agent/rollback.sdd
   Audit: @agent/audit.sdd
   Runtime: @.runtime/INDEX.sdd
 
 State: +
-  
