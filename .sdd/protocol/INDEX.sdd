@@ -1,24 +1,65 @@
-# Protocol
+Protocol: SDD
 
 Purpose:
-  Universal protocol layer. Defines rules, vocabulary, stages, states,
-  relations, and origins that govern the entire SDDRA system.
+  Universal protocol layer. Defines the immutable rules, vocabulary,
+  stages, and principles that govern the entire SDDRA system.
   This layer is above all project-specific content.
 
 Owns: ./
-
-ReadOrder:
-   1 @INDEX.sdd
-   2 @ROOT.sdd (universal rules)
-   3 @skill-execution.sdd (skill execution protocol)
 
 Rules:
   [PR1] Protocol rules are immutable unless explicitly changed.
   [PR2] All project-specific content must comply with protocol.
   [PR3] Protocol changes require human approval.
 
+Principles:
+  Authority hierarchy: protocol > project > task > source
+  Minimal sufficient context only
+  Declared != Observed -> DRIFT
+  Fact != Assumption -> mark explicitly as ASSUMPTION
+  Policy conflict -> HUMAN_REVIEW
+
+Agent:
+  Must:
+    [PR1] Resolve context before implementation.
+    [PR2] Follow declared chains — never skip a mandatory gate.
+    [PR3] Respect project constraints.
+    [PR4] Record state transitions.
+    [PR5] Verify completed work.
+    [PR6] Read minimum sufficient context.
+    [PR7] Resolve references before following them.
+    [PR8] Treat assumptions as assumptions — mark them explicitly.
+
+  MustNot:
+    [PR9] Invent architecture.
+    [PR10] Skip required gates.
+    [PR11] Modify global skills silently.
+    [PR12] Read the entire repository unnecessarily.
+    [PR13] Treat assumptions as facts.
+    [PR14] Create project facts without a real source artifact.
+    [PR15] Add personal signatures or sign-offs to outputs.
+    [PR16] Use emojis, icons, or decorative symbols in headers or titles.
+
+UniversalStages:
+  AR = Architecture
+  DB = Database
+  BE = Backend
+  API = API / Contract
+  FE = Frontend
+  MD = Mobile
+  TS = Test
+  QA = Quality Assurance
+  SC = Security
+  DO = DevOps
+  VR = Verify
+
 Navigation:
   Root: @ROOT.sdd
   SkillExecution: @skill-execution.sdd
+  Skills: @../skills/INDEX.sdd
+  State: @../state/state.sdd
+  Context: @../context/INDEX.sdd
+  Agent: @../agent/INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
 
 State: +
