@@ -3,78 +3,40 @@
 Purpose:
   Defines security gates including SAST, dependency scan, secrets scan, DAST, and pentest.
 
-SecurityGates:
-  SASTGate:
-    Format: SAST-GATE-<ID>
+GateSchema:
+  Format: SECURITY-GATE-<ID>
+  Condition: <security criterion>
+  Evidence: <security report>
+  Threshold: <pass/fail criteria>
+  Owner: Security
+  Decision: PASS / FAIL
+
+GateTypes:
+  SAST:
     Condition: No critical vulnerabilities in source code
-    Evidence: SAST report
     Threshold: Critical = 0, High = 0
-    Checks:
-      - SQL Injection
-      - XSS
-      - Command Injection
-      - Path Traversal
-      - Unsafe crypto
-    Owner: Security
-
-  DependencyScanGate:
-    Format: DEP-SCAN-GATE-<ID>
+    Checks: SQL Injection, XSS, Command Injection, Path Traversal, Unsafe crypto
+  DependencyScan:
     Condition: No critical dependency vulnerabilities
-    Evidence: dependency scan report
     Threshold: Critical = 0, High = 0
-    Scans:
-      - go.mod
-      - package.json
-      - pubspec.yaml
-      - composer.json
-    Owner: Security
-
-  SecretsScanGate:
-    Format: SECRETS-GATE-<ID>
+    Scans: go.mod, package.json, pubspec.yaml, composer.json
+  SecretsScan:
     Condition: No secrets in source repository
-    Evidence: secrets scan report
     Threshold: Secrets = 0
-    Scans:
-      - API keys
-      - Passwords
-      - Tokens
-      - Private keys
-      - Cloud credentials
-    Owner: Security
-
-  DASTGate:
-    Format: DAST-GATE-<ID>
+    Scans: API keys, Passwords, Tokens, Private keys, Cloud credentials
+  DAST:
     Condition: No critical vulnerabilities in running application
-    Evidence: DAST report
     Threshold: Critical = 0, High = 0
-    Checks:
-      - Authentication
-      - Authorization
-      - Input validation
-      - Session
-      - API abuse
-    Owner: Security
-
-  PentestGate:
-    Format: PENTEST-GATE-<ID>
+    Checks: Authentication, Authorization, Input validation, Session, API abuse
+  Pentest:
     Condition: No unresolved high/critical findings
-    Evidence: pentest report
-    Fields:
-      - Scope
-      - Tester
-      - Date
-      - Environment
-      - Findings
-      - Remediation
-      - Retest
-    Owner: Security
+    Fields: Scope, Tester, Date, Environment, Findings, Remediation, Retest
 
-SecurityGateRules:
-  [SG1]  Security gates are first-class gates.
-  [SG2]  Security gate failure blocks release.
-  [SG3]  SAST runs before DAST.
-  [SG4]  Pentest is separate from automated security tests.
-  [SG5]  Security findings MUST be tracked to tasks.
+Rules:
+  [SG1] Security gates are first-class gates.
+  [SG2] Security gate failure blocks release.
+  [SG3] SAST runs before DAST.
+  [SG4] Pentest is separate from automated security tests.
+  [SG5] Security findings MUST be tracked to tasks.
 
 State: +
-  

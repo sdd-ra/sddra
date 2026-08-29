@@ -4,24 +4,12 @@ Purpose:
   Defines gate levels L0-L5 and default gate matrix.
 
 Levels:
-  L0:
-    Description: Prototype
-    Checks: Minimal
-  L1:
-    Description: Small project
-    Checks: Basic test + lint
-  L2:
-    Description: Production application
-    Checks: Security + integration + deployment
-  L3:
-    Description: Business-critical
-    Checks: Performance + security + observability
-  L4:
-    Description: High-scale
-    Checks: Resilience + DR + advanced security
-  L5:
-    Description: Mission-critical
-    Checks: Formal controls + continuous verification
+  L0: Prototype — minimal checks
+  L1: Small project — basic test + lint
+  L2: Production application — security + integration + deployment
+  L3: Business-critical — performance + security + observability
+  L4: High-scale — resilience + DR + advanced security
+  L5: Mission-critical — formal controls + continuous verification
 
 GateMatrix:
   | Gate            | L1 | L2 | L3 | L4 | L5 |
@@ -44,10 +32,9 @@ QualityProfile:
   InternetExposure: <YES|NO>
   Scale: <DAU/MAU/RPS>
 
-LevelRules:
-  [LV1]  Gate selection is based on project level and context.
-  [LV2]  Default matrix may be overridden by project-specific policy.
-  [LV3]  Higher levels include all lower level gates.
+Rules:
+  [LV1] Gate selection is based on project level and context.
+  [LV2] Default matrix may be overridden by project-specific policy.
+  [LV3] Higher levels include all lower level gates.
 
 State: +
-  

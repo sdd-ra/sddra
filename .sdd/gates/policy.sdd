@@ -1,51 +1,31 @@
 ﻿Policy: Gates
 
 Purpose:
-  Defines gate engine policy and adaptive gate selection rules.
+  Defines gate engine policy, lifecycle, and adaptive gate selection.
 
-UniversalLifecycle:
-  REQUIREMENT
-    ↓
-  BDD
-    ↓
-  IMPLEMENTATION
-    ↓
-  STATIC QUALITY
-    ↓
-  UNIT TEST
-    ↓
-  INTEGRATION TEST
-    ↓
-  E2E / UI
-    ↓
-  SECURITY
-    ↓
-  PERFORMANCE
-    ↓
-  INFRASTRUCTURE
-    ↓
-  REVIEW
-    ↓
-  RELEASE
-    ↓
-  DEPLOY
-    ↓
-  RUNTIME VERIFY
+Lifecycle:
+  REQUIREMENT → BDD → IMPLEMENTATION → STATIC QUALITY → UNIT TEST →
+  INTEGRATION TEST → E2E/UI → SECURITY → PERFORMANCE → INFRASTRUCTURE →
+  REVIEW → RELEASE → DEPLOY → RUNTIME VERIFY
+
+GateSchema:
+  Every gate MUST define:
+    id: GATE-<ID>
+    condition: <what must be true>
+    evidence: <artifact reference>
+    threshold: <pass/fail criteria>
+    owner: <who validates>
+    decision: PASS / FAIL / BLOCKED
+
+GateStatuses:
+  PENDING, RUNNING, PASSED, FAILED, BLOCKED, SKIPPED, WAIVED, EXPIRED
+
+GateSeverity:
+  BLOCKER, CRITICAL, HIGH, MEDIUM, LOW, INFO
 
 AdaptiveGates:
   Principle: Not all stages are mandatory for all projects.
-
-  Small landing page:
-    BDD → Code → Lint → UI → Release
-
-  Payment system:
-    BDD → Code → Unit → Integration → E2E → Security → SAST → DAST → Load → Pentest → Release
-
-  Mobile app:
-    BDD → Code → Unit → Widget → E2E → Security → Build → Store/TestFlight
-
-GateSelection:
-  Factors:
+  Selection factors:
     - Project Level (L0-L5)
     - Technology
     - Risk
@@ -53,30 +33,39 @@ GateSelection:
     - Data sensitivity
     - Business criticality
 
-GateStatuses:
-  PENDING
-  RUNNING
-  PASSED
-  FAILED
-  BLOCKED
-  SKIPPED
-  WAIVED
-  EXPIRED
+Waiver:
+  Format: WAIVER-NNN
+  Fields: Gate, Reason, Owner, Expiration, Risk, Approval
+  Rules:
+    [WVR1] Waiver MUST have Reason, Owner, Expiration, Risk, Approval.
+    [WVR2] Waiver is temporary; expired waivers re-trigger gate.
+    [WVR3] Waiver does not bypass gate permanently.
+    [WVR4] Waiver MUST be recorded in graph.
 
-GateSeverity:
-  BLOCKER
-  CRITICAL
-  HIGH
-  MEDIUM
-  LOW
-  INFO
+Evidence:
+  Every gate result MUST include:
+    - Who ran the gate
+    - What was tested
+    - When it was run
+    - Why it was run
+    - Result (PASS/FAIL/BLOCKED/etc.)
+    - Evidence artifact
 
-GateRules:
+  EvidenceRules:
+    [EV1] Every gate MUST produce evidence.
+    [EV2] Evidence MUST be immutable after gate completion.
+    [EV3] Evidence MUST be linkable from graph.
+    [EV4] Evidence MUST be retrievable for audit.
+
+Rules:
   [GP1]  Gates are adaptive, not one-size-fits-all.
   [GP2]  Gate selection is based on project context.
   [GP3]  Every gate MUST have Condition + Evidence + Threshold + Owner + Decision.
   [GP4]  Gate failure blocks subsequent gates.
   [GP5]  Critical gates are hard blockers.
+  [EX1]  SKIPPED ≠ WAIVED.
+  [EX2]  Waivers require explicit approval.
+  [EX3]  Waivers have expiration dates.
+  [EX4]  Expired waivers MUST be renewed or gate re-run.
 
 State: +
-  
