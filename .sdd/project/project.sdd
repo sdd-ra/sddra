@@ -113,6 +113,25 @@ Profile:
       PentestRequired:   <true/false>
       ExternalExposure:  <public/internal/private>
 
+  Mode:
+    Type: <GREENFIELD|BROWNFIELD|HYBRID>
+    Reason: <why this mode>
+
+  DiscoveryStatus:
+    Status: <PENDING|IN_PROGRESS|COMPLETE>
+    Timestamp: <ISO-8601>
+    Score: <percentage>
+    Unknown: <percentage>
+
+  Discovered:
+    Stack: [<technologies>]
+    Architecture: <style>
+    Domains: [<domains>]
+    Tests: [<test-types>]
+    Security: [<controls>]
+    Infrastructure: [<infra>]
+    Gaps: [<missing-items>]
+
 
 NonGoals:
 
