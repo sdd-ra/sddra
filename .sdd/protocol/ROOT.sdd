@@ -1,10 +1,10 @@
-Protocol: SDD
+Protocol: Root
 
 Purpose:
   Defines the .sdd system's universal rules. This file is above everything
-   — project model, skills, chains, tasks, and source code all obey its
-   rules. This file only stores universal principles, it does not store
-   concrete project content (see DoesNotOwn below).
+  — project model, skills, chains, tasks, and source code all obey its
+  rules. This file only stores universal principles, not concrete project
+  content.
 
 Owns: ./
 
@@ -21,10 +21,6 @@ Scope:
   Failure routing
   Human approval levels
   Conflict resolution
-  SDD pyramid branching hierarchy
-  Branch naming conventions
-  Merge flow rules
-  Branch lifecycle and deletion policy
 
 DoesNotOwn:
   Project-specific architecture
@@ -35,19 +31,8 @@ DoesNotOwn:
   Source code
   Human documentation
 
-   (see PROJECT.sdd -> Rules [R12] — every file in the .sdd system must
-   follow this principle at its own level.)
-
-
 Authority:
   protocol > project > task > source
-
-   Protocol rules are at a higher level than the project model. Project
-   model is at a higher level than tasks. Tasks are at a higher level than
-   source code. Higher-level rules cannot be overridden by lower levels —
-   in case of conflict, human decision is required (see PROJECT.sdd ->
-   HumanDecision).
-
 
 Agent:
   Must:
@@ -68,308 +53,36 @@ Agent:
     [PR13] Treat assumptions as facts.
     [PR14] Create project facts without a real source artifact.
     [PR15] Add personal signatures or sign-offs to outputs.
-    [PR16] Use emojis, icons, or decorative symbols in headers or titles — these are reserved for human use only.
+    [PR16] Use emojis, icons, or decorative symbols in headers or titles.
     [PR17] Create branches outside the SDD pyramid hierarchy without explicit approval.
-
 
 Context:
   Minimal sufficient context only.
-
-  AI MUST load context progressively:
-    L0  PROJECT summary
-    L1  relevant domain
-    L2  relevant module
-    L3  relevant skill
-    L4  specific implementation rule
-    L5  source/document/deep reference
-
-  Default path: L0 -> L1 -> L2. AI MUST NOT advance to L3+ unless
-  explicitly required (bax TokenEconomy in architecture/architecture.sdd
-  -> Principles, ProgressiveContextLoading in tasks/tasks.sdd).
-
+  AI MUST load context progressively: L0 -> L1 -> L2. AI MUST NOT advance
+  to L3+ unless explicitly required.
 
 Truth:
-  Declared:
-    Approved project intent — architecture, flows, decisions, constraints.
-
-  Observed:
-    Actual repository/runtime state — source code, tests, config, metrics.
-
-  Evidence:
-    Measurable/supporting information — benchmarks, incidents, decisions.
-
+  Declared: Approved project intent — architecture, flows, decisions, constraints.
+  Observed: Actual repository/runtime state — source code, tests, config, metrics.
+  Evidence: Measurable/supporting information — benchmarks, incidents, decisions.
   Conflict:
-    Declared != Observed  -> DRIFT
-    Fact != Assumption    -> mark explicitly as ASSUMPTION
-    Policy conflict       -> HUMAN_REVIEW
-
+    Declared != Observed -> DRIFT
+    Fact != Assumption -> mark explicitly as ASSUMPTION
+    Policy conflict -> HUMAN_REVIEW
 
 UniversalObjectModel:
   Basic objects inside .sdd:
-
-    PROJECT
-    DOMAIN
-    MODULE
-    COMPONENT
-    SYMBOL
-    SKILL
-    CHAIN
-    STAGE
-    TASK
-    DECISION
-    RISK
-    EVIDENCE
-    ASSUMPTION
-    FINDING
-    VERIFY
-
-  These are the .sdd system's primitive types. Every .sdd file is one
-   of these objects or an instance of one.
-
+    PROJECT, DOMAIN, MODULE, COMPONENT, SYMBOL, SKILL, CHAIN, STAGE,
+    TASK, DECISION, RISK, EVIDENCE, ASSUMPTION, FINDING, VERIFY
 
 UniversalState:
-  State symbols are defined canonically in state/state.sdd. The protocol
-  layer does not redefine them — it only adds new symbols when a real
-  gap exists, with explicit justification (bax state/state.sdd -> Rules
-  [S2]: "State symbols MUST NOT be redefined by project components").
-
-  Canonical symbols (from state/state.sdd):
-    + = DONE
-    ~ = ACTIVE
-    - = FAILED
-    ! = BLOCKED
-    ? = DECISION_REQUIRED
-    > = NEXT
-    @ = REFERENCE
-    = = CREATED
-    : = ANALYZING
-    * = REVIEW
-    ^ = SUPERSEDED
-    _ = ARCHIVED
-
+  State symbols are defined canonically in state/state.sdd.
+  Canonical symbols:
+    + = DONE, ~ = ACTIVE, - = FAILED, ! = BLOCKED, ? = DECISION_REQUIRED,
+    > = NEXT, @ = REFERENCE, = = CREATED, : = ANALYZING, * = REVIEW,
+    ^ = SUPERSEDED, _ = ARCHIVED
   Extended by protocol:
     x = CANCELLED
-
-  AI MUST use these symbols exactly as defined. AI MUST NOT invent new
-  symbols without adding them to state/state.sdd first.
-
-
-PyramidBranching:
-  hierarchy:
-    decision_{id}   — Decision branch (top level)
-      model_{id}     — Model branch
-        task_{id}    — Task branch
-          subtask_{id} — Subtask branch
-            be|fe|md|ts|sc|cr_{subtask_id} — Domain implementation branch
-              commits
-
-  merge_flow:
-    commits -> subtask branch
-    subtask branches -> task branch
-    task branches -> model branch
-    model branches -> decision branch
-    decision branch -> test -> stage -> prod (if no parent branch)
-
-  domain_codes:
-    BE  — Backend
-    FE  — Frontend
-    MD  — Mobile
-    TS  — Test
-    SC  — Security
-    CR  — Code Review
-
-  deletion_rules:
-    - After PR is merged
-    - Branch no longer needed in active development
-    - Form: decision -> commits (all intermediate branches can be deleted)
-    - Exception: master, develop, and active release branches are never deleted
-
-  branch_protection:
-    master:
-      - Require PR review
-      - Require passing tests
-      - No direct commits
-      - Protected from deletion
-
-    develop:
-      - Require passing tests
-      - Allow direct commits from owner
-      - Protected from deletion
-
-    decision branches:
-      - Require approval before merge
-      - Must have linked decision record
-      - Deleted after merge to test
-
-    model/task/subtask branches:
-      - Require passing tests
-      - Deleted after merge to parent
-
-
-UniversalStages:
-  AR = Architecture
-  DB = Database
-  BE = Backend
-  API = API / Contract
-  FE = Frontend
-  MD = Mobile
-  TS = Test
-  QA = Quality Assurance
-  SC = Security
-  DO = DevOps
-  VR = Verify
-
-  Stage symbols are semantic — each is bound to its stage registry,
-  skill registry, and project paths. `BE` means backend stage AND
-  backend skills AND backend project paths (bax chains/chains.sdd ->
-  Stages).
-
-
-ChainSyntax:
-  >  execution transition
-  -> dependency
-  <- reverse dependency
-  => produces
-  <= consumes
-  >> continue
-  << return
-  @  reference
-  +  passed/done
-  ~  pending
-  !  failed
-  ?  blocked
-  -  skipped
-  x  cancelled
-
-  Chain syntax is distinct from dependency syntax:
-    AR > DB > BE    is an execution chain (stages in order)
-    BE -> DB        is a dependency (BE depends on DB)
-    BE << DB        is a return/reverse (BE returns to DB)
-
-  AI MUST NOT confuse the two.
-
-
-RelationTokens:
-  Project Graph relation abbreviations:
-
-    o:  owns
-    u:  uses
-    c:  calls
-    r:  reads
-    w:  writes
-    t:  tests
-    s:  secures
-    d:  deploys
-    doc: documents
-
-  Example:
-    BE/payments
-      o: refund.go
-      u: DB/payment
-      c: API/refund
-      w: DB/refunds
-      t: QA/refund
-
-
-ImpactTokens:
-  Impact level abbreviations:
-
-    I0 = isolated
-    I1 = local
-    I2 = module
-    I3 = domain
-    I4 = project
-    I5 = system
-
-  Example:
-    Impact: I3
-
-  Means: change has domain-level impact.
-
-
-RiskTokens:
-  Risk level abbreviations:
-
-    R0 = none
-    R1 = low
-    R2 = medium
-    R3 = high
-    R4 = critical
-
-  Example:
-    SC:R3
-
-  Means: high security risk.
-
-
-LevelTokens:
-  Architecture/complexity level abbreviations:
-
-    L0 = simple
-    L1 = modular
-    L2 = modular-monolith
-    L3 = distributed
-    L4 = microservices
-    L5 = large-scale
-
-  Example:
-    Arch: L2
-
-  Means: modular monolith. AI MUST NOT propose microservices for L2
-  (bax STOP_RULE in tasks/tasks.sdd).
-
-
-EvidenceTokens:
-  Evidence type abbreviations:
-
-    E: test
-    E: benchmark
-    E: incident
-    E: metric
-    E: audit
-    E: doc
-    E: pentest
-
-  Example:
-    Decision:
-      cache added
-
-    Reason:
-      E: benchmark
-      E: metric
-
-  Evidence MUST be traceable to a real artifact (bax decisions/
-  decisions.sdd -> Evidence, skills/skills.sdd -> Evidence).
-
-
-TruthTokens:
-  Truth status abbreviations:
-
-    F = Fact
-    A = Assumption
-    O = Observed
-    D = Declared
-    E = Evidence
-
-  Example:
-    DAU:
-      A: 1M
-
-  Means: 1M DAU is an assumption, not a fact. If observed from
-  repository:
-    DAU:
-      O: 1M
-
-  If confirmed by customer:
-    DAU:
-      D: 1M
-
-  If measured by metric:
-    DAU:
-      E: metric
-
-  AI MUST NOT treat assumptions as facts (bax [PR7], [PR13]).
-
 
 ReferenceSystem:
   @payments
@@ -378,81 +91,18 @@ ReferenceSystem:
   @projects/{project_name}/tasks/PAY-042
   @decision/DEC-012
 
-  References are resolved through the project graph, not through
-  filesystem search. When AI sees `@payments/refund`, it MUST resolve
-  the graph path to the exact target without scanning the repository.
-
-
-ContextPriority:
-  When multiple sources are available, AI MUST load in this order:
-    1. Current task
-    2. Current module
-    3. Current chain stage
-    4. Direct dependencies
-    5. Applicable skills
-    6. Security constraints
-    7. Project architecture
-    8. Global protocol
-    9. Historical context
-
-  This ordering is the token economy foundation — AI reads the smallest
-  sufficient context first (bax TokenEconomy in architecture/architecture.sdd
-  -> Principles).
-
-
-FailureRouting:
-  Failure MUST be classified before routing:
-
-    code issue      -> BE
-    architecture    -> AR
-    database        -> DB
-    security        -> SC
-    requirements    -> HUMAN
-    infrastructure  -> DO
-
-  AI MUST NOT blindly return to the previous stage. It MUST classify
-  the failure type first, then route to the correct owner. This is
-  controlled return, not chain loop (bax tasks/tasks.sdd -> FailureRouting).
-
+  References are resolved through the project graph, not filesystem search.
 
 HumanApproval:
-  Three-level approval model:
-
-    AUTO       — AI decides without human involvement
-    REVIEW     — AI proposes, human reviews before execution
-    BLOCK      — human decision required before any action
-
-  Examples:
-    Code formatting           AUTO
-    Refactor                  AUTO / REVIEW
-    Architecture change       REVIEW
-    Security policy change    REVIEW
-    Production destructive    BLOCK
+  AUTO — AI decides without human involvement
+  REVIEW — AI proposes, human reviews before execution
+  BLOCK — human decision required before any action
 
   AI MUST respect these levels without exception.
 
-
 ConflictResolution:
-  Declared != Observed  -> DRIFT -> create task to reconcile
-  Fact != Assumption    -> mark as ASSUMPTION, do not treat as fact
-  Policy conflict       -> HUMAN_REVIEW -> escalate to human decision
+  Declared != Observed -> DRIFT -> create task to reconcile
+  Fact != Assumption -> mark as ASSUMPTION, do not treat as fact
+  Policy conflict -> HUMAN_REVIEW -> escalate to human decision
 
 State: +
-  Note:
-  This file is the constitution of the .sdd
-  system. Every other file in .sdd/ is a specialization of these rules.
-  The source proposed a `protocol/` directory at STEP 20/21/22 and it was
-  declined each time because there was no coherent protocol layer yet —
-   only isolated proposals. Research decisions now justify a
-  single, authoritative protocol file: ROOT.sdd. INDEX.sdd is the entry
-  point that routes to it. No additional protocol sub-files are created
-  yet — the protocol layer is intentionally minimal at this phase
-  (NoDuplication, skeleton + rule engine precedent).
-
-  Token dictionary expanded with six new
-  token categories: RelationTokens (o:/u:/c:/r:/w:/t:/s:/d:/doc:),
-  ImpactTokens (I0-I5), RiskTokens (R0-R4), LevelTokens (L0-L5),
-  EvidenceTokens (E:test/benchmark/incident/metric/audit/doc/pentest),
-  TruthTokens (F/A/O/D/E). No separate protocol sub-files created —
-  ROOT.sdd remains the single authoritative token dictionary (NoDuplication).
-

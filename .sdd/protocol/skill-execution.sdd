@@ -6,21 +6,6 @@ Purpose:
   ensures deterministic skill resolution, context injection, policy
   enforcement, and output validation.
 
-Owns: ./
-
-Scope:
-  Skill definition and contract structure
-  Skill chain and skill graph
-  Skill gates, guards, preconditions, postconditions
-  Skill versioning and compatibility
-  Skill composition (composite skills)
-  Skill execution context injection
-  Skill autonomy and trust levels
-  Skill boundary enforcement (file, database, API scope)
-  Skill failure classification and recovery
-  Skill escalation chains
-  Least privilege tool access
-
 Principles:
   Skill = WHAT process is executed.
   Context = WHERE / WITH WHAT.
@@ -31,126 +16,43 @@ Principles:
 
 SkillDefinition:
   structure:
-    id: string (immutable, e.g. SKILL-API-IMPLEMENT)
-    version: string (semver: MAJOR.MINOR.PATCH)
+    id: string (immutable)
+    version: string (semver)
     autonomy: integer (0=human only, 1=AI proposes, 2=AI executes with approval, 3=AI executes automatically)
     trust: string (READ_ONLY, LOW_RISK, MEDIUM_RISK, HIGH_RISK, CRITICAL)
 
-  input:
-    - API_SPEC
-    - DOMAIN_CONTEXT
-
-  requires:
-    - SKILL-ARCHITECTURE-CONTEXT
-
-  tools:
-    - read
-    - write
-    - test
-    - diff
-
-  preconditions:
-    - specification_valid
-    - dependencies_resolved
-
-  outputs:
-    - SOURCE_CODE
-    - TESTS
-
-  postconditions:
-    - tests_pass
-
-  policies:
-    - PROJECT-CODING-STANDARDS
-
+  input: [required inputs]
+  requires: [required skills]
+  tools: [allowed tools]
+  preconditions: [must be true before execution]
+  outputs: [expected outputs]
+  postconditions: [must be true after execution]
+  policies: [applicable policies]
   boundary:
-    allowed_paths:
-      - internal/payment/**
-    allowed_tables:
-      - payments
-      - payment_transactions
-    allowed_api:
-      - /payments/**
+    allowed_paths: [file paths]
+    allowed_tables: [database tables]
+    allowed_api: [API endpoints]
 
 SkillChain:
-  definition:
-    ordered sequence of skills required to complete a task
-
-  example:
-    ANALYZE -> DESIGN -> IMPLEMENT -> TEST -> REVIEW -> APPROVAL -> DEPLOY
-
+  definition: ordered sequence of skills required to complete a task
   rule: chain order is deterministic — AI does not choose next skill
   rule: gates between skills evaluate conditions before advancing
 
 SkillGraph:
-  definition:
-    non-linear skill dependency graph
-
-  example:
-              DESIGN
-             /      \
-            ↓        ↓
-        BACKEND    FRONTEND
-            \        /
-             ↓      ↓
-              INTEGRATION
-                   ↓
-                 TEST
-
+  definition: non-linear skill dependency graph
   rule: graph MUST be acyclic
   rule: parallel skills MUST have explicit synchronization points
 
 SkillGate:
-  definition:
-    conditional checkpoint between skills
-
-  behavior:
-    if condition == true:
-      advance to next skill
-    else:
-      block execution
-
+  definition: conditional checkpoint between skills
+  behavior: if condition == true -> advance, else -> block
   rule: gate evaluation is deterministic, not AI-driven
 
 SkillGuard:
-  preconditions:
-    - architecture_valid
-    - dependencies_resolved
-    - tests_available
-
-  postconditions:
-    - code_exists
-    - tests_pass
-    - artifact_created
-
+  preconditions: [must be true before execution]
+  postconditions: [must be true after execution]
   rule: guards MUST be validated before and after skill execution
   rule: failed postconditions MUST trigger recovery skill
-
-SkillVersioning:
-  compatibility:
-    - MAJOR: breaking changes
-    - MINOR: backward-compatible features
-    - PATCH: corrections
-
-  check:
-    agent supports: SKILL-API-IMPLEMENT@1.x
-    task requires: SKILL-API-IMPLEMENT@2.x
-    result: INCOMPATIBLE
-
-SkillComposition:
-  definition:
-    composite skill = atomic skills composed into higher-level workflow
-
-  example:
-    BUILD-FEATURE:
-      - ANALYZE
-      - DESIGN
-      - IMPLEMENT
-      - TEST
-      - REVIEW
-
-  rule: composite skills MUST be decomposable into atomic skills
-  rule: atomic skills MUST be reusable across composite skills
 
 SkillExecutionProtocol:
   steps:
@@ -195,20 +97,12 @@ SkillFailure:
   rule: failures MUST be typed, not generic
 
 SkillRecovery:
-  retry:
-    definition: same skill again
-    condition: transient failure (timeout, tool failure)
-
-  recovery:
-    definition: different strategy
-    condition: assertion failure, output invalid
-
+  retry: same skill again, condition: transient failure
+  recovery: different strategy, condition: assertion failure, output invalid
   rule: retry != recovery
 
 SkillEscalation:
-  chain:
-    CODER -> CODER -> CODER -> SENIOR-REVIEW -> HUMAN
-
+  chain: CODER -> CODER -> CODER -> SENIOR-REVIEW -> HUMAN
   rule: escalation triggers after N failures
   rule: human escalation is REQUIRED for CRITICAL trust level
 
@@ -216,55 +110,14 @@ SkillOwnership:
   rule: every skill MUST have owner
   rule: skill changes require owner approval
 
-SkillTrustLevels:
-  READ_ONLY:
-    autonomy: 0..3
-    tools: read only
-    risk: none
-
-  LOW_RISK:
-    autonomy: 3
-    tools: read, write, test
-    risk: minimal
-
-  MEDIUM_RISK:
-    autonomy: 2
-    tools: read, write, test, diff
-    risk: moderate
-    approval: optional
-
-  HIGH_RISK:
-    autonomy: 1
-    tools: limited write
-    risk: significant
-    approval: required
-
-  CRITICAL:
-    autonomy: 0
-    tools: propose only
-    risk: severe
-    approval: mandatory human
-
 LeastPrivilege:
   rule: skill receives ONLY required tool permissions
-  rule: production_deploy tool is NEVER granted to IMPLEMENT skill
   rule: file scope, database scope, and API scope are enforced
 
 ConflictResolution:
-  priority:
-    System > Project > Domain > Skill > Task > Agent preference
-
+  priority: System > Project > Domain > Skill > Task > Agent preference
   rule: project policy overrides skill defaults
   rule: system policy overrides project policy
-
-Navigation:
-  Skills: @../skills/INDEX.sdd
-  SkillDiscovery: @../skills/meta/SKILL-DISCOVERY.sdd
-  SkillRecommendation: @../skills/meta/SKILL-RECOMMENDATION.sdd
-  SkillGapAnalysis: @../skills/meta/SKILL-GAP-ANALYSIS.sdd
-  Runtime: @../runtime/INDEX.sdd
-  Orchestrator: @../orchestrator/INDEX.sdd
-  Protocol: @../protocol/INDEX.sdd
 
 Rules:
   [SK-PROTO-01] Skill is executable contract, not prompt.
@@ -284,5 +137,14 @@ Rules:
   [SK-PROTO-15] Skill ownership MUST be explicit for governance.
   [SK-PROTO-16] Agent MUST NOT add signatures or sign-offs to skill outputs.
   [SK-PROTO-17] Agent MUST NOT use emojis, icons, or decorative symbols in skill output headers or titles.
+
+Navigation:
+  Skills: @../skills/INDEX.sdd
+  SkillDiscovery: @../skills/meta/SKILL-DISCOVERY.sdd
+  SkillRecommendation: @../skills/meta/SKILL-RECOMMENDATION.sdd
+  SkillGapAnalysis: @../skills/meta/SKILL-GAP-ANALYSIS.sdd
+  Runtime: @../runtime/INDEX.sdd
+  Orchestrator: @../orchestrator/INDEX.sdd
+  Protocol: @../protocol/INDEX.sdd
 
 State: +
