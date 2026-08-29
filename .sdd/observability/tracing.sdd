@@ -1,32 +1,18 @@
 ﻿Tracing: SDD
 
 Purpose:
-  Defines distributed tracing policy, trace structure, and
-  code-to-trace mapping rules.
+  Defines distributed tracing policy and trace structure.
 
 TraceStructure:
-  TraceID:
-    - Unique per request
-    - Propagated across all services
-
-  SpanID:
-    - Unique per operation
-    - Parent-child relationship
-
-  Context:
-    - service
-    - operation
-    - start_time
-    - end_time
-    - duration
-    - status
-    - tags (key-value pairs)
-    - logs (timestamped events within span)
+  TraceID: Unique per request, propagated across services
+  SpanID: Unique per operation, parent-child relationship
+  Context: service, operation, start_time, end_time, duration,
+           status, tags, logs
 
 Propagation:
-  - HTTP: X-Trace-ID header
-  - gRPC: metadata propagation
-  - Message queues: message headers
+  HTTP: X-Trace-ID header
+  gRPC: metadata propagation
+  Message queues: message headers
 
 Sampling:
   Development: 100%
@@ -34,27 +20,16 @@ Sampling:
   Errors: 100% for error traces
 
 CodeTraceMapping:
-  trace:
-    <operation.name>
-  ↓
-  service:
-    ./<layer>/<domain>/<module>/<artifact>
-  ↓
-  component:
-    <ComponentName>
-  ↓
-  task:
-    <TASK-ID>
+  trace → service → component → task
 
 LatencyAnalysis:
   - Identify slow spans
   - Compare against baseline
   - Detect regressions
 
-CrossLayer:
-  Architecture: Service dependency mapping
-  Diagnostics: Trace analysis for root cause
-  Incident: Trace correlation for impact analysis
+Rules:
+  [TR1] Every request MUST have trace_id.
+  [TR2] Trace MUST span all services.
+  [TR3] Trace MUST include stage information.
 
 State: +
-  

@@ -1,49 +1,28 @@
 ﻿Health: SDD
 
 Purpose:
-  Defines health check model beyond simple 200 OK. Three levels
-  of health determine whether a service can receive traffic.
+  Defines health check model beyond simple 200 OK.
 
 HealthLevels:
-  Liveness:
-    Definition: Service is running
-    Check: Process alive, basic functionality
-    Failure: Restart service
-    Example: HTTP /health/live → 200
-
-  Readiness:
-    Definition: Service can accept traffic
-    Check: Dependencies available, cache warm, queue connected
-    Failure: Remove from load balancer
-    Example: HTTP /health/ready → 200 or 503
-
-  DependencyHealth:
-    Definition: Downstream dependencies are healthy
-    Check: Database reachable, cache connected, queue available
-    Failure: Mark service as degraded
-    Example: PostgreSQL ping → OK, Redis ping → OK
+  Liveness: Service is running, process alive
+  Readiness: Service can accept traffic, dependencies available
+  DependencyHealth: Downstream dependencies are healthy
 
 HealthCheck:
   Required:
-    - Liveness: Always
-    - Readiness: Always for production
-    - Dependency: For services with external dependencies
+    Liveness: Always
+    Readiness: Always for production
+    Dependency: For services with external dependencies
 
-  Response:
-    Healthy:
-      status: healthy
-      checks: { liveness: OK, readiness: OK, dependencies: OK }
-    Degraded:
-      status: degraded
-      checks: { liveness: OK, readiness: OK, dependencies: DEGRADED }
-    Unhealthy:
-      status: unhealthy
-      checks: { liveness: FAIL, readiness: FAIL, dependencies: FAIL }
+Response:
+  Healthy: status healthy, checks OK
+  Degraded: status degraded, dependencies DEGRADED
+  Unhealthy: status unhealthy, checks FAIL
 
-CrossLayer:
-  Architecture: Service dependency mapping
-  Security: Health endpoints MUST be protected
-  Operations: Health check routing and monitoring
+Rules:
+  [HL1] Health endpoints MUST be protected.
+  [HL2] Liveness failure triggers restart.
+  [HL3] Readiness failure removes from load balancer.
+  [HL4] Dependency failure marks service as degraded.
 
 State: +
-  
