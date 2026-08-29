@@ -75,6 +75,5 @@ Navigation:
   Testing: @testing/INDEX.sdd
   Tokens: @tokens/
   Features: @../../features/INDEX.sdd
-  Layers: @../../features/layers.sdd
 
 State: ~ (example/template state)

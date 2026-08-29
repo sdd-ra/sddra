@@ -112,10 +112,8 @@ ReadOrder:
    64 @projects/{project_name}/tasks/          (project task instances)
     65 @workflow/INDEX.sdd
     66 @workflow/ (workflow engine: stages, transitions, gates, testing, state)
-    67 @features/INDEX.sdd (feature planning and layer assignment)
-    68 @features/layers.sdd (feature layers: L0-L4)
-    69 @features/decisions.sdd (feature decision framework)
-    70 @projects/{project_name}/MAP.md (project map: real codebase location)
+     67 @features/INDEX.sdd (feature planning and layer assignment)
+     68 @projects/{project_name}/MAP.md (project map: real codebase location)
     71 @projects/{project_name}/STRUCTURE.md (project structure description)
     72 @runtime/events.sdd (runtime event log)
    68 @verification/ (when present)
@@ -232,8 +230,6 @@ Navigation:
   ProjectStackTesting: @projects/{project_name}/stack/testing.sdd
   ProjectStackInfrastructure: @projects/{project_name}/stack/infrastructure.sdd
   Features: @features/INDEX.sdd
-  FeatureLayers: @features/layers.sdd
-  FeatureDecisions: @features/decisions.sdd
   Decisions:  @projects/{project_name}/decisions/INDEX.sdd
   DecisionInstances: @projects/{project_name}/decisions/
   DomainDecisions: @projects/{project_name}/decisions/INDEX.sdd
