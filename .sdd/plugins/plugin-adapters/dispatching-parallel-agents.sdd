@@ -1,16 +1,9 @@
-# Plugin: Dispatching Parallel Agents Adapter
+# Plugin: Dispatching Parallel Agents
 
 Purpose:
-  Adapt Superpowers dispatching-parallel-agents skill for SDDRA scheduler.
+  Adapt parallel agents skill for SDDRA scheduler.
 
-Source:
-  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\dispatching-parallel-agents\SKILL.md
-
-Original:
-  Concurrent subagent workflows
-  Parallel execution with checkpoints
-
-Adapted for SDDRA:
+Adaptation:
   Parallel execution in chain graph:
     - FE and MD can run in parallel
     - Independent tasks can run concurrently
@@ -21,19 +14,8 @@ Adapted for SDDRA:
     - Parallel tasks MUST NOT share mutable state
     - Checkpoints after each parallel batch
 
-  Integration:
-    - Chain graph parallel section
-    - Task scheduler in .sdd/projects/{project_name}/tasks/
-    - Token budget shared across parallel tasks
-
 Usage:
-  Referenced by:
-    .sdd/chains/feature.sdd (Parallel section)
-    .sdd/chains/INDEX.sdd
+  Chain: feature (parallel section)
+  Trigger: Multiple tasks ready, no dependencies between tasks
 
-  Triggers:
-    - Multiple tasks ready
-    - No dependencies between tasks
-    - Token budget available
-
-State: Adapted
+State: +

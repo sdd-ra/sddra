@@ -1,16 +1,9 @@
-# Plugin: Verification Before Completion Adapter
+# Plugin: Verification Before Completion
 
 Purpose:
-  Adapt Superpowers verification-before-completion skill for SDDRA R1 arm.
+  Adapt verification-before-completion skill for SDDRA R1 arm.
 
-Source:
-  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\verification-before-completion\SKILL.md
-
-Original:
-  Ensure work is actually done before claiming completion
-  Check against original requirements
-
-Adapted for SDDRA:
+Adaptation:
   Verification checklist for R1 arm:
     1. All tests pass
     2. Linter passes
@@ -24,19 +17,8 @@ Adapted for SDDRA:
     - All decision tasks completed
     - Decision status updated to verified
 
-  Integration:
-    - R1 arm uses this checklist
-    - Verification recorded in decisions/
-    - Drift detection from .sdd to project/
-
 Usage:
-  Referenced by:
-    .sdd/chains/arms/review.sdd
-    .sdd/chains/rules/chain-rules.sdd (CR6)
+  Chain: R1 (review arm)
+  Trigger: C1 arm completes, before marking task complete
 
-  Triggers:
-    - C1 arm completes
-    - R1 arm execution
-    - Before marking task complete
-
-State: Adapted
+State: +

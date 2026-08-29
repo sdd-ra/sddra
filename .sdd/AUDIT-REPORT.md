@@ -120,8 +120,7 @@ All case files have `state: -` instead of `State: +` (different format).
    - workflows/agent-workflow.sdd
    - workflows/chain-implementation.sdd
    - workflows/agent-implementation.sdd
-   - plugins/adapter-map.sdd
-   - plugins/README.sdd
+    - plugins/INDEX.sdd (includes adapter map)
    - observability/observability.sdd
    - architecture/architecture.sdd
 4. Standardized file headers (where applicable)
