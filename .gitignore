@@ -1,13 +1,11 @@
 # SDDRA .gitignore
 
-# Only project-specific data is tracked.
-# Framework files (.sdd/ system definition) are NOT project data.
-# Only .sdd/projects/{project_name}/** is tracked in repos.
-
-.sdd/
-!.sdd/projects/
-!.sdd/projects/*/
-!.sdd/projects/*/**
+# Framework repo (.sdd/ system files ARE tracked here).
+# For project repos using SDDRA, uncomment below to ignore framework:
+# .sdd/
+# !.sdd/projects/
+# !.sdd/projects/*/
+# !.sdd/projects/*/**
 
 # Old/archived files
 old/
