@@ -117,12 +117,7 @@ ReadOrder:
     71 @projects/{project_name}/STRUCTURE.md (project structure description)
     72 @runtime/events.sdd (runtime event log)
    68 @verification/ (when present)
-    69 @state/state.sdd
-    70 @constitution.sdd
-    71 @references/INDEX.sdd
-    72 @concepts/INDEX.sdd
-    73 @knowledge/INDEX.sdd
-    74 @insights/INDEX.sdd
+   69 @state/state.sdd
 
 Modes:
   ANALYZE   — project discovery and context building
@@ -158,14 +153,6 @@ Rules:
   [I20] Real project instances are created AFTER human selects a project name.
   [I21] AI MUST create .sdd/projects/{project_name}/ when human provides a project name.
   [I22] Until project name is selected, all work uses {project_name}/ as reference.
-  [I23] AI MUST use @reference system for knowledge navigation, not filesystem paths.
-  [I24] AI MUST load references lazily — only when needed for current task.
-  [I25] AI MUST prefer existing references over creating new knowledge.
-  [I26] AI MUST NOT duplicate knowledge — use references instead.
-  [I27] AI MUST classify knowledge as concept, reference, skill, or insight.
-  [I28] AI MUST promote candidates to references only with validation.
-  [I29] AI MUST detect concept drift and conflicts.
-  [I30] AI MUST record learning from every task.
 
 Entry:
   @protocol/ROOT.sdd
@@ -452,19 +439,8 @@ Navigation:
    PluginParallelAgents: @plugins/plugin-adapters/dispatching-parallel-agents.sdd
    PluginWritingSkills: @plugins/plugin-adapters/writing-skills.sdd
    PluginVerification: @plugins/plugin-adapters/verification-before-completion.sdd
-   Constitution: @constitution.sdd
-   References: @references/INDEX.sdd
-   ReferencesDDD: @references/ddd/INDEX.sdd
-   ReferencesArchitecture: @references/architecture/INDEX.sdd
-   ReferencesPatterns: @references/patterns/INDEX.sdd
-   ReferencesDatabase: @references/database/INDEX.sdd
-   ReferencesEngineering: @references/engineering/INDEX.sdd
-   ReferencesBestPractices: @references/best-practices/INDEX.sdd
-   Concepts: @concepts/INDEX.sdd
-   Knowledge: @knowledge/INDEX.sdd
-   KnowledgeCandidates: @knowledge/candidates/INDEX.sdd
-   KnowledgeLessons: @knowledge/lessons/INDEX.sdd
-   Insights: @insights/INDEX.sdd
+   Verification: @verification/
+   State:      @state/state.sdd
 
 State: +
    (created as the universal entry point and routing table)

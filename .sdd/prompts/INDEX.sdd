@@ -1,4 +1,4 @@
-# Prompts: Default
+# Prompts
 
 Purpose:
   Prompt intelligence engine. Converts simple human prompts into
@@ -9,19 +9,40 @@ Purpose:
 
 Owns: ./
 
-ReadOrder:
-   1 @INDEX.sdd
-   2 @prompts.sdd
-   3 @tech-stack/INDEX.sdd
-   4 @role-assignment/INDEX.sdd
-   5 @provisioning/INDEX.sdd
-
 Modes:
   ANALYZE   — analyze incoming prompt from root prompts/
   GENERATE  — generate docs from prompt
   CONVERT   — convert docs to .sdd/project/
   EXECUTE   — execute .sdd/project/
   REVIEW    — human review gate
+
+Directories:
+  inbox:
+    path: ./inbox
+    purpose: Newly received prompts
+
+  active:
+    path: ./active
+    purpose: Prompts affecting active work
+
+  archive:
+    path: ./archive
+    purpose: Processed prompts and historical knowledge
+
+  extracted:
+    path: ./extracted
+    purpose: Useful knowledge extracted from prompts
+
+  conflicts:
+    path: ./conflicts
+    purpose: Prompt conflicts requiring resolution
+
+Types:
+  requirement, feature, bug, architecture, improvement, constraint,
+  skill, process, decision, knowledge, tech-stack, role-assignment, provisioning
+
+Lifecycle:
+  RECEIVE > ANALYZE > CLASSIFY > COMPARE > IMPACT > DECIDE > EXECUTE | BACKLOG | ARCHIVE
 
 Rules:
   [P1]  Every prompt MUST be analyzed before execution.
@@ -32,16 +53,21 @@ Rules:
   [P6]  Tech stack prompts MUST resolve to skill paths.
   [P7]  Role assignment prompts MUST require human approval.
   [P8]  Provisioning prompts MUST only execute after approval.
-  [P9]  Docs MUST be generated in simple English.
+  [P9]  Docs MUST be in simple language.
   [P10] .sdd/project/ MUST be generated only after human approval.
   [P11] Formalized prompts MUST live in .sdd/projects/prompts/.
   [P12] Documented prompts with IDs MUST live in .sdd/projects/{project_name}/docs/prompts/.
   [P13] Root prompts/ is the user inbox only — no .sdd metadata there.
 
+ReadOrder:
+   1 @INDEX.sdd
+   2 @tech-stack/INDEX.sdd
+   3 @role-assignment/INDEX.sdd
+   4 @provisioning/INDEX.sdd
+
 Entry:
   Read:
     INDEX.sdd
-    prompts.sdd
 
   Resolve:
     tech-stack
@@ -53,7 +79,6 @@ Navigation:
   TechStack: @prompts/tech-stack/INDEX.sdd
   RoleAssignment: @prompts/role-assignment/INDEX.sdd
   Provisioning: @prompts/provisioning/INDEX.sdd
-  RootPrompts: @../../prompts/README.md
   RootPromptsInbox: @../../prompts/inbox/
   RootPromptsActive: @../../prompts/active/
   RootPromptsArchive: @../../prompts/archive/

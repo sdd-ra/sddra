@@ -47,8 +47,8 @@ Files lacking State: + in modifiable directories:
 
 | File | Line | Issue |
 |------|------|-------|
-| `.sdd/prompts/INDEX.sdd` | 32 | Rule [P9] says "Azerbaijani" |
-| `.sdd/prompts/prompts.sdd` | 50 | Rule [P8] says "English" |
+| `.sdd/prompts/INDEX.sdd` | 32 | Rule [P9] says "simple language" |
+| `.sdd/prompts/INDEX.sdd` | 28 | Rule [P8] says "human approval" |
 | `.sdd/prompts/tech-stack/prompt-to-docs.sdd` | 50 | Says "simple English" |
 
 ## Medium Priority Issues
