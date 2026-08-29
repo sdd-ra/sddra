@@ -69,7 +69,7 @@ Navigation:
   Release: @gates/release.sdd
   Exceptions: @gates/exceptions.sdd
   Evidence: @gates/evidence.sdd
-  ProjectGates: @projects/example_project/gates/INDEX.sdd
+  ProjectGates: @projects/{project_name}/gates/INDEX.sdd
 
 State: +
   

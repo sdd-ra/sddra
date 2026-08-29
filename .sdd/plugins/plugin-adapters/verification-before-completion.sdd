@@ -4,7 +4,7 @@ Purpose:
   Adapt Superpowers verification-before-completion skill for SDDRA R1 arm.
 
 Source:
-  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01\skills\verification-before-completion\SKILL.md
+  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\verification-before-completion\SKILL.md
 
 Original:
   Ensure work is actually done before claiming completion

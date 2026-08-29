@@ -1,7 +1,7 @@
-# example_project — Project Structure
+# {project_name} — Project Structure
 
 Purpose:
-  Detailed description of the example_project codebase structure.
+  Detailed description of the {project_name} codebase structure.
   Used by AI to understand the project architecture, layers,
   and where to implement new features.
 

@@ -43,7 +43,7 @@ Navigation:
   Unit: @unit.sdd
   API: @api.sdd
   Contract: @contract.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
 
 State: +
   

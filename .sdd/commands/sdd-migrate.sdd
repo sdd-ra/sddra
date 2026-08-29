@@ -26,9 +26,9 @@ Options:
   --dry-run           Show what would be migrated without changing files
 
 Migration Location:
-  .sdd/projects/example_project/migrations/
+  .sdd/projects/{project_name}/migrations/
     INDEX.sdd              — Migration registry and state
-    001-project-separation.sdd  — Move project/ state to projects/example_project/
+    001-project-separation.sdd  — Move project/ state to projects/{project_name}/
     002-path-references.sdd     — Update path references after restructuring
     003-schema-updates.sdd      — Schema version updates
     004-prompts-registry.sdd    — Validate prompts/ shared registry
@@ -41,12 +41,12 @@ Migration Location:
 
 Migration Registry:
   {
-    "project": "example_project",
+    "project": "{project_name}",
     "applied": [
       {
         "id": "001-project-separation",
         "applied_at": "2026-08-29T08:00:00Z",
-        "description": "Move concrete project state from project/ to projects/example_project/"
+        "description": "Move concrete project state from project/ to projects/{project_name}/"
       }
     ],
     "pending": [],

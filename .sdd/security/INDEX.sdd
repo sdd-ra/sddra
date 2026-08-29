@@ -68,7 +68,7 @@ Navigation:
   Graph: @graph/graph.sdd
   Skills: @skills/INDEX.sdd
   Chains: @chains/INDEX.sdd
-  Tasks: @projects/example_project/tasks/tasks.sdd
+  Tasks: @projects/{project_name}/tasks/tasks.sdd
   Security: @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd
   SecurityPolicy: @security/SECURITY.sdd
@@ -79,7 +79,7 @@ Navigation:
   SecurityScanners: @security/scanners.sdd
   Verification: @verification/
   State: @state/state.sdd
-  Decisions: @projects/example_project/decisions/decisions.sdd
+  Decisions: @projects/{project_name}/decisions/decisions.sdd
 
 State: +
   Note:

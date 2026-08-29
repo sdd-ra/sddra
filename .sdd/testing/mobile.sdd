@@ -46,7 +46,7 @@ Navigation:
   Unit: @unit.sdd
   E2E: @e2e.sdd
   UI: @ui.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
 
 State: +
   

@@ -356,8 +356,8 @@ Navigation:
   Availability: @availability.sdd
   Networking: @networking.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @projects/example_project/architecture/INDEX.sdd
-  Decisions: @projects/example_project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
+  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
   

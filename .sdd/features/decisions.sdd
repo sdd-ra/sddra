@@ -47,8 +47,8 @@ Rules:
 
 Navigation:
   Layers: @layers.sdd
-  ProjectMap: @../projects/example_project/MAP.md
-  ProjectStructure: @../projects/example_project/STRUCTURE.md
+  ProjectMap: @../projects/{project_name}/MAP.md
+  ProjectStructure: @../projects/{project_name}/STRUCTURE.md
   Decisions: @../decisions/INDEX.sdd
   Tasks: @../tasks/INDEX.sdd
 
