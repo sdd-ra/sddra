@@ -74,7 +74,7 @@ Evidence:
   - Building robust external integration architectures (WJARR 2025)
   - Microservices Architecture and API Management (2025)
   - Enterprise Integration Patterns (Hohpe & Woolf)
-  - Production experience: sweeps-integrations, pultapaz
+  - Production experience: CaptainUp gamification integration, pultapaz
 
 Overview:
   An Integration Module encapsulates all communication with one external

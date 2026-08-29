@@ -138,7 +138,7 @@ BusinessFlows:
   IntegrationExecution:
     purpose: End-to-end flow for executing an external integration call
     applies_to:
-      - sweeps-integrations
+      - captainup-gamification
       - pultapaz
     steps:
       - receive_event: Event/message arrives (WebSocket, RabbitMQ, HTTP webhook, or polling claim)
@@ -162,7 +162,7 @@ BusinessFlows:
   NotificationDispatch:
     purpose: Send outbound notifications through configured channels
     applies_to:
-      - sweeps-integrations
+      - captainup-gamification
       - pultapaz
     steps:
       - resolve_template: Load template config from settings (html_template, fields_to_replace)
@@ -182,7 +182,7 @@ BusinessFlows:
   ScheduledSync:
     purpose: Periodic synchronization of external configuration data
     applies_to:
-      - sweeps-integrations
+      - captainup-gamification
     steps:
       - fetch_config_once: Single API call to retrieve full app configuration
       - execute_handlers_sequentially: Run sync handlers one by one to avoid DB contention
@@ -199,7 +199,7 @@ BusinessFlows:
   WebSocketEventIngestion:
     purpose: Real-time event intake via WebSocket with database persistence
     applies_to:
-      - sweeps-integrations
+      - captainup-gamification
     steps:
       - connect: Establish WebSocket connection with auth (app_id + secret)
       - heartbeat: Send periodic ping, expect pong response

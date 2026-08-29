@@ -1,0 +1,254 @@
+Skill: Player Profile
+
+ID:
+  SKILL-SDD-PLAYER-PROFILE
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+   2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  player profile
+  captainup player
+  player state
+  profile sync
+  player attributes
+  level progression
+  experience points
+  player stats
+  profile cache
+  profile mapping
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Managing player profiles in gamification systems
+  - Syncing player data between internal and external platforms
+  - Tracking player attributes, progression, and statistics
+  - Caching hot player data for performance
+  - Handling identity mapping and profile versioning
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  gamification-engineer
+  integration-engineer
+
+Requires:
+  sdd-integration-module
+  sdd-event-processor
+  sdd-field-mapping
+  sdd-gamification-rules
+
+Avoid:
+  direct-db-writes-to-external
+  sync-without-backoff
+  cache-without-invalidation
+  exposing-internal-ids
+  blocking-profile-sync
+  missing-versioning
+
+HumanDoc:
+  docs/skills/sdd/player-profile.md
+
+Evidence:
+  - Player Profile Management in Gamification (Gartner 2025)
+  - Identity Resolution Patterns (Microsoft Learn 2024)
+  - CQRS and Event Sourcing for Player State (DDD Europe 2024)
+  - Caching Strategies for User Profiles (High Scalability 2025)
+  - CaptainUp player API documentation
+
+Overview:
+  The Player Profile pattern manages player identity, attributes, and
+  state across internal and external gamification platforms. It provides
+  async profile synchronization, immutable identity mapping, attribute
+  caching, and versioned profile history. The profile is the source of
+  truth for user attributes that gamification rules depend on (level,
+  country, registration_date, etc.).
+
+Rules:
+
+  [PP1] Player identity MUST use immutable external ID (auid) as primary key.
+
+  [PP2] Internal user ID MUST be mapped to external ID bidirectionally with TTL.
+
+  [PP3] Profile sync MUST be async with exponential backoff and circuit breaker.
+
+  [PP4] Player attributes MUST be cached with explicit invalidation on update.
+
+  [PP5] Profile writes to external systems MUST be idempotent (auid-based dedup).
+
+  [PP6] Profile history MUST be immutable and append-only.
+
+  [PP7] Sensitive player attributes MUST be classified and redacted in logs.
+
+  [PP8] Profile sync MUST NOT block the main user flow.
+
+  [PP9] Version conflicts MUST be resolved by last-write-wins with audit trail.
+
+  [PP10] Deleted players MUST be anonymized, not hard-deleted, for audit.
+
+Architecture:
+
+  PlayerProfile:
+    owns:
+      - Identity mapping (internal_id <-> auid)
+      - Attribute storage and versioning
+      - Async sync with external platform
+      - Cache management
+      - Profile history and audit
+
+    api:
+      - getProfile(userId) -> PlayerProfile
+      - getExternalId(userId) -> auid
+      - getInternalId(auid) -> userId
+      - syncProfile(userId) -> void
+      - updateAttributes(userId, attributes) -> void
+      - getHistory(userId) -> [ProfileSnapshot]
+
+    deps:
+      - integration-module (external API calls)
+      - cache (Redis for hot profiles)
+      - db (PostgreSQL for durable storage)
+      - event-processor (sync events)
+
+ProfileStructure:
+  PlayerProfile:
+    user_id: string (internal)
+    auid: string (external, immutable)
+    attributes:
+      username: string
+      email: string (redacted in logs)
+      country: string (ISO3166)
+      registration_date: ISO8601
+      level: number
+      experience_points: number
+      avatar_url: string
+      custom_attributes: object
+    metadata:
+      source: string (internal | captainup | synced)
+      last_synced_at: ISO8601
+      version: number (optimistic locking)
+      created_at: ISO8601
+      updated_at: ISO8601
+
+IdentityMapping:
+  mapping:
+    user_id: string (internal PK)
+    auid: string (external ID)
+    provider: string (captainup | internal | other)
+    status: active | merged | deprecated
+    created_at: ISO8601
+    last_used_at: ISO8601
+
+  operations:
+    - resolve(userId) -> auid (cache-first, then DB)
+    - resolve(auid) -> userId (reverse lookup)
+    - merge(oldUserId, newUserId) -> void (migration support)
+    - deprecate(userId) -> void (soft delete)
+
+SyncWorkflow:
+  push:
+    1. Detect attribute change (event or explicit update)
+    2. Queue sync job with backoff
+    3. Execute external API call via integration module
+    4. Handle conflicts: external newer -> merge, internal newer -> overwrite with audit
+    5. Update cache and local DB
+    6. Emit profile_synced event
+
+  pull:
+    1. Scheduled sync (configurable interval: 1h-24h)
+    2. Fetch changed profiles from external API (delta sync)
+    3. Apply changes to local DB with version check
+    4. Invalidate affected cache entries
+    5. Emit profile_updated events for downstream processing
+
+Caching:
+  hot_profile:
+    key: player:profile:{userId}
+    ttl: 5m (standard), 1h (stable profiles)
+    invalidation: on attribute update, sync completion
+  hot_external_id:
+    key: player:auid:{userId}
+    ttl: 24h
+    invalidation: on identity mapping change
+  attributes_lookup:
+    key: player:attrs:{userId}:{attr_name}
+    ttl: 5m
+    use_case: rule engine attribute checks
+
+AttributeVersioning:
+  snapshot:
+    - captured on every attribute change
+    - stored in player_profile_history table
+    - includes full attribute set, not just delta
+  history_query:
+    - getHistory(userId, from, to) -> [snapshot]
+    - used for audit, rollback, analytics
+
+SyncErrors:
+  transient:
+    - network timeout
+    - 502/503/429
+    action: retry with backoff (max 5 attempts)
+  permanent:
+    - 400 (invalid data)
+    - 401 (auth failure)
+    - 404 (player not found)
+    action: mark sync failed, alert, queue manual review
+  conflict:
+    - version mismatch
+    action: last-write-wins with audit, or merge strategy
+
+Performance:
+  getProfile_p99: < 10ms (cached), < 100ms (uncached)
+  syncProfile_p99: < 500ms (external API latency)
+  cache_hit_rate: > 98%
+  sync_volume: configurable batch size (10-100 per request)
+
+Best Practices:
+
+  - Use immutable auid as external reference; never change once assigned
+  - Implement circuit breaker for external profile API calls
+  - Cache hot profiles with short TTL; invalidate on update
+  - Log all profile changes with actor and reason
+  - Support profile export and GDPR deletion requests
+  - Use optimistic locking (version field) for concurrent updates
+  - Batch sync operations during low-traffic windows
+  - Monitor sync lag and failure rates
+  - Separate PII (email, phone) from gameplay attributes for compliance
+
+Anti-Patterns:
+
+  - Synchronous profile sync in user-facing paths
+  - Hardcoded external API endpoints or auth
+  - Cache without invalidation strategy
+  - Using mutable internal ID as external reference
+  - Direct DB writes to external platform tables
+  - Deleting player profiles (must anonymize)
+  - Exposing internal IDs to external systems
+  - Blocking main flow on external API failures
+
+State: +

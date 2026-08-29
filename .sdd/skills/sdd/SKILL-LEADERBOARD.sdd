@@ -1,0 +1,266 @@
+Skill: Leaderboard
+
+ID:
+  SKILL-SDD-LEADERBOARD
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+   2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  leaderboard
+  ranking
+  sorted set
+  real-time ranking
+  leaderboard cache
+  leaderboard scope
+  tie-breaking
+  leaderboard snapshot
+  seasonal leaderboard
+  pagination
+  top-n
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Implementing ranked player lists with multiple scopes
+  - Building real-time and batch leaderboard systems
+  - Supporting seasonal and historical leaderboard views
+  - Optimizing leaderboard queries for high concurrency
+  - Handling tie-breaking and pagination
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  gamification-engineer
+
+Requires:
+  sdd-gamification-rules
+  sdd-event-processor
+  sdd-cqrs
+
+Avoid:
+  full-scan-leaderboards
+  realtime-only-at-scale
+  no-cache-strategy
+  missing-tie-breaker
+  single-scope-only
+  blocking-queries
+
+HumanDoc:
+  docs/skills/sdd/leaderboard.md
+
+Evidence:
+  - Real-Time Leaderboards at Scale (Netflix Tech Blog 2024)
+  - Redis Sorted Sets for Ranking (Redis Labs 2025)
+  - Leaderboard Design Patterns (InfoQ 2024)
+  - Scalable Ranking Systems (ACM 2025)
+  - CaptainUp leaderboard architecture
+
+Overview:
+  The Leaderboard pattern provides ranked player lists with multiple
+  scopes (global, friends, regional, time-window) and supports both
+  real-time top-N queries and full pagination. It separates the write
+  model (immutable point events) from the read model (materialized
+  leaderboard views) and uses caching strategically to handle high
+  read traffic without overwhelming the datastore.
+
+Rules:
+
+  [LB1] Leaderboard read and write models MUST be separated (CQRS).
+
+  [LB2] Real-time leaderboards MUST use sorted-set datastores (Redis ZSET)
+        or equivalent.
+
+  [LB3] Full leaderboards MUST be batch-recalculated asynchronously, not
+        computed on-demand.
+
+  [LB4] Tie-breaking MUST be deterministic and explicit (secondary sort key).
+
+  [LB5] Leaderboard scopes MUST be configurable: global, friends, regional,
+        time-window, custom.
+
+  [LB6] Top-N queries MUST be cached with short TTL (30s-5m).
+
+  [LB7] Deep pagination MUST use seek-based approach, not OFFSET.
+
+  [LB8] Historical/seasonal leaderboards MUST be snapshotted, not recomputed.
+
+  [LB9] Leaderboard updates MUST be idempotent and handle out-of-order events.
+
+  [LB10] User rank queries MUST be O(log N) or better.
+
+Architecture:
+
+  LeaderboardSystem:
+    owns:
+      - Write model: point event ingestion
+      - Read model: materialized leaderboard views
+      - Cache layer: hot leaderboard slices
+      - Snapshot service: seasonal/historical views
+      - Pagination service: seek-based deep navigation
+
+    api:
+      - getTopN(scope, n, offset) -> {entries, total, has_more}
+      - getUserRank(userId, scope) -> {rank, score, total}
+      - getAroundUser(userId, scope, window) -> {entries}
+      - snapshot(scope, label) -> snapshot_id
+      - rebuild(scope) -> void
+
+    deps:
+      - event-store (immutable point events)
+      - cache (Redis sorted sets)
+      - db (materialized views, snapshots)
+      - rule-engine (point validation)
+
+Scopes:
+  global:
+    description: All users ranked by total points
+    dimensions:
+      - all_time (default)
+      - season_{id}
+      - year_{yyyy}
+    cache_ttl: 5m (top 1000), 1h (ranks beyond 1000)
+  friends:
+    description: User's friends ranked by points
+    dimensions:
+      - all_time
+      - season_{id}
+    cache_ttl: 2m (per user)
+    invalidation: on friend add/remove
+  regional:
+    description: Users in same region/country ranked
+    dimensions:
+      - all_time
+      - season_{id}
+    cache_ttl: 5m
+  time_window:
+    description: Points earned within time window
+    dimensions:
+      - daily (today, yesterday)
+      - weekly (this week, last week)
+      - monthly (this month, last month)
+    cache_ttl: 1m
+  custom:
+    description: Arbitrary filter combination
+    dimensions:
+      - segment_{id}
+      - level_{range}
+      - achievement_{id}
+    cache_ttl: configurable
+
+TieBreaking:
+  primary: score (descending)
+  secondary: first_achieved_at (ascending — earlier unlock wins)
+  tertiary: auid (ascending — deterministic, no bias)
+
+WriteModel:
+  PointEvent:
+    event_id: string
+    user_id: string
+    score_delta: number
+    reason: string
+    scope: string
+    timestamp: ISO8601
+    metadata: object
+
+  Ingestion:
+    1. Validate event (idempotency check by event_id)
+    2. Append to event store (immutable)
+    3. Update sorted set: ZADD leaderboard:{scope} {timestamp} {user_id}
+    4. Emit point_awarded event for async processing
+    5. Invalidate affected cache slices
+
+ReadModel:
+  MaterializedView:
+    - scope, user_id, score, rank, first_achieved_at, updated_at
+    - rebuilt from event stream via async projection
+    - supports multiple indexes per scope
+
+  CacheStrategy:
+    hot: top 1000 per scope (Redis ZSET, TTL 30s-5m)
+    warm: rank ranges per scope (Redis Hash, TTL 1h)
+    cold: full leaderboard in DB (materialized view, refreshed hourly)
+
+Pagination:
+  seek-based:
+    - use last_seen_score and last_seen_user_id as cursor
+    - query: ZRANGEBYSCORE leaderboard:global -inf {last_score} LIMIT {offset} {limit}
+    - avoid OFFSET on large sorted sets (O(N) penalty)
+  pages:
+    - page_size: 20 (default), max 100
+    - total_count: ZCARD leaderboard:{scope}
+    - has_more: true if more entries exist after current page
+
+Snapshots:
+  seasonal:
+    - triggered at season end
+    - copies current sorted set to snapshot key
+    - label: season_{id}_{yyyy-mm-dd}
+    - immutable after creation
+  historical:
+    - weekly snapshots for trend analysis
+    - compressed storage for old seasons
+
+RealTimeUpdates:
+  WebSocket:
+    - subscribe to leaderboard:{scope}:updates
+    - receive delta updates (rank change, score change)
+    - batch updates: max 1 message per second per client
+  Polling:
+    - fallback when WebSocket unavailable
+    - poll interval: 5s (top 100), 30s (full page)
+    - ETag-based conditional requests
+
+Performance:
+  getTopN_p99: < 20ms (cached), < 200ms (uncached)
+  getUserRank_p99: < 10ms
+  rebuild_large_leaderboard: < 5min for 1M users
+  concurrent_reads: 10k+ RPS per scope
+  cache_hit_rate: > 95% for top-N queries
+
+Best Practices:
+
+  - Use Redis sorted sets for hot leaderboards; fall back to DB for cold
+  - Invalidate cache on point events, not on schedule
+  - Rebuild stale leaderboards during low-traffic windows
+  - Implement circuit breaker for cache failures
+  - Monitor leaderboard freshness (max acceptable lag: 30s for real-time)
+  - Use connection pooling for high-concurrency read workloads
+  - Shard leaderboards by scope when single sorted set exceeds 10M entries
+  - Support user opt-out from public leaderboards (privacy)
+
+Anti-Patterns:
+
+  - Full table scan for top-N queries
+  - Synchronous leaderboard rebuild on every point event
+  - OFFSET-based deep pagination
+  - Single global leaderboard without scoping
+  - No tie-breaking (random or unstable ordering)
+  - Caching without invalidation strategy
+  - Recomputing leaderboard from raw events on every request
+  - Ignoring timezone in time-window scopes
+
+State: +

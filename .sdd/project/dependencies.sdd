@@ -20,15 +20,16 @@ RelationTypes:
 
 DependencyGraph:
 
-  sweeps-integrations:
+  captainup-gamification:
     depends_on:
       - supabase (database + RPC)
-      - captainup (external API)
+      - captainup (external gamification API)
       - mailgun (email provider)
       - slack (webhook provider)
-    does_not_depend_on:
-      - pultapaz
-      - rovio-matchmaking
+      - redis (cache, sorted sets, rate limits)
+  does_not_depend_on:
+    - pultapaz
+    - rovio-matchmaking
 
   pultapaz:
     depends_on:
@@ -37,7 +38,7 @@ DependencyGraph:
       - rabbitmq (async messaging)
       - guzzle (HTTP client for bank/MFO APIs)
     does_not_depend_on:
-      - sweeps-integrations
+      - captainup-gamification
       - rovio-matchmaking
 
   rovio-matchmaking:
@@ -46,14 +47,56 @@ DependencyGraph:
       - redis (queues, tickets, sessions, locks)
       - efcore (ORM)
     does_not_depend_on:
-      - sweeps-integrations
+      - captainup-gamification
       - pultapaz
 
 CrossModuleContracts:
 
+  gamification-field-mapping:
+    purpose: Field mapping between internal gamification events and CaptainUp API
+    owned_by: captainup-gamification (GamificationEventMapper) + integration (IntegrationField model)
+    contract:
+      - internal_event_type -> external_event_type mapping
+      - field_path for nested payloads
+      - transformation_rules for data normalization
+      - static_field support for fixed API parameters
+
+  gamification-audit-log:
+    purpose: Audit trail for all gamification actions (points, badges, rank changes)
+    owned_by: captainup-gamification (GamificationAuditLog) + pultapaz (IntegrationLog model)
+    contract:
+      - correlation_id (links to point event, badge event)
+      - user_id / auid
+      - action_type (POINT_AWARD, BADGE_UNLOCK, RANK_CHANGE)
+      - request_data / response_data
+      - execution_time_ms
+      - is_successful flag
+      - rollback_reference (if applicable)
+
+  gamification-event-pattern:
+    purpose: Common event processing pattern for gamification actions
+    owned_by: captainup-gamification (GamificationEventProcessor) + pultapaz (RabbitMQ consumers)
+    contract:
+      - event claiming (idempotent lock by event_id)
+      - handler dispatch (action_type -> processor)
+      - rule evaluation (gamification rules engine)
+      - batch completion
+      - retry with count tracking
+      - dead-letter queue for failed events
+
+  player-identity-mapping:
+    purpose: Bidirectional mapping between internal user ID and CaptainUp auid
+    owned_by: captainup-gamification (PlayerIdentityService) + user (User domain)
+    contract:
+      - internal_user_id <-> auid mapping
+      - provider identifier (captainup)
+      - status (active, merged, deprecated)
+      - TTL-based cache invalidation
+      - merge support for user migration
+
   shared-field-mapping:
     purpose: Common field mapping engine used by Integration domain
-    owned_by: sweeps-integrations (EncryptionService) + pultapaz (IntegrationField model)
+    owned_by: captainup-gamification (EventMapper) + pultapaz (IntegrationField model)
     contract:
       - internal_field -> external_field mapping
       - field_path (dot notation for nested objects)
@@ -62,7 +105,7 @@ CrossModuleContracts:
 
   shared-http-client:
     purpose: HTTP client abstraction for external API calls
-    owned_by: sweeps-integrations (BaseHttpService) + pultapaz (Guzzle client)
+    owned_by: captainup-gamification (BaseHttpService) + pultapaz (Guzzle client)
     contract:
       - content-type handling (json, form-data, form-urlencoded)
       - auth header injection
@@ -71,7 +114,7 @@ CrossModuleContracts:
 
   shared-audit-log:
     purpose: Integration request/response audit trail
-    owned_by: pultapaz (IntegrationLog model) + sweeps-integrations (api_response field)
+    owned_by: captainup-gamification (IntegrationLog) + pultapaz (IntegrationLog model)
     contract:
       - request_id (correlation ID)
       - integration_id / target_service
@@ -79,15 +122,6 @@ CrossModuleContracts:
       - response_body / api_response
       - execution_time_ms
       - is_successful flag
-
-  shared-event-pattern:
-    purpose: Common event processing pattern (claim -> handle -> complete)
-    owned_by: sweeps-integrations (pollAndProcessLogs) + pultapaz (RabbitMQ consumers)
-    contract:
-      - event claiming (idempotent lock)
-      - handler dispatch (service + event_type)
-      - batch completion
-      - retry with count tracking
 
 Rules:
   [DEP1] Dependencies MUST have an explicit owner.
