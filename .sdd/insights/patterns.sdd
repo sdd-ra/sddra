@@ -1,0 +1,12 @@
+@insights/patterns
+
+purpose:
+  Repeated patterns detected across tasks and modules.
+
+format:
+  - pattern: <observed pattern>
+  - occurrences: [task/module list]
+  - existing_knowledge: <reference if exists>
+  - candidate: <proposed reference if new>
+
+State: +

@@ -1,0 +1,17 @@
+Lessons: Knowledge
+
+Purpose:
+  Lessons learned from tasks. Validated knowledge extracted from
+  project experience.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+
+Navigation:
+  Lessons: @knowledge/lessons/INDEX.sdd
+  Knowledge: @knowledge/INDEX.sdd
+  Candidates: @knowledge/candidates/INDEX.sdd
+
+State: +

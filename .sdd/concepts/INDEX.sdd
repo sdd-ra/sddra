@@ -1,0 +1,18 @@
+Concepts: SDD
+
+Purpose:
+  Concept registry. Maps concepts to references, skills, projects,
+  and decisions. This is the central lookup for "what does this mean
+  in our system?"
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+
+Navigation:
+  Concepts: @concepts/INDEX.sdd
+  References: @references/INDEX.sdd
+  Constitution: @constitution.sdd
+
+State: +

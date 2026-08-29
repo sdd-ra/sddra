@@ -1,0 +1,27 @@
+References: Architecture
+
+Purpose:
+  Architecture style references. Layered, modular monolith,
+  microservices, event-driven, hexagonal, clean architecture.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @layered.sdd
+   3  @modular-monolith.sdd
+   4  @microservices.sdd
+   5  @event-driven.sdd
+   6  @hexagonal.sdd
+   7  @clean.sdd
+
+Navigation:
+  Architecture: @references/architecture/INDEX.sdd
+  Layered: @references/architecture/layered.sdd
+  ModularMonolith: @references/architecture/modular-monolith.sdd
+  Microservices: @references/architecture/microservices.sdd
+  EventDriven: @references/architecture/event-driven.sdd
+  Hexagonal: @references/architecture/hexagonal.sdd
+  Clean: @references/architecture/clean.sdd
+
+State: +

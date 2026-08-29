@@ -1,0 +1,19 @@
+Insights: SDD
+
+Purpose:
+  AI-discovered insights about the codebase and system.
+  These are observations, not yet formalized references.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+
+Navigation:
+  Insights: @insights/INDEX.sdd
+  Gaps: @insights/gaps.sdd
+  Patterns: @insights/patterns.sdd
+  Smells: @insights/smells.sdd
+  Knowledge: @knowledge/INDEX.sdd
+
+State: +

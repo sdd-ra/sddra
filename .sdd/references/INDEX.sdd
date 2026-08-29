@@ -1,0 +1,32 @@
+References: SDD
+
+Purpose:
+  Reusable knowledge references. These are concepts, patterns, and
+  practices that AI should reference instead of relearning.
+  References are organized by domain and use @reference system.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @ddd/INDEX.sdd
+   3  @architecture/INDEX.sdd
+   4  @patterns/INDEX.sdd
+   5  @database/INDEX.sdd
+   6  @engineering/INDEX.sdd
+   7  @best-practices/INDEX.sdd
+
+Navigation:
+  References: @references/INDEX.sdd
+  DDD: @references/ddd/INDEX.sdd
+  Architecture: @references/architecture/INDEX.sdd
+  Patterns: @references/patterns/INDEX.sdd
+  Database: @references/database/INDEX.sdd
+  Engineering: @references/engineering/INDEX.sdd
+  BestPractices: @references/best-practices/INDEX.sdd
+  Constitution: @constitution.sdd
+  Concepts: @concepts/INDEX.sdd
+  Knowledge: @knowledge/INDEX.sdd
+  Insights: @insights/INDEX.sdd
+
+State: +
