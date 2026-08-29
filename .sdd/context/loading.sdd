@@ -1,20 +1,15 @@
 ﻿Loading: Context
 
 Purpose:
-  Defines progressive context loading, "enough context" criterion,
+  Define progressive context loading, "enough context" criterion,
   and context expansion rules.
 
 ProgressiveLoading:
-  P0:
-    Always loaded
-  P1:
-    Loaded if P0 insufficient
-  P2:
-    Loaded if P1 insufficient
-  P3:
-    Loaded if P2 insufficient and budget allows
-  P4:
-    Loaded only on explicit request
+  P0: Always loaded
+  P1: Loaded if P0 insufficient
+  P2: Loaded if P1 insufficient
+  P3: Loaded if P2 insufficient and budget allows
+  P4: Loaded only on explicit request
 
 EnoughContextCriterion:
   AI MUST assess:
@@ -24,50 +19,15 @@ EnoughContextCriterion:
     - Source code accessible?
     - Tests accessible?
 
-  If all YES:
-    CONTEXT_SUFFICIENT
-  Else:
-    CONTEXT_INSUFFICIENT → expand
+  If all YES: CONTEXT_SUFFICIENT
+  Else: CONTEXT_INSUFFICIENT → expand
 
 ContextExpansion:
-  P0
-    ↓
-  Enough?
-    ├── YES → Execute
-    └── NO
-         ↓
-        P1
-         ↓
-       Enough?
-         ├── YES
-         └── NO
-              ↓
-             P2
-              ↓
-            Enough?
-              ├── YES
-              └── NO → EXPAND_CONTEXT or ABORT
+  P0 → P1 → P2 → P3 → P4
+  Stop when criterion met or budget exhausted.
 
 TokenAwareLoading:
-  Small skill (< 200 lines):
-    Load full
-  Large skill (> 200 lines):
-    Load INDEX first
-    Then load relevant sections
-
-SectionLevelRetrieval:
-  Skill: PostgreSQL
-  Sections:
-    - installation
-    - schema
-    - transactions
-    - indexing
-    - replication
-    - partitioning
-    - backup
-
-  Task: Add index
-    Load: indexing, query-planning
+  Small skill (< 200 lines): Load full
+  Large skill (> 200 lines): Load INDEX first, then relevant sections
 
 State: +
-  

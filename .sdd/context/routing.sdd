@@ -1,70 +1,35 @@
 ﻿Routing: Context
 
 Purpose:
-  Defines how user input is routed to the correct context. Intent
-  detection, project detection, domain detection, task detection,
-  and workflow stage detection determine what context is loaded.
+  Define how user input is routed to the correct context. Intent,
+  project, domain, and task detection determine what is loaded.
 
 IntentDetection:
-  FIX:
-    → task context
-  REVIEW:
-    → diff + standards + security context
-  SECURITY:
-    → threat model + security skills context
-  INCIDENT:
-    → alert + metrics + logs + trace context
-  DEPLOY:
-    → infrastructure + CI/CD + rollback context
-  ANALYZE:
-    → project summary + architecture + stack context
-  PLAN:
-    → requirements + architecture + tasks context
+  FIX: → task context
+  REVIEW: → diff + standards + security context
+  SECURITY: → threat model + security skills context
+  INCIDENT: → alert + metrics + logs + trace context
+  DEPLOY: → infrastructure + CI/CD + rollback context
+  ANALYZE: → project summary + architecture + stack context
+  PLAN: → requirements + architecture + tasks context
 
 ContextRadius:
-  R0:
-    task itself
-  R1:
-    direct dependencies
-  R2:
-    domain
-  R3:
-    architecture
-  R4:
-    entire project
+  R0: task itself
+  R1: direct dependencies
+  R2: domain
+  R3: architecture
+  R4: entire project
 
-Default:
-  R0 + R1
+Default: R0 + R1
 
 Expansion:
-  If context insufficient:
-    R0 → R1 → R2 → R3 → R4
+  If context insufficient: R0 → R1 → R2 → R3 → R4
 
 AudienceRouting:
-  Developer:
-    source, skills, architecture, tests
-  QA:
-    requirements, BDD, test strategy, contracts, source
-  Support:
-    business, runbooks, incidents, troubleshooting
-  Manager:
-    business, status, risks, decisions, progress
-  Security:
-    threat model, security skills, attack surface, code, logs
-
-ContextRadiusByLevel:
-  L0:
-    R0
-  L1:
-    R0 + R1
-  L2:
-    R0 + R1 + R2
-  L3:
-    R0 + R1 + R2 + R3
-  L4:
-    R0 + R1 + R2 + R3 + R4 (selective)
-  L5:
-    R0 + R1 + R2 + R3 + R4 (comprehensive)
+  Developer: source, skills, architecture, tests
+  QA: requirements, BDD, test strategy, contracts
+  Support: business, runbooks, incidents, troubleshooting
+  Manager: business, status, risks, decisions, progress
+  Security: threat model, security skills, attack surface
 
 State: +
-  
