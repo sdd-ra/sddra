@@ -10,10 +10,10 @@ Owns: ./
 ReadOrder:
     1  @protocol/ROOT.sdd
     2  @project/project.sdd
-    3  @graph/graph.sdd
-    4  @templates/INDEX.sdd (project structure templates)
-    5  @project/graph/ (domain-level graphs, when present)
-   5  @skills/INDEX.sdd
+    3  @graph/INDEX.sdd
+    4  @graph/model.sdd
+    5  @templates/INDEX.sdd (project structure templates)
+    6  @skills/INDEX.sdd
    6  @skills/languages/INDEX.sdd
    7  @skills/languages/go/
    8  @skills/languages/rust/
@@ -186,8 +186,8 @@ Navigation:
   ProjectArchitectureData: @projects/{project_name}/architecture/data.sdd
   ProjectArchitectureInfrastructure: @projects/{project_name}/architecture/infrastructure.sdd
   ProjectArchitectureDiagrams: @projects/{project_name}/architecture/diagrams/
-  Graph:      @graph/graph.sdd
-  DomainGraph: @project/graph/
+  Graph: @graph/INDEX.sdd
+  DomainGraph: @projects/{project_name}/graph/INDEX.sdd
   Skills:     @skills/INDEX.sdd
   SkillCategories: @skills/
   Chains:     @chains/INDEX.sdd
@@ -293,14 +293,7 @@ Navigation:
   DiscoveryConflicts: @discovery/conflicts.sdd
   ProjectMode: @project/mode.sdd
   Graph: @graph/INDEX.sdd
-  GraphNodes: @graph/nodes.sdd
-  GraphRelations: @graph/relations.sdd
-  GraphTraceability: @graph/traceability.sdd
-  GraphImpact: @graph/impact.sdd
-  GraphOwnership: @graph/ownership.sdd
-  GraphDependencies: @graph/dependencies.sdd
-  GraphCoverage: @graph/coverage.sdd
-  GraphDrift: @graph/drift.sdd
+  GraphModel: @graph/model.sdd
   Gates: @gates/INDEX.sdd
   GatesPolicy: @gates/policy.sdd
   GatesLevels: @gates/levels.sdd
