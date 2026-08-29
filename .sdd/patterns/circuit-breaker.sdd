@@ -1,121 +1,69 @@
-# Pattern: Circuit Breaker
+Pattern: Circuit Breaker
 
 Purpose:
   Prevent cascading failures by tracking failure rates and
   opening circuits when thresholds are exceeded. Ensures system
   can fail fast and recover gracefully.
 
-## Circuit States
+States:
+  CLOSED:
+    Normal operation. All requests pass through.
+    Transition: -> OPEN after failure_threshold failures
 
-CLOSED:
-  Normal operation. All requests pass through.
-  Transition: -> OPEN after failure_threshold failures
+  OPEN:
+    Circuit is open. All requests fail immediately.
+    Transition: -> HALF_OPEN after recovery_timeout
 
-OPEN:
-  Circuit is open. All requests fail immediately.
-  Transition: -> HALF_OPEN after recovery_timeout
+  HALF_OPEN:
+    Limited requests allowed to test recovery.
+    Transition: -> CLOSED after success_threshold successes
+    Transition: -> OPEN after failure_threshold failures
 
-HALF_OPEN:
-  Limited requests allowed to test recovery.
-  Transition: -> CLOSED after success_threshold successes
-  Transition: -> OPEN after failure_threshold failures
-
-## Configuration
-
-Defaults:
+Configuration:
   failure_threshold: 3
   recovery_timeout: 60s
   success_threshold: 2
   half_open_max_requests: 5
 
-Per-Stage Configuration:
-  P1:
-    failure_threshold: 5
-    recovery_timeout: 30s
-    success_threshold: 3
+FailureDetection:
+  Types: TIMEOUT, ERROR, VALIDATION, DEPENDENCY, RESOURCE
+  Counting: consecutive failures tracked, reset on success
 
-  D1:
-    failure_threshold: 3
-    recovery_timeout: 60s
-    success_threshold: 2
+CircuitActions:
+  Open:
+    - Log circuit open event
+    - Record failure reason
+    - Notify human if stage is critical
+    - Skip stage if non-critical
+    - Update state: circuit_open
 
-  S1:
-    failure_threshold: 2
-    recovery_timeout: 120s
-    success_threshold: 2
+  HalfOpen:
+    - Allow limited requests
+    - Monitor success/failure
+    - Close if success_threshold met
+    - Re-open if failure_threshold met
 
-  C1:
-    failure_threshold: 5
-    recovery_timeout: 60s
-    success_threshold: 3
+  Close:
+    - Log circuit close event
+    - Reset failure counter
+    - Resume normal operation
 
-  R1:
-    failure_threshold: 2
-    recovery_timeout: 30s
-    success_threshold: 1
+FallbackBehavior:
+  On circuit open: skip stage, use cached result, or notify human
+  On half-open: allow limited test requests
+  On circuit close: resume normal operation
 
-  DEP1:
-    failure_threshold: 1
-    recovery_timeout: 300s
-    success_threshold: 1
+Monitoring:
+  Metrics: circuit_state, failure_count, success_count, last_failure, last_success, recovery_attempts
+  Alerts: circuit open -> notify human, half-open/close -> log
 
-## Failure Detection
-
-Failure Types:
-  TIMEOUT: Stage exceeded time limit
-  ERROR: Stage returned error
-  VALIDATION: Stage output failed validation
-  DEPENDENCY: Required dependency failed
-  RESOURCE: Out of memory, disk full, etc.
-
-Failure Counting:
-  - Consecutive failures tracked per stage
-  - Reset on success
-  - Window: last 10 attempts
-
-## Circuit Actions
-
-When Circuit Opens:
-  1. Log circuit open event
-  2. Record failure reason
-  3. Notify human if stage is critical
-  4. Skip stage if non-critical
-  5. Update state: circuit_open
-
-When Circuit Half-Opens:
-  1. Allow limited requests
-  2. Monitor success/failure
-  3. Close if success_threshold met
-  4. Re-open if failure_threshold met
-
-When Circuit Closes:
-  1. Log circuit close event
-  2. Reset failure counter
-  3. Resume normal operation
-
-## Fallback Behavior
-
-Per-Stage Fallbacks:
-  P1: Return cached prompt analysis or ask human
-  D1: Return cached docs or use template defaults
-  S1: Return cached .sdd/ state or use template
-  C1: Skip code generation, notify human
-  R1: Skip review, notify human
-  DEP1: Halt deployment, notify human
-
-## Monitoring
-
-Metrics:
-  circuit_state: CLOSED|OPEN|HALF_OPEN
-  failure_count: integer
-  success_count: integer
-  last_failure: timestamp
-  last_success: timestamp
-  recovery_attempts: integer
-
-Alerts:
-  Circuit opens: notify human
-  Circuit half-opens: log
-  Circuit closes: log
+Rules:
+  [CB1] Circuit MUST open after failure_threshold consecutive failures.
+  [CB2] Circuit MUST transition to HALF_OPEN after recovery_timeout.
+  [CB3] Circuit MUST close after success_threshold successes in HALF_OPEN.
+  [CB4] Circuit MUST re-open if failure_threshold failures in HALF_OPEN.
+  [CB5] Circuit state MUST be persisted for crash recovery.
+  [CB6] Fallback MUST be defined for every protected stage.
+  [CB7] Circuit breaker MUST NOT block critical human-initiated actions.
 
 State: +
