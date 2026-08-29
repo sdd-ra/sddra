@@ -1,29 +1,21 @@
-﻿Conflicts: Discovery
+﻿Drift: Discovery
 
 Purpose:
-  Defines conflict detection and resolution rules.
+  Define drift detection, conflict resolution, and source-to-.sdd
+  mapping rules.
 
 DriftTypes:
-  STACK_DRIFT:
-    .sdd stack differs from source stack
-  ARCHITECTURE_DRIFT:
-    .sdd architecture differs from source architecture
-  TASK_DRIFT:
-    .sdd task status differs from source state
-  DOC_DRIFT:
-    .sdd documentation differs from source
-  SECURITY_DRIFT:
-    .sdd security controls differ from source
-  TEST_DRIFT:
-    .sdd test claims differ from source tests
-  INFRA_DRIFT:
-    .sdd infrastructure differs from source
-  DECISION_DRIFT:
-    .sdd decisions differ from source implementation
+  STACK_DRIFT: .sdd stack differs from source
+  ARCHITECTURE_DRIFT: .sdd architecture differs from source
+  TASK_DRIFT: .sdd task status differs from source state
+  DOC_DRIFT: .sdd documentation differs from source
+  SECURITY_DRIFT: .sdd security controls differ from source
+  TEST_DRIFT: .sdd test claims differ from source tests
+  INFRA_DRIFT: .sdd infrastructure differs from source
+  DECISION_DRIFT: .sdd decisions differ from source implementation
 
 ConflictResolution:
-  Principle:
-    Analyze ≠ Modify
+  Principle: Analyze ≠ Modify
 
   Process:
     DETECT
@@ -36,29 +28,40 @@ ConflictResolution:
 
 ConflictReporting:
   Format:
-    Conflict:
-      STACK_DRIFT
+    Conflict: <DRIFT_TYPE>
+    .sdd: <what .sdd claims>
+    Source: <what source shows>
+    Evidence: <list of indicators>
+    Recommendation: <suggested resolution>
 
-    .sdd:
-      Cache: Redis
+Mapping:
+  Source: ./<layer>/<domain>/<module>/<artifact>
+  → Task: .sdd/projects/{project_name}/tasks/<TASK-ID>.sdd
+  → Domain: <domain-name>
+  → Component: <ComponentName>
+  → Skill: <skill-name>
+  → Test: <test-path>
+  → Doc: docs/<layer>/<domain>.md
 
-    Source:
-      Redis + Memcached
+DriftExamples:
+  STACK_DRIFT: .sdd says Redis, source has Redis + Memcached
+  ARCHITECTURE_DRIFT: .sdd says Modular Monolith, source shows microservices
+  TASK_DRIFT: Task marked DONE but source shows incomplete
+  DOC_DRIFT: Doc says PostgreSQL sessions, source uses Redis
+  SECURITY_DRIFT: .sdd has rate limiting, source does not
+  TEST_DRIFT: .sdd claims E2E tests, none found
+  INFRA_DRIFT: .sdd says AWS, source uses VPS
+  DECISION_DRIFT: DEC-017 says Redis, source uses Memcached
 
-    Evidence:
-      - redis.conf
-      - memcached.conf
-      - Both clients in go.mod
-
-    Recommendation:
-      Update .sdd or remove Memcached
-
-ConflictRules:
-  [CO1]  Discovery MUST detect all drift types.
-  [CO2]  Discovery MUST report conflicts, not fix them.
-  [CO3]  Discovery MUST provide evidence for each conflict.
-  [CO4]  Discovery MUST recommend resolution, not enforce it.
-  [CO5]  .sdd MUST NOT be modified without explicit decision.
+Rules:
+  [CO1] Discovery MUST detect all drift types.
+  [CO2] Discovery MUST report conflicts, not fix them.
+  [CO3] Discovery MUST provide evidence for each conflict.
+  [CO4] Discovery MUST recommend resolution, not enforce it.
+  [CO5] .sdd MUST NOT be modified without explicit decision.
+  [MP1] Every source file SHOULD map to a task or component.
+  [MP2] Every domain SHOULD have documentation.
+  [MP3] Every security control SHOULD be documented.
+  [MP4] Drift MUST be reported, not silently ignored.
 
 State: +
-  

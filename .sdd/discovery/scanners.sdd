@@ -4,104 +4,42 @@ Purpose:
   Defines repository scanners that observe source code structure.
 
 Scanners:
-  StructureScanner:
-    Scans:
-      - Directory layout
-      - File organization
-      - Module boundaries
-    Output:
-      - Structure map
-      - Module list
+  Structure:
+    Scans: Directory layout, file organization, module boundaries
+    Output: Structure map, Module list
 
-  StackScanner:
-    Scans:
-      - go.mod, package.json, requirements.txt, composer.json
-      - Dockerfile, docker-compose
-      - CI/CD configs
-    Output:
-      - Language
-      - Framework
-      - Runtime
-      - Database
-      - Cache
-      - Queue
-      - Testing
-      - CI/CD
-      - Container
-      - Cloud
+  Stack:
+    Scans: Manifest files, Dockerfile, CI/CD configs
+    Output: Language, Framework, Runtime, Database, Cache, Queue
 
-  ArchitectureScanner:
-    Scans:
-      - Handler/Controller/Service/Repository patterns
-      - Layer organization
-      - Dependency injection
-    Output:
-      - Architecture pattern
-      - Layer map
-      - Dependency graph
+  Architecture:
+    Scans: Layer patterns, dependency injection, module boundaries
+    Output: Architecture pattern, Layer map, Dependency graph
 
-  DomainScanner:
-    Scans:
-      - internal/ directory structure
-      - Package organization
-      - Import relationships
-    Output:
-      - Domain list
-      - Domain boundaries
-      - Domain dependency graph
+  Domain:
+    Scans: Internal directory structure, package organization, imports
+    Output: Domain list, Domain boundaries, Domain dependency graph
 
-  TestScanner:
-    Scans:
-      - *_test.go, *.test.ts, *.spec.ts
-      - test/ directories
-      - BDD feature files
-      - E2E configs
-    Output:
-      - Test types
-      - Test frameworks
-      - Coverage map
+  Test:
+    Scans: Test files, test directories, BDD features, E2E configs
+    Output: Test types, Test frameworks, Coverage map
 
-  SecurityScanner:
-    Scans:
-      - Auth middleware
-      - RBAC implementations
-      - JWT/OAuth usage
-      - Input validation
-      - Rate limiting
-      - Encryption
-      - Secrets management
-    Output:
-      - Security model
-      - Security gaps
+  Security:
+    Scans: Auth middleware, RBAC, JWT/OAuth, rate limiting, encryption
+    Output: Security model, Security gaps
 
-  InfrastructureScanner:
-    Scans:
-      - Dockerfile, docker-compose
-      - Kubernetes manifests
-      - Terraform, Ansible
-      - Nginx configs
-      - CI/CD pipelines
-      - Environment files
-    Output:
-      - Infrastructure map
-      - Environment list
-      - Cloud provider
+  Infrastructure:
+    Scans: Docker, Kubernetes, Terraform, CI/CD, environment files
+    Output: Infrastructure map, Environment list, Cloud provider
 
-  DocumentationScanner:
-    Scans:
-      - README files
-      - docs/ directories
-      - ADR files
-      - Wiki
-    Output:
-      - Documentation map
-      - Documentation gaps
+  Documentation:
+    Scans: README, docs/, ADR files
+    Output: Documentation map, Documentation gaps
 
-ScannerRules:
-  [SC1]  Scanners MUST be read-only.
-  [SC2]  Scanners MUST classify findings with confidence.
-  [SC3]  Scanners MUST detect conflicts with existing .sdd.
-  [SC4]  Scanners MUST not infer beyond evidence.
+Rules:
+  [SC1] Scanners MUST be read-only.
+  [SC2] Scanners MUST classify findings with confidence.
+  [SC3] Scanners MUST detect conflicts with existing .sdd.
+  [SC4] Scanners MUST not infer beyond evidence.
 
 State: +
-  
