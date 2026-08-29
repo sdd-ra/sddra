@@ -29,7 +29,7 @@ DependencyGraph:
     does_not_depend_on:
       - credit-module
 
-  credit-module:
+  integration-module:
     depends_on:
       - database (primary storage)
       - cache (session, rate limiting)
