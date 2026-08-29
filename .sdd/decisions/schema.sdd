@@ -1,12 +1,12 @@
 ﻿# Decision Schema
+
 Purpose:
-  Decision Schema
+  Decision record schema and template. Every decision MUST follow this structure.
 
-
-Decision:
+Schema:
   id: DEC-<ID>
   type: architectural|technical|security|business|operational|human|ai
-  status: proposed|approved|rejected|superseded|implemented|verified
+  status: proposed|approved|rejected|superseded|implemented|verified|closed
 
   title: <one line>
   context: <why this decision is needed>
@@ -48,8 +48,72 @@ Decision:
   conflicts: <conflicting DEC ids>
   depends_on: <prerequisite DEC ids>
 
-   created_at: <timestamp>
-   updated_at: <timestamp>
+  created_at: <timestamp>
+  updated_at: <timestamp>
+
+Template:
+  Decision: DEC-XXX
+  Type: <type>
+  Status: proposed
+
+  Title: <one line>
+
+  Context:
+    <background, why this decision is needed>
+
+  Problem:
+    <specific problem statement>
+
+  Options:
+    1. <Option A>
+       Pros:
+         - <pro>
+       Cons:
+         - <con>
+       Cost: <estimate>
+
+    2. <Option B>
+       Pros:
+         - <pro>
+       Cons:
+         - <con>
+       Cost: <estimate>
+
+    3. <No change>
+       Pros:
+         - <pro>
+       Cons:
+         - <con>
+       Cost: <estimate>
+
+  Decision:
+    <chosen option>
+
+  Rationale:
+    <why this option over others>
+
+  Impact:
+    Files: [list]
+    Modules: [list]
+    Risks: [R0-R5 list]
+
+  Owner: <human or agent>
+  Reviewers: [list]
+
+  Implementation:
+    Tasks: [TASK ids]
+    Chain: <chain type>
+    Status: pending
+
+  Verification:
+    Criteria: [list]
+    Status: pending
+
+  Supersedes: null
+  Conflicts: null
+  Depends_On: null
+
+  Created_At: <timestamp>
+  Updated_At: <timestamp>
 
 State: +
-

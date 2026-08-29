@@ -227,7 +227,7 @@ Rules:
 
   [PM5]
   Feature/component declarations MUST reference task and decision rules
-  (bax tasks/tasks.sdd, decisions/decisions.sdd) instead of redefining
+  (bax tasks/tasks.sdd, decisions/workflow.sdd) instead of redefining
   their lifecycle.
 
   [PM6]

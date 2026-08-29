@@ -127,7 +127,7 @@ Rules:
   [DEP4] Cross-module contracts MUST be explicitly declared and versioned.
   [DEP5] A module MUST NOT depend on another module's internal structures.
   [DEP6] Shared kernel contracts MUST be reviewed by all owning modules before change.
-  [DEP7] Dependency changes MUST be recorded in decisions/decisions.sdd.
+  [DEP7] Dependency changes MUST be recorded in decisions/rules.sdd.
 
 Navigation:
   Domains: @../project/domains.sdd

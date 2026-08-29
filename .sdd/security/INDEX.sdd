@@ -79,7 +79,7 @@ Navigation:
   SecurityScanners: @security/scanners.sdd
   Verification: @verification/
   State: @state/state.sdd
-  Decisions: @projects/{project_name}/decisions/decisions.sdd
+  Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
   Note:
