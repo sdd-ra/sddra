@@ -1,9 +1,9 @@
-Index: Project
+# Project
 
 Purpose:
-  Project model registry and routing table. This file defines the SHAPE
-  of how projects are structured — the Project > Domain > Module > Feature
-  > Component hierarchy — and routes to model files.
+  Project model registry and routing table. Defines the SHAPE of how
+  projects are structured — Project > Domain > Module > Feature >
+  Component hierarchy — and routes to model files.
 
   This folder contains MODEL and SCHEMA only — no concrete project data.
   Concrete project instances live under .sdd/projects/<name>/.
@@ -11,42 +11,36 @@ Purpose:
 Owns: ./
 
 ReadOrder:
-   1  project.sdd   (project model entry point)
-   2  INDEX.sdd     (this file — project model map)
-   3  domains.sdd   (domain schema and list)
-   4  modules.sdd   (module schema and list)
-   5  map.sdd       (project navigation map)
-   6  flows.sdd     (execution flow schema)
-   7  dependencies.sdd (dependency schema)
-   8  indexes.sdd   (category-level index schema)
-   9  instantiation.sdd (project instantiation rules)
-   10 mode.sdd      (project mode schema)
-   11 architecture.sdd (architecture schema)
-   12 README.sdd    (project model overview)
+   1  @project.sdd
+   2  @domains.sdd
+   3  @modules.sdd
+   4  @flows.sdd
+   5  @dependencies.sdd
+   6  @instantiation.sdd
+   7  @map.sdd
+   8  @architecture.sdd
 
 Rules:
   [PM1] This folder defines reusable project structure schemas only.
   [PM2] Concrete project instances MUST live under .sdd/projects/<name>/.
-  [PM3] AI MUST NOT place project state (decisions, tasks, docs, etc.)
-        in this folder — use .sdd/projects/<name>/ instead.
-  [PM4] Domain and module schemas defined here are templates; concrete
-        instances belong to the instantiated project.
+  [PM3] AI MUST NOT place project state in this folder.
+  [PM4] Domain and module schemas are templates; concrete instances belong to instantiated project.
+  [PM5] Indexes are routing metadata, not source of truth.
+  [PM6] Indexes MUST reference authoritative SDD files, not duplicate them.
+
+Indexes:
+  module, domain, feature, api, database, dependency, test, deployment
 
 Navigation:
   ProjectModel: @project.sdd
   Domains: @domains.sdd
   Modules: @modules.sdd
-  Map: @map.sdd
   Flows: @flows.sdd
   Dependencies: @dependencies.sdd
-  Indexes: @indexes.sdd
   Instantiation: @instantiation.sdd
-  Mode: @mode.sdd
+  Map: @map.sdd
   Architecture: @architecture.sdd
-  Readme: @README.sdd
   Projects: @../projects/INDEX.sdd
-  ProjectInstances: @../projects/
   Root: @../INDEX.sdd
 
 State: +
-  (converted to model-only registry; concrete instances moved to projects/<name>/)

@@ -1,29 +1,17 @@
 Spec: Project/Architecture
 
 Purpose:
-  Describes how the project's OWN components (layers, modules, stack) are
-   structured and connected — this is the project's technical architecture,
-   NOT the .sdd system's own meta-architecture (see architecture/architecture.sdd
-   — different, separate document, STEP 3), NOT global engineering-architecture
-   principles (modularity, coupling, dependency direction) — those live in
-   architecture/principles.sdd (STEP 13) and concrete layer relationships
-   (Rules/Validation below) are checked against those global rules
-   (see Resolution: architecture/principles.sdd -> Resolution).
+  Schema for project-specific architecture declarations. Concrete layer
+  relationships are generated per project from templates.
 
 Layers:
-  DB
-  BE
-  API
-  FE
-  MD
-  QA
-  DO
+  DB, BE, API, FE, MD, QA, DO
 
 Rules:
   Architecture relationships MUST be explicit.
   Forbidden dependencies MUST be declared.
   Architecture violations MUST be detectable.
-  Architecture changes require human decision (bax PROJECT.sdd -> [R9]/[R11]).
+  Architecture changes require human decision.
 
 Validation:
   implemented_structure MUST conform to declared architecture.
@@ -35,14 +23,14 @@ State:
   ~ = architecture change in progress
 
 ViolationVsDecision:
-  AI MUST NOT silently resolve which of these two cases occurred:
-    A) mistake                 -> state: ! (Architecture Violation)
-    B) deliberate new decision -> state: ? (Architecture Decision Required,
-                                   human approval, see PROJECT.sdd HumanDecision)
-  AI leaves `?` and stops — it does NOT mark `!` saying "not fixing", nor
-  does it silently accept as new normal.
+  AI MUST NOT silently resolve:
+    A) mistake -> state: !
+    B) deliberate new decision -> state: ?
+  AI leaves ? and stops — does NOT mark !, does NOT silently accept.
 
 Note:
-  This document is a SCHEMA — concrete layer relationships (e.g. BE -> DB,
-  FE -> API) are generated per project from templates/_sdd/architecture/.
-  This file does not contain concrete project data.
+  This is a SCHEMA. Concrete layer relationships are generated per
+  project from templates/_sdd/architecture/. This file does not contain
+  concrete project data.
+
+State: +
