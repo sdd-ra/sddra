@@ -1,29 +1,172 @@
 ﻿Spec: Project/Modules
 
 Purpose:
-  Declare each domain module: what it owns, its public surface, and its
-  direct dependencies â€” schema only. Concrete module declarations (e.g.
-  payment, course, user) are added once those domains are rebuilt.
+  Declare each concrete module in the SDDRA ecosystem — what it owns,
+  its public API surface, and its direct dependencies. Modules are the
+  deployable/code-boundary units that implement domains.
 
 Rules:
   A module MUST declare what it owns.
   A module MUST declare its public API surface.
   A module MUST explicitly declare its dependencies (`deps`).
-  A module MUST NOT depend on any module not listed in its declared deps
-  (undeclared dependency = architecture violation, bax architecture.sdd).
-  A module MAY declare `files` (owned source paths) and `entry` (its
-   primary entry-point file) once real source exists â€” these are routing
-   pointers only, not a second source of truth (see map.sdd -> CodeReference
-   -> SourceOfTruth: it is the source for project organization, but runtime
-   behavior is still source code itself).
-  A module MAY declare `tests` (owned test paths) using the same
-  routing-only rule.
+  A module MUST NOT depend on any module not listed in its declared deps.
+  A module MAY declare `files` (owned source paths) — routing pointers only.
+  A module MAY declare `tests` (owned test paths) — routing pointers only.
+  A module MAY declare `bounded_contexts` when a domain spans multiple implementations.
 
 Note:
-  This file is a SCHEMA â€” concrete module declarations are generated per
-  project from templates/_sdd/modules/. This file does not contain
-  concrete project data.
+  This file contains CONCRETE module declarations for the SDDRA ecosystem.
+  Each module maps to a real codebase under ./tmp/.
 
+Modules:
+
+  sweeps-integrations:
+    purpose: CaptainUp gamification event processor and notification dispatcher
+    domain: Integration + Notification + EventProcessing + Scheduling
+    path: ./tmp/sweeps-integrations
+    bounded_contexts:
+      - websocket-events (CaptainUp firehose via WebSocket)
+      - polling-fallback (Supabase DB queue fallback)
+    owns:
+      - WebSocket event ingestion and deduplication
+      - Polling-based event claiming and batch processing
+      - ActionHandlerFactory (service + event_type dispatch)
+      - Encryption/Decryption service (base64, xor, aes-256-gcm)
+      - CaptainUp HTTP and WebSocket clients
+      - Scheduled sync jobs (levels, avatars, tournaments, missions)
+      - Mailgun email provider
+      - Slack webhook notification provider
+    api:
+      - getHandler(service, event_type) -> Handler
+      - getService(serviceKey) -> Service
+      - processEvent(eventRow) -> {status, http_response}
+      - sendEmail(payload) -> {success, http_response}
+      - sendSlack(payload) -> {status, http_response}
+      - syncCaptainUp(appConfig) -> void
+    deps:
+      - supabase (database + RPC functions)
+      - captainup (external gamification API)
+      - mailgun (email provider)
+      - slack (notification webhook)
+    files:
+      - src/app.js
+      - src/config.js
+      - src/constants/endpoints.js
+      - src/core/**/*
+      - src/modules/captainup/**/*
+      - src/modules/email/**/*
+      - src/modules/slack/**/*
+    tests:
+      - scripts/tests.sh
+    state: active
+
+  pultapaz:
+    purpose: Bank and MFO credit integration platform with quiz-based routing
+    domain: Integration + User + Notification + Scheduling
+    path: ./tmp/pultapaz
+    bounded_contexts:
+      - integration-execution (HTTP calls to bank/MFO APIs)
+      - pre-check-validation (identity verification before submission)
+      - status-polling (application status tracking)
+      - mail-integration (async email via RabbitMQ)
+      - batch-pre-check (multi-integration batch validation)
+      - condition-evaluation (dynamic routing rules)
+    owns:
+      - IntegrationService (HTTP execution, retry, response mapping)
+      - MailIntegrationService (template rendering, daily limits)
+      - BatchPreCheckService (batch identity validation)
+      - IntegrationConditionService (dynamic routing rules)
+      - RabbitMQ consumers (mail, batch, realtime)
+      - IntegrationField model (request/response mapping, transforms)
+      - IntegrationCondition model (amount, duration, employment rules)
+      - Delayed task commands (add, add_batch, execute)
+      - SMS and Telegram notification providers
+    api:
+      - processIntegration(quizParams, redirectId, alias) -> {results}
+      - executePreCheck(integration, values) -> {passed, message}
+      - checkApplicationStatus(integration, externalId, redirectId) -> {status, code}
+      - processWebhookResponse(integrationName, data) -> {mapped_fields}
+      - evaluateConditions(integrationId, redirect, params) -> {passed}
+      - sendIntegrationMail(integration, quizParams, redirectId) -> {success}
+    deps:
+      - mysql (primary database)
+      - redis (cache, session, queue)
+      - rabbitmq (async message processing)
+      - guzzle (HTTP client for external APIs)
+    files:
+      - backend/**/*
+      - api/**/*
+      - common/**/*
+      - console/**/*
+      - frontend/**/*
+      - src/integration/**/*
+      - src/consumer/**/*
+      - src/event/**/*
+      - src/delayed_task/**/*
+      - src/sms/**/*
+      - src/telegram/**/*
+      - src/salesdoubler/**/*
+    tests:
+      - tests/**/*
+    state: active
+
+  rovio-matchmaking:
+    purpose: Multi-game queue and matchmaking microservice
+    domain: Integration (game infrastructure) + EventProcessing
+    path: ./tmp/Rovio.Matchmaking
+    bounded_contexts:
+      - queue-management (enqueue, cancel, poll)
+      - session-formation (match creation, late join)
+      - game-config (durable config in Postgres, hot projection to Redis)
+    owns:
+      - QueueService (ticket enqueue, cancel, poll)
+      - SessionService (session formation, late join)
+      - GameConfigService (CRUD, Redis projection)
+      - MatchmakingEngine (ticket selection, session formation)
+      - MatchingService (latency + wait-time compatibility)
+      - Redis adapters (ticket store, session store, shard lock, config runtime)
+      - Postgres repository (game match config)
+    api:
+      - enqueue(gameId, playerId, region, latencyMs) -> TicketDto
+      - getTicket(gameId, ticketId) -> TicketDto
+      - cancelTicket(gameId, ticketId) -> void
+      - getSession(sessionId) -> SessionDto
+      - lateJoin(sessionId, playerId, region, latencyMs) -> SessionDto
+      - upsertGameConfig(gameId, config) -> GameMatchConfigDto
+      - getGameConfig(gameId) -> GameMatchConfigDto
+    deps:
+      - postgres (durable game config)
+      - redis (queues, tickets, sessions, locks, projected config)
+      - efcore (ORM for Postgres)
+    files:
+      - src/Rovio.Domain.Common/**/*
+      - src/Rovio.Matchmaking.Domain/**/*
+      - src/Rovio.Matchmaking.Application/**/*
+      - src/Rovio.Matchmaking.Infrastructure/**/*
+      - src/Rovio.Matchmaking.Api/**/*
+      - src/Rovio.Matchmaking.Worker/**/*
+    tests:
+      - tests/Rovio.Domain.Common.Tests.Unit/**/*
+      - tests/Rovio.Matchmaking.Domain.Tests.Unit/**/*
+      - tests/Rovio.Matchmaking.Application.Tests.Unit/**/*
+      - tests/Rovio.Matchmaking.Infrastructure.Tests.Integration/**/*
+      - tests/Rovio.Matchmaking.Api.Tests.Integration/**/*
+    state: active
+
+Rules:
+  [M1] A module MUST declare all direct dependencies.
+  [M2] A module MUST NOT depend on another module's internal structures.
+  [M3] A module's public API is its contract — internal implementation may change.
+  [M4] A module MAY implement multiple bounded contexts from one or more domains.
+  [M5] A module's `files` and `tests` declarations are routing pointers, not source of truth.
+  [M6] A module MUST be independently testable.
+  [M7] A module SHOULD be independently deployable when service extraction is needed.
+  [M8] Module boundaries MUST align with domain boundaries.
+
+Navigation:
+  Domains: @domains.sdd
+  Flows: @flows.sdd
+  Dependencies: @dependencies.sdd
+  Architecture: @../architecture/principles.sdd
 
 State: +
-

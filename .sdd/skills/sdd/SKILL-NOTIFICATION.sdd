@@ -1,0 +1,259 @@
+Skill: Notification Dispatch
+
+ID:
+  SKILL-SDD-NOTIFICATION
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  notification
+  multi-channel
+  email
+  sms
+  slack
+  telegram
+  template engine
+  provider abstraction
+  daily limit
+  retry
+  async dispatch
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Sending notifications through multiple channels (email, SMS, Slack, Telegram)
+  - Implementing template-based message rendering with dynamic data
+  - Building provider abstraction for interchangeable delivery channels
+  - Enforcing daily limits and retry policies for notifications
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  integration-engineer
+
+Requires:
+  sdd-integration-module
+  sdd-event-processor
+
+Avoid:
+  hardcoded-templates
+  tight-coupling-to-provider
+  synchronous-only
+  no-daily-limits
+  missing-retry
+  duplicate-notifications
+
+HumanDoc:
+  docs/skills/sdd/notification.md
+
+Evidence:
+  - Multi-Channel Notification System Guide (NotiGrid 2025)
+  - Multi-Channel Alert Delivery Best Practices (Upstat 2025)
+  - Notification Architecture Design Pattern (TechShitAnshu 2024)
+  - Best practices for Slack notifications (Knock 2024)
+  - Production experience: pultapaz MailIntegrationService, sweeps-integrations Slack/Mailgun
+
+Overview:
+  Notification Dispatch is the pattern for sending outbound messages through
+  configured channels. It separates message creation (template + data) from
+  delivery (provider), supports daily limits per integration, handles retries,
+  and logs all delivery attempts. Notifications can be sent synchronously
+  (Slack webhook) or asynchronously (email via RabbitMQ).
+
+Rules:
+
+  [NT1] Every notification MUST have a template and a data payload — no
+        hardcoded message bodies in handlers.
+
+  [NT2] Template rendering MUST replace placeholders with actual data values,
+        falling back to default values for missing fields.
+
+  [NT3] Provider selection MUST be configurable per integration — not hardcoded
+        in business logic.
+
+  [NT4] Daily limits MUST be enforced before sending — skip and log, never
+        throw on limit exceeded.
+
+  [NT5] Failed notifications MUST be retried with bounded retry policy (max
+        attempts, backoff, dead-letter).
+
+  [NT6] Every send attempt MUST be logged: integration_id, recipient, channel,
+        provider_response, execution_time_ms.
+
+  [NT7] Notification content MUST be sanitized (HTML escape) to prevent
+        injection attacks.
+
+  [NT8] Sensitive data in templates MUST be masked or encrypted per integration
+        settings.
+
+  [NT9] The notification service MUST be independently testable with mocked
+        providers.
+
+  [NT10] Channel fallback MUST be supported: if primary channel fails, try
+         secondary channel (configurable).
+
+Architecture:
+
+  NotificationService:
+    owns:
+      - Template resolution and rendering
+      - Provider abstraction (email, sms, slack, telegram)
+      - Daily limit enforcement
+      - Retry logic for failed sends
+      - Delivery logging
+
+    api:
+      - send(integration, payload) -> {success, log_id, error}
+      - queue(integration, payload) -> {queued, request_id}
+      - retry(logId) -> {success, error}
+      - renderTemplate(templateName, data) -> renderedContent
+
+Components:
+
+  NotificationProvider:
+    interface:
+      - send(recipient, subject, content) -> {success, provider_response}
+      - validateRecipient(recipient) -> bool
+    implementations:
+      - MailgunProvider (email via Mailgun API)
+      - SmtpProvider (email via SMTP)
+      - SlackProvider (webhook-based rich messages)
+      - TelegramProvider (bot API)
+      - SmsProvider (SMS gateway)
+
+  TemplateEngine:
+    - render(template, data) -> renderedContent
+    - replacePlaceholders(text, data) -> text
+    - formatFieldValue(field, value) -> formattedValue
+    placeholder_format: {{field_name}}
+
+  DailyLimitTracker:
+    - checkLimit(integrationId, date) -> {allowed, remaining, resetAt}
+    - increment(integrationId, date) -> newCount
+    - reset(integrationId, date) -> void
+
+  NotificationLog:
+    - integration_id, channel, recipient
+    - subject, content (request body)
+    - provider_response, execution_time_ms
+    - is_successful, error_message
+    - retry_count, sent_at
+
+Workflow:
+
+  send:
+    1. Resolve template config from integration settings
+    2. Check daily limit for integration
+    3. Render template with payload data
+    4. Select provider based on channel configuration
+    5. Execute provider.send()
+    6. Log result to notification_log
+    7. Return {success, log_id}
+
+  queue:
+    1. Validate integration is mail-type (or async-enabled)
+    2. Create notification log with status = queued
+    3. Publish message to async queue (RabbitMQ)
+    4. Return {queued, request_id}
+
+  retry:
+    1. Load notification log by ID
+    2. Check canRetry() (retry_count < max_retries)
+    3. Increment retry_count
+    4. Re-execute provider.send()
+    5. Update notification log with result
+
+Template System:
+
+  template_types:
+    - html_template: full HTML email with placeholders
+    - text_template: plain text fallback
+    - slack_template: Slack message blocks with placeholders
+    - sms_template: short text with placeholders
+
+  placeholder_resolution:
+    format: {{field_name}}
+    sources:
+      - payload fields (direct)
+      - quiz_params fields (first_name, phone, fin, etc.)
+      - quiz_redirect fields (amount, duration, monthly_income, etc.)
+      - computed fields (timestamp, full_name, document_number)
+
+  example:
+    template: "Dear {{first_name}}, your application for {{loan_amount}} AZN is {{status}}."
+    data: {first_name: "John", loan_amount: "5000", status: "approved"}
+    result: "Dear John, your application for 5000 AZN is approved."
+
+Provider Abstraction:
+
+  EmailProvider:
+    - send(to, subject, html, text) -> {success, message_id}
+    - implementations: MailgunProvider, SmtpProvider
+
+  SlackProvider:
+    - send(webhook_url, message) -> {success, status_code}
+    - builds: text, channel, username, icon_emoji, blocks
+
+  TelegramProvider:
+    - send(chat_id, text, parse_mode) -> {success, message_id}
+
+  SmsProvider:
+    - send(to, text) -> {success, message_id, provider_status}
+
+Channel Selection:
+
+  priority_routing:
+    - critical: push + sms + email
+    - high: push + email
+    - normal: email
+    - low: email digest (batch)
+
+  fallback_chain:
+    primary: configured channel
+    fallback_1: alternative channel
+    fallback_2: email (universal fallback)
+
+Best Practices:
+
+  - Use async processing for email (RabbitMQ) to avoid HTTP request blocking
+  - Implement circuit breaker for provider APIs
+  - Cache template configs in Redis for performance
+  - Use HTML sanitization for user-generated content in templates
+  - Track delivery status per provider (Mailgun, Slack)
+  - Implement rate limiting per provider to respect API limits
+  - Use queue-based retry for failed notifications (not inline retry)
+
+Anti-Patterns:
+
+  - Hardcoded message strings in handlers
+  - Synchronous email sending in request path
+  - Missing daily limits (notification spam)
+  - No retry on transient provider failures
+  - Tight coupling to specific provider SDKs
+  - Ignoring provider rate limits (getting blocked)
+
+State: +

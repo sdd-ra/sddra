@@ -1,9 +1,13 @@
 ﻿Spec: Project/Dependencies
 
 Purpose:
-  Describes the relationships between project components â€” schema/glossary
-   only. Concrete dependency graphs (which module depends on which) will
-   live inside each domain's own model, when domains are rebuilt.
+  Define the concrete dependency relationships between SDDRA ecosystem
+  modules. This is the project-level instance — not a reusable schema.
+
+Owns:
+  Module dependency graph
+  Cross-module contract definitions
+  Dependency rules for the SDDRA ecosystem
 
 RelationTypes:
   depends_on
@@ -14,18 +18,92 @@ RelationTypes:
   tested_by
   deployed_by
 
+DependencyGraph:
+
+  sweeps-integrations:
+    depends_on:
+      - supabase (database + RPC)
+      - captainup (external API)
+      - mailgun (email provider)
+      - slack (webhook provider)
+    does_not_depend_on:
+      - pultapaz
+      - rovio-matchmaking
+
+  pultapaz:
+    depends_on:
+      - mysql (primary database)
+      - redis (cache + session)
+      - rabbitmq (async messaging)
+      - guzzle (HTTP client for bank/MFO APIs)
+    does_not_depend_on:
+      - sweeps-integrations
+      - rovio-matchmaking
+
+  rovio-matchmaking:
+    depends_on:
+      - postgres (durable game config)
+      - redis (queues, tickets, sessions, locks)
+      - efcore (ORM)
+    does_not_depend_on:
+      - sweeps-integrations
+      - pultapaz
+
+CrossModuleContracts:
+
+  shared-field-mapping:
+    purpose: Common field mapping engine used by Integration domain
+    owned_by: sweeps-integrations (EncryptionService) + pultapaz (IntegrationField model)
+    contract:
+      - internal_field -> external_field mapping
+      - field_path (dot notation for nested objects)
+      - transformation_rules (uppercase, digits_only, remove_plus)
+      - static_field support with default_value
+
+  shared-http-client:
+    purpose: HTTP client abstraction for external API calls
+    owned_by: sweeps-integrations (BaseHttpService) + pultapaz (Guzzle client)
+    contract:
+      - content-type handling (json, form-data, form-urlencoded)
+      - auth header injection
+      - timeout and retry configuration
+      - standardized response format (status_code, response_body, success)
+
+  shared-audit-log:
+    purpose: Integration request/response audit trail
+    owned_by: pultapaz (IntegrationLog model) + sweeps-integrations (api_response field)
+    contract:
+      - request_id (correlation ID)
+      - integration_id / target_service
+      - request_body / request_data
+      - response_body / api_response
+      - execution_time_ms
+      - is_successful flag
+
+  shared-event-pattern:
+    purpose: Common event processing pattern (claim -> handle -> complete)
+    owned_by: sweeps-integrations (pollAndProcessLogs) + pultapaz (RabbitMQ consumers)
+    contract:
+      - event claiming (idempotent lock)
+      - handler dispatch (service + event_type)
+      - batch completion
+      - retry with count tracking
+
 Rules:
-  Dependencies MUST have an explicit owner.
-  Circular dependencies MUST be detectable.
-  New dependencies MUST be evaluated against architecture.sdd.
+  [DEP1] Dependencies MUST have an explicit owner.
+  [DEP2] Circular dependencies MUST be detectable and prohibited.
+  [DEP3] New dependencies MUST be evaluated against architecture principles (AP1-AP18).
+  [DEP4] Cross-module contracts MUST be explicitly declared and versioned.
+  [DEP5] A module MUST NOT depend on another module's internal structures.
+  [DEP6] Shared kernel contracts MUST be reviewed by all owning modules before change.
+  [DEP7] Dependency changes MUST be recorded in decisions/decisions.sdd.
 
-Note:
-  (prompt/new/21.md, STEP 4) The previous concrete Payment/Course/User
-   dependency graph (Payment -> User, Course, PaymentGateway; Course ->
-   User) was reset â€” see git history (before this commit). A future
-   "next" step will rebuild the concrete graph based on the RelationTypes
-   glossary above when concrete domains are rebuilt.
-
+Navigation:
+  Domains: @../project/domains.sdd
+  Modules: @../project/modules.sdd
+  Flows: @../project/flows.sdd
+  Architecture: @../../architecture/principles.sdd
 
 State: +
+
 

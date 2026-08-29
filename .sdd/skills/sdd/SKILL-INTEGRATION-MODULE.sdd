@@ -1,0 +1,232 @@
+Skill: Integration Module
+
+ID:
+  SKILL-SDD-INTEGRATION-MODULE
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  integration module
+  external API
+  field mapping
+  request/response mapping
+  pre-check
+  status polling
+  webhook
+  retry
+  circuit breaker
+  idempotent
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Building a new external system integration (bank, MFO, gamification, notification)
+  - Designing config-driven API connectors with field mapping
+  - Implementing pre-check, status polling, and webhook processing
+  - Standardizing integration error handling and retry policies
+
+Apply:
+  senior
+  lead
+  architect
+  integration-engineer
+
+Requires:
+  sdd-event-processor
+  sdd-http-client
+  sdd-field-mapping
+
+Avoid:
+  hardcoded-endpoints
+  tight-coupling-to-external-API
+  missing-retry
+  no-audit-log
+  synchronous-only
+  god-integration-class
+
+HumanDoc:
+  docs/skills/sdd/integration-module.md
+
+Evidence:
+  - Building robust external integration architectures (WJARR 2025)
+  - Microservices Architecture and API Management (2025)
+  - Enterprise Integration Patterns (Hohpe & Woolf)
+  - Production experience: sweeps-integrations, pultapaz
+
+Overview:
+  An Integration Module encapsulates all communication with one external
+  system (bank, MFO, CaptainUp, Mailgun, Slack). It owns request building,
+  response parsing, error handling, retry, audit logging, and configuration.
+  The module exposes a clean API to the rest of the system and hides all
+  external API details behind explicit boundaries.
+
+Rules:
+
+  [IM1] An integration module MUST have an explicit boundary — no external
+        system details leak into other modules.
+
+  [IM2] All endpoints, auth, and timeouts MUST be configurable via settings,
+        not hardcoded.
+
+  [IM3] Request building MUST use field mapping (internal_field ->
+        external_field) with transformation rules, not manual payload assembly.
+
+  [IM4] Response processing MUST map external fields back to internal fields
+        using the same mapping engine.
+
+  [IM5] Every external call MUST be auditable: request_id, request_data,
+        response_body, execution_time_ms, is_successful.
+
+  [IM6] Retry MUST be bounded: max_attempts, exponential backoff, and dead-
+        letter queue after exhaustion.
+
+  [IM7] Pre-check and status polling MUST be config-driven (settings JSON),
+        not code branches.
+
+  [IM8] Webhook processing MUST validate signatures (HMAC) before processing.
+
+  [IM9] Daily limits MUST be enforced at the integration level, not globally.
+
+  [IM10] The module MUST be independently testable with mocked HTTP clients.
+
+Architecture:
+
+  IntegrationModule:
+    owns:
+      - HTTP client configuration (base_url, timeout, auth, content_type)
+      - Request field mapping and transformation
+      - Response field mapping and transformation
+      - Retry policy (max_attempts, backoff, dead-letter)
+      - Audit log (request/response/execution_time)
+      - Pre-check execution (optional, config-driven)
+      - Status polling (optional, config-driven)
+      - Webhook processing (optional, signature validation)
+      - Daily limit enforcement
+
+    api:
+      - execute(integration, payload) -> {success, data, error}
+      - executePreCheck(integration, values) -> {passed, message}
+      - checkStatus(integration, externalId) -> {status, code}
+      - processWebhook(integrationName, data) -> {mapped_fields}
+
+    deps:
+      - http-client (BaseHttpService / Guzzle)
+      - field-mapping (IntegrationField model)
+      - audit-log (IntegrationLog model)
+      - settings (Integration settings JSON)
+
+Components:
+
+  IntegrationConfig:
+    - alias (unique identifier)
+    - api_url, http_method, content_type
+    - auth_type, auth_value, api_key_header
+    - timeout, retry_attempts, retry_delay
+    - webhook_url, webhook_secret
+    - settings JSON (pre_check, status_check, response mapping)
+
+  IntegrationField:
+    - field_type (request | response)
+    - internal_field, external_field, field_path
+    - data_type, is_required, default_value
+    - transformation_rule (uppercase, digits_only, remove_plus, etc.)
+    - sort_order
+
+  IntegrationLog:
+    - request_id (correlation ID)
+    - integration_id, quiz_params_id, quiz_redirect_id
+    - request_type (EXECUTE, PRE_CHECK, STATUS_CHECK, WEBHOOK, MAIL)
+    - request_url, request_method, request_headers, request_body
+    - response_status, response_headers, response_body
+    - execution_time_ms, is_successful, error_message
+    - retry_count, created_at
+
+  FieldMappingEngine:
+    - resolve(requestFields, params, redirect, requestId) -> payload
+    - mapResponse(responseFields, body) -> internalFields
+    - transform(value, rule) -> transformedValue
+    - setNestedValue(data, path, value) -> data
+
+Workflow:
+
+  execute:
+    1. Validate integration is active
+    2. Check daily limit
+    3. Check user daily limit (if applicable)
+    4. Generate request_id
+    5. Build request payload via field mapping
+    6. Create audit log
+    7. Execute HTTP request with retry
+    8. Map response fields
+    9. Update audit log with response
+    10. Return result
+
+  executePreCheck:
+    1. Validate pre_check config exists and enabled
+    2. Resolve URL (relative -> absolute via base_urls)
+    3. Build request from check_fields configuration
+    4. Execute HTTP request
+    5. Evaluate result against success_field / success_value
+    6. Log result to integration_log
+    7. Return {passed, message, raw_response}
+
+  checkStatus:
+    1. Check cache for existing response
+    2. Resolve external ID (request_id, FIN, phone, loan_request_id)
+    3. Build status check request from config
+    4. Execute HTTP request
+    5. Map status/code using status_mapping / code_mapping
+    6. Update redirect status if configured
+    7. Log result to integration_log
+    8. Return {status, status_text, code, code_text}
+
+  processWebhook:
+    1. Validate webhook signature (HMAC-SHA256)
+    2. Create audit log
+    3. Map response fields using active response field mappings
+    4. Return mapped internal fields
+
+Best Practices:
+
+  - Use circuit breaker for persistent external API failures
+  - Implement idempotency keys for all write operations
+  - Cache integration config in Redis for hot-path performance
+  - Use database transactions for audit log creation
+  - Separate read/write models (CQRS) for high-throughput integrations
+  - Version integration configs to support gradual rollout
+  - Use feature flags for new integration activation
+
+Anti-Patterns:
+
+  - God integration class that handles all operations
+  - Hardcoded URLs, auth, or field mappings
+  - Synchronous-only processing (no async fallback)
+  - Missing audit trail
+  - Retry without backoff or max attempts
+  - Direct database access from integration handlers
+  - Coupling integration logic to UI/controller layer
+
+State: +

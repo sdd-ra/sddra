@@ -1,0 +1,52 @@
+Skills: SDD Ecosystem
+
+Purpose:
+  SDDRA ecosystem-specific skills for integration, event processing,
+  field mapping, notification dispatch, and scheduled sync. These skills
+  are derived from production codebases under ./tmp/ and encode the
+  concrete patterns used across sweeps-integrations, pultapaz, and
+  rovio-matchmaking.
+
+Owns: ./
+
+ReadOrder:
+    1  @INDEX.sdd
+    2  @SKILL-INTEGRATION-MODULE.sdd
+    3  @SKILL-EVENT-PROCESSOR.sdd
+    4  @SKILL-FIELD-MAPPING.sdd
+    5  @SKILL-NOTIFICATION.sdd
+    6  @SKILL-SCHEDULED-SYNC.sdd
+
+Modes:
+  LEARN    — learn SDD ecosystem patterns
+  APPLY    — apply patterns to new integrations
+  REVIEW   — review implementation against skills
+  UPGRADE  — propose skill improvements
+
+Rules:
+  [S1] Integration modules MUST have explicit boundaries.
+  [S2] Event processors MUST implement claim/handle/complete lifecycle.
+  [S3] Field mapping MUST be config-driven, not hardcoded.
+  [S4] Notifications MUST support multi-channel dispatch with daily limits.
+  [S5] Scheduled sync MUST be idempotent and observable.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL-INTEGRATION-MODULE.sdd
+
+  Resolve:
+    integration-module
+    event-processor
+    field-mapping
+    notification
+    scheduled-sync
+
+Navigation:
+  IntegrationModule: @SKILL-INTEGRATION-MODULE.sdd
+  EventProcessor: @SKILL-EVENT-PROCESSOR.sdd
+  FieldMapping: @SKILL-FIELD-MAPPING.sdd
+  Notification: @SKILL-NOTIFICATION.sdd
+  ScheduledSync: @SKILL-SCHEDULED-SYNC.sdd
+
+State: +
