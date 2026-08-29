@@ -2,23 +2,12 @@ Observability: SDD
 
 Purpose:
   The .sdd system's observability, runtime diagnostics and incident
-   engine component. This directory defines how production runtime will
-   be monitored, log/metrics/trace policy, alerting rules, health check
-   mechanism, and incident lifecycle. Project-specific runtime state is
-   stored in .sdd/projects/{project_name}/observability/. Separation: root = reusable
-   observability constraints, project = concrete runtime state.
+  engine component. Defines how production runtime will be monitored,
+  log/metrics/trace policy, alerting rules, health check mechanism,
+  and incident lifecycle. Project-specific runtime state is stored in
+  .sdd/projects/{project_name}/observability/.
 
 Owns: ./
-
-ReadOrder:
-   1  @logging.sdd
-   2  @metrics.sdd
-   3  @tracing.sdd
-   4  @ai-observability.sdd (AI execution observability)
-   5  @alerting.sdd
-   6  @health.sdd
-   7  @diagnostics.sdd
-   8  @incident.sdd
 
 Modes:
   MONITOR   — runtime monitoring and health check
@@ -30,8 +19,7 @@ Modes:
 Rules:
   [OBS1]  Observability data MUST be treated as evidence, not assumption.
   [OBS2]  AI MUST correlate metrics, logs, and traces before diagnosing.
-  [OBS3]  Alert severity MUST be project-contextual (payment failure
-          = CRITICAL, internal admin latency = WARNING).
+  [OBS3]  Alert severity MUST be project-contextual.
   [OBS4]  Incident MUST be distinguished from alert: alert = suspicion,
           incident = confirmed business/system impact.
   [OBS5]  Root cause analysis MUST include confidence level, not just
@@ -42,40 +30,37 @@ Rules:
           deploy ? code change.
   [OBS9]  Sensitive data (password, token, session, card, secret, PII)
           MUST NOT appear in logs; violation = SECURITY_VIOLATION.
-  [OBS10] Rollback decisions for production MUST respect project policy
-          (AUTO or HUMAN_APPROVAL).
+  [OBS10] Rollback decisions for production MUST respect project policy.
+  [OBS11] AI decision provenance MUST be reproducible.
+  [OBS12] System records decision summary, not full chain-of-thought.
+  [OBS13] Observability data MUST be classified.
+  [OBS14] Cost and token metrics are required for AI operations.
+  [OBS15] Skill performance metrics drive improvement decisions.
+  [OBS16] Event ordering is guaranteed per execution_id.
+  [OBS17] Event consumers MUST be idempotent.
+  [OBS18] Correlation ID links workflow; Causation ID links causal chain.
+  [OBS19] Agent MUST NOT add signatures or sign-offs to observability output.
+  [OBS20] Agent MUST NOT use emojis or decorative symbols in observability output.
 
-Entry:
-  Read:
-    INDEX.sdd
+Pillars:
+  Logs: Structured logging with correlation IDs
+  Metrics: Business and technical metrics
+  Traces: Distributed tracing across services
 
-  Resolve:
-    logging
-    metrics
-    tracing
-    alerting
-    health
-    diagnostics
-    incident
+ReadOrder:
+   1  @logging.sdd
+   2  @metrics.sdd
+   3  @tracing.sdd
+   4  @health.sdd
+   5  @incident.sdd
 
 Navigation:
   Observability: @observability/INDEX.sdd
   Logging: @observability/logging.sdd
   Metrics: @observability/metrics.sdd
   Tracing: @observability/tracing.sdd
-  AIObservability: @observability/ai-observability.sdd
-  Alerting: @observability/alerting.sdd
   Health: @observability/health.sdd
-  Diagnostics: @observability/diagnostics.sdd
   Incident: @observability/incident.sdd
   ProjectObservability: @projects/{project_name}/observability/INDEX.sdd
 
 State: +
-  Note:
-  Observability directory created as
-  the production runtime monitoring and incident response layer.
-  Root observability/ defines reusable observability knowledge
-  (logs, metrics, traces, alerting, health, diagnostics, incident);
-  projects/{project_name}/observability/ tracks concrete project runtime state
-  (services, alerts, incidents, diagnostics). This phase completes
-  the development ? runtime ? feedback loop.

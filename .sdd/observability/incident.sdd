@@ -1,7 +1,7 @@
 ﻿Incident: SDD
 
 Purpose:
-  Defines incident lifecycle, structure, and response policy.
+  Defines incident lifecycle, alerting, and diagnostics.
   Incident is distinct from alert: alert = suspicion, incident =
   confirmed business/system impact.
 
@@ -14,9 +14,9 @@ IncidentLifecycle:
     - Owner assignment
     ↓
   INVESTIGATING:
-    - Collect signals
+    - Collect signals (metrics, logs, traces, deploy history)
     - Correlate data
-    - Identify root cause
+    - Identify root cause with confidence level
     ↓
   MITIGATING:
     - Immediate fix or workaround
@@ -38,68 +38,41 @@ IncidentLifecycle:
     - Skill update
 
 IncidentStructure:
-  ID:
-    INC-YYYYMMDD-NNN
+  ID: INC-YYYYMMDD-NNN
+  Severity: S1 (Critical), S2 (Major), S3 (Minor), S4 (Low)
+  Detected: alert, time
+  Impact: affected_services, affected_users, business_impact
+  Timeline: start, detected, mitigated, resolved
+  RootCause: cause, confidence, evidence
+  Task: TASK-xxx
+  Status: DETECTED, TRIAGED, INVESTIGATING, MITIGATING, RESOLVED, POSTMORTEM, PREVENTION
 
-  Severity:
-    S1 (Critical): System down, data loss
-    S2 (Major): Core functionality broken
-    S3 (Minor): Non-critical feature broken
-    S4 (Low): Minimal impact
+Alerting:
+  Severity: INFO, WARNING, MINOR, MAJOR, CRITICAL
+  Condition: metric, operator, threshold, duration, AND/OR
+  ProjectContextualSeverity: severity depends on business context
+  AlertFatigue: alerts MUST be actionable, grouped, suppressed during maintenance
 
-  Detected:
-    - alert: ALT-xxx
-    - time: timestamp
+Diagnostics:
+  Flow: Alert/Incident → CollectSignals → CorrelateSignals → IdentifyPattern → RootCause
+  Signals: Metrics, Logs, Traces, Deploy history, Code changes, Dependency status
+  Confidence: CONFIRMED, HIGH_CONFIDENCE, LIKELY, POSSIBLE, UNKNOWN
+  Tools: Metric analysis, Log analysis, Trace analysis, Deploy diff, Dependency graph
 
-  Impact:
-    - affected_services
-    - affected_users
-    - business_impact
+Response:
+  S1: Immediate page, war room, rollback considered
+  S2: Page on-call, fix within SLA
+  S3: Ticket created, fix within 24h
+  S4: Next sprint
 
-  Timeline:
-    - start
-    - detected
-    - mitigated
-    - resolved
-
-  RootCause:
-    - cause
-    - confidence
-    - evidence
-
-  Task:
-    - TASK-xxx (if created)
-
-  Status:
-    - DETECTED
-    - TRIAGED
-    - INVESTIGATING
-    - MITIGATING
-    - RESOLVED
-    - POSTMORTEM
-    - PREVENTION
-
-IncidentResponse:
-  S1:
-    - Immediate page
-    - War room
-    - All-hands if needed
-    - Rollback considered
-  S2:
-    - Page on-call
-    - Fix within SLA
-  S3:
-    - Ticket created
-    - Fix within 24h
-  S4:
-    - Next sprint
-
-CrossLayer:
-  Alerting: Alerts trigger incident detection
-  Diagnostics: Diagnostic flow feeds investigation
-  Task: Incident creates fix task
-  Architecture: Recurring incidents trigger architecture review
-  Skill: Outdated skills trigger skill update proposal
+Rules:
+  [IR1] Incident MUST be distinguished from alert.
+  [IR2] Alert severity MUST be project-contextual.
+  [IR3] Root cause MUST include confidence level.
+  [IR4] Recurring incidents MUST trigger ARCHITECTURE_REVIEW_REQUIRED.
+  [IR5] Deploy correlation MUST be maintained.
+  [IR6] Diagnostics MUST correlate multiple signal types.
+  [IR7] Incident → Task flow MUST be automatic for confirmed incidents.
+  [IR8] Rollback decisions MUST respect project policy.
 
 State: +
-  

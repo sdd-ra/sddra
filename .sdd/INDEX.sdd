@@ -255,9 +255,7 @@ Navigation:
   Logging: @observability/logging.sdd
   Metrics: @observability/metrics.sdd
   Tracing: @observability/tracing.sdd
-  Alerting: @observability/alerting.sdd
   Health: @observability/health.sdd
-  Diagnostics: @observability/diagnostics.sdd
   Incident: @observability/incident.sdd
   ProjectObservability: @projects/{project_name}/observability/INDEX.sdd
   ProjectRuntime: @projects/{project_name}/observability/runtime.sdd

@@ -1,7 +1,7 @@
 Skills: Observability
 
 Purpose:
-  Observability skills for logging, metrics, tracing, and alerting.
+  Observability skills for logging, metrics, tracing, health, and incident management.
 
 Owns: ./
 
@@ -10,7 +10,8 @@ ReadOrder:
    2  @logging.sdd
    3  @metrics.sdd
    4  @tracing.sdd
-   5  @alerting.sdd
+   5  @health.sdd
+   6  @incident.sdd
 
 Modes:
   LEARN    — learn observability fundamentals
@@ -19,10 +20,12 @@ Modes:
   UPGRADE  — propose observability skill upgrade
 
 Rules:
-  [O1]  Every service MUST have logs, metrics, and traces.
-  [O2]  Correlate telemetry with trace IDs.
-  [O3]  Monitor golden signals.
-  [O4]  Alerts MUST have runbooks.
+  [O1] Every service MUST have logs, metrics, and traces.
+  [O2] Correlate telemetry with trace IDs.
+  [O3] Monitor golden signals.
+  [O4] Alerts MUST have runbooks.
+  [O5] Health checks MUST be protected.
+  [O6] Sensitive data MUST NOT appear in logs.
 
 Entry:
   Read:
@@ -33,13 +36,15 @@ Entry:
     logging
     metrics
     tracing
-    alerting
+    health
+    incident
 
 Navigation:
   Observability: @cross-cutting/observability/INDEX.sdd
   Logging: @cross-cutting/observability/logging.sdd
   Metrics: @cross-cutting/observability/metrics.sdd
   Tracing: @cross-cutting/observability/tracing.sdd
-  Alerting: @cross-cutting/observability/alerting.sdd
+  Health: @cross-cutting/observability/health.sdd
+  Incident: @cross-cutting/observability/incident.sdd
 
 State: +

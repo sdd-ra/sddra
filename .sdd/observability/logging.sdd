@@ -1,71 +1,35 @@
 ﻿Logging: SDD
 
 Purpose:
-  Defines logging policy and structured log format. .sdd does not
-  store logs — it stores the policy that governs how logs are
-  generated, what they contain, and how they are secured.
+  Defines logging policy and structured log format.
 
 StructuredLog:
-  Required:
-    - timestamp
-    - level
-    - service
-    - environment
-    - request_id
-    - trace_id
-    - operation
-    - duration
-    - error_code (if error)
-
-  Optional:
-    - user_id
-    - session_id
-    - correlation_id
-    - component
-    - version
+  Required: timestamp, level, service, environment, request_id,
+            trace_id, operation, duration, error_code
+  Optional: user_id, session_id, correlation_id, component, version
 
 LogLevels:
-  DEBUG:
-    - Development only
-    - MUST NOT appear in production
-  INFO:
-    - Normal operation events
-    - Business events
-  WARN:
-    - Recoverable issues
-    - Degraded performance
-  ERROR:
-    - Failures that affect functionality
-    - Requires attention
-  FATAL:
-    - System-critical failures
-    - Immediate action required
+  DEBUG: Development only, MUST NOT appear in production
+  INFO: Normal operation events
+  WARN: Recoverable issues
+  ERROR: Failures affecting functionality
+  FATAL: System-critical failures
 
 SensitiveDataProtection:
-  Forbidden:
-    - password
-    - token
-    - session
-    - card
-    - secret
-    - PII (email, phone, SSN)
-    - Authorization headers
-    - Cookie values
-
-  Action:
-    - Redact before logging
-    - Hash or tokenize if needed for debugging
-    - Violation = SECURITY_VIOLATION
+  Forbidden: password, token, session, card, secret, PII,
+             Authorization headers, Cookie values
+  Action: Redact before logging, hash if needed for debugging
+  Violation: SECURITY_VIOLATION
 
 LogRetention:
   Development: 7 days
   Production: 30 days
   Compliance: As required by regulation
 
-CrossLayer:
-  Security: Sensitive data protection rules
-  Observability: Log aggregation and analysis
-  Incident: Log correlation for root cause analysis
+Rules:
+  [LG1] All errors MUST be logged with context.
+  [LG2] All security events MUST be logged.
+  [LG3] Logs MUST include tenant_id, correlation_id, actor_id.
+  [LG4] Sensitive data MUST NOT appear in logs.
 
 State: +
-  
