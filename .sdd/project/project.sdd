@@ -733,7 +733,7 @@ Graph:
   model says "@payments exists"; the graph says "@payments -> @users,
   @payments -> @gateway, @payments/refund owner: BE".
 
-  The graph has three sub-types (see graph/graph.sdd):
+  The graph model is defined in graph/model.sdd.
 
     DependencyGraph  — "What is A dependent on?"
     ImpactGraph      — "What is affected when A changes?"
@@ -812,11 +812,13 @@ DomainGraph:
 
   Each domain MAY have its own local graph at .sdd/project/<domain>/
   graph.sdd containing only the nodes and edges relevant to that domain.
-  The global graph at .sdd/graph/graph.sdd contains only high-level
-  domain-to-domain relationships.
+  The global graph entry point is .sdd/graph/INDEX.sdd; the data model
+  is in .sdd/graph/model.sdd. Domain-level graphs live at
+  .sdd/project/<domain>/graph.sdd and contain only nodes and edges
+  relevant to that domain.
 
   Resolution order:
-    1. Global graph (.sdd/graph/graph.sdd)
+    1. Global graph (.sdd/graph/INDEX.sdd)
     2. Domain graph (.sdd/project/<domain>/graph.sdd)
     3. Component model (.sdd/project/<domain>/<component>.sdd)
     4. Fallback discovery (if all graphs are silent)
@@ -833,9 +835,8 @@ State: STEP 4 (domains/modules) + STEP 14 (this file, Feature/Component)
   with Paths/Uses/API/Data/Chain/Risk/Security/Docs, added SourceMapping,
   Declared/Observed/Drift, MinimalModel, Project/Root entry point at
   project/PROJECT.sdd
-  + — added Graph: section (DependencyGraph,
-  ImpactGraph, OwnershipGraph, EdgeMetadata, GraphDrift, FallbackDiscovery,
-  DomainGraph), created graph/graph.sdd as global graph entry point
+   + — added Graph: section, created graph/INDEX.sdd as entry point
+     and graph/model.sdd as unified data model
 
 Note:
   (prompt/new/36.md — source labeled this "STEP 13", a THIRD consecutive

@@ -8,17 +8,6 @@ Purpose:
 
 Owns: ./
 
-ReadOrder:
-   1  @model.sdd (entity and relationship data model)
-   2  @nodes.sdd
-   3  @relations.sdd
-   4  @traceability.sdd
-   5  @impact.sdd
-   6  @ownership.sdd
-   7  @dependencies.sdd
-   8  @coverage.sdd
-   9  @drift.sdd
-
 Modes:
   IMPLEMENT — task implementation context
   DEBUG     — incident debugging context
@@ -40,31 +29,12 @@ Rules:
   [GR11] Decision history MUST be preserved (SUPERSEDES).
   [GR12] Graph MUST support scale-aware analysis.
 
-Entry:
-  Read:
-    INDEX.sdd
-
-  Resolve:
-    nodes
-    relations
-    traceability
-    impact
-    ownership
-    dependencies
-    coverage
-    drift
+ReadOrder:
+   1  @model.sdd
 
 Navigation:
   Graph: @graph/INDEX.sdd
   Model: @graph/model.sdd
-  Nodes: @graph/nodes.sdd
-  Relations: @graph/relations.sdd
-  Traceability: @graph/traceability.sdd
-  Impact: @graph/impact.sdd
-  Ownership: @graph/ownership.sdd
-  Dependencies: @graph/dependencies.sdd
-  Coverage: @graph/coverage.sdd
-  Drift: @graph/drift.sdd
+  ProjectGraph: @projects/{project_name}/graph/INDEX.sdd
 
 State: +
-  

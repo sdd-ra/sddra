@@ -65,7 +65,7 @@ Navigation:
   ProjectFindings: @project/security/findings/
   ProjectThreats: @project/security/threats/
   ProjectExceptions: @project/security/exceptions/
-  Graph: @graph/graph.sdd
+  Graph: @graph/INDEX.sdd
   Skills: @skills/INDEX.sdd
   Chains: @chains/INDEX.sdd
   Tasks: @projects/{project_name}/tasks/tasks.sdd
