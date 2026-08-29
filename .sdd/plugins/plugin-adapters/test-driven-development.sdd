@@ -1,43 +1,18 @@
-# Plugin: Test-Driven Development Adapter
+# Plugin: Test-Driven Development
 
 Purpose:
-  Adapt Superpowers TDD skill for SDDRA QA chain.
+  Adapt TDD skill for SDDRA QA chain.
 
-Source:
-  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\test-driven-development\SKILL.md
-
-Original:
-  RED-GREEN-REFACTOR cycle
-  Iron Law: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
-
-Adapted for SDDRA:
-  Mapped to QA chain stages:
-    RED   -> TS (Test Suite) - write failing test
+Adaptation:
+  Maps RED-GREEN-REFACTOR to QA chain:
+    RED -> TS (Test Suite) - write failing test
     GREEN -> BE (Backend) - minimal code to pass
     REFACTOR -> QA (Quality Assurance) - clean up
 
-  Iron Law adapted:
-    NO CODE IN project/ WITHOUT FAILING TEST FIRST
-
-  Integration:
-    - TS stage in feature/bugfix/refactor chains
-    - Test requirements from decisions/
-    - Verification criteria from DEC-XXX.sdd
-
-  Token tracking:
-    - Test writing: ~2000 tokens
-    - Test execution: ~1000 tokens
-    - Refactor: ~1500 tokens
+  Iron Law: NO CODE IN project/ WITHOUT FAILING TEST FIRST
 
 Usage:
-  Referenced by:
-    .sdd/chains/feature.sdd (TS stage)
-    .sdd/chains/bugfix.sdd (TS stage)
-    .sdd/chains/refactor.sdd (TS stage)
+  Chain: feature, bugfix, refactor (TS stage)
+  Trigger: Task enters TS stage, new feature, bug fix
 
-  Triggers:
-    - Task enters TS stage
-    - New feature implementation
-    - Bug fix implementation
-
-State: Adapted
+State: +

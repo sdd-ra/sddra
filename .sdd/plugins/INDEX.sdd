@@ -1,24 +1,10 @@
-# Plugins: Index
+# Plugins
 
 Purpose:
   Plugin adapters for external skills mapped to SDDRA chain graph.
   Only general-purpose skills are adapted; domain-specific ones are excluded.
 
-Files:
-  adapter-map: @adapter-map.sdd
-  brainstorming: @plugin-adapters/brainstorming.sdd
-  test-driven-development: @plugin-adapters/test-driven-development.sdd
-  systematic-debugging: @plugin-adapters/systematic-debugging.sdd
-  writing-plans: @plugin-adapters/writing-plans.sdd
-  using-git-worktrees: @plugin-adapters/using-git-worktrees.sdd
-  code-review: @plugin-adapters/code-review.sdd
-  dispatching-parallel-agents: @plugin-adapters/dispatching-parallel-agents.sdd
-  writing-skills: @plugin-adapters/writing-skills.sdd
-  verification-before-completion: @plugin-adapters/verification-before-completion.sdd
-
-External Repo:
-  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01
-  Source: https://github.com/obra/superpowers
+Owns: ./
 
 Rules:
   [PL1] Only general-purpose skills are adapted.
@@ -26,5 +12,30 @@ Rules:
   [PL3] External dependencies are not added.
   [PL4] Adapted skills MUST fit SDDRA token budget.
   [PL5] Adapted skills MUST respect human gates.
+  [PL6] Plugin adapters MUST NOT introduce project-specific paths.
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @plugin-adapters/brainstorming.sdd
+   3  @plugin-adapters/test-driven-development.sdd
+   4  @plugin-adapters/systematic-debugging.sdd
+   5  @plugin-adapters/writing-plans.sdd
+   6  @plugin-adapters/using-git-worktrees.sdd
+   7  @plugin-adapters/code-review.sdd
+   8  @plugin-adapters/dispatching-parallel-agents.sdd
+   9  @plugin-adapters/writing-skills.sdd
+   10 @plugin-adapters/verification-before-completion.sdd
+
+Navigation:
+  Plugins: @plugins/INDEX.sdd
+  Brainstorming: @plugins/plugin-adapters/brainstorming.sdd
+  TDD: @plugins/plugin-adapters/test-driven-development.sdd
+  Debugging: @plugins/plugin-adapters/systematic-debugging.sdd
+  WritingPlans: @plugins/plugin-adapters/writing-plans.sdd
+  GitWorktrees: @plugins/plugin-adapters/using-git-worktrees.sdd
+  CodeReview: @plugins/plugin-adapters/code-review.sdd
+  ParallelAgents: @plugins/plugin-adapters/dispatching-parallel-agents.sdd
+  WritingSkills: @plugins/plugin-adapters/writing-skills.sdd
+  Verification: @plugins/plugin-adapters/verification-before-completion.sdd
 
 State: +

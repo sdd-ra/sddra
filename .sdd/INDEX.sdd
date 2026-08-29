@@ -430,7 +430,6 @@ Navigation:
     CommandResume: @commands/sdd-resume.sdd
    CommandDecisions: @commands/sdd-decisions.sdd
    Plugins: @plugins/INDEX.sdd
-   PluginAdapterMap: @plugins/adapter-map.sdd
    PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd
    PluginTDD: @plugins/plugin-adapters/test-driven-development.sdd
    PluginDebugging: @plugins/plugin-adapters/systematic-debugging.sdd
