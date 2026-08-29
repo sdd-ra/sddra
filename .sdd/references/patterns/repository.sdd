@@ -1,0 +1,26 @@
+@patterns.repository
+
+Purpose:
+  Abstraction over data source.
+
+UseWhen:
+  - need to decouple domain from persistence
+  - multiple data sources possible
+  - testability is required
+
+AvoidWhen:
+  - simple CRUD without domain logic
+  - no persistence layer
+
+Why:
+  Mediates between domain and data mapping layers.
+
+Related:
+  @ddd.repository
+  @architecture.hexagonal
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

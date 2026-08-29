@@ -287,7 +287,7 @@ Documentation:
 
     docs/
     ├── 00-about/        (project.md, glossary.md, system-overview.md)
-    ├── 10-business/     (business-model.md, business-rules.md, domains/, workflows/)
+    ├── 10-business/     (business-model.md, business-rules.md, domains/, workflow/)
     ├── 20-architecture/ (overview.md, decisions.md, boundaries.md, dependencies.md, diagrams/)
     ├── 30-backend/      (overview.md, modules/, services/, api/, diagrams/)
     ├── 40-frontend/     (overview.md, modules/, state/, diagrams/)

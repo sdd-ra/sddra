@@ -1,0 +1,25 @@
+@patterns.decorator
+
+Purpose:
+  Add behavior without modifying original.
+
+UseWhen:
+  - need to extend behavior dynamically
+  - subclassing is impractical
+  - multiple combinations of behaviors
+
+AvoidWhen:
+  - fixed set of behaviors
+  - modification is acceptable
+
+Why:
+  Provides flexible alternative to subclassing.
+
+Related:
+  @patterns.strategy
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

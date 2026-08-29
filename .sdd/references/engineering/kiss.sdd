@@ -1,0 +1,29 @@
+@engineering.kiss
+
+Purpose:
+  Keep it simple.
+
+UseWhen:
+  - solution can be simple
+  - readability matters
+  - maintenance cost is high
+
+AvoidWhen:
+  - complexity is required for correctness
+  - performance demands optimization
+
+Why:
+  Simple solutions are easier to understand, test, and maintain.
+
+Exception:
+  If simplicity sacrifices measurable business or technical value, complexity is justified.
+
+Related:
+  @engineering.dry
+  @engineering.yagni
+
+Examples:
+  @project.simple-crud
+  @project.admin-panel
+
+State: +

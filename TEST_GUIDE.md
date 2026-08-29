@@ -43,7 +43,7 @@ SDDRA sistemini test etmək və Claude AI kimi başqa agent sistemləri ilə int
 │   └── INDEX.sdd
 ├── skills/                  # 158 texnologiya faylı
 ├── prompts/                 # Prompt engine
-├── workflows/               # Task execution, recovery
+├── workflow/               # Task execution, recovery
 └── state/                   # State symbols
 
 project/                      # İnsan kodu (source of truth)

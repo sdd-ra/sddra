@@ -1,0 +1,34 @@
+@architecture.event-driven
+
+Purpose:
+  Communication through events.
+
+UseWhen:
+  - need loose coupling
+  - async workflows
+  - multiple consumers for same event
+
+AvoidWhen:
+  - simple synchronous flow
+  - strong consistency required everywhere
+
+Why:
+  Decouples producers from consumers.
+
+TradeOffs:
+  + Loose coupling
+  + Scalable
+  + Resilient to failures
+  - Eventual consistency
+  - Debugging complexity
+  - Ordering challenges
+
+Related:
+  @ddd.domain-event
+  @architecture.microservices
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

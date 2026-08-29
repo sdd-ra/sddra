@@ -35,7 +35,7 @@ Humans modify it to change the system.
     devops/                DevOps skills (git, ci-cd, security)
   commands/                CLI commands (/sdd, /sdd-analyze, etc.)
   patterns/                Resilience patterns
-  workflows/               Execution workflows
+  workflow/               Execution workflows
   decisions/               Decision ledger
   tasks/                   Task lifecycle
   templates/               Reusable project scaffolding
@@ -154,7 +154,7 @@ Currently tested with:
 1. **Read the system**: Start with `.sdd/PROJECT.sdd` and `.sdd/INDEX.sdd`
 2. **Understand the chain**: Read `.sdd/chains/graph.sdd`
 3. **Learn the rules**: Read `.sdd/protocol/ROOT.sdd`
-4. **Follow the workflow**: Read `.sdd/workflows/`
+4. **Follow the workflow**: Read `.sdd/workflow/`
 5. **Respect gates**: Human approval is required at every gate
 6. **Use skills**: Read `.sdd/skills/` for domain knowledge
 7. **Record tokens**: Track token usage at every stage
@@ -244,9 +244,9 @@ The system includes intelligent runtime capabilities:
 
 ### Adding a New Workflow
 
-1. Create workflow file in `.sdd/workflows/`
+1. Create workflow file in `.sdd/workflow/`
 2. Follow the format: Purpose, Stages, Rules, State
-3. Add to `.sdd/workflows/INDEX.sdd`
+3. Add to `.sdd/workflow/INDEX.sdd`
 4. Add to `.sdd/INDEX.sdd` navigation
 5. Update README.md
 
@@ -327,7 +327,7 @@ Every developer MUST run:
 | `.sdd/templates/` | Reusable project templates |
 | `.sdd/decisions/` | Decision ledger |
 | `.sdd/patterns/` | Resilience patterns |
-| `.sdd/workflows/` | Execution workflows |
+| `.sdd/workflow/` | Execution workflows |
 | `.sdd/commands/` | CLI commands |
 | `prompts/` | Root-level prompt registry |
 | `project/` | Concrete source code |

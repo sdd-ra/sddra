@@ -1,0 +1,68 @@
+Workflow: Recovery
+
+Purpose:
+  Define how AI recovers from failures during task execution.
+  Ensures system can retry, escalate, or gracefully degrade.
+
+Failure Modes:
+  TASK_FAILURE:
+    Cause: Implementation error, test failure
+    Recovery:
+      1. Retry (max 3 attempts)
+      2. If still failing: request human intervention
+      3. Document failure in .sdd/project/state/
+
+  DEPENDENCY_FAILURE:
+    Cause: Required task failed
+    Recovery:
+      1. Wait for dependency resolution
+      2. If dependency cannot be resolved: mark task blocked
+      3. Notify human
+
+  SKILL_NOT_FOUND:
+    Cause: Required skill missing from .sdd/skills/
+    Recovery:
+      1. Search for alternative skill
+      2. If no alternative: request human decision
+      3. Document missing skill
+
+  VALIDATION_FAILURE:
+    Cause: Tests fail, lint fails, policy violation
+    Recovery:
+      1. Auto-fix if possible
+      2. If cannot fix: mark task failed
+      3. Request human review
+
+  RESOURCE_FAILURE:
+    Cause: Out of memory, disk full, network error
+    Recovery:
+      1. Retry with backoff
+      2. If persistent: escalate to human
+      3. Document resource issue
+
+Retry Policy:
+  max_retries: 3
+  backoff: exponential
+  initial_delay: 1s
+  max_delay: 60s
+
+Escalation:
+  After max_retries:
+    1. Document failure
+    2. Create escalation ticket
+    3. Notify human
+    4. Wait for human decision
+
+State Transitions:
+  ready → running → completed
+               → failed → retry → running
+               → failed → escalation → blocked
+               → waiting (for dependency)
+
+Rules:
+  [R1] Tasks MUST NOT be silently skipped on failure.
+  [R2] All failures MUST be documented.
+  [R3] Human MUST be notified of escalations.
+  [R4] Recovery MUST NOT violate .sdd/project/ constraints.
+
+State: +

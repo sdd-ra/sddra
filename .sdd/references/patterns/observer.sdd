@@ -1,0 +1,26 @@
+@patterns.observer
+
+Purpose:
+  One-to-many dependency notification.
+
+UseWhen:
+  - state change affects multiple objects
+  - need to notify without tight coupling
+  - event handling
+
+AvoidWhen:
+  - simple direct calls suffice
+  - single consumer
+
+Why:
+  Maintains consistency without hard dependencies.
+
+Related:
+  @ddd.domain-event
+  @architecture.event-driven
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

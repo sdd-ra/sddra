@@ -1,0 +1,36 @@
+@architecture.microservices
+
+Purpose:
+  Distributed services with independent deployment.
+
+UseWhen:
+  - multiple teams
+  - need independent scaling
+  - complex domain with clear boundaries
+
+AvoidWhen:
+  - small team
+  - simple domain
+  - limited ops experience
+
+Why:
+  Enables independent ownership and scaling.
+
+TradeOffs:
+  + Independent deployment
+  + Team autonomy
+  + Technology diversity
+  - Operational complexity
+  - Network latency
+  - Data consistency challenges
+
+Related:
+  @architecture.modular-monolith
+  @architecture.event-driven
+  @ddd.bounded-context
+
+Examples:
+  @project.core-banking
+  @project.enterprise
+
+State: +

@@ -1,0 +1,26 @@
+@ddd.entity
+
+Purpose:
+  Identity-based domain object.
+
+UseWhen:
+  - object has distinct identity
+  - lifecycle matters
+  - equality is based on identity, not attributes
+
+AvoidWhen:
+  - simple value with no identity
+  - immutable data holder
+
+Why:
+  Entities represent things that change over time and need to be tracked.
+
+Related:
+  @ddd.value-object
+  @ddd.aggregate
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

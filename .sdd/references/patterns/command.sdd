@@ -1,0 +1,25 @@
+@patterns.command
+
+Purpose:
+  Encapsulate request as object.
+
+UseWhen:
+  - need to parameterize actions
+  - queuing or logging requests
+  - undo/redo support
+
+AvoidWhen:
+  - simple direct invocation
+  - no need for history or queue
+
+Why:
+  Turns requests into first-class citizens.
+
+Related:
+  @patterns.strategy
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

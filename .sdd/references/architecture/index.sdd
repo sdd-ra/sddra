@@ -1,0 +1,51 @@
+@architecture
+
+Purpose:
+  System architecture references.
+
+Use this index before choosing an architecture style.
+
+Styles:
+  @architecture.layered
+      Traditional layered architecture.
+
+  @architecture.hexagonal
+      Ports and adapters, dependency inversion.
+
+  @architecture.clean
+      Entities, use cases, interface adapters, frameworks.
+
+  @architecture.modular-monolith
+      Single deployable unit with internal module boundaries.
+
+  @architecture.microservices
+      Distributed services with independent deployment.
+
+  @architecture.event-driven
+      Communication through events.
+
+DecisionGuide:
+  TeamSize < 5, Domain simple?
+    → @architecture.layered
+
+  Need testability and framework independence?
+    → @architecture.hexagonal
+
+  Need strict dependency rules and enterprise scale?
+    → @architecture.clean
+
+  Single team, need internal boundaries?
+    → @architecture.modular-monolith
+
+  Multiple teams, independent deployability?
+    → @architecture.microservices
+
+  Need async communication and loose coupling?
+    → @architecture.event-driven
+
+RelatedReferences:
+  @ddd
+  @patterns.repository
+  @database.transaction
+
+State: +

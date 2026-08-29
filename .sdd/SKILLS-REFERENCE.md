@@ -39,8 +39,7 @@ This document explains what each folder contains and what each skill/file is for
 | `tasks/` | Task lifecycle | tasks |
 | `templates/` | Reusable project templates | INDEX, docs, decisions, tasks, stack, modules, architecture, flows, domains |
 | `testing/` | Test types and gates | api, bdd, contract, e2e, gates, index, integration, levels, load, mobile, performance, types, ui, unit |
-| `workflow/` | Workflow engine | dependencies, gates, lifecycle, policies, recovery, stages, state, testing, transitions |
-| `workflows/` | Execution workflows | agent-implementation, agent-workflow, chain-implementation, recovery, task-execution, parallel-execution, knowledge-sharing, intelligent-runtime, example-prompt-to-code, backup-integrity, skill-auto-integration |
+| `workflow/` | Workflow engine and implementations | dependencies, engine-recovery, gates, impl-agent-implementation, impl-agent-workflow, impl-backup-integrity, impl-chain-implementation, impl-example-prompt-to-code, impl-feature-planning, impl-intelligent-runtime, impl-knowledge-sharing, impl-migration, impl-parallel-execution, impl-recovery, impl-skill-auto-integration, impl-task-execution, lifecycle, policies, stages, state, testing, transitions |
 
 ## Detailed Reference
 
@@ -501,39 +500,33 @@ Test types, levels, and gates.
 
 ### workflow/
 
-Workflow engine components.
+Workflow engine components and implementations.
 
 | File | Purpose |
 |------|---------|
 | dependencies.sdd | Workflow dependencies |
+| engine-recovery.sdd | Workflow engine recovery |
 | gates.sdd | Workflow gates |
 | INDEX.sdd | Workflow index |
+| impl-agent-implementation.sdd | Agent implementation workflow |
+| impl-agent-workflow.sdd | Agent workflow |
+| impl-backup-integrity.sdd | Backup and integrity workflow |
+| impl-chain-implementation.sdd | Chain implementation workflow |
+| impl-example-prompt-to-code.sdd | Example: prompt to code |
+| impl-feature-planning.sdd | Feature planning workflow |
+| impl-intelligent-runtime.sdd | Intelligent runtime workflow |
+| impl-knowledge-sharing.sdd | Knowledge sharing workflow |
+| impl-migration.sdd | Migration workflow |
+| impl-parallel-execution.sdd | Parallel execution workflow |
+| impl-recovery.sdd | Recovery workflow |
+| impl-skill-auto-integration.sdd | Skill auto-integration workflow |
+| impl-task-execution.sdd | Task execution workflow |
 | lifecycle.sdd | Workflow lifecycle |
 | policies.sdd | Workflow policies |
-| recovery.sdd | Workflow recovery |
 | stages.sdd | Workflow stages |
 | state.sdd | Workflow state |
 | testing.sdd | Workflow testing |
 | transitions.sdd | Workflow transitions |
-
-### workflows/
-
-Execution workflows.
-
-| File | Purpose |
-|------|---------|
-| INDEX.sdd | Workflow registry |
-| agent-implementation.sdd | Agent implementation workflow |
-| agent-workflow.sdd | Agent workflow |
-| backup-integrity.sdd | Backup and integrity workflow |
-| chain-implementation.sdd | Chain implementation workflow |
-| example-prompt-to-code.sdd | Example: prompt to code |
-| intelligent-runtime.sdd | Intelligent runtime workflow |
-| knowledge-sharing.sdd | Knowledge sharing workflow |
-| parallel-execution.sdd | Parallel execution workflow |
-| recovery.sdd | Recovery workflow |
-| skill-auto-integration.sdd | Skill auto-integration workflow |
-| task-execution.sdd | Task execution workflow |
 
 ## Skills Reference
 
@@ -663,7 +656,7 @@ Skills are organized by domain and competency level (L1-L5).
 ## File Naming Conventions
 
 - **Directories**: kebab-case (e.g., `cross-cutting`, `skill-auto-integration`)
-- **Files**: kebab-case for workflows/patterns, UPPER-CASE for decisions/tasks (e.g., `DEC-100.sdd`, `TASK-201.sdd`)
+- **Files**: kebab-case for workflow/patterns, UPPER-CASE for decisions/tasks (e.g., `DEC-100.sdd`, `TASK-201.sdd`)
 - **Skills**: SKILL-{DOMAIN}-{NAME}-L{LEVEL} format
 - **IDs**: UPPER-CASE with hyphens
 

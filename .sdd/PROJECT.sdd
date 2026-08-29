@@ -53,8 +53,8 @@ Directories:
     purpose: Feature planning, decision, and layer assignment
     ref: @features/INDEX.sdd
 
-  workflows:
-    path: ./workflows
+  workflow:
+    path: ./workflow
     purpose: Execution workflows (task execution, recovery, parallel, knowledge sharing, migration)
 
   commands:
@@ -90,7 +90,7 @@ Navigation:
   skills: @skills
   prompts: @prompts
   features: @features
-  workflows: @workflows
+  workflow: @workflow
   commands: @commands
   plugins: @plugins
   project: @project

@@ -66,8 +66,15 @@ ReadOrder:
    55 @skills/cross-cutting/security/
    56 @skills/cross-cutting/architecture/
    57 @skills/cross-cutting/observability/
-   58 @architecture/INDEX.sdd (architecture knowledge base)
-   24 @architecture/levels.sdd (ProjectScale L0-L5)
+    58 @architecture/INDEX.sdd (architecture knowledge base)
+    59 @references/INDEX.sdd (reusable engineering knowledge)
+    60 @references/ddd/ (domain driven design references)
+    61 @references/architecture/ (architecture style references)
+    62 @references/patterns/ (design pattern references)
+    63 @references/database/ (database references)
+    64 @references/engineering/ (engineering principles)
+    65 @references/best-practices/ (default heuristics)
+    24 @architecture/levels.sdd (ProjectScale L0-L5)
    25 @architecture/patterns.sdd (architecture patterns)
    26 @architecture/scaling.sdd (scaling rules)
    27 @architecture/availability.sdd (availability/RTO/RPO)
@@ -180,6 +187,13 @@ Navigation:
   ArchitectureObservability: @architecture/observability.sdd
   ArchitectureNetworking: @architecture/networking.sdd
   ArchitectureDeployment: @architecture/deployment.sdd
+  References: @references/INDEX.sdd
+  ReferencesDDD: @references/ddd/INDEX.sdd
+  ReferencesArchitecture: @references/architecture/INDEX.sdd
+  ReferencesPatterns: @references/patterns/INDEX.sdd
+  ReferencesDatabase: @references/database/INDEX.sdd
+  ReferencesEngineering: @references/engineering/INDEX.sdd
+  ReferencesBestPractices: @references/best-practices/INDEX.sdd
   ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
   ProjectArchitectureSystem: @projects/{project_name}/architecture/system.sdd
   ProjectArchitectureComponents: @projects/{project_name}/architecture/components.sdd
@@ -245,7 +259,7 @@ Navigation:
   WorkflowState: @workflow/state.sdd
   WorkflowLifecycle: @workflow/lifecycle.sdd
   WorkflowDependencies: @workflow/dependencies.sdd
-  WorkflowRecovery: @workflow/recovery.sdd
+  WorkflowRecovery: @workflow/engine-recovery.sdd
   WorkflowPolicies: @workflow/policies.sdd
   ProjectWorkflow: @projects/{project_name}/workflow/INDEX.sdd
   ProjectWorkflowLifecycle: @projects/{project_name}/workflow/lifecycle.sdd
@@ -382,9 +396,9 @@ Navigation:
     SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
     FastPath: @chains/fast-path.sdd
    BugTracking: @projects/{project_name}/bugs/INDEX.sdd
-   ParallelExecution: @workflows/parallel-execution.sdd
-   KnowledgeSharing: @workflows/knowledge-sharing.sdd
-   IntelligentRuntime: @workflows/intelligent-runtime.sdd
+   ParallelExecution: @workflow/parallel-execution.sdd
+   KnowledgeSharing: @workflow/knowledge-sharing.sdd
+   IntelligentRuntime: @workflow/intelligent-runtime.sdd
   HumanSkills: @projects/{project_name}/docs/skills/
    Orchestrator: @orchestrator/INDEX.sdd
    OrchestratorModes: @orchestrator/modes.sdd

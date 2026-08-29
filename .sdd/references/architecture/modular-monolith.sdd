@@ -1,0 +1,33 @@
+@architecture.modular-monolith
+
+Purpose:
+  Single deployable unit with internal module boundaries.
+
+UseWhen:
+  - single team
+  - need internal boundaries
+  - not ready for distributed systems
+
+AvoidWhen:
+  - multiple independent teams
+  - need independent scaling
+
+Why:
+  Balances simplicity and modularity.
+
+TradeOffs:
+  + Simple deployment
+  + Easy debugging
+  + Internal modularity
+  - Limited independent scaling
+  - Shared database risk
+
+Related:
+  @architecture.microservices
+  @ddd.bounded-context
+
+Examples:
+  @project.order-management
+  @project.payment
+
+State: +

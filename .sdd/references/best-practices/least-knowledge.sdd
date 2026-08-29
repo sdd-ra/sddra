@@ -1,0 +1,28 @@
+@best-practices.least-knowledge
+
+Purpose:
+  Minimize coupling between modules.
+
+Also known as:
+  Law of Demeter.
+
+UseWhen:
+  - designing module interfaces
+  - reducing coupling
+  - improving testability
+
+Rule:
+  Talk only to immediate friends.
+
+Why:
+  Reduces ripple effects of changes.
+
+Related:
+  @best-practices.solid
+  @best-practices.composition-over-inheritance
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

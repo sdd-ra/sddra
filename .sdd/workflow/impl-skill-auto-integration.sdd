@@ -1,0 +1,149 @@
+# Workflow: Skill Auto-Integration
+
+Purpose:
+  Automatically integrate recommended skills into the project.
+  Triggered when skill gap analysis finds missing skills with >= 80% relevance.
+  Creates actionable plan and executes integration with human approval.
+
+## Auto-Integration Triggers
+
+Automatic Triggers:
+  - Skill gap analysis finds >= 80% relevant skill
+  - New technology added to project
+  - New feature requiring new skill
+  - External best practice discovered
+
+Manual Triggers:
+  - Human requests skill addition
+  - Human approves recommendation
+  - Periodic skill audit
+
+## Auto-Integration Workflow
+
+  1. SKILL DISCOVERY
+     - Analyze project requirements
+     - Scan .sdd/skills/ registry
+     - Check external sources (old/external-repo-audit/)
+     - Identify candidate skills
+
+  2. RELEVANCE SCORING
+     - Calculate relevance for each candidate
+     - Domain match: 40%
+     - Technology match: 30%
+     - Use case match: 20%
+     - Maturity: 10%
+     - Filter: score >= 80%
+
+  3. GAP ANALYSIS
+     - Compare against current skills
+     - Identify overlaps
+     - Identify duplicates
+     - Calculate coverage improvement
+
+  4. RECOMMENDATION
+     - Generate recommendation report
+     - Priority order
+     - Integration plan
+     - Estimated effort
+     - Present to human
+
+  5. HUMAN APPROVAL
+     - Human reviews recommendation
+     - Human approves/rejects/modifies
+     - Human sets priority
+     - Human provides context
+
+  6. SKILL ACQUISITION
+     - Copy from .sdd/skills/ if exists
+     - Adapt from external source if needed
+     - Create new skill if necessary
+     - Follow SKILL-EXECUTION format
+
+  7. SKILL ADAPTATION
+     - Adapt to project context
+     - Update examples
+     - Update validation criteria
+     - Update dependencies
+     - Test skill execution
+
+  8. SKILL INTEGRATION
+     - Add to .sdd/skills/<domain>/INDEX.sdd
+     - Add to .sdd/INDEX.sdd navigation
+     - Update .sdd/skills/INDEX.sdd ReadOrder
+     - Create DEC-XXX for addition
+     - Update README.md
+
+  9. SKILL TESTING
+     - Test skill execution
+     - Validate input/output
+     - Check examples
+     - Verify fallback behavior
+
+  10. SKILL DEPLOYMENT
+      - Deploy to .sdd/skills/
+      - Update registries
+      - Notify agents
+      - Document in README
+
+  11. KNOWLEDGE SHARING
+      - Share new skill with all agents
+      - Update skill cache
+      - Notify dependent skills
+      - Document lessons learned
+
+## Auto-Integration Rules
+
+  [AI1] Only skills with >= 80% relevance are auto-recommended.
+  [AI2] Human approval is required before integration.
+  [AI3] Duplicate skills are not integrated.
+  [AI4] Experimental skills require extra review.
+  [AI5] Deprecated skills are not integrated.
+  [AI6] Integration must be traceable to DEC-XXX.
+  [AI7] Integration must not break existing skills.
+  [AI8] Integration must be tested before deployment.
+
+## Auto-Integration Safety
+
+Safety Checks:
+  - Relevance score >= 80%
+  - No duplicates
+  - No conflicts with existing skills
+  - Human approval obtained
+  - DEC-XXX created
+  - Tests pass
+
+Rollback:
+  - If integration fails, rollback to previous state
+  - Restore from backup
+  - Notify human
+  - Document failure
+
+## Auto-Integration Metrics
+
+Track:
+  - Skills discovered per project
+  - Skills recommended per project
+  - Skills integrated per project
+  - Integration success rate
+  - Time to integrate
+  - Relevance score distribution
+
+## Auto-Integration Commands
+
+/sdd-discover-skills:
+  Discover skills for current project
+  Usage: /sdd-discover-skills --project=current
+
+/sdd-recommend-skills:
+  Recommend skills to add
+  Usage: /sdd-recommend-skills --threshold=80
+
+/sdd-integrate-skill:
+  Integrate recommended skill
+  Usage: /sdd-integrate-skill --skill=SKILL-XXX
+
+/sdd-audit-skills:
+  Audit current skill coverage
+  Usage: /sdd-audit-skills
+
+State: +

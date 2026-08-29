@@ -1,0 +1,27 @@
+@ddd.value-object
+
+Purpose:
+  Immutable value without identity.
+
+UseWhen:
+  - describes a quantity or measurement
+  - equality is based on attributes
+  - immutability is desired
+
+AvoidWhen:
+  - object has lifecycle
+  - identity matters
+  - frequent mutations expected
+
+Why:
+  Value objects reduce complexity by being immutable and interchangeable.
+
+Related:
+  @ddd.entity
+  @ddd.aggregate
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

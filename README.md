@@ -60,7 +60,7 @@ All DevOps practices are encoded as skills in `.sdd/skills/devops/`. This includ
   skills/                  Engineering skills (L1-L5)
     devops/                DevOps skills (git, ci-cd, security, testing)
   prompts/                 Prompt intelligence engine
-  workflows/               Execution workflows
+  workflow/               Execution workflows
   commands/                Claude CLI commands (/sdd, /sdd-analyze)
   plugins/                 External plugin adapters
   project/                 Project-specific schemas & routing
@@ -335,8 +335,8 @@ The system includes resilience patterns:
 4. Document in README.md
 
 ### Adding New Workflows
-1. Create workflow file in `.sdd/workflows/`
-2. Add to `.sdd/workflows/INDEX.sdd`
+1. Create workflow file in `.sdd/workflow/`
+2. Add to `.sdd/workflow/INDEX.sdd`
 3. Add to `.sdd/INDEX.sdd` navigation
 4. Document in README.md
 

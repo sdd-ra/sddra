@@ -1,0 +1,20 @@
+@best-practices.kiss
+
+Purpose:
+  Keep it simple.
+
+Default:
+  Prefer simpler solution.
+
+Unless:
+  Complexity provides measurable business or technical value.
+
+Related:
+  @best-practices.dry
+  @best-practices.yagni
+
+Examples:
+  @project.simple-crud
+  @project.admin-panel
+
+State: +

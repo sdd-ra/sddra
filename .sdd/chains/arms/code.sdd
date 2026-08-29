@@ -13,7 +13,7 @@ Stage:
     - project/
     - .sdd/projects/{project_name}/decisions/DEC-XXX.sdd (updated status)
   skills:
-    - workflows/task-execution.sdd
+    - workflow/impl-task-execution.sdd
     - plugins/plugin-adapters/using-git-worktrees.sdd
   token:
     - ../../projects/{project_name}/tokens/C1.sdd

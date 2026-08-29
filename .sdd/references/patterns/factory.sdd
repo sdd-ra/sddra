@@ -1,0 +1,25 @@
+@patterns.factory
+
+Purpose:
+  Object creation without specifying exact class.
+
+UseWhen:
+  - creation logic is complex
+  - need to decouple creation from usage
+  - multiple product families
+
+AvoidWhen:
+  - simple object creation with new
+  - no variation in creation
+
+Why:
+  Centralizes creation logic and promotes loose coupling.
+
+Related:
+  @patterns.strategy
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

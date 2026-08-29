@@ -1,0 +1,26 @@
+@ddd.domain-service
+
+Purpose:
+  Domain operation that does not naturally belong to an entity/value object.
+
+UseWhen:
+  - operation spans multiple aggregates
+  - no natural owner exists
+  - domain logic without state
+
+AvoidWhen:
+  - operation belongs to a single entity
+  - stateless orchestration (use application service)
+
+Why:
+  Prevents forcing domain logic into entities where it does not belong.
+
+Related:
+  @ddd.entity
+  @ddd.aggregate
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

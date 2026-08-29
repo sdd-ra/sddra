@@ -36,7 +36,7 @@ docs/
   RESOURCES.sdd             # Resource registry
   PROTOCOL/ROOT.sdd         # Universal rules
   patterns/                 # Resilience patterns
-  workflows/                # Example workflows
+  workflow/                # Example workflows
 ```
 
 ## Human-Readable Documentation

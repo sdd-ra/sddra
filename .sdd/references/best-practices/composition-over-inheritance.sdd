@@ -1,0 +1,26 @@
+@best-practices.composition-over-inheritance
+
+Purpose:
+  Prefer composition for flexibility.
+
+UseWhen:
+  - need flexible behavior combination
+  - inheritance hierarchy is deep
+  - multiple variants needed
+
+AvoidWhen:
+  - simple is-a relationship
+  - framework requires inheritance
+
+Why:
+  Composition provides runtime flexibility and avoids fragile base class problem.
+
+Related:
+  @best-practices.solid
+  @best-practices.dry
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

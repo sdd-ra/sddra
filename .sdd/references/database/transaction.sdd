@@ -1,0 +1,26 @@
+@database.transaction
+
+Purpose:
+  Unit of work with ACID guarantees.
+
+UseWhen:
+  - multiple operations must succeed or fail together
+  - data consistency is critical
+  - financial or critical business operations
+
+AvoidWhen:
+  - read-only operations
+  - eventual consistency is acceptable
+
+Why:
+  Maintains data integrity across operations.
+
+Related:
+  @database.locking
+  @patterns.repository
+
+Examples:
+  @project.payment
+  @project.core-banking
+
+State: +

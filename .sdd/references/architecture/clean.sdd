@@ -1,0 +1,32 @@
+@architecture.clean
+
+Purpose:
+  Entities, use cases, interface adapters, frameworks.
+
+UseWhen:
+  - enterprise scale
+  - strict dependency rules required
+  - long-lived codebase
+
+AvoidWhen:
+  - small project
+  - rapid prototyping
+
+Why:
+  Enforces strict dependency direction inward.
+
+TradeOffs:
+  + Clear separation of concerns
+  + Enterprise grade
+  - More boilerplate
+  - Steeper learning curve
+
+Related:
+  @architecture.hexagonal
+  @architecture.layered
+
+Examples:
+  @project.core-banking
+  @project.enterprise
+
+State: +

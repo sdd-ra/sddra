@@ -50,7 +50,7 @@ Structure:
       tokens/
     skills/                 # Skill catalog
     prompts/                # Prompt templates
-    workflows/              # Workflow definitions
+    workflow/              # Workflow definitions
     state/                  # State notation
 
 Rules:

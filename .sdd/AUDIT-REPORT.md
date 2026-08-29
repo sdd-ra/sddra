@@ -38,7 +38,7 @@ Files lacking State: + in modifiable directories:
 | tasks/ | tasks.sdd |
 | decisions/ | schema.sdd, template.sdd |
 | project/ | map.sdd, README.sdd, decisions/INDEX.sdd, docs/mappings.sdd, tasks/INDEX.sdd, architecture/INDEX.sdd |
-| workflows/ | agent-workflow.sdd, chain-implementation.sdd, agent-implementation.sdd, recovery.sdd, example-prompt-to-code.sdd, backup-integrity.sdd |
+| workflow/ | agent-workflow.sdd, chain-implementation.sdd, agent-implementation.sdd, engine-recovery.sdd, example-prompt-to-code.sdd, backup-integrity.sdd, impl-migration.sdd, impl-feature-planning.sdd, impl-agent-workflow.sdd, impl-agent-implementation.sdd, impl-chain-implementation.sdd, impl-task-execution.sdd, impl-recovery.sdd, impl-parallel-execution.sdd, impl-knowledge-sharing.sdd, impl-intelligent-runtime.sdd, impl-backup-integrity.sdd, impl-skill-auto-integration.sdd, impl-example-prompt-to-code.sdd |
 | orchestrator/ | reasoning.sdd, boundary.sdd, modes.sdd |
 | observability/ | observability.sdd |
 | architecture/ | architecture.sdd, principles.sdd |
@@ -117,12 +117,25 @@ All case files have `state: -` instead of `State: +` (different format).
    - project/README.sdd
    - projects/{project_name}/decisions/INDEX.sdd
    - project/map.sdd
-   - workflows/agent-workflow.sdd
-   - workflows/chain-implementation.sdd
-   - workflows/agent-implementation.sdd
-    - plugins/INDEX.sdd (includes adapter map)
-   - observability/observability.sdd
-   - architecture/architecture.sdd
+    - workflow/agent-workflow.sdd
+    - workflow/chain-implementation.sdd
+    - workflow/agent-implementation.sdd
+    - workflow/engine-recovery.sdd
+    - workflow/example-prompt-to-code.sdd
+    - workflow/backup-integrity.sdd
+    - workflow/impl-migration.sdd
+    - workflow/impl-feature-planning.sdd
+    - workflow/impl-agent-workflow.sdd
+    - workflow/impl-agent-implementation.sdd
+    - workflow/impl-chain-implementation.sdd
+    - workflow/impl-task-execution.sdd
+    - workflow/impl-recovery.sdd
+    - workflow/impl-parallel-execution.sdd
+    - workflow/impl-knowledge-sharing.sdd
+    - workflow/impl-intelligent-runtime.sdd
+    - workflow/impl-backup-integrity.sdd
+    - workflow/impl-skill-auto-integration.sdd
+    - workflow/impl-example-prompt-to-code.sdd
 4. Standardized file headers (where applicable)
 
 ## Files Already Correct
@@ -137,8 +150,8 @@ The following files already had State: + and required no changes:
 - projects/{project_name}/docs/mappings.sdd
 - projects/{project_name}/tasks/INDEX.sdd
 - projects/{project_name}/architecture/INDEX.sdd
-- workflows/recovery.sdd
-- workflows/example-prompt-to-code.sdd
-- workflows/backup-integrity.sdd
+- workflow/engine-recovery.sdd
+- workflow/example-prompt-to-code.sdd
+- workflow/backup-integrity.sdd
 
 State: +

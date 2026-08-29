@@ -1,0 +1,20 @@
+@best-practices.dry
+
+Purpose:
+  Don't repeat yourself.
+
+Default:
+  Avoid accidental duplication.
+
+Unless:
+  Abstraction introduces stronger coupling.
+
+Related:
+  @best-practices.kiss
+  @best-practices.composition-over-inheritance
+
+Examples:
+  @project.payment
+  @project.order
+
+State: +

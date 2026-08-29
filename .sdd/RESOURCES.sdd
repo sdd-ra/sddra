@@ -19,8 +19,8 @@ TEMPLATE:
 
 WORKFLOW:
   Execution workflows
-  Location: .sdd/workflows/
-  Registry: .sdd/workflows/INDEX.sdd
+  Location: .sdd/workflow/
+  Registry: .sdd/workflow/INDEX.sdd
 
 COMMAND:
   CLI commands
