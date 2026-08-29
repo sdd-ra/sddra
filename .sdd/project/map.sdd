@@ -26,7 +26,7 @@ Structure:
       mode.sdd
       architecture.sdd
     projects/               # Concrete project instances
-      vkard.az/
+      example_project/
         INDEX.sdd
         decisions/
         tasks/
@@ -55,7 +55,7 @@ Structure:
 
 Rules:
   [S1] AI MUST start from .sdd/, never from project/ directly.
-  [S2] AI MUST read .sdd/projects/vkard.az/docs/ before touching project/.
+  [S2] AI MUST read .sdd/projects/example_project/docs/ before touching project/.
   [S3] AI MUST get human approval before writing to project/.
   [S4] project/ is the source of truth for code.
   [S5] .sdd/ is the source of truth for intent.
@@ -65,7 +65,7 @@ Rules:
 Context Flow:
   prompt
     -> .sdd/chains/arms/prompt.sdd (P1)
-    -> .sdd/projects/vkard.az/docs/ (human docs)
+    -> .sdd/projects/example_project/docs/ (human docs)
     -> human approval
     -> .sdd/project/ (AI model)
     -> .sdd/chains/arms/code.sdd (C1)

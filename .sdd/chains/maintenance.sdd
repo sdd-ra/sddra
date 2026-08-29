@@ -33,7 +33,7 @@ Gates:
   VR: verified
 
 Retry: 2
-Token: @projects/vkard.az/tokens/M1.sdd
+Token: @projects/example_project/tokens/M1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

@@ -11,7 +11,7 @@ ReadOrder:
    1 @INDEX.sdd
    2 @layers.sdd
    3 @decisions.sdd
-   4 @../projects/vkard.az/MAP.md
+   4 @../projects/example_project/MAP.md
 
 Rules:
   [FTR1] Features MUST be assigned to a layer (L0, L1, L2, ...).
@@ -20,13 +20,13 @@ Rules:
   [FTR4] L1 = Customer-requested features (next priority).
   [FTR5] L2+ = Future enhancements and optimizations.
   [FTR6] Feature decisions MUST be documented in decisions/.
-  [FTR7] Project-specific features live in projects/vkard.az/.
+  [FTR7] Project-specific features live in projects/example_project/.
 
 Navigation:
   Layers: @layers.sdd
   Decisions: @decisions.sdd
-  ProjectMap: @../projects/vkard.az/MAP.md
-  ProjectStructure: @../projects/vkard.az/STRUCTURE.md
+  ProjectMap: @../projects/example_project/MAP.md
+  ProjectStructure: @../projects/example_project/STRUCTURE.md
   Registry: @../projects/INDEX.sdd
 
 State: +

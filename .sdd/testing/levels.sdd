@@ -109,11 +109,11 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
-  ProjectCoverage: @projects/vkard.az/testing/coverage.sdd
-  ProjectRuns: @projects/vkard.az/testing/runs/
-  ProjectFailures: @projects/vkard.az/testing/failures/
-  ProjectExceptions: @projects/vkard.az/testing/exceptions/
+  ProjectTesting: @projects/example_project/testing/INDEX.sdd
+  ProjectCoverage: @projects/example_project/testing/coverage.sdd
+  ProjectRuns: @projects/example_project/testing/runs/
+  ProjectFailures: @projects/example_project/testing/failures/
+  ProjectExceptions: @projects/example_project/testing/exceptions/
 
 State: +
   Note:

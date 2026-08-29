@@ -47,8 +47,8 @@ Rules:
 
 Navigation:
   Layers: @layers.sdd
-  ProjectMap: @../projects/vkard.az/MAP.md
-  ProjectStructure: @../projects/vkard.az/STRUCTURE.md
+  ProjectMap: @../projects/example_project/MAP.md
+  ProjectStructure: @../projects/example_project/STRUCTURE.md
   Decisions: @../decisions/INDEX.sdd
   Tasks: @../tasks/INDEX.sdd
 

@@ -5,9 +5,9 @@ Purpose:
   Tasks are derived from approved docs and .sdd/project/ structure.
 
 Inputs:
-  - .sdd/projects/vkard.az/tasks/*.sdd (task definitions)
+  - .sdd/projects/example_project/tasks/*.sdd (task definitions)
   - .sdd/project/domains.sdd (domain structure)
-  - .sdd/projects/vkard.az/stack/*.sdd (tech stack)
+  - .sdd/projects/example_project/stack/*.sdd (tech stack)
   - .sdd/skills/**/*.sdd (skill catalog)
   - .sdd/chains/*.sdd (execution chains)
 
@@ -19,7 +19,7 @@ Outputs:
 
 Steps:
   1. DISCOVER_TASKS:
-     - Read .sdd/projects/vkard.az/tasks/INDEX.sdd
+     - Read .sdd/projects/example_project/tasks/INDEX.sdd
      - Find tasks with status: ready
      - Respect dependency order
 

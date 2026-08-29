@@ -4,8 +4,8 @@ Purpose:
   Adapt Superpowers requesting/receiving code review skills for SDDRA R1 arm.
 
 Source:
-  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01\skills\requesting-code-review\SKILL.md
-  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01\skills\receiving-code-review\SKILL.md
+  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01\skills\requesting-code-review\SKILL.md
+  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01\skills\receiving-code-review\SKILL.md
 
 Original:
   Requesting: Pre-review checklist
@@ -29,7 +29,7 @@ Adapted for SDDRA:
   Integration:
     - R1 arm handles review
     - Feedback recorded in decisions/
-    - Revision tasks created in .sdd/projects/vkard.az/tasks/
+    - Revision tasks created in .sdd/projects/example_project/tasks/
 
 Usage:
   Referenced by:

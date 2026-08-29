@@ -15,7 +15,7 @@ Hər işdən əvvəl bu sıra ilə başla:
 2. `.sdd/chains/graph.sdd` — hansı chain işləyəcək
 3. `.sdd/chains/arms/*.sdd` — hər arm nə edir
 4. `.sdd/decisions/DEC-*.sdd` — hansı qərarlar təsdiq edilib
-5. `.sdd/instances/vkard.az/docs/` — insan dili təsviri
+5. `.sdd/instances/example_project/docs/` — insan dili təsviri
 6. `templates/INDEX.sdd` — reusable project templates
 7. `.sdd/skills/cross-cutting/project-structure/` — project generation skill
 

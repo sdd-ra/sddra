@@ -52,7 +52,7 @@ Navigation:
   BDD: @bdd.sdd
   Integration: @integration.sdd
   API: @api.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/example_project/testing/INDEX.sdd
 
 State: +
   

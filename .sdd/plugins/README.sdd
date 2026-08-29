@@ -4,7 +4,7 @@ Purpose:
   How SDDRA adapts external plugins and integrates them into the chain graph.
 
 External Source:
-  D:\Tasks\ai_code\vkard.az\tmp\external-repo-audit\repo-01
+  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01
   Upstream: https://github.com/obra/superpowers
 
 Adaptation Rules:

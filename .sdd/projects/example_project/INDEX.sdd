@@ -1,0 +1,80 @@
+# example_project — Example Project Instance
+
+Purpose:
+  Example project instance used for demonstration and testing.
+  This is NOT a real project — it shows how a project instance
+  is structured within SDDRA.
+
+  When a real project is selected by human, a new instance is created
+  at .sdd/projects/{project_name}/ following this template.
+
+  This example contains placeholder data for:
+    decisions, tasks, docs, stack, testing, context, cases, bugs,
+    dependencies, observability, workflow, architecture, and tokens.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @MAP.md
+   3 @STRUCTURE.md
+   4 @decisions/INDEX.sdd
+   5 @tasks/INDEX.sdd
+   6 @docs/INDEX.sdd
+   7 @stack/INDEX.sdd
+   8 @context/INDEX.sdd
+   9 @cases/INDEX.sdd
+   10 @bugs/INDEX.sdd
+   11 @dependencies/INDEX.sdd
+   12 @gates/INDEX.sdd
+   13 @observability/INDEX.sdd
+   14 @workflow/INDEX.sdd
+   15 @architecture/INDEX.sdd
+   16 @testing/INDEX.sdd
+   17 @tokens/
+
+Rules:
+  [V1] This is an EXAMPLE project, not a real project.
+  [V2] All data in this directory is for demonstration only.
+  [V3] When a real project is selected, create .sdd/projects/{project_name}/.
+  [V4] Project state MUST live under the real project instance.
+  [V5] Decisions MUST be tracked in decisions/.
+  [V6] Tasks MUST be tracked in tasks/.
+  [V7] Documentation MUST live in docs/.
+  [V8] Stack declarations MUST live in stack/.
+  [V9] Context MUST be managed in context/.
+  [V10] Cases and bugs MUST be tracked in cases/ and bugs/.
+  [V11] Dependencies MUST be declared in dependencies/.
+  [V12] Gates MUST be enforced via gates/.
+  [V13] Observability data MUST live in observability/.
+  [V14] Workflow state MUST live in workflow/.
+  [V15] Architecture decisions MUST live in architecture/.
+  [V16] Test results MUST live in testing/.
+  [V17] Token records MUST live in tokens/.
+  [V18] MAP.md MUST contain real project location and file mappings.
+  [V19] STRUCTURE.md MUST describe the real codebase structure.
+  [V20] Feature decisions MUST use MAP.md and STRUCTURE.md for context.
+
+Navigation:
+  Model: @../project/INDEX.sdd
+  Registry: @../INDEX.sdd
+  Map: @MAP.md
+  Structure: @STRUCTURE.md
+  Decisions: @decisions/INDEX.sdd
+  Tasks: @tasks/INDEX.sdd
+  Docs: @docs/INDEX.sdd
+  Stack: @stack/INDEX.sdd
+  Context: @context/INDEX.sdd
+  Cases: @cases/INDEX.sdd
+  Bugs: @bugs/INDEX.sdd
+  Dependencies: @dependencies/INDEX.sdd
+  Gates: @gates/INDEX.sdd
+  Observability: @observability/INDEX.sdd
+  Workflow: @workflow/INDEX.sdd
+  Architecture: @architecture/INDEX.sdd
+  Testing: @testing/INDEX.sdd
+  Tokens: @tokens/
+  Features: @../../features/INDEX.sdd
+  Layers: @../../features/layers.sdd
+
+State: ~ (example/template state)

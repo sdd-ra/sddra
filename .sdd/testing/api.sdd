@@ -46,7 +46,7 @@ Navigation:
   Unit: @unit.sdd
   Integration: @integration.sdd
   Contract: @contract.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/example_project/testing/INDEX.sdd
 
 State: +
   
