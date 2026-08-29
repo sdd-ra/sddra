@@ -292,13 +292,9 @@ Navigation:
   AgentAudit: @agent/audit.sdd
   RuntimeWorkspace: @runtime/INDEX.sdd
   Discovery: @discovery/INDEX.sdd
-  DiscoveryRules: @discovery/rules.sdd
   DiscoveryScanners: @discovery/scanners.sdd
   DiscoveryDetectors: @discovery/detectors.sdd
-  DiscoveryMapping: @discovery/mapping.sdd
-  DiscoveryConfidence: @discovery/confidence.sdd
   DiscoveryConflicts: @discovery/conflicts.sdd
-  DiscoveryBaseline: @discovery/baseline.sdd
   ProjectMode: @project/mode.sdd
   Graph: @graph/INDEX.sdd
   GraphNodes: @graph/nodes.sdd

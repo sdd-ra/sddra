@@ -2,21 +2,12 @@
 
 Purpose:
   Project Discovery and Reverse-Engineering Engine. Enables AI to
-  understand existing (brownfield) projects by analyzing source
-  code and inferring architecture, stack, domains, tests, security,
+  understand existing (brownfield) projects by analyzing source code
+  and inferring architecture, stack, domains, tests, security,
   infrastructure, and documentation. Discovery NEVER modifies
   source code — it only observes, infers, validates, and models.
 
 Owns: ./
-
-ReadOrder:
-   1  @rules.sdd
-   2  @scanners.sdd
-   3  @detectors.sdd
-   4  @mapping.sdd
-   5  @confidence.sdd
-   6  @conflicts.sdd
-   7  @baseline.sdd
 
 Modes:
   GREENFIELD — new project from business input
@@ -35,31 +26,61 @@ Rules:
   [DSC8]  Discovery baseline MUST be created for future comparison.
   [DSC9]  Discovery MUST detect circular dependencies.
   [DSC10] Discovery MUST identify security gaps.
+  [DR1]   Discovery MUST analyze, not modify source code.
+  [DR2]   Discovery MUST classify all findings.
+  [DR3]   Discovery MUST assign confidence to inferences.
+  [DR4]   Discovery MUST detect drift between .sdd and source.
+  [DR5]   Discovery MUST produce actionable backlog.
+  [DR6]   Discovery MUST create baseline for future comparison.
+  [DR7]   Discovery MUST detect circular dependencies.
+  [DR8]   Discovery MUST identify security gaps.
+  [CF1]   Every inference MUST have confidence level.
+  [CF2]   HIGH confidence findings MAY be treated as FACT.
+  [CF3]   MEDIUM confidence findings MUST be validated for critical decisions.
+  [CF4]   LOW confidence findings MUST be marked UNKNOWN if critical.
+  [CF5]   Confidence MUST NOT be inflated for convenience.
+  [BL1]   Baseline MUST be created after every discovery.
+  [BL2]   Baseline MUST be immutable after creation.
+  [BL3]   Future discoveries MUST compare against baseline.
+  [BL4]   Baseline MUST include discovery score and unknown budget.
 
-Entry:
-  Read:
-    INDEX.sdd
+FactClassification:
+  FACT: Directly proven from source code
+  INFERRED: Logical conclusion from source code
+  UNKNOWN: No information available
+  CONFLICT: .sdd differs from source
 
-  Resolve:
-    rules
-    scanners
-    detectors
-    mapping
-    confidence
-    conflicts
-    baseline
+ConfidenceLevels:
+  HIGH:
+    Definition: Directly proven from source
+    Evidence: Multiple indicators, explicit configuration
+    Action: Treat as FACT
+  MEDIUM:
+    Definition: Strong inference from source
+    Evidence: Clear patterns, consistent usage
+    Action: Treat as INFERRED, validate if critical
+  LOW:
+    Definition: Weak inference
+    Evidence: Single indicator, ambiguous
+    Action: Treat as INFERRED, mark as UNKNOWN if critical
+
+Baseline:
+  Structure: Project, Mode, Timestamp
+  Scores: Overall, Structure, Stack, Architecture, Testing, Security, Infrastructure, Documentation
+  UnknownBudget: Unknown percentage
+  Sections: Discovered lists, Conflicts, Gaps, ActionableBacklog
+  Rules: immutable after creation, compare future discoveries against it
+
+ReadOrder:
+   1  @scanners.sdd
+   2  @detectors.sdd
+   3  @conflicts.sdd
 
 Navigation:
   Discovery: @discovery/INDEX.sdd
-  Rules: @discovery/rules.sdd
   Scanners: @discovery/scanners.sdd
   Detectors: @discovery/detectors.sdd
-  Mapping: @discovery/mapping.sdd
-  Confidence: @discovery/confidence.sdd
   Conflicts: @discovery/conflicts.sdd
-  Baseline: @discovery/baseline.sdd
   ProjectMode: @project/mode.sdd
-  HumanDiscovery: @docs/discovery/project-analysis.md
 
 State: +
-  
