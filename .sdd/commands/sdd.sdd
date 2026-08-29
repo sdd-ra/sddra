@@ -1,100 +1,32 @@
-﻿# /sdd Command Specification
-Purpose:
-  /sdd Command Specification
-
-
-Command: /sdd "prompt"
-Alias: /sdd-run
+﻿# /sdd
 
 Description:
-  Execute SDDRA chain graph from prompts in the prompts/ folder.
-  Claude reads prompts/, selects next prompt, reads .sdd/, generates docs,
-  waits for approval, generates .sdd/project/, waits for approval, generates code.
+  Execute the SDDRA chain from a prompt. Routes through prompt → docs →
+  sdd → code → review → deploy, with human approval at each gate.
 
 Usage:
-  /sdd "prompt-001"
-  /sdd "prompt-001/prompt.md"
-  /sdd "inbox/prompt-003"
+  /sdd "prompt text or path"
   /sdd --list
   /sdd --status
 
+Options:
+  --list    List available prompts
+  --status  Show current execution status
+
 Behavior:
-  1. Read prompts/ folder
-  2. Find next prompt to process (inbox or active)
-  3. Read prompt.md
-  4. Read first skill from prompt/skill/
-  5. Read .sdd/PROJECT.sdd
-  6. Read .sdd/chains/graph.sdd
-  7. Select chain: D0 -> D1 -> S1 -> C1
-  8. Execute D1 (docs arm):
-       - Generate docs/ from prompt
-       - Create decision records (DEC-XXX)
-       - Record tokens
-       - Return to D0
-  9. Wait for human approval (Gate P1->D1)
-  10. Execute S1 (sdd arm):
-        - Convert docs/ to .sdd/project/
-        - Create tasks linked to decisions
-        - Record tokens
-        - Return to D0
-  11. Wait for human approval (Gate D1->S1)
-  12. Execute C1 (code arm):
-        - Execute tasks from .sdd/project/
-        - Update decision status
-        - Record tokens
-        - Return to D0
-  13. Wait for human review (Gate S1->C1)
-  14. Execute R1 (review arm):
-        - Present code for review
-        - Record tokens
-        - Return to D0
-  15. Wait for human approval (Gate C1->R1)
-  16. Execute DEP1 (deploy arm):
-        - Deploy to production
-        - Record tokens
-        - Return to D0
-  17. Move prompt to archive
-  18. Complete
+  1. Read prompt
+  2. Generate docs (D1)
+  3. Wait for approval
+  4. Generate .sdd/project/ (S1)
+  5. Wait for approval
+  6. Implement code (C1)
+  7. Review (R1)
+  8. Deploy (DEP1) — requires explicit approval
 
-Token Budget: 70,000 total
-
-Output Format:
-  [tokens: in=X, out=Y, delta=Z]
+Output:
+  [tokens: in=X, out=Y]
   [decision: DEC-XXX]
   [gate: human_required|auto]
-  [next: D0->D1|D0->S1|...]
-  [status: completed|pending|failed]
-  [prompt: prompt-XXX]
-
-Prompt Selection:
-  Priority order:
-    1. active/ (currently being worked on)
-    2. inbox/ (new prompts)
-    3. prompt-XXX/ (numbered prompts)
-
-  Selection criteria:
-    - Oldest first (FIFO)
-    - Dependencies resolved
-    - Resources available
-
-Prompt State:
-  inbox -> active -> archive
-  inbox: New prompts awaiting processing
-  active: Prompts currently being worked on
-  archive: Completed prompts
-
-Prompt Folder Structure:
-  prompts/
-    prompt-XXX/
-      prompt.md          â€” Original user prompt
-      skill/             â€” First skill to execute
-        SKILL.sdd
-      context/           â€” Execution context
-        decisions/
-        tasks/
-        docs/
-      state/             â€” Current execution state
-      logs/              â€” Execution logs
+  [next: D0→D1]
 
 State: +
-

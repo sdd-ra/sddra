@@ -3,16 +3,21 @@
 Purpose:
   CLI commands for SDDRA system in Claude AI.
 
-Files:
-  sdd: @sdd.sdd
-  sdd-analyze: @sdd-analyze.sdd
-  sdd-status: @sdd-status.sdd
-  sdd-decisions: @sdd-decisions.sdd
-  sdd-health: @sdd-health.sdd
-  sdd-backup: @sdd-backup.sdd
-  sdd-restore: @sdd-restore.sdd
-  sdd-resume: @sdd-resume.sdd
-  sdd-migrate: @sdd-migrate.sdd
+Schema:
+  command: /command-name
+  description: One-line user-friendly description
+  usage: /command-name [args] [options]
+  options:
+    - --flag: description
+  mode: READ_ONLY | SUPERVISED | READ_WRITE
+  output: Markdown | Table | Plain text
+
+Rules:
+  [CMD1] All commands MUST have a single-line description.
+  [CMD2] Commands MUST NOT modify files unless mode is READ_WRITE.
+  [CMD3] Commands with side effects MUST require human approval.
+  [CMD4] Command output MUST be human-readable by default.
+  [CMD5] Commands MUST support --help for usage information.
 
 Commands:
   /sdd: Execute chain graph from prompt
@@ -20,9 +25,13 @@ Commands:
   /sdd-status: Show execution status
   /sdd-decisions: List decisions
   /sdd-health: Check system integrity
-  /sdd-backup: Create backup of critical files
+  /sdd-backup: Create backup
   /sdd-restore: Restore from backup
   /sdd-resume: Resume from checkpoint
-  /sdd-migrate: Run migrations after .sdd/ updates
+  /sdd-migrate: Run migrations
+
+Navigation:
+  Chains: @../chains/INDEX.sdd
+  Agent: @../agent/INDEX.sdd
 
 State: +

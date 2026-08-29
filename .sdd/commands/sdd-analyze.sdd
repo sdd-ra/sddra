@@ -1,65 +1,22 @@
-﻿# /sdd-analyze Command Specification
-Purpose:
-  /sdd-analyze Command Specification
-
-
-Command: /sdd-analyze
-Alias: /sdd-explain, /sdd-structure
+﻿# /sdd-analyze
 
 Description:
-  Analyze .sdd/ structure and explain the system in human language.
-  Does NOT modify any files. Read-only analysis.
+  Analyze and explain the .sdd/ system structure. Read-only — does not
+  modify any files.
 
 Usage:
   /sdd-analyze
-  /sdd-analyze --detailed
-  /sdd-analyze --decisions
   /sdd-analyze --chains
+  /sdd-analyze --decisions
   /sdd-analyze --project
 
-Behavior:
-  1. Read .sdd/PROJECT.sdd
-  2. Read .sdd/chains/graph.sdd
-  3. Read .sdd/decisions/INDEX.sdd
-  4. Read .sdd/project/INDEX.sdd
-  5. Generate human-readable explanation
-
-Output Sections:
-  1. System Overview
-     - What SDDRA is
-     - How it works
-     - Current status
-
-  2. Chain Graph
-     - D0 root
-     - 6 arms: P1, D1, S1, C1, R1, DEP1
-     - Current execution state
-     - Token usage
-
-  3. Decision Ledger
-     - Active decisions
-     - Decision relationships
-     - Pending approvals
-
-  4. Project Structure
-     - Domains
-     - Modules
-     - Tech stack
-     - Scale
-
-  5. Next Steps
-     - What can be executed
-     - What needs approval
-     - Recommended actions
-
 Options:
-  --detailed: Include all .sdd/ file contents
-  --decisions: Focus on decision ledger
-  --chains: Focus on chain graph
-  --project: Focus on project structure
+  --chains     Focus on chain graph
+  --decisions  Focus on decision ledger
+  --project    Focus on project structure
 
-Output Format:
-  Plain text, human-readable, English.
+Output:
+  System overview, chain graph, decisions, project modules,
+  and recommended next steps.
 
 State: +
-

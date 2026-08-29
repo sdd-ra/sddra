@@ -1,42 +1,31 @@
-# Command: SDD Restore
-
-Command: /sdd-restore
-Mode: SUPERVISED
-Purpose: Restore .sdd/ files from backup
+# /sdd-restore
 
 Description:
-  Restores critical .sdd/ files from a previous backup.
-  Requires human approval in SUPERVISED mode.
-  Validates backup integrity before restore.
+  Restore .sdd/ files from a previous backup. Requires approval.
 
 Usage:
-  /sdd-restore --backup=<backup-name>
   /sdd-restore --latest
+  /sdd-restore --backup=<name>
   /sdd-restore --list
 
 Options:
-  --backup=<name>   Restore from specific backup
-  --latest          Restore from latest backup
-  --list            List available backups
-  --force           Skip confirmation (dangerous)
+  --latest   Restore from latest backup
+  --backup   Restore from specific backup
+  --list     List available backups
 
-Restore Process:
-  1. Load backup manifest
-  2. Verify backup integrity (hashes)
-  3. Create backup of current state (safety)
-  4. Restore files from backup
-  5. Verify restored files
-  6. Update system state
+Process:
+  1. Verify backup integrity
+  2. Backup current state
+  3. Restore files
+  4. Verify restored files
 
 Safety:
-  - Current state backed up before restore
-  - Backup integrity verified before restore
-  - Human confirmation required (unless --force)
-  - Restore logged in audit trail
+  Current state is backed up before restore.
+  Human confirmation required.
 
 Exit Codes:
-  0 - Restore successful
-  1 - Restore failed
+  0 - Success
+  1 - Failed
   2 - Backup not found
   3 - Backup corrupted
 
