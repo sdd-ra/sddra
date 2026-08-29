@@ -34,7 +34,7 @@ Owns:
 DoesNotOwn:
   Project hierarchy shape (Project>Domain>Module>Feature>Component)
                                                 (see ./project.sdd)
-  Prompt intake/analysis mechanics                (see ../prompts/prompts.sdd)
+  Prompt intake/analysis mechanics                (see ../prompts/INDEX.sdd)
   Skill catalog content                           (see ../skills/skills.sdd)
   Global engineering-architecture principles       (see ../architecture/principles.sdd)
   This project's own resolved architecture         (see ./architecture.sdd)
@@ -45,7 +45,7 @@ DoesNotOwn:
 Pipeline:
 
   RAW PROMPT
-    -> Prompt Analysis         (bax ../prompts/prompts.sdd -> Lifecycle)
+    -> Prompt Analysis         (bax ../prompts/INDEX.sdd -> Lifecycle)
     -> Skill Discovery         (bax SkillFiltering below)
     -> Architecture Analysis   (bax ArchitectureSelection below)
     -> Scale Analysis          (bax ProjectScale below)
@@ -170,7 +170,7 @@ Rules:
 
 Navigation:
   Project hierarchy shape:        @./project.sdd
-  Prompt intake:                  @../prompts/prompts.sdd
+  Prompt intake:                  @../prompts/INDEX.sdd
   Skill catalog:                  @../skills/skills.sdd
   Global architecture principles: @../architecture/principles.sdd
   This project's resolved arch.:  @./architecture.sdd

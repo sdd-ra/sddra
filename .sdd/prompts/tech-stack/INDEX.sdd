@@ -1,18 +1,8 @@
-Prompts: Prompt Engine
+Prompts: Tech Stack
 
 Purpose:
   Convert simple human prompts into architecture docs and .sdd/project/.
   Supports the full human-in-the-loop workflow.
-
-Owns: ./
-
-ReadOrder:
-   1 @INDEX.sdd
-   2 @prompt-to-docs.sdd
-   3 @docs-to-project.sdd
-   4 @human-in-the-loop.sdd
-   5 @role-mapper.sdd
-   6 @provisioning-trigger.sdd
 
 Modes:
   GENERATE_DOCS — convert prompt to human docs
@@ -25,22 +15,10 @@ Rules:
   [PE2] Human MUST approve .sdd/project/ before code execution.
   [PE3] Human MUST approve production deployment.
   [PE4] All approvals MUST be recorded.
-  [PE5] Docs MUST be in simple Azerbaijani.
+  [PE5] Docs MUST be in simple language.
   [PE6] .sdd/project/ MUST be machine-readable.
   [PE7] Tech stack MUST resolve to valid skills.
   [PE8] Best practices MUST be included in docs.
-
-Entry:
-  Read:
-    INDEX.sdd
-    prompt-to-docs.sdd
-
-  Resolve:
-    prompt-to-docs
-    docs-to-project
-    human-in-the-loop
-    role-mapper
-    provisioning-trigger
 
 Navigation:
   PromptEngine: @prompts/INDEX.sdd

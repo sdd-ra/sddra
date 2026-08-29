@@ -855,7 +855,7 @@ Note:
   references them instead of restating their content (bax [PM8]).
 
   Rule IDs: the source used a bare `[P1]-[P10]` range, which collides
-  with `prompts/prompts.sdd`'s own `[P#]` range (bax PROJECT.sdd ->
+   with `prompts/INDEX.sdd`'s own `[P#]` range (bax PROJECT.sdd ->
   Directories -> prompts). Renumbered to `[PM1]-[PM8]`
   ("ProjectModel") to read unambiguously next to this repo's other
   prefixes ([R] PROJECT rules, [C] chains, [T] tasks, [D] decisions,
