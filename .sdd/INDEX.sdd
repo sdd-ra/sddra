@@ -310,8 +310,6 @@ Navigation:
   GatesPerformance: @gates/performance.sdd
   GatesInfrastructure: @gates/infrastructure.sdd
   GatesRelease: @gates/release.sdd
-  GatesExceptions: @gates/exceptions.sdd
-  GatesEvidence: @gates/evidence.sdd
   ProjectGates: @projects/{project_name}/gates/INDEX.sdd
   ProjectGatePolicy: @projects/{project_name}/gates/policy.sdd
   ProjectGateActive: @projects/{project_name}/gates/active.sdd

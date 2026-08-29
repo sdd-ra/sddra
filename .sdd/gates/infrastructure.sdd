@@ -3,68 +3,41 @@
 Purpose:
   Defines infrastructure and deployment gates.
 
-InfrastructureGates:
-  DockerGate:
-    Format: DOCKER-GATE-<ID>
+GateSchema:
+  Format: INFRA-GATE-<ID>
+  Condition: <infrastructure criterion>
+  Evidence: <validation result>
+  Threshold: <pass/fail criteria>
+  Owner: DevOps
+  Decision: PASS / FAIL
+
+GateTypes:
+  Docker:
     Condition: Docker build succeeds
-    Evidence: build result
-    Owner: DevOps
-
-  CICDGate:
-    Format: CI-CD-GATE-<ID>
+  CICD:
     Condition: CI/CD pipeline passes
-    Evidence: pipeline result
-    Owner: DevOps
-
-  SecretsGate:
-    Format: SECRETS-INFRA-GATE-<ID>
+  Secrets:
     Condition: No secrets in infrastructure config
-    Evidence: scan result
-    Owner: Security/DevOps
-
-  NetworkingGate:
-    Format: NETWORKING-GATE-<ID>
+  Networking:
     Condition: Network config valid
-    Evidence: config validation
-    Owner: DevOps
-
-  HealthcheckGate:
-    Format: HEALTHCHECK-GATE-<ID>
+  Healthcheck:
     Condition: Health checks pass
-    Evidence: health check result
-    Owner: DevOps
-
-  BackupGate:
-    Format: BACKUP-GATE-<ID>
+  Backup:
     Condition: Backup strategy validated
-    Evidence: backup test result
-    Owner: DevOps/DBA
-
-  MonitoringGate:
-    Format: MONITORING-GATE-<ID>
+  Monitoring:
     Condition: Monitoring configured
-    Evidence: monitoring config
-    Owner: DevOps
-
-  LoggingGate:
-    Format: LOGGING-GATE-<ID>
+  Logging:
     Condition: Logging configured
-    Evidence: logging config
-    Owner: DevOps
 
 DeploymentGates:
-  Local:
-    Direct deployment
-  Staging:
-    Rolling deployment
-  Production:
-    Canary / Blue-Green based on scale
+  Local: Direct deployment
+  Staging: Rolling deployment
+  Production: Canary / Blue-Green based on scale
 
-InfrastructureRules:
-  [IF1]  Infrastructure gates are environment-specific.
-  [IF2]  Production has strictest infrastructure gates.
-  [IF3]  Health checks MUST pass before traffic routing.
-  [IF4]  Backup and monitoring MUST be verified before production deploy.
+Rules:
+  [IF1] Infrastructure gates are environment-specific.
+  [IF2] Production has strictest infrastructure gates.
+  [IF3] Health checks MUST pass before traffic routing.
+  [IF4] Backup and monitoring MUST be verified before production deploy.
 
 State: +
-  

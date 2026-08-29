@@ -1,45 +1,30 @@
 ﻿Performance: Gates
 
 Purpose:
-  Defines performance gates including load testing and DDoS resilience.
+  Defines performance gates including load testing and resilience checks.
 
-PerformanceGates:
-  LoadGate:
-    Format: LOAD-GATE-<ID>
+GateSchema:
+  Format: PERFORMANCE-GATE-<ID>
+  Condition: <performance criterion>
+  Evidence: <performance report>
+  Threshold: <pass/fail criteria>
+  Owner: QA/DevOps
+  Decision: PASS / FAIL
+
+GateTypes:
+  Load:
     Condition: System handles expected load
-    Evidence: load test report
-    Metrics:
-      - RPS
-      - P50
-      - P95
-      - P99
-      - Error rate
-      - CPU
-      - Memory
-      - DB latency
-      - Cache hit rate
-      - Queue latency
+    Metrics: RPS, P50, P95, P99, Error rate, CPU, Memory, DB latency, Cache hit rate, Queue latency
     Threshold: Context-dependent
-    Owner: QA/DevOps
+  Resilience:
+    Condition: System withstands load/resilience simulation
+    Checks: Rate limiting, WAF, CDN, Load balancer, Autoscaling
+    Note: Agent creates controlled test plan, does not execute real attacks.
 
-  DDoSResilienceGate:
-    Format: DDOS-GATE-<ID>
-    Condition: System withstands DDoS simulation
-    Evidence: resilience test report
-    Checks:
-      - Rate limiting
-      - WAF
-      - CDN
-      - Load balancer
-      - Autoscaling
-    Owner: DevOps/Security
-    Note: Agent does NOT execute real DDoS; creates controlled test plan.
-
-PerformanceRules:
-  [PF1]  Load testing is context-dependent (not all projects need it).
-  [PF2]  DDoS gate uses controlled simulation, not real attacks.
-  [PF3]  Performance thresholds are based on project scale.
-  [PF4]  Performance gate failure blocks release for L3+.
+Rules:
+  [PF1] Load testing is context-dependent (not all projects need it).
+  [PF2] Resilience gate uses controlled simulation, not real attacks.
+  [PF3] Performance thresholds are based on project scale.
+  [PF4] Performance gate failure blocks release for L3+.
 
 State: +
-  

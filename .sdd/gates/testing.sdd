@@ -3,59 +3,39 @@
 Purpose:
   Defines testing gates including unit, integration, E2E, UI, and manual QA.
 
-TestGates:
-  UnitGate:
-    Format: UNIT-GATE-<ID>
+GateSchema:
+  Format: TEST-GATE-<ID>
+  Condition: <test criterion>
+  Evidence: <test result>
+  Threshold: <pass/fail criteria>
+  Owner: QA/Developer
+  Decision: PASS / FAIL
+
+TestTypes:
+  Unit:
     Condition: All unit tests pass
-    Evidence: test result
     Threshold: Failed = 0
-    Owner: QA/Developer
-
-  IntegrationGate:
-    Format: INTEGRATION-GATE-<ID>
+  Integration:
     Condition: All integration tests pass with real dependencies
-    Evidence: test result
     Threshold: Failed = 0
-    Owner: QA/Developer
-    Dependencies:
-      - API
-      - DB
-      - Redis
-      - Queue
-
-  E2EGate:
-    Format: E2E-GATE-<ID>
+    Dependencies: API, DB, Redis, Queue
+  E2E:
     Condition: All E2E tests pass
-    Evidence: test result
     Threshold: Failed = 0
-    Owner: QA
-    Layers:
-      - FE → API → BE → DB
-      - MD → API → BE
-
-  UIGate:
-    Format: UI-GATE-<ID>
+    Layers: FE → API → BE → DB, MD → API → BE
+  UI:
     Condition: UI tests pass
-    Tools:
-      - Playwright
-      - Cypress
-      - Detox
-      - Flutter integration
-    Owner: QA
-
-  ManualQAGate:
-    Format: MANUAL-QA-GATE-<ID>
+    Tools: Playwright, Cypress, Detox, Flutter integration
+  ManualQA:
     Condition: Manual test passed
-    Evidence: manual test result
     Threshold: PASS / FAIL / BLOCKED
     Owner: QA
 
-TestGateRules:
-  [TG1]  Unit tests MUST pass before integration tests.
-  [TG2]  Integration tests MUST pass before E2E tests.
-  [TG3]  E2E tests MUST pass before release.
-  [TG4]  UI tests use stack-appropriate tools from skill registry.
-  [TG5]  Manual QA results MUST be recorded in graph.
+Rules:
+  [TG1] Unit tests MUST pass before integration tests.
+  [TG2] Integration tests MUST pass before E2E tests.
+  [TG3] E2E tests MUST pass before release.
+  [TG4] UI tests use stack-appropriate tools from skill registry.
+  [TG5] Manual QA results MUST be recorded in graph.
 
 State: +
-  

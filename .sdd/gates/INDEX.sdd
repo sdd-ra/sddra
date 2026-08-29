@@ -1,23 +1,11 @@
 Gates: SDD
 
 Purpose:
-  Automated Quality, Security & Release Gate Engine. Defines
-  universal lifecycle and adaptive gates that determine when a
-  task or release is ready. Task completion ? Release readiness.
+  Automated Quality, Security & Release Gate Engine. Defines universal
+  lifecycle and adaptive gates that determine when a task or release
+  is ready. Task completion ? Release readiness.
 
 Owns: ./
-
-ReadOrder:
-   1  @policy.sdd
-   2  @levels.sdd
-   3  @quality.sdd
-   4  @testing.sdd
-   5  @security.sdd
-   6  @performance.sdd
-   7  @infrastructure.sdd
-   8  @release.sdd
-   9  @exceptions.sdd
-   10 @evidence.sdd
 
 Modes:
   L0 — Prototype (minimal checks)
@@ -41,21 +29,15 @@ Rules:
   [GT11] Incident feedback MUST trigger new gate requirements.
   [GT12] Gate chain: BDD ? Code ? Static Quality ? Unit ? Integration ? E2E ? Security ? Performance ? Infrastructure ? Review ? Release ? Deploy ? Runtime Verify.
 
-Entry:
-  Read:
-    INDEX.sdd
-
-  Resolve:
-    policy
-    levels
-    quality
-    testing
-    security
-    performance
-    infrastructure
-    release
-    exceptions
-    evidence
+ReadOrder:
+   1  @policy.sdd
+   2  @levels.sdd
+   3  @quality.sdd
+   4  @testing.sdd
+   5  @security.sdd
+   6  @performance.sdd
+   7  @infrastructure.sdd
+   8  @release.sdd
 
 Navigation:
   Gates: @gates/INDEX.sdd
@@ -67,9 +49,6 @@ Navigation:
   Performance: @gates/performance.sdd
   Infrastructure: @gates/infrastructure.sdd
   Release: @gates/release.sdd
-  Exceptions: @gates/exceptions.sdd
-  Evidence: @gates/evidence.sdd
   ProjectGates: @projects/{project_name}/gates/INDEX.sdd
 
 State: +
-  
