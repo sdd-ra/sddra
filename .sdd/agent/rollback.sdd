@@ -4,7 +4,7 @@ Purpose:
   Defines rollback and recovery policies for agent actions.
 
 Checkpoint:
-  Agent MUST create checkpoint before destructive/risky actions.
+  Agent MUST create checkpoint before risky actions.
 
   Types:
     Git diff:
@@ -25,17 +25,6 @@ RollbackFlow:
     ROLLBACK CHECKPOINT
 
 PartialFailure:
-  Task:
-    ├── BE
-    ├── FE
-    ├── MD
-    └── QA
-
-  BE = VERIFIED
-  FE = FAILED
-  MD = NOT_STARTED
-  QA = BLOCKED
-
   Agent MUST preserve real state, not mark entire task as FAILED.
 
 Recovery:
@@ -53,4 +42,3 @@ RollbackRules:
   [RB4]  Agent MUST recover from transient failures automatically.
 
 State: +
-  

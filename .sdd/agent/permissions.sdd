@@ -1,36 +1,14 @@
 ﻿Permissions: Agent
 
 Purpose:
-  Defines agent permissions and command policy. Permission maps
-  capabilities to policy decisions (AUTO, APPROVAL, BLOCKED).
+  Defines agent permissions. Permission = capability + policy + context.
+  This file maps capabilities to policy decisions. Risk levels and
+  approval matrix are defined in policies.sdd.
 
-RiskLevels:
-  R0:
-    safe: Read file, list files, search
-  R1:
-    low: Create temp file, run formatter, run unit test
-  R2:
-    moderate: Modify source, install dependency, change config
-  R3:
-    high: DB migration, change security config, Docker infra change
-  R4:
-    critical: Production deployment, secret rotation, data migration
-  R5:
-    destructive: Delete production data, drop database, destroy infra
-
-ApprovalMatrix:
-  R0:
-    AUTO
-  R1:
-    AUTO
-  R2:
-    AUTO / POLICY
-  R3:
-    APPROVAL
-  R4:
-    APPROVAL
-  R5:
-    EXPLICIT_APPROVAL
+PermissionModel:
+  capability: What agent CAN do technically
+  policy: Whether agent MAY do it under current policy
+  context: Environmental constraints (LOCAL, TEST, STAGING, PRODUCTION)
 
 CommandPolicy:
   go test:
@@ -92,4 +70,3 @@ PermissionRules:
   [PM5]  Secrets MUST NEVER be loaded into context.
 
 State: +
-  
