@@ -156,32 +156,109 @@ DependencyGraph:
   rule: parallel tasks MUST have no blocking dependencies between them
   rule: critical path MUST be identifiable
 
-TaskDecomposition:
-  protocol:
-    1. Read Requirement
-    2. Resolve Domain
-    3. Resolve Architecture
-    4. Identify Business Capabilities
-    5. Identify Technical Work
-    6. Propose Tasks
-    7. Define Dependencies
-    8. Define Acceptance Criteria
-    9. Map Skills
-    10. Validate Coverage
-    11. Detect Cycles
-    12. Validate Scope
-    13. Produce Task Graph
+AIProposal:
+  responsibilities:
+    - understanding requirement
+    - proposing decomposition
+    - proposing dependencies
+    - proposing acceptance criteria
+    - proposing skill mappings
 
-  rule: AI proposes, engine validates
-  rule: engine checks coverage, cycles, schema, policies, permissions
-  rule: decomposition MUST NOT create more tasks than necessary
+  limitations:
+    - DOES NOT validate structure
+    - DOES NOT enforce constraints
+    - DOES NOT authorize changes
+    - DOES NOT schedule execution
 
-TaskCoverage:
-  matrix:
-    requirement: [tasks] | [tests]
+EngineValidation:
+  responsibilities:
+    - coverage validation
+    - cycle detection
+    - schema validation
+    - policy validation
+    - permission checking
+    - scheduling
+
+  rule: engine is source of truth for correctness
+
+AIVsEngine:
+  | Task                    | AI | Engine |
+  | ----------------------- | -: | -----: |
+  | Requirement understanding |  ? |      ? |
+  | Task proposal           |  ? |      ? |
+  | Dependency proposal     |  ? |      ? |
+  | Coverage                | ?? |      ? |
+  | Cycle detection         |  ? |      ? |
+  | Schema validation       |  ? |      ? |
+  | Policy validation       |  ? |      ? |
+  | Permission              |  ? |      ? |
+  | Scheduling              | ?? |      ? |
+
+CoverageMatrix:
+  structure:
+    | Requirement      | Tasks    | Tests  |
+    | ---------------- | -------- | ------ |
+    | Reset password   | T1,T2,T3 | TEST-1 |
+    | Send email       | T4       | TEST-2 |
+    | Token expiration | T1       | TEST-3 |
 
   rule: every requirement MUST map to at least one task
-  rule: orphan tasks MUST be explicitly justified (tech debt, research)
+  rule: incomplete coverage MUST produce INCOMPLETE_COVERAGE error
+
+OrphanTask:
+  definition: task with no requirement link
+
+  allowed_types:
+    - technical debt
+    - refactoring
+    - maintenance
+    - infrastructure
+
+  rule: orphan tasks MUST have explicit type justification
+
+DynamicTaskGraph:
+  principle: task plan is NOT immutable
+
+  triggers:
+    - research produces new decision
+    - dependency invalidation
+    - requirement change
+
+  versioning:
+    PLAN-100 v1:
+      - T1
+      - T2
+      - T3
+
+    PLAN-100 v2 (after research):
+      - T1
+      - T2
+      - T3
+      - T4
+
+  rule: execution records which plan version was used
+  rule: changes are audited via events
+
+ResearchTask:
+  definition: task whose output is a decision, not code
+
+  example:
+    TASK-RESEARCH-001:
+      Goal: Evaluate Kafka vs RabbitMQ
+      Output: ARCH-DECISION-001
+
+  rule: research tasks MUST produce decision artifacts
+  rule: research tasks MUST NOT produce source code
+
+DecisionProducingTask:
+  flow: Research -> Analysis -> Decision -> Implementation Tasks
+
+  rule: decision MUST be recorded before implementation tasks proceed
+
+TaskExecutionBoundary:
+  rule: one execution = one task scope
+  rule: agent MUST NOT switch tasks without formal TASK_SWITCH_REQUEST
+  rule: files outside task scope are DENIED unless scope expansion is approved
 
 ScopeBoundary:
   rule: task MUST define allowed and forbidden scopes
@@ -263,7 +340,6 @@ Rules:
 
 Navigation:
   Tasks: @tasks.sdd
-  Decomposition: @decomposition.sdd
   ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd

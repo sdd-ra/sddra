@@ -2,6 +2,7 @@ State: default
 
 Purpose:
   Define global state symbols used across all .sdd files.
+  This is the single source of truth for state symbols.
 
 Symbols:
   +: done
@@ -12,6 +13,12 @@ Symbols:
   >: next
   @: reference
   #: task
+  =: created
+  : : analyzing
+  *: review
+  ^: superseded
+  _: archived
+  x: cancelled
   [!]: attention required
   [x]: completed
   [ ]: pending
@@ -24,13 +31,15 @@ Stages:
   API: API
   FE: Frontend
   MD: Mobile
+  TS: Test
   QA: Quality Assurance
+  SC: Security
   DO: DevOps
   VR: Verify
 
 Rules:
   [S1] State symbols MUST be used consistently across all .sdd files.
   [S2] AI MUST update state after completing each stage.
-   [S3] State changes MUST be logged in decisions/.
+  [S3] State changes MUST be logged in decisions/.
 
 State: +
