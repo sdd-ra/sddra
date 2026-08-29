@@ -17,7 +17,7 @@ Skills:
 
 Inputs:
   - .sdd/project/domains.sdd
-  - .sdd/instances/vkard.az/stack/{layer}.sdd
+  - .sdd/projects/vkard.az/stack/{layer}.sdd
 
 Outputs:
   - {output file path 1}

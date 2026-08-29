@@ -3,7 +3,7 @@ Database: SDD
 Purpose:
   Database technology catalog with comparison criteria, selection rules,
   and compatibility requirements. Root stack/ defines reusable database
-  knowledge; instances/vkard.az/stack/ stores the selected database for the project.
+  knowledge; projects/vkard.az/stack/ stores the selected database for the project.
 
 Catalog:
   PostgreSQL:

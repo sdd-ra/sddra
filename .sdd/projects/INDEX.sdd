@@ -8,7 +8,7 @@ Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @../instances/vkard.az/INDEX.sdd
+   2 @../projects/vkard.az/INDEX.sdd
 
 Rules:
   [PRJ1] This folder MUST remain empty.
@@ -18,7 +18,7 @@ Rules:
 
 Navigation:
   ProjectModel: @../project/INDEX.sdd
-  VKARD: @../instances/vkard.az/INDEX.sdd
+  VKARD: @../projects/vkard.az/INDEX.sdd
   Migration: @../commands/sdd-migrate.sdd
 
 State: +

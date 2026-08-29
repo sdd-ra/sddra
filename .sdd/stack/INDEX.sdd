@@ -4,7 +4,7 @@ Purpose:
   The .sdd system's technology selection and stack information layer.
    This directory defines technology constraints, compatibility rules,
    and selection mechanisms. Project-specific selected stack is stored
-   in .sdd/instances/vkard.az/stack/. Separation: root = reusable technology
+   in .sdd/projects/vkard.az/stack/. Separation: root = reusable technology
    constraints, project = concrete selection.
 
 Owns: ./
@@ -77,13 +77,13 @@ Navigation:
   Testing: @stack/testing.sdd
   Infrastructure: @stack/infrastructure.sdd
   Observability: @stack/observability.sdd
-  ProjectStack: @instances/vkard.az/stack/INDEX.sdd
+  ProjectStack: @projects/vkard.az/stack/INDEX.sdd
 
 State: +
   Note:
   Stack directory created as the technology
   selection and knowledge layer. Root stack/ defines reusable technology
-  constraints and compatibility rules; instances/vkard.az/stack/ stores the selected
+  constraints and compatibility rules; projects/vkard.az/stack/ stores the selected
   technology instances for the current project. Separation follows
   ROOT-001: root = reusable system intelligence, project = concrete
   project state.

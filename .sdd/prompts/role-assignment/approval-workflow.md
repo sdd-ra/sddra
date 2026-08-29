@@ -84,8 +84,8 @@ This file explains the human approval process.
 **AI presents:**
 - `.sdd/project/PROJECT.sdd`
 - `.sdd/project/domains.sdd`
-- `.sdd/instances/vkard.az/tasks/*.sdd`
-- `.sdd/instances/vkard.az/decisions/*.sdd`
+- `.sdd/projects/vkard.az/tasks/*.sdd`
+- `.sdd/projects/vkard.az/decisions/*.sdd`
 
 **Human checks:**
 - Is the domain structure correct?
@@ -120,7 +120,7 @@ This file explains the human approval process.
 
 All approvals are recorded:
 ```
-.sdd/instances/vkard.az/decisions/approvals/
+.sdd/projects/vkard.az/decisions/approvals/
 ├── GATE-1-001.sdd  # Docs approval
 ├── GATE-2-001.sdd  # SDD approval
 ├── GATE-3-001.sdd  # Code approval

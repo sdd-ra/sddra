@@ -153,7 +153,7 @@ Waiver:
     Expires: <date>
     Compensating control: <what replaces the test>
 
-  Waived tests are tracked in @instances/vkard.az/testing/exceptions/.
+  Waived tests are tracked in @projects/vkard.az/testing/exceptions/.
 
 Navigation:
   Project: @project/project.sdd
@@ -170,9 +170,9 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @instances/vkard.az/testing/INDEX.sdd
-  ProjectFailures: @instances/vkard.az/testing/failures/
-  ProjectExceptions: @instances/vkard.az/testing/exceptions/
+  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectFailures: @projects/vkard.az/testing/failures/
+  ProjectExceptions: @projects/vkard.az/testing/exceptions/
 
 State: +
   Note:

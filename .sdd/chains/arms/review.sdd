@@ -20,7 +20,7 @@ Stage:
     - plugins/plugin-adapters/code-review.sdd
     - plugins/plugin-adapters/verification-before-completion.sdd
   token:
-    - ../../instances/vkard.az/tokens/R1.sdd
+    - ../../projects/vkard.az/tokens/R1.sdd
   rule:
     - ./rules/INDEX.sdd
   gate:

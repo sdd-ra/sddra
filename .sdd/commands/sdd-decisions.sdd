@@ -18,7 +18,7 @@ Usage:
 
 Behavior:
   1. Read .sdd/decisions/INDEX.sdd
-  2. Read .sdd/instances/vkard.az/decisions/INDEX.sdd
+  2. Read .sdd/projects/vkard.az/decisions/INDEX.sdd
   3. Load requested decisions
   4. Generate report
 

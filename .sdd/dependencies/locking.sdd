@@ -5,7 +5,7 @@ Purpose:
   and shared access to resources is managed, how locks are acquired and
   released, how deadlocks are prevented/detected, and how AI task
   collisions are prevented. This is reusable system intelligence;
-  concrete lock state lives in instances/vkard.az/dependencies/locks.sdd.
+  concrete lock state lives in projects/vkard.az/dependencies/locks.sdd.
 
 Owns:
   Lock types, lock acquisition/release rules, deadlock detection,
@@ -13,7 +13,7 @@ Owns:
   AI task collision prevention.
 
 DoesNotOwn:
-  Concrete lock instances (those live in instances/vkard.az/dependencies/locks.sdd),
+  Concrete lock instances (those live in projects/vkard.az/dependencies/locks.sdd),
   task execution (scheduler's job), resource provisioning (infrastructure's
   job).
 
@@ -237,8 +237,8 @@ Navigation:
   LockingModel: ./INDEX.sdd
   LockingGraph: ./graph.sdd
   LockingModel: ./locking.sdd
-  ProjectLocks: ../instances/vkard.az/dependencies/locks.sdd
-  ProjectReservations: ../instances/vkard.az/dependencies/reservations/
+  ProjectLocks: ../projects/vkard.az/dependencies/locks.sdd
+  ProjectReservations: ../projects/vkard.az/dependencies/reservations/
 
 
 State: +

@@ -30,7 +30,7 @@ Gates:
   VR: prod-verified
 
 Retry: 2
-Token: @instances/vkard.az/tokens/H1.sdd
+Token: @projects/vkard.az/tokens/H1.sdd
 Rule: @rules/chain-rules.sdd
 Skills:
    AR: plugins/plugin-adapters/systematic-debugging.sdd

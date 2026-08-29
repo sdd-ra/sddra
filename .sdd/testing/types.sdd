@@ -163,7 +163,7 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @instances/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
 
 State: +
   Note:

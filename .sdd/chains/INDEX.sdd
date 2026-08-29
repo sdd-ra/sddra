@@ -9,7 +9,7 @@ Graph:
   arms: P1,D1,S1,C1,R1,DEP1
   selector: @selector.sdd
   rules: @rules/INDEX.sdd
-  tokens: @instances/vkard.az/tokens/INDEX.sdd
+  tokens: @projects/vkard.az/tokens/INDEX.sdd
 
 Files:
   graph: @graph.sdd
@@ -37,14 +37,14 @@ Rules:
   chain: @rules/chain-rules.sdd
 
 Tokens:
-  calculator: @instances/vkard.az/tokens/calculator.sdd
-  P1: @instances/vkard.az/tokens/P1.sdd
-  D1: @instances/vkard.az/tokens/D1.sdd
-  S1: @instances/vkard.az/tokens/S1.sdd
-  C1: @instances/vkard.az/tokens/C1.sdd
-  R1: @instances/vkard.az/tokens/R1.sdd
-  DEP1: @instances/vkard.az/tokens/DEP1.sdd
-  D0: @instances/vkard.az/tokens/D0.sdd
+  calculator: @projects/vkard.az/tokens/calculator.sdd
+  P1: @projects/vkard.az/tokens/P1.sdd
+  D1: @projects/vkard.az/tokens/D1.sdd
+  S1: @projects/vkard.az/tokens/S1.sdd
+  C1: @projects/vkard.az/tokens/C1.sdd
+  R1: @projects/vkard.az/tokens/R1.sdd
+  DEP1: @projects/vkard.az/tokens/DEP1.sdd
+  D0: @projects/vkard.az/tokens/D0.sdd
 
 State: +
 

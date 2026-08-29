@@ -129,9 +129,9 @@ AI creates:
 - `.sdd/project/domains.sdd`
 - `.sdd/project/modules.sdd`
 - `.sdd/project/flows.sdd`
-- `.sdd/instances/vkard.az/stack/*.sdd`
-- `.sdd/instances/vkard.az/tasks/*.sdd`
-- `.sdd/instances/vkard.az/decisions/*.sdd`
+- `.sdd/projects/vkard.az/stack/*.sdd`
+- `.sdd/projects/vkard.az/tasks/*.sdd`
+- `.sdd/projects/vkard.az/decisions/*.sdd`
 
 ## Human Gate
 

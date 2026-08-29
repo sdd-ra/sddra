@@ -63,7 +63,7 @@ Navigation:
   TestTypes: @types.sdd
   TestGates: @gates.sdd
   Performance: @performance.sdd
-  ProjectTesting: @instances/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
 
 State: +
   
