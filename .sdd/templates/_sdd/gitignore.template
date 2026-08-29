@@ -1,4 +1,10 @@
-# SDDRA .gitignore
+# Project-specific .gitignore
+# Only project data is tracked. Framework files are ignored.
+
+.sdd/
+!.sdd/projects/
+!.sdd/projects/*/
+!.sdd/projects/*/**
 
 # Old/archived files
 old/

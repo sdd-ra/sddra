@@ -75,7 +75,8 @@ Directories:
     path: ./docs
     purpose: Human-readable project documentation
     project: ../project
-    mapping: @templates/docs/mappings.template.sdd
+    sdd: ../.sdd/projects/{project_name}/docs
+    mapping: @templates/docs/structure.template.sdd
 
   tasks:
     path: ./tasks
@@ -161,9 +162,9 @@ Rules:
   [R50] Every change in project/ MUST be documented in docs/.
   [R51] docs/ MUST explain WHY, not just WHAT.
   [R52] Git commits MUST describe what changed and why.
-  [R53] All customer inputs MUST be recorded in history/.
+  [R53] All customer inputs MUST be recorded in projects/{project_name}/history/.
   [R54] project/ is AI language, docs/ is human language.
   [R55] Stack selection MUST be recorded as DEC with PRs/CONs.
   [R56] Token economy: /compact after each task, /clear before next task.
-  [R57] history/ is append-only — never modify or delete records.
-  [R58] Customer can query history/ at any time to see inputs and actions.
+  [R57] projects/{project_name}/history/ is append-only — never modify or delete records.
+  [R58] Customer can query projects/{project_name}/history/ at any time to see inputs and actions.

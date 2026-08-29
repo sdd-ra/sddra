@@ -74,7 +74,7 @@ ReadOrder:
     63 @references/database/ (database references)
     64 @references/engineering/ (engineering principles)
      65 @references/best-practices/ (default heuristics)
-    66 @history/INDEX.sdd (customer input history)
+    66 @projects/{project_name}/history/INDEX.sdd (customer input history)
     24 @architecture/levels.sdd (ProjectScale L0-L5)
    25 @architecture/patterns.sdd (architecture patterns)
    26 @architecture/scaling.sdd (scaling rules)
@@ -197,9 +197,9 @@ Navigation:
   ReferencesDatabase: @references/database/INDEX.sdd
   ReferencesEngineering: @references/engineering/INDEX.sdd
   ReferencesBestPractices: @references/best-practices/INDEX.sdd
-  History: @history/INDEX.sdd
-  HistoryInputs: @history/inputs/
-  HistoryActions: @history/actions/
+  History: @projects/{project_name}/history/INDEX.sdd
+  HistoryInputs: @projects/{project_name}/history/inputs/
+  HistoryActions: @projects/{project_name}/history/actions/
   ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
   ProjectArchitectureSystem: @projects/{project_name}/architecture/system.sdd
   ProjectArchitectureComponents: @projects/{project_name}/architecture/components.sdd

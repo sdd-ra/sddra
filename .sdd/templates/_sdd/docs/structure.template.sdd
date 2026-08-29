@@ -1,0 +1,39 @@
+# Docs Structure
+
+Purpose:
+  Defines the dual docs structure:
+  - .sdd/projects/{project_name}/docs/ — AI-readable, created before code
+  - project/docs/ — human-readable, part of actual codebase
+
+Mapping:
+  .sdd/projects/{project_name}/docs/ → project/docs/
+
+Structure:
+  .sdd/projects/{project_name}/docs/:
+    purpose: AI-readable project documentation
+    audience: AI agents, system processes
+    created: Before code generation
+    format: .sdd format with human-readable sections
+
+  project/docs/:
+    purpose: Human-readable project documentation
+    audience: Developers, stakeholders
+    created: Alongside code
+    format: Markdown
+
+Rules:
+  [D1] .sdd/projects/{project_name}/docs/ MUST be created before project/.
+  [D2] project/docs/ MUST mirror .sdd/projects/{project_name}/docs/ 1:1.
+  [D3] docs/ MUST explain WHY, not just WHAT.
+  [D4] Every project/ file MUST have a docs/ counterpart.
+  [D5] Changes to project/ MUST update docs/ simultaneously.
+  [D6] Docs MUST include business context and rationale.
+  [D7] project/docs/ is part of the codebase, versioned with code.
+  [D8] .sdd/projects/{project_name}/docs/ is part of project state, versioned with .sdd.
+
+Navigation:
+  AIDocs: @projects/{project_name}/docs/INDEX.sdd
+  ProjectDocs: @../docs/
+  Project: @../project/INDEX.sdd
+
+State: +
