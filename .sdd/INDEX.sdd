@@ -73,7 +73,8 @@ ReadOrder:
     62 @references/patterns/ (design pattern references)
     63 @references/database/ (database references)
     64 @references/engineering/ (engineering principles)
-    65 @references/best-practices/ (default heuristics)
+     65 @references/best-practices/ (default heuristics)
+    66 @history/INDEX.sdd (customer input history)
     24 @architecture/levels.sdd (ProjectScale L0-L5)
    25 @architecture/patterns.sdd (architecture patterns)
    26 @architecture/scaling.sdd (scaling rules)
@@ -105,6 +106,8 @@ ReadOrder:
     54 @projects/{project_name}/observability/ (project runtime instances, when present)
     55 @commands/INDEX.sdd (CLI commands for SDDRA)
     56 @commands/ (command definitions, when present)
+    57 @commands/sdd-compact.sdd (context compaction)
+    58 @commands/sdd-clear.sdd (context clearing)
     57 @plugins/INDEX.sdd (plugin adapters)
     58 @plugins/ (plugin adapter definitions, when present)
     59 @projects/{project_name}/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
@@ -194,6 +197,9 @@ Navigation:
   ReferencesDatabase: @references/database/INDEX.sdd
   ReferencesEngineering: @references/engineering/INDEX.sdd
   ReferencesBestPractices: @references/best-practices/INDEX.sdd
+  History: @history/INDEX.sdd
+  HistoryInputs: @history/inputs/
+  HistoryActions: @history/actions/
   ProjectArchitecture: @projects/{project_name}/architecture/INDEX.sdd
   ProjectArchitectureSystem: @projects/{project_name}/architecture/system.sdd
   ProjectArchitectureComponents: @projects/{project_name}/architecture/components.sdd
@@ -280,6 +286,15 @@ Navigation:
   Docs: @projects/{project_name}/docs/INDEX.sdd
   DocsMappings: @projects/{project_name}/docs/mappings.sdd
   DocsOwnership: @projects/{project_name}/docs/ownership.sdd
+  ProjectStructure: @projects/{project_name}/STRUCTURE.md
+  ProjectModules: @projects/{project_name}/project/modules/
+  ProjectComponents: @projects/{project_name}/project/components/
+  ProjectAPI: @projects/{project_name}/project/api/
+  ProjectData: @projects/{project_name}/project/data/
+  DocsModules: @projects/{project_name}/docs/10-business/modules/
+  DocsComponents: @projects/{project_name}/docs/20-architecture/components/
+  DocsAPI: @projects/{project_name}/docs/30-backend/api/
+  DocsData: @projects/{project_name}/docs/60-database/schemas/
   Context: @context/INDEX.sdd
   ContextRouting: @context/routing.sdd
   ContextPriorities: @context/priorities.sdd
@@ -442,6 +457,9 @@ Navigation:
     CommandBackup: @commands/sdd-backup.sdd
     CommandRestore: @commands/sdd-restore.sdd
     CommandResume: @commands/sdd-resume.sdd
+    CommandMigrate: @commands/sdd-migrate.sdd
+    CommandCompact: @commands/sdd-compact.sdd
+    CommandClear: @commands/sdd-clear.sdd
    CommandDecisions: @commands/sdd-decisions.sdd
    Plugins: @plugins/INDEX.sdd
    PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd

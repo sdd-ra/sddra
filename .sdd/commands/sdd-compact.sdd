@@ -1,0 +1,27 @@
+# /compact
+
+Description:
+  Compress current context to essential tokens only. Use after completing
+  a task to minimize token usage before next operation.
+
+Usage:
+  /compact
+  /compact --keep-decisions
+  /compact --keep-references
+
+Options:
+  --keep-decisions    Preserve decision records
+  --keep-references   Preserve reference index
+
+Behavior:
+  1. Summarize current task output to essential facts
+  2. Remove verbose explanations and examples
+  3. Keep decisions, references, and next actions
+  4. Update token count
+  5. Persist compressed state
+
+Output:
+  [tokens: before=X, after=Y, saved=Z%]
+  [state: compacted]
+
+State: +

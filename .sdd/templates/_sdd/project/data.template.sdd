@@ -1,0 +1,25 @@
+# Data Model Template
+
+Purpose:
+  Template for data models and schemas.
+
+Schema:
+  id: SCH-XXX
+  name: <schema name>
+  aggregate: AGG-XXX
+  owner: <team or agent>
+
+  purpose: <one line>
+
+  tables:
+    - name: <table>
+      columns: [list]
+      indexes: [list]
+
+  events:
+    - EVENT-XXX
+
+  files:
+    - path/to/file
+
+State: +

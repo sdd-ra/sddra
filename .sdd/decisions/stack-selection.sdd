@@ -1,0 +1,114 @@
+# Stack Selection Decision Template
+
+Purpose:
+  Template for project technology stack decisions.
+  Every project MUST have a stack selection decision with
+  pros/cons analysis for each option.
+
+Schema:
+  id: DEC-<ID>
+  type: technical
+  status: proposed|approved|rejected|implemented|verified
+
+  project: <project_name>
+  title: Stack selection for <project>
+
+  requirements:
+    - <requirement 1>
+    - <requirement 2>
+
+  options:
+    - stack: <stack name>
+      components:
+        backend: <technology>
+        frontend: <technology>
+        database: <technology>
+        cache: <technology>
+        messaging: <technology>
+      pros:
+        - <pro>
+      cons:
+        - <con>
+      compatibility: <score 0-100>
+      team_familiarity: <score 0-100>
+      community_support: <score 0-100>
+
+  decision: <chosen stack>
+  rationale: <why this stack>
+
+  impact:
+    files: [list]
+    modules: [list]
+    risks: [R0-R5]
+
+  owner: <human or agent>
+  reviewers: [list]
+  approved_by: <who approved>
+  approved_at: <timestamp>
+
+  implementation:
+    tasks: [TASK ids]
+    status: pending|in_progress|completed
+
+  verification:
+    criteria: [how to verify]
+    status: pending|passed|failed
+
+  created_at: <timestamp>
+  updated_at: <timestamp>
+
+Template:
+  Decision: DEC-XXX
+  Type: technical
+  Status: proposed
+
+  Project: <project_name>
+  Title: Stack selection for <project>
+
+  Requirements:
+    - <functional requirement>
+    - <non-functional requirement>
+    - <constraint>
+
+  Options:
+    1. <Stack A>
+       Backend: <technology>
+       Frontend: <technology>
+       Database: <technology>
+       Pros:
+         - <pro>
+       Cons:
+         - <con>
+       Compatibility: <score>
+       TeamFamiliarity: <score>
+       CommunitySupport: <score>
+
+    2. <Stack B>
+       ...
+
+  Decision:
+    <chosen stack>
+
+  Rationale:
+    <why this option>
+
+  Impact:
+    Files: [list]
+    Modules: [list]
+    Risks: [R0-R5]
+
+  Owner: <human or agent>
+  Reviewers: [list]
+
+  Implementation:
+    Tasks: [TASK ids]
+    Status: pending
+
+  Verification:
+    Criteria: [list]
+    Status: pending
+
+  Created_At: <timestamp>
+  Updated_At: <timestamp>
+
+State: +

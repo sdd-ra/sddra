@@ -24,6 +24,7 @@ Files:
   schema: @schema.sdd
   workflow: @workflow.sdd
   rules: @rules.sdd
+  stack-selection: @stack-selection.sdd
   project: @project/INDEX.sdd
 
 Rules:

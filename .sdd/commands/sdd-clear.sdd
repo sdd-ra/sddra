@@ -1,0 +1,28 @@
+# /clear
+
+Description:
+  Clear all context and start fresh for next task. Use when transitioning
+  between distinct tasks to prevent context pollution.
+
+Usage:
+  /clear
+  /clear --save-state
+  /clear --archive
+
+Options:
+  --save-state   Save current state before clearing
+  --archive      Archive current context to history
+
+Behavior:
+  1. If --save-state: persist current task state
+  2. If --archive: move context to history log
+  3. Clear all working memory
+  4. Reset to minimal context (INDEX.sdd only)
+  5. Ready for next task
+
+Output:
+  [tokens: cleared]
+  [state: fresh]
+  [history: archived|discarded]
+
+State: +

@@ -1,0 +1,22 @@
+# Component Template
+
+Purpose:
+  Template for reusable UI/logic components.
+
+Schema:
+  id: COMP-XXX
+  name: <component name>
+  module: MOD-XXX
+  owner: <team or agent>
+
+  purpose: <one line>
+
+  type: ui|logic|shared
+
+  dependencies:
+    - COMP-XXX
+
+  files:
+    - path/to/file
+
+State: +

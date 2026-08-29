@@ -29,6 +29,8 @@ Commands:
   /sdd-restore: Restore from backup
   /sdd-resume: Resume from checkpoint
   /sdd-migrate: Run migrations
+  /sdd-compact: Compress context after task
+  /sdd-clear: Clear context for next task
 
 Navigation:
   Chains: @../chains/INDEX.sdd
