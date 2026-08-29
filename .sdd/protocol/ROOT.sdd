@@ -77,12 +77,7 @@ UniversalObjectModel:
 
 UniversalState:
   State symbols are defined canonically in state/state.sdd.
-  Canonical symbols:
-    + = DONE, ~ = ACTIVE, - = FAILED, ! = BLOCKED, ? = DECISION_REQUIRED,
-    > = NEXT, @ = REFERENCE, = = CREATED, : = ANALYZING, * = REVIEW,
-    ^ = SUPERSEDED, _ = ARCHIVED
-  Extended by protocol:
-    x = CANCELLED
+  AI MUST use those symbols exactly as defined there.
 
 ReferenceSystem:
   @payments

@@ -9,7 +9,6 @@ Owns: ./
 ReadOrder:
    1 @INDEX.sdd
    2 @tasks.sdd (task lifecycle rules and contracts)
-   3 @decomposition.sdd (decomposition engine and validation)
 
 Rules:
   [T1] Every task MUST have a unique ID.
@@ -19,7 +18,6 @@ Rules:
 
 Navigation:
   Tasks: @tasks.sdd
-  Decomposition: @decomposition.sdd
   ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
 
 State: +
