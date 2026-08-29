@@ -9,16 +9,16 @@ Input:
 
 Output:
   .sdd/project/PROJECT.sdd
-  .sdd/projects/example_project/architecture/system.sdd
-  .sdd/projects/example_project/stack/backend.sdd
-  .sdd/projects/example_project/stack/frontend.sdd
-  .sdd/projects/example_project/stack/database.sdd
+  .sdd/projects/{project_name}/architecture/system.sdd
+  .sdd/projects/{project_name}/stack/backend.sdd
+  .sdd/projects/{project_name}/stack/frontend.sdd
+  .sdd/projects/{project_name}/stack/database.sdd
   .sdd/project/domains.sdd
   .sdd/project/modules.sdd
   .sdd/project/flows.sdd
   .sdd/project/dependencies.sdd
-  .sdd/projects/example_project/tasks/ (generated tasks)
-  .sdd/projects/example_project/decisions/ (approved decisions)
+  .sdd/projects/{project_name}/tasks/ (generated tasks)
+  .sdd/projects/{project_name}/decisions/ (approved decisions)
 
 Steps:
   1. PARSE_DOCS:
@@ -41,7 +41,7 @@ Steps:
   4. GENERATE_TASKS:
      - Break down into executable tasks
      - Assign chains to tasks
-     - Create .sdd/projects/example_project/tasks/*.sdd
+     - Create .sdd/projects/{project_name}/tasks/*.sdd
 
   5. VALIDATE:
      - Run .sdd linter

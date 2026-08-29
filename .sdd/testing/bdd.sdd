@@ -101,7 +101,7 @@ Navigation:
   Integration: @integration.sdd
   API: @api.sdd
   E2E: @e2e.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
 
 State: +
   Note:

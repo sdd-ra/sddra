@@ -1,7 +1,7 @@
 # .sdd/ Audit Report
 
 Date: 2026-08-28
-Scope: All .sdd/ files in D:\Tasks\ai_code\example_project\.sdd\
+Scope: All .sdd/ files in D:\Tasks\ai_code\{project_name}\.sdd\
 
 ## Executive Summary
 
@@ -115,7 +115,7 @@ All case files have `state: -` instead of `State: +` (different format).
    - decisions/schema.sdd
    - decisions/template.sdd
    - project/README.sdd
-   - projects/example_project/decisions/INDEX.sdd
+   - projects/{project_name}/decisions/INDEX.sdd
    - project/map.sdd
    - workflows/agent-workflow.sdd
    - workflows/chain-implementation.sdd
@@ -135,9 +135,9 @@ The following files already had State: + and required no changes:
 - All orchestrator/*.sdd files (except those noted above)
 - RESOURCES.sdd
 - WORK-PLAN.sdd
-- projects/example_project/docs/mappings.sdd
-- projects/example_project/tasks/INDEX.sdd
-- projects/example_project/architecture/INDEX.sdd
+- projects/{project_name}/docs/mappings.sdd
+- projects/{project_name}/tasks/INDEX.sdd
+- projects/{project_name}/architecture/INDEX.sdd
 - workflows/recovery.sdd
 - workflows/example-prompt-to-code.sdd
 - workflows/backup-integrity.sdd

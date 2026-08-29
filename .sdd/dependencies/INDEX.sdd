@@ -27,17 +27,17 @@ Components:
       prevention). Root-level, reusable system intelligence.
 
   PROJECT_GRAPH:
-    path: ../projects/example_project/dependencies/graph.sdd
+    path: ../projects/{project_name}/dependencies/graph.sdd
     role: Project-specific dependency graph (concrete nodes, edges,
       states). Project-level, because this is concrete project state.
 
   PROJECT_LOCKS:
-    path: ../projects/example_project/dependencies/locks.sdd
+    path: ../projects/{project_name}/dependencies/locks.sdd
     role: Project-specific lock state (active locks, reservations,
       conflicts). Project-level, concrete project state.
 
   PROJECT_RESERVATIONS:
-    path: ../projects/example_project/dependencies/reservations/
+    path: ../projects/{project_name}/dependencies/reservations/
     role: Resource reservation instances. Project-level, concrete state.
 
 
@@ -100,7 +100,7 @@ Forbidden:
 Note:
   Created as dependency graph engine
   entry point. Root .sdd/dependencies/ = reusable system intelligence
-  (graph algorithms, locking rules); .sdd/projects/example_project/dependencies/ =
+  (graph algorithms, locking rules); .sdd/projects/{project_name}/dependencies/ =
   concrete project state (actual dependency graph, lock state).
   ROOT-001 separation principle enforced.
 

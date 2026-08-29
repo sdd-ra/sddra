@@ -19,7 +19,7 @@ Optimization:
   - Minimize context duplication
 Tracking:
 
-  File: .sdd/projects/example_project/tokens/{node}.sdd
+  File: .sdd/projects/{project_name}/tokens/{node}.sdd
   Fields:
     stage
     run_id

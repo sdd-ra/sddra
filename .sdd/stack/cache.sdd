@@ -3,7 +3,7 @@ Cache: SDD
 Purpose:
   Cache technology catalog with comparison criteria, selection rules,
   and integration patterns. Root stack/ defines reusable cache knowledge;
-  projects/example_project/stack/ stores the selected cache for the project.
+  projects/{project_name}/stack/ stores the selected cache for the project.
 
 Catalog:
   Redis:

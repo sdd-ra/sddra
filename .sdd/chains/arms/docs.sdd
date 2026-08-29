@@ -21,11 +21,11 @@ Stage:
     - docs/60-database/overview.md
     - docs/70-api/overview.md
     - docs/100-devops/overview.md
-    - .sdd/projects/example_project/decisions/DEC-XXX.sdd (proposed decisions)
+    - .sdd/projects/{project_name}/decisions/DEC-XXX.sdd (proposed decisions)
   skills:
     - prompts/tech-stack/prompt-to-docs.sdd
   token:
-    - ../../projects/example_project/tokens/D1.sdd
+    - ../../projects/{project_name}/tokens/D1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

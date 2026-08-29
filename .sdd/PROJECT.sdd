@@ -46,7 +46,7 @@ Directories:
     root_purpose: Root-level prompt inbox (user submissions)
     formalized: ../projects/prompts
     formalized_purpose: Shared formalized prompt registry (not project instance)
-    documented: ../projects/example_project/docs/prompts
+    documented: ../projects/{project_name}/docs/prompts
 
   features:
     path: ./features
@@ -97,8 +97,8 @@ Navigation:
   plugins: @plugins
   project: @project
   projects: @projects
-  projectMap: @projects/example_project/MAP.md
-  projectStructure: @projects/example_project/STRUCTURE.md
+  projectMap: @projects/{project_name}/MAP.md
+  projectStructure: @projects/{project_name}/STRUCTURE.md
   tasks: @tasks
   decisions: @decisions
   state: @state
@@ -150,6 +150,6 @@ Rules:
   [R44] AI MUST read MAP.md and STRUCTURE.md before implementing features.
   [R45] projects/ is a registry; project instances live in projects/<name>/.
   [R46] projects/prompts/ is a shared registry, not a project instance.
-  [R47] example_project/ is a TEMPLATE, not a real project.
+  [R47] {project_name}/ is a TEMPLATE, not a real project.
   [R48] Real project instances are created AFTER human selects a project name.
-  [R49] AI MUST NOT treat example_project/ as production data.
+  [R49] AI MUST NOT treat {project_name}/ as production data.

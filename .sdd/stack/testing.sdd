@@ -3,7 +3,7 @@ Testing: SDD
 Purpose:
   Testing technology catalog with framework options, selection criteria,
   and integration patterns. Root stack/ defines reusable testing knowledge;
-  projects/example_project/stack/ stores the selected testing stack for the project.
+  projects/{project_name}/stack/ stores the selected testing stack for the project.
 
 Catalog:
   Playwright:

@@ -109,11 +109,11 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
-  ProjectCoverage: @projects/example_project/testing/coverage.sdd
-  ProjectRuns: @projects/example_project/testing/runs/
-  ProjectFailures: @projects/example_project/testing/failures/
-  ProjectExceptions: @projects/example_project/testing/exceptions/
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
+  ProjectCoverage: @projects/{project_name}/testing/coverage.sdd
+  ProjectRuns: @projects/{project_name}/testing/runs/
+  ProjectFailures: @projects/{project_name}/testing/failures/
+  ProjectExceptions: @projects/{project_name}/testing/exceptions/
 
 State: +
   Note:

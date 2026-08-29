@@ -9,7 +9,7 @@ Graph:
   arms: P1,D1,S1,C1,R1,DEP1
   selector: @selector.sdd
   rules: @rules/INDEX.sdd
-  tokens: @projects/example_project/tokens/INDEX.sdd
+  tokens: @projects/{project_name}/tokens/INDEX.sdd
 
 Files:
   graph: @graph.sdd
@@ -37,14 +37,14 @@ Rules:
   chain: @rules/chain-rules.sdd
 
 Tokens:
-  calculator: @projects/example_project/tokens/calculator.sdd
-  P1: @projects/example_project/tokens/P1.sdd
-  D1: @projects/example_project/tokens/D1.sdd
-  S1: @projects/example_project/tokens/S1.sdd
-  C1: @projects/example_project/tokens/C1.sdd
-  R1: @projects/example_project/tokens/R1.sdd
-  DEP1: @projects/example_project/tokens/DEP1.sdd
-  D0: @projects/example_project/tokens/D0.sdd
+  calculator: @projects/{project_name}/tokens/calculator.sdd
+  P1: @projects/{project_name}/tokens/P1.sdd
+  D1: @projects/{project_name}/tokens/D1.sdd
+  S1: @projects/{project_name}/tokens/S1.sdd
+  C1: @projects/{project_name}/tokens/C1.sdd
+  R1: @projects/{project_name}/tokens/R1.sdd
+  DEP1: @projects/{project_name}/tokens/DEP1.sdd
+  D0: @projects/{project_name}/tokens/D0.sdd
 
 State: +
 

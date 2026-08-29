@@ -4,7 +4,7 @@ Purpose:
   Adapt Superpowers using-git-worktrees skill for SDDRA C1 arm.
 
 Source:
-  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01\skills\using-git-worktrees\SKILL.md
+  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\using-git-worktrees\SKILL.md
 
 Original:
   Creates isolated workspace on new branch

@@ -43,7 +43,7 @@ Navigation:
   TestTypes: @types.sdd
   TestGates: @gates.sdd
   Load: @load.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
 
 State: +
   

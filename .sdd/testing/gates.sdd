@@ -153,7 +153,7 @@ Waiver:
     Expires: <date>
     Compensating control: <what replaces the test>
 
-  Waived tests are tracked in @projects/example_project/testing/exceptions/.
+  Waived tests are tracked in @projects/{project_name}/testing/exceptions/.
 
 Navigation:
   Project: @project/project.sdd
@@ -170,9 +170,9 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @projects/example_project/testing/INDEX.sdd
-  ProjectFailures: @projects/example_project/testing/failures/
-  ProjectExceptions: @projects/example_project/testing/exceptions/
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
+  ProjectFailures: @projects/{project_name}/testing/failures/
+  ProjectExceptions: @projects/{project_name}/testing/exceptions/
 
 State: +
   Note:

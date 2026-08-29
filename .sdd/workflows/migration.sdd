@@ -10,7 +10,7 @@ Owns: ./
 ReadOrder:
    1 @INDEX.sdd
    2 @../commands/sdd-migrate.sdd
-   3 @../projects/example_project/migrations/INDEX.sdd
+   3 @../projects/{project_name}/migrations/INDEX.sdd
 
 Steps:
   1. List pending migrations from migrations/INDEX.sdd

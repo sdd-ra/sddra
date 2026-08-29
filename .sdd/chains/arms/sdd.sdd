@@ -13,17 +13,17 @@ Stage:
   returns_to: D0
   inputs:
     - docs/
-    - .sdd/projects/example_project/decisions/ (approved decisions)
+    - .sdd/projects/{project_name}/decisions/ (approved decisions)
   outputs:
     - .sdd/project/PROJECT.sdd
     - .sdd/project/domains.sdd
-    - .sdd/projects/example_project/tasks/INDEX.sdd
-    - .sdd/projects/example_project/tasks/TASK-XXX.sdd (linked to decisions)
+    - .sdd/projects/{project_name}/tasks/INDEX.sdd
+    - .sdd/projects/{project_name}/tasks/TASK-XXX.sdd (linked to decisions)
   skills:
     - prompts/tech-stack/docs-to-project.sdd
     - plugins/plugin-adapters/writing-plans.sdd
   token:
-    - ../../projects/example_project/tokens/S1.sdd
+    - ../../projects/{project_name}/tokens/S1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

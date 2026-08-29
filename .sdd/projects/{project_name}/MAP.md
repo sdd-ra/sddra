@@ -1,7 +1,7 @@
-# example_project — Project Map
+# {project_name} — Project Map
 
 Purpose:
-  AI representation of the example_project codebase.
+  AI representation of the {project_name} codebase.
   This file maps the real project structure so AI can understand
   where code lives, what it does, and how components relate.
 
@@ -9,19 +9,19 @@ IMPORTANT:
   The source code does NOT live inside .sdd/.
   The actual project is located at:
 
-  ../../../../example_project/
+  ../../../../{project_name}/
 
   Every file reference in this directory points to a real file
   inside the source project.
 
 ## Source → AI Mapping
 
-Real Project Root: `D:\Tasks\ai_code\example_project\`
+Real Project Root: `D:\Tasks\ai_code\{project_name}\`
 
 ### Directory Structure
 
 ```
-example_project/
+{project_name}/
 ├── src/
 │   ├── auth/
 │   ├── api/
@@ -43,7 +43,7 @@ Each file in the project can be represented as:
 # src/auth/login.ts
 
 Real file:
-`../../../../example_project/src/auth/login.ts`
+`../../../../{project_name}/src/auth/login.ts`
 
 Purpose:
 <description>
@@ -67,7 +67,7 @@ Status:
 
 ### Navigation
 
-- Project Root: `../../../../example_project/`
+- Project Root: `../../../../{project_name}/`
 - Source Files: `src/`
 - Tests: `tests/`
 - Documentation: `docs/`

@@ -6,33 +6,33 @@ Purpose:
 
   IMPORTANT: .sdd/projects/ is NOT permanently empty.
   It contains:
-    - example_project/ — example/template project for demonstration
+    - {project_name}/ — example/template project for demonstration
     - {project_name}/   — real project instances created after human selection
 
 Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @example_project/INDEX.sdd
+   2 @{project_name}/INDEX.sdd
 
 Rules:
-  [PRJ1] example_project/ is a template, not a real project.
+  [PRJ1] {project_name}/ is a template, not a real project.
   [PRJ2] Real project instances are created at .sdd/projects/{project_name}/.
   [PRJ3] Project instances are created AFTER human selects a project name.
-  [PRJ4] Before project selection, only example_project/ exists.
+  [PRJ4] Before project selection, only {project_name}/ exists.
   [PRJ5] Migration commands run against real project instances.
   [PRJ6] The project/ folder contains reusable schemas only.
 
 Lifecycle:
   1. Human provides project name (e.g. "my-app")
-  2. AI creates .sdd/projects/my-app/ from example_project/ template
+  2. AI creates .sdd/projects/my-app/ from {project_name}/ template
   3. AI populates my-app/ with project-specific data
   4. All work proceeds in .sdd/projects/my-app/
-  5. example_project/ remains as reference/template
+  5. {project_name}/ remains as reference/template
 
 Navigation:
   ProjectModel: @../project/INDEX.sdd
-  ExampleProject: @example_project/INDEX.sdd
+  ExampleProject: @{project_name}/INDEX.sdd
   Migration: @../commands/sdd-migrate.sdd
   Features: @../features/INDEX.sdd
 

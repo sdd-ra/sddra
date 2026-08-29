@@ -38,7 +38,7 @@ task:
 
   inputs:
     - .sdd/project/domains.sdd
-    - .sdd/projects/example_project/stack/backend.sdd
+    - .sdd/projects/{project_name}/stack/backend.sdd
 
   outputs:
     - backend/domain/auth/
@@ -75,7 +75,7 @@ Fix → Test → Emergency Review → Deploy
 ## Execution Steps
 
 ### 1. Task Discovery
-AI reads `.sdd/projects/example_project/tasks/` and finds ready tasks:
+AI reads `.sdd/projects/{project_name}/tasks/` and finds ready tasks:
 - `status: ready`
 - `dependencies: []` (all dependencies satisfied)
 
@@ -121,7 +121,7 @@ artifacts: [list of created files]
 
 1. **AI loads context:**
    - `.sdd/project/domains.sdd` (auth domain)
-   - `.sdd/projects/example_project/stack/backend.sdd` (Go, Gin)
+   - `.sdd/projects/{project_name}/stack/backend.sdd` (Go, Gin)
    - Skills: `languages/go/L2-patterns`
 
 2. **AI plans:**

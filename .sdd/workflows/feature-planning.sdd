@@ -12,8 +12,8 @@ ReadOrder:
    2 @../features/INDEX.sdd
    3 @../features/layers.sdd
    4 @../features/decisions.sdd
-   5 @../projects/example_project/MAP.md
-   6 @../projects/example_project/STRUCTURE.md
+   5 @../projects/{project_name}/MAP.md
+   6 @../projects/{project_name}/STRUCTURE.md
 
 Steps:
   1. Receive prompt/feature request

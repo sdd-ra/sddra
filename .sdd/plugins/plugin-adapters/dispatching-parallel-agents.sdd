@@ -4,7 +4,7 @@ Purpose:
   Adapt Superpowers dispatching-parallel-agents skill for SDDRA scheduler.
 
 Source:
-  D:\Tasks\ai_code\example_project\tmp\external-repo-audit\repo-01\skills\dispatching-parallel-agents\SKILL.md
+  D:\Tasks\ai_code\{project_name}\tmp\external-repo-audit\repo-01\skills\dispatching-parallel-agents\SKILL.md
 
 Original:
   Concurrent subagent workflows
@@ -23,7 +23,7 @@ Adapted for SDDRA:
 
   Integration:
     - Chain graph parallel section
-    - Task scheduler in .sdd/projects/example_project/tasks/
+    - Task scheduler in .sdd/projects/{project_name}/tasks/
     - Token budget shared across parallel tasks
 
 Usage:
