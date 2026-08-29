@@ -3,146 +3,37 @@
 Purpose:
   Defines orchestrator modes and decision thresholds.
 
-AgentModes:
-  AUTO:
-    Description: AI decides low-risk items
-    Use: Standard development
-  SUPERVISED:
-    Description: AI recommends, human approves major decisions
-    Use: Risky projects
-  STRICT:
-    Description: Human approval required for architecture, security, DB migration, release
-    Use: Financial/security-critical
-  AUDIT:
-    Description: Analysis only, no modifications
-    Use: Project analysis
-  READ_ONLY:
-    Description: Project analysis, no code changes
-    Use: "Analyze project"
+Modes:
+  AUTO: AI decides low-risk items
+  SUPERVISED: AI recommends, human approves major decisions
+  STRICT: Human approval required for architecture, security, DB migration, release
+  AUDIT: Analysis only, no modifications
+  READ_ONLY: Project analysis, no code changes
 
 DecisionThreshold:
-  LOW_RISK:
-    Action: AI decides
-    Examples: Code style, variable naming, small refactors
-  MEDIUM_RISK:
-    Action: AI recommends
-    Examples: Library selection, configuration changes
-  HIGH_RISK:
-    Action: Human approval
-    Examples: Architecture change, DB migration, security policy
-  CRITICAL:
-    Action: Human mandatory
-    Examples: Production deployment, credential rotation, data deletion
+  LOW_RISK: AI decides
+  MEDIUM_RISK: AI recommends
+  HIGH_RISK: Human approval
+  CRITICAL: Human mandatory
 
 HumanDecisionBoundary:
-  AI decides:
-    - Code implementation
-    - Test creation
-    - Documentation
-    - Configuration (non-security)
-  Human approves:
-    - Architecture changes
-    - Database migration
-    - Security policy
-    - Production destructive operations
+  AI decides: code implementation, test creation, documentation, non-security configuration
+  Human approves: architecture changes, database migration, security policy, production destructive operations
 
-OverengineeringGuard:
-  AI MUST ask "Necessary?" for every recommendation.
-  10k users → Kubernetes + Kafka is overengineering.
+Degradation:
+  FULL: all features operational
+  REDUCED: skip optional stages, core skills only
+  MINIMAL: basic chain only, human approval for all gates
+  READ_ONLY: analysis only, no modifications
+  Triggers: resource pressure, component failure, repeated failures
 
-ComplexityBudget:
-  LOW:
-    Modular Monolith
-  MEDIUM:
-    Modular Monolith + async workers
-  HIGH:
-    Selective services
-  CRITICAL:
-    Distributed architecture
-
-ModeRules:
-  [MD1]  Default mode is AUTO for standard projects.
-  [MD2]  STRICT mode requires human approval for critical decisions.
-  [MD3]  READ_ONLY mode never modifies source code.
-  [MD4]  Complexity budget MUST be respected.
-  [MD5]  System can degrade to REDUCED, MINIMAL, or READ_ONLY.
-  [MD6]  Degradation is automatic based on health checks.
-  [MD7]  Recovery is automatic when conditions improve.
-  [MD8]  Human is notified of mode changes.
-
-DegradationModes:
-  FULL:
-    Description: All features operational
-    Trigger: All components healthy
-    Capabilities:
-      - Full chain execution
-      - All skills available
-      - Full context loading
-      - Human gates active
-
-  REDUCED:
-    Description: Non-critical features disabled
-    Trigger: Minor component failure, resource pressure
-    Capabilities:
-      - Chain execution (skip optional stages)
-      - Core skills only
-      - Reduced context (lazy loading)
-      - Human gates active for critical items
-    Restrictions:
-      - Skip observability stages
-      - Skip optional testing stages
-      - Use cached contexts only
-
-  MINIMAL:
-    Description: Essential features only
-    Trigger: Major component failure, resource exhaustion
-    Capabilities:
-      - Basic chain execution (P1->D1->S1->C1 only)
-      - Essential skills only
-      - Minimal context
-      - Human approval for all gates
-    Restrictions:
-      - No R1 (review) - human reviews manually
-      - No DEP1 (deploy) - human deploys manually
-      - No parallel execution
-      - No caching
-
-  READ_ONLY:
-    Description: Analysis only, no modifications
-    Trigger: System instability, audit mode
-    Capabilities:
-      - Read .sdd/ files
-      - Analyze project structure
-      - Generate reports
-    Restrictions:
-      - No file creation
-      - No modifications
-      - No chain execution
-      - No state changes
-
-DegradationTriggers:
-  ResourceBased:
-    Memory > 90%: REDUCED
-    Memory > 95%: MINIMAL
-    Disk < 1GB: READ_ONLY
-    Token budget < 10%: MINIMAL
-
-  ComponentBased:
-    Skill registry unavailable: REDUCED
-    Context cache corrupted: REDUCED
-    Graph engine failed: MINIMAL
-    State tracker failed: READ_ONLY
-
-  FailureBased:
-    1-2 stage failures: REDUCED
-    3+ stage failures: MINIMAL
-    Critical component failure: READ_ONLY
-
-CircuitBreaker:
-  failure_threshold: 3
-  recovery_timeout: 60s
-  success_threshold: 2
-  half_open_max_requests: 5
+Rules:
+  [MD1] Default mode is AUTO for standard projects.
+  [MD2] STRICT mode requires human approval for critical decisions.
+  [MD3] READ_ONLY mode never modifies source code.
+  [MD4] Complexity budget MUST be respected.
+  [MD5] Degradation is automatic based on health checks.
+  [MD6] Recovery is automatic when conditions improve.
+  [MD7] Human is notified of mode changes.
 
 State: +
-  

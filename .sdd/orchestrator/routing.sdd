@@ -1,771 +1,84 @@
-Orchestrator: Routing
+Routing: Orchestrator
 
 Purpose:
-  Define agent selection, capability matching, policy evaluation,
-  routing logic, handoff contracts, and trust model for the SDDRA
-  execution engine.
-
-Owns: ./
-
-Scope:
-  Agent definition and identity
-  Capability registry and matching
-  Agent selection scoring
-  Policy evaluation for execution
-  Cost-aware and context-aware routing
-  Agent handoff contracts
-  Agent affinity and reputation
-  Trust levels and autonomy levels
-  Centralized vs decentralized orchestration
-  Explainable routing
+  Define agent selection, capability matching, and execution routing.
 
 Principles:
   Agent = WHO executes.
   Skill = HOW work is done.
   Task = WHAT must be done.
-  Tool = WITH WHAT capability.
   Policy = WHETHER allowed.
-  Agent is execution participant, not source of truth.
-  SDD is source of truth.
+  Agent is execution participant, not source of truth. SDD is source of truth.
 
 Agent:
-  definition:
-    autonomous execution unit with capabilities, skills, and policies
-
-  structure:
-    id: string (e.g. AGENT-BACKEND-001)
-    role: string (e.g. backend-developer)
-    capabilities: [CAP-GO, CAP-POSTGRES, CAP-REST]
-    skills: [SKILL-API-IMPLEMENT, SKILL-UNIT-TEST]
-    tools: [read, write, test]
-    autonomy: integer (0..4)
-    trust: string (TRUST-LOW, TRUST-MEDIUM, TRUST-HIGH)
-    model: string (optional LLM model binding)
-
-  rule: agent identity is separate from model
-  rule: agent can bind to multiple models
-
-Capability:
-  definition:
-    concrete ability to perform specific work
-
-  examples:
-    - GO
-    - POSTGRESQL
-    - REST
-    - KUBERNETES
-    - SECURITY-REVIEW
-
-  registry:
-    CAP-GO
-    CAP-POSTGRES
-    CAP-KAFKA
-    CAP-KUBERNETES
-    CAP-SECURITY
+  id: string
+  role: string (exactly one primary role)
+  capabilities: [CAP-*]
+  skills: [SKILL-*]
+  autonomy: 0..4
+  trust: TRUST-LOW | TRUST-MEDIUM | TRUST-HIGH
 
 CapabilityMatching:
-  formula:
-    score = required_capabilities_matched / total_required_capabilities
+  score = required_capabilities_matched / total_required_capabilities
+  100% match required for mandatory capabilities
+  extra capabilities allowed but not required
 
-  rule: 100% match required for mandatory capabilities
-  rule: extra capabilities are allowed but not required
-
-SkillMatching:
-  rule: agent MUST support required skill version
-  rule: version incompatibility MUST block assignment
-
-AgentSelectionScore:
-  components:
-    capability_match: weight_high
-    skill_match: weight_high
-    availability: weight_medium
-    quality: weight_medium
-    cost: weight_low
-    risk_fit: weight_high
-    context_fit: weight_medium
-
-  rule: weights are project-configurable
-  rule: highest scoring eligible agent is selected
+AgentSelection:
+  Factors: capability_match, skill_match, availability, quality, cost, risk_fit, context_fit
+  Rule: highest scoring eligible agent is selected
+  Rule: only AVAILABLE agents are considered
 
 Availability:
-  states:
-    - AVAILABLE
-    - BUSY
-    - OFFLINE
-    - DISABLED
-
-  rule: only AVAILABLE agents are considered for assignment
-
-AgentPool:
-  rule: scheduler selects from eligible pool
-  rule: load balancing distributes work evenly
-  rule: domain affinity prefers context-familiar agents
+  AVAILABLE, BUSY, OFFLINE, DISABLED
 
 AgentAffinity:
-  definition:
-    preference for agent with existing context in specific domain
-
-  example:
-    PAYMENT domain tasks prefer AGENT-PAYMENT-01
-    because context familiarity reduces token cost
-
-ContextCost:
-  definition:
-    token cost to load full context for a task
-
-  rule: context cost is a routing criterion
-  rule: familiar agent may have lower context cost
-
-CostAwareRouting:
-  rule: low-risk tasks MAY use cheaper models
-  rule: high-risk tasks MUST use high-quality models
-  rule: model selection is abstracted from agent identity
-
-ModelRouting:
-  mapping:
-    Simple CRUD -> fast model
-    Architecture decision -> reasoning model
-    Security review -> high-quality model
-
-  rule: agent abstraction hides model selection
-
-AgentPolicy:
-  definition:
-    agent-level execution restrictions
-
-  example:
-    allowed: [development, testing]
-    forbidden: [production]
-
-TaskPolicy:
-  definition:
-    task-level execution requirements
-
-  example:
-    required_approval: [security-team]
-
-FullAuthorization:
-  chain:
-    Task
-      ↓
-    Agent Capability Check
-      ↓
-    Skill Permission Check
-      ↓
-    Task Policy
-      ↓
-    Agent Policy
-      ↓
-    Environment Policy
-      ↓
-    ALLOW / DENY / REQUIRE_APPROVAL
-
-  rule: all checks MUST pass before execution
-
-CapabilityVsPermission:
-  capability:
-    definition: can do (technical ability)
-    example: CAN use PostgreSQL
-
-  permission:
-    definition: may do (authorization)
-    example: CAN modify production database
-
-  rule: capability does not imply permission
-  rule: permission is enforced by policy engine
-
-AgentHandoff:
-  contract:
-    task_id: string
-    current_state: string
-    completed_work: artifact
-    pending_work: [items]
-    artifacts: [outputs]
-    failures: [incidents]
-    decisions: [decisions]
-    context: minimal_relevant_context
-
-  rule: handoff MUST include all required context
-  rule: receiving agent MUST NOT read full reasoning history
-
-AgentChain:
-  example:
-    ARCHITECT -> CODER -> QA -> SECURITY -> DEVOPS
-
-  rule: chain order is deterministic
-  rule: handoff artifacts are the only communication channel
-
-AgentParallelism:
-  example:
-            CODER
-           /     \
-          ↓       ↓
-        QA       SECURITY
-           \     /
-            ↓
-          REVIEW
-
-  rule: parallel agents MUST have synchronization points
-
-Supervisor:
-  responsibilities:
-    - task decomposition
-    - agent selection
-    - result validation
-    - handoff orchestration
-    - failure recovery
-
-  rule: supervisor is centralized orchestrator
-  rule: agents do NOT negotiate directly with each other
-
-CentralizedOrchestration:
-  architecture:
-    SDD -> Orchestrator -> Agents
-
-  advantages:
-    - control
-    - observability
-    - deterministic workflow
-
-  disadvantage:
-    - bottleneck potential
-
-DecentralizedOrchestration:
-  architecture:
-    Agent <-> Agent <-> Agent
-
-  disadvantages:
-    - unpredictable
-    - harder to debug
-    - harder governance
-
-  rule: SDD uses centralized orchestration with controlled collaboration
-
-AgentProposal:
-  protocol:
-    1. Agent detects need for additional work
-    2. Agent creates SECURITY-REVIEW-REQUEST (or similar)
-    3. Orchestrator validates request against SDD graph
-    4. Orchestrator creates task and routes agent
-
-  rule: agent proposals are not direct execution
-
-AgentAutonomyLevels:
-  L0: observe
-  L1: suggest
-  L2: execute approved task
-  L3: autonomous execution
-  L4: autonomous orchestration
-
-  rule: L4 is ONLY allowed within explicit trust boundaries
-  rule: default is L2
-
-TrustLevels:
-  TRUST-LOW:
-    scope: read-only
-    environment: development
-
-  TRUST-MEDIUM:
-    scope: development
-    environment: development, testing
-
-  TRUST-HIGH:
-    scope: production
-    environment: any
-    rule: still requires policy/approval for critical actions
-
-AgentReputation:
-  metrics:
-    - success_rate
-    - average_duration
-    - test_failure_rate
-    - review_score
-    - cost_per_task
-
-  rule: reputation is advisory, not deterministic
-  rule: reputation bias MUST be balanced with exploration
-
-ExplainableRouting:
-  requirement:
-    every agent assignment MUST record reason
-
-  example:
-    GO capability = match
-    REST capability = match
-    skill = match
-    availability = available
-    risk = compatible
-    cost = acceptable
-
-  rule: "Why was this agent selected?" MUST be answerable
-
-AgentFailure:
-  classification:
-    - agent failure (agent can be retried or replaced)
-    - task failure (acceptance criteria not met)
-
-  rule: agent failure does not imply task failure
-  rule: task failure requires remediation, not just retry
-
-FailureRouting:
-  chain:
-    CODER-A -> FAILED -> CODER-B -> FAILED -> SENIOR-CODER -> HUMAN
-
-  rule: escalation chain is deterministic
-  rule: human escalation is REQUIRED after exhaustion
-
-AgentContextIsolation:
-  rule: agent sees only relevant subgraph
-  rule: token budget is enforced
-  rule: security-sensitive nodes are never exposed to low-trust agents
-
-MultiAgent:
-  definition:
-    coordinated execution by multiple specialized agents
-
-  principle:
-    Multi-agent != multiple LLM calls
-    Multi-agent = Role + Scope + Context + Permission + Task + Communication + Ownership
-
-  why:
-    single agent for complex task creates too much responsibility
-    specialized agents are more controllable and observable
-
-AgentRole:
-  definition:
-    functional classification of agent
-
-  examples:
-    - ARCHITECT
-    - CODER
-    - QA
-    - SECURITY
-    - REVIEWER
-    - DEVOPS
-    - DOCUMENTATION
-
-  rule: every agent MUST have exactly one primary role
-  rule: GENERAL_AGENT is forbidden
-
-AgentResponsibility:
-  structure:
-    responsibility:
-      implement application code
-
-    not_responsible_for:
-      - production deployment
-      - security approval
-      - architecture approval
-
-  rule: responsibility is explicit, not implicit
-
-AgentScope:
-  definition:
-    boundaries of where agent can work
-
-  example:
-    scope:
-      project: payments
-      modules:
-        - refund
-        - transaction
-
-  rule: agent cannot modify resources outside scope
-
-AgentPermission:
-  definition:
-    specific actions agent can perform
-
-  example:
-    CODER:
-      CAN: READ_FILE, WRITE_FILE, RUN_TEST
-      CANNOT: DEPLOY_PRODUCTION
-
-  rule: scope and permission are separate concepts
-
-AgentOwnership:
-  definition:
-    task graph node ownership
-
-  example:
-    TASK-100 owner = ARCHITECT
-    TASK-101 owner = CODER
-    TASK-102 owner = QA
-
-  rule: every task has exactly one owner
-
-Delegation:
-  definition:
-    agent assigns work to another agent
-
-  example:
-    ARCHITECT -> delegate -> CODER
-
-  rule: delegation MUST follow formal contract
-
-DelegationContract:
-  structure:
-    delegation:
-      from: ARCHITECT
-      to: CODER
-      task: TASK-101
-      input:
-        - architecture_spec
-        - api_contract
-      expected_output:
-        - implementation
-        - tests
-
-ContextPackage:
-  definition:
-    minimal context bundle for handoff
-
-  example:
-    CONTEXT-PACKAGE-20:
-      task: TASK-101
-      required_files: [payment.go, refund.go]
-      decisions: [ADR-20]
-      constraints: [idempotency_required]
-      artifacts: [API-SPEC-10]
-
-  rule: handoff does NOT transfer full context
-  rule: receiving agent requests additional context if needed
-
-SharedContext:
-  definition:
-    context available to all agents in workflow
-
-  examples:
-    - requirements
-    - architecture
-    - decisions
-    - contracts
-    - task graph
-
-PrivateContext:
-  definition:
-    agent-specific context not shared with others
-
-  examples:
-    CODER: implementation details
-    SECURITY: security analysis
-    QA: test strategy
-
-  rule: private context reduces noise and cost
-  rule: minimum required context principle applies
-
-Orchestrator:
-  definition:
-    component that plans, delegates, schedules, monitors, and coordinates agents
-
-  responsibilities:
-    - plan
-    - delegate
-    - schedule
-    - monitor
-    - retry
-    - coordinate
-    - aggregate
-
-  rule: orchestrator is NOT necessarily an LLM agent
-  rule: orchestrator workflow is deterministic
-
-SupervisorPattern:
-  architecture:
-              SUPERVISOR
-             /     |     \
-            /      |      \
-        CODER      QA    SECURITY
-
-  responsibilities:
-    - assign
-    - review
-    - retry
-    - escalate
-
-WorkerPattern:
-  architecture:
-    SUPERVISOR
-        │
-     ┌──┼────┐
-     ▼  ▼    ▼
-    W1  W2   W3
-
-  rule: worker only solves assigned task
-
-PipelinePattern:
-  architecture:
-    ARCHITECT -> CODER -> QA -> SECURITY -> REVIEWER
-
-  rule: agents work sequentially
-  rule: handoff artifacts are the only communication
-
-ParallelPattern:
-  architecture:
-           TASK
-            │
-      ┌─────┼─────┐
-      ▼     ▼     ▼
-     QA  SECURITY  DOCS
-      │     │       │
-      └─────┼───────┘
-            ▼
-          REVIEW
-
-  rule: parallel agents MUST have synchronization points
-  rule: parallel execution only when no blocking dependencies
-
-AgentCommunication:
-  rule: agents do NOT negotiate directly with each other
-  rule: all communication goes through orchestrator
-
-  flow:
-    Agent A -> Message Contract -> Orchestrator -> Agent B
-
-MessageContract:
-  structure:
-    message:
-      type: HANDOFF | TASK_ASSIGNMENT | RESULT | REVIEW_REQUEST | APPROVAL_REQUEST | BLOCKER | QUESTION | ESCALATION
-      task_id: string
-      artifacts: [items]
-      decisions: [items]
-      constraints: [items]
-
-AgentResultContract:
-  structure:
-    result:
-      status: SUCCESS | FAILURE | BLOCKED
-      artifacts: [ART-100]
-      changes: [payment.go]
-      tests: [PASS]
-      blockers: []
-      recommendations: []
-
-  rule: "Done" is not sufficient
-  rule: structured result is required
-
-AgentIsolation:
-  rule: agents MUST be isolated from each other's partial work
-
-  workspace_isolation:
-    example:
-      TASK-101 -> WORKSPACE-101 -> CODER
-
-  git_branch_isolation:
-    example:
-      main
-        ├── sdd/task-101
-        ├── sdd/task-102
-        └── sdd/task-103
-
-ReviewerAgent:
-  responsibilities:
-    - correctness
-    - architecture
-    - security
-    - style
-    - tests
-    - requirements
-
-  rule: reviewer is independent from coder
-  rule: reviewer does not share coder's full context (confirmation bias prevention)
-
-TwoAgentVerification:
-  definition:
-    independent validation by second agent
-
-  example:
-    CODER -> INDEPENDENT REVIEWER
-
-  rule: critical tasks require two-agent verification
-  rule: reviewer runs independent tests, not just reviews code
-
-SecurityGate:
-  definition:
-    mandatory security check for critical resources
-
-  example:
-    CODER -> QA -> SECURITY -> APPROVAL
-
-  resources:
-    - production
-    - payment
-    - authentication
-    - PII
-
-ConflictResolution:
-  resolution_methods:
-    - priority
-    - policy
-    - decision record
-    - human approval
-    - reviewer
-    - consensus
-
-  rule: security policy > agent preference
-
-Veto:
-  definition:
-    single agent can block workflow
-
-  example:
-    SECURITY: CRITICAL_VIOLATION -> BLOCK
-
-  rule: veto cannot be overridden by majority vote
-  rule: veto requires explicit policy justification
-
-AgentEscalation:
-  chain:
-    CODER -> SENIOR-CODER -> HUMAN
-
-  triggers:
-    - insufficient_context
-    - permission_denied
-    - ambiguous_requirement
-    - repeated_failure
-    - security_risk
-    - budget_exceeded
-    - dependency_blocked
-
-  rule: retry != escalation
-  rule: human escalation is REQUIRED after exhaustion
-
-PartialProgress:
-  definition:
-    multi-agent workflow where some agents succeed and others fail
-
-  example:
-    Agent A ✓
-    Agent B ✓
-    Agent C ✗
-    Agent D ✓
-
-  rule: partial progress does not automatically mean workflow FAILED
-  rule: task graph determines recovery path
-
-AgentQuota:
-  structure:
-    max_tokens: integer
-    max_tool_calls: integer
-    max_duration: string
-    max_cost: float
-    max_parallel_tasks: integer
-
-  rule: quotas prevent runaway agents
-
-AgentScheduling:
-  responsibilities:
-    - which agent
-    - when
-    - how many
-    - parallel or sequential
-
-  rule: scheduling is deterministic based on task graph
-
-AgentPool:
-  definition:
-    pool of interchangeable agents with same role
-
-  example:
-    CODER POOL:
-      - Coder-1
-      - Coder-2
-      - Coder-3
-
-  rule: available worker is assigned to task
-
-AgentAffinity:
-  definition:
-    preference for same agent to continue related tasks
-
-  example:
-    TASK-1 -> CODER-2
-    TASK-2 -> CODER-2 (context continuity)
-
-  rule: affinity is trade-off between cost and reliability
-
-AgentMemory:
-  task_memory:
-    definition: current execution context
-    scope: current task only
-
-  project_memory:
-    definition: stable project knowledge
-    scope: entire project
-
-  rule: shared memory MUST be controlled, versioned, audited
-  rule: shared writable memory causes chaos
-
-AgentCommunicationGraph:
-  architecture:
-                     ORCHESTRATOR
-                          │
-         ┌────────────────┼────────────────┐
-         ▼                ▼                ▼
-     ARCHITECT          CODER             QA
-         │                │                │
-         └────────────────┼────────────────┘
-                          ▼
-                       REVIEWER
-                          │
-                          ▼
-                         GATE
-
-  rule: agents primarily communicate through orchestrator
-  rule: direct agent communication is forbidden
-
-AgentAuthorityModel:
-  principle:
-    Agent = intelligence within boundaries
-    Authority = comes from SDD governance layer
-
-  model:
-    LLM -> Intent -> Agent -> Permission -> Policy -> Gate -> Execution
-
-  rule: agent does not create its own authority
-  rule: agent can decide, propose, execute within scope
-  rule: agent CANNOT override policy, change ownership, bypass gate, grant permission
-
-MultiAgentPrinciple:
-  rule: agents can have autonomy, but NOT authority
-  rule: autonomy = decide, propose, execute within scope
-  rule: authority = override policy, change ownership, bypass gate, grant permission
-
-Navigation:
-  Orchestrator: @../orchestrator/INDEX.sdd
-  Pipeline: @../orchestrator/pipeline.sdd
-  Runtime: @../runtime/INDEX.sdd
-  Execution: @../runtime/execution.sdd
-  Context: @../runtime/context.sdd
-  Skills: @../skills/INDEX.sdd
-  Protocol: @../protocol/INDEX.sdd
-  Graph: @../graph/INDEX.sdd
-  Tasks: @../tasks/INDEX.sdd
-  Workflow: @../workflow/INDEX.sdd
-  Observability: @../observability/INDEX.sdd
+  Preference for agent with existing context in specific domain.
+  Rule: affinity is trade-off between cost and reliability.
+
+Routing:
+  Low-risk tasks MAY use cheaper models.
+  High-risk tasks MUST use high-quality models.
+  Model selection is abstracted from agent identity.
+
+Policy:
+  Agent capability does not imply permission.
+  Permission is enforced by policy engine.
+  Full authorization chain: Task → Agent Capability → Skill Permission → Task Policy → Agent Policy → Environment Policy → ALLOW/DENY/REQUIRE_APPROVAL
+
+Handoff:
+  Contract: task_id, current_state, completed_work, pending_work, artifacts, failures, decisions, context
+  Rule: handoff transfers context package, not full context.
+  Rule: receiving agent requests additional context if needed.
+
+Isolation:
+  Rule: agents MUST be isolated from each other's partial work.
+  Rule: agents do NOT negotiate directly — all communication goes through orchestrator.
+
+Failure:
+  Agent failure does not imply task failure.
+  Task failure requires remediation, not just retry.
+  Escalation chain is deterministic. Human escalation REQUIRED after exhaustion.
 
 Rules:
-  [RT-MULTI-01] Multi-agent != multiple LLM calls — requires Role, Scope, Context, Permission, Task, Communication, Ownership.
-  [RT-MULTI-02] Every agent MUST have exactly one primary role.
-  [RT-MULTI-03] Agent responsibility is explicit, not implicit.
-  [RT-MULTI-04] Agent scope and permission are separate concepts.
-  [RT-MULTI-05] Every task has exactly one owner.
-  [RT-MULTI-06] Delegation MUST follow formal contract.
-  [RT-MULTI-07] Handoff transfers context package, not full context.
-  [RT-MULTI-08] Orchestrator is NOT necessarily an LLM agent — workflow is deterministic.
-  [RT-MULTI-09] Agents do NOT negotiate directly — all communication goes through orchestrator.
-  [RT-MULTI-10] Parallel agents MUST have synchronization points.
-  [RT-MULTI-11] Agent isolation prevents partial work interference.
-  [RT-MULTI-12] Reviewer is independent from coder — confirmation bias prevention.
-  [RT-MULTI-13] Critical tasks require two-agent verification.
-  [RT-MULTI-14] Security veto cannot be overridden by majority vote.
-  [RT-MULTI-15] Agents have autonomy but NOT authority.
-  [RT-MULTI-16] Authority comes from SDD governance, not agent self-declaration.
-  [RT-MULTI-17] Partial progress does not automatically mean workflow FAILED.
-  [RT-MULTI-18] Agent memory MUST be controlled, versioned, audited.
-  [RT-MULTI-19] Agent quotas prevent runaway agents.
-  [RT-MULTI-20] Multi-agent failure does not stop entire system — dependency graph determines impact.
-  [RT-MULTI-21] Agent MUST NOT add signatures or sign-offs to any output.
-  [RT-MULTI-22] Agent MUST NOT use emojis, icons, or decorative symbols in headers, titles, or messages — reserved for human use only.
+  [RT1] Every agent MUST have exactly one primary role.
+  [RT2] Agent responsibility is explicit, not implicit.
+  [RT3] Agent scope and permission are separate concepts.
+  [RT4] Every task has exactly one owner.
+  [RT5] Delegation MUST follow formal contract.
+  [RT6] Handoff transfers context package, not full context.
+  [RT7] Orchestrator is NOT necessarily an LLM agent — workflow is deterministic.
+  [RT8] Agents do NOT negotiate directly — all communication goes through orchestrator.
+  [RT9] Parallel agents MUST have synchronization points.
+  [RT10] Agent isolation prevents partial work interference.
+  [RT11] Reviewer is independent from coder.
+  [RT12] Critical tasks require two-agent verification.
+  [RT13] Security veto cannot be overridden by majority vote.
+  [RT14] Agents have autonomy but NOT authority.
+  [RT15] Authority comes from SDD governance, not agent self-declaration.
+  [RT16] Partial progress does not automatically mean workflow FAILED.
+  [RT17] Agent memory MUST be controlled, versioned, audited.
+  [RT18] Agent quotas prevent runaway agents.
+  [RT19] Agent MUST NOT add signatures or sign-offs to any output.
+  [RT20] Agent MUST NOT use emojis or decorative symbols in headers or titles.
 
 State: +

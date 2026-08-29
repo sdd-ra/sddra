@@ -379,20 +379,17 @@ Navigation:
    SkillDiscovery: @skills/SKILL-DISCOVERY.sdd
    SkillRecommendation: @skills/SKILL-RECOMMENDATION.sdd
    SkillGapAnalysis: @skills/SKILL-GAP-ANALYSIS.sdd
-   SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
-   Reasoning: @orchestrator/reasoning.sdd
-   FastPath: @chains/fast-path.sdd
+    SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
+    FastPath: @chains/fast-path.sdd
    BugTracking: @projects/{project_name}/bugs/INDEX.sdd
    ParallelExecution: @workflows/parallel-execution.sdd
    KnowledgeSharing: @workflows/knowledge-sharing.sdd
    IntelligentRuntime: @workflows/intelligent-runtime.sdd
   HumanSkills: @projects/{project_name}/docs/skills/
-  Orchestrator: @orchestrator/INDEX.sdd
-  OrchestratorIntent: @orchestrator/intent.sdd
-  OrchestratorModes: @orchestrator/modes.sdd
-  OrchestratorState: @orchestrator/state.sdd
-  OrchestratorPipeline: @orchestrator/pipeline.sdd
-  OrchestratorBoundary: @orchestrator/boundary.sdd
+   Orchestrator: @orchestrator/INDEX.sdd
+   OrchestratorModes: @orchestrator/modes.sdd
+   OrchestratorPipeline: @orchestrator/pipeline.sdd
+   OrchestratorRouting: @orchestrator/routing.sdd
   RuntimeAgent: @runtime/agent.sdd
   RuntimeSession: @runtime/session.sdd
   RuntimeCurrent: @runtime/current.sdd

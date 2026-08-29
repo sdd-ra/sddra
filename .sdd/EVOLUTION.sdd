@@ -136,7 +136,7 @@ Files:
   - patterns/checkpoint-restore.sdd
   - patterns/graceful-degradation.sdd
   - context/cache.sdd (with metrics)
-  - orchestrator/reasoning.sdd
+  - orchestrator/INDEX.sdd (includes reasoning patterns)
   - RESILIENCE.md
 
 ### L4: Optimized
@@ -168,7 +168,7 @@ Limitations:
 Files:
   - All L3 files
   - RESOURCES.sdd (with auto-update)
-  - orchestrator/reasoning.sdd (advanced)
+  - orchestrator/INDEX.sdd (includes reasoning patterns)
   - patterns/self-healing.sdd (if added)
   - patterns/intelligent-gates.sdd (if added)
 
