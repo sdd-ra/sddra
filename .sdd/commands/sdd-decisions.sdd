@@ -1,4 +1,4 @@
-﻿# /sdd-decisions Command Specification
+# /sdd-decisions Command Specification
 Purpose:
   /sdd-decisions Command Specification
 
@@ -18,7 +18,7 @@ Usage:
 
 Behavior:
   1. Read .sdd/decisions/INDEX.sdd
-  2. Read .sdd/project/decisions/INDEX.sdd
+  2. Read .sdd/projects/sddra.ai/decisions/INDEX.sdd
   3. Load requested decisions
   4. Generate report
 

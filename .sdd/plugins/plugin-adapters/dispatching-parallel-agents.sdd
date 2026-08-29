@@ -23,7 +23,7 @@ Adapted for SDDRA:
 
   Integration:
     - Chain graph parallel section
-    - Task scheduler in .sdd/project/tasks/
+    - Task scheduler in .sdd/projects/sddra.ai/tasks/
     - Token budget shared across parallel tasks
 
 Usage:

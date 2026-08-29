@@ -1,4 +1,4 @@
-﻿Availability: SDD
+Availability: SDD
 
 Purpose:
   Define availability levels, RTO/RPO targets, HA patterns, disaster
@@ -125,7 +125,7 @@ RTO_RPO:
   relationship:
     RPO <= backup frequency
     RTO >= estimated recovery time
-    both MUST be documented in ../project/decisions/INDEX.sdd
+    both MUST be documented in ../projects/sddra.ai/decisions/INDEX.sdd
 
 HAPatterns:
 
@@ -297,7 +297,7 @@ Selection:
     budget
     team capability
 
-  Availability MUST NOT be selected at maximum level by default —
+  Availability MUST NOT be selected at maximum level by default �
   it MUST be proportional to actual business need.
 
 AntiPatterns:
@@ -335,8 +335,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

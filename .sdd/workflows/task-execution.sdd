@@ -5,9 +5,9 @@ Purpose:
   Tasks are derived from approved docs and .sdd/project/ structure.
 
 Inputs:
-  - .sdd/project/tasks/*.sdd (task definitions)
+  - .sdd/projects/sddra.ai/tasks/*.sdd (task definitions)
   - .sdd/project/domains.sdd (domain structure)
-  - .sdd/project/stack/*.sdd (tech stack)
+  - .sdd/projects/sddra.ai/stack/*.sdd (tech stack)
   - .sdd/skills/**/*.sdd (skill catalog)
   - .sdd/chains/*.sdd (execution chains)
 
@@ -19,7 +19,7 @@ Outputs:
 
 Steps:
   1. DISCOVER_TASKS:
-     - Read .sdd/project/tasks/INDEX.sdd
+     - Read .sdd/projects/sddra.ai/tasks/INDEX.sdd
      - Find tasks with status: ready
      - Respect dependency order
 

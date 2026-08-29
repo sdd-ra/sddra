@@ -1,11 +1,11 @@
-﻿LockingModel: SDD
+LockingModel: SDD
 
 Purpose:
-  Define the resource locking model for the .sdd system â€” how exclusive
+  Define the resource locking model for the .sdd system — how exclusive
   and shared access to resources is managed, how locks are acquired and
   released, how deadlocks are prevented/detected, and how AI task
   collisions are prevented. This is reusable system intelligence;
-  concrete lock state lives in project/dependencies/locks.sdd.
+  concrete lock state lives in projects/sddra.ai/dependencies/locks.sdd.
 
 Owns:
   Lock types, lock acquisition/release rules, deadlock detection,
@@ -13,7 +13,7 @@ Owns:
   AI task collision prevention.
 
 DoesNotOwn:
-  Concrete lock instances (those live in project/dependencies/locks.sdd),
+  Concrete lock instances (those live in projects/sddra.ai/dependencies/locks.sdd),
   task execution (scheduler's job), resource provisioning (infrastructure's
   job).
 
@@ -64,9 +64,9 @@ LockAcquisition:
     1. Check existing locks on resource
     2. Check compatibility matrix
     3. Check for deadlock potential
-    4. If compatible â†’ ACQUIRED
-    5. If conflict â†’ CONFLICT (queue or reject)
-    6. If deadlock â†’ DEADLOCK (resolve)
+    4. If compatible → ACQUIRED
+    5. If conflict → CONFLICT (queue or reject)
+    6. If deadlock → DEADLOCK (resolve)
 
 
 CompatibilityMatrix:
@@ -110,7 +110,7 @@ OptimisticLocking:
   Rules:
     [LK5] Optimistic access MUST include version/timestamp check at commit.
     [LK6] Conflict MUST trigger retry or escalation, not silent overwrite.
-    [LK7] Optimistic lock is advisory â€” it signals intent but does not block.
+    [LK7] Optimistic lock is advisory — it signals intent but does not block.
 
 
 LeaseModel:
@@ -118,13 +118,13 @@ LeaseModel:
   LEASE locks expire automatically.
 
   Lease lifecycle:
-    ACQUIRE â†’ (active) â†’ RENEW | EXPIRE â†’ RELEASE
+    ACQUIRE → (active) → RENEW | EXPIRE → RELEASE
 
   Rules:
     [LK8] LEASE lock MUST have explicit duration.
     [LK9] LEASE lock MAY be renewed if renew = true.
     [LK10] Expired LEASE MUST be automatically released.
-    [LK11] Task using LEASE MUST handle expiration â€” cannot assume
+    [LK11] Task using LEASE MUST handle expiration — cannot assume
       lock persists beyond duration.
 
 
@@ -136,7 +136,7 @@ DeadlockDetection:
     On each lock request:
       1. Build wait-for graph
       2. Run cycle detection (DFS)
-      3. If cycle found â†’ DEADLOCK
+      3. If cycle found → DEADLOCK
 
   Prevention:
     [LK12] Lock ordering: resources MUST be acquired in canonical order.
@@ -171,8 +171,8 @@ LockRecovery:
   1. Detect: heartbeat timeout or explicit failure
   2. Classify: LEASE (auto-expire) vs PERSISTENT (manual recovery)
   3. Recover:
-     LEASE â†’ wait for expiry or force-release after safety margin
-     PERSISTENT â†’ escalate to human or use recovery policy
+     LEASE → wait for expiry or force-release after safety margin
+     PERSISTENT → escalate to human or use recovery policy
   4. Notify: inform waiters of lock status change
 
   Rules:
@@ -195,7 +195,7 @@ AITaskCollisionPrevention:
       DONE, FAILED, or CANCELLED.
 
   Collision handling:
-    [LK28] Detected collision â†’ second agent receives TASK_LOCKED event.
+    [LK28] Detected collision → second agent receives TASK_LOCKED event.
     [LK29] Second agent selects next candidate from scheduler.
     [LK30] Human MAY override lock to reassign task.
 
@@ -227,7 +227,7 @@ LockGovernance:
   [LK35] Lock acquisition MUST go through policy engine.
   [LK36] Human-requested locks have priority over AI-requested locks.
   [LK37] System locks (maintenance, backup) have highest priority.
-  [LK38] Lock hold time SHOULD be minimized â€” acquire late, release early.
+  [LK38] Lock hold time SHOULD be minimized — acquire late, release early.
   [LK39] Lock audit log MUST record all acquisitions, releases, timeouts,
     conflicts, and deadlocks.
 
@@ -237,8 +237,8 @@ Navigation:
   LockingModel: ./INDEX.sdd
   LockingGraph: ./graph.sdd
   LockingModel: ./locking.sdd
-  ProjectLocks: ../project/dependencies/locks.sdd
-  ProjectReservations: ../project/dependencies/reservations/
+  ProjectLocks: ../projects/sddra.ai/dependencies/locks.sdd
+  ProjectReservations: ../projects/sddra.ai/dependencies/reservations/
 
 
 State: +

@@ -1,4 +1,4 @@
-﻿Deployment: SDD
+Deployment: SDD
 
 Purpose:
   Define deployment strategies, environment management, CI/CD pipeline
@@ -356,8 +356,8 @@ Navigation:
   Availability: @availability.sdd
   Networking: @networking.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

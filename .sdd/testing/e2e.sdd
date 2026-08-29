@@ -1,7 +1,7 @@
-ï»¿E2E: SDD
+E2E: SDD
 
 Purpose:
-  End-to-End testing â€” verify complete user/business flows work across
+  End-to-End testing — verify complete user/business flows work across
   the entire system. E2E tests validate the system from the user's
   perspective, including all integrated components.
 
@@ -18,7 +18,7 @@ Principles:
   Test real user journeys, not technical paths
   Use production-like data and configuration
   Keep E2E suite small and focused on critical paths
-  E2E tests are slow â€” use them sparingly
+  E2E tests are slow — use them sparingly
   E2E failures require immediate investigation
 
 Structure:
@@ -47,7 +47,7 @@ Navigation:
   API: @api.sdd
   UI: @ui.sdd
   Mobile: @mobile.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

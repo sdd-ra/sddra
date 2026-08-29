@@ -1,7 +1,7 @@
-﻿Unit: SDD
+Unit: SDD
 
 Purpose:
-  Unit testing — verify individual components in isolation. Unit tests
+  Unit testing � verify individual components in isolation. Unit tests
   are the foundation of the test pyramid: fast, cheap, and provide
   immediate feedback.
 
@@ -52,7 +52,7 @@ Navigation:
   BDD: @bdd.sdd
   Integration: @integration.sdd
   API: @api.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

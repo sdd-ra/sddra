@@ -38,6 +38,6 @@ Navigation:
   Observability: @observability.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
-  ProjectArchitecture: @../project/architecture/INDEX.sdd
+  ProjectArchitecture: @../projects/sddra.ai/architecture/INDEX.sdd
 
 State: +

@@ -1,210 +1,52 @@
 Index: Project
 
 Purpose:
-  Project-level routing table. Root INDEX.sdd routes here for project-
-  specific state. This file maps where project artifacts live and how
-  they relate to each other.
+  Project model registry and routing table. This file defines the SHAPE
+  of how projects are structured — the Project > Domain > Module > Feature
+  > Component hierarchy — and routes to model files.
 
-  This file contains SCHEMA and ROUTING only — no concrete project data.
-  Concrete project instances are generated per prompt into project/.
+  This folder contains MODEL and SCHEMA only — no concrete project data.
+  Concrete project instances live under .sdd/projects/<name>/.
 
 Owns: ./
 
 ReadOrder:
-   1  PROJECT.sdd (project model entry point)
-   2  INDEX.sdd   (this file — project map)
-   3  templates/INDEX.sdd (reusable project templates)
-   4  docs/INDEX.sdd (human docs)
-   5  docs/mappings.sdd (doc-to-sdd mappings)
-   6  docs/ownership.sdd (doc ownership)
-   7  architecture/INDEX.sdd (project architecture map)
-   8  architecture/system.sdd (system architecture)
-   9  context/INDEX.sdd (project context router)
-   10 context/map.sdd (project context map)
-   11 context/active.sdd (active context instances)
-   12 mode.sdd (project mode)
-   13 decisions/INDEX.sdd (decision index)
-   14 tasks/INDEX.sdd (task scheduler map)
-   15 stack/INDEX.sdd (project stack selection)
+   1  project.sdd   (project model entry point)
+   2  INDEX.sdd     (this file — project model map)
+   3  domains.sdd   (domain schema and list)
+   4  modules.sdd   (module schema and list)
+   5  map.sdd       (project navigation map)
+   6  flows.sdd     (execution flow schema)
+   7  dependencies.sdd (dependency schema)
+   8  indexes.sdd   (category-level index schema)
+   9  instantiation.sdd (project instantiation rules)
+   10 mode.sdd      (project mode schema)
+   11 architecture.sdd (architecture schema)
+   12 README.sdd    (project model overview)
 
 Rules:
-  [PI1] AI MUST resolve project context before reading any project artifact.
-  [PI2] AI MUST use the task scheduler map (tasks/INDEX.sdd) to find
-        ready/unblocked tasks — MUST NOT scan tasks/ blindly.
-  [PI3] Task execution order is determined by dependency graph, NOT task ID.
-  [PI4] A task with unresolved dependencies MUST remain in WAIT state.
-  [PI5] When a task completes, AI MUST re-evaluate the dependency graph
-        to unlock dependent tasks.
-  [PI6] AI MUST load minimum sufficient task context — no full task catalog reads.
+  [PM1] This folder defines reusable project structure schemas only.
+  [PM2] Concrete project instances MUST live under .sdd/projects/<name>/.
+  [PM3] AI MUST NOT place project state (decisions, tasks, docs, etc.)
+        in this folder — use .sdd/projects/<name>/ instead.
+  [PM4] Domain and module schemas defined here are templates; concrete
+        instances belong to the instantiated project.
 
 Navigation:
-  Project:    @PROJECT.sdd
-  Templates:  @../../templates/INDEX.sdd
-  TemplatesDocs: @../../templates/_sdd/docs
-  TemplatesDecisions: @../../templates/_sdd/decisions
-  TemplatesTasks: @../../templates/_sdd/tasks
-  TemplatesStack: @../../templates/_sdd/stack
-  TemplatesModules: @../../templates/_sdd/modules
-  TemplatesArchitecture: @../../templates/_sdd/architecture
-  TemplatesFlows: @../../templates/_sdd/flows
-  TemplatesDomains: @../../templates/_sdd/domains
-  Architecture: @architecture/INDEX.sdd
-  ArchitectureSystem: @architecture/system.sdd
-  ArchitectureComponents: @architecture/components.sdd
-  ArchitectureData: @architecture/data.sdd
-  ArchitectureInfrastructure: @architecture/infrastructure.sdd
-  ArchitectureDiagrams: @architecture/diagrams/
-  ArchitectureKnowledge: @../../architecture/INDEX.sdd
-  ArchitectureLevels: @../../architecture/levels.sdd
-  ArchitecturePatterns: @../../architecture/patterns.sdd
-  ArchitectureScaling: @../../architecture/scaling.sdd
-  ArchitectureAvailability: @../../architecture/availability.sdd
-  ArchitectureDataKnowledge: @../../architecture/data.sdd
-  ArchitectureObservability: @../../architecture/observability.sdd
-  ArchitectureNetworking: @../../architecture/networking.sdd
-  ArchitectureDeployment: @../../architecture/deployment.sdd
-  Tasks:      @tasks/INDEX.sdd
-  TaskInstances: @tasks/
-  Testing:    @testing/INDEX.sdd
-  TestingCoverage: @testing/coverage.sdd
-  TestingRuns: @testing/runs/
-  TestingFailures: @testing/failures/
-  TestingExceptions: @testing/exceptions/
-  Security:   @security/INDEX.sdd
-  SecurityLevel: @security/levels.sdd
-  SecurityGates: @security/gates/
-  Findings:   @security/findings/
-  Threats:    @security/threats/
-  Exceptions: @security/exceptions/
-  Dependencies: @dependencies/INDEX.sdd
-  DependencyGraph: @dependencies/graph.sdd
-  DependencyLocks: @dependencies/locks.sdd
-  Reservations: @dependencies/reservations/
-  DependencyEngine: @../../dependencies/INDEX.sdd
-  DependencyGraphEngine: @../../dependencies/graph.sdd
-  DependencyLocking: @../../dependencies/locking.sdd
-  Decisions:  @decisions/INDEX.sdd
-  DecisionInstances: @decisions/
-  DecisionSchema: @../../decisions/schema.sdd
-  DecisionWorkflow: @../../decisions/workflow.sdd
-  DecisionRules: @../../decisions/rules.sdd
-  Domains:    @domains/
-  Flows:      @flows/
-  Stack:      @stack/INDEX.sdd
-  StackBackend: @stack/backend.sdd
-  StackFrontend: @stack/frontend.sdd
-  StackMobile: @stack/mobile.sdd
-  StackDatabase: @stack/database.sdd
-  StackTesting: @stack/testing.sdd
-  StackInfrastructure: @stack/infrastructure.sdd
-  Workflow: @workflow/INDEX.sdd
-  WorkflowLifecycle: @workflow/lifecycle.sdd
-  WorkflowDependencies: @workflow/dependencies.sdd
-  WorkflowRecovery: @workflow/recovery.sdd
-  WorkflowPolicies: @workflow/policies.sdd
-  Docs: @docs/INDEX.sdd
-  DocsMappings: @docs/mappings.sdd
-  DocsOwnership: @docs/ownership.sdd
-  Context: @context/INDEX.sdd
-  ContextRouting: @context/routing.sdd
-  ContextPriorities: @context/priorities.sdd
-  ContextBudgets: @context/budgets.sdd
-  ContextLoading: @context/loading.sdd
-  ContextDependencies: @context/dependencies.sdd
-  ContextCache: @context/cache.sdd
-  ProjectContext: @project/context/INDEX.sdd
-  ProjectContextMap: @project/context/map.sdd
-  ProjectContextActive: @project/context/active.sdd
-  Agent: @agent/INDEX.sdd
-  AgentCapabilities: @agent/capabilities.sdd
-  AgentPermissions: @agent/permissions.sdd
-  AgentPolicies: @agent/policies.sdd
-  AgentApprovals: @agent/approvals.sdd
-  AgentExecution: @agent/execution.sdd
-  AgentRollback: @agent/rollback.sdd
-  AgentLimits: @agent/limits.sdd
-  AgentAudit: @agent/audit.sdd
-  RuntimeWorkspace: @.runtime/INDEX.sdd
-  Discovery: @discovery/INDEX.sdd
-  DiscoveryRules: @discovery/rules.sdd
-  DiscoveryScanners: @discovery/scanners.sdd
-  DiscoveryDetectors: @discovery/detectors.sdd
-  DiscoveryMapping: @discovery/mapping.sdd
-  DiscoveryConfidence: @discovery/confidence.sdd
-  DiscoveryConflicts: @discovery/conflicts.sdd
-  DiscoveryBaseline: @discovery/baseline.sdd
-  ProjectMode: @project/mode.sdd
-  Graph: @graph/INDEX.sdd
-  GraphNodes: @graph/nodes.sdd
-  GraphRelations: @graph/relations.sdd
-  GraphTraceability: @graph/traceability.sdd
-  GraphImpact: @graph/impact.sdd
-  GraphOwnership: @graph/ownership.sdd
-  GraphDependencies: @graph/dependencies.sdd
-  GraphCoverage: @graph/coverage.sdd
-  GraphDrift: @graph/drift.sdd
-  Chains:     @chains/INDEX.sdd
-  ChainGraph: @chains/graph.sdd
-  ChainArms:  @chains/arms
-  ChainRules: @chains/rules/chain-rules.sdd
-  ChainTokens: @chains/tokens/INDEX.sdd
-  ProjectRoot: @../../project
-  HumanDocs:  @docs/INDEX.sdd
-  AIModel:    @sdd/INDEX.sdd
-  GatesPolicy: @gates/policy.sdd
-  GatesLevels: @gates/levels.sdd
-  GatesQuality: @gates/quality.sdd
-  GatesTesting: @gates/testing.sdd
-  GatesSecurity: @gates/security.sdd
-  GatesPerformance: @gates/performance.sdd
-  GatesInfrastructure: @gates/infrastructure.sdd
-  GatesRelease: @gates/release.sdd
-  GatesExceptions: @gates/exceptions.sdd
-  GatesEvidence: @gates/evidence.sdd
-  Skills: @skills/INDEX.sdd
-  SkillsLanguages: @skills/languages/INDEX.sdd
-  SkillsFrameworks: @skills/frameworks/INDEX.sdd
-  SkillsDatabases: @skills/databases/INDEX.sdd
-  SkillsPlatforms: @skills/platforms/INDEX.sdd
-  SkillsMessaging: @skills/messaging/INDEX.sdd
-  SkillsCrossCutting: @skills/cross-cutting/INDEX.sdd
-  HumanSkills: @docs/skills/
-  Orchestrator: @orchestrator/INDEX.sdd
-  OrchestratorIntent: @orchestrator/intent.sdd
-  OrchestratorModes: @orchestrator/modes.sdd
-  OrchestratorState: @orchestrator/state.sdd
-  OrchestratorPipeline: @orchestrator/pipeline.sdd
-  OrchestratorBoundary: @orchestrator/boundary.sdd
-  RuntimeAgent: @runtime/agent.sdd
-  RuntimeSession: @runtime/session.sdd
-  RuntimeCurrent: @runtime/current.sdd
-  Standards: @standards/INDEX.sdd
-  StandardsNaming: @standards/naming.sdd
-  StandardsLevels: @standards/levels.sdd
-  StandardsStates: @standards/states.sdd
-  StandardsRelations: @standards/relations.sdd
-  StandardsConventions: @standards/conventions.sdd
-  Schemas: @schemas/INDEX.sdd
-  SchemaTask: @schemas/task.sdd
-  SchemaDecision: @schemas/decision.sdd
-  SchemaWorkflow: @schemas/workflow.sdd
-  SchemaSkill: @schemas/skill.sdd
-  SchemaGate: @schemas/gate.sdd
-  SchemaModule: @schemas/module.sdd
-  Infrastructure: @infrastructure/
-  Root:       @../INDEX.sdd
+  ProjectModel: @project.sdd
+  Domains: @domains.sdd
+  Modules: @modules.sdd
+  Map: @map.sdd
+  Flows: @flows.sdd
+  Dependencies: @dependencies.sdd
+  Indexes: @indexes.sdd
+  Instantiation: @instantiation.sdd
+  Mode: @mode.sdd
+  Architecture: @architecture.sdd
+  Readme: @README.sdd
+  Projects: @../projects/INDEX.sdd
+  ProjectInstances: @../projects/
+  Root: @../INDEX.sdd
 
 State: +
-  (created as project-level routing table)
-  (removed stale EduNexus-specific entries: DEC-001..007, concrete stack refs)
-  (removed duplicate navigation entries)
-  (added templates references)
-
-Note:
-  This file is the project-specific counterpart to root INDEX.sdd.
-  Root INDEX.sdd owns system routing; this file owns project routing.
-  This file contains SCHEMA and ROUTING only — no concrete project data.
-  Concrete project instances are generated per prompt into project/.
-  Task instances live under tasks/, decisions under decisions/,
-  domain models under domains/, etc. — all project-specific state
-  is contained under .sdd/project/, never at root.
+  (converted to model-only registry; concrete instances moved to projects/<name>/)

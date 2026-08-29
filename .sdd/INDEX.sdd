@@ -83,35 +83,35 @@ ReadOrder:
    37 @dependencies/INDEX.sdd (dependency graph engine)
    38 @dependencies/graph.sdd (DAG, topological sort, cycle detection)
    39 @dependencies/locking.sdd (locking model, deadlock, lease)
-   40 @project/decisions/decisions.sdd
-   41 @project/decisions/ (decision instances, when present)
-   42 @project/decisions/INDEX.sdd (project decision registry)
-   43 @project/dependencies/INDEX.sdd (project dependency state)
-   44 @project/dependencies/graph.sdd (project dependency graph)
-   45 @project/dependencies/locks.sdd (project lock state)
-   46 @project/dependencies/reservations/ (resource reservations)
+   40 @projects/sddra.ai/decisions/decisions.sdd
+   41 @projects/sddra.ai/decisions/ (decision instances, when present)
+   42 @projects/sddra.ai/decisions/INDEX.sdd (project decision registry)
+   43 @projects/sddra.ai/dependencies/INDEX.sdd (project dependency state)
+   44 @projects/sddra.ai/dependencies/graph.sdd (project dependency graph)
+   45 @projects/sddra.ai/dependencies/locks.sdd (project lock state)
+   46 @projects/sddra.ai/dependencies/reservations/ (resource reservations)
    47 @stack/INDEX.sdd          (stack technology knowledge base)
    48 @stack/ (technology catalogs, when present)
-   49 @project/stack/INDEX.sdd  (project stack selection)
-   50 @project/stack/ (project technology instances, when present)
+   49 @projects/sddra.ai/stack/INDEX.sdd  (project stack selection)
+   50 @projects/sddra.ai/stack/ (project technology instances, when present)
    51 @observability/INDEX.sdd  (observability and incident engine)
    52 @observability/ (observability catalogs, when present)
-    53 @project/observability/INDEX.sdd (project observability state)
-    54 @project/observability/ (project runtime instances, when present)
+    53 @projects/sddra.ai/observability/INDEX.sdd (project observability state)
+    54 @projects/sddra.ai/observability/ (project runtime instances, when present)
     55 @commands/INDEX.sdd (CLI commands for SDDRA)
     56 @commands/ (command definitions, when present)
     57 @plugins/INDEX.sdd (plugin adapters)
     58 @plugins/ (plugin adapter definitions, when present)
-    59 @project/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
+    59 @projects/sddra.ai/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
    56 @project/INDEX.sdd       (project map)
    57 @project/PROJECT.sdd     (project model)
-   58 @project/architecture/INDEX.sdd (project architecture map)
-   59 @project/architecture/system.sdd (system architecture)
-   60 @project/architecture/components.sdd (component architecture)
-   61 @project/architecture/data.sdd (data architecture)
-   62 @project/architecture/infrastructure.sdd (infrastructure)
-   63 @project/tasks/INDEX.sdd (task scheduler map)
-   64 @project/tasks/          (project task instances)
+   58 @projects/sddra.ai/architecture/INDEX.sdd (project architecture map)
+   59 @projects/sddra.ai/architecture/system.sdd (system architecture)
+   60 @projects/sddra.ai/architecture/components.sdd (component architecture)
+   61 @projects/sddra.ai/architecture/data.sdd (data architecture)
+   62 @projects/sddra.ai/architecture/infrastructure.sdd (infrastructure)
+   63 @projects/sddra.ai/tasks/INDEX.sdd (task scheduler map)
+   64 @projects/sddra.ai/tasks/          (project task instances)
    65 @workflow/INDEX.sdd
    66 @workflow/ (workflow engine: stages, transitions, gates, testing, state)
    67 @runtime/events.sdd (runtime event log)
@@ -168,12 +168,12 @@ Navigation:
   ArchitectureObservability: @architecture/observability.sdd
   ArchitectureNetworking: @architecture/networking.sdd
   ArchitectureDeployment: @architecture/deployment.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  ProjectArchitectureSystem: @project/architecture/system.sdd
-  ProjectArchitectureComponents: @project/architecture/components.sdd
-  ProjectArchitectureData: @project/architecture/data.sdd
-  ProjectArchitectureInfrastructure: @project/architecture/infrastructure.sdd
-  ProjectArchitectureDiagrams: @project/architecture/diagrams/
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  ProjectArchitectureSystem: @projects/sddra.ai/architecture/system.sdd
+  ProjectArchitectureComponents: @projects/sddra.ai/architecture/components.sdd
+  ProjectArchitectureData: @projects/sddra.ai/architecture/data.sdd
+  ProjectArchitectureInfrastructure: @projects/sddra.ai/architecture/infrastructure.sdd
+  ProjectArchitectureDiagrams: @projects/sddra.ai/architecture/diagrams/
   Graph:      @graph/graph.sdd
   DomainGraph: @project/graph/
   Skills:     @skills/INDEX.sdd
@@ -195,10 +195,10 @@ Navigation:
   DependencyEngine: @dependencies/INDEX.sdd
   DependencyGraph: @dependencies/graph.sdd
   DependencyLocking: @dependencies/locking.sdd
-  ProjectDependencies: @project/dependencies/INDEX.sdd
-  ProjectDependencyGraph: @project/dependencies/graph.sdd
-  ProjectLocks: @project/dependencies/locks.sdd
-  ProjectReservations: @project/dependencies/reservations/
+  ProjectDependencies: @projects/sddra.ai/dependencies/INDEX.sdd
+  ProjectDependencyGraph: @projects/sddra.ai/dependencies/graph.sdd
+  ProjectLocks: @projects/sddra.ai/dependencies/locks.sdd
+  ProjectReservations: @projects/sddra.ai/dependencies/reservations/
   Stack: @stack/INDEX.sdd
   StackLanguages: @stack/languages.sdd
   StackBackend: @stack/backend.sdd
@@ -210,20 +210,20 @@ Navigation:
   StackTesting: @stack/testing.sdd
   StackInfrastructure: @stack/infrastructure.sdd
   StackObservability: @stack/observability.sdd
-  ProjectStack: @project/stack/INDEX.sdd
-  ProjectStackBackend: @project/stack/backend.sdd
-  ProjectStackFrontend: @project/stack/frontend.sdd
-  ProjectStackMobile: @project/stack/mobile.sdd
-  ProjectStackDatabase: @project/stack/database.sdd
-  ProjectStackTesting: @project/stack/testing.sdd
-  ProjectStackInfrastructure: @project/stack/infrastructure.sdd
-  Decisions:  @project/decisions/decisions.sdd
-  DecisionInstances: @project/decisions/
-   DomainDecisions: @project/decisions/INDEX.sdd
-   DecisionHumanDocs: @project/docs/decisions/INDEX.md
-  TaskEngine: @project/tasks/tasks.sdd
-  TaskInstances: @project/tasks/
-  TaskScheduler: @project/tasks/INDEX.sdd
+  ProjectStack: @projects/sddra.ai/stack/INDEX.sdd
+  ProjectStackBackend: @projects/sddra.ai/stack/backend.sdd
+  ProjectStackFrontend: @projects/sddra.ai/stack/frontend.sdd
+  ProjectStackMobile: @projects/sddra.ai/stack/mobile.sdd
+  ProjectStackDatabase: @projects/sddra.ai/stack/database.sdd
+  ProjectStackTesting: @projects/sddra.ai/stack/testing.sdd
+  ProjectStackInfrastructure: @projects/sddra.ai/stack/infrastructure.sdd
+  Decisions:  @projects/sddra.ai/decisions/decisions.sdd
+  DecisionInstances: @projects/sddra.ai/decisions/
+   DomainDecisions: @projects/sddra.ai/decisions/INDEX.sdd
+   DecisionHumanDocs: @projects/sddra.ai/docs/decisions/INDEX.md
+  TaskEngine: @projects/sddra.ai/tasks/tasks.sdd
+  TaskInstances: @projects/sddra.ai/tasks/
+  TaskScheduler: @projects/sddra.ai/tasks/INDEX.sdd
   Workflow:   @workflow/INDEX.sdd
   WorkflowStages: @workflow/stages.sdd
   WorkflowTransitions: @workflow/transitions.sdd
@@ -234,10 +234,10 @@ Navigation:
   WorkflowDependencies: @workflow/dependencies.sdd
   WorkflowRecovery: @workflow/recovery.sdd
   WorkflowPolicies: @workflow/policies.sdd
-  ProjectWorkflow: @project/workflow/INDEX.sdd
-  ProjectWorkflowLifecycle: @project/workflow/lifecycle.sdd
-  ProjectWorkflowActive: @project/workflow/active.sdd
-  ProjectWorkflowExceptions: @project/workflow/exceptions.sdd
+  ProjectWorkflow: @projects/sddra.ai/workflow/INDEX.sdd
+  ProjectWorkflowLifecycle: @projects/sddra.ai/workflow/lifecycle.sdd
+  ProjectWorkflowActive: @projects/sddra.ai/workflow/active.sdd
+  ProjectWorkflowExceptions: @projects/sddra.ai/workflow/exceptions.sdd
   Observability: @observability/INDEX.sdd
   Logging: @observability/logging.sdd
   Metrics: @observability/metrics.sdd
@@ -246,15 +246,15 @@ Navigation:
   Health: @observability/health.sdd
   Diagnostics: @observability/diagnostics.sdd
   Incident: @observability/incident.sdd
-  ProjectObservability: @project/observability/INDEX.sdd
-  ProjectRuntime: @project/observability/runtime.sdd
-  ProjectServices: @project/observability/services.sdd
-  ProjectAlerts: @project/observability/alerts.sdd
-  ProjectIncidents: @project/observability/incidents/
-  ProjectDiagnostics: @project/observability/diagnostics/
-  Docs: @project/docs/INDEX.sdd
-  DocsMappings: @project/docs/mappings.sdd
-  DocsOwnership: @project/docs/ownership.sdd
+  ProjectObservability: @projects/sddra.ai/observability/INDEX.sdd
+  ProjectRuntime: @projects/sddra.ai/observability/runtime.sdd
+  ProjectServices: @projects/sddra.ai/observability/services.sdd
+  ProjectAlerts: @projects/sddra.ai/observability/alerts.sdd
+  ProjectIncidents: @projects/sddra.ai/observability/incidents/
+  ProjectDiagnostics: @projects/sddra.ai/observability/diagnostics/
+  Docs: @projects/sddra.ai/docs/INDEX.sdd
+  DocsMappings: @projects/sddra.ai/docs/mappings.sdd
+  DocsOwnership: @projects/sddra.ai/docs/ownership.sdd
   Context: @context/INDEX.sdd
   ContextRouting: @context/routing.sdd
   ContextPriorities: @context/priorities.sdd
@@ -262,9 +262,9 @@ Navigation:
   ContextLoading: @context/loading.sdd
   ContextDependencies: @context/dependencies.sdd
   ContextCache: @context/cache.sdd
-  ProjectContext: @project/context/INDEX.sdd
-  ProjectContextMap: @project/context/map.sdd
-  ProjectContextActive: @project/context/active.sdd
+  ProjectContext: @projects/sddra.ai/context/INDEX.sdd
+  ProjectContextMap: @projects/sddra.ai/context/map.sdd
+  ProjectContextActive: @projects/sddra.ai/context/active.sdd
   Agent: @agent/INDEX.sdd
   AgentCapabilities: @agent/capabilities.sdd
   AgentPermissions: @agent/permissions.sdd
@@ -304,9 +304,9 @@ Navigation:
   GatesRelease: @gates/release.sdd
   GatesExceptions: @gates/exceptions.sdd
   GatesEvidence: @gates/evidence.sdd
-  ProjectGates: @project/gates/INDEX.sdd
-  ProjectGatePolicy: @project/gates/policy.sdd
-  ProjectGateActive: @project/gates/active.sdd
+  ProjectGates: @projects/sddra.ai/gates/INDEX.sdd
+  ProjectGatePolicy: @projects/sddra.ai/gates/policy.sdd
+  ProjectGateActive: @projects/sddra.ai/gates/active.sdd
   Skills: @skills/INDEX.sdd
   SkillsLanguages: @skills/languages/INDEX.sdd
   SkillsGo: @skills/languages/go/INDEX.sdd
@@ -385,11 +385,11 @@ Navigation:
    SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
    Reasoning: @orchestrator/reasoning.sdd
    FastPath: @chains/fast-path.sdd
-   BugTracking: @project/bugs/INDEX.sdd
+   BugTracking: @projects/sddra.ai/bugs/INDEX.sdd
    ParallelExecution: @workflows/parallel-execution.sdd
    KnowledgeSharing: @workflows/knowledge-sharing.sdd
    IntelligentRuntime: @workflows/intelligent-runtime.sdd
-  HumanSkills: @project/docs/skills/
+  HumanSkills: @projects/sddra.ai/docs/skills/
   Orchestrator: @orchestrator/INDEX.sdd
   OrchestratorIntent: @orchestrator/intent.sdd
   OrchestratorModes: @orchestrator/modes.sdd
@@ -417,14 +417,14 @@ Navigation:
   TestLevels: @testing/levels.sdd
   TestTypes:  @testing/types.sdd
   TestGates:  @testing/gates.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
-  ProjectCoverage: @project/testing/coverage.sdd
-  ProjectTestRuns: @project/testing/runs/
-  ProjectTestFailures: @project/testing/failures/
-  ProjectTestExceptions: @project/testing/exceptions/
-   Docs:       @project/docs/INDEX.sdd
-   DocsTasks:  @project/docs/tasks/
-   DocsDecisions: @project/docs/decisions/
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
+  ProjectCoverage: @projects/sddra.ai/testing/coverage.sdd
+  ProjectTestRuns: @projects/sddra.ai/testing/runs/
+  ProjectTestFailures: @projects/sddra.ai/testing/failures/
+  ProjectTestExceptions: @projects/sddra.ai/testing/exceptions/
+   Docs:       @projects/sddra.ai/docs/INDEX.sdd
+   DocsTasks:  @projects/sddra.ai/docs/tasks/
+   DocsDecisions: @projects/sddra.ai/docs/decisions/
     Commands:   @commands/INDEX.sdd
     CommandSDD: @commands/sdd.sdd
     CommandAnalyze: @commands/sdd-analyze.sdd
@@ -469,30 +469,30 @@ Note:
     Added architecture and decisions sections to ReadOrder and Navigation.
     Architecture knowledge base includes levels.sdd, patterns.sdd, scaling.sdd,
     availability.sdd, data.sdd, observability.sdd, networking.sdd, deployment.sdd.
-    Project architecture state lives in project/architecture/ with 1:1 mapping
-    to human docs. Decisions registry lives in project/decisions/ with 1:1
+    Project architecture state lives in projects/sddra.ai/architecture/ with 1:1 mapping
+    to human docs. Decisions registry lives in projects/sddra.ai/decisions/ with 1:1
     mapping to docs/decisions/.
 
     Added dependency graph engine and locking model sections to ReadOrder
     and Navigation. Root dependencies/ = reusable system intelligence (graph
-    algorithms, locking rules); project/dependencies/ = concrete project state
+    algorithms, locking rules); projects/sddra.ai/dependencies/ = concrete project state
     (actual dependency graph, lock state, reservations).
 
     Added stack technology knowledge base sections to ReadOrder and Navigation.
     Root stack/ = reusable technology knowledge (languages, frameworks,
     databases, caches, messaging, testing, infrastructure, observability);
-    project/stack/ = concrete project state (selected technology instances).
+    projects/sddra.ai/stack/ = concrete project state (selected technology instances).
     Technology selection follows architecture, not precedes it.
 
     Added workflow lifecycle engine sections to ReadOrder and Navigation.
     Root workflow/ = reusable workflow knowledge (lifecycle, stages,
-    dependencies, recovery, policies); project/workflow/ = concrete project
+    dependencies, recovery, policies); projects/sddra.ai/workflow/ = concrete project
     workflow state (active instances, exceptions).
 
     Added observability and incident engine sections to ReadOrder and
     Navigation. Root observability/ = reusable observability knowledge
     (logging, metrics, tracing, alerting, health, diagnostics, incident);
-    project/observability/ = concrete project runtime state (services, alerts,
+    projects/sddra.ai/observability/ = concrete project runtime state (services, alerts,
     incidents, diagnostics). This completes the development → runtime →
     feedback loop.
 

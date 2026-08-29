@@ -1,4 +1,4 @@
-ï»¿Context: SDD
+Context: SDD
 
 Purpose:
   Context Router and Token Optimization Engine. Defines how AI
@@ -17,18 +17,18 @@ ReadOrder:
    6  @cache.sdd
 
 Modes:
-  TASK       â€” task-specific context
-  INCIDENT   â€” incident-specific context
-  SECURITY   â€” security-specific context
-  MANAGER    â€” manager/status context
-  DEVELOPER  â€” developer/implementation context
-  AUDIT      â€” full-project analysis (exception mode)
+  TASK       — task-specific context
+  INCIDENT   — incident-specific context
+  SECURITY   — security-specific context
+  MANAGER    — manager/status context
+  DEVELOPER  — developer/implementation context
+  AUDIT      — full-project analysis (exception mode)
 
 Rules:
   [CTX1]  AI MUST load minimum sufficient context for the current task.
   [CTX2]  AI MUST NEVER load entire .sdd/ unless explicit audit,
           architecture review, migration planning, or system-wide analysis.
-  [CTX3]  Context expansion MUST be progressive: P0 â†’ P1 â†’ P2 â†’ ...
+  [CTX3]  Context expansion MUST be progressive: P0 ? P1 ? P2 ? ...
   [CTX4]  Context confidence MUST be assessed before execution.
   [CTX5]  Stale or invalidated context MUST be rebuilt, not reused.
   [CTX6]  Context budget is determined by project level (L0-L5), not
@@ -58,7 +58,7 @@ Navigation:
   Loading: @context/loading.sdd
   Dependencies: @context/dependencies.sdd
   Cache: @context/cache.sdd
-  ProjectContext: @project/context/INDEX.sdd
+  ProjectContext: @projects/sddra.ai/context/INDEX.sdd
 
 State: +
   

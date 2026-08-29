@@ -1,7 +1,7 @@
-﻿UI: SDD
+UI: SDD
 
 Purpose:
-  UI testing — verify interface behavior, rendering, and user
+  UI testing � verify interface behavior, rendering, and user
   interactions. UI tests validate that the frontend displays correctly
   and responds to user input as expected.
 
@@ -44,7 +44,7 @@ Navigation:
   BDD: @bdd.sdd
   Unit: @unit.sdd
   E2E: @e2e.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

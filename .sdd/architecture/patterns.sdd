@@ -1,9 +1,9 @@
-﻿Patterns: SDD
+Patterns: SDD
 
 Purpose:
   Define architecture patterns available for selection. Patterns are
   reusable solutions to common architectural problems. AI MUST select
-  a pattern based on project requirements, constraints, and trade-offs —
+  a pattern based on project requirements, constraints, and trade-offs �
   not by default or preference.
 
 Owns: ./
@@ -282,8 +282,8 @@ Navigation:
   Observability: @observability.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

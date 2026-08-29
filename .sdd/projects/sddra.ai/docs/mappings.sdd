@@ -1,4 +1,4 @@
-﻿Mappings: Documentation
+Mappings: Documentation
 
 Purpose:
   Maps human-readable docs to .sdd counterparts and defines
@@ -6,7 +6,7 @@ Purpose:
 
 DocMapping:
   docs/business/INDEX.md:
-    sdd: .sdd/project/docs/mappings.sdd
+    sdd: .sdd/projects/sddra.ai/docs/mappings.sdd
     audience: BUSINESS, MANAGER
     owner: BUSINESS
     depth: L1
@@ -20,7 +20,7 @@ DocMapping:
     type: ARCHITECTURE
 
   docs/developer/INDEX.md:
-    sdd: .sdd/project/docs/mappings.sdd
+    sdd: .sdd/projects/sddra.ai/docs/mappings.sdd
     audience: DEVELOPER, QA
     owner: DEVELOPER
     depth: L2
@@ -62,21 +62,21 @@ DocMapping:
     type: RUNBOOK
 
   docs/support/INDEX.md:
-    sdd: .sdd/project/docs/mappings.sdd
+    sdd: .sdd/projects/sddra.ai/docs/mappings.sdd
     audience: SUPPORT, OPERATIONS
     owner: SUPPORT
     depth: L1
     type: TROUBLESHOOT
 
   docs/incidents/INC-*.md:
-    sdd: .sdd/project/observability/incidents/
+    sdd: .sdd/projects/sddra.ai/observability/incidents/
     audience: OPERATIONS, DEVOPS, SECURITY
     owner: DEVOPS
     depth: L3
     type: POSTMORTEM
 
   docs/decisions/DEC-*.md:
-    sdd: .sdd/project/decisions/
+    sdd: .sdd/projects/sddra.ai/decisions/
     audience: ARCHITECT, DEVELOPER, MANAGER
     owner: ARCHITECT
     depth: L2
@@ -91,13 +91,13 @@ DocMapping:
 
 ImpactGraph:
   repository.go:
-    ↓
+    ?
   repository.sdd
-    ↓
+    ?
   analytics domain
-    ↓
+    ?
   docs/developer/analytics.md
-    ↓
+    ?
   docs/architecture/data-flow.md
 
 DocumentationStatus:

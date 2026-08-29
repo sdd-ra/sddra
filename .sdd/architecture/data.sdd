@@ -1,4 +1,4 @@
-﻿Data: SDD
+Data: SDD
 
 Purpose:
   Define data architecture patterns, database selection rules, data
@@ -360,8 +360,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

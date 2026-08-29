@@ -1,4 +1,4 @@
-﻿Index: ProjectArchitecture
+Index: ProjectArchitecture
 
 Purpose:
   Project-specific architecture state. Root .sdd/architecture/ defines
@@ -12,7 +12,7 @@ Purpose:
 Owns: ./
 
 ReadOrder:
-   1  INDEX.sdd (this file — project architecture map)
+   1  INDEX.sdd (this file � project architecture map)
    2  system.sdd (system architecture)
    3  components.sdd (component architecture)
    4  data.sdd (data architecture)

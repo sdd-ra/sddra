@@ -99,13 +99,13 @@ Status: Completed
 Goals:
   Create root-level prompts/ inbox and integrate with /sdd command.
   Prompts are analyzed, formalized in .sdd/projects/prompts/,
-  documented in .sdd/project/docs/prompts/, and approved by human
+  documented in .sdd/projects/sddra.ai/docs/prompts/, and approved by human
   before flow-based planning begins.
 
 Deliverables:
   - prompts/ folder at root level (user inbox)
   - .sdd/projects/prompts/ (formalized examples)
-  - .sdd/project/docs/prompts/ (documented prompts with IDs)
+  - .sdd/projects/sddra.ai/docs/prompts/ (documented prompts with IDs)
   - Prompt folder structure and workflow
   - First skill in each prompt folder
   - Updated /sdd command to read from prompts/

@@ -1,9 +1,9 @@
-﻿Testing: SDD
+Testing: SDD
 
 Purpose:
   Testing technology catalog with framework options, selection criteria,
   and integration patterns. Root stack/ defines reusable testing knowledge;
-  project/stack/ stores the selected testing stack for the project.
+  projects/sddra.ai/stack/ stores the selected testing stack for the project.
 
 Catalog:
   Playwright:

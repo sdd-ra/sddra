@@ -33,7 +33,7 @@ Gates:
   VR: verified
 
 Retry: 2
-Token: @project/tokens/M1.sdd
+Token: @projects/sddra.ai/tokens/M1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

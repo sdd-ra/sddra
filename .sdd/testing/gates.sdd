@@ -1,9 +1,9 @@
-﻿TestGates: SDD
+TestGates: SDD
 
 Purpose:
   Define test gate criteria. Every task MUST pass required test gates
   before advancing to DONE. Test gates are checkpoints, not separate
-  stages — they are evaluated within the QA stage.
+  stages � they are evaluated within the QA stage.
 
 Owns: ./
 
@@ -153,7 +153,7 @@ Waiver:
     Expires: <date>
     Compensating control: <what replaces the test>
 
-  Waived tests are tracked in @project/testing/exceptions/.
+  Waived tests are tracked in @projects/sddra.ai/testing/exceptions/.
 
 Navigation:
   Project: @project/project.sdd
@@ -170,9 +170,9 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
-  ProjectFailures: @project/testing/failures/
-  ProjectExceptions: @project/testing/exceptions/
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
+  ProjectFailures: @projects/sddra.ai/testing/failures/
+  ProjectExceptions: @projects/sddra.ai/testing/exceptions/
 
 State: +
   Note:

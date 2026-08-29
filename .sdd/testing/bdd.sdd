@@ -1,7 +1,7 @@
-ï»¿BDD: SDD
+BDD: SDD
 
 Purpose:
-  Behavior-Driven Development â€” define business behavior in executable
+  Behavior-Driven Development — define business behavior in executable
   specifications before implementation starts. BDD is the bridge between
   business requirements and technical implementation.
 
@@ -33,7 +33,7 @@ Principles:
     Scenarios are written in business language, not technical jargon.
 
   BDD is executable:
-    Scenarios are not documentation â€” they are executable tests.
+    Scenarios are not documentation — they are executable tests.
     They MUST run and pass before the task can advance.
 
 Format:
@@ -101,12 +101,12 @@ Navigation:
   Integration: @integration.sdd
   API: @api.sdd
   E2E: @e2e.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   Note:
   BDD is a first-class citizen in the .sdd system. Every task with
   business behavior MUST have BDD scenarios before implementation.
   BDD scenarios are stored in the project's BDD framework (e.g.,
-  Behave, Cucumber, SpecFlow) â€” not in .sdd/. The .sdd system
+  Behave, Cucumber, SpecFlow) — not in .sdd/. The .sdd system
   references BDD artifacts, it does not store them.

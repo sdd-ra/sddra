@@ -1,23 +1,26 @@
 # Projects
 
 Purpose:
-  Multi-project and formalized prompt registry.
-  Contains project-specific formalized content such as prompts
-  that have been analyzed and approved for execution.
+  Multi-project registry. Each subdirectory is a concrete project instance
+  containing its own decisions, tasks, docs, stack, testing, and state.
 
 Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @prompts/INDEX.sdd
+   2 @sddra.ai/INDEX.sdd
+   3 @prompts/INDEX.sdd
 
 Rules:
   [PRJ1] Each project MUST have its own subdirectory.
   [PRJ2] Formalized prompts MUST live in projects/prompts/.
-  [PRJ3] Project state MUST be tracked in project/.
+  [PRJ3] Project state MUST be tracked in projects/<name>/, not in project/.
+  [PRJ4] The project/ folder contains reusable schemas only; concrete data
+        belongs here.
 
 Navigation:
   Prompts: @prompts/INDEX.sdd
   ProjectModel: @../project/INDEX.sdd
+  SDDRAAI: @sddra.ai/INDEX.sdd
 
 State: +

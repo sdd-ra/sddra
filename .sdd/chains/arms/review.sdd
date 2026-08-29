@@ -20,7 +20,7 @@ Stage:
     - plugins/plugin-adapters/code-review.sdd
     - plugins/plugin-adapters/verification-before-completion.sdd
   token:
-    - ../../project/tokens/R1.sdd
+    - ../../projects/sddra.ai/tokens/R1.sdd
   rule:
     - ./rules/INDEX.sdd
   gate:

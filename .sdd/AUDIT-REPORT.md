@@ -115,7 +115,7 @@ All case files have `state: -` instead of `State: +` (different format).
    - decisions/schema.sdd
    - decisions/template.sdd
    - project/README.sdd
-   - project/decisions/INDEX.sdd
+   - projects/sddra.ai/decisions/INDEX.sdd
    - project/map.sdd
    - workflows/agent-workflow.sdd
    - workflows/chain-implementation.sdd
@@ -135,9 +135,9 @@ The following files already had State: + and required no changes:
 - All orchestrator/*.sdd files (except those noted above)
 - RESOURCES.sdd
 - WORK-PLAN.sdd
-- project/docs/mappings.sdd
-- project/tasks/INDEX.sdd
-- project/architecture/INDEX.sdd
+- projects/sddra.ai/docs/mappings.sdd
+- projects/sddra.ai/tasks/INDEX.sdd
+- projects/sddra.ai/architecture/INDEX.sdd
 - workflows/recovery.sdd
 - workflows/example-prompt-to-code.sdd
 - workflows/backup-integrity.sdd

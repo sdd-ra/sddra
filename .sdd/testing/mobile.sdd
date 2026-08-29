@@ -1,7 +1,7 @@
-﻿Mobile: SDD
+Mobile: SDD
 
 Purpose:
-  Mobile testing — verify mobile app behavior across platforms and
+  Mobile testing � verify mobile app behavior across platforms and
   devices. Mobile tests cover native features, gestures, offline
   behavior, and platform-specific concerns.
 
@@ -46,7 +46,7 @@ Navigation:
   Unit: @unit.sdd
   E2E: @e2e.sdd
   UI: @ui.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

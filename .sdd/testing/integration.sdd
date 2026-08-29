@@ -1,7 +1,7 @@
-﻿Integration: SDD
+Integration: SDD
 
 Purpose:
-  Integration testing — verify multiple components work together correctly.
+  Integration testing � verify multiple components work together correctly.
   Integration tests sit between unit tests and E2E tests in the pyramid.
 
 Owns: ./
@@ -43,7 +43,7 @@ Navigation:
   Unit: @unit.sdd
   API: @api.sdd
   Contract: @contract.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

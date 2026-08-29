@@ -13,17 +13,17 @@ Stage:
   returns_to: D0
   inputs:
     - docs/
-    - .sdd/project/decisions/ (approved decisions)
+    - .sdd/projects/sddra.ai/decisions/ (approved decisions)
   outputs:
     - .sdd/project/PROJECT.sdd
     - .sdd/project/domains.sdd
-    - .sdd/project/tasks/INDEX.sdd
-    - .sdd/project/tasks/TASK-XXX.sdd (linked to decisions)
+    - .sdd/projects/sddra.ai/tasks/INDEX.sdd
+    - .sdd/projects/sddra.ai/tasks/TASK-XXX.sdd (linked to decisions)
   skills:
     - prompts/tech-stack/docs-to-project.sdd
     - plugins/plugin-adapters/writing-plans.sdd
   token:
-    - ../../project/tokens/S1.sdd
+    - ../../projects/sddra.ai/tokens/S1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

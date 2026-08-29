@@ -44,7 +44,7 @@ Show current execution status.
 Flow:
   Read:
     .sdd/chains/tokens/*.sdd
-    .sdd/project/decisions/*.sdd
+    .sdd/projects/sddra.ai/decisions/*.sdd
   Output:
     - Token usage per stage
     - Decision status
@@ -56,7 +56,7 @@ List all decisions.
 Flow:
   Read:
     .sdd/decisions/INDEX.sdd
-    .sdd/project/decisions/INDEX.sdd
+    .sdd/projects/sddra.ai/decisions/INDEX.sdd
   Output:
     - Active decisions
     - Superseded decisions

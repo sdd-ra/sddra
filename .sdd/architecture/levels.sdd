@@ -1,8 +1,8 @@
-﻿ProjectScale: SDD
+ProjectScale: SDD
 
 Purpose:
   Define project scale levels L0-L5. Scale is one of the primary inputs
-  to architecture selection — it determines what patterns, infrastructure,
+  to architecture selection � it determines what patterns, infrastructure,
   and complexity are appropriate. Scale is NOT the only input: team size,
   budget, compliance, and risk also matter.
 
@@ -157,8 +157,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   
