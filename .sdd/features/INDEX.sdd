@@ -1,0 +1,32 @@
+# Features
+
+Purpose:
+  Feature planning, decision, and layer assignment system.
+  Analyzes project state, evaluates new features, and assigns
+  work to appropriate layers (L0, L1, L2, ...).
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @layers.sdd
+   3 @decisions.sdd
+   4 @../projects/vkard.az/MAP.md
+
+Rules:
+  [FTR1] Features MUST be assigned to a layer (L0, L1, L2, ...).
+  [FTR2] Layer assignment is based on project maturity and complexity.
+  [FTR3] L0 = MVP/core features (already implemented).
+  [FTR4] L1 = Customer-requested features (next priority).
+  [FTR5] L2+ = Future enhancements and optimizations.
+  [FTR6] Feature decisions MUST be documented in decisions/.
+  [FTR7] Project-specific features live in projects/vkard.az/.
+
+Navigation:
+  Layers: @layers.sdd
+  Decisions: @decisions.sdd
+  ProjectMap: @../projects/vkard.az/MAP.md
+  ProjectStructure: @../projects/vkard.az/STRUCTURE.md
+  Registry: @../projects/INDEX.sdd
+
+State: +

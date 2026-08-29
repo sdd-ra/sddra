@@ -29,7 +29,7 @@ Adapted for SDDRA:
   Integration:
     - R1 arm handles review
     - Feedback recorded in decisions/
-    - Revision tasks created in .sdd/instances/vkard.az/tasks/
+    - Revision tasks created in .sdd/projects/vkard.az/tasks/
 
 Usage:
   Referenced by:

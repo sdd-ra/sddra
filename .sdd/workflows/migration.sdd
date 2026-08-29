@@ -10,7 +10,7 @@ Owns: ./
 ReadOrder:
    1 @INDEX.sdd
    2 @../commands/sdd-migrate.sdd
-   3 @../instances/vkard.az/migrations/INDEX.sdd
+   3 @../projects/vkard.az/migrations/INDEX.sdd
 
 Steps:
   1. List pending migrations from migrations/INDEX.sdd
@@ -19,7 +19,8 @@ Steps:
   4. Update migration state (PENDING -> APPLIED)
   5. Validate project instance after migration
   6. Validate shared registries (projects/prompts/)
-  7. Report results
+  7. Validate features/ directory structure
+  8. Report results
 
 Rules:
   [MW1] Migrations MUST be applied in numerical order.
@@ -29,5 +30,6 @@ Rules:
   [MW5] Migration state MUST be persisted in migrations/INDEX.sdd.
   [MW6] Shared registries (projects/prompts/) MUST be validated after project migrations.
   [MW7] Shared registries are NOT project instances and MUST NOT be migrated as such.
+  [MW8] features/ directory MUST exist and contain INDEX.sdd, layers.sdd, decisions.sdd.
 
 State: +

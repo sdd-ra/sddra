@@ -31,9 +31,9 @@ Adapted for SDDRA:
     - Verification criteria from investigation
 
   Evidence gathering:
-    - Error logs from .sdd/instances/vkard.az/observability/
+    - Error logs from .sdd/projects/vkard.az/observability/
     - Recent changes from .sdd/decisions/
-    - Dependency graph from .sdd/instances/vkard.az/dependencies/
+    - Dependency graph from .sdd/projects/vkard.az/dependencies/
 
 Usage:
   Referenced by:

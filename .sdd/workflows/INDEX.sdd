@@ -6,19 +6,21 @@ Purpose:
 ReadOrder:
    1 @INDEX.sdd
    2 @migration.sdd
-   3 @agent-workflow.sdd
-   4 @chain-implementation.sdd
-   5 @agent-implementation.sdd
-   6 @task-execution.sdd
-   7 @recovery.sdd
-   8 @parallel-execution.sdd
-   9 @knowledge-sharing.sdd
-   10 @intelligent-runtime.sdd
-   11 @example-prompt-to-code.sdd
-   12 @backup-integrity.sdd
+   3 @feature-planning.sdd
+   4 @agent-workflow.sdd
+   5 @chain-implementation.sdd
+   6 @agent-implementation.sdd
+   7 @task-execution.sdd
+   8 @recovery.sdd
+   9 @parallel-execution.sdd
+   10 @knowledge-sharing.sdd
+   11 @intelligent-runtime.sdd
+   12 @example-prompt-to-code.sdd
+   13 @backup-integrity.sdd
 
 Workflows:
   Migration: @migration.sdd
+  FeaturePlanning: @feature-planning.sdd
   AgentWorkflow: @agent-workflow.sdd
   ChainImplementation: @chain-implementation.sdd
   AgentImplementation: @agent-implementation.sdd

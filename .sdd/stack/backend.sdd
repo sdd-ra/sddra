@@ -3,7 +3,7 @@ Backend: SDD
 Purpose:
   Backend technology catalog with framework options, compatibility rules,
   and selection criteria. Root stack/ defines reusable backend knowledge;
-  instances/vkard.az/stack/ stores the selected backend for the current project.
+  projects/vkard.az/stack/ stores the selected backend for the current project.
 
 Catalog:
   Go:

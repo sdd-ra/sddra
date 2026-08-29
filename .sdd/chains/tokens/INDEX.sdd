@@ -4,13 +4,13 @@ Purpose:
   Record token usage per chain stage for cost control.
 
 Index:
-  P1: @instances/vkard.az/tokens/P1.sdd
-  D1: @instances/vkard.az/tokens/D1.sdd
-  S1: @instances/vkard.az/tokens/S1.sdd
-  C1: @instances/vkard.az/tokens/C1.sdd
-  R1: @instances/vkard.az/tokens/R1.sdd
-  DEP1: @instances/vkard.az/tokens/DEP1.sdd
-  D0: @instances/vkard.az/tokens/D0.sdd
+  P1: @projects/vkard.az/tokens/P1.sdd
+  D1: @projects/vkard.az/tokens/D1.sdd
+  S1: @projects/vkard.az/tokens/S1.sdd
+  C1: @projects/vkard.az/tokens/C1.sdd
+  R1: @projects/vkard.az/tokens/R1.sdd
+  DEP1: @projects/vkard.az/tokens/DEP1.sdd
+  D0: @projects/vkard.az/tokens/D0.sdd
 
 Schema:
   stage: P1|D1|S1|C1|R1|DEP1|D0

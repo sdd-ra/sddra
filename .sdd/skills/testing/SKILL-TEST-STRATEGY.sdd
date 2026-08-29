@@ -37,7 +37,7 @@ Execute:
   3. Select tests based on impact and risk
   4. Execute .sdd/testing/scripts/run.ps1 with appropriate category
   5. Parse results and generate findings
-  6. Update instances/vkard.az/testing/ state
+  6. Update projects/vkard.az/testing/ state
   7. Route failures to task graph
 
 Test Selection Rules:
@@ -51,7 +51,7 @@ Test Selection Rules:
 Execution Rules:
   [TS7] Tests MUST be executed from .sdd/testing/scripts/.
   [TS8] AI MUST NOT create ad-hoc test commands outside this skill.
-  [TS9] Test results MUST be stored in .sdd/instances/vkard.az/testing/.
+  [TS9] Test results MUST be stored in .sdd/projects/vkard.az/testing/.
   [TS10] Flaky tests MUST be quarantined and investigated.
 
 State: +

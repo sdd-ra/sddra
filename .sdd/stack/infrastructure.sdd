@@ -3,7 +3,7 @@ Infrastructure: SDD
 Purpose:
   Infrastructure technology catalog with deployment targets, containerization,
   orchestration, and IaC options. Root stack/ defines reusable infrastructure
-  knowledge; instances/vkard.az/stack/ stores the selected infrastructure for the project.
+  knowledge; projects/vkard.az/stack/ stores the selected infrastructure for the project.
 
 Catalog:
   Docker:

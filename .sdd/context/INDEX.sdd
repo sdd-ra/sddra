@@ -58,7 +58,7 @@ Navigation:
   Loading: @context/loading.sdd
   Dependencies: @context/dependencies.sdd
   Cache: @context/cache.sdd
-  ProjectContext: @instances/vkard.az/context/INDEX.sdd
+  ProjectContext: @projects/vkard.az/context/INDEX.sdd
 
 State: +
   

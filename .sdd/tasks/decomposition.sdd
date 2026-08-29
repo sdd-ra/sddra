@@ -131,7 +131,7 @@ TaskExecutionBoundary:
 
 Navigation:
   Tasks: @tasks.sdd
-  ProjectTasks: @../instances/vkard.az/tasks/INDEX.sdd
+  ProjectTasks: @../projects/vkard.az/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Graph: @../graph/INDEX.sdd

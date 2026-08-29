@@ -36,7 +36,7 @@ Gates:
   VR: resolved
 
 Retry: 3
-Token: @instances/vkard.az/tokens/I1.sdd
+Token: @projects/vkard.az/tokens/I1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

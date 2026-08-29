@@ -45,11 +45,18 @@ Directories:
     root: ../prompts
     root_purpose: Root-level prompt inbox (user submissions)
     formalized: ../projects/prompts
-    documented: ../instances/vkard.az/docs/prompts
+    formalized_purpose: Shared formalized prompt registry (not project instance)
+    documented: ../projects/vkard.az/docs/prompts
+
+  features:
+    path: ./features
+    purpose: Feature planning, decision, and layer assignment
+    layers: @features/layers.sdd
+    decisions: @features/decisions.sdd
 
   workflows:
     path: ./workflows
-    purpose: Execution workflows (task execution, recovery, parallel, knowledge sharing)
+    purpose: Execution workflows (task execution, recovery, parallel, knowledge sharing, migration)
 
   commands:
     path: ./commands
@@ -83,10 +90,15 @@ Navigation:
   chains: @chains
   skills: @skills
   prompts: @prompts
+  features: @features
+  layers: @features/layers.sdd
   workflows: @workflows
   commands: @commands
   plugins: @plugins
   project: @project
+  projects: @projects
+  projectMap: @projects/vkard.az/MAP.md
+  projectStructure: @projects/vkard.az/STRUCTURE.md
   tasks: @tasks
   decisions: @decisions
   state: @state
@@ -132,3 +144,9 @@ Rules:
   [R38] .sdd/ changes require owner approval.
   [R39] project/ changes require human review.
   [R40] All DevOps practices are encoded as skills in .sdd/skills/devops/.
+  [R41] Features MUST be assigned to layers (L0-L4) before implementation.
+  [R42] L0 = MVP core (completed), L1 = customer features, L2+ = future.
+  [R43] Project MAP.md and STRUCTURE.md MUST be updated when codebase changes.
+  [R44] AI MUST read MAP.md and STRUCTURE.md before implementing features.
+  [R45] projects/ is a registry; project instances live in projects/<name>/.
+  [R46] projects/prompts/ is a shared registry, not a project instance.

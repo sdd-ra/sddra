@@ -30,7 +30,7 @@ Execution Flow:
     ↓
   S1 (sdd)
     Input: docs/ + approved decisions
-    Output: .sdd/project/domains.sdd, .sdd/instances/vkard.az/tasks/TASK-201.sdd
+    Output: .sdd/project/domains.sdd, .sdd/projects/vkard.az/tasks/TASK-201.sdd
     Token: in=3500, out=5800, delta=2300
     Decision: DEC-100, DEC-101, DEC-102 approved
     Gate: human_required
