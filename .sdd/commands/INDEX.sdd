@@ -12,6 +12,7 @@ Files:
   sdd-backup: @sdd-backup.sdd
   sdd-restore: @sdd-restore.sdd
   sdd-resume: @sdd-resume.sdd
+  sdd-migrate: @sdd-migrate.sdd
 
 Commands:
   /sdd: Execute chain graph from prompt
@@ -22,5 +23,6 @@ Commands:
   /sdd-backup: Create backup of critical files
   /sdd-restore: Restore from backup
   /sdd-resume: Resume from checkpoint
+  /sdd-migrate: Run migrations after .sdd/ updates
 
 State: +
