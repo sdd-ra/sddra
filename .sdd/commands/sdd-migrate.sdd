@@ -1,62 +1,28 @@
-# Command: SDD Migrate
-
-Command: /sdd-migrate
-Mode: READ_WRITE
-Purpose: Run pending migrations after .sdd/ schema updates
+# /sdd-migrate
 
 Description:
-  Executes pending migrations for the active project instance.
-  Migrations are applied in order and tracked in migrations/ state.
-  This command MUST be run after any .sdd/ update that changes
-  file locations, schemas, or project structure.
-
-  Shared registries (projects/prompts/) are validated but not migrated
-  as project instances — they have their own migration rules.
+  Run pending migrations after .sdd/ schema updates. Must be run after
+  any .sdd/ update that changes file locations or schemas.
 
 Usage:
   /sdd-migrate
   /sdd-migrate --list
-  /sdd-migrate --apply=<migration-id>
-  /sdd-migrate --rollback=<migration-id>
+  /sdd-migrate --apply=<id>
+  /sdd-migrate --rollback=<id>
 
 Options:
-  --list              List pending and applied migrations
-  --apply=<id>        Apply specific migration by ID
-  --rollback=<id>     Rollback specific migration by ID
-  --dry-run           Show what would be migrated without changing files
+  --list      List pending and applied migrations
+  --apply     Apply specific migration by ID
+  --rollback  Rollback specific migration by ID
 
-Migration Location:
-  .sdd/projects/{project_name}/migrations/
-    INDEX.sdd              — Migration registry and state
-    001-project-separation.sdd  — Move project/ state to projects/{project_name}/
-    002-path-references.sdd     — Update path references after restructuring
-    003-schema-updates.sdd      — Schema version updates
-    004-prompts-registry.sdd    — Validate prompts/ shared registry
-
-   Shared registries (validated but not migrated as instances):
-     .sdd/projects/prompts/     — Formalized prompt registry
-
-  New system directories (created fresh, no migration needed):
-     .sdd/features/             — Feature planning and layer assignment
-
-Migration Registry:
-  {
-    "project": "{project_name}",
-    "applied": [
-      {
-        "id": "001-project-separation",
-        "applied_at": "2026-08-29T08:00:00Z",
-        "description": "Move concrete project state from project/ to projects/{project_name}/"
-      }
-    ],
-    "pending": [],
-    "schema_version": "1.0.0"
-  }
+Migrations:
+  Location: .sdd/projects/{project_name}/migrations/
+  Format: sequential ID, description, applied_at
 
 Exit Codes:
-  0 - Migrations applied successfully
-  1 - Migration failed
+  0 - Success
+  1 - Failed
   2 - No pending migrations
-  3 - Migration already applied
+  3 - Already applied
 
 State: +

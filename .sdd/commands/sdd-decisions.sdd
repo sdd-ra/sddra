@@ -1,60 +1,19 @@
-# /sdd-decisions Command Specification
-Purpose:
-  /sdd-decisions Command Specification
-
-
-Command: /sdd-decisions
-Alias: /sdd-dec, /sdd-log
+# /sdd-decisions
 
 Description:
-  List and explain all decisions in the decision ledger.
+  List and explain decisions in the decision ledger.
 
 Usage:
-   /sdd-decisions
-   /sdd-decisions --active
-   /sdd-decisions --superseded
-   /sdd-decisions --archived
-   /sdd-decisions --decision DEC-<ID>
-
-Behavior:
-  1. Read .sdd/decisions/INDEX.sdd
-  2. Read .sdd/projects/{project_name}/decisions/INDEX.sdd
-  3. Load requested decisions
-  4. Generate report
-
-Output Sections:
-  1. Decision Summary
-     - Total decisions
-     - Active count
-     - Pending count
-     - Superseded count
-
-  2. Decision List
-     - ID, type, status, title
-     - Owner, approved by
-     - Linked tasks
-
-   3. Decision Details (if --decision DEC-<ID>)
-     - Full decision record
-     - Options considered
-     - Rationale
-     - Impact
-     - Implementation status
-
-  4. Relationships
-     - Decision graph
-     - Conflicts
-     - Dependencies
+  /sdd-decisions
+  /sdd-decisions --active
+  /sdd-decisions --decision DEC-<ID>
 
 Options:
-  --active: Show only active decisions
-  --superseded: Show only superseded decisions
-  --archived: Show only archived decisions
-   --decision DEC-<ID>: Show specific decision
+  --active      Show only active decisions
+  --decision    Show specific decision details
 
-Output Format:
-  Table for list view
-  Full detail for single decision
+Output:
+  Table: ID, type, status, title, owner.
+  Detail: options, rationale, impact, implementation status.
 
 State: +
-

@@ -1,13 +1,8 @@
-# Command: SDD Health Check
-
-Command: /sdd-health
-Mode: AUDIT
-Purpose: Validate SDDRA system integrity before execution
+# /sdd-health
 
 Description:
-  Performs comprehensive health check of the .sdd/ system.
-  Validates critical files, graph consistency, references,
-  and token budgets. Reports status and recommendations.
+  Validate .sdd/ system integrity. Checks critical files, references,
+  graph consistency, and token budgets.
 
 Usage:
   /sdd-health
@@ -15,90 +10,25 @@ Usage:
   /sdd-health --fix
 
 Options:
-  --verbose   Show detailed validation results
-  --fix       Attempt to fix minor issues automatically
+  --verbose  Show detailed validation results
+  --fix      Attempt to fix minor issues automatically
 
 Checks:
-
-  [H1] Critical Files Exist
-      Files:
-        - .sdd/PROJECT.sdd
-        - .sdd/INDEX.sdd
-        - .sdd/protocol/ROOT.sdd
-        - .sdd/chains/graph.sdd
-        - .sdd/templates/INDEX.sdd
-      Action: FAIL if any missing
-      Recovery: Restore from git or backup
-
-  [H2] References Resolve
-      Check: All @references in .sdd/ files resolve to existing files
-      Action: WARN if unresolved reference
-      Recovery: Create missing file or fix reference
-
-  [H3] Graph Consistency
-      Check: Chain graph has no orphaned nodes
-      Check: All arms return to D0
-      Check: No circular dependencies in non-cyclic parts
-      Action: FAIL if graph is broken
-      Recovery: Restore from backup
-
-  [H4] Token Budgets Valid
-      Check: All token budgets are positive numbers
-      Check: Total budget < max_context
-      Action: WARN if budget exceeds max_context
-      Recovery: Adjust budgets or increase max_context
-
-  [H5] Decision Ledger Valid
-      Check: No duplicate DEC-IDs
-      Check: All referenced decisions exist
-      Check: Decision states are valid
-      Action: WARN if issues found
-      Recovery: Merge duplicates, fix references
-
-  [H6] Template Index Valid
-      Check: templates/INDEX.sdd exists
-      Check: All template references resolve
-      Check: No missing templates
-      Action: WARN if templates missing
-      Recovery: Restore from backup
-
-  [H7] No Corrupted Files
-      Check: All .sdd/ files are valid UTF-8
-      Check: No truncated files
-      Check: No binary files in .sdd/
-      Action: WARN if corruption detected
-      Recovery: Restore from git or backup
-
-  [H8] State Consistency
-      Check: No orphaned tasks
-      Check: No conflicting states
-      Check: State transitions are valid
-      Action: WARN if inconsistencies found
-      Recovery: Fix states manually or restore
+  Critical files exist
+  References resolve
+  Graph consistency
+  Token budgets valid
+  Decision ledger valid
+  No corrupted files
 
 Output:
-
-  HEALTHY:
-    All checks passed. System is ready for execution.
-
-  DEGRADED:
-    Non-critical issues found. System can execute with warnings.
-    List: [warnings]
-
-  UNHEALTHY:
-    Critical issues found. Execution may fail.
-    List: [errors]
-    Recommendation: Fix issues before proceeding.
-
-  FAILED:
-    System is not operational.
-    List: [critical errors]
-    Recovery: Restore from backup or contact owner.
+  HEALTHY | DEGRADED | UNHEALTHY | FAILED
+  With list of warnings or errors.
 
 Exit Codes:
-  0 - HEALTHY
-  1 - DEGRADED
-  2 - UNHEALTHY
-  3 - FAILED
+  0 - Healthy
+  1 - Degraded
+  2 - Unhealthy
+  3 - Failed
 
 State: +
