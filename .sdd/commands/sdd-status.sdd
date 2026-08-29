@@ -1,4 +1,4 @@
-﻿# /sdd-status Command Specification
+# /sdd-status Command Specification
 Purpose:
   /sdd-status Command Specification
 
@@ -18,8 +18,8 @@ Usage:
 
 Behavior:
   1. Read .sdd/chains/tokens/*.sdd
-  2. Read .sdd/project/decisions/*.sdd
-  3. Read .sdd/project/tasks/*.sdd
+  2. Read .sdd/projects/sddra.ai/decisions/*.sdd
+  3. Read .sdd/projects/sddra.ai/tasks/*.sdd
   4. Generate status report
 
 Output Sections:

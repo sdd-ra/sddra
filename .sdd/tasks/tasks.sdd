@@ -1,4 +1,4 @@
-﻿Tasks: default
+Tasks: default
 
 Purpose:
   Manage executable work generated from prompts, analysis,
@@ -248,7 +248,7 @@ Rules:
   [T2] Task state MUST be updated after each stage.
   [T3] Blocked tasks MUST have explicit blockers.
   [T4] Completed tasks MUST be archived with outputs.
-  [T5] Task graph MUST be a DAG — cycles are compile-time errors.
+  [T5] Task graph MUST be a DAG � cycles are compile-time errors.
   [T6] Task MUST have exactly one primary goal.
   [T7] Task MUST have defined scope (allowed and forbidden).
   [T8] Task MUST have acceptance criteria.
@@ -264,7 +264,7 @@ Rules:
 Navigation:
   Tasks: @tasks.sdd
   Decomposition: @decomposition.sdd
-  ProjectTasks: @../project/tasks/INDEX.sdd
+  ProjectTasks: @../projects/sddra.ai/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Graph: @../graph/INDEX.sdd

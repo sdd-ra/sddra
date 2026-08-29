@@ -1,7 +1,7 @@
-﻿DependencyEngine: SDD
+DependencyEngine: SDD
 
 Purpose:
-  Define the internal dependency graph engine of the .sdd system itself —
+  Define the internal dependency graph engine of the .sdd system itself �
   how dependencies are represented, validated, evaluated, and how they
   interact with the state machine, scheduler, and policy engine. This is
   NOT the project's concrete dependency graph (that lives in project/
@@ -27,17 +27,17 @@ Components:
       prevention). Root-level, reusable system intelligence.
 
   PROJECT_GRAPH:
-    path: ../project/dependencies/graph.sdd
+    path: ../projects/sddra.ai/dependencies/graph.sdd
     role: Project-specific dependency graph (concrete nodes, edges,
       states). Project-level, because this is concrete project state.
 
   PROJECT_LOCKS:
-    path: ../project/dependencies/locks.sdd
+    path: ../projects/sddra.ai/dependencies/locks.sdd
     role: Project-specific lock state (active locks, reservations,
       conflicts). Project-level, concrete project state.
 
   PROJECT_RESERVATIONS:
-    path: ../project/dependencies/reservations/
+    path: ../projects/sddra.ai/dependencies/reservations/
     role: Resource reservation instances. Project-level, concrete state.
 
 
@@ -100,7 +100,7 @@ Forbidden:
 Note:
   Created as dependency graph engine
   entry point. Root .sdd/dependencies/ = reusable system intelligence
-  (graph algorithms, locking rules); .sdd/project/dependencies/ =
+  (graph algorithms, locking rules); .sdd/projects/sddra.ai/dependencies/ =
   concrete project state (actual dependency graph, lock state).
   ROOT-001 separation principle enforced.
 

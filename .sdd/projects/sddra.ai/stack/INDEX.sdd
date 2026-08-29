@@ -1,4 +1,4 @@
-ï»¿Stack: Project Selection
+Stack: Project Selection
 
 Purpose:
   Project-specific technology stack selections. These files are selected
@@ -10,16 +10,16 @@ Purpose:
 Owns: ./
 
 ReadOrder:
-   1  @INDEX.sdd (this file â€” project stack map)
+   1  @INDEX.sdd (this file — project stack map)
    2  @LAYER.template.sdd (stack layer template)
    3  @<layer>.sdd (specific layer selection, when populated)
 
 Modes:
-  ANALYZE   â€” stack fit and compatibility analysis
-  PLAN      â€” technology selection and mapping
-  WORK      â€” stack-based implementation
-  VERIFY    â€” stack compliance check
-  REVIEW    â€” technology decision execution
+  ANALYZE   — stack fit and compatibility analysis
+  PLAN      — technology selection and mapping
+  WORK      — stack-based implementation
+  VERIFY    — stack compliance check
+  REVIEW    — technology decision execution
 
 Rules:
   [PS1]  Project stack MUST be selected from root .sdd/stack/ catalog.
@@ -42,13 +42,13 @@ Entry:
     infrastructure
 
 Navigation:
-  ProjectStack: @project/stack/INDEX.sdd
-  Backend: @project/stack/backend.sdd
-  Frontend: @project/stack/frontend.sdd
-  Mobile: @project/stack/mobile.sdd
-  Database: @project/stack/database.sdd
-  Testing: @project/stack/testing.sdd
-  Infrastructure: @project/stack/infrastructure.sdd
+  ProjectStack: @projects/sddra.ai/stack/INDEX.sdd
+  Backend: @projects/sddra.ai/stack/backend.sdd
+  Frontend: @projects/sddra.ai/stack/frontend.sdd
+  Mobile: @projects/sddra.ai/stack/mobile.sdd
+  Database: @projects/sddra.ai/stack/database.sdd
+  Testing: @projects/sddra.ai/stack/testing.sdd
+  Infrastructure: @projects/sddra.ai/stack/infrastructure.sdd
   RootStack: @stack/INDEX.sdd
   Template: @../../../templates/_sdd/stack/LAYER.template.sdd
 

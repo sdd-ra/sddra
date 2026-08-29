@@ -36,7 +36,7 @@ Gates:
   VR: verified
 
 Retry: 2
-Token: @project/tokens/SEC1.sdd
+Token: @projects/sddra.ai/tokens/SEC1.sdd
    Rule: @rules/chain-rules.sdd
 
 State: +

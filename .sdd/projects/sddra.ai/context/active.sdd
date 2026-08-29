@@ -1,8 +1,8 @@
-﻿Active: Project Context
+Active: Project Context
 
 Purpose:
   Stores active context instances for the current project.
-  This file defines the CONTEXT SCHEMA only — concrete instances are
+  This file defines the CONTEXT SCHEMA only � concrete instances are
   generated per project by the project-structure skill.
 
 ActiveContexts:

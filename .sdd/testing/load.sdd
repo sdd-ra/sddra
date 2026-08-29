@@ -1,7 +1,7 @@
-ï»¿Load: SDD
+Load: SDD
 
 Purpose:
-  Load testing â€” verify system behavior under expected and peak load.
+  Load testing — verify system behavior under expected and peak load.
   Load tests simulate real user traffic to identify breaking points,
   resource exhaustion, and degradation patterns.
 
@@ -19,7 +19,7 @@ Principles:
   Test with production-like data volume
   Monitor all system resources
   Identify bottlenecks before they cause outages
-  Load tests are not just "make it fast" â€” they verify stability
+  Load tests are not just "make it fast" — they verify stability
 
 Structure:
   Every load test MUST:
@@ -63,7 +63,7 @@ Navigation:
   TestTypes: @types.sdd
   TestGates: @gates.sdd
   Performance: @performance.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

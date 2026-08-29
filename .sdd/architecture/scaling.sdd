@@ -1,8 +1,8 @@
-﻿Scaling: SDD
+Scaling: SDD
 
 Purpose:
   Define scaling rules for all system tiers. Scaling is the capacity
-  management dimension of architecture — how the system handles growth
+  management dimension of architecture � how the system handles growth
   in users, traffic, and data. Scaling decisions are driven by
   ProjectScale (../levels.sdd) and must be validated against actual
   load, not projected maximums.
@@ -295,8 +295,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

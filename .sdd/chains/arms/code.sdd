@@ -13,15 +13,15 @@ Stage:
   returns_to: D0
   inputs:
     - .sdd/project/
-    - .sdd/project/decisions/ (approved decisions)
+    - .sdd/projects/sddra.ai/decisions/ (approved decisions)
   outputs:
     - project/
-    - .sdd/project/decisions/DEC-XXX.sdd (updated status)
+    - .sdd/projects/sddra.ai/decisions/DEC-XXX.sdd (updated status)
   skills:
     - workflows/task-execution.sdd
     - plugins/plugin-adapters/using-git-worktrees.sdd
   token:
-    - ../../project/tokens/C1.sdd
+    - ../../projects/sddra.ai/tokens/C1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

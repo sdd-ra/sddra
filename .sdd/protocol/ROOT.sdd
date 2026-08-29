@@ -375,7 +375,7 @@ ReferenceSystem:
   @payments
   @payments/refund
   @skills/backend/ddd
-  @project/tasks/PAY-042
+  @projects/sddra.ai/tasks/PAY-042
   @decision/DEC-012
 
   References are resolved through the project graph, not through

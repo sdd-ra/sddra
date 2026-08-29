@@ -13,7 +13,7 @@ Original:
 Adapted for SDDRA:
   Mapped to S1 arm task generation:
     Input: approved docs/
-    Output: .sdd/project/tasks/*.sdd
+    Output: .sdd/projects/sddra.ai/tasks/*.sdd
 
   Task structure:
     id: TASK-XXX

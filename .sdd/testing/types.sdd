@@ -1,4 +1,4 @@
-﻿TestTypes: SDD
+TestTypes: SDD
 
 Purpose:
   Define the test types available in the system. Each test type has a
@@ -163,7 +163,7 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   Note:

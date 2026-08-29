@@ -68,7 +68,7 @@ Navigation:
   Graph: @graph/graph.sdd
   Skills: @skills/INDEX.sdd
   Chains: @chains/INDEX.sdd
-  Tasks: @project/tasks/tasks.sdd
+  Tasks: @projects/sddra.ai/tasks/tasks.sdd
   Security: @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd
   SecurityPolicy: @security/SECURITY.sdd
@@ -79,7 +79,7 @@ Navigation:
   SecurityScanners: @security/scanners.sdd
   Verification: @verification/
   State: @state/state.sdd
-  Decisions: @project/decisions/decisions.sdd
+  Decisions: @projects/sddra.ai/decisions/decisions.sdd
 
 State: +
   Note:

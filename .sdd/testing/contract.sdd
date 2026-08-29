@@ -1,7 +1,7 @@
-﻿Contract: SDD
+Contract: SDD
 
 Purpose:
-  Contract testing — verify that service-to-service contracts are
+  Contract testing � verify that service-to-service contracts are
   honored. Contract tests ensure that providers and consumers agree
   on the API schema and behavior, enabling independent deployment.
 
@@ -43,7 +43,7 @@ Navigation:
   Unit: @unit.sdd
   Integration: @integration.sdd
   API: @api.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

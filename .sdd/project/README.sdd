@@ -1,50 +1,39 @@
 # Project Structure Template
 
 Purpose:
-  This directory contains schemas, indexes, and routing tables for the
-  project model. Concrete project data and templates are NOT stored here.
+  This directory contains reusable schemas, indexes, and routing tables
+  for the project model. Concrete project data is NOT stored here.
 
 Contents:
   This directory is SCHEMA-ONLY. For reusable templates, see:
     @../../templates/INDEX.sdd
 
-  Template sources:
-    docs/
-      00-about/project.template.md       — Project overview template
-      20-architecture/overview.template.md — Architecture overview template
-      INDEX.sdd                           — Docs routing
-      mappings.sdd                        — Doc-to-sdd mappings
-      ownership.sdd                       — Doc ownership rules
-
-    decisions/
-      INDEX.sdd                           — Decision index
-      DEC-000.template.sdd                — Decision template
-
-    tasks/
-      INDEX.sdd                           — Task index
-      TASK-000.template.sdd               — Task template
-
-    stack/
-      INDEX.sdd                           — Stack index
-      LAYER.template.sdd                  — Stack layer template
-
-    architecture/
-      INDEX.sdd                           — Architecture index
-      system.template.md                  — System architecture template
+  Model files:
+    project.sdd     — Project model entry point (shape, schema, rules)
+    domains.sdd     — Domain schema and list
+    modules.sdd     — Module schema and list
+    map.sdd         — Project navigation map
+    flows.sdd       — Execution flow schema
+    dependencies.sdd — Dependency schema
+    indexes.sdd     — Category-level index schema
+    instantiation.sdd — Project instantiation rules
+    mode.sdd        — Project mode schema
+    architecture.sdd — Architecture schema
+    README.sdd      — This file
 
 Usage:
-  1. Templates are consumed from templates/_sdd/ by the project-structure skill
-  2. When a new project is initiated, the skill generates project/ from templates
-  3. Replace placeholders with actual project content
-  4. Create concrete decisions (DEC-001, DEC-002, etc.)
-  5. Create concrete tasks (TASK-001, TASK-002, etc.)
-  6. Populate stack/ with actual technology choices
+  1. This folder defines HOW projects are structured (the model)
+  2. Concrete project instances live in .sdd/projects/<name>/
+  3. Templates for decisions, tasks, docs, etc. live in templates/_sdd/
+  4. When a new project is initiated, it is instantiated from this model
 
 Note:
   This directory does NOT contain concrete project data.
   Concrete project data lives in:
-    - prompt/ (human prompts)
-    - .sdd/decisions/ (concrete decisions)
-     - project/ (concrete code, generated from templates)
+    - .sdd/projects/<name>/decisions/ (concrete decisions)
+    - .sdd/projects/<name>/tasks/ (concrete tasks)
+    - .sdd/projects/<name>/docs/ (concrete docs)
+    - .sdd/projects/<name>/stack/ (concrete stack)
+    - .sdd/projects/<name>/ (all other project state)
 
 State: +

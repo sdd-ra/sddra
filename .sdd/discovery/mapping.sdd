@@ -1,4 +1,4 @@
-﻿Mapping: Discovery
+Mapping: Discovery
 
 Purpose:
   Defines how discovered elements map to .sdd model and
@@ -7,39 +7,39 @@ Purpose:
 SourceToSddMapping:
   Source:
     ./<layer>/<domain>/<module>/<artifact>
-  ↓
+  ?
   .sdd:
-    .sdd/project/tasks/<TASK-ID>.sdd
-  ↓
+    .sdd/projects/sddra.ai/tasks/<TASK-ID>.sdd
+  ?
   Domain:
     <domain-name>
-  ↓
+  ?
   Component:
     <ComponentName>
-  ↓
+  ?
   Skill:
     <skill-name>
-  ↓
+  ?
   Test:
     <test-path>
-  ↓
+  ?
   Doc:
     docs/<layer>/<domain>.md
 
 DiscoveryToTaskMapping:
   SECURITY_GAP:
     Missing rate limit
-  ↓
+  ?
   SEC-101
 
   DOC_GAP:
     Missing deployment documentation
-  ↓
+  ?
   DOC-201
 
   ARCH-CYCLE:
-    payments ↔ orders
-  ↓
+    payments ? orders
+  ?
   ARCH-301
 
 DriftMapping:
@@ -63,19 +63,19 @@ DriftMapping:
 DocumentationMapping:
   Source:
     ./<layer>/<domain>/<module>/<artifact>
-  ↓
+  ?
   Doc:
     docs/<layer>/<domain>.md
 
   Source:
     ./<layer>/migrations/
-  ↓
+  ?
   Doc:
     docs/<layer>/database.md
 
   Source:
     .github/workflows/
-  ↓
+  ?
   Doc:
     docs/<layer>/ci-cd.md
 

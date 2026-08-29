@@ -1,9 +1,9 @@
-﻿Frontend: SDD
+Frontend: SDD
 
 Purpose:
   Frontend technology catalog with framework options, selection criteria,
   and compatibility rules. Root stack/ defines reusable frontend knowledge;
-  project/stack/ stores the selected frontend for the current project.
+  projects/sddra.ai/stack/ stores the selected frontend for the current project.
 
 Catalog:
   React:

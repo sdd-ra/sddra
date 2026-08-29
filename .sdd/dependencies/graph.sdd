@@ -4,7 +4,7 @@ Purpose:
   Define the dependency graph engine — how dependencies are represented,
   validated, evaluated, and how they drive task readiness and scheduling.
   This is the reusable system intelligence; concrete project graphs live
-  in project/dependencies/graph.sdd.
+  in projects/sddra.ai/dependencies/graph.sdd.
 
 Owns:
   Dependency graph model, DAG rules, topological sort, cycle detection,
@@ -368,7 +368,7 @@ Navigation:
   DependencyEngine: ./INDEX.sdd
   DependencyGraph: ./graph.sdd
   DependencyLocking: ./locking.sdd
-  ProjectDependencies: ../project/dependencies/INDEX.sdd
-  ProjectDependencyGraph: ../project/dependencies/graph.sdd
-  ProjectLocks: ../project/dependencies/locks.sdd
-  ProjectReservations: ../project/dependencies/reservations/
+  ProjectDependencies: ../projects/sddra.ai/dependencies/INDEX.sdd
+  ProjectDependencyGraph: ../projects/sddra.ai/dependencies/graph.sdd
+  ProjectLocks: ../projects/sddra.ai/dependencies/locks.sdd
+  ProjectReservations: ../projects/sddra.ai/dependencies/reservations/

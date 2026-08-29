@@ -1,4 +1,4 @@
-﻿Networking: SDD
+Networking: SDD
 
 Purpose:
   Define networking patterns, CDN configuration, WAF rules, load
@@ -308,8 +308,8 @@ Navigation:
   Observability: @observability.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @project/architecture/INDEX.sdd
-  Decisions: @project/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
+  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
 
 State: +
   

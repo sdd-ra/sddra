@@ -1,7 +1,7 @@
-﻿API: SDD
+API: SDD
 
 Purpose:
-  API testing — verify API endpoints behave correctly according to
+  API testing � verify API endpoints behave correctly according to
   their contracts. API tests validate request/response formats,
   status codes, error handling, and business logic at the API layer.
 
@@ -46,7 +46,7 @@ Navigation:
   Unit: @unit.sdd
   Integration: @integration.sdd
   Contract: @contract.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
 
 State: +
   

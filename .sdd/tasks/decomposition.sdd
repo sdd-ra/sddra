@@ -131,7 +131,7 @@ TaskExecutionBoundary:
 
 Navigation:
   Tasks: @tasks.sdd
-  ProjectTasks: @../project/tasks/INDEX.sdd
+  ProjectTasks: @../projects/sddra.ai/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Graph: @../graph/INDEX.sdd

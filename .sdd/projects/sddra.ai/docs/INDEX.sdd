@@ -1,8 +1,8 @@
-﻿Docs: Project Documentation
+Docs: Project Documentation
 
 Purpose:
   Project documentation mapping, audience assignment, and ownership
-  routing. .sdd/project/docs/ maps human-readable docs to their
+  routing. .sdd/projects/sddra.ai/docs/ maps human-readable docs to their
   .sdd counterparts and defines audience, ownership, and freshness
   rules.
 

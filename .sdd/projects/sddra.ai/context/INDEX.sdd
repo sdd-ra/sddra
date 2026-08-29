@@ -1,8 +1,8 @@
-ï»¿Context: Project
+Context: Project
 
 Purpose:
   Stores context map and active context instances for the current project.
-  This file provides routing only â€” concrete data is generated per project.
+  This file provides routing only — concrete data is generated per project.
 
 Owns: ./
 
@@ -11,11 +11,11 @@ ReadOrder:
    2  @active.sdd
 
 Modes:
-  TASK     â€” task-specific context
-  INCIDENT â€” incident-specific context
-  SECURITY â€” security-specific context
-  MANAGER  â€” manager/status context
-  DEVELOPER â€” developer/implementation context
+  TASK     — task-specific context
+  INCIDENT — incident-specific context
+  SECURITY — security-specific context
+  MANAGER  — manager/status context
+  DEVELOPER — developer/implementation context
 
 Rules:
   [PC1]  Project context MUST follow root context policy.
@@ -33,9 +33,9 @@ Entry:
     active
 
 Navigation:
-  ProjectContext: @project/context/INDEX.sdd
-  ContextMap: @project/context/map.sdd
-  ActiveContext: @project/context/active.sdd
+  ProjectContext: @projects/sddra.ai/context/INDEX.sdd
+  ContextMap: @projects/sddra.ai/context/map.sdd
+  ActiveContext: @projects/sddra.ai/context/active.sdd
   RootContext: @../context/INDEX.sdd
 
 State: +

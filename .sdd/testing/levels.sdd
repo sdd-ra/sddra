@@ -1,4 +1,4 @@
-﻿TestLevels: SDD
+TestLevels: SDD
 
 Purpose:
   Define test depth levels L0-L5. These levels describe how deep testing
@@ -109,11 +109,11 @@ Navigation:
   Mobile: @mobile.sdd
   Performance: @performance.sdd
   Load: @load.sdd
-  ProjectTesting: @project/testing/INDEX.sdd
-  ProjectCoverage: @project/testing/coverage.sdd
-  ProjectRuns: @project/testing/runs/
-  ProjectFailures: @project/testing/failures/
-  ProjectExceptions: @project/testing/exceptions/
+  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
+  ProjectCoverage: @projects/sddra.ai/testing/coverage.sdd
+  ProjectRuns: @projects/sddra.ai/testing/runs/
+  ProjectFailures: @projects/sddra.ai/testing/failures/
+  ProjectExceptions: @projects/sddra.ai/testing/exceptions/
 
 State: +
   Note:

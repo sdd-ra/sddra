@@ -1,9 +1,9 @@
-﻿Messaging: SDD
+Messaging: SDD
 
 Purpose:
   Messaging technology catalog with comparison criteria, selection rules,
   and integration patterns. Root stack/ defines reusable messaging knowledge;
-  project/stack/ stores the selected messaging for the project.
+  projects/sddra.ai/stack/ stores the selected messaging for the project.
 
 Catalog:
   RabbitMQ:

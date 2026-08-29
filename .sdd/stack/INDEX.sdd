@@ -1,10 +1,10 @@
-ï»¿Stack: SDD
+Stack: SDD
 
 Purpose:
   The .sdd system's technology selection and stack information layer.
    This directory defines technology constraints, compatibility rules,
    and selection mechanisms. Project-specific selected stack is stored
-   in .sdd/project/stack/. Separation: root = reusable technology
+   in .sdd/projects/sddra.ai/stack/. Separation: root = reusable technology
    constraints, project = concrete selection.
 
 Owns: ./
@@ -22,15 +22,15 @@ ReadOrder:
    10  @observability.sdd
 
 Modes:
-  ANALYZE   â€” technology selection and fit analysis
-  PLAN      â€” stack decision and technology mapping
-  WORK      â€” technology-based implementation
-  VERIFY    â€” stack compliance check
-  REVIEW    â€” technology decision execution
+  ANALYZE   — technology selection and fit analysis
+  PLAN      — stack decision and technology mapping
+  WORK      — technology-based implementation
+  VERIFY    — stack compliance check
+  REVIEW    — technology decision execution
 
 Rules:
   [STK1]  Technology selection MUST follow architecture, not precede it.
-  [STK2]  AI MUST NOT hard-code universal technology preferences â€” all
+  [STK2]  AI MUST NOT hard-code universal technology preferences — all
           scores are decision aids, not mandates.
   [STK3]  Technology decisions MUST be recorded with rationale and
           alternatives considered.
@@ -77,13 +77,13 @@ Navigation:
   Testing: @stack/testing.sdd
   Infrastructure: @stack/infrastructure.sdd
   Observability: @stack/observability.sdd
-  ProjectStack: @project/stack/INDEX.sdd
+  ProjectStack: @projects/sddra.ai/stack/INDEX.sdd
 
 State: +
   Note:
   Stack directory created as the technology
   selection and knowledge layer. Root stack/ defines reusable technology
-  constraints and compatibility rules; project/stack/ stores the selected
+  constraints and compatibility rules; projects/sddra.ai/stack/ stores the selected
   technology instances for the current project. Separation follows
   ROOT-001: root = reusable system intelligence, project = concrete
   project state.
