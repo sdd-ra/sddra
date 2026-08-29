@@ -1,7 +1,7 @@
-# VKARD.AZ — Project Map
+# example_project — Project Map
 
 Purpose:
-  AI representation of the vkard.az codebase.
+  AI representation of the example_project codebase.
   This file maps the real project structure so AI can understand
   where code lives, what it does, and how components relate.
 
@@ -9,19 +9,19 @@ IMPORTANT:
   The source code does NOT live inside .sdd/.
   The actual project is located at:
 
-  ../../../../vkard.az/
+  ../../../../example_project/
 
   Every file reference in this directory points to a real file
   inside the source project.
 
 ## Source → AI Mapping
 
-Real Project Root: `D:\Tasks\ai_code\vkard.az\`
+Real Project Root: `D:\Tasks\ai_code\example_project\`
 
 ### Directory Structure
 
 ```
-vkard.az/
+example_project/
 ├── src/
 │   ├── auth/
 │   ├── api/
@@ -43,7 +43,7 @@ Each file in the project can be represented as:
 # src/auth/login.ts
 
 Real file:
-`../../../../vkard.az/src/auth/login.ts`
+`../../../../example_project/src/auth/login.ts`
 
 Purpose:
 <description>
@@ -67,7 +67,7 @@ Status:
 
 ### Navigation
 
-- Project Root: `../../../../vkard.az/`
+- Project Root: `../../../../example_project/`
 - Source Files: `src/`
 - Tests: `tests/`
 - Documentation: `docs/`

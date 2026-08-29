@@ -47,7 +47,7 @@ Navigation:
   API: @api.sdd
   UI: @ui.sdd
   Mobile: @mobile.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/example_project/testing/INDEX.sdd
 
 State: +
   

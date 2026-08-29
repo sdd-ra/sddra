@@ -9,7 +9,7 @@ SourceToSddMapping:
     ./<layer>/<domain>/<module>/<artifact>
   ?
   .sdd:
-    .sdd/projects/vkard.az/tasks/<TASK-ID>.sdd
+    .sdd/projects/example_project/tasks/<TASK-ID>.sdd
   ?
   Domain:
     <domain-name>

@@ -20,6 +20,6 @@ Rules:
 Navigation:
   Tasks: @tasks.sdd
   Decomposition: @decomposition.sdd
-  ProjectTasks: @../projects/vkard.az/tasks/INDEX.sdd
+  ProjectTasks: @../projects/example_project/tasks/INDEX.sdd
 
 State: +

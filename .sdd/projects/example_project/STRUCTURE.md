@@ -1,7 +1,7 @@
-# VKARD.AZ — Project Structure
+# example_project — Project Structure
 
 Purpose:
-  Detailed description of the vkard.az codebase structure.
+  Detailed description of the example_project codebase structure.
   Used by AI to understand the project architecture, layers,
   and where to implement new features.
 

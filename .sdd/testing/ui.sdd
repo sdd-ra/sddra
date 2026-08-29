@@ -44,7 +44,7 @@ Navigation:
   BDD: @bdd.sdd
   Unit: @unit.sdd
   E2E: @e2e.sdd
-  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectTesting: @projects/example_project/testing/INDEX.sdd
 
 State: +
   
