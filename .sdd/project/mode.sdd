@@ -1,0 +1,38 @@
+﻿Mode: Project
+
+Purpose:
+  Defines project mode — whether project is greenfield, brownfield,
+  or hybrid.
+
+Owns: ./
+
+Modes:
+  GREENFIELD  — new project, no existing code
+  BROWNFIELD  — existing project being analyzed
+  HYBRID      — mix of new and existing
+
+Fields:
+  Mode:              <GREENFIELD|BROWNFIELD|HYBRID>
+  Reason:            <why this mode>
+  DiscoveryStatus:
+    Status:          <PENDING|IN_PROGRESS|COMPLETE>
+    Timestamp:       <ISO-8601>
+    Score:           <percentage>
+    Unknown:         <percentage>
+  DiscoveredStack:   [<technologies>]
+  DiscoveredArchitecture: <style>
+  DiscoveredDomains: [<domains>]
+  DiscoveredTests:   [<test-types>]
+  DiscoveredSecurity: [<controls>]
+  DiscoveredInfrastructure: [<infra>]
+  Gaps:              [<missing-items>]
+
+Navigation:
+  ProjectMode: @project/mode.sdd
+  RootMode: @../mode.sdd
+
+State: +
+
+Note:
+  This file is the project-specific mode declaration. Concrete mode
+  data is generated per project by the project-structure skill.
