@@ -1,0 +1,40 @@
+@concepts
+
+Purpose:
+  Central concept registry with aliases and ambiguity resolution.
+  Maps terminology to references and skills.
+
+Owns: ./
+
+Registry:
+  - concept_id: <unique identifier>
+    canonical_name: <human-readable name>
+    aliases: [alternative names]
+    avoid_terms: [confusing terms]
+    reference: <primary reference>
+    skills: [related skills]
+    projects: [using projects]
+
+Rules:
+  [C1] Every concept MUST have a canonical name.
+  [C2] Aliases MUST map to exactly one concept.
+  [C3] Ambiguous terms MUST be flagged, not guessed.
+  [C4] Concepts MUST be context-aware.
+  [C5] Concept drift MUST be detected and recorded.
+  [C6] Conflicting concepts MUST be separated.
+
+Resolution:
+  priority:
+    1. exact reference
+    2. project-local alias
+    3. parent index alias
+    4. global alias
+    5. semantic search
+    6. ask human
+
+Navigation:
+  References: @../references/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+  Projects: @../projects/INDEX.sdd
+
+State: +
