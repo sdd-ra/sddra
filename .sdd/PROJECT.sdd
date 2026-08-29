@@ -51,8 +51,7 @@ Directories:
   features:
     path: ./features
     purpose: Feature planning, decision, and layer assignment
-    layers: @features/layers.sdd
-    decisions: @features/decisions.sdd
+    ref: @features/INDEX.sdd
 
   workflows:
     path: ./workflows
@@ -91,7 +90,6 @@ Navigation:
   skills: @skills
   prompts: @prompts
   features: @features
-  layers: @features/layers.sdd
   workflows: @workflows
   commands: @commands
   plugins: @plugins

@@ -1,32 +1,57 @@
-# Features
+Features: SDD
 
 Purpose:
   Feature planning, decision, and layer assignment system.
   Analyzes project state, evaluates new features, and assigns
-  work to appropriate layers (L0, L1, L2, ...).
+  work to appropriate layers (L0-L4).
 
 Owns: ./
 
-ReadOrder:
-   1 @INDEX.sdd
-   2 @layers.sdd
-   3 @decisions.sdd
-   4 @../projects/{project_name}/MAP.md
+Layers:
+  L0:
+    Name: MVP Core
+    Description: Minimum viable product features, already implemented
+    WorkMode: Maintenance only
+
+  L1:
+    Name: Customer Features
+    Description: Features requested after MVP
+    WorkMode: Implementation
+    Priority: HIGH
+
+  L2:
+    Name: Enhancements
+    Description: Performance improvements, UX enhancements
+    WorkMode: Implementation
+    Priority: MEDIUM
+
+  L3:
+    Name: Scalability
+    Description: Scaling, multi-tenant, advanced security
+    WorkMode: Implementation
+    Priority: LOW
+
+  L4:
+    Name: Innovation
+    Description: Experimental features, AI/ML, advanced analytics
+    WorkMode: Research and POC
 
 Rules:
-  [FTR1] Features MUST be assigned to a layer (L0, L1, L2, ...).
-  [FTR2] Layer assignment is based on project maturity and complexity.
-  [FTR3] L0 = MVP/core features (already implemented).
-  [FTR4] L1 = Customer-requested features (next priority).
-  [FTR5] L2+ = Future enhancements and optimizations.
-  [FTR6] Feature decisions MUST be documented in decisions/.
-  [FTR7] Project-specific features live in projects/{project_name}/.
+  [FTR1] Features MUST be assigned to a layer (L0-L4).
+  [FTR2] Work MUST proceed from L0 -> L1 -> L2 -> L3 -> L4.
+  [FTR3] L0 MUST be stable before L1 work begins.
+  [FTR4] L1 features MUST be approved by human before implementation.
+  [FTR5] Layer assignment MUST be documented in decisions/.
+  [FTR6] Features MAY span multiple layers if justified.
+  [FTR7] Every feature decision MUST be traceable to its source.
+  [FTR8] Human approval REQUIRED for L1+ features.
+  [FTR9] L0 features MAY be implemented without approval if within scope.
 
-Navigation:
-  Layers: @layers.sdd
-  Decisions: @decisions.sdd
-  ProjectMap: @../projects/{project_name}/MAP.md
-  ProjectStructure: @../projects/{project_name}/STRUCTURE.md
-  Registry: @../projects/INDEX.sdd
+DecisionProcess:
+  1. Evaluate feature against current project state
+  2. Assign feature to appropriate layer
+  3. Identify affected components
+  4. Create decision record (DEC-XXX)
+  5. Create tasks for implementation
 
 State: +
