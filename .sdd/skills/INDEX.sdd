@@ -74,7 +74,13 @@ ReadOrder:
    62 @cross-cutting/testing/
    63 @cross-cutting/security/
    64 @cross-cutting/architecture/
-   65 @cross-cutting/observability/
+    65  @cross-cutting/observability/
+    66  @sdd/INDEX.sdd
+    67  @sdd/SKILL-INTEGRATION-MODULE.sdd
+    68  @sdd/SKILL-EVENT-PROCESSOR.sdd
+    69  @sdd/SKILL-FIELD-MAPPING.sdd
+    70  @sdd/SKILL-NOTIFICATION.sdd
+    71  @sdd/SKILL-SCHEDULED-SYNC.sdd
 
 Modes:
   APPLY    — apply skill to current task
@@ -194,7 +200,13 @@ Navigation:
     SkillDiscovery: @skills/meta/SKILL-DISCOVERY.sdd
     SkillRecommendation: @skills/meta/SKILL-RECOMMENDATION.sdd
     SkillGapAnalysis: @skills/meta/SKILL-GAP-ANALYSIS.sdd
-     HumanSkills: @docs/skills/
-     SkillExecutionProtocol: @protocol/skill-execution.sdd
+      HumanSkills: @docs/skills/
+      SkillExecutionProtocol: @protocol/skill-execution.sdd
+      SDD: @skills/sdd/INDEX.sdd
+      SDDIntegrationModule: @skills/sdd/SKILL-INTEGRATION-MODULE.sdd
+      SDDEventProcessor: @skills/sdd/SKILL-EVENT-PROCESSOR.sdd
+      SDDFieldMapping: @skills/sdd/SKILL-FIELD-MAPPING.sdd
+      SDDNotification: @skills/sdd/SKILL-NOTIFICATION.sdd
+      SDScheduledSync: @skills/sdd/SKILL-SCHEDULED-SYNC.sdd
 
 State: +

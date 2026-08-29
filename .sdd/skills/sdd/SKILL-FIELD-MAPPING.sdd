@@ -1,0 +1,262 @@
+Skill: Field Mapping
+
+ID:
+  SKILL-SDD-FIELD-MAPPING
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  field mapping
+  data transformation
+  request mapping
+  response mapping
+  integration field
+  transformation rule
+  static field
+  nested path
+  data type conversion
+  API integration
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Mapping internal fields to external API fields (request building)
+  - Mapping external API responses back to internal fields
+  - Implementing data transformations (uppercase, digits_only, remove_plus)
+  - Handling static fields with default values
+  - Supporting nested object paths (dot notation)
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  integration-engineer
+
+Requires:
+  sdd-integration-module
+
+Avoid:
+  hardcoded-mapping
+  manual-payload-assembly
+  missing-null-handling
+  no-transformation-rules
+  tight-coupling-to-external-schema
+
+HumanDoc:
+  docs/skills/sdd/field-mapping.md
+
+Evidence:
+  - Data Mapping and Transformation (Software Patterns Lexicon 2024)
+  - 7 Data Mapping Best Practices (Elvity 2026)
+  - API Data Mapping Comprehensive Guide (Adeptia 2024)
+  - Production experience: pultapaz IntegrationField model
+
+Overview:
+  Field Mapping is the engine that translates data between internal domain
+  models and external API schemas. It supports request mapping (internal ->
+  external) and response mapping (external -> internal), with configurable
+  transformation rules, static fields, nested paths, and type conversions.
+  The mapping is data-driven: no code changes needed when external APIs
+  evolve.
+
+Rules:
+
+  [FM1] Every field mapping MUST declare internal_field, external_field,
+        and field_path (dot notation for nested objects).
+
+  [FM2] Transformation rules MUST be declarative (configuration), not
+        imperative (code branches).
+
+  [FM3] Static fields MUST be supported with default_value — no source
+        lookup required.
+
+  [FM4] Null/empty handling MUST be explicit: use default_value, reject, or
+        flag for manual review.
+
+  [FM5] Field mapping MUST support data type conversions (string, number,
+        boolean, date).
+
+  [FM6] Nested paths MUST use dot notation (e.g., data.user.profile.name).
+
+  [FM7] Response mapping MUST handle missing fields gracefully — return
+        default_value or null, never throw.
+
+  [FM8] Field mappings MUST be ordered (sort_order) for deterministic
+        processing.
+
+  [FM9] Sensitive fields (PII) MUST be maskable at the mapping layer.
+
+  [FM10] The mapping engine MUST be independently testable without HTTP or
+         database dependencies.
+
+Architecture:
+
+  FieldMappingEngine:
+    owns:
+      - Field resolution (static, dynamic, nested)
+      - Transformation execution
+      - Nested value setting/getting
+      - Null/empty handling
+      - Type conversion
+
+    api:
+      - resolveRequestFields(fields, params, redirect, requestId) -> payload
+      - mapResponseFields(fields, body) -> internalFields
+      - transform(value, rule) -> transformedValue
+      - getNestedValue(body, path) -> value
+      - setNestedValue(data, path, value) -> data
+
+Components:
+
+  IntegrationField:
+    - field_type: request | response
+    - internal_field: target field name in internal model
+    - external_field: source field name in external API
+    - field_path: dot notation for nested access (e.g., data.user.id)
+    - data_type: string | number | boolean | date | json
+    - is_required: bool
+    - default_value: fallback when source is missing
+    - transformation_rule: array of {type, params}
+    - sort_order: int
+
+  TransformationRule:
+    - type: uppercase | lowercase | digits_only | remove_plus | format_date | encrypt | decrypt | custom
+    - params: type-specific parameters
+
+Field Resolution:
+
+  StaticField:
+    condition: is_static == true
+    source: default_value
+    example:
+      internal_field: app_id
+      external_field: app
+      default_value: "12345"
+
+  DynamicField:
+    condition: is_static == false
+    source: resolved from context
+    priority:
+      1. params.<field_name> (quiz params JSON)
+      2. redirect.<field_name> (quiz redirects DB)
+      3. default_value
+    example:
+      internal_field: phone
+      external_field: customer_phone
+      resolved_from: params.phone or redirect.phone
+
+  NestedPath:
+    format: dot notation
+    example:
+      field_path: data.user.profile.phone
+      resolves: body.data.user.profile.phone
+
+Transformation Rules:
+
+  uppercase:
+    input: "hello"
+    output: "HELLO"
+
+  lowercase:
+    input: "HELLO"
+    output: "hello"
+
+  digits_only:
+    input: "+994501234567"
+    output: "994501234567"
+
+  remove_plus:
+    input: "+994501234567"
+    output: "994501234567"
+
+  format_date:
+    input: "2026-01-15"
+    params: {format: "Y-m-d"}
+    output: "15.01.2026"
+
+  encrypt/decrypt:
+    input: "plaintext"
+    params: {method: "base64|xor:key|aes:key"}
+    output: "encrypted"
+
+Request Mapping:
+
+  Input:
+    - IntegrationField[] requestFields (ordered by sort_order)
+    - QuizParams params
+    - QuizRedirects redirect
+    - string requestId
+
+  Process:
+    for each field in requestFields:
+      if field.is_static:
+        value = field.default_value
+      else:
+        value = resolveDynamicField(field, params, redirect, requestId)
+      value = transform(value, field.transformation_rule)
+      if field.field_path:
+        setNestedValue(payload, field.field_path, value)
+      else:
+        payload[field.external_field] = value
+
+  Output:
+    - payload object ready for external API
+
+Response Mapping:
+
+  Input:
+    - IntegrationField[] responseFields (ordered by sort_order)
+    - decoded API response body
+
+  Process:
+    for each field in responseFields:
+      value = getNestedValue(body, field.external_field or field.field_path)
+      value = transform(value, field.transformation_rule)
+      internalFields[field.internal_field] = value ?? field.default_value
+
+  Output:
+    - internalFields object with mapped values
+
+Best Practices:
+
+  - Store mapping config in database, not code
+  - Version mapping configs when breaking changes occur
+  - Cache field definitions in Redis for hot-path performance
+  - Validate mapping completeness before API calls (all required fields present)
+  - Use field_path for nested APIs, external_field for flat APIs
+  - Implement field-level encryption for PII fields
+  - Log unmapped fields for debugging and schema evolution
+
+Anti-Patterns:
+
+  - Manual payload assembly without mapping engine
+  - Hardcoded field names scattered across handlers
+  - Missing transformation rules (silent data corruption)
+  - No null handling (crashes on missing fields)
+  - Coupling internal field names to external API field names
+  - Over-nesting paths beyond 3 levels (indicates poor API design)
+
+State: +

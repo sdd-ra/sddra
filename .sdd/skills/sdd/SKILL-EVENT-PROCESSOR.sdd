@@ -1,0 +1,275 @@
+Skill: Event Processor
+
+ID:
+  SKILL-SDD-EVENT-PROCESSOR
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  MEDIUM
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  event processor
+  claim handle complete
+  event queue
+  retry
+  dead letter queue
+  idempotent
+  deduplication
+  correlation ID
+  batch processing
+  message consumer
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Processing events/messages from a queue (DB-based, RabbitMQ, Kafka)
+  - Implementing claim -> handle -> complete lifecycle
+  - Building retry and error handling for async processing
+  - Standardizing event deduplication and correlation tracking
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  integration-engineer
+
+Requires:
+  sdd-integration-module
+  sdd-http-client
+
+Avoid:
+  fire-and-forget
+  no-acknowledgment
+  missing-retry
+  duplicate-processing
+  tight-coupling-to-source
+
+HumanDoc:
+  docs/skills/sdd/event-processor.md
+
+Evidence:
+  - Azure Functions reliable event processing (Microsoft Learn 2026)
+  - Error Handling Patterns in Kafka (Confluent 2024)
+  - Handling Failures in Queues in Event-Based Architecture (Medium 2024)
+  - Event Sourcing Patterns Best Practices (GitScrum 2026)
+  - Production experience: sweeps-integrations, pultapaz
+
+Overview:
+  The Event Processor pattern defines how events/messages are ingested,
+  claimed, handled, and completed. It provides exactly-once or at-least-once
+  guarantees, bounded retry, dead-letter handling, and correlation tracking.
+  The processor is transport-agnostic: it works with DB-based queues
+  (Supabase), message brokers (RabbitMQ), or WebSocket firehose.
+
+Rules:
+
+  [EP1] Event claiming MUST be atomic and idempotent — no duplicate claims.
+
+  [EP2] Event processing MUST be idempotent — safe to process the same event
+        multiple times without side effects.
+
+  [EP3] Every event MUST have a correlation ID (auid, request_id) that
+        persists through the entire processing pipeline.
+
+  [EP4] Retry MUST be bounded: max_retries, backoff strategy, and dead-letter
+        queue after exhaustion.
+
+  [EP5] Failed events MUST NOT block the queue — they MUST be moved to a
+        dead-letter queue or marked as failed, allowing the processor to
+        continue.
+
+  [EP6] Event handlers MUST return explicit status: completed, retry, failed.
+
+  [EP7] Batch completion MUST be atomic — all events in a batch are updated
+        together, or none.
+
+  [EP8] Deduplication MUST be implemented at the ingestion layer (auid set,
+        message ID check, or broker-level dedup).
+
+  [EP9] Processing errors MUST be logged with full context: event ID, service,
+        event type, error stack trace.
+
+  [EP10] The processor MUST support graceful shutdown — complete in-flight
+         events before exiting.
+
+Architecture:
+
+  EventProcessor:
+    owns:
+      - Event claiming and locking
+      - Handler dispatch (service + event_type routing)
+      - Retry policy and execution
+      - Dead-letter queue management
+      - Correlation ID tracking
+      - Batch status updates
+      - Deduplication logic
+
+    api:
+      - claim(batchSize) -> [eventRows]
+      - handle(eventRow) -> {status, http_response}
+      - complete(eventId, status, retryCount) -> void
+      - completeBatch(updates) -> void
+
+Workflow:
+
+  claim:
+    1. Atomically claim N pending events (skip locked / FOR UPDATE)
+    2. Mark claimed events as processing with timestamp
+    3. Return claimed event rows
+    4. If no events available, wait/poll
+
+  handle:
+    1. Validate event has required fields (target_service, event_type)
+    2. Decrypt payload if decryption is enabled for this event type
+    3. Resolve handler from factory (service + event_type)
+    4. Execute handler.handle(eventData)
+    5. Return {status, http_response}
+    6. On error: return {status: retry, retry_count: +1}
+
+  complete:
+    1. Update event status (completed, retry, failed)
+    2. Store API response in event record
+    3. Increment retry_count if status is retry
+    4. If retry_count > max_retries: mark as failed, move to DLQ
+
+  completeBatch:
+    1. Atomically update all events in batch via stored procedure
+    2. Handle partial failures within batch
+    3. Return success/failure counts
+
+Modes:
+
+  Polling:
+    - Periodic claim loop with configurable interval
+    - Fallback when WebSocket/real-time is unavailable
+    - Batch size controlled by config
+
+  WebSocket:
+    - Real-time event ingestion
+    - Events persisted to DB, then claimed by processor
+    - Auto-restart and heartbeat
+
+  Consumer:
+    - Message broker consumer (RabbitMQ, Kafka)
+    - Manual or auto acknowledgment
+    - Prefetch/batch size control
+
+Retry Policy:
+
+  ImmediateRetry:
+    count: 1
+    delay: 0ms
+    use_for: validation errors, transient network glitches
+
+  ExponentialBackoff:
+    max_attempts: 5
+    initial_delay: 1000ms
+    max_delay: 30000ms
+    multiplier: 2
+    use_for: external API failures, rate limiting
+
+  DeadLetter:
+    max_retries: 5
+    action: move_to_dlq
+    alert: notify_on_dlq
+    use_for: permanent failures, data errors
+
+Deduplication:
+
+  auid-based:
+    - Maintain in-memory set of acknowledged auids
+    - Check before processing
+    - Size-limited (LRU eviction)
+
+  message-id-based:
+    - Check message ID against processed set
+    - Broker-level dedup (Kafka idempotent producer, RabbitMQ dedup plugin)
+
+  idempotency-key:
+    - Use business key (user_id + event_type + date)
+    - Check before processing
+    - Store in Redis with TTL
+
+Correlation ID:
+
+  format: {service}-{timestamp}-{random}
+  examples:
+    - captainup-auid-1234567890-abc123
+    - pultapaz-request_id-42
+  propagation:
+    - Generated at ingestion
+    - Passed through all handler calls
+    - Stored in audit log
+    - Used in error messages
+
+Error Handling:
+
+  TransientError:
+    - Network timeout
+    - 502 Bad Gateway
+    - 503 Service Unavailable
+    - 429 Too Many Requests
+    action: retry_with_backoff
+
+  PermanentError:
+    - 400 Bad Request (invalid payload)
+    - 401 Unauthorized (auth failure)
+    - 404 Not Found (resource missing)
+    - 422 Unprocessable Entity
+    action: mark_failed, move_to_dlq
+
+  SystemError:
+    - Handler exception
+    - Database connection failure
+    - Memory overflow
+    action: retry_once, then mark_failed
+
+Batch Processing:
+
+  batch_size: 10-100 (configurable)
+  atomic_update: true (all-or-nothing batch completion)
+  parallel_handling: false (sequential to avoid DB contention)
+  timeout_per_event: 30s
+  batch_timeout: 5m
+
+Best Practices:
+
+  - Use database-level locking (SKIP LOCKED, FOR UPDATE) for claim
+  - Implement circuit breaker for external API calls within handlers
+  - Log structured events with correlation ID for distributed tracing
+  - Use dead-letter queues with manual replay capability
+  - Monitor queue depth, processing lag, error rates
+  - Implement graceful shutdown with in-flight completion
+  - Use health checks that verify queue connectivity
+
+Anti-Patterns:
+
+  - Fire-and-forget without acknowledgment
+  - Infinite retry without backoff or max attempts
+  - Processing events without deduplication
+  - Synchronous blocking in event handlers
+  - Shared mutable state between event handlers
+  - Ignoring poison messages (blocking the queue)
+
+State: +

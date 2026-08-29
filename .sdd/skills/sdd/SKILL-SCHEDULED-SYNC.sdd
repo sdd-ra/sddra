@@ -1,0 +1,277 @@
+Skill: Scheduled Sync
+
+ID:
+  SKILL-SDD-SCHEDULED-SYNC
+
+Domain:
+  sdd
+
+Level:
+  L2
+
+Status:
+  STABLE
+
+Maturity:
+  VALIDATED
+
+Risk:
+  LOW
+
+Review:
+  2026-08
+
+Version:
+  1.0
+
+EvidenceLevel:
+  HIGH
+
+SearchKeys:
+  scheduled sync
+  periodic job
+  batch job
+  cron
+  delayed task
+  background worker
+  config projection
+  idempotent sync
+  batch orchestration
+  pre-check batch
+
+TechnologyLifecycle:
+  Current: MATURE
+
+Use:
+  - Periodic synchronization of external configuration data
+  - Running batch pre-checks across multiple integrations
+  - Implementing delayed task execution
+  - Building config projection from durable store to cache
+
+Apply:
+  senior
+  lead
+  backend-engineer
+  integration-engineer
+
+Requires:
+  sdd-integration-module
+  sdd-event-processor
+
+Avoid:
+  cron-everywhere
+  non-idempotent-sync
+  missing-monitoring
+  tight-coupling-to-scheduler
+  no-error-handling
+
+HumanDoc:
+  docs/skills/sdd/scheduled-sync.md
+
+Evidence:
+  - Best Practices for Background Jobs (Azure Architecture Center 2026)
+  - Batch processing best practices (Vlad Mihalcea)
+  - Scheduling background jobs patterns (AppMaster 2026)
+  - Production experience: sweeps-integrations node-cron, pultapaz yii2-delayed-task
+
+Overview:
+  Scheduled Sync covers periodic and delayed task execution: cron jobs for
+  regular synchronization, batch orchestration for multi-step operations,
+  and config projection for hot-path performance. The pattern emphasizes
+  idempotency, observability, and graceful error handling.
+
+Rules:
+
+  [SS1] Scheduled jobs MUST be idempotent — running the same job twice MUST
+        not produce duplicate or corrupt data.
+
+  [SS2] Job execution MUST be logged: job_id, started_at, completed_at,
+        status, items_processed, errors.
+
+  [SS3] Batch operations MUST be chunked — process N items at a time, not all
+        at once, to avoid memory/timeout issues.
+
+  [SS4] Config projection MUST be atomic: write to durable store first, then
+        project to cache — never the reverse.
+
+  [SS5] Delayed tasks MUST have a state machine: queued -> processing ->
+        completed | failed | cancelled.
+
+  [SS6] Job failures MUST trigger alerts — silent failures are unacceptable.
+
+  [SS7] Scheduler configuration MUST be externalized (cron expressions,
+        intervals) — not hardcoded.
+
+  [SS8] Multiple scheduler instances MUST be safe: use distributed locks or
+        leader election to prevent duplicate execution.
+
+  [SS9] Long-running jobs MUST support progress tracking and resume from
+        checkpoint.
+
+  [SS10] Scheduled sync MUST NOT block the main application thread — use
+         separate worker process/host.
+
+Architecture:
+
+  ScheduledSync:
+    owns:
+      - Job registration and scheduling
+      - Job execution and monitoring
+      - Batch orchestration (chunking, parallelism)
+      - Config projection (DB -> Redis)
+      - Delayed task queue management
+      - Error handling and alerting
+
+    api:
+      - schedule(job) -> jobId
+      - execute(jobId) -> {status, result}
+      - cancel(jobId) -> void
+      - getStatus(jobId) -> {status, progress}
+
+Components:
+
+  SyncJob:
+    - job_id (unique identifier)
+    - name (human-readable)
+    - cron_expression or interval_ms
+    - handler (callable)
+    - params (job-specific configuration)
+    - enabled: bool
+    - last_run_at, last_run_status, last_run_error
+    - created_at, updated_at
+
+  BatchJob:
+    - job_id
+    - total_items, processed_items, failed_items
+    - chunk_size
+    - status: queued | processing | completed | failed | cancelled
+    - started_at, completed_at
+    - result_json (summary)
+
+  DelayedTask:
+    - task_id
+    - type (add, add_batch, execute)
+    - payload (serialized data)
+    - execute_at (timestamp)
+    - status: queued | processing | completed | failed | cancelled
+    - locked_by, locked_until (distributed lock)
+    - retry_count, max_retries
+    - created_at, updated_at
+
+  ConfigProjector:
+    - source: Postgres (durable config store)
+    - target: Redis (hot-path runtime config)
+    - projection: atomic write -> invalidate cache -> reload
+    - trigger: on config change, on startup, on schedule
+
+Workflows:
+
+  PeriodicSync:
+    1. Scheduler triggers job at cron interval
+    2. Acquire distributed lock (prevent duplicate execution)
+    3. Fetch external config once (single API call)
+    4. Execute handlers sequentially (avoid DB contention)
+    5. Log results (counts, errors, duration)
+    6. Release lock
+    7. Alert on failure
+
+  BatchPreCheck:
+    1. Create BatchPreCheckResult job with identity values
+    2. Mark job as processing
+    3. Discover integrations with pre_check enabled
+    4. For each integration:
+       a. Execute pre-check via IntegrationService
+       b. Record pass/fail result
+       c. Continue on failure (do not block others)
+    5. Aggregate results (total, passed, failed)
+    6. Mark job as completed with statistics
+    7. Alert on critical failures
+
+  ConfigProjection:
+    1. Admin updates config in Postgres
+    2. Projector detects change (trigger or polling)
+    3. Read new config from Postgres
+    4. Validate config schema
+    5. Atomically write to Redis (Lua script or transaction)
+    6. Invalidate stale cache entries
+    7. Log projection result
+    8. On failure: alert, retry with backoff, fall back to cached config
+
+  DelayedTask:
+    1. Task created with execute_at timestamp
+    2. Task persisted to delayed_task table
+    3. Scheduler polls for tasks where execute_at <= now
+    4. Claim task atomically (skip locked)
+    5. Execute task handler
+    6. On success: mark completed
+    7. On failure: increment retry_count, reschedule or mark failed
+    8. On max retries: move to DLQ, alert
+
+Idempotency:
+
+  idempotency_key:
+    format: {job_type}:{entity_id}:{date}
+    examples:
+      - sync_levels:angry-birds-2:2026-01-15
+      - pre_check:user-123:2026-01-15
+      - batch_mail:integration-42:2026-01-15
+
+  enforcement:
+    - Check idempotency key before execution
+    - If exists and completed: skip, return cached result
+    - If exists and processing: wait or abort
+    - If not exists: create and execute
+
+Chunking:
+
+  chunk_size:
+    default: 50-200 items
+    factors:
+      - memory constraints
+      - timeout limits
+      - external API rate limits
+      - database transaction size
+
+  chunk_processing:
+    for chunk in chunks(items, chunk_size):
+      process(chunk)
+      report_progress(chunk_index, total_chunks)
+      if error and stop_on_error:
+        break
+
+Monitoring:
+
+  metrics:
+    - job_execution_count (by job name, status)
+    - job_execution_duration_ms (p50, p95, p99)
+    - job_error_rate (by job name)
+    - batch_processing_rate (items/sec)
+    - queue_depth (delayed tasks pending)
+    - config_projection_lag_ms
+
+  alerts:
+    - job_failure: any job fails
+    - job_timeout: job exceeds expected duration
+    - queue_backlog: delayed tasks accumulate
+    - projection_failure: config projection fails
+
+Best Practices:
+
+  - Use separate worker host/process for scheduled jobs
+  - Implement distributed locking for multi-instance schedulers
+  - Use cron expressions for human-readable schedules
+  - Implement circuit breaker for external API calls within jobs
+  - Log structured job execution data for auditability
+  - Use job priorities (critical, high, normal, low)
+  - Implement maintenance windows (pause jobs during deployments)
+
+Anti-Patterns:
+
+  - Cron jobs inside web application process
+  - Non-idempotent batch operations
+  - Processing all items in one transaction
+  - Hardcoded schedules
+  - Silent job failures (no alerting)
+  - Synchronous long-running jobs in request path
+
+State: +

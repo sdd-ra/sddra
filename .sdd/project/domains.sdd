@@ -1,27 +1,113 @@
 ﻿Spec: Project/Domains
 
 Purpose:
-  Defines the business domains represented in the project â€” schema only,
-   not a concrete domain list.
+  Define the concrete business domains of the SDDRA ecosystem — the
+  bounded contexts that make up the system. Each domain represents a
+  distinct area of business capability with its own vocabulary, rules,
+  and ownership.
+
+Owns:
+  Domain definitions
+  Domain boundaries
+  Domain relationships
+  Bounded context mapping
+
+Domains:
+
+  Integration:
+    purpose: External system connectivity — banks, MFOs, gamification platforms, notification providers
+    bounded_contexts:
+      - sweeps-integrations (CaptainUp gamification)
+      - pultapaz (Bank/MFO credit integrations)
+    owns:
+      - Integration configuration (endpoints, auth, field mapping)
+      - Pre-check execution (identity validation against external APIs)
+      - Request/response field mapping and transformation
+      - Status polling and webhook processing
+      - Retry and error handling policies
+      - Daily limits and rate limiting
+    shared_kernel:
+      - Field mapping engine (internal_field -> external_field, field_path, transforms)
+      - Integration conditions (amount, duration, employment status rules)
+      - HTTP client abstraction (content-type, auth, timeout)
+      - Audit logging (request/response/execution time)
+    relationships:
+      - uses: Notification
+      - uses: EventProcessing
+      - uses: Scheduling
+
+  Notification:
+    purpose: Multi-channel outbound messaging — email, SMS, Telegram, Slack
+    bounded_contexts:
+      - email (Mailgun/SMTP template rendering)
+      - sms (provider abstraction)
+      - telegram (bot API)
+      - slack (webhook-based rich messages)
+    owns:
+      - Template engine (placeholder replacement, HTML rendering)
+      - Provider abstraction (send via configured channel)
+      - Daily limits per integration
+      - Retry logic for failed sends
+    relationships:
+      - uses: EventProcessing
+
+  EventProcessing:
+    purpose: Event/message intake, dispatch, and lifecycle management
+    bounded_contexts:
+      - websocket-events (CaptainUp firehose via WebSocket)
+      - rabbitmq-consumers (async mail/batch processing)
+      - polling-fallback (Supabase DB-based queue)
+    owns:
+      - Event claiming and deduplication
+      - Handler dispatch (service + event_type routing)
+      - Retry policy (count, backoff, dead-letter)
+      - Correlation ID tracking
+      - Batch completion and status updates
+    relationships:
+      - uses: Integration
+      - uses: Notification
+
+  Scheduling:
+    purpose: Periodic and delayed task execution
+    bounded_contexts:
+      - node-cron (sweeps-integrations periodic sync)
+      - yii2-delayed-task (pultapaz batch operations)
+    owns:
+      - Cron job registration and execution
+      - Delayed task queue management
+      - Batch orchestration (pre-check, sync)
+    relationships:
+      - uses: Integration
+      - uses: EventProcessing
+
+  User:
+    purpose: User identity and profile across external systems
+    bounded_contexts:
+      - quiz-user (pultapaz — QuizParams, QuizRedirects)
+      - captainup-player (sweeps-integrations — CaptainUp player profile)
+      - external-mapping (cross-system user ID mapping)
+    owns:
+      - User profile data (FIN, phone, name, document)
+      - External service user mapping (internal ID -> external ID)
+      - User-level daily limits
+    relationships:
+      - used_by: Integration
+      - used_by: Notification
 
 Rules:
-  Each domain MUST have an identifiable owner.
-  Domain knowledge MUST remain within its own domain model.
-  Cross-domain dependencies MUST be explicit (see dependencies.sdd).
+  [D1] Each domain MUST have an identifiable bounded context.
+  [D2] Domain knowledge MUST remain within its own domain model.
+  [D3] Cross-domain communication MUST use explicit contracts.
+  [D4] A domain MUST NOT access another domain's internal structures.
+  [D5] Shared kernel MUST be explicitly declared and versioned.
+  [D6] Domain boundaries MUST align with business capability, not technical layer.
+  [D7] A domain MAY span multiple implementations (bounded contexts).
+  [D8] Domain relationships MUST be recorded in dependencies.sdd.
 
-Note:
-  This differs from the module-level concept in map.sdd: `modules.sdd`
-   describes the technical/code-boundary contract (owns/api/deps), this
-   file is the schema of the business-domain model â€” in practice they
-   often 1:1 match (e.g. "payment" can be both a module and a domain),
-   but conceptually they are separate and must not be mixed.
-
-   (prompt/new/21.md, STEP 4) The old `map.sdd` version mixed these two
-   concepts by repeating the module list in the "Domains:" section (see
-   map.sdd -> Note). This file was created to separate that confusion.
-   Concrete domains (payment, course, user, etc.) will be rebuilt
-   according to this schema in a future "next" step.
-
+Navigation:
+  Modules: @modules.sdd
+  Flows: @flows.sdd
+  Dependencies: @dependencies.sdd
+  Architecture: @../architecture/principles.sdd
 
 State: +
-
