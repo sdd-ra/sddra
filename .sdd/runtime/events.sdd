@@ -1,34 +1,15 @@
-﻿Events: SDD
+﻿Runtime: Events
 
 Purpose:
-  Define the runtime event architecture for the .sdd system. Events
-  are the historical record of every state change, action, policy
-  decision, and system occurrence. Events are append-only and MUST
-  NEVER be modified or deleted.
-
-Owns: ./
-
-Scope:
-  Event format and envelope
-  Event types and categories
-  Event fields and metadata
-  Event storage convention
-  Event append rules
-  Event bus architecture
-  Event versioning
-  Event producer/consumer model
-  Duplicate event handling
-  Dead letter queue
-  Ordering guarantees
-  Correlation and causation IDs
-  Domain events vs system events
-  Event retention and archival
+  Define the runtime event architecture. Events are the historical
+  record of every state change, action, policy decision, and system
+  occurrence. Events are append-only and MUST NEVER be modified or
+  deleted.
 
 Principles:
   Events are immutable — history is append-only.
   Events are the source of truth for audit and debugging.
   State can be reconstructed from events.
-  Events are classified and redacted for security.
   Event ordering is guaranteed per execution_id.
 
 EventEnvelope:
@@ -48,64 +29,20 @@ EventEnvelope:
   rule: event ID is unique across all events
 
 EventTypes:
-  STATE:
-    description: task or execution state changed
-    example: ExecutionStarted, ExecutionCompleted
-
-  STAGE:
-    description: task stage changed
-    example: StageChanged AR -> BDD
-
-  GATE:
-    description: gate pass/fail result
-    example: SecurityGatePassed, TestGateFailed
-
-  ACTION:
-    description: agent action taken
-    example: FileWritten, TestExecuted
-
-  APPROVAL:
-    description: approval requested, granted, or rejected
-    example: ApprovalRequested, ApprovalGranted
-
-  POLICY:
-    description: policy evaluated
-    example: PolicyEvaluated, PolicyDenied
-
-  TOOL:
-    description: tool called or completed
-    example: ToolCalled, ToolCompleted, ToolFailed
-
-  CHECKPOINT:
-    description: checkpoint created
-    example: CheckpointCreated
-
-  ERROR:
-    description: error occurred
-    example: ToolTimeout, NetworkError
-
-  METRIC:
-    description: metric recorded
-    example: TokenUsageRecorded, CostRecorded
+  STATE: task or execution state changed
+  STAGE: task stage changed
+  GATE: gate pass/fail result
+  ACTION: agent action taken
+  APPROVAL: approval requested, granted, or rejected
+  POLICY: policy evaluated
+  TOOL: tool called or completed
+  CHECKPOINT: checkpoint created
+  ERROR: error occurred
+  METRIC: metric recorded
 
 EventCategories:
-  DomainEvents:
-    description: business-level events
-    examples:
-      - UserCreated
-      - PaymentCompleted
-      - OrderCancelled
-      - RequirementAdded
-
-  SystemEvents:
-    description: execution and system-level events
-    examples:
-      - ExecutionStarted
-      - ToolCalled
-      - ToolFailed
-      - AgentAssigned
-      - PolicyDenied
-      - CheckpointCreated
+  DomainEvents: business-level events (UserCreated, PaymentCompleted, OrderCancelled)
+  SystemEvents: execution and system-level events (ExecutionStarted, ToolCalled, ToolFailed)
 
 EventFormat:
   minimal_event:
@@ -129,21 +66,7 @@ EventFormat:
 
 EventStorage:
   storage_location: .sdd/runtime/events.sdd
-
-  format:
-    # Task: TASK-100
-    # Execution: EXEC-500
-    # State: RUNNING
-
-    2026-08-26T07:35:00+04:00 STATE EXEC-500 agent PENDING > RUNNING
-      reason: all prerequisites met
-      actor: ExecutionEngine
-
-    2026-08-26T07:36:00+04:00 TOOL EXEC-500 agent ToolCalled
-      tool: read_file
-      resource: auth/login.go
-      actor: AGENT-CODER-01
-
+  format: append-only, organized by task/execution
   rule: events are stored in a single append-only structure
   rule: events are organized by task/execution
 
@@ -155,38 +78,13 @@ EventRetention:
 
 EventVersioning:
   rule: event schemas are versioned
-  example:
-    ToolCalled.v1
-    ToolCalled.v2
-
   rule: consumers MUST handle old event versions
   rule: schema changes require migration
 
-EventProducer:
-  examples:
-    ExecutionEngine: ExecutionStarted, ExecutionCompleted
-    ToolRunner: ToolCalled, ToolCompleted, ToolFailed
-    PolicyEngine: PolicyEvaluated, PolicyDenied
-    AgentRuntime: ActionProposed
-
-EventConsumer:
-  examples:
-    ObservabilityService: metrics, traces
-    AuditService: audit log
-    NotificationService: alerts
-    MetricsService: aggregations
-
-EventBus:
-  purpose: decouple producers from consumers
-
-  properties:
-    ordering: per execution_id
-    delivery: at-least-once
-    retry: with exponential backoff
-    dead-letter: DLQ for permanently failed events
-    idempotency: deduplication by event_id
-    partitioning: by execution_id
-    retention: configurable per event type
+EventImmutability:
+  rule: events cannot be modified after creation
+  rule: corrections create new events, not modifications
+  rule: event history is never rewritten
 
 DuplicateEvents:
   rule: consumers MUST handle duplicate events
@@ -204,36 +102,14 @@ Ordering:
   rule: ordering is implemented via partitioning
 
 CorrelationID:
-  definition:
-    ID that links all events in a workflow
-
-  example:
-    CORR-500 flows through:
-      API -> Task -> Execution -> Agent -> Tool -> Validation
-
+  definition: ID that links all events in a workflow
   rule: correlation_id is set at workflow start
   rule: all subsequent events inherit correlation_id
 
 CausationID:
-  definition:
-    ID of the event that caused this event
-
-  example:
-    EVENT-10: ExecutionStarted
-    EVENT-11: ToolCalled (caused_by: EVENT-10)
-    EVENT-12: ToolCompleted (caused_by: EVENT-11)
-
+  definition: ID of the event that caused this event
   rule: causation_id creates causal chain
   rule: causation_id enables root cause analysis
-
-CorrelationVsCausation:
-  correlation:
-    definition: events belong to same workflow
-    example: CORR-500 links all events in a request
-
-  causation:
-    definition: event A caused event B
-    example: ToolCalled caused ToolCompleted
 
 Security:
   rule: sensitive data MUST be redacted in events
@@ -241,24 +117,9 @@ Security:
   rule: event access is controlled by policy
 
 DataClassification:
-  levels:
-    PUBLIC: no restrictions
-    INTERNAL: internal use only
-    CONFIDENTIAL: restricted access
-    SECRET: highly sensitive, never in plain text
-
+  levels: PUBLIC, INTERNAL, CONFIDENTIAL, SECRET
   rule: all event payloads MUST be classified
   rule: SECRET data is replaced with [REDACTED]
-
-EventImmutability:
-  rule: events cannot be modified after creation
-  rule: corrections create new events, not modifications
-  example:
-    TOOL_FAILED
-    TOOL_RETRIED
-    TOOL_COMPLETED
-
-  rule: event history is never rewritten
 
 AIReadRestriction:
   rule: AI MUST NOT read the entire events file
@@ -270,8 +131,6 @@ Navigation:
   Execution: @execution.sdd
   Context: @context.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
-  Workflow: @../workflow/INDEX.sdd
-  Protocol: @../protocol/INDEX.sdd
 
 Rules:
   [E1] Every state change MUST produce a STATE event.
@@ -295,6 +154,6 @@ Rules:
   [E19] Correlation ID links workflow events; Causation ID links causal chain.
   [E20] Events are retained indefinitely; archive remains queryable.
   [E21] Agent MUST NOT add signatures or sign-offs to event outputs.
-  [E22] Agent MUST NOT use emojis, icons, or decorative symbols in event output headers or titles — reserved for human use only.
+  [E22] Agent MUST NOT use emojis, icons, or decorative symbols in event output headers or titles.
 
 State: +
