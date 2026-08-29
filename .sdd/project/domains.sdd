@@ -15,10 +15,13 @@ Owns:
 Domains:
 
   Integration:
-    purpose: External system connectivity — banks, MFOs, gamification platforms, notification providers
+    purpose: External system connectivity — third-party APIs, webhooks, pre-checks
     bounded_contexts:
-      - external-integration (external system API connectivity)
-      - identity-validation (pre-check and identity verification)
+      - http-client (external API communication)
+      - field-mapping (request/response transformation)
+      - pre-check (identity validation)
+      - status-polling (application status tracking)
+      - webhook-processing (incoming webhook handling)
     owns:
       - Integration configuration (endpoints, auth, field mapping)
       - Pre-check execution (identity validation against external APIs)
@@ -28,7 +31,6 @@ Domains:
       - Daily limits and rate limiting
     shared_kernel:
       - Field mapping engine (internal_field -> external_field, field_path, transforms)
-      - Integration conditions (amount, duration, employment status rules)
       - HTTP client abstraction (content-type, auth, timeout)
       - Audit logging (request/response/execution time)
     relationships:
@@ -36,15 +38,41 @@ Domains:
       - uses: EventProcessing
       - uses: Scheduling
 
-  Notification:
-    purpose: Multi-channel outbound messaging — email, SMS, Telegram, Slack
+  Gamification:
+    purpose: Player engagement system — points, badges, leaderboards, rules
     bounded_contexts:
-      - email (template rendering)
-      - sms (provider abstraction)
-      - telegram (bot API)
-      - slack (webhook-based rich messages)
+      - rules-engine (declarative rule evaluation for points, badges, achievements)
+      - leaderboard (ranked lists, scopes, caching)
+      - player-profile (player profile, external identity mapping, progression)
+      - anti-cheat (validation, anomaly detection, rollback)
     owns:
-      - Template engine (placeholder replacement, HTML rendering)
+      - Rule definitions (points, badges, achievements, campaigns)
+      - Rule evaluation engine (async, idempotent, auditable)
+      - Player state (balance, badges, streak, level)
+      - Leaderboard write and read models
+      - Anti-cheat detection and enforcement
+      - Real-time event delivery
+      - Time-window aggregation (daily, weekly, monthly)
+    shared_kernel:
+      - Event envelope (action_performed, user_id, context, timestamp)
+      - Correlation ID propagation
+      - Daily limit enforcement
+      - Audit trail for all gamification actions
+    relationships:
+      - uses: Integration (external gamification API)
+      - uses: EventProcessing (action events, point events)
+      - uses: Notification (badge unlock, rank change alerts)
+      - uses: Scheduling (batch leaderboard rebuild, badge evaluation)
+      - used_by: User (player attributes, progression)
+
+  Notification:
+    purpose: Multi-channel outbound messaging — email, SMS, messaging platforms
+    bounded_contexts:
+      - email (template rendering and delivery)
+      - sms (provider abstraction)
+      - messaging (bot API, webhook-based messages)
+    owns:
+      - Template engine (placeholder replacement, rendering)
       - Provider abstraction (send via configured channel)
       - Daily limits per integration
       - Retry logic for failed sends
@@ -92,6 +120,7 @@ Domains:
     relationships:
       - used_by: Integration
       - used_by: Notification
+      - used_by: Gamification
 
 Rules:
   [D1] Each domain MUST have an identifiable bounded context.

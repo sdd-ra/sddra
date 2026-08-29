@@ -155,6 +155,73 @@ Modules:
       - tests/user/**/*
     state: active
 
+  gamification-module:
+    purpose: Gamification platform integration — points, badges, leaderboards, rules
+    domain: Gamification
+    bounded_contexts:
+      - rules-engine (declarative rule evaluation)
+      - leaderboard (ranked lists, scopes, caching)
+      - player-profile (player profile, external identity, progression)
+      - anti-cheat (validation, anomaly detection, rollback)
+    owns:
+      - Rule definitions and evaluation engine
+      - Point award processing (idempotent, auditable)
+      - Badge unlock evaluation
+      - Leaderboard write/read models
+      - Player profile sync and identity mapping
+      - Anti-cheat detection and enforcement
+      - Real-time event delivery
+      - Scheduled batch jobs (leaderboard rebuild, badge evaluation)
+    api:
+      - evaluateRules(event, userState) -> {actions}
+      - getLeaderboard(scope, page) -> {entries}
+      - getUserRank(userId, scope) -> {rank, score}
+      - getPlayerProfile(userId) -> PlayerProfile
+      - syncPlayerProfile(userId) -> void
+      - awardPoints(userId, amount, reason) -> PointEvent
+      - unlockBadge(userId, badgeId) -> BadgeEvent
+    deps:
+      - external-api (third-party gamification service)
+      - database (persistence)
+      - cache (sorted sets, rate limits)
+      - message-broker (async event processing)
+    files:
+      - src/gamification/**/*
+    tests:
+      - tests/gamification/**/*
+    state: active
+
+  matchmaking-module:
+    purpose: Queue-based matchmaking and session formation
+    domain: Matchmaking
+    bounded_contexts:
+      - queue-management (ticket enqueue, cancel, poll)
+      - session-formation (match creation, late join)
+      - game-config (durable config, runtime projection)
+    owns:
+      - Queue and ticket management
+      - Session formation and late join
+      - Game configuration CRUD
+      - Matchmaking engine
+      - Latency-based compatibility matching
+    api:
+      - enqueue(gameId, playerId, region, latencyMs) -> Ticket
+      - getTicket(gameId, ticketId) -> Ticket
+      - cancelTicket(gameId, ticketId) -> void
+      - getSession(sessionId) -> Session
+      - lateJoin(sessionId, playerId) -> Session
+      - upsertGameConfig(gameId, config) -> GameConfig
+      - getGameConfig(gameId) -> GameConfig
+    deps:
+      - database (durable config)
+      - cache (queues, sessions, locks)
+      - orm (data access)
+    files:
+      - src/matchmaking/**/*
+    tests:
+      - tests/matchmaking/**/*
+    state: active
+
 Rules:
   [M1] A module MUST declare all direct dependencies.
   [M2] A module MUST NOT depend on another module's internal structures.
