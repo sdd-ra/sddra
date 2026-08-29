@@ -81,6 +81,29 @@ Directories:
     path: ./state
     purpose: State symbols
 
+  constitution:
+    path: ./constitution.sdd
+    purpose: Default engineering principles (SOLID, DRY, KISS, YAGNI, Clean Code)
+
+  references:
+    path: ./references
+    purpose: Reusable knowledge references (DDD, architecture, patterns, database, engineering)
+    index: @references/INDEX.sdd
+
+  concepts:
+    path: ./concepts
+    purpose: Concept registry (maps concepts to references, skills, projects)
+
+  knowledge:
+    path: ./knowledge
+    purpose: Knowledge lifecycle (candidates -> validated -> references)
+    candidates: ./knowledge/candidates
+    lessons: ./knowledge/lessons
+
+  insights:
+    path: ./insights
+    purpose: AI-discovered insights (gaps, patterns, smells)
+
 Navigation:
   start: PROJECT.sdd
   cases: @cases
@@ -99,7 +122,12 @@ Navigation:
   projectStructure: @projects/{project_name}/STRUCTURE.md
   tasks: @tasks
   decisions: @decisions
-  state: @state
+   state: @state
+   constitution: @constitution.sdd
+   references: @references/INDEX.sdd
+   concepts: @concepts/INDEX.sdd
+   knowledge: @knowledge/INDEX.sdd
+   insights: @insights/INDEX.sdd
 
 Rules:
   [R1] PROJECT.sdd is the root entry point.

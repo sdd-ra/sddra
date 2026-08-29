@@ -1,0 +1,17 @@
+Candidates: Knowledge
+
+Purpose:
+  Knowledge candidates awaiting validation. These are potential
+  references discovered by AI but not yet approved.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+
+Navigation:
+  Candidates: @knowledge/candidates/INDEX.sdd
+  Knowledge: @knowledge/INDEX.sdd
+  Lessons: @knowledge/lessons/INDEX.sdd
+
+State: +

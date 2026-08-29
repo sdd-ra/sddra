@@ -1,0 +1,25 @@
+References: Database
+
+Purpose:
+  Database and persistence references. Transactions, locking, indexing,
+  idempotency, and data modeling patterns.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @transaction.sdd
+   3  @locking.sdd
+   4  @indexing.sdd
+   5  @idempotency.sdd
+   6  @modeling.sdd
+
+Navigation:
+  Database: @references/database/INDEX.sdd
+  Transaction: @references/database/transaction.sdd
+  Locking: @references/database/locking.sdd
+  Indexing: @references/database/indexing.sdd
+  Idempotency: @references/database/idempotency.sdd
+  Modeling: @references/database/modeling.sdd
+
+State: +

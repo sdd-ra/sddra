@@ -1,46 +1,74 @@
-# Project Map
+# Project Root vs AI Coding Separation
 
 Purpose:
-  Navigation map for the SDDRA project structure. Shows where human code
-  and AI execution context are separated.
+  Keep human code and AI execution context separate.
 
 Structure:
   project/                 # Human code root
+    backend/
+    frontend/
+    database/
+    tests/
+    docs/                  # Human-readable docs
+      index.md
+
   .sdd/                     # AI context root
     PROJECT.sdd             # Project intent
-    project/                # AI project model (schemas)
+    project/                # AI project model (schemas, structure rules)
+      PROJECT.sdd
+      domains.sdd
+      modules.sdd
+      map.sdd
+      flows.sdd
+      dependencies.sdd
+      indexes.sdd
+      instantiation.sdd
+      mode.sdd
+      architecture.sdd
     projects/               # Concrete project instances
+      {project_name}/
+        INDEX.sdd
+        decisions/
+        tasks/
+        docs/
+        stack/
+        context/
+        cases/
+        bugs/
+        dependencies/
+        gates/
+        observability/
+        workflow/
+        architecture/
+        testing/
+        tokens/
     chains/                 # Execution chains
-    skills/                 # Reusable skills
-    architecture/           # Architecture knowledge
-    decisions/              # Decision ledger
-    tasks/                  # Task definitions
-    workflow/               # Workflow definitions
-    observability/          # Observability config
-    testing/                # Testing config
-    security/               # Security config
+      graph.sdd
+      default.sdd
+      arms/
+      rules/
+      tokens/
+    skills/                 # Skill catalog
     prompts/                # Prompt templates
-    plugins/                # Plugin adapters
-    patterns/               # Reusable patterns
-    runtime/                # Runtime state
-    context/                # Context routing
-    dependencies/           # Dependency rules
-    gates/                  # Quality gates
-    stages/                 # Stage definitions
-    standards/              # Coding standards
-    state/                  # State management
-    templates/              # Document templates
-    workflow/               # Workflow engine
     workflows/              # Workflow definitions
-
-Separation:
-  Human code lives in project/
-  AI context lives in .sdd/
-  Concrete project instances live in .sdd/projects/<name>/
+    state/                  # State notation
 
 Rules:
-  [MAP1] Human code and AI context MUST be separated.
-  [MAP2] Concrete project data MUST NOT live in .sdd/project/.
-  [MAP3] .sdd/projects/<name>/ is the only location for concrete project instances.
+  [S1] AI MUST start from .sdd/, never from project/ directly.
+  [S2] AI MUST read .sdd/projects/{project_name}/docs/ before touching project/.
+  [S3] AI MUST get human approval before writing to project/.
+  [S4] project/ is the source of truth for code.
+  [S5] .sdd/ is the source of truth for intent.
+  [S6] docs/ under project/ is human language.
+  [S7] .sdd/project/ is AI language (model schemas only).
+
+Context Flow:
+  prompt
+    -> .sdd/chains/arms/prompt.sdd (P1)
+    -> .sdd/projects/{project_name}/docs/ (human docs)
+    -> human approval
+    -> .sdd/project/ (AI model)
+    -> .sdd/chains/arms/code.sdd (C1)
+     -> project/ (human code)
 
 State: +

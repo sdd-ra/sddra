@@ -1,0 +1,12 @@
+@insights/gaps
+
+purpose:
+  Knowledge gaps detected by AI during task execution.
+
+format:
+  - concept: <missing concept>
+  - context: <where it was needed>
+  - evidence: <why existing knowledge is insufficient>
+  - suggested_reference: <proposed reference path>
+
+State: +

@@ -1,0 +1,25 @@
+References: Engineering
+
+Purpose:
+  General engineering references. API design, error handling,
+  concurrency, testing, security, and DevOps practices.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @api-design.sdd
+   3  @error-handling.sdd
+   4  @concurrency.sdd
+   5  @testing.sdd
+   6  @security.sdd
+
+Navigation:
+  Engineering: @references/engineering/INDEX.sdd
+  ApiDesign: @references/engineering/api-design.sdd
+  ErrorHandling: @references/engineering/error-handling.sdd
+  Concurrency: @references/engineering/concurrency.sdd
+  Testing: @references/engineering/testing.sdd
+  Security: @references/engineering/security.sdd
+
+State: +
