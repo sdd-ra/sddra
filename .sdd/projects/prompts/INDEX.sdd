@@ -1,10 +1,13 @@
 # Projects: Prompts
 
 Purpose:
-  Formalized prompt examples and processed prompt registry.
-  Contains prompts that have been analyzed, formalized, and approved
-  for execution. Each prompt has an ID, best practice documentation,
-  and associated skills/tasks.
+  Shared formalized prompt registry. Contains prompts that have been
+  analyzed, formalized, and approved for execution. This is NOT a
+  project instance — it is a cross-project registry of reusable
+  prompt templates and their associated skills.
+
+  Formalized prompts are linked to project instances (e.g. vkard.az)
+  but are stored here for reuse across multiple projects.
 
 Owns: ./
 
@@ -19,6 +22,9 @@ Rules:
   [PR3] Prompts MUST be reviewed by human before execution.
   [PR4] Prompts MUST include best practice references.
   [PR5] Prompt state MUST be tracked: draft, review, approved, active, done.
+  [PR6] This folder is a shared registry, NOT a project instance.
+  [PR7] Prompts MAY reference any project instance (e.g. vkard.az).
+  [PR8] Prompt migrations are handled by the active project's migration system.
 
 Navigation:
   Prompt001: @prompt-001/prompt.md
@@ -26,6 +32,13 @@ Navigation:
   Prompt002: @prompt-002/prompt.md
   Prompt002Skill: @prompt-002/skill/SKILL-SECURITY-AUTH-L2.sdd
   PromptEngine: @../prompts/INDEX.sdd
-  PromptDocs: @../../projects/vkard.az/docs/prompts/
+  PromptDocs: @../../vkard.az/docs/prompts/
+  Migration: @../commands/sdd-migrate.sdd
+
+Exclusions:
+  This folder is EXCLUDED from:
+    - Project instance rules (projects/<name>/)
+    - Project migration scope (migrations run for vkard.az, not here)
+    - Project state tracking (tasks, decisions, tokens belong to projects)
 
 State: +
