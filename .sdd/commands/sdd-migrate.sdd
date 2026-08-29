@@ -1,0 +1,52 @@
+# Command: SDD Migrate
+
+Command: /sdd-migrate
+Mode: READ_WRITE
+Purpose: Run pending migrations after .sdd/ schema updates
+
+Description:
+  Executes pending migrations for the active project instance.
+  Migrations are applied in order and tracked in migrations/ state.
+  This command MUST be run after any .sdd/ update that changes
+  file locations, schemas, or project structure.
+
+Usage:
+  /sdd-migrate
+  /sdd-migrate --list
+  /sdd-migrate --apply=<migration-id>
+  /sdd-migrate --rollback=<migration-id>
+
+Options:
+  --list              List pending and applied migrations
+  --apply=<id>        Apply specific migration by ID
+  --rollback=<id>     Rollback specific migration by ID
+  --dry-run           Show what would be migrated without changing files
+
+Migration Location:
+  .sdd/projects/vkard.az/migrations/
+    INDEX.sdd              — Migration registry and state
+    001-project-separation.sdd  — Move project/ state to projects/vkard.az/
+    002-path-references.sdd     — Update path references after restructuring
+    003-schema-updates.sdd      — Schema version updates
+
+Migration Registry:
+  {
+    "project": "vkard.az",
+    "applied": [
+      {
+        "id": "001-project-separation",
+        "applied_at": "2026-08-29T08:00:00Z",
+        "description": "Move concrete project state from project/ to projects/vkard.az/"
+      }
+    ],
+    "pending": [],
+    "schema_version": "1.0.0"
+  }
+
+Exit Codes:
+  0 - Migrations applied successfully
+  1 - Migration failed
+  2 - No pending migrations
+  3 - Migration already applied
+
+State: +

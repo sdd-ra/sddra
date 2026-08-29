@@ -26,6 +26,6 @@ Navigation:
   Prompt002: @prompt-002/prompt.md
   Prompt002Skill: @prompt-002/skill/SKILL-SECURITY-AUTH-L2.sdd
   PromptEngine: @../prompts/INDEX.sdd
-  PromptDocs: @../../projects/sddra.ai/docs/prompts/
+  PromptDocs: @../../projects/vkard.az/docs/prompts/
 
 State: +

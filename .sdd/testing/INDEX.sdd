@@ -6,7 +6,7 @@ Purpose:
   is split into two layers:
     - .sdd/testing/ defines reusable testing knowledge (types,
       levels, gates, principles) and execution scripts
-    - .sdd/projects/sddra.ai/testing/ tracks concrete project test state (coverage,
+    - .sdd/projects/vkard.az/testing/ tracks concrete project test state (coverage,
       runs, failures, exceptions)
 
 Owns: ./
@@ -38,8 +38,8 @@ Rules:
           source code stays in project test directories, .sdd stores
           only metadata and workflow.
   [TEST4] Test failures MUST create findings and feed back into the
-          task graph (bax projects/sddra.ai/testing/failures/).
-  [TEST5] Test status MUST be tracked per task in projects/sddra.ai/testing/.
+          task graph (bax projects/vkard.az/testing/failures/).
+  [TEST5] Test status MUST be tracked per task in projects/vkard.az/testing/.
   [TEST6] Flaky tests MUST be flagged separately from failures.
   [TEST7] Coverage is not just a percentage — critical path, risk, and
           mutation coverage MUST be considered.
@@ -68,13 +68,13 @@ Navigation:
   Load: @load.sdd
   TestRunner: @scripts/run.ps1
   TestStrategy: @skills/testing/SKILL-TEST-STRATEGY.sdd
-  ProjectTesting: @projects/sddra.ai/testing/INDEX.sdd
-  ProjectCoverage: @projects/sddra.ai/testing/coverage.sdd
-  ProjectRuns: @projects/sddra.ai/testing/runs/
-  ProjectFailures: @projects/sddra.ai/testing/failures/
-  ProjectExceptions: @projects/sddra.ai/testing/exceptions/
+  ProjectTesting: @projects/vkard.az/testing/INDEX.sdd
+  ProjectCoverage: @projects/vkard.az/testing/coverage.sdd
+  ProjectRuns: @projects/vkard.az/testing/runs/
+  ProjectFailures: @projects/vkard.az/testing/failures/
+  ProjectExceptions: @projects/vkard.az/testing/exceptions/
   Skills: @skills/INDEX.sdd
-  Tasks: @projects/sddra.ai/tasks/tasks.sdd
+  Tasks: @projects/vkard.az/tasks/tasks.sdd
   Security: @security/INDEX.sdd
   State: @state/state.sdd
 
@@ -83,6 +83,6 @@ State: +
   This directory is the testing knowledge
   base. It defines test types, levels, gates, and principles. The actual
   test execution workflow is in @workflow/testing.sdd. Project-specific
-  test state (coverage, runs, failures) lives in @projects/sddra.ai/testing/.
+  test state (coverage, runs, failures) lives in @projects/vkard.az/testing/.
   Test execution scripts live in @scripts/ and are invoked by AI or CI.
 

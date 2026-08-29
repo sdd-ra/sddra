@@ -1,0 +1,126 @@
+Case: E-COMMERCE-PLATFORM
+
+id: E-COMMERCE-PLATFORM
+type: feature
+title: Enterprise E-Commerce Platform
+purpose: Build scalable e-commerce platform with microservices
+status: DRAFT
+state: -
+created: 2026-08-27
+updated: 2026-08-27
+
+depends_on:
+  - PAYMENT-INTEGRATION
+  - USER-AUTH
+
+produces:
+  - backend/product-service
+  - backend/order-service
+  - backend/cart-service
+  - backend/recommendation-service
+  - frontend/storefront
+  - frontend/admin-panel
+  - mobile/shopping-app
+  - infrastructure/kubernetes
+  - tests/load
+
+chain: feature
+
+template: modular-feature
+
+stages:
+  AN: -
+  AR: -
+  DB: -
+  BE: -
+  API: -
+  FE: -
+  MD: -
+  QA: -
+  DO: -
+  VR: -
+
+tech_stack:
+  languages:
+    - go (L3-L4 microservices)
+    - java (L3-L4 enterprise)
+    - typescript (L3-L4 enterprise)
+    - swift (L1-L2 ios)
+    - kotlin (L1-L2 android)
+  frameworks:
+    - spring-boot (L1 product service)
+    - nestjs (L3 api gateway)
+    - nextjs (L1 storefront)
+    - react-native (L1 shopping app)
+    - flutter (L1 mobile)
+  databases:
+    - postgresql (L3-L4 enterprise)
+    - mongodb (L1 product catalog)
+    - redis (L1-L2 caching)
+    - elasticsearch (L1 search)
+  platforms:
+    - docker (L3-L4 enterprise)
+    - kubernetes (L1-L2)
+    - terraform (L1)
+    - aws (L1-L2)
+  messaging:
+    - kafka (L1-L2 event streaming)
+    - rabbitmq (L1 task queues)
+    - nats (L1 lightweight)
+  cross-cutting:
+    - testing: tdd, bdd, performance, load, e2e
+    - security: authentication, authorization, encryption
+    - architecture: ddd, microservices, event-driven, clean-architecture
+    - observability: logging, metrics, tracing, alerting
+
+rules:
+  [E1] Platform MUST handle 10K concurrent users.
+  [E2] Search MUST return results in <100ms.
+  [E3] Checkout MUST complete in <3s.
+  [E4] Inventory MUST be real-time.
+  [E5] Recommendations MUST be personalized.
+  [E6] All payments MUST be PCI compliant.
+  [E7] Platform MUST be 99.9% available.
+  [E8] All services MUST be independently deployable.
+
+decisions:
+  - id: ECOM-001
+    title: Product catalog database
+    status: pending
+    options:
+      - postgresql
+      - mongodb
+      - elasticsearch
+
+  - id: ECOM-002
+    title: Frontend architecture
+    status: pending
+    options:
+      - next.js storefront + admin
+      - micro-frontends
+      - monolith
+
+  - id: ECOM-003
+    title: Mobile strategy
+    status: pending
+    options:
+      - react native
+      - flutter
+      - native ios + android
+
+approval_required:
+  - ECOM-001
+  - ECOM-002
+  - ECOM-003
+
+provisioning:
+  triggers:
+    - kafka cluster
+    - elasticsearch cluster
+    - redis cluster
+    - cdn
+    - kubernetes cluster
+
+   State: -
+
+State: +

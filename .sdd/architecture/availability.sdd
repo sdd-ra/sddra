@@ -125,7 +125,7 @@ RTO_RPO:
   relationship:
     RPO <= backup frequency
     RTO >= estimated recovery time
-    both MUST be documented in ../projects/sddra.ai/decisions/INDEX.sdd
+    both MUST be documented in ../projects/vkard.az/decisions/INDEX.sdd
 
 HAPatterns:
 
@@ -335,8 +335,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
-  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/vkard.az/architecture/INDEX.sdd
+  Decisions: @projects/vkard.az/decisions/INDEX.sdd
 
 State: +
   

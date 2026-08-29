@@ -360,8 +360,8 @@ Navigation:
   Networking: @networking.sdd
   Deployment: @deployment.sdd
   Project: @project/project.sdd
-  ProjectArchitecture: @projects/sddra.ai/architecture/INDEX.sdd
-  Decisions: @projects/sddra.ai/decisions/INDEX.sdd
+  ProjectArchitecture: @projects/vkard.az/architecture/INDEX.sdd
+  Decisions: @projects/vkard.az/decisions/INDEX.sdd
 
 State: +
   

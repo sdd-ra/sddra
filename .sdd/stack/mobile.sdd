@@ -3,7 +3,7 @@ Mobile: SDD
 Purpose:
   Mobile technology catalog with platform options, framework comparisons,
   and selection criteria. Root stack/ defines reusable mobile knowledge;
-  projects/sddra.ai/stack/ stores the selected mobile stack for the current project.
+  projects/vkard.az/stack/ stores the selected mobile stack for the current project.
 
 Catalog:
   React Native:

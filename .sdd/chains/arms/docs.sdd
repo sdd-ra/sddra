@@ -21,11 +21,11 @@ Stage:
     - docs/60-database/overview.md
     - docs/70-api/overview.md
     - docs/100-devops/overview.md
-    - .sdd/projects/sddra.ai/decisions/DEC-XXX.sdd (proposed decisions)
+    - .sdd/projects/vkard.az/decisions/DEC-XXX.sdd (proposed decisions)
   skills:
     - prompts/tech-stack/prompt-to-docs.sdd
   token:
-    - ../../projects/sddra.ai/tokens/D1.sdd
+    - ../../projects/vkard.az/tokens/D1.sdd
   rule:
     - ./rules/INDEX.sdd
   decision:

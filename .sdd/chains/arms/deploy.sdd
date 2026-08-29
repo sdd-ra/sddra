@@ -19,7 +19,7 @@ Stage:
   skills:
     - prompts/provisioning/INDEX.sdd
   token:
-    - ../../projects/sddra.ai/tokens/DEP1.sdd
+    - ../../projects/vkard.az/tokens/DEP1.sdd
   rule:
     - ./rules/INDEX.sdd
   gate:

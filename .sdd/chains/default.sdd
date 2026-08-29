@@ -21,7 +21,7 @@ Stage:
   rule:
     - ./rules/INDEX.sdd
   token:
-     - ../../projects/sddra.ai/tokens/D0.sdd
+     - ../../projects/vkard.az/tokens/D0.sdd
 
 State: +
 

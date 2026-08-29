@@ -5,7 +5,7 @@ Purpose:
   architecture docs and executable .sdd/project/ structure.
   Raw prompts are read from root prompts/ inbox, analyzed,
   formalized into .sdd/projects/prompts/, and documented
-  in .sdd/projects/sddra.ai/docs/prompts/ for human review.
+  in .sdd/projects/vkard.az/docs/prompts/ for human review.
 
 Owns: ./
 
@@ -35,7 +35,7 @@ Rules:
   [P9]  Docs MUST be generated in simple English.
   [P10] .sdd/project/ MUST be generated only after human approval.
   [P11] Formalized prompts MUST live in .sdd/projects/prompts/.
-  [P12] Documented prompts with IDs MUST live in .sdd/projects/sddra.ai/docs/prompts/.
+  [P12] Documented prompts with IDs MUST live in .sdd/projects/vkard.az/docs/prompts/.
   [P13] Root prompts/ is the user inbox only — no .sdd metadata there.
 
 Entry:
@@ -58,6 +58,6 @@ Navigation:
   RootPromptsActive: @../../prompts/active/
   RootPromptsArchive: @../../prompts/archive/
   ProjectsPrompts: @../projects/prompts/INDEX.sdd
-  PromptDocs: @../../projects/sddra.ai/docs/prompts/
+  PromptDocs: @../../projects/vkard.az/docs/prompts/
 
 State: +
