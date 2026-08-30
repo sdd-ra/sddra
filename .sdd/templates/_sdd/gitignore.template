@@ -6,6 +6,9 @@
 !.sdd/projects/*/
 !.sdd/projects/*/**
 
+# Project root inbox — flat file storage, no custom structure
+inbox/**
+
 # Old/archived files
 old/
 

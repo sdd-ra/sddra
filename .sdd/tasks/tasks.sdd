@@ -8,20 +8,21 @@ Purpose:
 
 Owns: ./
 
-Scope:
-  Task definition and contract
-  Task lifecycle and state
-  Task decomposition engine
-  Dependency types and DAG enforcement
-  Task granularity and atomicity
-  Task scope boundaries
-  Acceptance criteria
-  Task coverage matrix
-  Scope expansion protocol
-  Plan versioning
-  SDD pyramid branching hierarchy
-  Branch naming and merge flow
-  Branch lifecycle and deletion policy
+  Scope:
+    Task definition and contract
+    Task lifecycle and state
+    Task decomposition engine
+    Dependency types and DAG enforcement
+    Task granularity and atomicity
+    Task scope boundaries
+    Acceptance criteria
+    Task coverage matrix
+    Scope expansion protocol
+    Plan versioning
+    SDD pyramid branching hierarchy
+    Branch naming and merge flow
+    Branch lifecycle and deletion policy
+    Commit message format and decision/task linkage
 
 Principles:
   Task is specification, not execution.
@@ -337,6 +338,12 @@ Rules:
   [T14] Task coverage MUST map requirements to tasks and tests.
   [T15] Agent MUST NOT add signatures or sign-offs to task outputs.
   [T16] Agent MUST NOT use emojis, icons, or decorative symbols in task output headers or titles.
+  [T17] Every commit MUST reference linked DEC and TASK IDs in commit message.
+  [T18] Branch naming: main -> stage -> test -> MODUL/<module> -> DEC/<id> -> TASK/<id>.
+  [T19] Each task MUST have its own base branch derived from linked module branch.
+  [T20] TASK branches are deleted after merge; DEC and MODUL branches persist.
+  [T21] Only changed files are tested — full regression suites run on unchanged code only.
+  [T22] Test execution MUST run inside Docker with resource limits enforced.
 
 Navigation:
   Tasks: @tasks.sdd

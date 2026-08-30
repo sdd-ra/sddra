@@ -190,6 +190,91 @@ Gates:
       - Security finding unresolved
       - Routing: responsible stage for rework, or HUMAN (acceptance decision)
 
+  CR — Code Review Gate:
+    Pass:
+      - Code follows architecture decisions
+      - No unauthorized coupling introduced
+      - Security baseline passes (SAST)
+      - Lint and typecheck pass
+      - Linked DEC and TASK IDs are referenced in commits
+      - Review comments are resolved or accepted
+    Fail:
+      - Architecture violation
+      - Security finding
+      - Missing decision/task linkage
+      - Routing: responsible stage (BE/FE/MD/API) for fix, or AR (architecture change)
+
+  BRU — Business Requirement Unit Gate:
+    Pass:
+      - Implementation matches business requirements
+      - User acceptance criteria are met
+      - Business rules are correctly implemented
+      - Edge cases are handled
+      - Business stakeholder sign-off obtained
+    Fail:
+      - Business requirement mismatch
+      - Missing edge case handling
+      - Routing: responsible stage for fix, or HUMAN (requirement clarification)
+
+  CRU — Code Requirement Unit Gate:
+    Pass:
+      - Code follows project standards and conventions
+      - Architecture compliance verified
+      - Performance requirements met
+      - Error handling implemented
+      - Logging and observability in place
+      - Code documentation is current
+    Fail:
+      - Standard violation
+      - Architecture non-compliance
+      - Routing: responsible stage for fix, or AR (architecture change)
+
+  BE_TS — Backend Test Suite Gate:
+    Pass:
+      - Unit tests pass
+      - Integration tests pass
+      - Contract tests pass
+      - Code coverage meets threshold
+      - No critical/high bugs open
+    Fail:
+      - Test failure
+      - Coverage below threshold
+      - Routing: BE (fix), QA (test gap)
+
+  FE_TS — Frontend Test Suite Gate:
+    Pass:
+      - Component tests pass
+      - Integration tests pass
+      - E2E tests pass (if applicable)
+      - Accessibility checks pass
+      - Responsive design validated
+    Fail:
+      - Test failure
+      - Accessibility violation
+      - Routing: FE (fix), QA (test gap)
+
+  MD_TS — Mobile Test Suite Gate:
+    Pass:
+      - Platform tests pass
+      - Integration tests pass
+      - Offline behavior validated
+      - Platform guidelines followed
+      - API integration works
+    Fail:
+      - Test failure
+      - Platform violation
+      - Routing: MD (fix), QA (test gap)
+
+  MANUAL — Manual Check Gate:
+    Pass:
+      - User login verified with full permissions
+      - Manual acceptance criteria met
+      - Business stakeholder approval recorded
+      - All automated gates passed
+    Fail:
+      - Manual acceptance criteria not met
+      - Routing: responsible stage for fix, or HUMAN (acceptance decision)
+
 
 GateFailure:
 

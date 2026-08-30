@@ -1,0 +1,32 @@
+# /sdd-next
+
+Description:
+  Advance the decision chain to the next step automatically.
+  Reads current decision state and triggers the next workflow stage.
+
+Usage:
+  /sdd-next
+  /sdd-next --decision DEC-<ID>
+  /sdd-next --force
+
+Options:
+  --decision    Advance specific decision
+  --force       Force advance even if gate is not passed (requires approval)
+
+Behavior:
+  1. Read current decision state from projects/{project_name}/decisions/
+  2. Determine next step from decision workflow
+  3. Check gate criteria for current stage
+  4. If gate passed: advance to next stage automatically
+  5. If gate failed: route to responsible stage for recovery
+  6. Record transition in decision history
+  7. Update project state
+
+Output:
+  [decision: DEC-XXX]
+  [from: <stage>]
+  [to: <stage>]
+  [gate: passed|failed]
+  [next: <next_stage>]
+
+State: +

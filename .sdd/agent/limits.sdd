@@ -17,6 +17,40 @@ ExecutionLimits:
   MaxRuntimePerTask:
     30 minutes
 
+DockerExecution:
+  rule: ALL execution MUST run inside Docker
+  rule: no local tool installation is permitted
+  rule: Docker image MUST include all required tools
+  rule: network access MUST be restricted to allowlisted domains only
+
+DockerResourceLimits:
+  CPU:
+    2 cores max
+  Memory:
+    4GB max
+  Disk:
+    10GB temporary
+  PIDs:
+    256 max
+  Network:
+    allowlisted domains only
+
+DockerVolumes:
+  rule: volumes MUST be read-only unless explicitly required for output
+  rule: no host filesystem access outside volumes
+
+DockerToolAccess:
+  allowed:
+    - docker build
+    - docker run
+    - docker compose
+    - docker exec
+    - docker cp
+  denied:
+    - docker run --privileged
+    - docker run --network=host
+    - docker run -v /:/host
+
 ResourceLimits:
   Memory:
     512MB

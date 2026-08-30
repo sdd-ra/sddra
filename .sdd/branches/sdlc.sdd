@@ -1,0 +1,45 @@
+SDLC: Branches
+
+Purpose:
+  Software Development Life Cycle branch standards.
+  Defines main, stage, test branch roles and promotion rules.
+
+Branches:
+  main:
+    purpose: Production-ready code
+    protection: required
+    promotion: stage -> main
+    merge_strategy: squash
+    required_checks:
+      - all gates passed
+      - security scan clean
+      - documentation updated
+
+  stage:
+    purpose: Pre-production integration
+    protection: required
+    promotion: test -> stage -> main
+    merge_strategy: squash
+    required_checks:
+      - all tests pass
+      - integration tests pass
+      - performance tests pass
+
+  test:
+    purpose: Test environment deployment
+    protection: optional
+    promotion: test -> stage
+    merge_strategy: merge
+    required_checks:
+      - unit tests pass
+      - integration tests pass
+
+Rules:
+  [SDLC1] No direct push to main or stage — pull request only.
+  [SDLC2] All required checks MUST pass before merge.
+  [SDLC3] Merge strategy is squash for main and stage.
+  [SDLC4] Documentation MUST be updated before merge to main.
+  [SDLC5] Security scan MUST pass before merge to main.
+  [SDLC6] Rollback plan MUST exist before merge to main.
+
+State: +
