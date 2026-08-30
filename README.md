@@ -10,7 +10,7 @@ generates `project/` (source code) with human approval at every gate.
 ### Two-Language Model
 - `.sdd/` — machine-readable AI intent (immutable rules, schemas, workflows, DevOps)
 - `project/` — human source-of-truth code (concrete implementations)
-- `.sdd/instances/{project_name}/docs/` — human-readable documentation generated from prompts
+- `.sdd/projects/{project_name}/docs/` — human-readable documentation generated from prompts
 
 ### Chain Graph
 Cyclic root `D0` with 6 arms. Every arm returns to `D0`:
@@ -64,28 +64,40 @@ All DevOps practices are encoded as skills in `.sdd/skills/devops/`. This includ
   commands/                Claude CLI commands (/sdd, /sdd-analyze)
   plugins/                 External plugin adapters
   project/                 Project-specific schemas & routing
+    schema.sdd              Core hierarchy (Project > Domain > Module > Feature > Component)
+    profile.sdd             Project operational context
+    ownership.sdd           Ownership rules
+    code-mapping.sdd        Source code to semantic mapping
+    drift.sdd               Declared/observed/drift model
+    decisions.sdd           Project decision storage
+    docs.sdd                Documentation structure
+    risk.sdd                Risk register
   tasks/                   Task lifecycle engine
   decisions/               Decision ledger engine
-  state/                   State symbols
+  standards/               Naming, levels, states, relations
+    states.sdd              State symbols and task state machine
   templates/               Reusable project structure templates
   context/                 Context loading & budgets
   dependencies/            Dependency graph engine
   gates/                   Quality/security/release gates
+    stage/gates.sdd         Stage-specific gate criteria
+    security/               Security gate specifications
   graph/                   Knowledge graph (nodes, relations, drift)
   observability/           Logging, metrics, tracing, incidents
   runtime/                 Agent runtime state
+    state.sdd               Runtime state for crash recovery
   schemas/                 Canonical schemas
   security/                Security controls & scanners
   stages/                  Stage definitions (AN, AR, DB, BE, API, FE, MD, QA, DO, VR)
-  standards/               Naming, levels, states, relations
   testing/                 Test types, levels, gates, scripts
+    t-levels.sdd            Test type levels T0-T7
   patterns/                Resilience patterns
-  orchestrator/            Orchestration engine
+  orchestrator/            Orchestration reference
   agent/                   Agent behavior rules
   cases/                   Case specifications
   bugs/                    Bug tracking
-  projects/                Formalized prompts and multi-project support
-    prompts/               Formalized prompt examples
+  projects/                Project instances
+    {project_name}/         Concrete project data
 
 project/                      # Concrete source code
   backend/
@@ -95,9 +107,6 @@ project/                      # Concrete source code
 
 prompts/                      # Root-level prompt inbox (user submissions)
   inbox/                      # New prompts awaiting processing
-  active/                     # Active prompts
-  archive/                    # Completed prompts
-  extracted/                  # Extracted knowledge
 
 old/                           # Archived external assets and historical versions (excluded from distribution)
 ```
@@ -111,6 +120,10 @@ old/                           # Archived external assets and historical version
 - **Explicit References**: `@path` format, resolved before reading
 - **Human Control**: Architectural changes and production deployments require approval
 - **DevOps as Code**: All DevOps practices are encoded as skills in `.sdd/`
+- **SOLID/KISS/YAGNI/DRY**: Framework modules follow these principles — single responsibility, simple design, no premature abstraction, no duplication
+- **Docker Only**: All execution runs inside Docker — no local tool installation
+- **Local Bind Mounts**: Docker uses local bind mounts — named volumes are forbidden
+- **Changed Files Only**: Only changed files are tested — regression suites run on unchanged code only
 
 ## AI Behavior Rules
 
@@ -124,11 +137,33 @@ old/                           # Archived external assets and historical version
 8. **SKILLS ARE EXECUTABLE**: Skills are not just knowledge — they are executable units
 9. **DEVOPS AS SKILLS**: All DevOps practices are skills in `.sdd/skills/devops/`
 10. **LOCAL VALIDATION**: All changes must pass local validation before push
+11. **DOCKER ONLY**: All execution MUST run inside Docker — no local tool installation
+12. **RESOURCE LIMITS**: Docker containers MUST be resource-limited (CPU, memory, PIDs, network)
+13. **LOCAL BIND MOUNTS**: Docker MUST use local bind mounts — named volumes are forbidden
+14. **CHANGED FILES ONLY**: Only changed files are tested — regression suites are not run on unchanged code
+15. **BRANCH PER TASK**: Each task has its own branch linked to its module and decision
+
+## Fixed Flow
+
+The SDLC flow is fixed and MUST be followed in order:
+
+```
+BE -> BE_TS -> CR -> FE -> FE_TS -> CR -> MD -> MD_TS -> CR -> BRU -> CRU -> MANUAL -> VR
+```
+
+Where:
+- **BE_TS**: Backend Test Suite (unit, integration, contract tests — only changed files)
+- **FE_TS**: Frontend Test Suite (component, integration, E2E tests — only changed files)
+- **MD_TS**: Mobile Test Suite (platform, integration, offline tests — only changed files)
+- **CR**: Code Review (mandatory after each implementation stage and test suite)
+- **BRU**: Business Requirement Unit (human-gated business validation)
+- **CRU**: Code Requirement Unit (automated code quality and compliance check)
+- **MANUAL**: Manual check (requires user login with full permissions)
 
 ## DevOps Rules (Immutable)
 
 ### Git Commits
-- All commits MUST follow semantic format: `<type>(<scope>): <subject>`
+- All commits MUST follow semantic format: `<type>(<scope>): <subject> [DEC:<id>] [TASK:<id>]`
 - Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `revert`
 - Valid scopes: `sdd`, `project`, `docs`, `chains`, `skills`, `prompts`, `commands`, `templates`, `patterns`, `workflows`, `decisions`, `gates`, `tests`, `testing`, `orchestrator`, `agent`, `security`, `architecture`, `stages`, `state`, `tasks`, `plugins`, `context`, `dependencies`, `observability`, `runtime`, `schemas`, `standards`, `cases`, `bugs`
 - Breaking changes MUST include `!` and footer: `BREAKING CHANGE: <description>`
@@ -156,13 +191,12 @@ Every developer MUST run:
 7. Production deployment requires human approval
 
 ### Branching Strategy
-- `feat(scope): description` → develop
-- `fix(scope): description` → develop
-- `docs(scope): description` → develop
-- `refactor(scope): description` → develop
-- `chore(scope): description` → develop
-- `hotfix(scope): description` → master
-- Never commit directly to master
+- `MODUL/<module>` → module development branch
+- `DEC/<id>` → decision implementation branch
+- `TASK/<id>` → task execution branch
+- Branch hierarchy: main -> stage -> test -> MODUL -> DEC -> TASK
+- Every commit MUST reference linked DEC and TASK IDs
+- Only changed files are tested
 
 ## Getting Started
 
@@ -204,7 +238,7 @@ Every developer MUST run:
 
 | Command | Purpose |
 |---------|---------|
-| `/sdd` | Execute chain graph from prompt (reads prompts/ folder) |
+| `/sdd` | Execute chain graph from prompt |
 | `/sdd-analyze` | Analyze .sdd/ structure |
 | `/sdd-status` | Show execution status |
 | `/sdd-decisions` | List decisions |
@@ -212,9 +246,9 @@ Every developer MUST run:
 | `/sdd-backup` | Create backup of critical files |
 | `/sdd-restore` | Restore from backup |
 | `/sdd-resume` | Resume from checkpoint |
-| `/sdd-fast` | Fast path execution |
-| `/sdd-full` | Full chain execution |
-| `/sdd-auto` | Auto-select path |
+| `/sdd-compact` | Compress context after task |
+| `/sdd-clear` | Clear context for next task |
+| `/sdd-next` | Advance decision chain to next step |
 
 ## Skills System
 
@@ -255,34 +289,33 @@ The system includes resilience patterns:
 ### Prompt to Code
 1. User submits prompt to `prompts/inbox/`
 2. `/sdd` reads prompt
-3. Analyzes and formalizes prompt into `.sdd/projects/prompts/`
-4. Documents prompt with ID in `.sdd/instances/{project_name}/docs/prompts/`
-5. Human reviews documented prompt
-6. Executes P1 (prompt analysis)
-7. Executes D1 (docs generation)
-8. Human approves docs
-9. Executes S1 (sdd generation)
-10. Human approves sdd
-11. Executes C1 (code generation)
-12. Human reviews code
-13. Executes R1 (review)
-14. Human approves production
-15. Executes DEP1 (deploy)
-16. Moves prompt to `prompts/archive/`
+3. Analyzes and formalizes prompt into `.sdd/projects/{project_name}/docs/`
+4. Human reviews documented prompt
+5. Executes P1 (prompt analysis)
+6. Executes D1 (docs generation)
+7. Human approves docs
+8. Executes S1 (sdd generation)
+9. Human approves sdd
+10. Executes C1 (code generation)
+11. Human reviews code
+12. Executes R1 (review)
+13. Human approves production
+14. Executes DEP1 (deploy)
+15. Moves prompt to archive
 
 ### Git Workflow
-1. Create branch: `feat(scope): description`
+1. Create branch: `MODUL/<module>`, `DEC/<id>`, or `TASK/<id>`
 2. Make changes
-3. Run local validation
-4. Commit with semantic message
+3. Run local validation (only changed files)
+4. Commit with semantic message referencing DEC and TASK IDs
 5. Push to remote
 6. Create PR
 7. CI/CD runs checks
 8. Human reviews
-9. Merge to develop
+9. Merge through stage -> test -> main
 10. Deploy to staging
 11. Human approves production
-12. Merge to master
+12. Merge to main
 13. Deploy to production
 
 ## Connecting AI Agents
@@ -471,16 +504,18 @@ Each manifest points to the same `.sdd/` core, so the system behaves identically
 2. Run `/sdd-resume` to continue from checkpoint
 3. Check logs in `.sdd/testing/scripts/results/`
 4. Review decisions in `.sdd/decisions/`
+5. Ensure Docker is running (all execution requires Docker)
 
-### Git commit rejected
-1. Check commit message format
-2. Run pre-commit hook manually
-3. Fix validation errors
-4. Try commit again
+### Docker issues
+1. Verify Docker is installed and running
+2. Check container resource limits (CPU, memory, PIDs)
+3. Verify local bind mounts are configured correctly
+4. Ensure no named volumes are used
+5. Check Docker logs for errors
 
 ### Tests failing
-1. Run tests locally
-2. Check test output
+1. Run tests locally in Docker
+2. Check test output (only changed files are tested)
 3. Fix failing tests
 4. Run local validation
 5. Push again
