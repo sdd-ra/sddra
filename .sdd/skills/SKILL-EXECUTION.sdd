@@ -7,7 +7,8 @@ Purpose:
 
 ## Skill Structure
 
-Every skill MUST contain:
+Every skill MUST conform to the schema defined in @schemas/skill.sdd.
+Key structural elements:
 
   ID: Unique identifier (SKILL-XXX)
   Domain: Technology domain

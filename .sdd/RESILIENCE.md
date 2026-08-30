@@ -14,7 +14,7 @@ Date: 2026-08-28
 |-----------|------|--------|------------|
 | D0 (root node) | Corruption/deletion | Entire chain graph fails | Backup graph.sdd, version control |
 | INDEX.sdd | Corruption/deletion | Navigation impossible | Redundant index in .runtime/ |
-| PROJECT.sdd | Corruption/deletion | No entry point | Backup in .runtime/current.sdd |
+| PROJECT.sdd | Corruption/deletion | No entry point | Backup in .runtime/state.sdd |
 | protocol/ROOT.sdd | Corruption/deletion | Rules undefined | Immutable backup, git history |
 | templates/INDEX.sdd | Corruption/deletion | Template instantiation fails | Backup index, fallback templates |
 | Chain graph | Single path | No alternative execution | Parallel arm support |

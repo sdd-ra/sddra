@@ -73,12 +73,12 @@ Navigation:
   SecurityLevels: @security/levels.sdd
   SecurityPolicy: @security/SECURITY.sdd
   SecurityControls: @security/controls.sdd
-  SecurityGates: @security/gates.sdd
-  SecurityGateSpecs: @security/gates/
+  SecurityGates: @gates/security/INDEX.sdd
+  SecurityGateSpecs: @gates/security/
   SecurityThreats: @security/threats.sdd
   SecurityScanners: @security/scanners.sdd
   Verification: @verification/
-  State: @state/state.sdd
+  State: @standards/states.sdd
   Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +

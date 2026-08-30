@@ -2,6 +2,35 @@
 
 Purpose:
   Defines standard states for .sdd entities.
+  This is the single source of truth for all state definitions.
+
+TaskStates:
+  NEW:
+    Description: Task has been created but not yet analyzed
+  ANALYZING:
+    Description: Task is being analyzed (scope, dependencies, risk)
+  PLANNED:
+    Description: Analysis complete, plan exists, ready for implementation
+  READY:
+    Description: All prerequisites met, waiting for execution slot
+  IN_PROGRESS:
+    Description: Work is actively being performed
+  BLOCKED:
+    Description: Work cannot continue due to an unresolved blocker
+  REVIEW:
+    Description: Work is under review
+  TESTING:
+    Description: Work is being tested (QA stage)
+  SECURITY:
+    Description: Work is under security validation (SC stage)
+  VERIFYING:
+    Description: Work is under final verification (VR stage)
+  DONE:
+    Description: Work is complete and verified
+  FAILED:
+    Description: Work has failed and requires recovery
+  CANCELLED:
+    Description: Work has been cancelled, will not proceed
 
 EntityStates:
   DRAFT:
@@ -14,22 +43,6 @@ EntityStates:
     Description: Being phased out
   RETIRED:
     Description: No longer used
-
-TaskStates:
-  DRAFT:
-    Task created, not ready
-  READY:
-    Dependencies satisfied, ready to start
-  ACTIVE:
-    Currently being worked on
-  BLOCKED:
-    Waiting for dependency or approval
-  DONE:
-    Completed and verified
-  FAILED:
-    Execution failed
-  ARCHIVED:
-    No longer relevant
 
 WorkflowStates:
   PENDING:
@@ -59,11 +72,34 @@ GateStates:
   WAIVED
   EXPIRED
 
+CompactSymbols:
+  Purpose: Inline state notation for .sdd files
+  Symbols:
+    +: done
+    ~: active
+    -: failed
+    !: blocked
+    ?: decision required
+    >: next
+    @: reference
+    #: task
+    =: created
+    :: analyzing
+    *: review
+    ^: superseded
+    _: archived
+    x: cancelled
+    [!]: attention required
+    [x]: completed
+    [ ]: pending
+
 StateRules:
   [SS1]  All entities MUST have a state.
   [SS2]  State transitions MUST follow defined flows.
   [SS3]  ARCHIVED state preserves history, does not delete.
   [SS4]  WAIVED state requires expiration date.
+  [SS5]  Compact symbols are for inline notation only — full state names are canonical.
+  [SS6]  Task state machine is defined in workflow/state.sdd — do not duplicate here.
 
 State: +
   

@@ -127,7 +127,7 @@ ReadOrder:
     71 @projects/{project_name}/STRUCTURE.md (project structure description)
     72 @runtime/events.sdd (runtime event log)
    68 @verification/ (when present)
-   69 @state/state.sdd
+    69 @standards/states.sdd (state standards and compact symbols)
 
 Modes:
   ANALYZE   — project discovery and context building
@@ -231,8 +231,8 @@ Navigation:
   Security:   @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd
   SecurityControls: @security/controls.sdd
-  SecurityGates: @security/gates.sdd
-  SecurityGateSpecs: @security/gates/
+  SecurityGates: @gates/security/INDEX.sdd
+  SecurityGateSpecs: @gates/security/
   SecurityThreats: @security/threats.sdd
   SecurityScanners: @security/scanners.sdd
   ProjectSecurity: @project/security/INDEX.sdd
@@ -275,8 +275,8 @@ Navigation:
   Workflow:   @workflow/INDEX.sdd
   WorkflowStages: @workflow/stages.sdd
   WorkflowTransitions: @workflow/transitions.sdd
-  WorkflowGates: @workflow/gates.sdd
-  WorkflowTesting: @workflow/testing.sdd
+  WorkflowGates: @gates/stage/gates.sdd
+  WorkflowTesting: @testing/t-levels.sdd
   WorkflowState: @workflow/state.sdd
   WorkflowLifecycle: @workflow/lifecycle.sdd
   WorkflowDependencies: @workflow/dependencies.sdd
@@ -443,9 +443,9 @@ Navigation:
    OrchestratorModes: @orchestrator/modes.sdd
    OrchestratorPipeline: @orchestrator/pipeline.sdd
    OrchestratorRouting: @orchestrator/routing.sdd
-  RuntimeAgent: @runtime/agent.sdd
-  RuntimeSession: @runtime/session.sdd
-  RuntimeCurrent: @runtime/current.sdd
+  RuntimeAgent: @runtime/state.sdd
+  RuntimeSession: @runtime/state.sdd
+  RuntimeCurrent: @runtime/state.sdd
   Standards: @standards/INDEX.sdd
   StandardsNaming: @standards/naming.sdd
   StandardsLevels: @standards/levels.sdd
@@ -497,7 +497,7 @@ Navigation:
    PluginWritingSkills: @plugins/plugin-adapters/writing-skills.sdd
    PluginVerification: @plugins/plugin-adapters/verification-before-completion.sdd
    Verification: @verification/
-   State:      @state/state.sdd
+    State:      @standards/states.sdd
 
 State: +
    (created as the universal entry point and routing table)

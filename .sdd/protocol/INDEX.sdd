@@ -57,7 +57,7 @@ Navigation:
   Root: @ROOT.sdd
   SkillExecution: @skill-execution.sdd
   Skills: @../skills/INDEX.sdd
-  State: @../state/state.sdd
+  State: @../standards/states.sdd
   Context: @../context/INDEX.sdd
   Agent: @../agent/INDEX.sdd
   Decisions: @../decisions/INDEX.sdd

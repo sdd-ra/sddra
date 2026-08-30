@@ -150,7 +150,7 @@ Selection:
 
 Navigation:
   Project: @project/project.sdd
-  Workflow: @workflow/testing.sdd
+  Workflow: @t-levels.sdd
   TestLevels: @levels.sdd
   TestGates: @gates.sdd
   BDD: @bdd.sdd

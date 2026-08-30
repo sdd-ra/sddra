@@ -30,12 +30,12 @@ Navigation:
   Execution: @runtime/execution.sdd
   Events: @runtime/events.sdd
   Context: @runtime/context.sdd
-  Agent: @runtime/agent.sdd
-  Session: @runtime/session.sdd
-  Current: @runtime/current.sdd
+  Agent: @state.sdd
+  Session: @state.sdd
+  Current: @state.sdd
   Checkpoints: @../patterns/checkpoint-restore.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Protocol: @../protocol/INDEX.sdd
-  State: @../state/state.sdd
+  State: @../standards/states.sdd
 
 State: +

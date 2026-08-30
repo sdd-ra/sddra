@@ -59,7 +59,7 @@ State:
   States: DISCOVERING, ANALYZING, PLANNING, WAITING, IMPLEMENTING,
           TESTING, VERIFYING, RELEASING, DEPLOYING, OBSERVING,
           COMPLETED, FAILED
-  Persistence: runtime/current.sdd
+  Persistence: runtime/state.sdd
   Recovery: resume from exact state, no restart
 
 Pipeline:
