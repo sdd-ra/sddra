@@ -110,9 +110,9 @@ All case files have `state: -` instead of `State: +` (different format).
    - chains/*.sdd (14 files)
    - cases/*.sdd (6 files)
    - security/SECURITY.sdd
-   - state/state.sdd
+    - standards/states.sdd
    - tasks/tasks.sdd
-   - decisions/schema.sdd
+    - schemas/decision.sdd
    - decisions/template.sdd
    - project/README.sdd
    - projects/{project_name}/decisions/INDEX.sdd

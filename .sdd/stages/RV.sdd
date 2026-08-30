@@ -28,15 +28,15 @@ Next:
   VR
   next stage
 
-Review:
-  @RV/code-review
-  @QA/review
+  Review:
+    @RV/code-review
+    @QA/review
 
 Risk:
   R1
 
 Skills:
-  @verification/review
+  @RV
   @qa/code-review
   @architecture/review
 

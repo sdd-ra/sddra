@@ -36,16 +36,16 @@ OnFail:
 Next:
   DONE
 
-Review:
-  @VR/final
-  @QA/acceptance
-  @SC/final-security
+  Review:
+    @VR/final
+    @QA/acceptance
+    @SC/final-security
 
 Risk:
   R3
 
 Skills:
-  @verification/final
+  @VR
   @qa/acceptance
   @security/final
 
