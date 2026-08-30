@@ -36,8 +36,12 @@ DockerResourceLimits:
     allowlisted domains only
 
 DockerVolumes:
-  rule: volumes MUST be read-only unless explicitly required for output
-  rule: no host filesystem access outside volumes
+  rule: USE LOCAL BIND MOUNTS ONLY — no Docker named volumes
+  rule: all data MUST persist on local filesystem via bind mount
+  rule: bind mount path: ./workspace -> /workspace inside container
+  rule: when container is deleted, local files remain intact
+  rule: this enables re-testing after server/container restart
+  rule: Docker named volumes are FORBIDDEN
 
 DockerToolAccess:
   allowed:

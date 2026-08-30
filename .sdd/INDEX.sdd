@@ -168,15 +168,16 @@ Rules:
   [I25] Agent MUST NOT invoke tools outside Docker sandbox.
   [I26] Docker image MUST include all required tools — no host-level package installation.
   [I27] Resource limits MUST be defined per container: cpu, memory, pids, ulimit.
-  [I28] When no git remote link exists, local history is the default and mandatory record.
-  [I29] {project_name}/ directory MUST NOT be auto-created without explicit human selection.
-  [I30] Branch naming follows SDLC/STLC: main, stage, test, MODUL/<module>, DEC/<id>, TASK/<id>.
-  [I31] Each task MUST have its own base branch linked to its module and decision.
-  [I32] Only changed files are tested — full regression suites are reserved for unchanged code only.
-  [I33] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
-  [I34] BRU = Business Requirement Unit, CRU = Code Requirement Unit — mandatory gates.
-  [I35] Manual check requires user login with full permissions from environment.
-  [I36] /sdd next advances the decision chain to the next step automatically.
+  [I28] Docker MUST use local bind mounts — named volumes are forbidden.
+  [I29] When no git remote link exists, local history is the default and mandatory record.
+  [I30] {project_name}/ directory MUST NOT be auto-created without explicit human selection.
+  [I31] Branch naming follows SDLC/STLC: main, stage, test, MODUL/<module>, DEC/<id>, TASK/<id>.
+  [I32] Each task MUST have its own base branch linked to its module and decision.
+  [I33] Only changed files are tested — full regression suites are reserved for unchanged code only.
+  [I34] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
+  [I35] BRU = Business Requirement Unit, CRU = Code Requirement Unit — mandatory gates.
+  [I36] Manual check requires user login with full permissions from environment.
+  [I37] /sdd next advances the decision chain to the next step automatically.
 
 Entry:
   @protocol/ROOT.sdd
