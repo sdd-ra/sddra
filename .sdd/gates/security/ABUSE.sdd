@@ -1,7 +1,7 @@
-﻿Gate: ABUSE
+Gate: ABUSE
 
 Purpose:
-  Abuse and load testing — verify that the system can withstand
+  Abuse and load testing � verify that the system can withstand
   abusive usage patterns, DDoS attempts, and resource exhaustion.
 
 AppliesTo:

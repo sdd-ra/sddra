@@ -1,4 +1,4 @@
-﻿# Go Advanced Patterns
+# Go Advanced Patterns
 
 Purpose:
   Go Advanced Patterns
@@ -77,9 +77,9 @@ Rules:
   [G2] Function names MUST use camelCase.
   [G3] Errors MUST be wrapped with context using `fmt.Errorf`.
   [G4] Context MUST be passed as first argument to functions that need it.
-  [G5] Use interfaces for dependencies â€” accept interfaces, return structs.
+  [G5] Use interfaces for dependencies — accept interfaces, return structs.
   [G6] Avoid naked returns in long functions.
-  [G7] Use meaningful variable names â€” avoid single letters except for indices.
+  [G7] Use meaningful variable names — avoid single letters except for indices.
   [G8] Keep functions small and focused (under 50 lines).
   [G9] Use `embed` for static assets instead of file systems.
   [G10] Group related types and functions in the same package.

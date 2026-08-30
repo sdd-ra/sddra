@@ -1,29 +1,29 @@
-﻿Levels: Gates
+Levels: Gates
 
 Purpose:
   Defines gate levels L0-L5 and default gate matrix.
 
 Levels:
-  L0: Prototype — minimal checks
-  L1: Small project — basic test + lint
-  L2: Production application — security + integration + deployment
-  L3: Business-critical — performance + security + observability
-  L4: High-scale — resilience + DR + advanced security
-  L5: Mission-critical — formal controls + continuous verification
+  L0: Prototype � minimal checks
+  L1: Small project � basic test + lint
+  L2: Production application � security + integration + deployment
+  L3: Business-critical � performance + security + observability
+  L4: High-scale � resilience + DR + advanced security
+  L5: Mission-critical � formal controls + continuous verification
 
 GateMatrix:
   | Gate            | L1 | L2 | L3 | L4 | L5 |
   | --------------- | -- | -- | -- | -- | -- |
-  | Lint            | ✅ | ✅ | ✅ | ✅ | ✅ |
-  | Unit            | ✅ | ✅ | ✅ | ✅ | ✅ |
-  | Integration     | opt | ✅ | ✅ | ✅ | ✅ |
-  | E2E             | opt | ✅ | ✅ | ✅ | ✅ |
-  | SAST            | opt | ✅ | ✅ | ✅ | ✅ |
-  | DAST            | ❌ | opt | ✅ | ✅ | ✅ |
-  | Pentest         | ❌ | risk | ✅ | ✅ | ✅ |
-  | Load            | ❌ | risk | ✅ | ✅ | ✅ |
-  | DDoS resilience | ❌ | ❌ | opt | ✅ | ✅ |
-  | DR              | ❌ | opt | ✅ | ✅ | ✅ |
+  | Lint            | ? | ? | ? | ? | ? |
+  | Unit            | ? | ? | ? | ? | ? |
+  | Integration     | opt | ? | ? | ? | ? |
+  | E2E             | opt | ? | ? | ? | ? |
+  | SAST            | opt | ? | ? | ? | ? |
+  | DAST            | ? | opt | ? | ? | ? |
+  | Pentest         | ? | risk | ? | ? | ? |
+  | Load            | ? | risk | ? | ? | ? |
+  | DDoS resilience | ? | ? | opt | ? | ? |
+  | DR              | ? | opt | ? | ? | ? |
 
 QualityProfile:
   ProjectLevel: <L0-L5>

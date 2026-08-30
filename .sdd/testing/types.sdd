@@ -149,7 +149,7 @@ Selection:
     Infrastructure: Load, Performance
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   Workflow: @t-levels.sdd
   TestLevels: @levels.sdd
   TestGates: @gates.sdd

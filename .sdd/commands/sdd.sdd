@@ -1,8 +1,8 @@
-﻿# /sdd
+# /sdd
 
 Description:
-  Execute the SDDRA chain from a prompt. Routes through prompt → docs →
-  sdd → code → review → deploy, with human approval at each gate.
+  Execute the SDDRA chain from a prompt. Routes through prompt ? docs ?
+  sdd ? code ? review ? deploy, with human approval at each gate.
 
 Usage:
   /sdd "prompt text or path"
@@ -21,12 +21,12 @@ Behavior:
   5. Wait for approval
   6. Implement code (C1)
   7. Review (R1)
-  8. Deploy (DEP1) — requires explicit approval
+  8. Deploy (DEP1) � requires explicit approval
 
 Output:
   [tokens: in=X, out=Y]
   [decision: DEC-XXX]
   [gate: human_required|auto]
-  [next: D0→D1]
+  [next: D0?D1]
 
 State: +

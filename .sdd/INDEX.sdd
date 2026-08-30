@@ -9,7 +9,7 @@ Owns: ./
 
 ReadOrder:
     1  @protocol/ROOT.sdd
-    2  @project/project.sdd
+    2  @project/schema.sdd
     3  @graph/INDEX.sdd
     4  @graph/model.sdd
     5  @templates/INDEX.sdd (project structure templates)
@@ -112,7 +112,7 @@ ReadOrder:
     58 @plugins/ (plugin adapter definitions, when present)
     59 @projects/{project_name}/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
    56 @project/INDEX.sdd       (project map)
-   57 @project/PROJECT.sdd     (project model)
+   57 @project/schema.sdd     (project model)
    58 @projects/{project_name}/architecture/INDEX.sdd (project architecture map)
    59 @projects/{project_name}/architecture/system.sdd (system architecture)
    60 @projects/{project_name}/architecture/components.sdd (component architecture)
@@ -193,7 +193,7 @@ Navigation:
   TemplatesArchitecture: @templates/_sdd/architecture
   TemplatesFlows: @templates/_sdd/flows
   TemplatesDomains: @templates/_sdd/domains
-  Project:    @project/PROJECT.sdd
+  Project:    @project/schema.sdd
   ProjectMap: @projects/{project_name}/MAP.md
   ProjectStructure: @projects/{project_name}/STRUCTURE.md
   Architecture: @architecture/INDEX.sdd
@@ -440,8 +440,8 @@ Navigation:
    IntelligentRuntime: @workflow/intelligent-runtime.sdd
   HumanSkills: @projects/{project_name}/docs/skills/
    Orchestrator: @orchestrator/INDEX.sdd
-   OrchestratorModes: @orchestrator/modes.sdd
-   OrchestratorPipeline: @orchestrator/pipeline.sdd
+   OrchestratorModes: @orchestrator/INDEX.sdd
+   OrchestratorPipeline: @orchestrator/INDEX.sdd
    OrchestratorRouting: @orchestrator/routing.sdd
   RuntimeAgent: @runtime/state.sdd
   RuntimeSession: @runtime/state.sdd

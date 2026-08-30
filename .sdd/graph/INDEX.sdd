@@ -1,19 +1,19 @@
-ï»¿Graph: SDD
+Graph: SDD
 
 Purpose:
   Engineering Knowledge Graph and Traceability Engine. Connects
   all .sdd system elements into a single traceable engineering
   model. Graph stores relationships, indexes, traces, and impact
-  â€” NOT copies of source files.
+  — NOT copies of source files.
 
 Owns: ./
 
 Modes:
-  IMPLEMENT â€” task implementation context
-  DEBUG     â€” incident debugging context
-  SECURITY  â€” security analysis context
-  SUPPORT   â€” support/troubleshooting context
-  AUDIT     â€” full traceability audit
+  IMPLEMENT — task implementation context
+  DEBUG     — incident debugging context
+  SECURITY  — security analysis context
+  SUPPORT   — support/troubleshooting context
+  AUDIT     — full traceability audit
 
 Rules:
   [GR1]  Graph stores relationships, NOT copies of source files.

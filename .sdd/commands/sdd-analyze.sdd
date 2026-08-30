@@ -1,7 +1,7 @@
-﻿# /sdd-analyze
+# /sdd-analyze
 
 Description:
-  Analyze and explain the .sdd/ system structure. Read-only — does not
+  Analyze and explain the .sdd/ system structure. Read-only � does not
   modify any files.
 
 Usage:

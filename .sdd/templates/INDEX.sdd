@@ -1,9 +1,9 @@
-﻿Index: Templates
+Index: Templates
 
 Purpose:
   Reusable project structure templates. These templates are consumed by
   the project-structure skill to generate concrete project/ directories
-  from human prompts. Templates are NOT project-specific â€” they are
+  from human prompts. Templates are NOT project-specific — they are
   generic scaffolding instantiated per project.
 
 Owns: ./
@@ -23,11 +23,11 @@ ReadOrder:
    12 @_sdd/architecture/system.template.md
 
 Rules:
-  [T1] Templates are READ-ONLY â€” they MUST NOT be modified per project.
+  [T1] Templates are READ-ONLY — they MUST NOT be modified per project.
   [T2] Placeholders use {ANGLE_BRACKET} format.
   [T3] Unsubstituted placeholders MUST be replaced with null or empty.
   [T4] Templates MUST be consumed by the project-structure skill, not copied manually.
-  [T5] Template content is generic â€” no project-specific data here.
+  [T5] Template content is generic — no project-specific data here.
 
 Navigation:
   DocsTemplates: @_sdd/docs/

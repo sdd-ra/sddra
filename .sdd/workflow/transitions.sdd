@@ -1,11 +1,11 @@
-ï»¿Transitions: SDD
+Transitions: SDD
 
 Purpose:
   Define default and conditional transitions between workflow stages.
   A transition is a directed edge from one stage to another, with
   conditions that must be satisfied before the transition is allowed.
 
-  This file is the authoritative transition list â€” chains/chains.sdd ->
+  This file is the authoritative transition list — chains/chains.sdd ->
   DefaultFlow is a reference order, not the transition engine.
 
 
@@ -135,7 +135,7 @@ Rules:
 
   [TR1]  Every transition MUST have a declared source and target stage.
 
-  [TR2]  Default transitions are the minimum required flow â€” conditional
+  [TR2]  Default transitions are the minimum required flow — conditional
          transitions expand the flow, they do not replace it.
 
   [TR3]  A task MUST NOT advance to a stage whose gate has not been
@@ -145,7 +145,7 @@ Rules:
          has not passed validation.
 
   [TR5]  Conditional transitions MUST declare their activation condition
-         explicitly â€” AI MUST NOT invent conditions.
+         explicitly — AI MUST NOT invent conditions.
 
   [TR6]  A stage MAY have multiple outgoing transitions, but each MUST
          be distinguishable by its condition.
@@ -155,7 +155,7 @@ Rules:
   [TR8]  Transition order is determined by dependency resolution, not
          by the order listed in this file.
 
-  [TR9]  A BLOCKED state does not create a new transition â€” it suspends
+  [TR9]  A BLOCKED state does not create a new transition — it suspends
          the current stage until the blocker is resolved, then the
          original transition continues.
 

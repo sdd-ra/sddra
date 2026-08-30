@@ -10,7 +10,7 @@ Stage:
     - docs/
     - .sdd/projects/{project_name}/decisions/ (approved decisions)
   outputs:
-    - .sdd/project/PROJECT.sdd
+    - .sdd/project/schema.sdd
     - .sdd/project/domains.sdd
     - .sdd/projects/{project_name}/tasks/INDEX.sdd
     - .sdd/projects/{project_name}/tasks/TASK-XXX.sdd (linked to decisions)

@@ -1,0 +1,54 @@
+# Project: Schema
+
+Purpose:
+  Define the core project hierarchy: Project > Domain > Module > Feature > Component.
+  This is the SHAPE of the hierarchy — concrete instances live in sibling files.
+
+Hierarchy:
+  Project:
+    description: Top-level software system
+
+  Domain:
+    description: Coherent business capability
+    schema: ./domains.sdd
+
+  Module:
+    description: Technical or functional boundary inside a domain
+    schema: ./modules.sdd
+
+  Feature:
+    description: Executable product behavior inside a module
+    schema: ./features.sdd
+
+  Component:
+    description: Implementation boundary inside a feature
+    schema: ./components.sdd
+
+ResolutionOrder:
+  PROJECT > DOMAIN > MODULE > FEATURE > COMPONENT > CODE
+
+Rules:
+  [PS1] Every project domain MUST have a model file (bax ./domains.sdd).
+  [PS2] Every domain SHOULD expose its boundaries and declare owned components.
+  [PS3] Project elements MUST NOT duplicate information owned by global SDD systems — reference them instead.
+  [PS4] Feature declarations MUST reference the chain type they run under (bax chains/chains.sdd).
+  [PS5] Feature/component declarations MUST reference task and decision rules (bax tasks/tasks.sdd, decisions/workflow.sdd).
+  [PS6] Component code paths MUST be mapped to project ownership.
+  [PS7] AI SHOULD use this project model to locate code before searching the source tree.
+  [PS8] This file MUST NOT redeclare concrete domain/module lists already owned by domains.sdd/modules.sdd.
+  [PS9] Populating hierarchy layers beyond what current analysis justifies is FORBIDDEN (bax ./instantiation.sdd).
+  [PS10] Every project element (domain, module, feature, component) MUST have one clear owner.
+
+Navigation:
+  Domains: @domains.sdd
+  Modules: @modules.sdd
+  Features: @features.sdd
+  Components: @components.sdd
+  Map: @map.sdd
+  Indexes: @indexes.sdd
+  Architecture: @architecture.sdd
+  Flows: @flows.sdd
+  Dependencies: @dependencies.sdd
+  Instantiation: @instantiation.sdd
+
+State: +

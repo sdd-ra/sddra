@@ -1,23 +1,23 @@
-﻿WorkflowRecovery: SDD
+WorkflowRecovery: SDD
 
 Purpose:
   Defines how the workflow engine recovers from failures. Recovery
-  is not retry — it is root cause analysis and appropriate response.
+  is not retry � it is root cause analysis and appropriate response.
 
 RecoveryFlow:
   FailureDetected:
-    ↓
+    ?
   AnalyzeFailure:
-    ↓
+    ?
   KnownIssue:
-    ├── YES → ApplyExistingFix
-    │         ↓
-    │       ResumeWorkflow
-    │
-    └── NO → RootCauseAnalysis
-              ↓
+    +-- YES ? ApplyExistingFix
+    �         ?
+    �       ResumeWorkflow
+    �
+    +-- NO ? RootCauseAnalysis
+              ?
             NewTask
-              ↓
+              ?
             ResumeWorkflow
 
 FailureClassification:

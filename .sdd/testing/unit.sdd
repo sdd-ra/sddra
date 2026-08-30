@@ -44,7 +44,7 @@ Coverage:
   AI MUST NOT use coverage as the sole quality metric
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   Workflow: @t-levels.sdd
   TestLevels: @levels.sdd
   TestTypes: @types.sdd

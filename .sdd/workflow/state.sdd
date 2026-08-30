@@ -1,4 +1,4 @@
-ï»¿State: SDD (Workflow)
+State: SDD (Workflow)
 
 Purpose:
   Define the formal task state machine used by the workflow engine.
@@ -6,11 +6,11 @@ Purpose:
   state symbols defined in standards/states.sdd.
 
   State and Stage are distinct:
-    Stage  â€” which engineering discipline is currently active (BE, QA,
-             SC, etc.) â€” defined in workflow/stages.sdd
-    State  â€” the task's lifecycle condition (NEW, ANALYZING, PLANNED,
+    Stage  — which engineering discipline is currently active (BE, QA,
+             SC, etc.) — defined in workflow/stages.sdd
+    State  — the task's lifecycle condition (NEW, ANALYZING, PLANNED,
              READY, IN_PROGRESS, BLOCKED, REVIEW, TESTING, SECURITY,
-             VERIFYING, DONE, FAILED, CANCELLED) â€” defined here
+             VERIFYING, DONE, FAILED, CANCELLED) — defined here
 
   A task at stage BE with state BLOCKED means: "Backend implementation
   is the current stage, but work cannot continue because a blocker
@@ -41,19 +41,19 @@ Scope:
 
 States:
 
-  NEW        â€” Task has been created but not yet analyzed
-  ANALYZING  â€” Task is being analyzed (scope, dependencies, risk)
-  PLANNED    â€” Analysis complete, plan exists, ready for implementation
-  READY      â€” All prerequisites met, waiting for execution slot
-  IN_PROGRESSâ€” Work is actively being performed
-  BLOCKED    â€” Work cannot continue due to an unresolved blocker
-  REVIEW     â€” Work is under review
-  TESTING    â€” Work is being tested (QA stage)
-  SECURITY   â€” Work is under security validation (SC stage)
-  VERIFYING  â€” Work is under final verification (VR stage)
-  DONE       â€” Work is complete and verified
-  FAILED     â€” Work has failed and requires recovery
-  CANCELLED  â€” Work has been cancelled, will not proceed
+  NEW        — Task has been created but not yet analyzed
+  ANALYZING  — Task is being analyzed (scope, dependencies, risk)
+  PLANNED    — Analysis complete, plan exists, ready for implementation
+  READY      — All prerequisites met, waiting for execution slot
+  IN_PROGRESS— Work is actively being performed
+  BLOCKED    — Work cannot continue due to an unresolved blocker
+  REVIEW     — Work is under review
+  TESTING    — Work is being tested (QA stage)
+  SECURITY   — Work is under security validation (SC stage)
+  VERIFYING  — Work is under final verification (VR stage)
+  DONE       — Work is complete and verified
+  FAILED     — Work has failed and requires recovery
+  CANCELLED  — Work has been cancelled, will not proceed
 
 
 StateTransitions:
@@ -94,12 +94,12 @@ StateTransitions:
     SECURITY > FAILED
     VERIFYING > FAILED
 
-    FAILED > ANALYZING  (recovery â€” re-analyze failure)
+    FAILED > ANALYZING  (recovery — re-analyze failure)
 
   Terminal transitions:
 
-    DONE      (terminal â€” task is complete)
-    CANCELLED (terminal â€” task is abandoned)
+    DONE      (terminal — task is complete)
+    CANCELLED (terminal — task is abandoned)
 
 
 NextAction:
@@ -154,7 +154,7 @@ NextAction:
 Blocker:
 
   A blocker is an explicit reason a task cannot advance. State BLOCKED
-  alone is insufficient â€” the task MUST declare what is blocking it:
+  alone is insufficient — the task MUST declare what is blocking it:
 
     BlockedBy:
       type: DEPENDENCY
@@ -177,24 +177,24 @@ Blocker:
 
 BlockerTypes:
 
-  DEPENDENCY  â€” another task or artifact is not yet ready
-  SECURITY    â€” a security finding or review is pending
-  TECHNICAL   â€” a technical impediment (bug, infrastructure, environment)
-  ENVIRONMENT â€” an environment issue (deployment, config, access)
-  HUMAN       â€” a human decision or action is required
-  EXTERNAL    â€” an external system or vendor is unavailable
-  DECISION    â€” a decision is pending (bax ../decisions/)
-  RESOURCE    â€” a resource constraint (budget, capacity, license)
+  DEPENDENCY  — another task or artifact is not yet ready
+  SECURITY    — a security finding or review is pending
+  TECHNICAL   — a technical impediment (bug, infrastructure, environment)
+  ENVIRONMENT — an environment issue (deployment, config, access)
+  HUMAN       — a human decision or action is required
+  EXTERNAL    — an external system or vendor is unavailable
+  DECISION    — a decision is pending (bax ../decisions/)
+  RESOURCE    — a resource constraint (budget, capacity, license)
 
 
 Risk:
 
   Every task declares its risk level:
 
-    LOW      â€” minimal impact if things go wrong
-    MEDIUM   â€” moderate impact, reversible with effort
-    HIGH     â€” significant impact, requires careful handling
-    CRITICAL â€” severe impact, requires human approval for execution
+    LOW      — minimal impact if things go wrong
+    MEDIUM   — moderate impact, reversible with effort
+    HIGH     — significant impact, requires careful handling
+    CRITICAL — severe impact, requires human approval for execution
 
   Risk determines which stages and gates are activated:
 
@@ -307,9 +307,9 @@ Rules:
   [ST1]  A task MUST declare exactly one state at any given time.
 
   [ST2]  A task MUST NOT transition directly between non-adjacent states
-         â€” AI MUST follow the declared transitions above.
+         — AI MUST follow the declared transitions above.
 
-  [ST3]  BLOCKED is an overlay state, not a stage â€” when the blocker is
+  [ST3]  BLOCKED is an overlay state, not a stage — when the blocker is
          resolved, the task returns to its previous state, not directly
          to IN_PROGRESS.
 
@@ -318,17 +318,17 @@ Rules:
   [ST5]  A task MUST NOT leave BLOCKED state without resolving or
          removing all blockers.
 
-  [ST6]  DONE is a terminal state â€” a DONE task MUST NOT re-enter the
+  [ST6]  DONE is a terminal state — a DONE task MUST NOT re-enter the
          workflow unless reopened by human decision.
 
-  [ST7]  CANCELLED is a terminal state â€” a CANCELLED task MUST NOT
+  [ST7]  CANCELLED is a terminal state — a CANCELLED task MUST NOT
          re-enter the workflow.
 
-  [ST8]  FAILED MUST trigger failure analysis before recovery â€” AI MUST
+  [ST8]  FAILED MUST trigger failure analysis before recovery — AI MUST
          NOT silently retry without identifying the failure cause.
 
   [ST9]  Recovery from FAILED MUST return to ANALYZING, not directly to
-         IN_PROGRESS â€” the failure must be analyzed first.
+         IN_PROGRESS — the failure must be analyzed first.
 
   [ST10] A CRITICAL risk task MUST receive human approval before
          entering IN_PROGRESS state.
@@ -342,7 +342,7 @@ Rules:
   [ST13] State changes MUST be recorded as runtime events (bax
          ../runtime/events.sdd).
 
-  [ST14] State history MUST be append-only â€” AI MUST NOT modify or
+  [ST14] State history MUST be append-only — AI MUST NOT modify or
          delete past state transitions.
 
 

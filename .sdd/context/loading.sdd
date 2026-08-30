@@ -1,4 +1,4 @@
-﻿Loading: Context
+Loading: Context
 
 Purpose:
   Define progressive context loading, "enough context" criterion,
@@ -20,10 +20,10 @@ EnoughContextCriterion:
     - Tests accessible?
 
   If all YES: CONTEXT_SUFFICIENT
-  Else: CONTEXT_INSUFFICIENT → expand
+  Else: CONTEXT_INSUFFICIENT ? expand
 
 ContextExpansion:
-  P0 → P1 → P2 → P3 → P4
+  P0 ? P1 ? P2 ? P3 ? P4
   Stop when criterion met or budget exhausted.
 
 TokenAwareLoading:

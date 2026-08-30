@@ -1,7 +1,7 @@
-﻿Gate: DEPENDENCY
+Gate: DEPENDENCY
 
 Purpose:
-  Dependency security scan — check third-party dependencies for
+  Dependency security scan � check third-party dependencies for
   known vulnerabilities.
 
 AppliesTo:

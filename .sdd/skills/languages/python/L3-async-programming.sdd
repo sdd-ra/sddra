@@ -1,4 +1,4 @@
-﻿# Python Async Programming
+# Python Async Programming
 
 Purpose:
   Python Async Programming
@@ -74,7 +74,7 @@ Evidence:
 
 Rules:
   [P1] Use `async def` for I/O-bound functions.
-  [P2] Always `await` coroutines â€” never fire-and-forget.
+  [P2] Always `await` coroutines — never fire-and-forget.
   [P3] Use `asyncio.gather` for parallel I/O operations.
   [P4] Use `asyncio.Timeout` for operation timeouts.
   [P5] Use `asyncio.Lock` for shared state protection.

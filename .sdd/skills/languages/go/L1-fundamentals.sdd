@@ -1,4 +1,4 @@
-﻿# Go Fundamentals
+# Go Fundamentals
 
 Purpose:
   Go Fundamentals
@@ -60,7 +60,7 @@ SearchKeys:
 
 TechnologyLifecycle:
   Current: MATURE
-  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+  Emerging → Adopted → Mature → Legacy → Deprecated
 
 HumanDoc:
   docs/skills/languages/go/L1-fundamentals.md
@@ -72,7 +72,7 @@ Evidence:
 
 Rules:
   [G1] Use `:=` for variable declaration inside functions.
-  [G2] Always handle errors explicitly â€” never ignore with `_`.
+  [G2] Always handle errors explicitly — never ignore with `_`.
   [G3] Use `fmt.Errorf` for error wrapping.
   [G4] Use `defer` for cleanup operations.
   [G5] Use `range` for iteration, not index-based loops.

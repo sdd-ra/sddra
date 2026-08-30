@@ -1,4 +1,4 @@
-﻿Security: Gates
+Security: Gates
 
 Purpose:
   Defines security gates including SAST, dependency scan, secrets scan, DAST, and pentest.

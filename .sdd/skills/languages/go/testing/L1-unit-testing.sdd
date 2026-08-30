@@ -1,4 +1,4 @@
-﻿# Go Unit Testing
+# Go Unit Testing
 
 Purpose:
   Go Unit Testing
@@ -76,7 +76,7 @@ Rules:
   [T3] Use table-driven tests for multiple cases.
   [T4] Use subtests for related assertions (`t.Run`).
   [T5] Mock external dependencies.
-  [T6] Tests MUST be independent â€” no shared state.
+  [T6] Tests MUST be independent — no shared state.
   [T7] Use testify for assertions.
   [T8] Test files MUST be named `*_test.go`.
 

@@ -1,0 +1,87 @@
+# Project: Drift
+
+Purpose:
+  Define the Declared/Observed/Drift model for detecting divergence
+  between the .sdd project model and actual codebase state.
+
+Declared:
+  Approved project intent — architecture, domains, modules, components,
+  flows, decisions, constraints.
+
+Observed:
+  Actual repository/runtime state — source code, tests, config, metrics,
+  actual dependencies.
+
+Drift:
+  When Declared != Observed, AI MUST create a DRIFT finding and a task
+  to reconcile the difference.
+
+DriftSeverity:
+  D0: no drift
+  D1: minor (typo, naming)
+  D2: significant (missing module, wrong dependency)
+  D3: critical (architecture violation, security gap)
+
+MinimalModel:
+  Every domain/component does NOT need a 500-line document. The minimal
+  model is:
+    ID
+    Paths
+    Owns
+    DependsOn / UsedBy
+    Chain
+    Risk
+
+  Everything else lives in the graph and skills.
+
+Rules:
+  [PD1] AI MUST detect drift by comparing change impact against the project model.
+  [PD2] AI MUST NOT silently update the project model without human approval for significant changes.
+  [PD3] Drift findings MUST be created before any model update.
+  [PD4] Minimal model prevents context bloat and keeps the project model token-efficient.
+
+GraphDrift:
+  When the graph says:
+    @payments/refund -> @db/refunds
+  but the actual code has:
+    @payments/refund -> @redis/cache
+
+  AI MUST:
+    1. Detect the drift
+    2. Create a DRIFT finding
+    3. Create a task to reconcile the graph
+    4. NOT silently update the graph without human approval
+
+FallbackDiscovery:
+  When the graph says nothing about a node, AI MUST fall back to
+  discovery, but MUST NOT silently update the graph:
+
+    GRAPH MISSING
+      ↓
+    DISCOVER
+      ↓
+    OBSERVE
+      ↓
+    DRAFT UPDATE
+      ↓
+    HUMAN APPROVAL (if significant)
+      ↓
+    UPDATE GRAPH
+
+DomainGraph:
+  Each domain MAY have its own local graph at .sdd/project/<domain>/
+  graph.sdd containing only the nodes and edges relevant to that domain.
+  The global graph entry point is .sdd/graph/INDEX.sdd.
+
+  Resolution order:
+    1. Global graph (.sdd/graph/INDEX.sdd)
+    2. Domain graph (.sdd/project/<domain>/graph.sdd)
+    3. Component model (.sdd/project/<domain>/<component>.sdd)
+    4. Fallback discovery (if all graphs are silent)
+
+Navigation:
+  Graph: @../graph/INDEX.sdd
+  GraphModel: @../graph/model.sdd
+  Dependencies: @dependencies.sdd
+
+State: +

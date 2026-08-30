@@ -1,7 +1,8 @@
-Routing: Orchestrator
+# Routing: Orchestrator
 
 Purpose:
-  Define agent selection, capability matching, and execution routing.
+  Define agent selection and execution routing principles.
+  Detailed capability and permission definitions live in @agent/.
 
 Principles:
   Agent = WHO executes.
@@ -24,16 +25,12 @@ CapabilityMatching:
   extra capabilities allowed but not required
 
 AgentSelection:
-  Factors: capability_match, skill_match, availability, quality, cost, risk_fit, context_fit
+  Factors: capability_match, skill_match, availability, quality, risk_fit, context_fit
   Rule: highest scoring eligible agent is selected
   Rule: only AVAILABLE agents are considered
 
 Availability:
   AVAILABLE, BUSY, OFFLINE, DISABLED
-
-AgentAffinity:
-  Preference for agent with existing context in specific domain.
-  Rule: affinity is trade-off between cost and reliability.
 
 Routing:
   Low-risk tasks MAY use cheaper models.
@@ -80,5 +77,10 @@ Rules:
   [RT18] Agent quotas prevent runaway agents.
   [RT19] Agent MUST NOT add signatures or sign-offs to any output.
   [RT20] Agent MUST NOT use emojis or decorative symbols in headers or titles.
+
+Navigation:
+  AgentCapabilities: @../agent/capabilities.sdd
+  AgentPermissions: @../agent/permissions.sdd
+  AgentPolicies: @../agent/policies.sdd
 
 State: +

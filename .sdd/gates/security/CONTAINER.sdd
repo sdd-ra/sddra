@@ -1,7 +1,7 @@
-﻿Gate: CONTAINER
+Gate: CONTAINER
 
 Purpose:
-  Container security — ensure container images and deployments
+  Container security � ensure container images and deployments
   follow security best practices.
 
 AppliesTo:

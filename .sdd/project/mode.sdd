@@ -1,15 +1,15 @@
-ï»¿Mode: Project
+Mode: Project
 
 Purpose:
-  Defines project mode â€” whether project is greenfield, brownfield,
+  Defines project mode — whether project is greenfield, brownfield,
   or hybrid.
 
 Owns: ./
 
 Modes:
-  GREENFIELD  â€” new project, no existing code
-  BROWNFIELD  â€” existing project being analyzed
-  HYBRID      â€” mix of new and existing
+  GREENFIELD  — new project, no existing code
+  BROWNFIELD  — existing project being analyzed
+  HYBRID      — mix of new and existing
 
 Fields:
   Mode:              <GREENFIELD|BROWNFIELD|HYBRID>

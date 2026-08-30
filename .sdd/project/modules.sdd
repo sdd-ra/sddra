@@ -1,7 +1,7 @@
-ï»¿Spec: Project/Modules
+Spec: Project/Modules
 
 Purpose:
-  Declare each generic module in the SDDRA ecosystem â€” what it owns,
+  Declare each generic module in the SDDRA ecosystem — what it owns,
   its public API surface, and its direct dependencies. Modules are the
   deployable/code-boundary units that implement domains.
 
@@ -10,8 +10,8 @@ Rules:
   A module MUST declare its public API surface.
   A module MUST explicitly declare its dependencies (`deps`).
   A module MUST NOT depend on any module not listed in its declared deps.
-  A module MAY declare `files` (owned source paths) â€” routing pointers only.
-  A module MAY declare `tests` (owned test paths) â€” routing pointers only.
+  A module MAY declare `files` (owned source paths) — routing pointers only.
+  A module MAY declare `tests` (owned test paths) — routing pointers only.
   A module MAY declare `bounded_contexts` when a domain spans multiple implementations.
 
 Modules:
@@ -156,7 +156,7 @@ Modules:
     state: active
 
   gamification-module:
-    purpose: Gamification platform integration â€” points, badges, leaderboards, rules
+    purpose: Gamification platform integration — points, badges, leaderboards, rules
     domain: Gamification
     bounded_contexts:
       - rules-engine (declarative rule evaluation)
@@ -225,7 +225,7 @@ Modules:
 Rules:
   [M1] A module MUST declare all direct dependencies.
   [M2] A module MUST NOT depend on another module's internal structures.
-  [M3] A module's public API is its contract â€” internal implementation may change.
+  [M3] A module's public API is its contract — internal implementation may change.
   [M4] A module MAY implement multiple bounded contexts from one or more domains.
   [M5] A module's `files` and `tests` declarations are routing pointers, not source of truth.
   [M6] A module MUST be independently testable.

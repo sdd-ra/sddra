@@ -1,7 +1,7 @@
-﻿Gate: DAST
+Gate: DAST
 
 Purpose:
-  Dynamic Application Security Testing — analyze running application
+  Dynamic Application Security Testing � analyze running application
   for security vulnerabilities by simulating attacks.
 
 AppliesTo:

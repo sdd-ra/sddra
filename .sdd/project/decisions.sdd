@@ -1,0 +1,78 @@
+# Project: Decisions
+
+Purpose:
+  Define how project-level decisions are stored, indexed, and traced.
+  This file defines the SHAPE only — concrete decisions belong to the
+  instantiated project.
+
+Storage:
+  project/<domain>/decisions/<state>/*.sdd
+
+  Where <state> is one of: pending / approved / rejected / superseded
+
+  Example:
+    project/<domain>/decisions/pending/DEC-<ID>.sdd
+    project/<domain>/decisions/approved/DEC-<ID>.sdd
+
+DecisionIndex:
+  Each domain MAY maintain an INDEX.sdd for fast lookup:
+
+    Domain: @<domain>
+    Active: DEC-<ID>, DEC-<ID>
+    Review: DEC-<ID>
+    Superseded: DEC-<ID>, DEC-<ID>
+
+  AI MUST load INDEX first, then only the relevant decisions.
+
+DecisionRetrieval:
+  Task -> Domain -> Decision INDEX -> affected decisions -> only relevant DEC files
+
+DecisionImpactWorkflow:
+  NEW DECISION
+    -> COMPARE
+    -> CONFLICT CHECK
+    -> IMPACT ANALYSIS
+      -> SKILL IMPACT
+      -> GRAPH IMPACT
+      -> TASK IMPACT
+      -> DOC IMPACT
+    -> HUMAN GATE
+    -> APPROVE
+    -> CREATE / UPDATE TASKS
+
+RelationModel:
+  DependsOn:     decision depends on another decision
+  Supersedes:    decision replaces an older decision
+  Conflicts:     decision contradicts another decision
+  Affects:       decision affects a project element
+  DerivedFrom:   decision derived from another decision
+  Requires:      decision requires a skill
+  ReviewedBy:    decision reviewed by
+  ImplementedBy: decision implemented by a task
+  VerifiedBy:    decision verified by a QA task
+
+TokenEconomy:
+  ->  affects
+  =>  produces
+  <-  depends
+  ~   pending
+  +   accepted
+  !   conflict/fail
+  x   superseded
+  @   review
+
+DecisionStates:
+  ~ proposed
+  @ review
+  + accepted
+  ! rejected
+  x superseded
+  ? deprecated
+
+Navigation:
+  Schema: @../../schemas/decision.sdd
+  Workflow: @../../decisions/workflow.sdd
+  Rules: @../../decisions/rules.sdd
+  Template: @../../../templates/_sdd/decisions/DEC-000.template.sdd
+
+State: +

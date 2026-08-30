@@ -1,0 +1,32 @@
+# Project: Code Mapping
+
+Purpose:
+  Map source code artifacts to semantic identifiers through mirror files.
+  Source code annotations are forbidden — mirror files are the only
+  mapping mechanism.
+
+MirrorFileFormat:
+  Own:      <what this artifact owns>
+  Do:       <what this artifact does>
+  Use:      <what this artifact uses>
+  Test:     <test paths>
+  ->        <pointer to module/domain model>
+
+MirrorFileLocation:
+  .sdd/project/<source-path>/<artifact>.sdd
+
+BidirectionalResolution:
+  source -> semantic: mirror file path -> semantic ID
+  semantic -> source: semantic ID -> mirror file path -> real source
+
+Rules:
+  [PC1] Mirror files are created only when real source exists.
+  [PC2] Mirror files MUST NOT be created for hypothetical future code.
+  [PC3] Mirror file content MUST match the actual source code behavior.
+  [PC4] AI MUST use mirror files for source mapping, not filesystem search.
+
+Navigation:
+  Schema: @schema.sdd
+  Dependencies: @dependencies.sdd
+
+State: +

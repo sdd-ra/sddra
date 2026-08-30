@@ -1,4 +1,4 @@
-﻿Languages: SDD
+Languages: SDD
 
 Purpose:
   Programming language catalog with metadata for AI-driven technology
@@ -302,17 +302,17 @@ Catalog:
 
 TechnologyLifecycle:
   CANDIDATE:
-    ↓
+    ?
   EVALUATING:
-    ↓
+    ?
   SELECTED:
-    ↓
+    ?
   SUPPORTED:
-    ↓
+    ?
   DEPRECATED:
-    ↓
+    ?
   MIGRATION:
-    ↓
+    ?
   RETIRED
 
 State: +

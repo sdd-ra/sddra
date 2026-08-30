@@ -1,7 +1,7 @@
-﻿Gate: SAST
+Gate: SAST
 
 Purpose:
-  Static Application Security Testing — analyze source code for
+  Static Application Security Testing � analyze source code for
   security vulnerabilities without executing it.
 
 AppliesTo:

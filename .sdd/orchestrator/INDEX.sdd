@@ -1,104 +1,31 @@
-﻿Orchestrator: SDD
+# Orchestrator: SDD
 
 Purpose:
-  Autonomous Project Orchestrator. Unifies all engines into a single
-  agent lifecycle. Handles greenfield and brownfield modes. Transforms
-  user intent into architecture, tasks, workflow, implementation, and release.
-
-Owns: ./
+  Thin reference to the chain execution engine.
+  The actual orchestration logic lives in chains/ and workflow/.
+  This file exists for backward compatibility only.
 
 Modes:
-  AUTO — AI decides low-risk items
-  SUPERVISED — AI recommends, human approves major decisions
-  STRICT — Human approval required for architecture, security, DB migration, release
-  AUDIT — Analysis only, no modifications
-  READ_ONLY — Project analysis, no code changes
+  AUTO � AI decides low-risk items
+  SUPERVISED � AI recommends, human approves major decisions
+  STRICT � Human approval required for architecture, security, DB migration, release
+  AUDIT � Analysis only, no modifications
+  READ_ONLY � Project analysis, no code changes
 
-Rules:
-  [OD1] Default mode is AUTO for standard projects.
-  [OD2] STRICT mode requires human approval for critical decisions.
-  [OD3] READ_ONLY mode never modifies source code.
-  [OD4] AI MUST stop on critical ambiguity.
-  [OD5] AI MUST request human approval for HIGH/CRITICAL risk decisions.
-  [OD6] AI MUST NOT restart workflow on resume.
-  [OD7] Agent state MUST be persisted after each step.
-  [OD8] Crash recovery MUST resume from exact state, not restart.
-  [OD9] All user input MUST be normalized to structured intent.
-  [OD10] Intent MUST include risk assessment.
-  [OD11] Pipeline is adaptive, not linear.
-  [OD12] Existing project starts with discovery, not architecture.
-  [OD13] Multi-agent execution requires Role, Scope, Context, Permission, Task, Communication, Ownership.
-  [OD14] Every agent MUST have exactly one primary role.
-  [OD15] Agent responsibility is explicit, not implicit.
-  [OD16] Every task has exactly one owner.
-  [OD17] Handoff transfers context package, not full context.
-  [OD18] Orchestrator is NOT necessarily an LLM agent — workflow is deterministic.
-  [OD19] Agents do NOT negotiate directly — all communication goes through orchestrator.
-  [OD20] Parallel agents MUST have synchronization points.
-  [OD21] Agent isolation prevents partial work interference.
-  [OD22] Reviewer is independent from coder — confirmation bias prevention.
-  [OD23] Critical tasks require two-agent verification.
-  [OD24] Security veto cannot be overridden by majority vote.
-  [OD25] Agents have autonomy but NOT authority.
-  [OD26] Authority comes from SDD governance, not agent self-declaration.
-  [OD27] Partial progress does not automatically mean workflow FAILED.
-  [OD28] Agent memory MUST be controlled, versioned, audited.
-  [OD29] Agent quotas prevent runaway agents.
-  [OD30] Agent MUST NOT add signatures or sign-offs to any output.
-  [OD31] Agent MUST NOT use emojis or decorative symbols in headers or titles.
-
-Intent:
-  Types: BUG | FEATURE | REFACTOR | SECURITY | PERFORMANCE | DEPLOY | ANALYZE | PLAN
-  Structure: Intent, Domain, Risk, Constraints, RequiredSkills, LikelySkills
-  Rules:
-    - All user input MUST be normalized
-    - Critical ambiguity MUST trigger clarification
-    - Non-critical ambiguity resolved by agent research
-
-State:
-  States: DISCOVERING, ANALYZING, PLANNING, WAITING, IMPLEMENTING,
-          TESTING, VERIFYING, RELEASING, DEPLOYING, OBSERVING,
-          COMPLETED, FAILED
-  Persistence: runtime/state.sdd
-  Recovery: resume from exact state, no restart
-
-Pipeline:
-  New: Intent → Discovery → Analysis → Architecture → Skills →
-       Decision → Tasks → Dependencies → Workflow → BDD →
-       Implementation → Test → Security → Performance →
-       Infrastructure → Release → Deploy → Observe → Learn
-  Existing: Intent → Scan → Analysis → Detection → Mapping →
-            Conflict → Baseline → Gaps → Tasks → Workflow →
-            Parallel Execution
-  Rules:
-    - Pipeline is adaptive, not linear
-    - Cross-layer changes trigger multi-layer task creation
-    - Pipeline MUST support pause/resume for human approval
-
-Degradation:
-  FULL: all features operational
-  REDUCED: skip optional stages, core skills only
-  MINIMAL: basic chain only, human approval for all gates
-  READ_ONLY: analysis only, no modifications
-  Triggers: resource pressure, component failure, repeated failures
-
-ReadOrder:
-   1  @modes.sdd
-   2  @pipeline.sdd
-   3  @routing.sdd
+Execution:
+  All execution flows through the chain graph (chains/INDEX.sdd).
+  The orchestrator selects chains, applies policies, and executes stages.
 
 Navigation:
-  Orchestrator: @orchestrator/INDEX.sdd
-  Modes: @orchestrator/modes.sdd
-  Pipeline: @orchestrator/pipeline.sdd
-  Routing: @orchestrator/routing.sdd
-  Runtime: @runtime/INDEX.sdd
-  Context: @context/INDEX.sdd
-  Skills: @skills/INDEX.sdd
-  Protocol: @protocol/INDEX.sdd
-  Graph: @graph/INDEX.sdd
-  Tasks: @tasks/INDEX.sdd
-  Workflow: @workflow/INDEX.sdd
-  Observability: @observability/INDEX.sdd
+  Chains: @../chains/INDEX.sdd
+  Workflow: @../workflow/INDEX.sdd
+  Agent: @../agent/INDEX.sdd
+  Policies: @../workflow/policies.sdd
+
+Rules:
+  [OD1] All execution MUST go through the chain graph.
+  [OD2] Policy engine enforces authorization before execution.
+  [OD3] Human gates are mandatory for critical actions.
+  [OD4] Token economy rules apply to all execution.
 
 State: +

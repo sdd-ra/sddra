@@ -1,9 +1,9 @@
-﻿SecurityLevels: SDD
+SecurityLevels: SDD
 
 Purpose:
   Define the security levels (L0-L5) that determine which security
   controls, gates, and tests are applied to a project. Security level
-  is NOT a global setting — it is calculated from project characteristics
+  is NOT a global setting � it is calculated from project characteristics
   and must be explicitly set per project.
 
 Owns: ./

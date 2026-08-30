@@ -200,7 +200,7 @@ Reconciler:
 
 Navigation:
   Orchestrator: @../orchestrator/INDEX.sdd
-  Pipeline: @../orchestrator/pipeline.sdd
+  Pipeline: @../orchestrator/INDEX.sdd
   Workflow: @../workflow/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Graph: @../graph/INDEX.sdd

@@ -1,4 +1,4 @@
-﻿Release: Gates
+Release: Gates
 
 Purpose:
   Defines release gate and deployment verification rules.
@@ -11,18 +11,18 @@ GateSchema:
   Decision: APPROVED / BLOCKED
 
 ReleaseChain:
-  TASK → GATES → EVIDENCE → RESULT → RELEASE
+  TASK ? GATES ? EVIDENCE ? RESULT ? RELEASE
 
 ReleaseNode:
   Format: REL-YYYY-NNN
   Links to: TASKS, GATES, COMMIT, BUILD, IMAGE, DEPLOYMENT, ENVIRONMENT
 
 DeploymentVerification:
-  DEPLOY → SMOKE TEST → HEALTH CHECK → METRICS → ERROR RATE → VERIFY
+  DEPLOY ? SMOKE TEST ? HEALTH CHECK ? METRICS ? ERROR RATE ? VERIFY
 
 AutomaticRollback:
-  Trigger: Error rate ↑, Latency ↑, Healthcheck FAIL
-  Action: Release → Rollback policy
+  Trigger: Error rate ?, Latency ?, Healthcheck FAIL
+  Action: Release ? Rollback policy
 
 DeploymentStrategies:
   Small: Direct deployment

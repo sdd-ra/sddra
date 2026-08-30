@@ -37,7 +37,7 @@ Frameworks:
   Schemathesis (property-based)
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   Workflow: @t-levels.sdd
   TestLevels: @levels.sdd
   TestTypes: @types.sdd

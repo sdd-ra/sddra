@@ -1,0 +1,55 @@
+# Project: Risk
+
+Purpose:
+  Define the risk register schema for a project instance.
+  This file defines the SHAPE only — concrete risks belong to the
+  instantiated project.
+
+Schema:
+  id
+  area
+  risk
+  probability
+  impact
+  trigger
+  mitigation
+  owner
+
+Example:
+  #RISK-004
+
+  Area:
+    Database
+
+  Risk:
+    PostgreSQL becomes bottleneck
+
+  Probability:
+    medium
+
+  Impact:
+    high
+
+  Trigger:
+      CPU > 75%
+
+  Mitigation:
+      indexing
+      caching
+      read replica
+
+  Owner:
+      DB / DO
+
+Rules:
+  [PR1] AI MUST consult the risk register when proposing architecture or
+        implementation changes.
+  [PR2] Every risk MUST have an owner.
+  [PR3] Every risk MUST have defined mitigation.
+  [PR4] Risk register MUST be updated when risks change.
+
+Navigation:
+  Schema: @schema.sdd
+  Architecture: @architecture.sdd
+
+State: +

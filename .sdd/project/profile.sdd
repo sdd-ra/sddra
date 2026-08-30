@@ -1,0 +1,74 @@
+# Project: Profile
+
+Purpose:
+  Define project operational context so AI can choose architecture,
+  skills, and implementation strategies that fit the actual project.
+  This file defines the schema only — concrete values belong to the
+  instantiated project (bax ./instantiation.sdd).
+
+Schema:
+  Stack:
+    BE:    <backend framework / language>
+    DB:    <database>
+    FE:    <frontend framework>
+    MD:    <mobile framework>
+    DO:    <deployment / orchestration>
+
+  Scale:
+    DAU:   <number>
+    MAU:   <number>
+    QPS:   <number>
+
+  Availability:
+    SLA:   <percentage>
+
+  Architecture:
+    <style: modular_monolith / microservices / serverless / ...>
+
+  Regions:
+    <count>
+
+  Compliance:
+    <standards: GDPR / SOC2 / ...>
+
+  Constraints:
+    <list>
+
+  Goals:
+    <list>
+
+  ComplexityBudget:
+    <L0-L5 scale constraint that gates which patterns are eligible>
+
+  NFR:
+    Latency:     <target>
+    Availability: <target>
+    Security:     <baseline>
+    Recovery:     <RPO/RTO>
+
+  SecurityRiskBudget:
+    SecurityLevel:     <L0-L5>
+    RiskTolerance:    <low/medium/high>
+    CriticalAllowed:  <true/false>
+    HighAllowed:      <true/false>
+    PentestRequired:  <true/false>
+    ExternalExposure: <public/internal/private>
+
+NonGoals:
+  A project instance MAY declare explicit non-goals to prevent AI from
+  introducing scope creep via "best practice" additions the project has
+  consciously excluded.
+
+  Schema:
+    NonGoals:
+      <explicitly excluded concept>
+
+  Examples (illustrative only):
+    microservices, multi-region, blockchain, event-sourcing
+
+Navigation:
+  Schema: @schema.sdd
+  Instantiation: @instantiation.sdd
+  Architecture: @architecture.sdd
+
+State: +

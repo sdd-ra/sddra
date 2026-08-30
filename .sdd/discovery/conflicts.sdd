@@ -1,4 +1,4 @@
-﻿Drift: Discovery
+Drift: Discovery
 
 Purpose:
   Define drift detection, conflict resolution, and source-to-.sdd
@@ -15,15 +15,15 @@ DriftTypes:
   DECISION_DRIFT: .sdd decisions differ from source implementation
 
 ConflictResolution:
-  Principle: Analyze ≠ Modify
+  Principle: Analyze ? Modify
 
   Process:
     DETECT
-      ↓
+      ?
     REPORT
-      ↓
+      ?
     HUMAN/AGENT DECISION
-      ↓
+      ?
     .sdd UPDATE (if approved)
 
 ConflictReporting:
@@ -36,12 +36,12 @@ ConflictReporting:
 
 Mapping:
   Source: ./<layer>/<domain>/<module>/<artifact>
-  → Task: .sdd/projects/{project_name}/tasks/<TASK-ID>.sdd
-  → Domain: <domain-name>
-  → Component: <ComponentName>
-  → Skill: <skill-name>
-  → Test: <test-path>
-  → Doc: docs/<layer>/<domain>.md
+  ? Task: .sdd/projects/{project_name}/tasks/<TASK-ID>.sdd
+  ? Domain: <domain-name>
+  ? Component: <ComponentName>
+  ? Skill: <skill-name>
+  ? Test: <test-path>
+  ? Doc: docs/<layer>/<domain>.md
 
 DriftExamples:
   STACK_DRIFT: .sdd says Redis, source has Redis + Memcached

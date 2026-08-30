@@ -1,4 +1,4 @@
-﻿Rollback: Agent
+Rollback: Agent
 
 Purpose:
   Defines rollback and recovery policies for agent actions.
@@ -14,11 +14,11 @@ Checkpoint:
 
 RollbackFlow:
   RUN
-    ↓
+    ?
   CHECKPOINT
-    ↓
+    ?
   ACTION
-    ↓
+    ?
   VERIFY
 
   If fail:

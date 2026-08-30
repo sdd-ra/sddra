@@ -1,4 +1,4 @@
-﻿# JavaScript Fundamentals
+# JavaScript Fundamentals
 
 Purpose:
   JavaScript Fundamentals
@@ -63,7 +63,7 @@ SearchKeys:
 
 TechnologyLifecycle:
   Current: MATURE
-  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+  Emerging → Adopted → Mature → Legacy → Deprecated
 
 HumanDoc:
   docs/skills/languages/javascript/L1-fundamentals.md
@@ -75,7 +75,7 @@ Evidence:
 
 Rules:
   [J1] Use `const` by default, `let` if reassignment needed.
-  [J2] Never use `var` â€” it has function scope.
+  [J2] Never use `var` — it has function scope.
   [J3] Use template literals for string interpolation.
   [J4] Use arrow functions for callbacks.
   [J5] Use `===` and `!==`, never `==` or `!=`.
