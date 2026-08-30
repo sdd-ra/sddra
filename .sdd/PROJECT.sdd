@@ -172,7 +172,7 @@ Rules:
   [R63] Docker image MUST include all required tools — no host-level package installation.
   [R64] Resource limits MUST be defined per container: cpu, memory, pids, ulimit.
   [R65] Network access MUST be restricted to allowlisted domains only.
-  [R66] Docker volumes MUST be read-only unless explicitly required for output.
+  [R66] Docker containers MUST use local bind mounts — named volumes are forbidden.
   [R67] When no git remote link exists, local history is the default and mandatory record.
   [R68] {project_name}/ directory MUST NOT be auto-created — it requires explicit human selection.
   [R69] Until project name is selected, all work uses {project_name}/ as reference template only.

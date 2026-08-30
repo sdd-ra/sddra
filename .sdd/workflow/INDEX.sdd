@@ -104,5 +104,6 @@ Rules:
   [W18] /sdd next advances the decision chain to the next step automatically.
   [W19] Docker is the single execution environment — no host-level tool execution.
   [W20] Resource limits are enforced per Docker container: cpu, memory, pids, network.
+  [W21] Docker MUST use local bind mounts — named volumes are forbidden.
 
 State: +

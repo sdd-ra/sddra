@@ -1,32 +1,53 @@
 # /sdd-next
 
 Description:
-  Advance the decision chain to the next step automatically.
-  Reads current decision state and triggers the next workflow stage.
+  Advance to the next decision step or case.
+  Checks completion status of current decision and linked tasks
+  before determining the next action.
 
 Usage:
   /sdd-next
   /sdd-next --decision DEC-<ID>
+  /sdd-next --case CASE-<ID>
   /sdd-next --force
 
 Options:
   --decision    Advance specific decision
-  --force       Force advance even if gate is not passed (requires approval)
+  --case        Jump to specific case
+  --force       Force advance even if incomplete (requires approval)
 
 Behavior:
   1. Read current decision state from projects/{project_name}/decisions/
-  2. Determine next step from decision workflow
-  3. Check gate criteria for current stage
-  4. If gate passed: advance to next stage automatically
-  5. If gate failed: route to responsible stage for recovery
+  2. Read linked tasks from projects/{project_name}/tasks/
+  3. Check if current decision and ALL linked tasks are complete
+  4. IF complete:
+       - Move to next decision in the chain
+       - If no more decisions, move to next case
+       - If no more cases, signal workflow complete
+  5. IF incomplete:
+       - Identify which section is incomplete (decision or task)
+       - Resume from that section
+       - Do NOT advance to next case
   6. Record transition in decision history
   7. Update project state
 
+CompletionCheck:
+  decision_complete:
+    - status = approved
+    - all acceptance criteria met
+    - implementation tasks linked
+
+  task_complete:
+    - status = DONE
+    - all acceptance criteria met
+    - tests pass
+    - review passed
+
 Output:
   [decision: DEC-XXX]
-  [from: <stage>]
-  [to: <stage>]
-  [gate: passed|failed]
-  [next: <next_stage>]
+  [tasks_complete: true|false]
+  [incomplete_section: decision|task|none]
+  [action: advance|resume|complete]
+  [next: <decision|case|workflow_complete>]
 
 State: +
