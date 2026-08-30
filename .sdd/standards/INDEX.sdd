@@ -1,7 +1,7 @@
-ï»¿Standards: SDD
+Standards: SDD
 
 Purpose:
-  .sdd system standards â€” naming, levels, states, relations,
+  .sdd system standards — naming, levels, states, relations,
   conventions. These are the global rules that all .sdd files
   must follow.
 
@@ -15,9 +15,9 @@ ReadOrder:
    5  @conventions.sdd
 
 Modes:
-  PARSE   â€” parse and validate .sdd files
-  VALIDATE â€” validate against schemas
-  REBUILD â€” rebuild INDEX from entities
+  PARSE   — parse and validate .sdd files
+  VALIDATE — validate against schemas
+  REBUILD — rebuild INDEX from entities
 
 Rules:
   [ST1]  .sdd files are AI engineering knowledge, not documentation.

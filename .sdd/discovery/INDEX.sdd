@@ -1,18 +1,18 @@
-ï»¿Discovery: SDD
+Discovery: SDD
 
 Purpose:
   Project Discovery and Reverse-Engineering Engine. Enables AI to
   understand existing (brownfield) projects by analyzing source code
   and inferring architecture, stack, domains, tests, security,
   infrastructure, and documentation. Discovery NEVER modifies
-  source code â€” it only observes, infers, validates, and models.
+  source code — it only observes, infers, validates, and models.
 
 Owns: ./
 
 Modes:
-  GREENFIELD â€” new project from business input
-  BROWNFIELD â€” existing project from source code
-  HYBRID â€” existing project with new requirements
+  GREENFIELD — new project from business input
+  BROWNFIELD — existing project from source code
+  HYBRID — existing project with new requirements
 
 Rules:
   [DSC1]  Discovery MUST analyze, not modify source code.
@@ -22,7 +22,7 @@ Rules:
   [DSC4]  Discovery MUST NOT overwrite .sdd without human/agent decision.
   [DSC5]  Discovery MUST detect drift between .sdd and source.
   [DSC6]  Discovery MUST produce actionable backlog, not just report.
-  [DSC7]  Discovery MUST respect "Analyze â‰  Modify" principle.
+  [DSC7]  Discovery MUST respect "Analyze ? Modify" principle.
   [DSC8]  Discovery baseline MUST be created for future comparison.
   [DSC9]  Discovery MUST detect circular dependencies.
   [DSC10] Discovery MUST identify security gaps.

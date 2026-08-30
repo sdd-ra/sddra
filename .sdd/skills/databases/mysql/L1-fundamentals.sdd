@@ -1,4 +1,4 @@
-﻿# MySQL Fundamentals
+# MySQL Fundamentals
 
 Purpose:
   MySQL Fundamentals
@@ -62,7 +62,7 @@ SearchKeys:
 
 TechnologyLifecycle:
   Current: MATURE
-  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+  Emerging → Adopted → Mature → Legacy → Deprecated
 
 HumanDoc:
   docs/skills/databases/mysql/L1-fundamentals.md

@@ -1,4 +1,4 @@
-﻿# React State Management
+# React State Management
 
 Purpose:
   React State Management
@@ -76,7 +76,7 @@ Evidence:
 Rules:
   [R1] Use React Query for server state (caching, refetching).
   [R2] Use Zustand or Jotai for client state (UI state).
-  [R3] Use Context API sparingly â€” only for truly global state.
+  [R3] Use Context API sparingly — only for truly global state.
   [R4] Use Redux Toolkit for complex state logic.
   [R5] Normalize state shape for relational data.
   [R6] Use selectors for derived state.

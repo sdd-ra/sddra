@@ -1,4 +1,4 @@
-﻿Tracing: SDD
+Tracing: SDD
 
 Purpose:
   Defines distributed tracing policy and trace structure.
@@ -20,7 +20,7 @@ Sampling:
   Errors: 100% for error traces
 
 CodeTraceMapping:
-  trace → service → component → task
+  trace ? service ? component ? task
 
 LatencyAnalysis:
   - Identify slow spans

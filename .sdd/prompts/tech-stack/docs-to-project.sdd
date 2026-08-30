@@ -8,7 +8,7 @@ Input:
   .sdd/skills/ (skill catalog for reference)
 
 Output:
-  .sdd/project/PROJECT.sdd
+  .sdd/project/schema.sdd
   .sdd/projects/{project_name}/architecture/system.sdd
   .sdd/projects/{project_name}/stack/backend.sdd
   .sdd/projects/{project_name}/stack/frontend.sdd

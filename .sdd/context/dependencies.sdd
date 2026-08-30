@@ -1,13 +1,13 @@
-﻿Dependencies: Context
+Dependencies: Context
 
 Purpose:
   Define context dependency graph, invalidation rules, and
   context fingerprinting.
 
 ContextDependencyGraph:
-  Task → Domain → Module → Artifacts
-  Task → Skills → Sections
-  Task → Decisions → Implementation
+  Task ? Domain ? Module ? Artifacts
+  Task ? Skills ? Sections
+  Task ? Decisions ? Implementation
 
 ContextFingerprint:
   Format: CTX-XXXX
@@ -22,11 +22,11 @@ ContextInvalidation:
 
   Process:
     SOURCE CHANGE
-      ↓
+      ?
     DEPENDENCY GRAPH
-      ↓
+      ?
     INVALIDATE
-      ↓
+      ?
     REBUILD CONTEXT
 
 InvalidationScope:

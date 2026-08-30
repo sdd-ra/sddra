@@ -3,6 +3,9 @@
 Purpose:
   Record token usage per chain stage for cost control.
 
+Tracking:
+  File: projects/{project_name}/tokens/{node}.sdd
+
 Schema: @calculator.sdd
 
 Index:
@@ -13,5 +16,10 @@ Index:
   R1: @projects/{project_name}/tokens/R1.sdd
   DEP1: @projects/{project_name}/tokens/DEP1.sdd
   D0: @projects/{project_name}/tokens/D0.sdd
+
+Rules:
+  [TK1] Token usage MUST be recorded for every chain stage.
+  [TK2] Token budget is enforced per stage, not globally.
+  [TK3] Over-budget stages MUST trigger context compaction.
 
 State: +

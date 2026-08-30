@@ -1,4 +1,4 @@
-﻿# Go Integration Testing
+# Go Integration Testing
 
 Purpose:
   Go Integration Testing
@@ -74,7 +74,7 @@ Rules:
   [T1] Integration tests MUST use real dependencies (test databases).
   [T2] Use Testcontainers for ephemeral test environments.
   [T3] Clean up resources after each test.
-  [T4] Tests MUST be idempotent â€” can run in any order.
+  [T4] Tests MUST be idempotent — can run in any order.
   [T5] Use Docker Compose for multi-service test setups.
   [T6] Mock only external third-party APIs, not internal services.
   [T7] Set reasonable timeouts for integration tests.

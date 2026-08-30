@@ -1,4 +1,4 @@
-﻿Spec: SecurityScanners
+Spec: SecurityScanners
 
 Purpose:
   Security scanner configuration and execution rules. Scanners are the

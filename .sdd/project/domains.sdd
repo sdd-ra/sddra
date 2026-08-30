@@ -1,7 +1,7 @@
-ï»¿Spec: Project/Domains
+Spec: Project/Domains
 
 Purpose:
-  Define the generic business domains of the SDDRA ecosystem â€” the
+  Define the generic business domains of the SDDRA ecosystem — the
   bounded contexts that make up the system. Each domain represents a
   distinct area of business capability with its own vocabulary, rules,
   and ownership.
@@ -15,7 +15,7 @@ Owns:
 Domains:
 
   Integration:
-    purpose: External system connectivity â€” third-party APIs, webhooks, pre-checks
+    purpose: External system connectivity — third-party APIs, webhooks, pre-checks
     bounded_contexts:
       - http-client (external API communication)
       - field-mapping (request/response transformation)
@@ -39,7 +39,7 @@ Domains:
       - uses: Scheduling
 
   Gamification:
-    purpose: Player engagement system â€” points, badges, leaderboards, rules
+    purpose: Player engagement system — points, badges, leaderboards, rules
     bounded_contexts:
       - rules-engine (declarative rule evaluation for points, badges, achievements)
       - leaderboard (ranked lists, scopes, caching)
@@ -66,7 +66,7 @@ Domains:
       - used_by: User (player attributes, progression)
 
   Notification:
-    purpose: Multi-channel outbound messaging â€” email, SMS, messaging platforms
+    purpose: Multi-channel outbound messaging — email, SMS, messaging platforms
     bounded_contexts:
       - email (template rendering and delivery)
       - sms (provider abstraction)

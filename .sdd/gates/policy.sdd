@@ -1,12 +1,12 @@
-﻿Policy: Gates
+Policy: Gates
 
 Purpose:
   Defines gate engine policy, lifecycle, and adaptive gate selection.
 
 Lifecycle:
-  REQUIREMENT → BDD → IMPLEMENTATION → STATIC QUALITY → UNIT TEST →
-  INTEGRATION TEST → E2E/UI → SECURITY → PERFORMANCE → INFRASTRUCTURE →
-  REVIEW → RELEASE → DEPLOY → RUNTIME VERIFY
+  REQUIREMENT ? BDD ? IMPLEMENTATION ? STATIC QUALITY ? UNIT TEST ?
+  INTEGRATION TEST ? E2E/UI ? SECURITY ? PERFORMANCE ? INFRASTRUCTURE ?
+  REVIEW ? RELEASE ? DEPLOY ? RUNTIME VERIFY
 
 GateSchema:
   Every gate MUST define:
@@ -63,7 +63,7 @@ Rules:
   [GP3]  Every gate MUST have Condition + Evidence + Threshold + Owner + Decision.
   [GP4]  Gate failure blocks subsequent gates.
   [GP5]  Critical gates are hard blockers.
-  [EX1]  SKIPPED ≠ WAIVED.
+  [EX1]  SKIPPED ? WAIVED.
   [EX2]  Waivers require explicit approval.
   [EX3]  Waivers have expiration dates.
   [EX4]  Expired waivers MUST be renewed or gate re-run.

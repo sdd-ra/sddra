@@ -1,4 +1,4 @@
-﻿Incident: SDD
+Incident: SDD
 
 Purpose:
   Defines incident lifecycle, alerting, and diagnostics.
@@ -7,31 +7,31 @@ Purpose:
 
 IncidentLifecycle:
   DETECTED:
-    ↓
+    ?
   TRIAGED:
     - Severity assessment
     - Impact assessment
     - Owner assignment
-    ↓
+    ?
   INVESTIGATING:
     - Collect signals (metrics, logs, traces, deploy history)
     - Correlate data
     - Identify root cause with confidence level
-    ↓
+    ?
   MITIGATING:
     - Immediate fix or workaround
     - Stop bleeding
-    ↓
+    ?
   RESOLVED:
     - Root cause fixed
     - Verification
-    ↓
+    ?
   POSTMORTEM:
     - Timeline
     - Root cause
     - Impact
     - Lessons learned
-    ↓
+    ?
   PREVENTION:
     - Task creation
     - Architecture review
@@ -54,7 +54,7 @@ Alerting:
   AlertFatigue: alerts MUST be actionable, grouped, suppressed during maintenance
 
 Diagnostics:
-  Flow: Alert/Incident → CollectSignals → CorrelateSignals → IdentifyPattern → RootCause
+  Flow: Alert/Incident ? CollectSignals ? CorrelateSignals ? IdentifyPattern ? RootCause
   Signals: Metrics, Logs, Traces, Deploy history, Code changes, Dependency status
   Confidence: CONFIRMED, HIGH_CONFIDENCE, LIKELY, POSSIBLE, UNKNOWN
   Tools: Metric analysis, Log analysis, Trace analysis, Deploy diff, Dependency graph
@@ -72,7 +72,7 @@ Rules:
   [IR4] Recurring incidents MUST trigger ARCHITECTURE_REVIEW_REQUIRED.
   [IR5] Deploy correlation MUST be maintained.
   [IR6] Diagnostics MUST correlate multiple signal types.
-  [IR7] Incident → Task flow MUST be automatic for confirmed incidents.
+  [IR7] Incident ? Task flow MUST be automatic for confirmed incidents.
   [IR8] Rollback decisions MUST respect project policy.
 
 State: +

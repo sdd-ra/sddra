@@ -1,4 +1,4 @@
-﻿# TypeScript Fundamentals
+# TypeScript Fundamentals
 
 Purpose:
   TypeScript Fundamentals
@@ -64,7 +64,7 @@ SearchKeys:
 
 TechnologyLifecycle:
   Current: MATURE
-  Emerging â†’ Adopted â†’ Mature â†’ Legacy â†’ Deprecated
+  Emerging → Adopted → Mature → Legacy → Deprecated
 
 HumanDoc:
   docs/skills/languages/typescript/L1-fundamentals.md
@@ -79,7 +79,7 @@ Rules:
   [T2] Use `interface` for object shapes, `type` for unions/aliases.
   [T3] Use `unknown` instead of `any` for unknown values.
   [T4] Use `readonly` for immutable properties.
-  [T5] Use `enum` sparingly â€” prefer union types.
+  [T5] Use `enum` sparingly — prefer union types.
   [T6] Use `const` assertions for literal types.
   [T7] Use `as const` for readonly literal types.
   [T8] Enable `noImplicitAny` and `strictNullChecks`.

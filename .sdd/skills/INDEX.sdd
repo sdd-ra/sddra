@@ -1,4 +1,4 @@
-ï»¿Skills: SDD
+Skills: SDD
 
 Purpose:
   Skill Intelligence and Self-Evolution Engine. Skills are living
@@ -83,11 +83,11 @@ ReadOrder:
     71  @sdd/SKILL-SCHEDULED-SYNC.sdd
 
 Modes:
-  APPLY    â€” apply skill to current task
-  REVIEW   â€” review skill for updates
-  UPGRADE  â€” propose skill upgrade
-  COMPARE  â€” compare approaches
-  AUDIT    â€” audit skill health
+  APPLY    — apply skill to current task
+  REVIEW   — review skill for updates
+  UPGRADE  — propose skill upgrade
+  COMPARE  — compare approaches
+  AUDIT    — audit skill health
 
 Rules:
   [SK1]  Skill Core MUST be short and token-efficient.
@@ -95,7 +95,7 @@ Rules:
   [SK3]  Skill MUST have metadata: ID, Domain, Level, Version, Status, Maturity, Risk, ReviewDate, EvidenceLevel.
   [SK4]  Skill status: DRAFT, EXPERIMENTAL, STABLE, DEPRECATED, RETIRED.
   [SK5]  Skill maturity: UNKNOWN, EMERGING, VALIDATED, MATURE, STANDARD.
-  [SK6]  Skill NEVER changes directly â€” DISCOVER â†’ ANALYZE â†’ PROPOSE â†’ REVIEW â†’ APPROVE â†’ UPDATE.
+  [SK6]  Skill NEVER changes directly — DISCOVER ? ANALYZE ? PROPOSE ? REVIEW ? APPROVE ? UPDATE.
   [SK7]  Evidence priority: Official standard > Official documentation > Security advisory > Vendor docs > Peer-reviewed research > Reputable source > Community consensus > Blog/opinion.
   [SK8]  Skill MUST have search keys for knowledge discovery.
   [SK9]  Skill MUST track technology lifecycle.
@@ -107,21 +107,21 @@ Rules:
   [SK15] Skill versioning: MAJOR (breaking), MINOR (compatible), PATCH (correction).
   [SK16] Skill compatibility MUST be checked against project versions.
   [SK17] Skill review schedule: Critical 30 days, Normal 90 days, Stable 180 days.
-  [SK18] Skill feedback loop: INCIDENT â†’ SKILL-GAP â†’ SKILL-UPGRADE-PROPOSAL.
+  [SK18] Skill feedback loop: INCIDENT ? SKILL-GAP ? SKILL-UPGRADE-PROPOSAL.
   [SK19] Skill is executable contract, not prompt. Input, output, requires, must, must_not MUST be declared.
-  [SK20] Skill chain defines process boundaries â€” AI discovers solution within boundaries.
+  [SK20] Skill chain defines process boundaries — AI discovers solution within boundaries.
   [SK21] Skill gate MUST evaluate condition before skill execution.
   [SK22] Skill guard MUST enforce preconditions and postconditions.
   [SK23] Skill autonomy level MUST be explicit: 0=human, 1=propose, 2=approved execute, 3=autonomous.
   [SK24] Skill trust level MUST be explicit: READ_ONLY, LOW_RISK, MEDIUM_RISK, HIGH_RISK, CRITICAL.
   [SK25] Skill boundary MUST be enforced: allowed_paths, allowed_tables, allowed_api.
-  [SK26] Skill tool access MUST follow least privilege â€” whitelist only required tools.
+  [SK26] Skill tool access MUST follow least privilege — whitelist only required tools.
   [SK27] Composite skills MUST decompose into reusable atomic skills.
   [SK28] Skill version compatibility MUST be checked before assignment.
   [SK29] Skill failure MUST be typed: INPUT_INVALID, POLICY_DENIED, TOOL_FAILED, TIMEOUT, AGENT_FAILED, OUTPUT_INVALID, POSTCONDITION_FAILED.
   [SK30] Skill execution protocol: Receive Task -> Resolve Skill -> Validate Input -> Resolve Context -> Resolve Policies -> Resolve Tools -> Create Execution -> Run Agent -> Validate Output -> Validate Postconditions -> Emit Events -> Continue Chain.
   [SK31] Agent MUST NOT add signatures or sign-offs to skill outputs.
-  [SK32] Agent MUST NOT use emojis, icons, or decorative symbols in skill output headers or titles â€” reserved for human use only.
+  [SK32] Agent MUST NOT use emojis, icons, or decorative symbols in skill output headers or titles — reserved for human use only.
 
 Entry:
   Read:

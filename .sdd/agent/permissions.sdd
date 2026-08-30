@@ -1,4 +1,4 @@
-﻿Permissions: Agent
+Permissions: Agent
 
 Purpose:
   Defines agent permissions. Permission = capability + policy + context.

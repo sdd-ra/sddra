@@ -1,4 +1,4 @@
-﻿Execution: Agent
+Execution: Agent
 
 Purpose:
   Defines agent execution lifecycle, action model, and tool
@@ -6,22 +6,22 @@ Purpose:
 
 ExecutionLifecycle:
   REQUESTED:
-    ↓
+    ?
   PLANNED:
-    ↓
+    ?
   AUTHORIZED:
-    ↓
+    ?
   EXECUTING:
-    ↓
+    ?
   VERIFIED:
-    ↓
+    ?
   COMPLETED
 
 Failure:
   EXECUTING:
-    ↓
+    ?
   FAILED:
-    ↓
+    ?
   ROLLBACK / RECOVERY
 
 ActionModel:

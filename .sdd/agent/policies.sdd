@@ -1,4 +1,4 @@
-﻿Policies: Agent
+Policies: Agent
 
 Purpose:
   Defines agent execution policies including risk classification,
@@ -98,7 +98,7 @@ EscalationRules:
   [AP4]  Agent MUST record approval decision in audit log.
 
 PolicyRules:
-  [PL1]  Policy hierarchy: Global → Project → Action.
+  [PL1]  Policy hierarchy: Global ? Project ? Action.
   [PL2]  Most specific policy wins.
   [PL3]  When in conflict, safer policy wins.
   [PL4]  Agent MUST stop on any stop condition.

@@ -1,8 +1,8 @@
-﻿Spec: Project/Dependencies
+Spec: Project/Dependencies
 
 Purpose:
   Define the generic dependency relationships between SDDRA ecosystem
-  modules. This is the project-level instance — not a reusable schema.
+  modules. This is the project-level instance � not a reusable schema.
 
 Owns:
   Module dependency graph

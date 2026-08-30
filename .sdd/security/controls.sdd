@@ -1,4 +1,4 @@
-﻿# Security Controls
+# Security Controls
 
 Purpose:
   Security control specifications for the SDDRA system.
@@ -91,12 +91,12 @@ ControlSelection:
     SEC.SAST
 
   Conditional controls (based on risk/level):
-    R2+ → SEC.SAST, SEC.DEP, SEC.AUTH
-    R3+ → SEC.THREAT, SEC.DAST
-    R4+ → SEC.PENTEST, SEC.AUDIT
-    L3+ → SEC.DAST, SEC.THREAT
-    L4+ → SEC.PENTEST
-    L5+ → SEC.SUPPLY, SEC.CONTAINER, external assessment
+    R2+ ? SEC.SAST, SEC.DEP, SEC.AUTH
+    R3+ ? SEC.THREAT, SEC.DAST
+    R4+ ? SEC.PENTEST, SEC.AUDIT
+    L3+ ? SEC.DAST, SEC.THREAT
+    L4+ ? SEC.PENTEST
+    L5+ ? SEC.SUPPLY, SEC.CONTAINER, external assessment
 
 State: +
   Note:

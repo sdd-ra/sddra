@@ -1,8 +1,8 @@
-﻿WorkflowLifecycle: SDD
+WorkflowLifecycle: SDD
 
 Purpose:
   Defines the standard workflow lifecycle for SDD-driven projects.
-  This is the DEFAULT catalog — projects select the stages they need
+  This is the DEFAULT catalog � projects select the stages they need
   based on scale, security, and complexity. Minimum sufficient process
   is enforced: small projects get minimal workflows, large projects
   get full validation.

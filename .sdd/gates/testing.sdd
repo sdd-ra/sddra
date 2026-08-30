@@ -1,4 +1,4 @@
-﻿Testing: Gates
+Testing: Gates
 
 Purpose:
   Defines testing gates including unit, integration, E2E, UI, and manual QA.
@@ -22,7 +22,7 @@ TestTypes:
   E2E:
     Condition: All E2E tests pass
     Threshold: Failed = 0
-    Layers: FE → API → BE → DB, MD → API → BE
+    Layers: FE ? API ? BE ? DB, MD ? API ? BE
   UI:
     Condition: UI tests pass
     Tools: Playwright, Cypress, Detox, Flutter integration

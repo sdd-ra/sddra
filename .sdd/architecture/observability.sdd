@@ -1,4 +1,4 @@
-﻿Observability: SDD
+Observability: SDD
 
 Purpose:
   Define observability requirements for both the system being built
@@ -339,20 +339,20 @@ EventArchitecture:
 EndToEndTrace:
   structure:
     REQ-100
-      ↓
+      ?
     TASK-200
-      ↓
+      ?
     EXEC-300
-      ↓
-    ├── AGENT-10
-      │     ├── SKILL-20
-      │     ├── CTX-30
-      │     └── PROMPT-40
-      ├── POLICY-50
-      ├── ACTION-60
-      │     └── TOOL-70
-      ├── VALIDATION-80
-      └── ARTIFACT-90
+      ?
+    +-- AGENT-10
+      �     +-- SKILL-20
+      �     +-- CTX-30
+      �     +-- PROMPT-40
+      +-- POLICY-50
+      +-- ACTION-60
+      �     +-- TOOL-70
+      +-- VALIDATION-80
+      +-- ARTIFACT-90
 
   rule: every node has ID, Version, Timestamp, Actor, Parent, Correlation
 
@@ -421,7 +421,7 @@ Rules:
   [OBS-13] End-to-end trace links Requirement to Artifact.
   [OBS-14] Root cause analysis traces failures through execution chain.
   [OBS-15] Agent MUST NOT add signatures or sign-offs to observability outputs.
-  [OBS-16] Agent MUST NOT use emojis, icons, or decorative symbols in observability output headers or titles — reserved for human use only.
+  [OBS-16] Agent MUST NOT use emojis, icons, or decorative symbols in observability output headers or titles � reserved for human use only.
 
 State: +
 

@@ -1,17 +1,17 @@
-﻿Routing: Context
+Routing: Context
 
 Purpose:
   Define how user input is routed to the correct context. Intent,
   project, domain, and task detection determine what is loaded.
 
 IntentDetection:
-  FIX: → task context
-  REVIEW: → diff + standards + security context
-  SECURITY: → threat model + security skills context
-  INCIDENT: → alert + metrics + logs + trace context
-  DEPLOY: → infrastructure + CI/CD + rollback context
-  ANALYZE: → project summary + architecture + stack context
-  PLAN: → requirements + architecture + tasks context
+  FIX: ? task context
+  REVIEW: ? diff + standards + security context
+  SECURITY: ? threat model + security skills context
+  INCIDENT: ? alert + metrics + logs + trace context
+  DEPLOY: ? infrastructure + CI/CD + rollback context
+  ANALYZE: ? project summary + architecture + stack context
+  PLAN: ? requirements + architecture + tasks context
 
 ContextRadius:
   R0: task itself
@@ -23,7 +23,7 @@ ContextRadius:
 Default: R0 + R1
 
 Expansion:
-  If context insufficient: R0 → R1 → R2 → R3 → R4
+  If context insufficient: R0 ? R1 ? R2 ? R3 ? R4
 
 AudienceRouting:
   Developer: source, skills, architecture, tests

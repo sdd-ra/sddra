@@ -1,4 +1,4 @@
-ï»¿# Workflow
+# Workflow
 
 Purpose:
   The .sdd system's workflow layer. Contains the workflow engine
@@ -12,7 +12,7 @@ ReadOrder:
    2 @stages.sdd (formal stage registry)
    3 @transitions.sdd (default and conditional transitions)
    4 @gates.sdd (gate criteria for each stage)
-    5 @state.sdd (task state machine â€” canonical definitions)
+    5 @state.sdd (task state machine — canonical definitions)
    6 @lifecycle.sdd (workflow lifecycle)
    7 @policies.sdd (workflow policies)
    8 @testing.sdd (test levels T0-T7, test pyramid)
@@ -69,7 +69,7 @@ Navigation:
 
 Rules:
   [W1]  AI MUST load workflow/INDEX.sdd before reading any workflow
-        component â€” never read workflow files blindly.
+        component — never read workflow files blindly.
 
   [W2]  A stage MUST be declared in stages.sdd before it can appear in
         any chain or transition.
@@ -80,31 +80,31 @@ Rules:
         advance.
 
   [W5]  State (workflow/state.sdd) and Stage (stages.sdd) are distinct
-        concepts â€” a task at stage BE may be in state BLOCKED.
+        concepts — a task at stage BE may be in state BLOCKED.
 
   [W6]  A task MUST NOT advance past a gate without passing it.
 
-  [W7]  Test levels (T0-T7) are independent of stages â€” a stage MAY
+  [W7]  Test levels (T0-T7) are independent of stages — a stage MAY
         activate multiple test levels.
 
   [W8]  The task queue engine (NextAction) operates on task state, not
-        stage â€” next valid transition determines next action.
+        stage — next valid transition determines next action.
 
-  [W9]  Runtime events (events.sdd) MUST be appended, never modified â€”
+  [W9]  Runtime events (events.sdd) MUST be appended, never modified —
         history is append-only.
 
   [W10] A workflow change (new stage, new transition, new gate) requires
         human approval if it affects an existing project's chains.
   [W11] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
-  [W12] BE_TS, FE_TS, MD_TS are test suite gates â€” they run only changed files.
-  [W13] Full regression suites are NOT run on unchanged code â€” token economy rule.
-  [W14] CR = Code Review â€” mandatory after each implementation stage and test suite.
-  [W15] BRU = Business Requirement Unit â€” human-gated business validation.
-  [W16] CRU = Code Requirement Unit â€” automated code quality and compliance check.
+  [W12] BE_TS, FE_TS, MD_TS are test suite gates — they run only changed files.
+  [W13] Full regression suites are NOT run on unchanged code — token economy rule.
+  [W14] CR = Code Review — mandatory after each implementation stage and test suite.
+  [W15] BRU = Business Requirement Unit — human-gated business validation.
+  [W16] CRU = Code Requirement Unit — automated code quality and compliance check.
   [W17] MANUAL gate requires user login with full permissions from environment.
   [W18] /sdd next advances the decision chain to the next step automatically.
-  [W19] Docker is the single execution environment â€” no host-level tool execution.
+  [W19] Docker is the single execution environment — no host-level tool execution.
   [W20] Resource limits are enforced per Docker container: cpu, memory, pids, network.
-  [W21] Docker MUST use local bind mounts â€” named volumes are forbidden.
+  [W21] Docker MUST use local bind mounts — named volumes are forbidden.
 
 State: +

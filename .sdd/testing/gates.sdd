@@ -156,7 +156,7 @@ Waiver:
   Waived tests are tracked in @projects/{project_name}/testing/exceptions/.
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   Workflow: @t-levels.sdd
   TestLevels: @levels.sdd
   TestTypes: @types.sdd

@@ -1,4 +1,4 @@
-﻿# Java Performance Tuning
+# Java Performance Tuning
 
 Purpose:
   Java Performance Tuning
@@ -72,8 +72,8 @@ Evidence:
   - Production benchmarks
 
 Rules:
-  [J1] Profile before optimizing â€” use JFR, async-profiler, or VisualVM.
-  [J2] Tune GC for your workload â€” G1GC for low latency, ZGC for massive heaps.
+  [J1] Profile before optimizing — use JFR, async-profiler, or VisualVM.
+  [J2] Tune GC for your workload — G1GC for low latency, ZGC for massive heaps.
   [J3] Use `-XX:+UseStringDeduplication` for G1GC.
   [J4] Minimize object allocation in hot paths.
   [J5] Use primitive collections (fastutil, trove) for numeric data.

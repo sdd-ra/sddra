@@ -1,4 +1,4 @@
-﻿Limits: Agent
+Limits: Agent
 
 Purpose:
   Defines agent execution limits and constraints.
@@ -36,7 +36,7 @@ DockerResourceLimits:
     allowlisted domains only
 
 DockerVolumes:
-  rule: USE LOCAL BIND MOUNTS ONLY — no Docker named volumes
+  rule: USE LOCAL BIND MOUNTS ONLY � no Docker named volumes
   rule: all data MUST persist on local filesystem via bind mount
   rule: bind mount path: ./workspace -> /workspace inside container
   rule: when container is deleted, local files remain intact

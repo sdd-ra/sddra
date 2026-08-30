@@ -1,4 +1,4 @@
-ï»¿Agent: SDD
+Agent: SDD
 
 Purpose:
   Agent Runtime and Tool Execution Engine. Defines what the AI
@@ -19,15 +19,15 @@ ReadOrder:
    8  @audit.sdd
 
 Modes:
-  PLAN      â€” plan only, no execution
-  ANALYZE   â€” analysis only
-  IMPLEMENT â€” implement changes
-  REVIEW    â€” review changes
-  TEST      â€” run tests
-  SECURITY  â€” security checks
-  DEPLOY    â€” deployment operations
-  DIAGNOSE  â€” diagnose issues
-  AUDIT     â€” full audit
+  PLAN      — plan only, no execution
+  ANALYZE   — analysis only
+  IMPLEMENT — implement changes
+  REVIEW    — review changes
+  TEST      — run tests
+  SECURITY  — security checks
+  DEPLOY    — deployment operations
+  DIAGNOSE  — diagnose issues
+  AUDIT     — full audit
 
 Rules:
   [AG1]  AI MUST NEVER act on "I think this is okay" for production

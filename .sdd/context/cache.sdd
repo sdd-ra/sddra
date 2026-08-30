@@ -1,4 +1,4 @@
-﻿Cache: Context
+Cache: Context
 
 Purpose:
   Define context caching policy, invalidation, and optimization.

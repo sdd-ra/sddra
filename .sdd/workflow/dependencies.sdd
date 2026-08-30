@@ -1,8 +1,8 @@
-﻿WorkflowDependencies: SDD
+WorkflowDependencies: SDD
 
 Purpose:
   Defines dependencies between workflow stages. Stage dependencies
-  are distinct from task dependencies — they define which stages must
+  are distinct from task dependencies � they define which stages must
   complete before others can begin, not which tasks block which tasks.
 
 StageDependencies:

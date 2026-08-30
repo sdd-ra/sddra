@@ -1,4 +1,4 @@
-﻿# Go Performance Optimization
+# Go Performance Optimization
 
 Purpose:
   Go Performance Optimization
@@ -74,12 +74,12 @@ Evidence:
   - Production benchmarks
 
 Rules:
-  [G1] Always profile before optimizing â€” use `go test -bench` and `pprof`.
-  [G2] Minimize allocations in hot paths â€” reuse objects with sync.Pool.
+  [G1] Always profile before optimizing — use `go test -bench` and `pprof`.
+  [G2] Minimize allocations in hot paths — reuse objects with sync.Pool.
   [G3] Use `[]byte` buffers instead of string concatenation.
   [G4] Pre-allocate slices when size is known.
   [G5] Use `strconv` instead of `fmt.Sprintf` for numbers.
-  [G6] Avoid mutex contention â€” use sharding or atomic operations.
+  [G6] Avoid mutex contention — use sharding or atomic operations.
   [G7] Use `runtime.SetFinalizer` carefully for cleanup.
   [G8] Monitor GC pauses with `GOGC` and `GOMEMLIMIT`.
   [G9] Use `go tool trace` for CPU and goroutine analysis.

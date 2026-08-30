@@ -1,4 +1,4 @@
-﻿Spec: Project/Indexes
+Spec: Project/Indexes
 
 Purpose:
   Category-level index list for fast resolution of project knowledge.
@@ -25,7 +25,7 @@ Note:
    like `api`, `database`, `test`, `deployment`). To prevent duplication
    (see architecture/architecture.sdd -> NoDuplication) this file does
    not store concrete path lists, it only declares which categories are
-   indexed â€” concrete index content will be added when corresponding
+   indexed — concrete index content will be added when corresponding
    domains/modules are rebuilt.
 
 

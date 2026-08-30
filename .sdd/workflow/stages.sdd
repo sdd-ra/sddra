@@ -1,4 +1,4 @@
-ï»¿Stages: SDD
+Stages: SDD
 
 Purpose:
   Formal registry of all engineering stages used by the SDLC and STLC.
@@ -6,7 +6,7 @@ Purpose:
   outputs, and gate criteria. Stages are the building blocks of chains
   (bax chains/chains.sdd -> Stages, DefaultFlow).
 
-  This file is the authoritative stage list â€” chains/chains.sdd ->
+  This file is the authoritative stage list — chains/chains.sdd ->
   Stages is a summary copy for chain context, not the registry itself.
 
 
@@ -31,7 +31,7 @@ DoesNotOwn:
 
 Stages:
 
-  Orchestration stages â€” analysis/decision points that begin or redirect
+  Orchestration stages — analysis/decision points that begin or redirect
   a chain:
 
     AN:     Analysis
@@ -57,7 +57,7 @@ Stages:
       Output:   impact scope, affected stages
       Activates: when existing work is modified (bugfix, change, hotfix)
 
-  Engineering discipline stages â€” one responsibility each, reusable
+  Engineering discipline stages — one responsibility each, reusable
   across every project:
 
     BDD:    Behavior-Driven Development
@@ -124,7 +124,7 @@ Stages:
       Owner:    SC
       Input:    implementation, threat model
       Output:   security findings, remediation tasks
-      Activates: after QA, before DO â€” and continuously during
+      Activates: after QA, before DO — and continuously during
                  implementation for security-impacting work
 
     DO:     DevOps
@@ -139,7 +139,7 @@ Stages:
       Owner:    VR
       Input:    all stage outputs, test results
       Output:   verification report, acceptance decision
-      Activates: after all required stages complete â€” VR is the final
+      Activates: after all required stages complete — VR is the final
                  stage of any chain (bax chains/chains.sdd -> Important)
 
     CR:     Code Review

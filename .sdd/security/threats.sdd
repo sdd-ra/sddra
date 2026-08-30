@@ -1,4 +1,4 @@
-﻿Spec: SecurityThreats
+Spec: SecurityThreats
 
 Purpose:
   Threat model for the project. This file defines the threat landscape,
@@ -27,17 +27,17 @@ ThreatCategories:
 
 TrustBoundaries:
   Internet
-    ↓
+    ?
   WAF / CDN
-    ↓
+    ?
   Load Balancer
-    ↓
+    ?
   API Gateway
-    ↓
+    ?
   Services
-    ↓
+    ?
   Database
-    ↓
+    ?
   Secrets Store
 
   Each boundary is a potential attack surface.

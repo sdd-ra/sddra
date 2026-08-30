@@ -1,0 +1,101 @@
+# Project: Docs
+
+Purpose:
+  Define the human-readable documentation structure for a project instance.
+  This file defines the SHAPE only — concrete docs belong to the project's
+  ./docs/ directory (bax ../PROJECT.sdd -> Directories -> docs).
+
+LayerStructure:
+  docs/
+  ├── 00-about/        (project.md, glossary.md, system-overview.md)
+  ├── 10-business/     (business-model.md, business-rules.md, domains/, workflow/)
+  ├── 20-architecture/ (overview.md, decisions.md, boundaries.md, dependencies.md, diagrams/)
+  ├── 30-backend/      (overview.md, modules/, services/, api/, diagrams/)
+  ├── 40-frontend/     (overview.md, modules/, state/, diagrams/)
+  ├── 50-mobile/       (overview.md, android/, ios/, diagrams/)
+  ├── 60-database/     (overview.md, schema/, migrations/, indexing/, diagrams/)
+  ├── 70-api/          (overview.md, contracts/, authentication.md, diagrams/)
+  ├── 80-qa/           (strategy.md, bdd/, automation/, ui/, manual/, diagrams/)
+  ├── 90-security/     (overview.md, threats.md, policies.md, incidents/)
+  ├── 100-devops/      (overview.md, docker/, ci-cd/, deployment/, rollback/, diagrams/)
+  ├── 110-infrastructure/ (overview.md, vps/, aws/, azure/, gcp/, kubernetes/)
+  ├── 120-support/     (overview.md, runbooks/, troubleshooting/, incidents/, faq/)
+  └── 130-operations/  (monitoring.md, alerting.md, sla.md, disaster-recovery.md)
+
+OwnershipMatrix:
+  Every problem type MUST map to a primary owner, secondary owner,
+  and runbook. This matrix lives at docs/00-about/ownership.md.
+
+  Example:
+    | Problem            | Primary | Secondary | Runbook           |
+    | API 500            | BE      | DO        | api-500           |
+    | UI broken          | FE      | QA        | ui-failure        |
+    | Mobile crash       | MD      | QA        | mobile-crash      |
+    | DB unavailable     | DB      | DO        | database-down     |
+    | Deployment fail    | DO      | BE        | deployment-failure|
+    | Security issue     | SEC     | DO        | security-incident |
+    | Business rule wrong| Product | BE        | business-rule     |
+    | Test failure       | QA      | Owner     | test-failure      |
+
+DocMetadata:
+  Every doc file SHOULD declare:
+    Owner:       <team>
+    Secondary:   <teams>
+    Business:    <domain>
+    Related:     <@IDs>
+    Audience:    <business|developer|qa|devops|support>
+
+OnePageSummary:
+  Every major domain or component SHOULD have a one-page summary
+  before detailed documentation:
+    Purpose, Owner, Users, Inputs, Outputs, Dependencies,
+    Main Flow, Failure modes, Current status
+
+DiagramMetadata:
+  Every diagram file SHOULD declare:
+    Layer:     <CTX|ARCH|FLOW|SEQ|DATA|DEP|NET|DEPLOY|CI|OBS|SEC|TEST>
+    Owner:     <team>
+    Related:   <@IDs>
+    Source:    <source file>
+    Generated: <date>
+    Status:    <✓ verified|~ stale|! missing>
+
+CanonicalDiagramTypes:
+  #CTX   Context
+  #ARCH  Architecture
+  #FLOW  Flow
+  #SEQ   Sequence
+  #DATA  Data model
+  #DEP   Dependency
+  #NET   Network
+  #DEPLOY Deployment
+  #CI    CI/CD
+  #OBS   Observability
+  #SEC   Security
+  #TEST  Test flow
+
+Views:
+  A single canonical relationship model MAY have multiple human-facing
+  views. Each layer reads the same model but renders only the slice
+  relevant to its concern.
+
+DocIndex:
+  docs/index.md is the human entry point. It MUST list every layer
+  with its Owner, Purpose, Related domains, Related diagrams, and
+  Related runbooks.
+
+DocStatus:
+  Documentation status is tracked per work item:
+    DOC+  documentation current and verified
+    DOC~  documentation stale, update required
+    DOC!  documentation missing, block VR
+
+  A work item MUST NOT pass VR while any impacted layer's documentation
+  is DOC! or DOC~ without an approved exception.
+
+Navigation:
+  ProjectDocs: @../docs/
+  DocsMappings: @../docs/mappings.sdd
+  DocsOwnership: @../docs/ownership.sdd
+
+State: +

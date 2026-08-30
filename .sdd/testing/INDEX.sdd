@@ -52,7 +52,7 @@ Rules:
           when AI runs tests, never from root-level test directories.
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   TLevels: @t-levels.sdd
   TestTypes: @types.sdd
   TestLevels: @levels.sdd

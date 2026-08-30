@@ -1,4 +1,4 @@
-﻿# React Hooks Patterns
+# React Hooks Patterns
 
 Purpose:
   React Hooks Patterns
@@ -78,7 +78,7 @@ Rules:
   [R3] Use `useRef` for mutable values that don't trigger rerenders.
   [R4] Use `useReducer` for complex state logic.
   [R5] Use custom hooks to extract reusable logic.
-  [R6] Follow the Rules of Hooks â€” only call at top level.
+  [R6] Follow the Rules of Hooks — only call at top level.
   [R7] Use exhaustive dependency arrays for `useEffect`.
   [R8] Use `useId` for unique IDs in SSR.
 

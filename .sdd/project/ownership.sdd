@@ -1,0 +1,25 @@
+# Project: Ownership
+
+Purpose:
+  Define ownership rules for project elements.
+  Every project element MUST have one clear owner.
+
+Rules:
+  [PO1] Every project element (domain, module, feature, component) MUST have one clear owner.
+  [PO2] Ownership is declared at the element level, not inferred from filesystem paths.
+  [PO3] A component's owner is the same as its parent module's owner unless explicitly overridden.
+  [PO4] Code ownership implies review authority for that code.
+  [PO5] Documentation ownership is separate from code ownership but should align.
+
+Example:
+  payments (module)
+    owns: payment state, payment rules, payment database model
+
+  refund (feature)
+    owns: refund behavior, refund workflow
+
+Navigation:
+  Schema: @schema.sdd
+  Docs: @docs.sdd
+
+State: +

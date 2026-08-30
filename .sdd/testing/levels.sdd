@@ -95,7 +95,7 @@ Selection:
   These are independent scales.
 
 Navigation:
-  Project: @project/project.sdd
+  Project: @project/schema.sdd
   Workflow: @t-levels.sdd
   TestTypes: @types.sdd
   TestGates: @gates.sdd

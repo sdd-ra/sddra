@@ -1,4 +1,4 @@
-ï»¿States: Standards
+States: Standards
 
 Purpose:
   Defines standard states for .sdd entities.
@@ -98,8 +98,8 @@ StateRules:
   [SS2]  State transitions MUST follow defined flows.
   [SS3]  ARCHIVED state preserves history, does not delete.
   [SS4]  WAIVED state requires expiration date.
-  [SS5]  Compact symbols are for inline notation only â€” full state names are canonical.
-  [SS6]  Task state machine is defined in workflow/state.sdd â€” do not duplicate here.
+  [SS5]  Compact symbols are for inline notation only — full state names are canonical.
+  [SS6]  Task state machine is defined in workflow/state.sdd — do not duplicate here.
 
 State: +
   

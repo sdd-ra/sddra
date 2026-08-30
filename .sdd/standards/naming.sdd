@@ -1,4 +1,4 @@
-ï»¿Naming: Standards
+Naming: Standards
 
 Purpose:
   Defines naming conventions for .sdd entities and files.
@@ -42,13 +42,13 @@ FileNaming:
     Example: idempotency.md, payment-flow.md
 
 PrefixSystem:
-  @ â€” entity declaration
-  > â€” comment
-  : â€” property
-  = â€” value
-  ? â€” optional
-  ! â€” required
-  ~ â€” deprecated
+  @ — entity declaration
+  > — comment
+  : — property
+  = — value
+  ? — optional
+  ! — required
+  ~ — deprecated
 
 RelationshipSyntax:
   depends <id>
