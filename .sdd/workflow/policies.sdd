@@ -374,7 +374,7 @@ PolicyVsValidation:
 
 Navigation:
   Workflow: @../workflow/INDEX.sdd
-  Gates: @../workflow/gates.sdd
+  Gates: @../gates/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Protocol: @../protocol/INDEX.sdd

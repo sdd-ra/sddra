@@ -22,7 +22,7 @@ States:
 
 Navigation:
   Index: @INDEX.sdd
-  Schema: @../../decisions/schema.sdd
+  Schema: @../../schemas/decision.sdd
   Template: @../../../templates/_sdd/decisions/DEC-000.template.sdd
   Workflow: @../../decisions/workflow.sdd
   Rules: @../../decisions/rules.sdd

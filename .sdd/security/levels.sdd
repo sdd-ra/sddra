@@ -159,7 +159,7 @@ Navigation:
   Findings: @project/security/findings/
   Threats: @project/security/threats/
   Exceptions: @project/security/exceptions/
-  Gates: @security/gates/
+  Gates: @gates/security/
   Controls: @security/controls.sdd
   Scanners: @security/scanners.sdd
   Policy: @security/SECURITY.sdd

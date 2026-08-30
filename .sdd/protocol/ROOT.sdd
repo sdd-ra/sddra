@@ -76,7 +76,7 @@ UniversalObjectModel:
     TASK, DECISION, RISK, EVIDENCE, ASSUMPTION, FINDING, VERIFY
 
 UniversalState:
-  State symbols are defined canonically in state/state.sdd.
+  State symbols are defined canonically in standards/states.sdd.
   AI MUST use those symbols exactly as defined there.
 
 ReferenceSystem:

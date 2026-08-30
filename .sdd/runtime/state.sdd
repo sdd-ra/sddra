@@ -1,13 +1,14 @@
-﻿Runtime: Agent
+Runtime: State
 
 Purpose:
-  Defines agent runtime state for crash recovery and session
-  management.
+  Defines runtime state for crash recovery, session management,
+  and orchestrator coordination. This is the single source of truth
+  for runtime current state.
 
 State:
   Mode: AUTO | SUPERVISED | STRICT | AUDIT | READ_ONLY
   Project: <project-name>
-  SessionID: <session-id>
+  SessionID: SESSION-<timestamp>-<random>
   CurrentTask: <task-id>
   CurrentPhase: <phase>
   LastStep: <last-successful-step>
@@ -27,5 +28,8 @@ Rules:
   [RT2] Crash recovery MUST resume from exact state.
   [RT3] Agent MUST NOT restart workflow on recovery.
   [RT4] Checkpoints MUST be created before risky operations.
+  [RT5] Session MUST be persisted on every state change.
+  [RT6] Session MUST be resumable after crash.
+  [RT7] Session history MUST be retained for audit.
 
 State: +

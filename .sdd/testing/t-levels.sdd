@@ -1,38 +1,13 @@
-﻿Testing: SDD
+TLevels: SDD
 
 Purpose:
-  Define the test levels (T0-T7), test pyramid, test ownership, and
-  the BDD → test chain that connects requirements to automated tests.
-  This file is the testing lifecycle engine — it defines WHAT is tested
-  at WHAT level and WHO owns it, not HOW to write individual tests
-  (that belongs to skills/testing/).
+  Define test type levels T0-T7. These levels define WHAT is tested
+  at each level, distinct from test depth levels L0-L5 which define
+  HOW DEEP testing goes.
 
-  Testing is part of STLC (Software Testing Lifecycle), which is embedded
-  inside SDLC (Software Development Lifecycle). The test pyramid ensures
-  fast feedback at the lowest possible level.
+Owns: ./
 
-
-Owns:
-  ./
-
-
-Scope:
-  Test levels T0-T7
-  Test pyramid
-  Test ownership per level
-  BDD to test chain
-  Test coverage requirements
-  Test failure routing
-
-
-DoesNotOwn:
-  Project-specific test suites (bax project/<domain>/tests/)
-  Engineering skills (bax skills/testing/)
-  Task instances (bax tasks/)
-  QA stage behavior (bax workflow/stages.sdd -> QA)
-
-
-TestLevels:
+TLevels:
 
   T0: Unit Test
     Scope:     Single function, method, or component in isolation
@@ -98,9 +73,7 @@ TestLevels:
     When:      after DO, before VR
     Gate:      all acceptance criteria met before VR stage gate
 
-
 TestPyramid:
-
   The test pyramid defines the expected distribution of test types:
 
         /\        T7: Acceptance (few)
@@ -108,13 +81,12 @@ TestPyramid:
       /    \      T5: Performance (as needed)
      /      \     T4: E2E (some)
     /________\    T3: Component (more)
-                 T2: Contract (more)
-                 T1: Integration (many)
-                 T0: Unit (most)
+                  T2: Contract (more)
+                  T1: Integration (many)
+                  T0: Unit (most)
 
   AI MUST NOT invert the pyramid — a project with more E2E tests than
-  unit tests has a testing anti-pattern (bax AntiPatterns in skills/
-  skills.sdd).
+  unit tests has a testing anti-pattern.
 
   Minimum ratios (guidelines, not hard rules):
     Unit:      60-70% of all tests
@@ -123,9 +95,7 @@ TestPyramid:
     E2E:       5-10%
     Performance/Security/Acceptance: as needed by risk
 
-
 TestOwnership:
-
   Each test level has a single owner responsible for its quality:
 
     T0  Implementer (BE/FE/MD/DB) — owns unit tests for their code
@@ -140,9 +110,7 @@ TestOwnership:
   AI MUST NOT write tests for a level owned by another role without
   their involvement — tests are code, and code ownership rules apply.
 
-
 BDDToTestChain:
-
   BDD scenarios (Given/When/Then) are the bridge between requirements
   and automated tests:
 
@@ -172,9 +140,7 @@ BDDToTestChain:
   AI MUST NOT skip levels in this chain without human approval — each
   level catches different failure modes.
 
-
 BDDToTaskChain:
-
   BDD scenarios drive task creation and validation:
 
     BDD Scenario
@@ -194,27 +160,7 @@ BDDToTaskChain:
       v
     VR: Final verification
 
-
-TestCoverage:
-
-  AI MUST track test coverage per level:
-
-    Coverage:
-      T0:  >= 80% line coverage
-      T1:  all critical integration paths
-      T2:  all public API contracts
-      T3:  all features
-      T4:  all critical user journeys
-      T5:  all NFR targets
-      T6:  all security-critical paths
-      T7:  all acceptance criteria
-
-  Coverage thresholds are project-specific — this file defines the
-  levels, project/flows.sdd defines the thresholds.
-
-
 TestFailure:
-
   Test failure MUST route to the responsible stage:
 
     T0 failure   -> Implementer (code defect)
@@ -226,45 +172,46 @@ TestFailure:
     T6 failure   -> SC/Implementer (security defect)
     T7 failure   -> HUMAN (acceptance criteria not met)
 
-
 Rules:
-
   [TEST1] Every feature MUST have at least one BDD scenario before
           implementation begins.
-
   [TEST2] Every BDD scenario MUST map to at least one automated test.
-
   [TEST3] Unit tests (T0) MUST be written before or concurrently with
           implementation — test-after is forbidden for new code.
-
   [TEST4] Contract tests (T2) MUST be written before the consumer
           implements against the contract.
-
   [TEST5] E2E tests (T4) MUST cover all critical user journeys.
-
   [TEST6] Security tests (T6) MUST be included for any feature with
-          security impact (bax ImpactMatrix in tasks/tasks.sdd).
-
+          security impact.
   [TEST7] Performance tests (T5) MUST be included when NFR targets are
           defined.
-
   [TEST8] Acceptance tests (T7) MUST be written in business language,
           not technical language.
-
   [TEST9] Test ownership MUST be explicit — AI MUST NOT write tests for
           a level owned by another role without their involvement.
-
   [TEST10] Test failure MUST route to the responsible owner, not to the
           next test level.
-
   [TEST11] AI MUST NOT skip test levels without human approval.
-
   [TEST12] The test pyramid MUST NOT be inverted — more E2E tests than
           unit tests is an anti-pattern.
-
   [TEST13] Test code MUST follow the same quality standards as
           production code (lint, review, etc.).
 
+Navigation:
+  TestLevels: @levels.sdd
+  TestTypes: @types.sdd
+  TestGates: @gates.sdd
+  BDD: @bdd.sdd
+  Unit: @unit.sdd
+  Integration: @integration.sdd
+  API: @api.sdd
+  Contract: @contract.sdd
+  E2E: @e2e.sdd
+  UI: @ui.sdd
+  Mobile: @mobile.sdd
+  Performance: @performance.sdd
+  Load: @load.sdd
+  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
+  Skills: @skills/INDEX.sdd
 
 State: +
-  

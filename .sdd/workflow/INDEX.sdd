@@ -12,7 +12,7 @@ ReadOrder:
    2 @stages.sdd (formal stage registry)
    3 @transitions.sdd (default and conditional transitions)
    4 @gates.sdd (gate criteria for each stage)
-   5 @state.sdd (task state machine)
+    5 @state.sdd (task state machine — canonical definitions)
    6 @lifecycle.sdd (workflow lifecycle)
    7 @policies.sdd (workflow policies)
    8 @testing.sdd (test levels T0-T7, test pyramid)
@@ -38,6 +38,7 @@ Navigation:
     Transitions: @transitions.sdd
     Gates: @gates.sdd
     State: @state.sdd
+    StateSymbols: @standards/states.sdd
     Lifecycle: @lifecycle.sdd
     Policies: @policies.sdd
     Testing: @testing.sdd
@@ -61,7 +62,7 @@ Navigation:
      Chains: @../chains/
      Tasks: @../tasks/
      Skills: @../skills/
-     State: @../state/state.sdd
+      State: @../standards/states.sdd
      Runtime: @../runtime/INDEX.sdd
      Flows: @flows/INDEX.sdd
      FlowFeature: @flows/feature.sdd

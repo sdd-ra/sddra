@@ -14,7 +14,7 @@ Purpose:
   - .sdd/chains/graph.sdd
   - .sdd/templates/INDEX.sdd
   - .sdd/decisions/workflow.sdd
-  - .sdd/decisions/schema.sdd
+  - .sdd/schemas/decision.sdd
 
 ### Backup Location
   .runtime/backup/

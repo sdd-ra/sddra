@@ -1,11 +1,22 @@
 Gates: SDD
 
 Purpose:
-  Automated Quality, Security & Release Gate Engine. Defines universal
-  lifecycle and adaptive gates that determine when a task or release
-  is ready. Task completion ? Release readiness.
+  Universal gate engine for the SDDRA system. Defines gate criteria,
+  failure routing, and validation rules for all stages.
+  Stage gates are in stage/gates.sdd; security gates are in security/.
 
 Owns: ./
+
+GateTypes:
+  stage: @stage/gates.sdd — stage-specific pass/fail criteria
+  security: @security/INDEX.sdd — security gate specifications
+  policy: @policy.sdd — gate policy and waiver rules
+  levels: @levels.sdd — adaptive gate levels L0-L5
+  quality: @quality.sdd — quality gate criteria
+  testing: @testing.sdd — testing gate criteria
+  performance: @performance.sdd — performance gate criteria
+  infrastructure: @infrastructure.sdd — infrastructure gate criteria
+  release: @release.sdd — release gate criteria
 
 Modes:
   L0 — Prototype (minimal checks)
@@ -14,6 +25,26 @@ Modes:
   L3 — Business-critical (performance + security + observability)
   L4 — High-scale (resilience + DR + advanced security)
   L5 — Mission-critical (formal controls + continuous verification)
+
+GateFailure:
+  Gate failure MUST route to FailureRouting. The chain MUST NOT advance
+  past an ungated stage.
+
+  Routing table:
+    code issue      -> responsible implementation stage
+    architecture    -> AR
+    database        -> DB
+    security        -> SC (finding) + responsible stage (fix)
+    test gap        -> QA
+    infrastructure  -> DO
+    requirement     -> HUMAN
+
+GateCriteria:
+  Every gate criterion MUST be:
+    - Measurable (pass/fail, not subjective)
+    - Automated where possible
+    - Documented with its evidence source
+    - Traceable to a requirement or risk
 
 Rules:
   [GT1]  Task completion ? Release readiness.
@@ -28,27 +59,41 @@ Rules:
   [GT10] Expired waivers MUST re-trigger gate.
   [GT11] Incident feedback MUST trigger new gate requirements.
   [GT12] Gate chain: BDD ? Code ? Static Quality ? Unit ? Integration ? E2E ? Security ? Performance ? Infrastructure ? Review ? Release ? Deploy ? Runtime Verify.
+  [G1]   Every stage MUST have a gate defined in stage/gates.sdd.
+  [G2]   A gate MUST declare at least one pass criterion and one fail criterion.
+  [G3]   ALL pass criteria MUST be satisfied before the stage is considered complete.
+  [G4]   ANY fail criterion MUST block advancement and route to FailureRouting.
+  [G5]   Gate criteria MUST be measurable — subjective criteria MUST NOT be used as pass/fail gates.
+  [G6]   Gate criteria MAY be automated (test, lint, scan) or manual (review, architecture check), but manual gates MUST be explicitly marked as such.
+  [G7]   A stage MUST NOT be marked complete without its gate passing.
+  [G8]   Gate failure MUST route to the responsible owner, not to the next stage.
+  [G9]   Security Gate (SC) failure at CRITICAL or HIGH MUST block VR regardless of other gate results.
+  [G10]  VR Gate failure MUST trigger impact analysis before any backward transition.
+  [G11]  A gate MAY be waived only by human decision. AI MUST NOT waive a gate.
+  [G12]  Gate criteria are defined at the system level — project-specific additions belong in project/flows.sdd.
 
 ReadOrder:
-   1  @policy.sdd
-   2  @levels.sdd
-   3  @quality.sdd
-   4  @testing.sdd
-   5  @security.sdd
-   6  @performance.sdd
-   7  @infrastructure.sdd
-   8  @release.sdd
+    1  @policy.sdd
+    2  @levels.sdd
+    3  @quality.sdd
+    4  @testing.sdd
+    5  @security/INDEX.sdd
+    6  @performance.sdd
+    7  @infrastructure.sdd
+    8  @release.sdd
+    9  @stage/gates.sdd
 
 Navigation:
   Gates: @gates/INDEX.sdd
-  Policy: @gates/policy.sdd
-  Levels: @gates/levels.sdd
-  Quality: @gates/quality.sdd
-  Testing: @gates/testing.sdd
-  Security: @gates/security.sdd
-  Performance: @gates/performance.sdd
-  Infrastructure: @gates/infrastructure.sdd
-  Release: @gates/release.sdd
+  Policy: @policy.sdd
+  Levels: @levels.sdd
+  Quality: @quality.sdd
+  Testing: @testing.sdd
+  Security: @security/INDEX.sdd
+  Performance: @performance.sdd
+  Infrastructure: @infrastructure.sdd
+  Release: @release.sdd
+  StageGates: @stage/gates.sdd
   ProjectGates: @projects/{project_name}/gates/INDEX.sdd
 
 State: +

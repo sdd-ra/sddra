@@ -17,8 +17,8 @@ Describe "Decision Workflow Integration Tests" {
             $file | Should -Exist
         }
         
-        It "decisions/schema.sdd exists" {
-            $file = Join-Path $sddDir "decisions/schema.sdd"
+        It "schemas/decision.sdd exists" {
+            $file = Join-Path $sddDir "schemas/decision.sdd"
             $file | Should -Exist
         }
         

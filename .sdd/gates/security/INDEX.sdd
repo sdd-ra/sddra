@@ -1,9 +1,7 @@
-﻿# Security Gates
+# Gates: Security
 
 Purpose:
   Security gate specifications for the SDDRA system.
-
-Spec: SecurityGates
 
 Gate: SC
 
@@ -39,7 +37,7 @@ GateCalculation:
   FAIL blocks chain and creates remediation task.
 
 GateSpecifications:
-  Individual gate specifications are in @security/gates/:
+  Individual gate specifications:
 
     SAST.sdd       — static application security testing
     DAST.sdd       — dynamic application security testing
@@ -73,11 +71,8 @@ AcceptedRisk:
   Expired exceptions MUST be re-evaluated.
   Accepted risks are stored in @project/security/exceptions/.
 
+Navigation:
+  StageGates: @../stage/gates.sdd
+  GateEngine: @../INDEX.sdd
+
 State: +
-  Note:
-  This file defines the security gate
-  criteria. The gate is not a separate stage — it is a checkpoint
-  within the SC stage that must pass before the chain advances to VR.
-  moved individual gate specifications to
-  @security/gates/ directory for modularity — this file now references
-  those specifications rather than duplicating them.

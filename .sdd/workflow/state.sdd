@@ -3,7 +3,7 @@
 Purpose:
   Define the formal task state machine used by the workflow engine.
   This is the full state vocabulary for tasks, distinct from the compact
-  state symbols defined in state/state.sdd.
+  state symbols defined in standards/states.sdd.
 
   State and Stage are distinct:
     Stage  — which engineering discipline is currently active (BE, QA,
@@ -32,9 +32,9 @@ Scope:
   Task queue engine concept
 
 
-DoesNotOwn:
-  Project-specific task instances (bax tasks/)
-  Compact state symbols (bax ../state/state.sdd)
+  DoesNotOwn:
+    Project-specific task instances (bax tasks/)
+    Compact state symbols (bax ../standards/states.sdd)
   Engineering skills (bax skills/)
   Project architecture (bax project/architecture.sdd)
 
@@ -297,7 +297,7 @@ StateMachine:
   creating a decision (bax PROJECT.sdd -> HumanDecision, ../decisions/
   decisions.sdd).
 
-  Compact symbols (bax ../state/state.sdd) MAY be used for inline state
+  Compact symbols (bax ../standards/states.sdd) MAY be used for inline state
   notation, but the full state names above are the canonical vocabulary
   for task files and the state machine.
 

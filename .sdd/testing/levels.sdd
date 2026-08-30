@@ -96,7 +96,7 @@ Selection:
 
 Navigation:
   Project: @project/project.sdd
-  Workflow: @workflow/testing.sdd
+  Workflow: @t-levels.sdd
   TestTypes: @types.sdd
   TestGates: @gates.sdd
   BDD: @bdd.sdd
@@ -119,5 +119,5 @@ State: +
   Note:
   L0-L5 test levels are distinct from SecurityLevel L0-L5 and
   workflow test levels T0-T7. This file defines HOW DEEP testing
-  goes for a task. The workflow/testing.sdd defines WHEN each
+  goes for a task. The testing/t-levels.sdd defines WHEN each
   test type runs in the SDLC.
