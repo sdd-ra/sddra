@@ -76,9 +76,8 @@ Navigation:
   SecurityGates: @gates/security/INDEX.sdd
   SecurityGateSpecs: @gates/security/
   SecurityThreats: @security/threats.sdd
-  SecurityScanners: @security/scanners.sdd
-  Verification: @verification/
-  State: @standards/states.sdd
+   SecurityScanners: @security/scanners.sdd
+   State: @standards/states.sdd
   Decisions: @projects/{project_name}/decisions/INDEX.sdd
 
 State: +
