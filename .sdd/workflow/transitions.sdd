@@ -29,11 +29,17 @@ DoesNotOwn:
 
 
 DefaultFlow:
-  AN > AR > DB > BE > API > FE > MD > QA > SC > DO > VR
+  AN > AR > DB > BE > BE_TS > CR > FE > FE_TS > CR > MD > MD_TS > CR > BRU > CRU > MANUAL > VR
 
   This is the reference order for a full-feature chain. Real chains
   skip/reorder/add stages per their own dependencies (bax chains/
   chains.sdd -> DefaultFlow, ProjectFlow, FlowResolution).
+
+  Sub-flows:
+    BE path:    BE -> BE_TS -> CR
+    FE path:    FE -> FE_TS -> CR
+    MD path:    MD -> MD_TS -> CR
+    Gate path:  CR -> BRU -> CRU -> MANUAL -> VR
 
 
 Transitions:
@@ -46,17 +52,18 @@ Transitions:
     BDD    -> ARCH
     ARCH   -> DB
     DB     -> BE
-    BE     -> API
-    API    -> FE
-    FE     -> MD
-    MD     -> QA
-    BE     -> QA
-    API    -> QA
-    FE     -> QA
-    MD     -> QA
-    QA     -> SC
-    SC     -> DO
-    DO     -> VR
+    BE     -> BE_TS
+    BE_TS  -> CR
+    CR     -> FE
+    CR     -> MD
+    FE     -> FE_TS
+    FE_TS  -> CR
+    MD     -> MD_TS
+    MD_TS  -> CR
+    CR     -> BRU
+    BRU    -> CRU
+    CRU    -> MANUAL
+    MANUAL -> VR
     VR     -> DONE
 
   Conditional transitions (allowed only when condition is met):
@@ -80,6 +87,24 @@ Transitions:
     VR     -> FE         (when verification fails and failure is FE)
     VR     -> QA         (when verification fails and failure is QA)
     DO     -> QA         (when deployment reveals test gap)
+    BE_TS  -> BE         (when test suite fails and failure is BE defect)
+    FE_TS  -> FE         (when test suite fails and failure is FE defect)
+    MD_TS  -> MD         (when test suite fails and failure is MD defect)
+    CR     -> BE         (when review fails and failure is BE)
+    CR     -> FE         (when review fails and failure is FE)
+    CR     -> MD         (when review fails and failure is MD)
+    CR     -> ARCH       (when review fails and failure is architectural)
+    BRU    -> AR         (when business requirement is not met and architecture change needed)
+    BRU    -> BE         (when business requirement is not met and BE fix needed)
+    BRU    -> FE         (when business requirement is not met and FE fix needed)
+    BRU    -> MD         (when business requirement is not met and MD fix needed)
+    CRU    -> BE         (when code requirement is not met and BE fix needed)
+    CRU    -> FE         (when code requirement is not met and FE fix needed)
+    CRU    -> MD         (when code requirement is not met and MD fix needed)
+    CRU    -> ARCH       (when code requirement is not met and architecture change needed)
+    MANUAL -> BE         (when manual check fails and BE fix needed)
+    MANUAL -> FE         (when manual check fails and FE fix needed)
+    MANUAL -> MD         (when manual check fails and MD fix needed)
     ANY    -> BLOCKED    (when dependency is unresolved or blocker exists)
     BLOCKED -> ANY       (when blocker is resolved, return to previous stage)
 

@@ -56,18 +56,22 @@ AgentRun:
     AUDIT
 
 Tools:
+  DockerTool:
+    BUILD, RUN, COMPOSE, EXEC, CP
+    rule: ALL tool execution MUST go through DockerTool
+    rule: no direct shell execution outside Docker
   FileTool:
     READ, SEARCH, CREATE, UPDATE, MOVE, DELETE
+    rule: file operations inside Docker volumes only
   GitTool:
     STATUS, DIFF, LOG, BRANCH, CHECKOUT, COMMIT, MERGE, TAG
-  ShellTool:
-    ALLOWLIST, DENYLIST, TIMEOUT, WORKDIR, ENVIRONMENT
+    rule: git operations inside Docker container
   TestTool:
     UNIT, INTEGRATION, E2E, BDD
-  DockerTool:
-    BUILD, RUN, COMPOSE, PUSH
+    rule: tests run inside Docker container with resource limits
   DatabaseTool:
     MIGRATE, SEED, QUERY
+    rule: database operations inside Docker container only
 
 ToolRules:
   [EX1]  Agent MUST use tool abstraction, not hard-code operations.

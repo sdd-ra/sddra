@@ -1,0 +1,29 @@
+STLC: Branches
+
+Purpose:
+  Software Testing Life Cycle branch standards.
+  Defines test environment branches and test promotion rules.
+
+Branches:
+  test:
+    purpose: Automated test execution environment
+    protection: optional
+    promotion: stage
+    merge_strategy: merge
+    test_types:
+      - unit
+      - integration
+      - e2e
+      - bdd
+      - performance
+      - security
+
+Rules:
+  [STLC1] Test branches run only changed files — full regression on unchanged code only.
+  [STLC2] Test results MUST be recorded in projects/{project_name}/testing/.
+  [STLC3] Failed tests MUST block merge to next stage.
+  [STLC4] Test coverage MUST meet threshold before merge.
+  [STLC5] Performance tests MUST pass for stage promotion.
+  [STLC6] Security tests MUST pass for main promotion.
+
+State: +

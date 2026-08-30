@@ -57,12 +57,14 @@ Navigation:
     BackupIntegrity: @impl-backup-integrity.sdd
     SkillAutoIntegration: @impl-skill-auto-integration.sdd
     ExamplePromptToCode: @impl-example-prompt-to-code.sdd
-  External:
-    Chains: @../chains/
-    Tasks: @../tasks/
-    Skills: @../skills/
-    State: @../state/state.sdd
-    Runtime: @../runtime/INDEX.sdd
+   External:
+     Chains: @../chains/
+     Tasks: @../tasks/
+     Skills: @../skills/
+     State: @../state/state.sdd
+     Runtime: @../runtime/INDEX.sdd
+     Flows: @flows/INDEX.sdd
+     FlowFeature: @flows/feature.sdd
 
 Rules:
   [W1]  AI MUST load workflow/INDEX.sdd before reading any workflow
@@ -92,5 +94,15 @@ Rules:
 
   [W10] A workflow change (new stage, new transition, new gate) requires
         human approval if it affects an existing project's chains.
+  [W11] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
+  [W12] BE_TS, FE_TS, MD_TS are test suite gates — they run only changed files.
+  [W13] Full regression suites are NOT run on unchanged code — token economy rule.
+  [W14] CR = Code Review — mandatory after each implementation stage and test suite.
+  [W15] BRU = Business Requirement Unit — human-gated business validation.
+  [W16] CRU = Code Requirement Unit — automated code quality and compliance check.
+  [W17] MANUAL gate requires user login with full permissions from environment.
+  [W18] /sdd next advances the decision chain to the next step automatically.
+  [W19] Docker is the single execution environment — no host-level tool execution.
+  [W20] Resource limits are enforced per Docker container: cpu, memory, pids, network.
 
 State: +

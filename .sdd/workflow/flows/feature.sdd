@@ -1,0 +1,50 @@
+# Flow: Feature
+
+Purpose:
+  Feature implementation flow following SDDRA standard.
+  Enforces BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
+
+Flow:
+  AN -> AR -> DB -> BE -> BE_TS -> CR -> FE -> FE_TS -> CR -> MD -> MD_TS -> CR -> BRU -> CRU -> MANUAL -> VR
+
+  This is the mandatory flow for all feature work.
+  Branches and merges follow branch hierarchy rules.
+
+BranchMapping:
+  BE:  MODUL/<backend_module> -> DEC/<id> -> TASK/<id>
+  FE:  MODUL/<frontend_module> -> DEC/<id> -> TASK/<id>
+  MD:  MODUL/<mobile_module> -> DEC/<id> -> TASK/<id>
+
+TestStrategy:
+  BE_TS: unit, integration, contract — only changed files
+  FE_TS: component, integration, e2e — only changed files
+  MD_TS: platform, integration, offline — only changed files
+
+GateSequence:
+  1. AN gate: scope documented
+  2. AR gate: architecture decided
+  3. DB gate: schema validated
+  4. BE gate: code compiles, tests pass
+  5. BE_TS gate: backend tests pass
+  6. CR gate: code review passed
+  7. FE gate: UI builds, tests pass
+  8. FE_TS gate: frontend tests pass
+  9. CR gate: code review passed
+  10. MD gate: app builds, tests pass
+  11. MD_TS gate: mobile tests pass
+  12. CR gate: code review passed
+  13. BRU gate: business requirements met
+  14. CRU gate: code requirements met
+  15. MANUAL gate: manual acceptance passed
+  16. VR gate: final verification passed
+
+Rules:
+  [F1] Flow MUST be followed in order — no skipping stages.
+  [F2] Each implementation stage MUST be followed by its test suite.
+  [F3] Each test suite MUST be followed by code review.
+  [F4] Only changed files are tested in test suites.
+  [F5] BRU requires human approval — AI MUST NOT auto-approve.
+  [F6] CRU is automated — runs code quality and compliance checks.
+  [F7] MANUAL requires user login with full permissions from environment.
+
+State: +

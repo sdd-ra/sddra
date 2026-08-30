@@ -44,9 +44,6 @@ Directories:
     purpose: Prompt intelligence engine
     root: ../prompts
     root_purpose: Root-level prompt inbox (user submissions)
-    formalized: ../projects/prompts
-    formalized_purpose: Shared formalized prompt registry (not project instance)
-    documented: ../projects/{project_name}/docs/prompts
 
   features:
     path: ./features
@@ -168,3 +165,25 @@ Rules:
   [R56] Token economy: /compact after each task, /clear before next task.
   [R57] projects/{project_name}/history/ is append-only — never modify or delete records.
   [R58] Customer can query projects/{project_name}/history/ at any time to see inputs and actions.
+  [R59] ALL execution MUST run inside Docker — no local tool installation is permitted.
+  [R60] Docker containers MUST be resource-limited: CPU, memory, disk, network.
+  [R61] Docker is the single execution environment for build, test, lint, and deploy.
+  [R62] Agent MUST NOT invoke tools outside Docker sandbox.
+  [R63] Docker image MUST include all required tools — no host-level package installation.
+  [R64] Resource limits MUST be defined per container: cpu, memory, pids, ulimit.
+  [R65] Network access MUST be restricted to allowlisted domains only.
+  [R66] Docker volumes MUST be read-only unless explicitly required for output.
+  [R67] When no git remote link exists, local history is the default and mandatory record.
+  [R68] {project_name}/ directory MUST NOT be auto-created — it requires explicit human selection.
+  [R69] Until project name is selected, all work uses {project_name}/ as reference template only.
+  [R70] Project root MUST NOT contain a prompts/ folder with custom structure.
+  [R71] User inbox is flat file storage in project root — any file name is accepted.
+  [R72] Every commit MUST reference its linked DEC and TASK IDs in the commit message.
+  [R73] Branch naming follows SDLC/STLC: MODUL/<module>, DEC/<id>, TASK/<id>.
+  [R74] Each task MUST have its own base branch derived from the linked module branch.
+  [R75] Branch hierarchy: main -> stage -> test -> MODUL/<module> -> DEC/<id> -> TASK/<id>.
+  [R76] Only changed files are tested — regression test suites are not run on unchanged code.
+  [R77] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
+  [R78] BRU = Business Requirement Unit, CRU = Code Requirement Unit — both are mandatory gates.
+  [R79] Manual check requires user login with full permissions — credentials are environment-provided.
+  [R80] /sdd next advances the decision chain to the next step automatically.

@@ -13,6 +13,11 @@ Structure:
     format: Markdown
     template: README.template.md
 
+  inbox/:
+    purpose: Flat user input storage — any file name is accepted
+    format: any
+    rule: no custom folder structure — flat files only
+
   modules/:
     purpose: Business logic modules
     format: module.sdd per bounded context
@@ -43,6 +48,8 @@ Rules:
   [PRJ6] project/ and docs/ MUST have 1:1 mapping.
   [PRJ7] Every change MUST be recorded in git with rationale.
   [PRJ8] Commit messages MUST follow: what changed, why, impact.
+  [PRJ9] inbox/ is flat storage — no subdirectories or custom structure.
+  [PRJ10] prompts/ folder MUST NOT exist in project root.
 
 Navigation:
   Modules: @modules/

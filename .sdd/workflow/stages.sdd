@@ -142,6 +142,48 @@ Stages:
       Activates: after all required stages complete — VR is the final
                  stage of any chain (bax chains/chains.sdd -> Important)
 
+    CR:     Code Review
+      Purpose:  Peer review of implementation before merge.
+      Owner:    AR
+      Input:    implementation, decision, task context
+      Output:   review report, approval, change requests
+      Activates: after BE/API/FE/MD implementation and tests pass
+
+    BRU:    Business Requirement Unit
+      Purpose:  Validate implementation against business requirements.
+      Owner:    HUMAN
+      Input:    implementation, business requirements
+      Output:   business acceptance decision
+      Activates: after CR passes, before manual check
+
+    CRU:    Code Requirement Unit
+      Purpose:  Validate implementation against code requirements and standards.
+      Owner:    QA
+      Input:    implementation, code standards, architecture decisions
+      Output:   code quality report, compliance decision
+      Activates: after BRU passes, before manual check
+
+    BE_TS:  Backend Test Suite
+      Purpose:  Backend unit, integration, and contract tests.
+      Owner:    QA
+      Input:    backend implementation
+      Output:   test report, coverage metrics
+      Activates: after BE implementation, before CR
+
+    FE_TS:  Frontend Test Suite
+      Purpose:  Frontend component, integration, and E2E tests.
+      Owner:    QA
+      Input:    frontend implementation
+      Output:   test report, coverage metrics
+      Activates: after FE implementation, before CR
+
+    MD_TS:  Mobile Test Suite
+      Purpose:  Mobile platform, integration, and offline tests.
+      Owner:    QA
+      Input:    mobile implementation
+      Output:   test report, coverage metrics
+      Activates: after MD implementation, before CR
+
 
 State: +
   

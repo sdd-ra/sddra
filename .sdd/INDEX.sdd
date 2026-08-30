@@ -159,10 +159,24 @@ Rules:
   [I16] L0 = MVP core (do not modify without approval).
   [I17] L1 = customer features (requires human approval).
   [I18] L2+ = enhancements and experiments (requires planning).
-  [I19] {project_name}/ is a TEMPLATE, not a real project.
+   [I19] {project_name}/ is a TEMPLATE, not a real project.
   [I20] Real project instances are created AFTER human selects a project name.
   [I21] AI MUST create .sdd/projects/{project_name}/ when human provides a project name.
   [I22] Until project name is selected, all work uses {project_name}/ as reference.
+  [I23] ALL execution MUST run inside Docker — no local tool installation is permitted.
+  [I24] Docker is the single execution environment for build, test, lint, and deploy.
+  [I25] Agent MUST NOT invoke tools outside Docker sandbox.
+  [I26] Docker image MUST include all required tools — no host-level package installation.
+  [I27] Resource limits MUST be defined per container: cpu, memory, pids, ulimit.
+  [I28] When no git remote link exists, local history is the default and mandatory record.
+  [I29] {project_name}/ directory MUST NOT be auto-created without explicit human selection.
+  [I30] Branch naming follows SDLC/STLC: main, stage, test, MODUL/<module>, DEC/<id>, TASK/<id>.
+  [I31] Each task MUST have its own base branch linked to its module and decision.
+  [I32] Only changed files are tested — full regression suites are reserved for unchanged code only.
+  [I33] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
+  [I34] BRU = Business Requirement Unit, CRU = Code Requirement Unit — mandatory gates.
+  [I35] Manual check requires user login with full permissions from environment.
+  [I36] /sdd next advances the decision chain to the next step automatically.
 
 Entry:
   @protocol/ROOT.sdd
@@ -332,7 +346,16 @@ Navigation:
   GatesRelease: @gates/release.sdd
   ProjectGates: @projects/{project_name}/gates/INDEX.sdd
   ProjectGatePolicy: @projects/{project_name}/gates/policy.sdd
-  ProjectGateActive: @projects/{project_name}/gates/active.sdd
+   ProjectGateActive: @projects/{project_name}/gates/active.sdd
+   Branches: @branches/INDEX.sdd
+   BranchModules: @branches/MODUL/
+   BranchDecisions: @branches/DEC/
+   BranchTasks: @branches/TASK/
+   BranchSDLC: @branches/sdlc.sdd
+   Flow: @workflow/flows/INDEX.sdd
+   FlowDefault: @workflow/flows/default.sdd
+   FlowFeature: @workflow/flows/feature.sdd
+   FlowVerification: @workflow/flows/verification.sdd
   Skills: @skills/INDEX.sdd
   SkillsLanguages: @skills/languages/INDEX.sdd
   SkillsGo: @skills/languages/go/INDEX.sdd
@@ -458,9 +481,10 @@ Navigation:
     CommandRestore: @commands/sdd-restore.sdd
     CommandResume: @commands/sdd-resume.sdd
     CommandMigrate: @commands/sdd-migrate.sdd
-    CommandCompact: @commands/sdd-compact.sdd
-    CommandClear: @commands/sdd-clear.sdd
-   CommandDecisions: @commands/sdd-decisions.sdd
+     CommandCompact: @commands/sdd-compact.sdd
+     CommandClear: @commands/sdd-clear.sdd
+     CommandNext: @commands/sdd-next.sdd
+    CommandDecisions: @commands/sdd-decisions.sdd
    Plugins: @plugins/INDEX.sdd
    PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd
    PluginTDD: @plugins/plugin-adapters/test-driven-development.sdd

@@ -1,0 +1,67 @@
+Branches: SDD
+
+Purpose:
+  Branch naming and hierarchy standards for SDDRA projects.
+  Enforces SDLC/STLC compliance and decision/task traceability.
+
+Hierarchy:
+  main:
+    purpose: Production-ready code
+    protection: required
+    merge_to: stage
+
+  stage:
+    purpose: Staging integration
+    protection: required
+    merge_to: main
+
+  test:
+    purpose: Test environment
+    protection: optional
+    merge_to: stage
+
+  MODUL/<module>:
+    purpose: Module development branch
+    parent: main
+    example: MODUL/auth, MODUL/payment
+    rule: one branch per bounded context module
+
+  DEC/<id>:
+    purpose: Decision implementation branch
+    parent: MODUL/<module>
+    example: DEC-001, DEC-002
+    rule: one branch per approved decision
+    rule: branch name MUST match decision ID exactly
+
+  TASK/<id>:
+    purpose: Task execution branch
+    parent: DEC/<id>
+    example: TASK-AUTH-001, TASK-PAYMENT-002
+    rule: one branch per task
+    rule: branch name MUST match task ID exactly
+
+Rules:
+  [B1]  Every commit MUST reference its linked DEC and TASK IDs.
+  [B2]  Commit message format: <type>(<scope>): <subject> [DEC:<id>] [TASK:<id>]
+  [B3]  MODUL branches are created during architecture phase.
+  [B4]  DEC branches are created when decision is approved.
+  [B5]  TASK branches are created from their linked DEC branch.
+  [B6]  Branches MUST follow hierarchy: main -> stage -> test -> MODUL -> DEC -> TASK.
+  [B7]  No direct commits to main, stage, or test — all via pull request.
+  [B8]  TASK branch MUST be deleted after merge and archive.
+  [B9]  DEC branch MUST be preserved for audit trail.
+  [B10] MODUL branch persists for module lifetime.
+  [B11] Branch protection rules apply at main and stage levels.
+  [B12] Only changed files are tested — regression tests run only on unchanged code.
+
+CommitFormat:
+  types: feat, fix, docs, style, refactor, test, chore, build, ci, perf, revert
+  scopes: sdd, project, docs, chains, skills, prompts, commands, templates, patterns, workflows, decisions, gates, tests
+  example: feat(auth): add login endpoint [DEC:DEC-001] [TASK:TASK-AUTH-001]
+
+Navigation:
+  SDLC: @sdlc.sdd
+  STLC: @stlc.sdd
+  Tasks: @../tasks/INDEX.sdd
+
+State: +

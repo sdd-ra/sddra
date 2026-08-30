@@ -1,0 +1,21 @@
+# Workflow Flows
+
+Purpose:
+  Project-specific flow definitions.
+  Default system flow is in transitions.sdd; project overrides live here.
+
+Flows:
+  default: @default.sdd
+  feature: @feature.sdd
+
+Rules:
+  [FL1] Project flows MUST NOT contradict system transitions.
+  [FL2] Project flow additions require human approval.
+  [FL3] Flow overrides MUST be documented with rationale.
+
+Navigation:
+  Transitions: @../transitions.sdd
+  Stages: @../stages.sdd
+  Gates: @../gates.sdd
+
+State: +
