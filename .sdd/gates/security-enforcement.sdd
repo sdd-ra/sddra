@@ -1,0 +1,121 @@
+Security: Enforcement Runtime
+
+Purpose:
+  Runtime enforcement of .sdd security gates via claude-code hooks.
+  Promotes advisory-only security checks (false-green gap) into
+  enforced blocking at the tool-execution boundary.
+
+  Integrates with:
+    .sdd/security/levels.sdd (L0-L5 levels)
+    .sdd/security/controls.sdd (pattern set, seeded from claude-code patterns.py)
+    .sdd/gates/security.sdd (gate schema)
+    .sdd/runtime/adapter-runtime.sdd (HookBridge)
+
+EnforcementModel:
+  observe:
+    description: Advisory mode — warnings logged, tool proceeds
+    triggers: PostToolUse[Edit/Write] pattern match at low L-level
+    action: log OBS12 security_gate_warned, tool continues
+    default_for: L0-L3 patterns below project threshold
+
+  enforce:
+    description: Blocking mode — tool call blocked on gate failure
+    triggers: PostToolUse[Edit/Write] pattern match at HIGH/CRITICAL L-level
+    action: emit OBS13 security_gate_blocked, exit 2 (block tool)
+    default_for: L4-L5 patterns at or above project SecurityLevel threshold
+
+ModeSelection:
+  source: PROJECT.sdd SecurityLevel
+  rule: L0-L2 -> observe (no blocking)
+  rule: L3 -> observe with OBS12 for HIGH, enforce for CRITICAL
+  rule: L4 -> enforce for HIGH and CRITICAL
+  rule: L5 -> enforce for MEDIUM and above
+
+PatternSet:
+  source: claude-code plugins/security-guidance/hooks/patterns.py:30-345
+  count: 17 pattern rules
+  categories:
+    - yaml.load (deserialization) -> L3 CRITICAL
+    - pickle.loads/dumps (RCE) -> L4 CRITICAL
+    - eval/exec (code injection) -> L4 CRITICAL
+    - subprocess with shell=True (command injection) -> L3 HIGH
+    - innerHTML/dangerouslySetInnerHTML (XSS) -> L2 HIGH
+    - string SQL concatenation (SQL injection) -> L3 CRITICAL
+    - hardcoded secrets (API key, token, password) -> L4 CRITICAL
+    - random.random for tokens (weak crypto) -> L2 MEDIUM
+    - MD5/SHA1 for security (weak crypto) -> L2 MEDIUM
+    - unsanitized file paths (path traversal) -> L3 HIGH
+    - CORS wildcard (CORS misconfiguration) -> L3 MEDIUM
+    - missing auth check (broken access control) -> L4 CRITICAL
+    - SSRF (server-side request forgery) -> L4 HIGH
+    - open redirect -> L2 MEDIUM
+    - deserialization of untrusted data -> L3 CRITICAL
+    - regex denial of service (ReDoS) -> L1 LOW
+    - missing rate limiting -> L1 LOW
+
+GateExecution:
+  flow:
+    PostToolUse[Edit/Write] ->
+      HookBridge reads .sdd/security/controls.sdd pattern set ->
+      Regex match against edited file content ->
+      If match: look up L-level + severity from pattern metadata ->
+      Compare L-level to project SecurityLevel from PROJECT.sdd ->
+      if pattern_L_level >= project_threshold:
+        emit OBS13 security_gate_blocked ->
+        exit 2 (block tool, surface error to agent) ->
+      else:
+        emit OBS12 security_gate_warned ->
+        tool proceeds with warning
+
+ObserveToEnforceMigration:
+  phase_1: 2 weeks observe mode — emit OBS12 on all matches, no blocking
+  phase_2: 1 week tune — adjust regex thresholds, add whitelist for false positives
+  phase_3: activate enforce mode — exit 2 on HIGH/CRITICAL above threshold
+  rollback: set PROJECT.sdd SecurityLevel back to L2 or below
+
+FalsePositiveHandling:
+  whitelist:
+    source: .sdd/security/whitelist.sdd (project-specific)
+    format: { pattern_id, file_glob, reason, expires, owner }
+    rule: whitelisted pattern matches do NOT trigger gate
+    rule: whitelist entries MUST have expiration date
+    rule: expired entries auto-retire and emit OBS14
+
+  human_override:
+    trigger: gate blocked but false positive
+    action: emit OBS15 security_gate_overridden
+    rule: override MUST be logged with reason + approver
+    rule: override does NOT change pattern set — only suppresses this instance
+
+AuditTrail:
+  every gate decision emits:
+    OBS12: security_gate_warned (observe mode)
+    OBS13: security_gate_blocked (enforce mode)
+    OBS14: security_gate_whitelisted (whitelist match)
+    OBS15: security_gate_overridden (human override)
+
+  fields:
+    timestamp, pattern_id, file, line, severity, L_level, project_level, mode, decision, evidence, hash
+
+Rules:
+  [SECV1] Security gate enforcement MUST read pattern set from .sdd/security/controls.sdd, not hard-coded.
+  [SECV2] Pattern L-levels MUST come from .sdd/security/levels.sdd, not hard-coded.
+  [SECV3] Project threshold MUST come from PROJECT.sdd SecurityLevel, not hard-coded.
+  [SECV4] In observe mode, ALL matches MUST emit OBS12 (never silent).
+  [SECV5] In enforce mode, HIGH/CRITICAL matches at or above threshold MUST exit non-zero.
+  [SECV6] Whitelist MUST be project-scoped and time-bounded.
+  [SECV7] Human override MUST NOT modify the pattern set — only suppress.
+  [SECV8] Every gate decision MUST be auditable via OBS12-OBS15 events.
+  [SECV9] Adapter MUST NOT block non-security tools — only Edit/Write hooks.
+  [SECV10] Secrets in tool arguments MUST be scrubbed before logging.
+  [SECV11] If claude-code hooks are unavailable, adapter MUST fail-open with OBS16 warning.
+  [SECV12] Gate enforcement MUST support project-level disable (PROJECT.sdd opt-out).
+
+Navigation:
+  Gates: @INDEX.sdd
+  Security Levels: @levels.sdd
+  Security Controls: @controls.sdd
+  Adapter: @../runtime/adapter-runtime.sdd
+  Observability: @../../observability/INDEX.sdd
+
+State: +
