@@ -5,7 +5,7 @@ Purpose:
   Default system flow is in transitions.sdd; project overrides live here.
 
 Flows:
-  default: @default.sdd
+  default: @../../chains/default.sdd
   feature: @feature.sdd
 
 Rules:
@@ -16,6 +16,6 @@ Rules:
 Navigation:
   Transitions: @../transitions.sdd
   Stages: @../stages.sdd
-  Gates: @../gates.sdd
+  Gates: @../../gates/INDEX.sdd
 
 State: +

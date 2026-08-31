@@ -1,0 +1,14 @@
+# Lessons
+
+Purpose:
+  Negative knowledge and rejected approaches index.
+
+Owns: ./
+
+Navigation:
+  Knowledge Lifecycle: @../KNOWLEDGE-LIFECYCLE.sdd
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Golden Rules: @../knowledge/GOLDEN-RULES.sdd
+  RejectedApproaches: @REJECTED-APPROACHES.sdd
+
+State: +

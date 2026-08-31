@@ -216,7 +216,7 @@ Navigation:
   Context Manifest: @context-manifest.sdd
   Execution: @execution.sdd
   Knowledge: @../knowledge/INDEX.sdd
-  Memory: @../memory/INDEX.sdd
+  Memory: @../runtime/memory-model.sdd
 
 Rules:
   [RT-MEM-CON-01] Consolidation occurs at end of every task execution.

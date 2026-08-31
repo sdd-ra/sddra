@@ -26,10 +26,10 @@ Rules:
   [RT11] Agent MUST NOT use emojis, icons, or decorative symbols in runtime output headers or titles.
 
 Navigation:
-  Runtime: @runtime/INDEX.sdd
-  Execution: @runtime/execution.sdd
-  Events: @runtime/events.sdd
-  Context: @runtime/context.sdd
+  Runtime: @INDEX.sdd
+  Execution: @execution.sdd
+  Events: @events.sdd
+  Context: @context.sdd
   Agent: @state.sdd
   Session: @state.sdd
   Current: @state.sdd

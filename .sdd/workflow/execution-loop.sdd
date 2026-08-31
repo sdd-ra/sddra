@@ -70,8 +70,8 @@ ExecutionSteps:
      output: task scope, acceptance criteria, dependencies
 
   3. BUILD CONTEXT
-     actions: load @policy.autonomy, @references/, @skills/,
-              @decisions/, project architecture
+      actions: load @policy.autonomy, @../references/, @../skills/,
+               @../decisions/, project architecture
      budget: CONTEXT LEVEL 0→1→2 default (bax runtime/context-builder.sdd)
      output: context manifest, context_confidence rating
      gate: confidence must be sufficient before PLAN (no guessing)
