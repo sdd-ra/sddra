@@ -5,6 +5,7 @@ Purpose:
 
 Use this index before applying a known pattern.
 
+Owns: references\patterns\index.sdd
 Patterns:
   @patterns.repository
       Abstraction over data source.

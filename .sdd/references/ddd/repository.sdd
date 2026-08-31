@@ -3,6 +3,7 @@
 Purpose:
   Aggregate persistence abstraction.
 
+Owns: references\ddd\repository.sdd
 UseWhen:
   - aggregate needs persistence
   - domain should not know about storage details

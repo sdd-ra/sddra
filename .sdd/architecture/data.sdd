@@ -5,6 +5,7 @@ Purpose:
   modeling guidelines, migration strategies, consistency models,
   partitioning approaches, retention policies, and encryption.
 
+Owns: architecture\data.sdd
 Principles:
   Choose database based on data characteristics, not familiarity.
   Schema design MUST match access patterns.

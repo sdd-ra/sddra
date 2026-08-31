@@ -6,6 +6,7 @@ ID:
 Purpose:
   Deployment and DevOps validation.
 
+Owns: stages\DO.sdd
 Entry:
   SC passed
   deployment plan ready

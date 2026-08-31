@@ -4,6 +4,7 @@ Purpose:
   Enforce semantic commit messages across the SDDRA system.
   Every commit MUST follow the format: `<type>(<scope>): <subject>`
 
+Owns: skills\devops\git\semantic-commits.sdd
 ID: SKILL-DEVOPS-GIT-SEMANTIC-COMMITS
 
 Domain: devops/git

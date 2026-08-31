@@ -3,6 +3,7 @@
 Purpose:
   Communication through events.
 
+Owns: references\architecture\event-driven.sdd
 UseWhen:
   - need loose coupling
   - async workflows

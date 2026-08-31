@@ -1,4 +1,4 @@
-State: SDD (Workflow)
+# State: SDD (Workflow)
 
 Purpose:
   Define the formal task state machine used by the workflow engine.

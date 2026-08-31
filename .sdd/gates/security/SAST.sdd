@@ -4,6 +4,7 @@ Purpose:
   Static Application Security Testing — analyze source code for
   security vulnerabilities without executing it.
 
+Owns: gates\security\SAST.sdd
 AppliesTo:
   - Backend code
   - Frontend code

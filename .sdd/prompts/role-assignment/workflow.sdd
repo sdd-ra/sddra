@@ -4,6 +4,7 @@ Purpose:
   Propose role assignments for each technology in tech_stack,
   wait for human approval, then trigger provisioning.
 
+Owns: prompts\role-assignment\workflow.sdd
 Inputs:
   - tech_map.json
   - role_assignments.json

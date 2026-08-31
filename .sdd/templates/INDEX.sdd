@@ -21,6 +21,13 @@ ReadOrder:
    10 @_sdd/modules/cases.template.sdd
    11 @_sdd/modules/flow.template.sdd
    12 @_sdd/architecture/system.template.md
+   13 @_sdd/architecture/DIAGRAM-TEMPLATE.sdd
+   14 @_sdd/project/case.template.sdd
+   15 @_sdd/project/case-index.template.sdd
+   16 @specdd/flow-index.template.sdd
+   17 @specdd/fix-index.template.sdd
+   18 @specdd/doc-template.sdd
+   19 @specdd/preflight-template.sdd
 
 Rules:
   [T1] Templates are READ-ONLY — they MUST NOT be modified per project.
@@ -30,16 +37,23 @@ Rules:
   [T5] Template content is generic — no project-specific data here.
 
 Navigation:
-  DocsTemplates: @_sdd/docs/
-  DecisionsTemplate: @_sdd/decisions/DEC-000.template.sdd
-  TasksTemplate: @_sdd/tasks/TASK-000.template.sdd
-  StackTemplate: @_sdd/stack/LAYER.template.sdd
-  ModuleTemplate: @_sdd/modules/module.template.sdd
-  ApiTemplate: @_sdd/modules/api.template.sdd
-  DbTemplate: @_sdd/modules/db.template.sdd
-  CasesTemplate: @_sdd/modules/cases.template.sdd
-  FlowTemplate: @_sdd/modules/flow.template.md
-  ArchitectureTemplate: @_sdd/architecture/system.template.md
+   DocsTemplates: @_sdd/docs/
+   DecisionsTemplate: @_sdd/decisions/DEC-000.template.sdd
+   TasksTemplate: @_sdd/tasks/TASK-000.template.sdd
+   StackTemplate: @_sdd/stack/LAYER.template.sdd
+   ModuleTemplate: @_sdd/modules/module.template.sdd
+   ApiTemplate: @_sdd/modules/api.template.sdd
+   DbTemplate: @_sdd/modules/db.template.sdd
+   CasesTemplate: @_sdd/modules/cases.template.sdd
+   FlowTemplate: @_sdd/modules/flow.template.md
+   ArchitectureTemplate: @_sdd/architecture/system.template.md
+   DiagramTemplate: @_sdd/architecture/DIAGRAM-TEMPLATE.sdd
+   CaseTemplate: @_sdd/project/case.template.sdd
+   CaseIndexTemplate: @_sdd/project/case-index.template.sdd
+   SpecDDFlowIndexTemplate: @specdd/flow-index.template.sdd
+   SpecDDFixIndexTemplate: @specdd/fix-index.template.sdd
+   SpecDDDocTemplate: @specdd/doc-template.sdd
+   SpecDDPreflightTemplate: @specdd/preflight-template.sdd
 
 Note:
   This directory is the single source of truth for all reusable project

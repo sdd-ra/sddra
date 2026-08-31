@@ -4,6 +4,7 @@ Purpose:
   Analyze case tech_stack and produce structured tech_map
   for role assignment and provisioning.
 
+Owns: prompts\tech-stack\workflow.sdd
 Inputs:
   - case.tech_stack
   - skills/INDEX.sdd

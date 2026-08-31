@@ -22,4 +22,47 @@ Properties:
   arms: P1,D1,S1,C1,R1,DEP1
   rules: ./rules/chain-rules.sdd
 
+ExecutionTrace:
+  Format: numbered steps with iteration tracking (PHASE 124 §23)
+  Trace:
+    #01  Discover    -> load task context and project memory
+    #02  BuildCtx    -> compile 4-tier memory (Long-Term, Project, Task, Working)
+    #03  Plan        -> decompose task into atomic sub-tasks, assign skills
+    #04  PlanCheck   -> validate DAG structure, dependencies, coverage matrix
+    #05  Implement   -> write code per plan, stage files
+    #06  Test        -> run unit/integration/BDD tests (CHANGED FILES ONLY)
+    #07  TestCheck   -> PASS branch -> Review | FAIL branch -> Classify
+    #08  Classify    -> map failure to FAILURE_CLASSIFICATION.sdd types
+    #09  Fix         -> apply fix from fix-index.sdd or new analysis
+    #10  LoopGuard   -> evaluate LOOP_SCORE, check failure_budget, iteration cap
+    #11  ReTest      -> re-run tests for changed files
+    #12  DoneProof   -> verify requirements, tests, architecture, review, docs
+    #13  Document    -> generate docs/ with WHY + WHAT
+    #14  LearnGate   -> evaluate learning gate outcome (NO_NEW_KNOWLEDGE | EXISTING_UPDATED | NEW_CANDIDATE | NEW_VALIDATED_SKILL | NEW_DECISION | NEW_LESSON)
+    #15  Consolidate -> DROP | ARCHIVE | LINK | PROMOTE knowledge into .sdd/
+    #16  Complete    -> mark task COMPLETED, update .specdd/task-context/
+
+  IterationTracking:
+    iteration: per-FIXING-loop counter (resets on state transition)
+    loop_score: cumulative risk score (see tasks/LOOP-PROTECTION.sdd)
+      threshold: >= 60 -> LOOP_RISK_HIGH -> BLOCKED + human notify
+    failure_budget: remaining allowable failure iterations (default: 3, per task)
+    autonomy_level: L0-L5 per task domain (see tasks/AUTONOMY-POLICY.sdd)
+    trace_log: .specdd/task-context/{task_id}/trace.jsonl (runtime-only)
+
+Navigation:
+  Rules: ./rules/chain-rules.sdd
+  Arms: @arms/INDEX.sdd
+  ExecutionLoop: @workflow/execution-loop.sdd
+  TaskStateMachine: @tasks/TASK-STATE-MACHINE.sdd
+  LoopProtection: @tasks/LOOP-PROTECTION.sdd
+  FailureClassification: @tasks/FAILURE-CLASSIFICATION.sdd
+  ExecutionContract: @tasks/EXECUTION-CONTRACT.sdd
+  DoneProof: @tasks/DONE-PROOF.sdd
+  LearningGate: @workflow/learning-gate.sdd
+  HumanDocsGate: @workflow/human-docs-gate.sdd
+
 State: +
+   (extended with execution trace format per PHASE 124 §23)
+   (added iteration tracking, loop_score, failure_budget, autonomy_level)
+   (linked to task lifecycle, loop protection, failure classification, and execution contract specs)

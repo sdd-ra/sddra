@@ -6,6 +6,7 @@ ID:
 Purpose:
   Final verification and validation.
 
+Owns: stages\VR.sdd
 Entry:
   all stages complete
   DO passed

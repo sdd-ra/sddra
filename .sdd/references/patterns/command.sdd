@@ -3,6 +3,7 @@
 Purpose:
   Encapsulate request as object.
 
+Owns: references\patterns\command.sdd
 UseWhen:
   - need to parameterize actions
   - queuing or logging requests

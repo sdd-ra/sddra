@@ -3,6 +3,7 @@
 Purpose:
   Convert approved docs/ to .sdd/project/. Minimal tokens.
 
+Owns: chains\arms\sdd.sdd
 Stage:
   id: S1
   name: sdd

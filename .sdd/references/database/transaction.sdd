@@ -3,6 +3,7 @@
 Purpose:
   Unit of work with ACID guarantees.
 
+Owns: references\database\transaction.sdd
 UseWhen:
   - multiple operations must succeed or fail together
   - data consistency is critical

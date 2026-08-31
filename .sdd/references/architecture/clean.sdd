@@ -3,6 +3,7 @@
 Purpose:
   Entities, use cases, interface adapters, frameworks.
 
+Owns: references\architecture\clean.sdd
 UseWhen:
   - enterprise scale
   - strict dependency rules required

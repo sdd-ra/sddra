@@ -2,7 +2,7 @@
 
 Describe "Language Compliance Tests" {
     BeforeAll {
-        $repoRoot = Split-Path -Parent $PSScriptRoot
+        $repoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)))
         $sddDir = Join-Path $repoRoot ".sdd"
     }
     
@@ -18,7 +18,7 @@ Describe "Language Compliance Tests" {
                 }
             }
             
-            $nonEnglishFiles | Should -BeNullOrEmpty
+            $nonEnglishFiles.Count | Should Be 0
         }
     }
     
@@ -28,13 +28,13 @@ Describe "Language Compliance Tests" {
             if (Test-Path $readme) {
                 $content = Get-Content $readme -Raw -ErrorAction SilentlyContinue
                 # README.md is allowed to have mixed content
-                $null | Should -Be $null
+                $null | Should Be $null
             }
         }
         
         It "old/ directory can contain non-English content" {
             # old/ is archived content, exempt from language check
-            $null | Should -Be $null
+            $null | Should Be $null
         }
     }
 }

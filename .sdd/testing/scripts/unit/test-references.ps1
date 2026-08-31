@@ -2,7 +2,7 @@
 
 Describe "@References Resolution Tests" {
     BeforeAll {
-        $repoRoot = Split-Path -Parent $PSScriptRoot
+        $repoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)))
         $sddDir = Join-Path $repoRoot ".sdd"
     }
     
@@ -17,7 +17,7 @@ Describe "@References Resolution Tests" {
                     $matches = [regex]::Matches($content, $refPattern)
                     foreach ($match in $matches) {
                         $ref = $match.Value
-                        $ref -match '^@[a-zA-Z0-9_/\-\.]+$' | Should -Be $true
+                        $ref -match '^@[a-zA-Z0-9_/\-\.]+$' | Should Be $true
                     }
                 }
             }
@@ -45,7 +45,7 @@ Describe "@References Resolution Tests" {
                 }
             }
             
-            $missingRefs | Should -BeNullOrEmpty
+            $missingRefs.Count | Should Be 0
         }
     }
 }

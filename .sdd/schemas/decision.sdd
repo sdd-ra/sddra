@@ -4,6 +4,7 @@ Purpose:
   Defines the authoritative schema for decision entities.
   Every decision in the SDDRA system MUST follow this structure.
 
+Owns: schemas\decision.sdd
 Schema:
   id: DEC-<ID>
   type: architectural|technical|security|business|operational|human|ai

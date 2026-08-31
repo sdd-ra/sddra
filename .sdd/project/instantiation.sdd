@@ -178,7 +178,7 @@ Navigation:
   Human decision gate:            @../PROJECT.sdd -> HumanDecision
 
 
-State: STEP 16
+Step: 16
 
 Note:
   (prompt/new/37.md — source labeled this "Yeni STEP 13", a FOURTH
@@ -250,3 +250,5 @@ Note:
   -> ArchitectureSelection (also STEP 16) already states this via its
   Examples list, and this file's own [PI2] already forbids unjustified
   pattern adoption; repeating it here would violate NoDuplication.)
+
+State: +

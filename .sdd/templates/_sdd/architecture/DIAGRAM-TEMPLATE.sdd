@@ -1,0 +1,74 @@
+# Architecture Diagram Template
+
+Purpose:
+  Template for architecture diagrams accompanying API implementations.
+  Every API implementation MUST include a diagram showing the data flow,
+  entry point, dependencies, and fallback paths. Stored alongside the CASE spec.
+
+Owns: templates/_sdd/architecture/DIAGRAM-TEMPLATE.sdd
+
+## Diagram Requirements
+
+Every implementation diagram MUST include:
+
+  1. Entry point — how the API is invoked
+  2. Data flow — direction and medium (HTTP, queue, DB)
+  3. Dependencies — what this component depends on
+  4. Fallback paths — what happens on failure
+  5. Why — business or technical rationale
+
+## Format
+
+Mermaid Diagram-as-Code (C4 model):
+
+```mermaid
+graph LR
+    subgraph "API Layer"
+        CLIENT[Client] -->|HTTP POST| API[Endpoint Handler]
+    end
+
+    subgraph "Business Logic"
+        API --> SVC[PaymentService]
+        SVC --> REPO[PaymentRepository]
+    end
+
+    subgraph "External"
+        SVC -->|provider API| PROVIDER[Payment Provider]
+        SVC -->|event| OUTBOX[Outbox]
+    end
+
+    subgraph "Fallback"
+        PROVIDER -- "on failure" --> DLQ[Dead Letter Queue]
+    end
+
+    STYLE API fill:#4a90d9,stroke:#fff,color:#fff
+```
+
+## Why-How-What Documentation
+
+After the diagram, include:
+
+  WHY: <business or technical reason for this approach>
+
+  HOW: <key implementation mechanism>
+
+  WHAT: <what data/entities are affected>
+
+## Example Placement
+
+  File location:
+    .sdd/projects/{project_name}/architecture/diagrams/CASE_02_03-diagram.md
+
+  Reference from CASE spec:
+    See: @projects/{project_name}/architecture/diagrams/CASE_02_03-diagram.md
+
+## Rules
+
+  [D1] Every API implementation MUST have a diagram.
+  [D2] Diagrams MUST be in Mermaid format.
+  [D3] C4 model is preferred (Context, Containers, Components, Code).
+  [D4] Fallback paths MUST be documented.
+  [D5] Diagrams MUST be checked into the architecture/diagrams/ directory.
+  [D6] Diagrams MUST be referenced from the CASE spec that owns the API.
+
+State: +

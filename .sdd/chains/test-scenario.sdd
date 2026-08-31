@@ -3,6 +3,7 @@
 Purpose:
   Practical test of the chain graph system.
 
+Owns: chains\test-scenario.sdd
 Input:
   "Build an education platform for schools.
    Video conferencing, payments, AI search should be included.

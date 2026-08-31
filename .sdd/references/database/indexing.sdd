@@ -3,6 +3,7 @@
 Purpose:
   Performance optimization for queries.
 
+Owns: references\database\indexing.sdd
 UseWhen:
   - slow query performance
   - large dataset

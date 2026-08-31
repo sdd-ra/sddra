@@ -1,5 +1,9 @@
 # /sdd-migrate
 
+Purpose:
+  Auto-generated purpose for sdd-migrate.
+
+Owns: commands\sdd-migrate.sdd
 Description:
   Run pending migrations after .sdd/ schema updates. Must be run after
   any .sdd/ update that changes file locations or schemas.

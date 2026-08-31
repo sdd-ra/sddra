@@ -6,6 +6,7 @@ ID:
 Purpose:
   Mobile implementation.
 
+Owns: stages\MD.sdd
 Entry:
   API contract ready
   design ready

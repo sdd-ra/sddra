@@ -5,6 +5,7 @@ Purpose:
 
 Use this index as a quick checklist before implementation.
 
+Owns: references\best-practices\index.sdd
 Practices:
   @best-practices.solid
       Object oriented design principles.

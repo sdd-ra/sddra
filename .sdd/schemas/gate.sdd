@@ -3,6 +3,7 @@ Gate: Schema
 Purpose:
   Defines schema for gate entities.
 
+Owns: schemas\gate.sdd
 Required:
   @gate <id>
   condition <condition>

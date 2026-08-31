@@ -3,6 +3,7 @@
 Purpose:
   Template for data models and schemas.
 
+Owns: templates\_sdd\project\data.template.sdd
 Schema:
   id: SCH-XXX
   name: <schema name>

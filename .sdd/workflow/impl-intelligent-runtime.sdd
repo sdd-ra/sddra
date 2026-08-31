@@ -5,6 +5,7 @@ Purpose:
   Enables runtime optimization, parallel execution, and
   adaptive behavior based on context.
 
+Owns: workflow\impl-intelligent-runtime.sdd
 ## Runtime Components
 
 ### 1. Execution Engine

@@ -3,6 +3,7 @@
 Purpose:
   Map execution type to chain node ID.
 
+Owns: chains\selector.sdd
 Map:
   prompt: P1
   docs: D1

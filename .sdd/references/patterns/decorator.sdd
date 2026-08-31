@@ -3,6 +3,7 @@
 Purpose:
   Add behavior without modifying original.
 
+Owns: references\patterns\decorator.sdd
 UseWhen:
   - need to extend behavior dynamically
   - subclassing is impractical

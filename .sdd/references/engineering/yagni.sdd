@@ -3,6 +3,7 @@
 Purpose:
   You aren't gonna need it.
 
+Owns: references\engineering\yagni.sdd
 UseWhen:
   - building for current requirements only
   - future needs are speculative

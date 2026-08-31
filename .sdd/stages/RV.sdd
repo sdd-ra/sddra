@@ -6,6 +6,7 @@ ID:
 Purpose:
   Stage-level review before advancing.
 
+Owns: stages\RV.sdd
 Entry:
   stage implementation complete
   applicable skills loaded

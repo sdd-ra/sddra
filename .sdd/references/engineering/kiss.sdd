@@ -3,6 +3,7 @@
 Purpose:
   Keep it simple.
 
+Owns: references\engineering\kiss.sdd
 UseWhen:
   - solution can be simple
   - readability matters

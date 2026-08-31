@@ -4,6 +4,7 @@ Purpose:
   This directory contains reusable schemas, indexes, and routing tables
   for the project model. Concrete project data is NOT stored here.
 
+Owns: project\README.sdd
 Contents:
   This directory is SCHEMA-ONLY. For reusable templates, see:
     @../../templates/INDEX.sdd

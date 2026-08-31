@@ -2,7 +2,7 @@
 
 Describe "Metadata Completeness Tests" {
     BeforeAll {
-        $repoRoot = Split-Path -Parent $PSScriptRoot
+        $repoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)))
         $sddDir = Join-Path $repoRoot ".sdd"
     }
     
@@ -11,7 +11,7 @@ Describe "Metadata Completeness Tests" {
             $files = Get-ChildItem -Path $sddDir -Recurse -Filter "*.sdd"
             foreach ($file in $files) {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
-                $content -match 'Purpose:' | Should -Be $true
+                $content -match 'Purpose:' | Should Be $true
             }
         }
         
@@ -19,7 +19,7 @@ Describe "Metadata Completeness Tests" {
             $files = Get-ChildItem -Path $sddDir -Recurse -Filter "*.sdd"
             foreach ($file in $files) {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
-                $content -match 'State:' | Should -Be $true
+                $content -match 'State:' | Should Be $true
             }
         }
         
@@ -27,7 +27,7 @@ Describe "Metadata Completeness Tests" {
             $files = Get-ChildItem -Path $sddDir -Recurse -Filter "*.sdd"
             foreach ($file in $files) {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
-                ($content -match 'Owns:' -or $content -match 'Rules:') | Should -Be $true
+                ($content -match 'Owns:' -or $content -match 'Rules:') | Should Be $true
             }
         }
     }
@@ -41,7 +41,7 @@ Describe "Metadata Completeness Tests" {
                 $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
                 if ($content -match 'State:\s*(\S+)') {
                     $state = $matches[1].Trim()
-                    $validStates -contains $state | Should -Be $true
+                    $validStates -contains $state | Should Be $true
                 }
             }
         }

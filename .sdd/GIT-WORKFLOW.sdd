@@ -5,6 +5,8 @@ Purpose:
   For branch naming and hierarchy, see @branches/INDEX.sdd.
   This file defines commit conventions, hooks, and workflows only.
 
+Owns: GIT-WORKFLOW.sdd
+
 ## Semantic Commits
 
 Format: `<type>(<scope>): <subject> [DEC:<id>] [TASK:<id>]`

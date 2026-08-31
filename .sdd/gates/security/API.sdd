@@ -4,6 +4,7 @@ Purpose:
   API security verification — ensure APIs follow security best
   practices and are protected against common API attacks.
 
+Owns: gates\security\API.sdd
 AppliesTo:
   - REST APIs
   - GraphQL APIs

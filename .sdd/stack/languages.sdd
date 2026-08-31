@@ -5,6 +5,7 @@ Purpose:
   selection. Each language entry provides objective decision criteria,
   not preferences.
 
+Owns: stack\languages.sdd
 Catalog:
   Go:
     Pros:

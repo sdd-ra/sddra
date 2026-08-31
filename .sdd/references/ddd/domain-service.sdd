@@ -3,6 +3,7 @@
 Purpose:
   Domain operation that does not naturally belong to an entity/value object.
 
+Owns: references\ddd\domain-service.sdd
 UseWhen:
   - operation spans multiple aggregates
   - no natural owner exists

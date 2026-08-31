@@ -3,6 +3,7 @@ Workflow: Schema
 Purpose:
   Defines schema for workflow entities.
 
+Owns: schemas\workflow.sdd
 Required:
   @workflow <id>
   name <name>

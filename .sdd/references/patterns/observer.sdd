@@ -3,6 +3,7 @@
 Purpose:
   One-to-many dependency notification.
 
+Owns: references\patterns\observer.sdd
 UseWhen:
   - state change affects multiple objects
   - need to notify without tight coupling

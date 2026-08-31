@@ -5,6 +5,7 @@ Purpose:
 
 Use this index before choosing an architecture style.
 
+Owns: references\architecture\index.sdd
 Styles:
   @architecture.layered
       Traditional layered architecture.

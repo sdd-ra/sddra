@@ -3,6 +3,11 @@
 ID: B1
 Parent: D0
 
+Purpose:
+  Fix bugs with regression testing and validation.
+
+Owns: chains/bugfix.sdd
+
 Stages:
   AR: Architecture
   BE: Backend

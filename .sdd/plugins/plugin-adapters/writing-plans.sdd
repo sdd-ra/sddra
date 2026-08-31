@@ -3,6 +3,7 @@
 Purpose:
   Adapt writing-plans skill for SDDRA S1 arm.
 
+Owns: plugins\plugin-adapters\writing-plans.sdd
 Adaptation:
   Breaks work into bite-sized tasks:
     Input: approved docs/

@@ -3,6 +3,7 @@
 Purpose:
   Concurrency control mechanisms.
 
+Owns: references\database\locking.sdd
 UseWhen:
   - concurrent access to same data
   - need to prevent race conditions

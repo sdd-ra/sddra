@@ -3,6 +3,7 @@
 Purpose:
   Detect errors as early as possible.
 
+Owns: references\best-practices\fail-fast.sdd
 UseWhen:
   - input validation
   - configuration errors

@@ -3,6 +3,7 @@
 Purpose:
   Security control specifications for the SDDRA system.
 
+Owns: security\controls.sdd
 Spec: SecurityControls
 
 Controls:

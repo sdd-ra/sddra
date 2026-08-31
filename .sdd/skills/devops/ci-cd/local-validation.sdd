@@ -4,6 +4,7 @@ Purpose:
   Define local validation checks that run before push.
   Ensures code quality and catches issues early.
 
+Owns: skills\devops\ci-cd\local-validation.sdd
 ID: SKILL-DEVOPS-CICD-LOCAL-VALIDATION
 
 Domain: devops/ci-cd

@@ -3,6 +3,7 @@
 Purpose:
   Distributed services with independent deployment.
 
+Owns: references\architecture\microservices.sdd
 UseWhen:
   - multiple teams
   - need independent scaling

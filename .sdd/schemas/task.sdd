@@ -3,6 +3,7 @@ Task: Schema
 Purpose:
   Defines schema for task entities.
 
+Owns: schemas\task.sdd
 Required:
   @task <id>
   title "<title>"

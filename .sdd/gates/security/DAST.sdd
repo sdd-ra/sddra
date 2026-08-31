@@ -4,6 +4,7 @@ Purpose:
   Dynamic Application Security Testing — analyze running application
   for security vulnerabilities by simulating attacks.
 
+Owns: gates\security\DAST.sdd
 AppliesTo:
   - Running application (staging/production-like environment)
   - API endpoints

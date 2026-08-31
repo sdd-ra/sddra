@@ -5,6 +5,7 @@ Purpose:
 
 Use this index before applying engineering standards.
 
+Owns: references\engineering\index.sdd
 Concepts:
   @engineering.solid
       Object oriented design principles.

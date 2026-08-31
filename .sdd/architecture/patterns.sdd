@@ -4,6 +4,7 @@ Purpose:
   Define architecture patterns available for selection. AI MUST select
   a pattern based on project requirements, constraints, and trade-offs.
 
+Owns: architecture\patterns.sdd
 Patterns:
 
   Monolith:

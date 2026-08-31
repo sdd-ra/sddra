@@ -3,6 +3,7 @@
 Purpose:
   Rules for decision creation, approval, and lifecycle.
 
+Owns: decisions\rules.sdd
 Creation:
   [DR1] Every decision MUST have a unique ID (DEC-XXX).
   [DR2] Every decision MUST have a type.

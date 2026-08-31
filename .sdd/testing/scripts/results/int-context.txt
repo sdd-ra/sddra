@@ -1,0 +1,22 @@
+=== Context Builder Integration Tests ===
+
+  PASS: Default context budget is Level 0-1-2
+  PASS: Escalation triggers Level 3-4
+  PASS: Context discovery pipeline stages
+  PASS: Knowledge retrieval engine stages
+  PASS: Context relevance levels
+  PASS: Sufficiency checkpoints
+  PASS: Always load cannot be excluded
+  PASS: Negative knowledge registry structure
+  PASS: Trust hierarchy in context policy
+  PASS: Hard and soft rules
+  PASS: Context builder has 12 rules
+  PASS: Context policy has 15 rules
+  PASS: Memory model has 14 rules
+  PASS: Memory TTL rules
+
+=== Results ===
+Passed: 14
+Failed: 0
+
+EXIT_CODE: 0 

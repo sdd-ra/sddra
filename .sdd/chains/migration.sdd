@@ -1,5 +1,9 @@
 # Chain: Migration
 
+Purpose:
+  Auto-generated purpose for migration.
+
+Owns: chains\migration.sdd
 ID: MG1
 Parent: D0
 

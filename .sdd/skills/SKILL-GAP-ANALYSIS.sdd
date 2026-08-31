@@ -5,6 +5,7 @@ Purpose:
   Compares project requirements against available skills
   and generates actionable gap report.
 
+Owns: skills\SKILL-GAP-ANALYSIS.sdd
 ID: SKILL-GAP-ANALYSIS
 
 Domain: meta

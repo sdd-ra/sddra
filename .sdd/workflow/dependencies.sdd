@@ -5,6 +5,7 @@ Purpose:
   are distinct from task dependencies — they define which stages must
   complete before others can begin, not which tasks block which tasks.
 
+Owns: workflow\dependencies.sdd
 StageDependencies:
   DISCOVER -> ANALYZE:
     Type: SEQUENTIAL

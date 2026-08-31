@@ -3,6 +3,7 @@
 Purpose:
   Event representing a domain fact.
 
+Owns: references\ddd\domain-event.sdd
 UseWhen:
   - other parts of system need to know about state change
   - decoupling producers from consumers

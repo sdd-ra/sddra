@@ -1,5 +1,9 @@
 # /sdd
 
+Purpose:
+  Auto-generated purpose for sdd.
+
+Owns: commands\sdd.sdd
 Description:
   Execute the SDDRA chain from a prompt. Routes through prompt ? docs ?
   sdd ? code ? review ? deploy, with human approval at each gate.

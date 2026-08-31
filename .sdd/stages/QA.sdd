@@ -6,6 +6,7 @@ ID:
 Purpose:
   Quality assurance and testing.
 
+Owns: stages\QA.sdd
 Entry:
   implementation complete
   tests written

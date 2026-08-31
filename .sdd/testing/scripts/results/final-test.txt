@@ -1,0 +1,152 @@
+=== SDDRA Test Suite ===
+Category: all
+
+--- Unit Tests ---
+  PASS: PROJECT.sdd exists
+  PASS: INDEX.sdd exists
+  PASS: protocol/ROOT.sdd exists
+  PASS: chains/graph.sdd exists
+  PASS: templates/INDEX.sdd exists
+  PASS: All .sdd files have Purpose
+  PASS: All .sdd files have State
+--- Integration Tests ---
+  PASS: Chain graph has D0 root
+  PASS: Chain graph has 6 arms
+  PASS: Skills INDEX lists all domains
+  PASS: Prompts directory exists
+--- Pattern Tests ---
+  PASS: Circuit breaker pattern exists
+  PASS: Checkpoint/restore pattern exists
+  PASS: Graceful degradation pattern exists
+  PASS: Circuit breaker has 3 states
+--- Skill Tests ---
+  PASS: SKILL-DISCOVERY exists
+  PASS: SKILL-RECOMMENDATION exists
+  PASS: SKILL-GAP-ANALYSIS exists
+  PASS: DevOps skills exist
+  PASS: Meta skills exist
+--- Chain Tests ---
+  PASS: Default chain exists
+  PASS: Fast path exists
+  PASS: All 6 arms exist
+--- Phase 120: Knowledge Health Tests ---
+  PASS: Knowledge model spec exists
+  PASS: Knowledge lifecycle spec exists
+  PASS: References index exists
+  PASS: sdd-knowledge command exists
+  PASS: Knowledge golden rules exist
+  PASS: Rejected approaches (negative knowledge) exists
+  PASS: sdd-analyze references knowledge system
+--- Phase 123: Working Memory & Context Tests ---
+  PASS: Memory model exists
+  PASS: Context builder exists
+  PASS: Context policy exists
+  PASS: Memory consolidation exists
+  PASS: Context policy has always_load allowlist
+  PASS: Context policy has DO NOT negative knowledge
+--- Phase 124: Execution Loop & Autonomy Tests ---
+  PASS: Task state machine exists
+  PASS: Loop protection exists
+  PASS: Failure classification exists
+  PASS: Execution contract exists
+  PASS: Autonomy policy exists
+  PASS: Done proof exists
+  PASS: Task state machine has 10 states
+  PASS: Loop protection has loop_score
+  PASS: Loop protection has failure_budget
+  PASS: Loop protection has threshold >= 60
+  PASS: Autonomy policy has L0-L5 levels
+  PASS: Done proof has requirements check
+  PASS: Done proof has tests check
+  PASS: Done proof has architecture check
+  PASS: Done proof has review check
+  PASS: Done proof has documentation check
+  PASS: tasks.sdd has 10-state lifecycle
+  PASS: chains/graph.sdd has execution trace
+  PASS: stages.sdd maps Phase124 states
+--- Knowledge System Tests ---
+  PASS: KNOWLEDGE-MODEL has 4 trust tiers
+  PASS: KNOWLEDGE-MODEL has decision_score formula
+  PASS: KNOWLEDGE-MODEL has evidence types
+  PASS: KNOWLEDGE-LIFECYCLE has 6 pipeline steps
+  PASS: KNOWLEDGE-LIFECYCLE has promotion policy
+  PASS: sdd-knowledge command has health scoring
+  PASS: sdd-knowledge command has diff symbols
+  PASS: CANONICALIZATION has relationship vocabulary
+  PASS: CANONICALIZATION has merging rules
+  PASS: GOLDEN-RULES has 10 principles
+  PASS: GOLDEN-RULES has rule strength levels
+--- Runtime Tests ---
+  PASS: memory-model has 4-tier hierarchy
+  PASS: memory-model has promotion pipeline
+  PASS: memory-model has importance levels
+  PASS: context-builder has budget levels
+  PASS: context-builder has default policy
+  PASS: context-builder has escalation policy
+  PASS: context-builder has knowledge retrieval stages
+  PASS: context-policy has always_load allowlist
+  PASS: context-policy has negative knowledge registry
+  PASS: context-policy has sufficiency levels
+  PASS: context-policy has human override
+--- Workflow Tests ---
+  PASS: execution-loop has 15-step machine
+  PASS: execution-loop has 11 execution states
+  PASS: execution-loop has loop protection threshold
+  PASS: execution-loop has review sub_states
+  PASS: learning-gate has 6 outcomes
+  PASS: learning-gate has knowledge artifacts
+  PASS: learning-gate has consolidation rules
+--- Tasks Tests ---
+  PASS: TASK-STATE-MACHINE has 10 states
+  PASS: TASK-STATE-MACHINE has sub_states
+  PASS: TASK-STATE-MACHINE has progress rule
+  PASS: LOOP-PROTECTION has 6 guards
+  PASS: LOOP-PROTECTION has severity weights
+  PASS: LOOP-PROTECTION has loop_score calculation
+  PASS: FAILURE-CLASSIFICATION has 9 types
+  PASS: FAILURE-CLASSIFICATION has severity weights
+  PASS: AUTONOMY-POLICY has L0-L5 levels
+  PASS: AUTONOMY-POLICY has level descriptions
+  PASS: AUTONOMY-POLICY has project policy format
+--- Cross-Reference Validation Tests ---
+  PASS: All @references resolve to existing files
+  PASS: No circular references in knowledge graph
+  PASS: All {PLACEHOLDER} templates in case.template.sdd are documented
+--- Phase 5 Template Tests ---
+  PASS: case.template.sdd has required headers
+  PASS: case.template.sdd has status values
+  PASS: case.template.sdd has requirements sections
+  PASS: flow-index.template.sdd has tree structure
+  PASS: flow-index.template.sdd has status legend
+  PASS: LAYER-GATE.sdd has L0-L4 layers
+  PASS: LAYER-GATE.sdd has git tag format
+  PASS: LAYER-GATE.sdd has example tag
+  PASS: LAYER-GATE.sdd has manual QA requirement
+--- SpecDD Bootstrap Tests ---
+  PASS: CASE template exists
+  PASS: CASE index template exists
+  PASS: Flow index template exists
+  PASS: Fix index template exists
+  PASS: Doc template exists
+  PASS: Pre-flight template exists
+  PASS: Test discovery gate exists
+  PASS: Manual QA gate exists
+  PASS: Code quality gate exists
+  PASS: Layer gate exists
+  PASS: API test template exists
+  PASS: Skill chain exists
+  PASS: Dependency ledger exists
+  PASS: Down-up transition exists
+  PASS: Toolchain spec exists
+  PASS: Task scheduling exists
+  PASS: sdd-explain command exists
+  PASS: sdd-next command exists
+  PASS: sdd-analyze scans specdd artifacts
+
+=== Test Results ===
+Passed: 126
+Failed: 0
+Skipped: 0
+Total: 126
+
+All tests passed!

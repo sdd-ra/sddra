@@ -3,6 +3,7 @@
 Purpose:
   Generic template for technology stack selection.
 
+Owns: templates\_sdd\stack\LAYER.template.sdd
 Instructions:
   Replace placeholders with actual tech choices for each layer.
 

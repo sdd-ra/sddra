@@ -1,5 +1,9 @@
 # /clear
 
+Purpose:
+  Auto-generated purpose for sdd-clear.
+
+Owns: commands\sdd-clear.sdd
 Description:
   Clear all context and start fresh for next task. Use when transitioning
   between distinct tasks to prevent context pollution.

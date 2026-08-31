@@ -5,6 +5,7 @@ Purpose:
   Ensures that learned patterns, decisions, and skills are shared
   across the system and persist for future use.
 
+Owns: workflow\impl-knowledge-sharing.sdd
 ## Knowledge Types
 
 DECISIONS:

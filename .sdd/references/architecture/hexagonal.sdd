@@ -3,6 +3,7 @@
 Purpose:
   Ports and adapters, dependency inversion.
 
+Owns: references\architecture\hexagonal.sdd
 UseWhen:
   - need high testability
   - want framework independence

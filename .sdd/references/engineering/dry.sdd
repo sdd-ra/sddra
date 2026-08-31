@@ -3,6 +3,7 @@
 Purpose:
   Don't repeat yourself.
 
+Owns: references\engineering\dry.sdd
 UseWhen:
   - same logic appears multiple times
   - change in one place should affect all

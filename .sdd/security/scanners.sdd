@@ -6,6 +6,7 @@ Purpose:
   scanner runs when, how it is configured, and how its output is
   interpreted.
 
+Owns: security\scanners.sdd
 Scanners:
 
   SEC.SECRET:

@@ -4,6 +4,7 @@ Purpose:
   Define branching strategy for SDDRA system. Ensures consistent
   branch naming, organization, and workflow.
 
+Owns: skills\devops\git\branching.sdd
 ID: SKILL-DEVOPS-GIT-BRANCHING
 
 Domain: devops/git

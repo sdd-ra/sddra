@@ -6,6 +6,7 @@ ID:
 Purpose:
   Test specification and implementation.
 
+Owns: stages\TS.sdd
 Entry:
   implementation complete
   applicable skills loaded

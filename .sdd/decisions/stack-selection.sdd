@@ -5,6 +5,7 @@ Purpose:
   Every project MUST have a stack selection decision with
   pros/cons analysis for each option.
 
+Owns: decisions\stack-selection.sdd
 Schema:
   id: DEC-<ID>
   type: technical

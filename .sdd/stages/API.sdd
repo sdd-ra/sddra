@@ -6,6 +6,7 @@ ID:
 Purpose:
   API surface implementation and contract validation.
 
+Owns: stages\API.sdd
 Entry:
   backend ready
   contract defined

@@ -5,6 +5,7 @@ Purpose:
 
 Use this index before making database decisions.
 
+Owns: references\database\index.sdd
 Concepts:
   @database.transaction
       Unit of work with ACID guarantees.

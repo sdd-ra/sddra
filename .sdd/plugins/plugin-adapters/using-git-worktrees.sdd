@@ -3,6 +3,7 @@
 Purpose:
   Adapt git worktrees skill for SDDRA C1 arm.
 
+Owns: plugins\plugin-adapters\using-git-worktrees.sdd
 Adaptation:
   Context isolation instead of git worktrees:
     - AI works in .sdd/ context

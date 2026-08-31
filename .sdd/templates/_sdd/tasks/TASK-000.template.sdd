@@ -3,6 +3,7 @@ Purpose:
   Task Template
 
 
+Owns: templates\_sdd\tasks\TASK-000.template.sdd
 Task: TASK-000
 Title: {One-line task title}
 Domain: {domain}

@@ -4,6 +4,7 @@ Purpose:
   Define scaling rules for all system tiers. Scaling decisions are
   driven by ProjectScale and validated against actual load.
 
+Owns: architecture\scaling.sdd
 Principles:
   Scale horizontally before vertically.
   Scale stateless layers before stateful layers.

@@ -4,6 +4,7 @@ Purpose:
   Container security — ensure container images and deployments
   follow security best practices.
 
+Owns: gates\security\CONTAINER.sdd
 AppliesTo:
   - Docker images
   - Kubernetes deployments

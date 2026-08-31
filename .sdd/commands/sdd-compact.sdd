@@ -1,5 +1,9 @@
 # /compact
 
+Purpose:
+  Auto-generated purpose for sdd-compact.
+
+Owns: commands\sdd-compact.sdd
 Description:
   Compress current context to essential tokens only. Use after completing
   a task to minimize token usage before next operation.

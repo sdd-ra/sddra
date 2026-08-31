@@ -3,6 +3,7 @@
 Purpose:
   Template for module flow specifications.
 
+Owns: templates\_sdd\flows\flow.template.sdd
 Flow: <MODULE_NAME>
 
 Chain:

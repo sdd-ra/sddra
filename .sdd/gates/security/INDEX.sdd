@@ -3,6 +3,7 @@
 Purpose:
   Security gate specifications for the SDDRA system.
 
+Owns: gates\security\INDEX.sdd
 Gate: SC
 
 Must:

@@ -6,6 +6,7 @@ Purpose:
   This file defines the schema only — concrete values belong to the
   instantiated project (bax ./instantiation.sdd).
 
+Owns: project\profile.sdd
 Schema:
   Stack:
     BE:    <backend framework / language>

@@ -4,6 +4,7 @@ Purpose:
   Define security testing requirements for SDDRA system.
   Ensures all code is tested for security vulnerabilities.
 
+Owns: skills\devops\security\testing.sdd
 ID: SKILL-DEVOPS-SECURITY-TESTING
 
 Domain: devops/security
