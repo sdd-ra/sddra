@@ -39,6 +39,68 @@ Lifecycle:
     ↓
   LEARN AGAIN
 
+  KnowledgeValidation:
+    source: anthropics/skills skill-creator eval harness
+    definition: Quality gate for skills via with-skill vs without-skill A/B testing
+    components:
+      EvalDefinition:
+        source: skills/skill-creator/references/schemas.md
+        structure: name, tests[], grading[], metrics[]
+        rule: every skill test MUST have at least one assertion
+
+      SubagentExecution:
+        source: skills/skill-creator/SKILL.md
+        pattern: spawn two subagents per test case in parallel
+          - with-skill (skill activated + test prompt)
+          - without-skill (baseline, test prompt only)
+        rule: subagents run in isolated context windows
+
+      GraderAgent:
+        source: skills/skill-creator/agents/grader.md
+        role: evaluates assertions, extracts implicit claims
+        output: grading.json (assertion -> passed/fail + evidence)
+        rule: grader NEVER sees which variant produced which output (blind)
+
+      ComparatorAgent:
+        source: skills/skill-creator/agents/comparator.md
+        role: unbiased comparison of with-skill vs without-skill outputs
+        rule: comparator does NOT know which output came from which variant
+
+      PostHocAnalyzer:
+        source: skills/skill-creator/agents/analyzer.md
+        role: unblinds results + diagnoses why winner won
+        output: analysis.json (patterns, regressions, recommendations)
+
+      BenchmarkAggregation:
+        source: skills/skill-creator/scripts/aggregate_benchmark.py
+        rule: benchmark.json persists test results across skill versions
+        rule: improvement tracked as test_score delta, not train_score
+
+      DescriptionOptimizer:
+        source: skills/skill-creator/scripts/improve_description.py
+        rule: optimize trigger_description for test score (not train score)
+        rule: stratified train/test split prevents overfitting
+        rule: each query run 3x for reliability
+
+    QualityGate:
+      min_score: 0.8 (80% assertion pass rate vs baseline)
+      min_improvement: 0.2 (20% improvement over without-skill baseline)
+      min_confidence: 0.7 (70% confidence across runs)
+      rule: skills below quality gate are NOT recommended
+      rule: human can override promotion below grade with justification
+      rule: eval results cached for 30 days (re-run on skill change)
+
+    Integration:
+      trigger: .sdd/INDEX.sdd ReadOrder step 6 (@skills)
+      storage: eval results -> .sdd/knowledge/candidates/skills/<skill_id>/
+      retention: eval cached 30 days; re-run on .sdd or skill file change
+      observability: OBS20 (skill_eval_completed) with score + recommendation
+
+  ValidationLifecycle:
+    candidates -> validate (via KnowledgeValidation) -> lessons (if validated)
+    rule: promotion requires KnowledgeValidation pass
+    rule: skills MUST pass eval harness before promotion to validated knowledge
+
 Rules:
   [K1] Every task MAY produce knowledge candidates.
   [K2] Candidates MUST be validated before promotion.

@@ -1,0 +1,73 @@
+Runtime: INDEX Integrity Checker
+
+Purpose:
+  Automated verification that all files referenced in INDEX.sdd
+  actually exist and that navigation links resolve. Prevents the
+  "directory explosion" anti-pattern where files drift out of
+  INDEX without detection.
+
+Source:
+  Derived from superpowers' zero-dep discipline + claude-mem's
+  health check pattern (version-check.js sub-100ms marker).
+
+CheckTypes:
+  FileExistence:
+    definition: Verify every @reference in INDEX.sdd resolves to a file
+    rule: missing references emit OBS18 (index_integrity_missing)
+    rule: stale references (pointing to deleted files) emit OBS19
+
+  NavigationLink:
+    definition: Verify every Navigation entry has a target file
+    rule: broken navigation links emit OBS18
+    rule: circular references emit OBS19 (index_integrity_circular)
+
+  ReadOrderSequence:
+    definition: Verify ReadOrder entries are valid file paths
+    rule: invalid ReadOrder sequence emits OBS18
+
+  DuplicateEntries:
+    definition: Detect duplicate file references in INDEX.sdd
+    rule: duplicates emit OBS17 (index_integrity_duplicate)
+
+  StaleFiles:
+    definition: Files in .sdd/ not referenced by any INDEX
+    rule: unreferenced files emit OBS19 (index_integrity_stale)
+    exception: files generated per-prompt (templates/*) exempt
+
+Execution:
+  trigger: pre-commit hook (optional) or CI (mandatory)
+  mode: fast (existence only) or full (also checks content hash)
+  frequency: on every .sdd/ file change
+  timeout: 5 seconds (fail-fast)
+
+  flow:
+    parse INDEX.sdd @references ->
+      resolve each to .sdd/<path>.sdd ->
+      check existence (fast) or content hash (full) ->
+      emit OBS18/OBS19 for violations ->
+      report summary to stdout
+
+Output:
+  summary: total_checked, missing, stale, circular, duplicates
+  violations: list of { path, type, severity, suggested_fix }
+  exit_code: 0 (pass) / 1 (violations found) / 2 (critical structural error)
+
+Rules:
+  [IDX1] INDEX integrity check MUST run in pre-commit hook.
+  [IDX2] CI MUST block merge if INDEX integrity check fails.
+  [IDX3] Missing references MUST be fixed before commit.
+  [IDX4] Stale files MUST be either referenced or deleted.
+  [IDX5] Circular references MUST be broken.
+  [IDX6] Duplicate entries MUST be deduplicated.
+  [IDX7] AI MUST NOT silently skip integrity violations.
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Events: @events.sdd
+  Observability: @../../observability/INDEX.sdd
+
+State: +
+  Note:
+  Generated file — runs as claude-code hook or CI job.
+  Not read by AI during normal operation; invoked by
+  /sdd-analyze command or pre-commit hook.
