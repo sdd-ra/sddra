@@ -3,6 +3,7 @@
 Purpose:
   Adapt writing-skills skill for SDDRA skill creation.
 
+Owns: plugins\plugin-adapters\writing-skills.sdd
 Adaptation:
   SDDRA skill format:
     .sdd/skills/{category}/{technology}/{L1-L5}.sdd

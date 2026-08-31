@@ -4,6 +4,7 @@ Purpose:
   Define git hooks for SDDRA system. Hooks enforce quality,
   security, and consistency before commits and pushes.
 
+Owns: skills\devops\git\hooks.sdd
 ID: SKILL-DEVOPS-GIT-HOOKS
 
 Domain: devops/git

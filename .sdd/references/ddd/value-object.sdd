@@ -3,6 +3,7 @@
 Purpose:
   Immutable value without identity.
 
+Owns: references\ddd\value-object.sdd
 UseWhen:
   - describes a quantity or measurement
   - equality is based on attributes

@@ -3,6 +3,7 @@
 Purpose:
   Template for external API contracts.
 
+Owns: templates\_sdd\project\api.template.sdd
 Schema:
   id: API-XXX
   name: <API name>

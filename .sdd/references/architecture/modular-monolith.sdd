@@ -3,6 +3,7 @@
 Purpose:
   Single deployable unit with internal module boundaries.
 
+Owns: references\architecture\modular-monolith.sdd
 UseWhen:
   - single team
   - need internal boundaries

@@ -6,6 +6,7 @@ ID:
 Purpose:
   Architecture analysis and design.
 
+Owns: stages\AR.sdd
 Entry:
   requirements resolved
   project context loaded

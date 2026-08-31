@@ -5,6 +5,7 @@ Purpose:
   This file defines the SHAPE only — concrete docs belong to the project's
   ./docs/ directory (bax ../PROJECT.sdd -> Directories -> docs).
 
+Owns: project\docs.sdd
 LayerStructure:
   docs/
   ├── 00-about/        (project.md, glossary.md, system-overview.md)

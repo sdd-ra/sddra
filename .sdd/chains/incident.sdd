@@ -3,6 +3,11 @@
 ID: I1
 Parent: D0
 
+Purpose:
+  Respond to production incidents with rapid diagnosis and fix.
+
+Owns: chains/incident.sdd
+
 Stages:
   AR: Architecture
   SC: Security

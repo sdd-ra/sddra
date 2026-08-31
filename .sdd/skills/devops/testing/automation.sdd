@@ -4,6 +4,7 @@ Purpose:
   Define test automation strategy for SDDRA system.
   Ensures all code changes are tested automatically.
 
+Owns: skills\devops\testing\automation.sdd
 ID: SKILL-DEVOPS-TESTING-AUTOMATION
 
 Domain: devops/testing

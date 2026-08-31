@@ -5,6 +5,7 @@ Purpose:
   Only recommends skills with >= 80% relevance to the project.
   Creates actionable plan for skill integration.
 
+Owns: skills\SKILL-RECOMMENDATION.sdd
 ID: SKILL-RECOMMENDATION
 
 Domain: meta

@@ -3,6 +3,7 @@
 Purpose:
   Practical guide for implementing the chain graph in an AI agent.
 
+Owns: workflow\impl-chain-implementation.sdd
 ## Agent Startup Sequence
 
 ```text

@@ -1,0 +1,722 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SDDRA Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .summary { margin: 20px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .pass-row { background-color: #d4edda; }
+        .fail-row { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>SDDRA Test Report</h1>
+    <div class="summary fail">
+        <strong>Passed:</strong> 136 | <strong>Failed:</strong> 2 | <strong>Skipped:</strong> 0 | <strong>Total:</strong> 138 | <strong>Duration:</strong> 2.4259033s
+    </div>
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Test</th>
+            <th>Error</th>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>PROJECT.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>protocol/ROOT.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>chains/graph.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>templates/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>decisions/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>decisions/workflow.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>schemas/decision.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>schemas/task.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>commands/sdd.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="fail-row">
+            <td>FAIL</td>
+            <td>unit</td>
+            <td>All .sdd files have Purpose</td>
+            <td>migration.sdd missing Purpose</td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>All .sdd files have State</td>
+            <td></td>
+        </tr>        <tr class="fail-row">
+            <td>FAIL</td>
+            <td>unit</td>
+            <td>All .sdd files have Owns or Rules</td>
+            <td>data.sdd missing Owns or Rules</td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>All State values are valid symbols</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>No Azerbaijani words in .sdd files</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>architecture directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>bugs directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>cases directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>chains directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>commands directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>context directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>decisions directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>dependencies directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>discovery directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>gates directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>graph directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>observability directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>orchestrator directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>patterns directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>plugins directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>project directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>prompts directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>protocol directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>runtime directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>schemas directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>security directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>skills directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>stack directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>stages directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>standards directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>state directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>tasks directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>templates directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>testing directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>unit</td>
+            <td>workflow directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Chain graph has D0 root node</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Chain graph has 6 arms</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Chain graph has cyclic edges</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Chain graph type is cyclic</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Chain graph root is D0</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompt arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>docs arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>sdd arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>code arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>review arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>deploy arm exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>Skills INDEX lists all domains</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/languages/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/frameworks/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/databases/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/platforms/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/messaging/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/cross-cutting/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/devops/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>skills/meta/INDEX.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompts/ directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompts/inbox/ exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompts/active/ exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompts/archive/ exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>prompts/extracted/ exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>decisions/workflow.sdd has 6 lifecycle states</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>schemas/decision.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>integration</td>
+            <td>commands/sdd.sdd references prompt workflow</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast-path.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>selector.sdd exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes P1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes D1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes S1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes C1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes R1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>default chain includes DEP1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>selector maps execution types to node IDs</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has P1 stage</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has D1 stage</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has S1 stage</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has C1 stage</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has R1 stage</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path skips DEP1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has safety checks FP1</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path has safety checks FP2</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path requires LOW risk</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path requires MEDIUM risk</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>fast path skips architectural changes</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>chain</td>
+            <td>All 6 arms have files</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker pattern exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Checkpoint/restore pattern exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Graceful degradation pattern exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has CLOSED state</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has OPEN state</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has HALF_OPEN state</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has failure detection</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has recovery mechanism</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has default thresholds</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Circuit breaker has per-stage failure actions</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Checkpoint has content specification</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Checkpoint has validation</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Checkpoint has storage location</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has FULL mode</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has REDUCED mode</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has MINIMAL mode</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has READ_ONLY mode</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has ResourceBased trigger</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has ComponentBased trigger</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has FailureBased trigger</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has Stage fallbacks</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has Skill fallbacks</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>patterns</td>
+            <td>Degradation has Context fallbacks</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-DISCOVERY exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-DISCOVERY has Input</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-DISCOVERY has Output</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-DISCOVERY has Execute steps</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-RECOMMENDATION exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance has Domain Match</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance has Technology Match</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance has Use Case Match</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance has Maturity dimension</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance threshold is 80%</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Relevance has recommendation levels</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-GAP-ANALYSIS exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Gap analysis has 80% threshold</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Gap analysis has 60% threshold</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Gap analysis has priority matrix</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>SKILL-EXECUTION exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>DevOps skills directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>Meta skills directory exists</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>At least 10 language skills exist</td>
+            <td></td>
+        </tr>        <tr class="pass-row">
+            <td>PASS</td>
+            <td>skills</td>
+            <td>At least 5 framework skills exist</td>
+            <td></td>
+        </tr>    </table>
+    <p><em>Generated: 2026-08-31 01:37:09</em></p>
+</body>
+</html>

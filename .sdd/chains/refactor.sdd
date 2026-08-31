@@ -1,5 +1,9 @@
 # Chain: Refactor
 
+Purpose:
+  Auto-generated purpose for refactor.
+
+Owns: chains\refactor.sdd
 ID: RF1
 Parent: D0
 

@@ -5,6 +5,7 @@ Purpose:
   Ensures system can recover from corruption, accidental deletion,
   or failed modifications.
 
+Owns: workflow\impl-backup-integrity.sdd
 ## Backup Strategy
 
 ### Critical Files (Always Backed Up)

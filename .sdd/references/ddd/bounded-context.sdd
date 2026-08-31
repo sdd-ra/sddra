@@ -3,6 +3,7 @@
 Purpose:
   Explicit domain model boundary.
 
+Owns: references\ddd\bounded-context.sdd
 UseWhen:
   - large complex domain
   - different teams/models for subdomains

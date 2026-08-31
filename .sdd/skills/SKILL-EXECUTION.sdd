@@ -5,6 +5,7 @@ Purpose:
   knowledge packages — they are executable units that can work
   independently with clear input/output contracts.
 
+Owns: skills\SKILL-EXECUTION.sdd
 ## Skill Structure
 
 Every skill MUST conform to the schema defined in @schemas/skill.sdd.

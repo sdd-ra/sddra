@@ -5,6 +5,8 @@ Purpose:
   Each level builds on the previous one. The system is designed to evolve
   through these levels without breaking changes.
 
+Owns: EVOLUTION.sdd
+
 ## Maturity Levels
 
 ### L0: Initial (MVP)

@@ -3,6 +3,7 @@
 Purpose:
   Traditional layered architecture.
 
+Owns: references\architecture\layered.sdd
 UseWhen:
   - simple to medium complexity
   - small team

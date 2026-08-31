@@ -6,6 +6,7 @@ ID:
 Purpose:
   Backend implementation.
 
+Owns: stages\BE.sdd
 Entry:
   architecture approved
   database ready

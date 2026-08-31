@@ -1,5 +1,9 @@
 # Chain: Security
 
+Purpose:
+  Auto-generated purpose for security.
+
+Owns: chains\security.sdd
 ID: SEC1
 Parent: D0
 

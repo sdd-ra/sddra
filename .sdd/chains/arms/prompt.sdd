@@ -3,6 +3,7 @@
 Purpose:
   Parse human prompt -> docs/. Minimal tokens.
 
+Owns: chains\arms\prompt.sdd
 Stage:
   id: P1
   name: prompt

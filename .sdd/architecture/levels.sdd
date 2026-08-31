@@ -4,6 +4,7 @@ Purpose:
   Define project scale levels L0-L5. Scale is one of the primary inputs
   to architecture selection.
 
+Owns: architecture\levels.sdd
 Levels:
 
   L0:

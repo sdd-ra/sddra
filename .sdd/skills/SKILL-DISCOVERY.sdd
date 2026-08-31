@@ -5,6 +5,7 @@ Purpose:
   Scans .sdd/skills/ registry, matches against project requirements,
   and identifies gaps. Suggests new skills when coverage is below 80%.
 
+Owns: skills\SKILL-DISCOVERY.sdd
 ID: SKILL-DISCOVERY
 
 Domain: meta

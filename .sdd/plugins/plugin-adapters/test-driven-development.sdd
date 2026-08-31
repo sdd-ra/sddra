@@ -3,6 +3,7 @@
 Purpose:
   Adapt TDD skill for SDDRA QA chain.
 
+Owns: plugins\plugin-adapters\test-driven-development.sdd
 Adaptation:
   Maps RED-GREEN-REFACTOR to QA chain:
     RED -> TS (Test Suite) - write failing test

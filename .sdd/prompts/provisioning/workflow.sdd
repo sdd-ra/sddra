@@ -3,6 +3,7 @@ Workflow: Provisioning
 Purpose:
   Provision infrastructure for approved technologies.
 
+Owns: prompts\provisioning\workflow.sdd
 Inputs:
   - approved_roles.json
   - provisioning_requirements.json

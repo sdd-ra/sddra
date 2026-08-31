@@ -4,6 +4,7 @@ Purpose:
   Define how user input is routed to the correct context. Intent,
   project, domain, and task detection determine what is loaded.
 
+Owns: context\routing.sdd
 IntentDetection:
   FIX: ? task context
   REVIEW: ? diff + standards + security context

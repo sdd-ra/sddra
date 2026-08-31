@@ -3,6 +3,11 @@
 ID: M1
 Parent: D0
 
+Purpose:
+  Maintain and update existing systems with minimal disruption.
+
+Owns: chains/maintenance.sdd
+
 Stages:
   AR: Architecture
   BE: Backend

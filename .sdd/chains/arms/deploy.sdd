@@ -3,6 +3,7 @@
 Purpose:
   Production deployment after approval. Minimal tokens.
 
+Owns: chains\arms\deploy.sdd
 Stage:
   id: DEP1
   name: deploy

@@ -4,6 +4,7 @@ Purpose:
   Defines how the workflow engine recovers from failures. Recovery
   is not retry — it is root cause analysis and appropriate response.
 
+Owns: workflow\engine-recovery.sdd
 RecoveryFlow:
   FailureDetected:
     ?

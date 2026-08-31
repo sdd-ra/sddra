@@ -1,1 +1,3 @@
 # Token Record: R1Purpose:  Token Record: R1Stage: R1RunID: RUN-TC2Timestamp: 2026-08-27T19:00:00ZTokensIn: 5000TokensOut: 10000TokensDelta: 5000Status: completedParent: D0DurationMs: 0RetryCount: 0 Error: NoneState: +
+
+Owns: projects\{project_name}\tokens\R1.sdd

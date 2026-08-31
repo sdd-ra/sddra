@@ -3,6 +3,7 @@ Module: Schema
 Purpose:
   Defines schema for module entities.
 
+Owns: schemas\module.sdd
 Required:
   @module <id>
   name <name>

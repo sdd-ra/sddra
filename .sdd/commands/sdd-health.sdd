@@ -1,5 +1,9 @@
 # /sdd-health
 
+Purpose:
+  Auto-generated purpose for sdd-health.
+
+Owns: commands\sdd-health.sdd
 Description:
   Validate .sdd/ system integrity. Checks critical files, references,
   graph consistency, and token budgets.

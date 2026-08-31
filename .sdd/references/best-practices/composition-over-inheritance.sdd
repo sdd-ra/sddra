@@ -3,6 +3,7 @@
 Purpose:
   Prefer composition for flexibility.
 
+Owns: references\best-practices\composition-over-inheritance.sdd
 UseWhen:
   - need flexible behavior combination
   - inheritance hierarchy is deep

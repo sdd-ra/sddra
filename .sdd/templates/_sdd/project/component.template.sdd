@@ -3,6 +3,7 @@
 Purpose:
   Template for reusable UI/logic components.
 
+Owns: templates\_sdd\project\component.template.sdd
 Schema:
   id: COMP-XXX
   name: <component name>

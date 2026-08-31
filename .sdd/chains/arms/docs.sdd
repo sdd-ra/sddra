@@ -3,6 +3,7 @@
 Purpose:
   Generate human docs from prompt. Minimal tokens.
 
+Owns: chains\arms\docs.sdd
 Stage:
   id: D1
   name: docs

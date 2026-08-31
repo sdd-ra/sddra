@@ -3,6 +3,7 @@
 Purpose:
   Interchangeable algorithm family.
 
+Owns: references\patterns\strategy.sdd
 UseWhen:
   - multiple variants of algorithm
   - need to switch algorithms at runtime

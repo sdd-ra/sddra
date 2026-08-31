@@ -5,6 +5,7 @@ Purpose:
   Triggered when skill gap analysis finds missing skills with >= 80% relevance.
   Creates actionable plan and executes integration with human approval.
 
+Owns: workflow\impl-skill-auto-integration.sdd
 ## Auto-Integration Triggers
 
 Automatic Triggers:

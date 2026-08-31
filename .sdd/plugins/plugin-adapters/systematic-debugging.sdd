@@ -3,6 +3,7 @@
 Purpose:
   Adapt systematic debugging skill for SDDRA bugfix/hotfix chains.
 
+Owns: plugins\plugin-adapters\systematic-debugging.sdd
 Adaptation:
   Maps 4-phase root cause investigation to bugfix chain:
     Phase 1 (Root Cause) -> AR (Architecture) stage

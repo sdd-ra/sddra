@@ -81,6 +81,7 @@ Artifacts Created:
     backend/payment/repository.go
     backend/payment/refund_test.go
 
+Owns: workflow\impl-example-prompt-to-code.sdd
 State: +
   Note:
   This is an EXAMPLE workflow. Actual execution follows the same pattern

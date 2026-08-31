@@ -1,0 +1,17 @@
+=== Knowledge Health Integration Tests ===
+
+    Trust coverage: 71.43% (ESTABLISHED=3, VALIDATED=2, CANDIDATE=2)
+  PASS: Trust coverage calculation
+  PASS: Candidate pipeline health
+  PASS: Conflict detection rules
+  PASS: Knowledge gap analysis
+  PASS: Golden rules enforcement
+  PASS: Canonicalization validation
+  PASS: Health score thresholds
+  PASS: Knowledge drift detection
+
+=== Results ===
+Passed: 8
+Failed: 0
+
+EXIT_CODE: 0 

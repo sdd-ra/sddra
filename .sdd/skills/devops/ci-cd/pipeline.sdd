@@ -4,6 +4,7 @@ Purpose:
   Define CI/CD pipeline for SDDRA system. Ensures every change
   is tested, validated, and deployed safely.
 
+Owns: skills\devops\ci-cd\pipeline.sdd
 ID: SKILL-DEVOPS-CICD-PIPELINE
 
 Domain: devops/ci-cd

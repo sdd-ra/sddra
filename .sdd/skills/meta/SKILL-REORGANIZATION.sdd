@@ -45,4 +45,4 @@ Migration Rules:
   [R4] Validate after each move
   [R5] Rollback on failure
 
-State: EXPERIMENTAL
+State: *

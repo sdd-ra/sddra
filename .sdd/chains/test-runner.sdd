@@ -29,6 +29,7 @@ Test Cases:
     Expected: Retry 3x, then escalate
     Budget: N/A
 
+Owns: chains\test-runner.sdd
 Run:
   python scripts/test_chain.py --case TC1
   python scripts/test_chain.py --case TC2

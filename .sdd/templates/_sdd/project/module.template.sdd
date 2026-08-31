@@ -3,6 +3,7 @@
 Purpose:
   Template for business logic modules.
 
+Owns: templates\_sdd\project\module.template.sdd
 Schema:
   id: MOD-XXX
   name: <module name>

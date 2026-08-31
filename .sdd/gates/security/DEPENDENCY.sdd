@@ -4,6 +4,7 @@ Purpose:
   Dependency security scan — check third-party dependencies for
   known vulnerabilities.
 
+Owns: gates\security\DEPENDENCY.sdd
 AppliesTo:
   - All dependencies
   - Package manifests (package.json, go.mod, requirements.txt, etc.)

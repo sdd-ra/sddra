@@ -3,6 +3,7 @@ Skill: Schema
 Purpose:
   Defines schema for skill entities.
 
+Owns: schemas\skill.sdd
 Required:
   @skill <id>
   domain <domain>

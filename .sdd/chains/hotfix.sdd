@@ -3,6 +3,11 @@
 ID: H1
 Parent: D0
 
+Purpose:
+  Fix critical issues with minimal scope and fast validation.
+
+Owns: chains/hotfix.sdd
+
 Stages:
   AR: Architecture
   BE: Backend

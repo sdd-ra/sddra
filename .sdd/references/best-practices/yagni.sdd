@@ -3,6 +3,7 @@
 Purpose:
   You aren't gonna need it.
 
+Owns: references\best-practices\yagni.sdd
 Default:
   Build only for current requirements.
 

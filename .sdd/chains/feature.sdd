@@ -3,6 +3,11 @@
 ID: F1
 Parent: D0
 
+Purpose:
+  Implement new features with full chain validation.
+
+Owns: chains/feature.sdd
+
 Stages:
   AN: Analyze
   AR: Architecture

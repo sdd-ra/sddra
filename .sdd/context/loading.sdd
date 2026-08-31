@@ -4,6 +4,7 @@ Purpose:
   Define progressive context loading, "enough context" criterion,
   and context expansion rules.
 
+Owns: context\loading.sdd
 ProgressiveLoading:
   P0: Always loaded
   P1: Loaded if P0 insufficient

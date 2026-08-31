@@ -17,7 +17,23 @@ Rules:
   [T4] Task dependencies MUST be resolved before execution.
 
 Navigation:
-  Tasks: @tasks.sdd
-  ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
+   Tasks: @tasks.sdd
+   ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
+   TaskStateMachine: @TASK-STATE-MACHINE.sdd
+   LoopProtection: @LOOP-PROTECTION.sdd
+   FailureClassification: @FAILURE-CLASSIFICATION.sdd
+   ExecutionContract: @EXECUTION-CONTRACT.sdd
+   AutonomyPolicy: @AUTONOMY-POLICY.sdd
+   DoneProof: @DONE-PROOF.sdd
+   PartialDone: @PARTIAL-DONE.sdd
+   SkillChain: @SKILL-CHAIN.sdd
+   TaskScheduling: @TASK-SCHEDULING.sdd
+   ExecutionLoop: @../workflow/execution-loop.sdd
+   LearningGate: @../workflow/learning-gate.sdd
+   HumanDocsGate: @../workflow/human-docs-gate.sdd
+   ExplainCommand: @../commands/sdd-explain.sdd
+   Branches: @../branches/DOWN-UP-TRANSITION.sdd
+   SDLC: @../branches/sdlc.sdd
+   STLC: @../branches/stlc.sdd
 
 State: +

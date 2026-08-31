@@ -3,6 +3,7 @@
 Purpose:
   Object oriented design principles.
 
+Owns: references\engineering\solid.sdd
 Principles:
   srp:
       Single responsibility.

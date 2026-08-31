@@ -4,6 +4,7 @@ Purpose:
   Define context dependency graph, invalidation rules, and
   context fingerprinting.
 
+Owns: context\dependencies.sdd
 ContextDependencyGraph:
   Task ? Domain ? Module ? Artifacts
   Task ? Skills ? Sections

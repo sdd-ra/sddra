@@ -4,6 +4,7 @@ Purpose:
   Stage-specific gate criteria. Each stage has a gate that must pass
   before the chain advances to the next stage.
 
+Owns: gates\stage\gates.sdd
 Gates:
 
   AN — Analysis Gate:

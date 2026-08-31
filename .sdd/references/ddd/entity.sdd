@@ -3,6 +3,7 @@
 Purpose:
   Identity-based domain object.
 
+Owns: references\ddd\entity.sdd
 UseWhen:
   - object has distinct identity
   - lifecycle matters

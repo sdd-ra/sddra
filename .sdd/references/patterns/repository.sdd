@@ -3,6 +3,7 @@
 Purpose:
   Abstraction over data source.
 
+Owns: references\patterns\repository.sdd
 UseWhen:
   - need to decouple domain from persistence
   - multiple data sources possible

@@ -1,5 +1,9 @@
 # /sdd-next
 
+Purpose:
+  Auto-generated purpose for sdd-next.
+
+Owns: commands\sdd-next.sdd
 Description:
   Advance to the next decision step or case.
   Checks completion status of current decision and linked tasks

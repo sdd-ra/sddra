@@ -5,6 +5,7 @@ Purpose:
   Improves performance by running multiple stages or tasks concurrently
   while maintaining dependency ordering.
 
+Owns: workflow\impl-parallel-execution.sdd
 ## Parallelism Levels
 
 ### Stage-Level Parallelism

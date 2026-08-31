@@ -3,6 +3,7 @@
 Purpose:
   Adapt verification-before-completion skill for SDDRA R1 arm.
 
+Owns: plugins\plugin-adapters\verification-before-completion.sdd
 Adaptation:
   Verification checklist for R1 arm:
     1. All tests pass

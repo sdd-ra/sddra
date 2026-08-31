@@ -3,6 +3,7 @@
 Purpose:
   Object creation without specifying exact class.
 
+Owns: references\patterns\factory.sdd
 UseWhen:
   - creation logic is complex
   - need to decouple creation from usage

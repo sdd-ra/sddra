@@ -4,6 +4,7 @@ Purpose:
   Abuse and load testing — verify that the system can withstand
   abusive usage patterns, DDoS attempts, and resource exhaustion.
 
+Owns: gates\security\ABUSE.sdd
 AppliesTo:
   - Public APIs
   - Authentication endpoints

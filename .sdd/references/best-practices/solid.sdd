@@ -3,6 +3,7 @@
 Purpose:
   Object oriented design principles.
 
+Owns: references\best-practices\solid.sdd
 Principles:
   srp:
       Single responsibility - a class should have one reason to change.

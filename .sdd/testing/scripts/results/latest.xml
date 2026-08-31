@@ -1,0 +1,146 @@
+<testsuites>
+  <testsuite name="SDDRA" tests="138" failures="2" skipped="0" time="2.4259033">
+    <testcase name="PROJECT.sdd exists" classname="unit" time="0" />
+    <testcase name="INDEX.sdd exists" classname="unit" time="0" />
+    <testcase name="protocol/ROOT.sdd exists" classname="unit" time="0" />
+    <testcase name="chains/graph.sdd exists" classname="unit" time="0" />
+    <testcase name="templates/INDEX.sdd exists" classname="unit" time="0" />
+    <testcase name="decisions/INDEX.sdd exists" classname="unit" time="0" />
+    <testcase name="decisions/workflow.sdd exists" classname="unit" time="0" />
+    <testcase name="schemas/decision.sdd exists" classname="unit" time="0" />
+    <testcase name="schemas/task.sdd exists" classname="unit" time="0" />
+    <testcase name="commands/sdd.sdd exists" classname="unit" time="0" />
+    <testcase name="All .sdd files have Purpose" classname="unit" time="0">
+      <failure message="migration.sdd missing Purpose" />
+    </testcase>
+    <testcase name="All .sdd files have State" classname="unit" time="0" />
+    <testcase name="All .sdd files have Owns or Rules" classname="unit" time="0">
+      <failure message="data.sdd missing Owns or Rules" />
+    </testcase>
+    <testcase name="All State values are valid symbols" classname="unit" time="0" />
+    <testcase name="No Azerbaijani words in .sdd files" classname="unit" time="0" />
+    <testcase name="architecture directory exists" classname="unit" time="0" />
+    <testcase name="bugs directory exists" classname="unit" time="0" />
+    <testcase name="cases directory exists" classname="unit" time="0" />
+    <testcase name="chains directory exists" classname="unit" time="0" />
+    <testcase name="commands directory exists" classname="unit" time="0" />
+    <testcase name="context directory exists" classname="unit" time="0" />
+    <testcase name="decisions directory exists" classname="unit" time="0" />
+    <testcase name="dependencies directory exists" classname="unit" time="0" />
+    <testcase name="discovery directory exists" classname="unit" time="0" />
+    <testcase name="gates directory exists" classname="unit" time="0" />
+    <testcase name="graph directory exists" classname="unit" time="0" />
+    <testcase name="observability directory exists" classname="unit" time="0" />
+    <testcase name="orchestrator directory exists" classname="unit" time="0" />
+    <testcase name="patterns directory exists" classname="unit" time="0" />
+    <testcase name="plugins directory exists" classname="unit" time="0" />
+    <testcase name="project directory exists" classname="unit" time="0" />
+    <testcase name="prompts directory exists" classname="unit" time="0" />
+    <testcase name="protocol directory exists" classname="unit" time="0" />
+    <testcase name="runtime directory exists" classname="unit" time="0" />
+    <testcase name="schemas directory exists" classname="unit" time="0" />
+    <testcase name="security directory exists" classname="unit" time="0" />
+    <testcase name="skills directory exists" classname="unit" time="0" />
+    <testcase name="stack directory exists" classname="unit" time="0" />
+    <testcase name="stages directory exists" classname="unit" time="0" />
+    <testcase name="standards directory exists" classname="unit" time="0" />
+    <testcase name="state directory exists" classname="unit" time="0" />
+    <testcase name="tasks directory exists" classname="unit" time="0" />
+    <testcase name="templates directory exists" classname="unit" time="0" />
+    <testcase name="testing directory exists" classname="unit" time="0" />
+    <testcase name="workflow directory exists" classname="unit" time="0" />
+    <testcase name="Chain graph has D0 root node" classname="integration" time="0" />
+    <testcase name="Chain graph has 6 arms" classname="integration" time="0" />
+    <testcase name="Chain graph has cyclic edges" classname="integration" time="0" />
+    <testcase name="Chain graph type is cyclic" classname="integration" time="0" />
+    <testcase name="Chain graph root is D0" classname="integration" time="0" />
+    <testcase name="prompt arm exists" classname="integration" time="0" />
+    <testcase name="docs arm exists" classname="integration" time="0" />
+    <testcase name="sdd arm exists" classname="integration" time="0" />
+    <testcase name="code arm exists" classname="integration" time="0" />
+    <testcase name="review arm exists" classname="integration" time="0" />
+    <testcase name="deploy arm exists" classname="integration" time="0" />
+    <testcase name="Skills INDEX lists all domains" classname="integration" time="0" />
+    <testcase name="skills/languages/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/frameworks/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/databases/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/platforms/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/messaging/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/cross-cutting/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/devops/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="skills/meta/INDEX.sdd exists" classname="integration" time="0" />
+    <testcase name="prompts/ directory exists" classname="integration" time="0" />
+    <testcase name="prompts/inbox/ exists" classname="integration" time="0" />
+    <testcase name="prompts/active/ exists" classname="integration" time="0" />
+    <testcase name="prompts/archive/ exists" classname="integration" time="0" />
+    <testcase name="prompts/extracted/ exists" classname="integration" time="0" />
+    <testcase name="decisions/workflow.sdd has 6 lifecycle states" classname="integration" time="0" />
+    <testcase name="schemas/decision.sdd exists" classname="integration" time="0" />
+    <testcase name="commands/sdd.sdd references prompt workflow" classname="integration" time="0" />
+    <testcase name="default.sdd exists" classname="chain" time="0" />
+    <testcase name="fast-path.sdd exists" classname="chain" time="0" />
+    <testcase name="selector.sdd exists" classname="chain" time="0" />
+    <testcase name="default chain includes P1" classname="chain" time="0" />
+    <testcase name="default chain includes D1" classname="chain" time="0" />
+    <testcase name="default chain includes S1" classname="chain" time="0" />
+    <testcase name="default chain includes C1" classname="chain" time="0" />
+    <testcase name="default chain includes R1" classname="chain" time="0" />
+    <testcase name="default chain includes DEP1" classname="chain" time="0" />
+    <testcase name="selector maps execution types to node IDs" classname="chain" time="0" />
+    <testcase name="fast path has P1 stage" classname="chain" time="0" />
+    <testcase name="fast path has D1 stage" classname="chain" time="0" />
+    <testcase name="fast path has S1 stage" classname="chain" time="0" />
+    <testcase name="fast path has C1 stage" classname="chain" time="0" />
+    <testcase name="fast path has R1 stage" classname="chain" time="0" />
+    <testcase name="fast path skips DEP1" classname="chain" time="0" />
+    <testcase name="fast path has safety checks FP1" classname="chain" time="0" />
+    <testcase name="fast path has safety checks FP2" classname="chain" time="0" />
+    <testcase name="fast path requires LOW risk" classname="chain" time="0" />
+    <testcase name="fast path requires MEDIUM risk" classname="chain" time="0" />
+    <testcase name="fast path skips architectural changes" classname="chain" time="0" />
+    <testcase name="All 6 arms have files" classname="chain" time="0" />
+    <testcase name="Circuit breaker pattern exists" classname="patterns" time="0" />
+    <testcase name="Checkpoint/restore pattern exists" classname="patterns" time="0" />
+    <testcase name="Graceful degradation pattern exists" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has CLOSED state" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has OPEN state" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has HALF_OPEN state" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has failure detection" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has recovery mechanism" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has default thresholds" classname="patterns" time="0" />
+    <testcase name="Circuit breaker has per-stage failure actions" classname="patterns" time="0" />
+    <testcase name="Checkpoint has content specification" classname="patterns" time="0" />
+    <testcase name="Checkpoint has validation" classname="patterns" time="0" />
+    <testcase name="Checkpoint has storage location" classname="patterns" time="0" />
+    <testcase name="Degradation has FULL mode" classname="patterns" time="0" />
+    <testcase name="Degradation has REDUCED mode" classname="patterns" time="0" />
+    <testcase name="Degradation has MINIMAL mode" classname="patterns" time="0" />
+    <testcase name="Degradation has READ_ONLY mode" classname="patterns" time="0" />
+    <testcase name="Degradation has ResourceBased trigger" classname="patterns" time="0" />
+    <testcase name="Degradation has ComponentBased trigger" classname="patterns" time="0" />
+    <testcase name="Degradation has FailureBased trigger" classname="patterns" time="0" />
+    <testcase name="Degradation has Stage fallbacks" classname="patterns" time="0" />
+    <testcase name="Degradation has Skill fallbacks" classname="patterns" time="0" />
+    <testcase name="Degradation has Context fallbacks" classname="patterns" time="0" />
+    <testcase name="SKILL-DISCOVERY exists" classname="skills" time="0" />
+    <testcase name="SKILL-DISCOVERY has Input" classname="skills" time="0" />
+    <testcase name="SKILL-DISCOVERY has Output" classname="skills" time="0" />
+    <testcase name="SKILL-DISCOVERY has Execute steps" classname="skills" time="0" />
+    <testcase name="SKILL-RECOMMENDATION exists" classname="skills" time="0" />
+    <testcase name="Relevance has Domain Match" classname="skills" time="0" />
+    <testcase name="Relevance has Technology Match" classname="skills" time="0" />
+    <testcase name="Relevance has Use Case Match" classname="skills" time="0" />
+    <testcase name="Relevance has Maturity dimension" classname="skills" time="0" />
+    <testcase name="Relevance threshold is 80%" classname="skills" time="0" />
+    <testcase name="Relevance has recommendation levels" classname="skills" time="0" />
+    <testcase name="SKILL-GAP-ANALYSIS exists" classname="skills" time="0" />
+    <testcase name="Gap analysis has 80% threshold" classname="skills" time="0" />
+    <testcase name="Gap analysis has 60% threshold" classname="skills" time="0" />
+    <testcase name="Gap analysis has priority matrix" classname="skills" time="0" />
+    <testcase name="SKILL-EXECUTION exists" classname="skills" time="0" />
+    <testcase name="DevOps skills directory exists" classname="skills" time="0" />
+    <testcase name="Meta skills directory exists" classname="skills" time="0" />
+    <testcase name="At least 10 language skills exist" classname="skills" time="0" />
+    <testcase name="At least 5 framework skills exist" classname="skills" time="0" />
+  </testsuite>
+</testsuites>

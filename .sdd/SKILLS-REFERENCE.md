@@ -12,15 +12,21 @@ This document explains what each folder contains and what each skill/file is for
 | `agents/` | Multi-agent configuration | (agent definitions) |
 | `architecture/` | System architecture knowledge | architecture, availability, data, deployment, levels, networking, observability, patterns, principles, scaling |
 | `bugs/` | Bug tracking | INDEX.sdd |
+| `branches/` | Branch naming and transition protocols | INDEX.sdd, sdlc.sdd, stlc.sdd, DOWN-UP-TRANSITION.sdd |
 | `cases/` | Case specifications | cases, ecommerce, microservices, mobile-banking, payment, real-time-analytics |
 | `chains/` | Execution graph and rules | graph, selector, arms, rules, tokens, fast-path |
-| `commands/` | CLI commands | sdd, sdd-analyze, sdd-status, sdd-decisions, sdd-health, sdd-backup, sdd-restore, sdd-resume |
+| `commands/` | CLI commands | sdd, sdd-analyze, sdd-status, sdd-decisions, sdd-health, sdd-knowledge, sdd-explain, sdd-next, sdd-backup, sdd-restore, sdd-resume |
+| `concepts/` | Canonical knowledge concepts | KNOWLEDGE-MODEL.sdd, CANONICALIZATION.sdd, RELATIONSHIP-VOCABULARY.sdd, INDEX.sdd |
 | `context/` | Context loading and budgets | budgets, cache, dependencies, loading, priorities, routing |
 | `decisions/` | Decision ledger | decisions, integration, rules, schema, task-lifecycle, template, workflow, examples |
 | `dependencies/` | Dependency graph engine | graph, locking |
 | `discovery/` | Project discovery | baseline, confidence, conflicts, detectors, mapping, rules, scanners |
 | `gates/` | Quality/security/release gates | evidence, exceptions, infrastructure, levels, performance, policy, quality, release, security, testing |
 | `graph/` | Knowledge graph | coverage, dependencies, drift, graph, impact, nodes, ownership, relations, traceability |
+| `insights/` | AI-discovered observations | INDEX.sdd, gaps.sdd, patterns.sdd, smells.sdd |
+| `knowledge/` | Knowledge lifecycle and management | KNOWLEDGE-LIFECYCLE.sdd, COMPRESSION.sdd, VERSIONING.sdd, GOLDEN-RULES.sdd, INDEX.sdd |
+| `legacy/` | Legacy audit and migration procedures | AUDIT-README.sdd |
+| `lessons/` | Negative knowledge and rejected approaches | REJECTED-APPROACHES.sdd |
 | `observability/` | Logging, metrics, tracing | alerting, diagnostics, health, incident, logging, metrics, observability, tracing |
 | `orchestrator/` | Orchestration engine | boundary, intent, modes, pipeline, state, reasoning |
 | `patterns/` | Resilience patterns | circuit-breaker, checkpoint-restore, graceful-degradation |
@@ -28,7 +34,8 @@ This document explains what each folder contains and what each skill/file is for
 | `project/` | Project-specific schemas | architecture, dependencies, domains, flows, indexes, instantiation, map, mode, modules, project, README |
 | `prompts/` | Prompt intelligence engine | INDEX, prompts, tech-stack, role-assignment, provisioning |
 | `protocol/` | Universal rules | ROOT.sdd |
-| `runtime/` | Agent runtime state | agent, current, events, session |
+| `references/` | Trust-weighted engineering knowledge | index, ddd, architecture, patterns, database, engineering, best-practices |
+| `runtime/` | Agent runtime state and memory model | INDEX.sdd, execution.sdd, events.sdd, context.sdd, memory-model.sdd, context-builder.sdd, context-policy.sdd, context-manifest.sdd, memory-consolidation.sdd |
 | `schemas/` | Canonical schemas | decision, gate, module, skill, task, workflow |
 | `security/` | Security controls | controls, gates, levels, scanners, SECURITY, threats |
 | `skills/` | Engineering skills | languages, frameworks, databases, platforms, messaging, cross-cutting, devops, meta |
@@ -36,7 +43,7 @@ This document explains what each folder contains and what each skill/file is for
 | `stages/` | Stage definitions | API, AR, BE, DB, DO, FE, MD, QA, RV, SC, TS, VR |
 | `standards/` | Naming, levels, states | conventions, levels, naming, relations, states |
 | `state/` | State symbols | state |
-| `tasks/` | Task lifecycle | tasks |
+| `tasks/` | Task lifecycle and execution model | tasks.sdd, INDEX.sdd, TASK-STATE-MACHINE.sdd, LOOP-PROTECTION.sdd, FAILURE-CLASSIFICATION.sdd, EXECUTION-CONTRACT.sdd, AUTONOMY-POLICY.sdd, DONE-PROOF.sdd, PARTIAL-DONE.sdd, SKILL-CHAIN.sdd, TASK-SCHEDULING.sdd |
 | `templates/` | Reusable project templates | INDEX, docs, decisions, tasks, stack, modules, architecture, flows, domains |
 | `testing/` | Test types and gates | api, bdd, contract, e2e, gates, index, integration, levels, load, mobile, performance, types, ui, unit |
 | `workflow/` | Workflow engine and implementations | dependencies, engine-recovery, gates, impl-agent-implementation, impl-agent-workflow, impl-backup-integrity, impl-chain-implementation, impl-example-prompt-to-code, impl-feature-planning, impl-intelligent-runtime, impl-knowledge-sharing, impl-migration, impl-parallel-execution, impl-recovery, impl-skill-auto-integration, impl-task-execution, lifecycle, policies, stages, state, testing, transitions |

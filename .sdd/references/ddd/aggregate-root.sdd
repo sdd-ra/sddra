@@ -3,6 +3,7 @@
 Purpose:
   Entry point to aggregate.
 
+Owns: references\ddd\aggregate-root.sdd
 UseWhen:
   - aggregate exists
   - external access needed

@@ -3,6 +3,7 @@
 Purpose:
   Human review gate after code execution. Minimal tokens.
 
+Owns: chains\arms\review.sdd
 Stage:
   id: R1
   name: review

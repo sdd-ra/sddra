@@ -3,6 +3,7 @@
 Purpose:
   Execute .sdd/project/ tasks to code. Minimal tokens.
 
+Owns: chains\arms\code.sdd
 Stage:
   id: C1
   name: code

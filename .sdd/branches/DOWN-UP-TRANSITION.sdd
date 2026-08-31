@@ -1,41 +1,108 @@
-# Down-Up Transition
+Branches: Down-Up Transition
 
 Purpose:
-  Defines the two-directional execution and verification flow for chained tasks.
-  DOWN execution builds top-down; UP verification closes bottom-up.
+  Defines the bidirectional transition protocol for task execution.
+  DOWN (top-down) for execution; UP (bottom-up) for verification.
+  TİKİNTİ (work) descends from MODUL → CASE → TASK → SUBTASK;
+  TƏSDİQ (verification) ascends SUBTASK → TASK → CASE → MODUL.
+  Every level must close before the level above it can advance.
 
-Owns: branches\DOWN-UP-TRANSITION.sdd
+Owns: branches/DOWN-UP-TRANSITION.sdd
 
-## DOWN Execution (Build Phase)
+## DOWN — Execution Flow (top-down)
 
-Direction: Top → Bottom
+Down_Flow:
+    MODUL → CASE → TASK → SUBTASK
 
-Flow:
-  MODUL → CASE → TASK → SUBTASK
+  MODUL:
+    parent: main
+    purpose: Module development branch (bounded context)
+    example: MODUL/auth, MODUL/payment
 
-Rule:
-  - Resolve and execute in top-down order.
-  - Each level inherits requirements from the level above.
-  - Path-based spec resolution applies at each step.
+  CASE:
+    parent: MODUL/<module>
+    purpose: Business capability specification
+    example: CASE_02_03 (Escrow Calculation)
 
-## UP Verification (Close Phase)
+  TASK:
+    parent: CASE/<case>
+    purpose: Concrete implementation work item
+    example: TASK-PAYMENT-003
 
-Direction: Bottom → Top
+  SUBTASK:
+    parent: TASK/<task>
+    purpose: Smallest unit of change
+    example: SUBTASK-PAYMENT-003-01
 
-Flow:
-  SUBTASK → TASK → CASE → MODUL
+  Rule: Work always begins at the MODUL level and descends.
+  Rule: Each level owns its child — changes do not cross sibling boundaries.
 
-Rule:
-  - A level cannot be closed until ALL lower levels are closed.
-  - Verification cascades upward: if a SUBTASK fails, its TASK cannot close.
-  - If a TASK fails, its CASE cannot close.
-  - If a CASE fails, its MODUL cannot close.
+## UP — Verification Flow (bottom-up)
 
-## Summary
+Up_Flow:
+    SUBTASK → TASK → CASE → MODUL
 
-Principle:
-  Construction goes top-down.
-  Verification goes bottom-up.
-  Every level must fully close before the level above can close.
+  Subtask_Verify:
+    - All tests pass
+    - Code quality gate passed
+    - Done proof complete
+
+  Task_Verify:
+    - All subtasks verified
+    - Integration tests pass
+
+  Case_Verify:
+    - All tasks verified
+    - BDD scenarios pass
+
+  Module_Verify:
+    - All cases verified
+    - Module-level integration tests pass
+
+  Rule: A level CANNOT advance until ALL children at the level below are verified.
+  Rule: This is the generalized form of the CHAIN-004 fix for competing ownership claims.
+
+## Down-Up Relationship
+
+Relationship:
+    Work flows DOWN (execution).
+    Verification flows UP (closing).
+
+  Qısaca: TİKİNTİ yuxarıdan-aşağı gedir, TƏSDİQ aşağıdan-yuxarı qayıdır.
+
+  Example:
+    1. MODUL/payment branch created
+    2. CASE_02_03 spec defined
+    3. TASK-PAYMENT-003 and SUBTASKs planned
+    4. [DOWN] Implement SUBTASK → TASK → CASE
+    5. [UP] Verify SUBTASK → TASK → CASE → MODUL
+    6. Merge ready at MODUL level
+
+## Verification Rules
+
+Verify_Rules:
+  [DU1] Every subtask MUST be verified before its parent task.
+  [DU2] Every task MUST be verified before its parent case.
+  [DU3] Every case MUST be verified before its parent module.
+  [DU4] Verification failures MUST propagate up the tree.
+  [DU5] A parent level CANNOT be marked complete until all children are verified.
+  [DU6] If a child fails verification, the parent reverts to "in progress" state.
+
+## Integration with Chain Graph
+
+Chain_Integration:
+  The chain graph (D0 → arm → D0) operates within a task scope.
+  D0 is the task root — each arm executes within the current task's
+  verification context.
+
+  Arm completion → verify at task level (UP direction).
+  Task completion → verify at case level (UP direction).
+  Case completion → verify at module level (UP direction).
+
+Navigation:
+  SDLC: @sdlc.sdd
+  STLC: @stlc.sdd
+  SDLC_STLC: @INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
 
 State: +

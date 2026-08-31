@@ -3,6 +3,7 @@
 Purpose:
   Keep it simple.
 
+Owns: references\best-practices\kiss.sdd
 Default:
   Prefer simpler solution.
 

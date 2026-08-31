@@ -4,6 +4,7 @@ Purpose:
   Threat model for the project. This file defines the threat landscape,
   trust boundaries, and threat categories relevant to the project.
 
+Owns: security\threats.sdd
 ThreatCategories:
   STRIDE:
     Spoofing

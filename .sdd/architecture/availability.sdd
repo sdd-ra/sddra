@@ -5,6 +5,8 @@ Purpose:
   Availability is selected based on business criticality, not defaulted
   to the highest level.
 
+Owns: architecture/availability.sdd
+
 Principles:
   Availability MUST be selected based on business criticality.
   Higher availability requires proportional investment.

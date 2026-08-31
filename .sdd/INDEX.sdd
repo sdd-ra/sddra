@@ -195,9 +195,10 @@ Navigation:
   TemplatesTasks: @templates/_sdd/tasks
   TemplatesStack: @templates/_sdd/stack
   TemplatesModules: @templates/_sdd/modules
-  TemplatesArchitecture: @templates/_sdd/architecture
-  TemplatesFlows: @templates/_sdd/flows
-  TemplatesDomains: @templates/_sdd/domains
+   TemplatesArchitecture: @templates/_sdd/architecture
+   TemplatesFlows: @templates/_sdd/flows
+   TemplatesDomains: @templates/_sdd/domains
+   TemplatesSpecDD: @templates/specdd/
   Project:    @project/schema.sdd
   ProjectMap: @projects/{project_name}/MAP.md
   ProjectStructure: @projects/{project_name}/STRUCTURE.md
@@ -298,9 +299,18 @@ Navigation:
   DecisionInstances: @projects/{project_name}/decisions/
   DomainDecisions: @projects/{project_name}/decisions/INDEX.sdd
    DecisionHumanDocs: @projects/{project_name}/docs/decisions/INDEX.md
-  TaskEngine: @projects/{project_name}/tasks/tasks.sdd
-  TaskInstances: @projects/{project_name}/tasks/
-  TaskScheduler: @projects/{project_name}/tasks/INDEX.sdd
+   TaskEngine: @projects/{project_name}/tasks/tasks.sdd
+   TaskStateMachine: @tasks/TASK-STATE-MACHINE.sdd
+   LoopProtection: @tasks/LOOP-PROTECTION.sdd
+   FailureClassification: @tasks/FAILURE-CLASSIFICATION.sdd
+   ExecutionContract: @tasks/EXECUTION-CONTRACT.sdd
+   AutonomyPolicy: @tasks/AUTONOMY-POLICY.sdd
+   DoneProof: @tasks/DONE-PROOF.sdd
+   PartialDone: @tasks/PARTIAL-DONE.sdd
+   SkillChain: @tasks/SKILL-CHAIN.sdd
+   TaskScheduling: @tasks/TASK-SCHEDULING.sdd
+   TaskInstances: @projects/{project_name}/tasks/
+   TaskScheduler: @projects/{project_name}/tasks/INDEX.sdd
   Workflow:   @workflow/INDEX.sdd
   WorkflowStages: @workflow/stages.sdd
   WorkflowTransitions: @workflow/transitions.sdd
@@ -309,8 +319,11 @@ Navigation:
   WorkflowState: @workflow/state.sdd
   WorkflowLifecycle: @workflow/lifecycle.sdd
   WorkflowDependencies: @workflow/dependencies.sdd
-  WorkflowRecovery: @workflow/engine-recovery.sdd
-  WorkflowPolicies: @workflow/policies.sdd
+   WorkflowRecovery: @workflow/engine-recovery.sdd
+   WorkflowExecutionLoop: @workflow/execution-loop.sdd
+   WorkflowLearningGate: @workflow/learning-gate.sdd
+   WorkflowHumanDocsGate: @workflow/human-docs-gate.sdd
+   WorkflowPolicies: @workflow/policies.sdd
   ProjectWorkflow: @projects/{project_name}/workflow/INDEX.sdd
   ProjectWorkflowLifecycle: @projects/{project_name}/workflow/lifecycle.sdd
   ProjectWorkflowActive: @projects/{project_name}/workflow/active.sdd
@@ -378,10 +391,11 @@ Navigation:
   ProjectGatePolicy: @projects/{project_name}/gates/policy.sdd
    ProjectGateActive: @projects/{project_name}/gates/active.sdd
    Branches: @branches/INDEX.sdd
-   BranchModules: @branches/MODUL/
-   BranchDecisions: @branches/DEC/
-   BranchTasks: @branches/TASK/
-   BranchSDLC: @branches/sdlc.sdd
+    BranchModules: @branches/MODUL/
+    BranchDecisions: @branches/DEC/
+    BranchTasks: @branches/TASK/
+    BranchSDLC: @branches/sdlc.sdd
+    BranchDownUp: @branches/DOWN-UP-TRANSITION.sdd
    Flow: @workflow/flows/INDEX.sdd
    FlowDefault: @workflow/flows/feature.sdd
    FlowFeature: @workflow/flows/feature.sdd
@@ -487,11 +501,16 @@ Navigation:
   SchemaGate: @schemas/gate.sdd
   SchemaModule: @schemas/module.sdd
   Runtime:    @runtime/events.sdd
-  Testing:    @testing/INDEX.sdd
-  TestLevels: @testing/levels.sdd
-  TestTypes:  @testing/types.sdd
-  TestGates:  @testing/gates.sdd
-  ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
+   Testing:    @testing/INDEX.sdd
+   TestLevels: @testing/levels.sdd
+   TestTypes:  @testing/types.sdd
+   TestGates:  @testing/gates.sdd
+   TestDiscoveryGate: @testing/TEST-DISCOVERY-GATE.sdd
+   ManualQAGate: @testing/MANUAL-QA-GATE.sdd
+   LayerGate: @testing/LAYER-GATE.sdd
+   CodeQualityGate: @testing/CODE-QUALITY-GATE.sdd
+   APITestTemplate: @testing/API-TEST-TEMPLATE.sdd
+   ProjectTesting: @projects/{project_name}/testing/INDEX.sdd
   ProjectCoverage: @projects/{project_name}/testing/coverage.sdd
   ProjectTestRuns: @projects/{project_name}/testing/runs/
   ProjectTestFailures: @projects/{project_name}/testing/failures/
@@ -511,8 +530,10 @@ Navigation:
     CommandMigrate: @commands/sdd-migrate.sdd
      CommandCompact: @commands/sdd-compact.sdd
      CommandClear: @commands/sdd-clear.sdd
-     CommandNext: @commands/sdd-next.sdd
-    CommandDecisions: @commands/sdd-decisions.sdd
+      CommandNext: @commands/sdd-next.sdd
+     CommandKnowledge: @commands/sdd-knowledge.sdd
+     CommandExplain: @commands/sdd-explain.sdd
+     CommandDecisions: @commands/sdd-decisions.sdd
    Plugins: @plugins/INDEX.sdd
    PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd
    PluginTDD: @plugins/plugin-adapters/test-driven-development.sdd

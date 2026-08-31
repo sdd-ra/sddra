@@ -6,6 +6,7 @@ Purpose:
 Also known as:
   Law of Demeter.
 
+Owns: references\best-practices\least-knowledge.sdd
 UseWhen:
   - designing module interfaces
   - reducing coupling

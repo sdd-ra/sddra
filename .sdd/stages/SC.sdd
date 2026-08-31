@@ -6,6 +6,7 @@ ID:
 Purpose:
   Security validation and approval.
 
+Owns: stages\SC.sdd
 Entry:
   QA passed
   security requirements known

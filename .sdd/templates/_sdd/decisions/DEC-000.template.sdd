@@ -3,6 +3,7 @@ Purpose:
   Decision Template
 
 
+Owns: templates\_sdd\decisions\DEC-000.template.sdd
 Decision: DEC-000
 Type: architectural|technical|security|business|operational|human|ai
 Status: proposed

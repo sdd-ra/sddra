@@ -5,6 +5,7 @@ Purpose:
 
 Use this index before introducing DDD concepts.
 
+Owns: references\ddd\index.sdd
 Concepts:
   @ddd.entity
       Identity-based domain object.

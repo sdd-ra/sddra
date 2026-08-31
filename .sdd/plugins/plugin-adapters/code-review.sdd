@@ -3,6 +3,7 @@
 Purpose:
   Adapt code review skills for SDDRA R1 arm.
 
+Owns: plugins\plugin-adapters\code-review.sdd
 Adaptation:
   Requesting -> AI presents code for human review:
     Checklist: tests pass, linter passes, decision requirements met,

@@ -6,6 +6,7 @@ ID:
 Purpose:
   Database design and implementation.
 
+Owns: stages\DB.sdd
 Entry:
   architecture approved
   data model known

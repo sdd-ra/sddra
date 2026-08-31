@@ -3,6 +3,7 @@
 Purpose:
   Adapt brainstorming skill for SDDRA prompt analysis.
 
+Owns: plugins\plugin-adapters\brainstorming.sdd
 Adaptation:
   Maps three paths to chain types:
     Spike -> P1 (quick analysis)

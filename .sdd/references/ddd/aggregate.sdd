@@ -3,6 +3,7 @@
 Purpose:
   Consistency boundary.
 
+Owns: references\ddd\aggregate.sdd
 UseWhen:
   - invariant spans multiple objects
   - atomic consistency is required

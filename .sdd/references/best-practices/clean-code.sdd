@@ -3,6 +3,7 @@
 Purpose:
   Readable and maintainable code.
 
+Owns: references\best-practices\clean-code.sdd
 Guidelines:
   naming:
       Use intention-revealing names.

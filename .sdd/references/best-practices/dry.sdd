@@ -3,6 +3,7 @@
 Purpose:
   Don't repeat yourself.
 
+Owns: references\best-practices\dry.sdd
 Default:
   Avoid accidental duplication.
 
