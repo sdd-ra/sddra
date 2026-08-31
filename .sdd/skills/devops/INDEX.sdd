@@ -34,7 +34,7 @@ Navigation:
   Hooks: @git/hooks.sdd
   Pipeline: @ci-cd/pipeline.sdd
   LocalValidation: @ci-cd/local-validation.sdd
-  SecurityTesting: @security/testing.sdd
+  SecurityTesting: @security/scanners.sdd
   TestAutomation: @testing/automation.sdd
 
 State: +
