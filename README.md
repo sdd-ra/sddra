@@ -65,27 +65,16 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "Docker Execution Layer"
-        direction TB
-        subgraph "Container 4: Deploy"
-            DEPLOY_TOOLS["Deploy Tools<br/>(Orchestrator, IaC)"]
-        end
-        subgraph "Container 3: Security"
-            SEC_TOOLS["Security Tools<br/>(SAST, DAST, Scanner)"]
-        end
-        subgraph "Container 2: Test"
-            TEST_TOOLS["Test Tools<br/>(Unit, Integration, E2E)"]
-        end
-        subgraph "Container 1: Build"
-            BUILD_TOOLS["Build Tools<br/>(Compiler, Linter, Formatter)"]
-        end
+    subgraph "Docker Execution Environment"
+        DOCKER_ENGINE["🐳 Docker Engine<br/>(Single Execution Environment)"]
     end
 
-    subgraph "Resource Limits (All Containers)"
+    subgraph "Resource Limits (Per Container)"
         CPU["CPU: Limited"]
         MEM["Memory: Limited"]
         PIDS["PIDs: Limited"]
         NET["Network: Allowlisted"]
+        DISK["Disk: Limited"]
     end
 
     subgraph "Storage"
@@ -93,23 +82,24 @@ graph TB
         NO_VOLUMES["Named Volumes: FORBIDDEN"]
     end
 
-    DOCKER_ENGINE["🐳 Docker Engine"] --> BUILD_TOOLS
-    DOCKER_ENGINE --> TEST_TOOLS
-    DOCKER_ENGINE --> SEC_TOOLS
-    DOCKER_ENGINE --> DEPLOY_TOOLS
+    subgraph "Image Constraint"
+        IMAGE["All required tools pre-installed in image<br/>(no host-level package install)"]
+    end
 
     DOCKER_ENGINE --> CPU
     DOCKER_ENGINE --> MEM
     DOCKER_ENGINE --> PIDS
     DOCKER_ENGINE --> NET
+    DOCKER_ENGINE --> DISK
 
     DOCKER_ENGINE --> BIND_MOUNT
     DOCKER_ENGINE -.->|FORBIDDEN| NO_VOLUMES
+    DOCKER_ENGINE --> IMAGE
 
     SDD_CORE[".sdd/ Core"] --> DOCKER_ENGINE
 ```
 
-**Legend:** Docker is the single execution environment for all build, test, lint, and deploy operations. Each container is resource-limited and uses local bind mounts. Named volumes are forbidden.
+**Legend:** Docker is the single execution environment for build, test, lint, deploy, and all agent tool invocations. Every container MUST be resource-limited (CPU, memory, PIDs, disk, network allowlist) and use local bind mounts — named volumes are forbidden. The Docker image MUST include all required tools; no host-level package installation is permitted. Agents MUST NOT invoke tools outside the Docker sandbox.
 
 ---
 
@@ -210,11 +200,12 @@ graph LR
 
 ```mermaid
 graph TB
-    subgraph "Chain-Level Gates"
+    subgraph "Chain-Level Gates (6 arms of D0)"
         P1["P1<br/>Prompt Analysis"]
         D1["D1<br/>Documentation Generation"]
         S1["S1<br/>SDD Generation"]
         C1["C1<br/>Code Generation"]
+        R1["R1<br/>Review"]
         DEP1["DEP1<br/>Deploy"]
     end
 
@@ -230,8 +221,10 @@ graph TB
     USER4["Human Approval"]
     USER5["User Login<br/>(Full Permissions)"]
 
-    P1 -->|"Gate: P1→D1"| USER1
+    P1 -->|"Gate: P1→D0"| USER1
     USER1 --> D1
+    USER1 --> R1
+    USER1 --> DEP1
 
     D1 -->|"Gate: D1→S1"| USER2
     USER2 --> S1
@@ -239,9 +232,10 @@ graph TB
     S1 -->|"Gate: S1→C1"| USER3
     USER3 --> C1
 
-    C1 -->|"Gate: C1→DEP1"| USER4
-    USER4 --> DEP1
+    C1 -->|"Gate: C1→R1"| USER4
+    USER4 --> R1
 
+    R1 -->|Return to D0| P1
     DEP1 -->|Return to D0| P1
 
     BRU_H -->|"Requires sign-off"| USER5
@@ -254,11 +248,11 @@ graph TB
     class USER1,USER2,USER3,USER4,USER5 human
 ```
 
-**Legend:** Seven non-bypassable human gates ensure control at critical transitions: chain-level approval at P1→D1, D1→S1, S1→C1, C1→DEP1, and SDLC-level approval at BRU, CRU, and MANUAL. MANUAL requires user login with full permissions from the environment.
+**Legend:** Seven non-bypassable human gates ensure control at critical transitions: chain-level approval at P1→D0, D1→S1, S1→C1, C1→R1, and SDLC-level approval at BRU, CRU, and MANUAL. MANUAL requires user login with full permissions from the environment. The chain is cyclic — every arm returns to D0 (root) for re-entry.
 
 ---
 
-## 6. Two-Language Model
+## 6. Three-Language Model
 
 ```mermaid
 graph TB
@@ -274,22 +268,21 @@ graph TB
         TEMPLATES[".sdd/templates/<br/>Scaffolding"]
     end
 
-    subgraph "Translation Layer"
-        CHAIN_EXEC["Chain Graph Execution<br/>(D0 → P1 → D1 → S1 → C1 → R1 → DEP1 → D0)"]
-        GATE_ENFORCE["Gate Enforcement<br/>(Human Approval at Each Step)"]
-        SKILL_EXEC["Skill Execution<br/>(L1-L5 Competency Levels)"]
-    end
-
-    subgraph "AI Language (project/)"
-        SOURCE_CODE["project/<br/>Generated Source Code"]
+    subgraph "AI Language (.sdd/project/)"
+        AI_PROJ[".sdd/project/<br/>AI-Readable Project Structure<br/>(modules, components, API, data)"]
     end
 
     subgraph "Human Language (docs/)"
-        HUMAN_DOCS["docs/<br/>Generated Documentation"]
+        HUMAN_DOCS["docs/<br/>Human-Readable Documentation<br/>1:1 mapping to project/"]
         HUMAN_REVIEW["Human Review<br/>(Approve / Request Changes)"]
     end
 
-    USER_PROMPT["User Prompt"] --> PROJ_SPEC
+    subgraph "Execution (Chain Graph)"
+        CHAIN_EXEC["D0 → P1 → D1 → S1 → C1 → R1 → DEP1 → D0"]
+        GATE_ENFORCE["Gate Enforcement<br/>(Human Approval at Each Step)"]
+    end
+
+    USER_PROMPT["User Prompt<br/>(prompts/inbox/)"] --> PROJ_SPEC
     PROJ_SPEC --> INDEX
     INDEX --> PROTO
     PROTO --> CHAINS
@@ -301,25 +294,24 @@ graph TB
 
     TEMPLATES --> CHAIN_EXEC
     CHAIN_EXEC --> GATE_ENFORCE
-    GATE_ENFORCE --> SKILL_EXEC
-
-    SKILL_EXEC --> HUMAN_DOCS
+    GATE_ENFORCE -->|"D1 produces"| HUMAN_DOCS
     HUMAN_DOCS --> HUMAN_REVIEW
-    HUMAN_REVIEW -->|"Approved"| SOURCE_CODE
+    HUMAN_REVIEW -->|"Approved"| AI_PROJ
     HUMAN_REVIEW -->|"Changes Requested"| CHAIN_EXEC
+    AI_PROJ -->|"code generation"| SOURCE_CODE["project/<br/>Derived Source Code"]
 
     classDef machine fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef translate fill:#fff3e0,stroke:#e65100,stroke-width:1px;
     classDef ai fill:#e8f5e9,stroke:#1b5e20,stroke-width:1px;
     classDef human fill:#f3e5f5,stroke:#4a148c,stroke-width:1px;
+    classDef exec fill:#fff3e0,stroke:#e65100,stroke-width:1px;
 
     class PROJ_SPEC,INDEX,PROTO,CHAINS,SKILLS,GATES,STAGES,DECISIONS,TEMPLATES machine
-    class CHAIN_EXEC,GATE_ENFORCE,SKILL_EXEC translate
-    class SOURCE_CODE ai
+    class AI_PROJ,SOURCE_CODE ai
     class HUMAN_DOCS,HUMAN_REVIEW human
+    class CHAIN_EXEC,GATE_ENFORCE exec
 ```
 
-**Legend:** SDDRA uses a two-language model. The `.sdd/` layer contains machine-readable specifications (immutable rules, schemas, workflows). The translation layer executes chain graphs with human gates. The `project/` layer contains AI-generated source code. The `docs/` layer contains human-reviewed documentation. Prompts flow from user → machine language → translation → human language → code.
+**Legend:** SDDRA uses a three-language model. `.sdd/` is **Machine Language** — immutable rules, schemas, workflows, and routing tables consumed by AI. `.sdd/project/` is **AI Language** — AI-readable project structure (modules, components, API, data) generated after human approval of `docs/`. `docs/` is **Human Language** — human-readable documentation with 1:1 mapping to `project/`. Prompts flow: user → machine language → execution → human language (docs) → AI language (project/) → derived source code. Humans MUST approve docs before `.sdd/project/` generation, and `.sdd/project/` before code execution.
 
 ---
 
@@ -733,55 +725,65 @@ graph LR
 
 ```mermaid
 graph TB
-    subgraph "Security Levels"
-        L0_SEC["L0<br/>Baseline"]
-        L1_SEC["L1<br/>+ Automated Scans"]
-        L2_SEC["L2<br/>+ Security Tests"]
-        L3_SEC["L3<br/>+ Threat Model + DAST"]
-        L4_SEC["L4<br/>+ Pentest + Arch Review"]
-        L5_SEC["L5<br/>+ Continuous + External"]
+    subgraph "Security Levels (Project-Specific)"
+        L0_SEC["L0<br/>Prototype"]
+        L1_SEC["L1<br/>Internal"]
+        L2_SEC["L2<br/>Standard Production"]
+        L3_SEC["L3<br/>High-Risk Production"]
+        L4_SEC["L4<br/>Critical System"]
+        L5_SEC["L5<br/>Regulated / Mission-Critical"]
     end
 
-    subgraph "Security Controls"
-        SAST["SAST"]
-        DAST["DAST"]
-        SCA["SCA<br/>(Dependency Scan)"]
-        SECRETS["Secrets Detection"]
-        AUTH["AuthN/AuthZ"]
+    subgraph "Control Selection (Risk-Based, Not Cumulative)"
+        L1_CTRLS["SecretScan + DependencyScan + SAST"]
+        L2_CTRLS["+ DAST + API Security + ContainerScan"]
+        L3_CTRLS["+ ThreatModel + PenTest + LoadTest + AbuseTest"]
+        L4_CTRLS["+ DDoS Protection + IncidentResponse + SecurityArchitectureReview + ContinuousMonitoring"]
+        L5_CTRLS["+ ExternalAssessment + ComplianceAudit + SupplyChainSecurity + RuntimeSecurity"]
     end
 
-    subgraph "Security Gates"
-        SG1["No CRITICAL/HIGH findings"]
-        SG2["Secrets not exposed"]
-        SG3["Auth validated"]
-        SG4["Dependency scan clean"]
+    subgraph "Gate Policy (Reachable + Exploitable)"
+        REACH_CRIT["Reachable CRITICAL → BLOCK"]
+        REACH_HIGH["Reachable HIGH → BLOCK"]
+        REACH_MED["Reachable MEDIUM → WARN + ticket"]
+        UNREACH["Unreachable → LOG only"]
+        KEV["CISA KEV → BLOCK if reachable"]
     end
 
-    L0_SEC --> L1_SEC
-    L1_SEC --> L2_SEC
-    L2_SEC --> L3_SEC
-    L3_SEC --> L4_SEC
-    L4_SEC --> L5_SEC
+    L0_SEC -.->|"no controls"| L1_SEC
+    L1_SEC --> L1_CTRLS
+    L2_SEC --> L2_CTRLS
+    L3_SEC --> L3_CTRLS
+    L4_SEC --> L4_CTRLS
+    L5_SEC --> L5_CTRLS
 
-    SAST --> SG1
-    DAST --> SG2
-    SCA --> SG3
-    SECRETS --> SG4
-    AUTH --> SG1
+    L1_CTRLS --> REACH_CRIT
+    L2_CTRLS --> REACH_HIGH
+    L3_CTRLS --> REACH_MED
+    L4_CTRLS --> UNREACH
+    L5_CTRLS --> KEV
+
+    classDef level fill:#e1f5fe,stroke:#01579b,stroke-width:1px;
+    classDef ctrl fill:#e8f5e9,stroke:#1b5e20,stroke-width:1px;
+    classDef gate fill:#fff3e0,stroke:#e65100,stroke-width:1px;
+
+    class L0_SEC,L1_SEC,L2_SEC,L3_SEC,L4_SEC,L5_SEC level
+    class L1_CTRLS,L2_CTRLS,L3_CTRLS,L4_CTRLS,L5_CTRLS ctrl
+    class REACH_CRIT,REACH_HIGH,REACH_MED,UNREACH,KEV gate
 ```
 
-**Legend:** Security is a cross-cutting control layer applied throughout the SDLC. Controls are selected based on risk level (R0-R5), not uniformly. Critical and High findings block verification until resolved.
+**Legend:** Security is a cross-cutting control layer applied throughout the SDLC. SecurityLevel is **project-specific** (stored in `project/security/INDEX.sdd`) and is calculated from data sensitivity, exposure, transaction volume, and compliance. Controls are **selected by level and risk**, not stacked cumulatively; gates block only on findings that are BOTH reachable AND exploitable (see `.sdd/security/levels.sdd`). Critical and High reachable findings block verification until resolved; Medium is warn+ticket; Unreachable is log-only.
 
 ### Security Level Definitions
 
-| Level | Controls | When to Use |
-|-------|----------|-------------|
-| **L0** | Baseline | No additional controls |
-| **L1** | Baseline + automated scans | Standard applications |
-| **L2** | Scans + security tests | Applications with sensitive data |
-| **L3** | Threat model + DAST | High-security applications |
-| **L4** | Pentest + architecture security review | Critical systems |
-| **L5** | Continuous security + external assessment | Regulated industries |
+| Level | Name | Controls | When to Use |
+|-------|------|----------|-------------|
+| **L0** | Prototype | None | Internal prototypes, throwaway experiments, non-production |
+| **L1** | Internal | SecretScan, DependencyScan, SAST | Internal tools, no external access, minimal sensitive data |
+| **L2** | Standard Production | + DAST, API Security, ContainerScan | Production systems with standard security requirements |
+| **L3** | High-Risk Production | + ThreatModel, PenTest, LoadTest, AbuseTest | High-risk systems with sensitive data or financial impact |
+| **L4** | Critical System | + DDoS Protection, IncidentResponse, SecurityArchitectureReview, ContinuousMonitoring | Mission-critical systems with maximum security requirements |
+| **L5** | Regulated / Mission-Critical | + ExternalAssessment, ComplianceAudit, SupplyChainSecurity, RuntimeSecurity | Regulated industries, government, critical infrastructure |
 
 ---
 
@@ -972,7 +974,7 @@ graph TB
 
 ```mermaid
 graph TB
-    GATE["Quality Gate<br/>(BE, FE, MD, API, QA, SC, DO, VR)"]
+    GATE["Quality Gate<br/>(AN, AR, BDD, ARCH, DB, BE, API, FE, MD, QA, SC, DO, VR, CR, BRU, CRU, MANUAL)"]
 
     GATE -->|"Pass"| NEXT["Advance to Next Stage"]
     GATE -->|"Fail"| CLASSIFY["Classify Failure"]
@@ -1004,7 +1006,7 @@ graph TB
     class CLASSIFY,OWNER,AR,DO,SC,QA,FIX,CLARIFY,INFRA_FIX,SEC_FIX,TEST_FIX fail
 ```
 
-**Legend:** When a quality gate fails, the failure is classified by type and routed to the responsible stage. Code defects go back to the owner stage, requirement defects to architecture, infrastructure issues to DevOps, security findings to security, and test gaps to QA. After fixing, the gate is re-run.
+**Legend:** When a quality gate fails, the failure is classified by type and routed to the responsible stage per `.sdd/gates/stage/gates.sdd`. There are 17 stage gates — AN, AR, BDD, ARCH, DB, BE, API, FE, MD, QA, SC, DO, VR, CR, BRU, CRU, MANUAL. Code defects go back to the owner stage, requirement defects to architecture, infrastructure issues to DevOps, security findings to security, and test gaps to QA. After fixing, the gate is re-run.
 
 ---
 
@@ -1014,60 +1016,79 @@ graph TB
 .sdd/
   PROJECT.sdd              Root router / constitution
   INDEX.sdd                Universal routing table
+  EVOLUTION.sdd            System evolution roadmap
+  AUDIT.sdd                Audit specification
+  WORK-PLAN.sdd            Work plan specification
+  RESOURCES.sdd            Resource specification
   protocol/ROOT.sdd        Universal rules (above everything)
   architecture/            System architecture knowledge base
     levels.sdd             ProjectScale L0-L5
     patterns.sdd           Architecture patterns
-    scaling.sdd            Scaling rules
-    availability.sdd       Availability/RTO/RPO
-    data.sdd               Data architecture
-    observability.sdd      Observability
-    networking.sdd         Networking
     deployment.sdd         Deployment strategies
   chains/                  Execution graph + arms + rules + tokens
-    graph.sdd              Cyclic root D0 with 6 arms
+    graph.sdd              Cyclic root D0 with 6 arms (P1, D1, S1, C1, R1, DEP1)
   skills/                  Engineering skills (L1-L5)
     devops/                DevOps skills (git, ci-cd, security, testing)
-    meta/                  Meta-skills for skill discovery
-  prompts/                 Prompt intelligence engine
-    root/                  Root-level prompt inbox (user submissions)
   workflow/                Execution workflows
-    stages.sdd             Formal stage registry (AN, AR, DB, BE, API, FE, MD, QA, DO, VR)
+    INDEX.sdd              Workflow engine routing
+    stages.sdd             Formal stage registry (AN, AR, BDD, ARCH, DB, BE, API, FE, MD, QA, SC, DO, BRU, CRU, MANUAL, VR)
     gates.sdd              Gate criteria for each stage
-  commands/                Claude CLI commands (/sdd, /sdd-analyze)
+  commands/                CLI commands (/sdd, /sdd-analyze, /sdd-status, …)
   plugins/                 External plugin adapters
-  project/                 Project-specific schemas & routing
+  project/                 AI-readable project structure (modules, components, API, data)
   tasks/                   Task lifecycle engine
   decisions/               Decision ledger engine
-  standards/               Naming, levels, states, relations
   templates/               Reusable project structure templates
   context/                 Context loading & budgets
   dependencies/            Dependency graph engine
-  gates/                   Quality/security/release gates
+  gates/                   Quality / security / release gates
     stage/gates.sdd        Stage-specific gate criteria
-    security/              Security gate specifications
   graph/                   Knowledge graph (nodes, relations, drift)
   observability/           Logging, metrics, tracing, incidents
   runtime/                 Agent runtime state
-  schemas/                 Canonical schemas
-  security/                Security controls & scanners
+  security/                Security controls & scanners (levels.sdd, controls.sdd)
   stages/                  Individual stage definitions (.sdd per stage)
   testing/                 Test types, levels, gates, scripts
-  patterns/                Resilience patterns
-  orchestrator/            Orchestration reference
-  agent/                   Agent behavior rules
+  agent/                   Agent behavior rules (capabilities, policies, …)
   cases/                   Case specifications
   bugs/                    Bug tracking
   projects/                Project instances
     {project_name}/        Concrete project data
+  state/                   System state
+  knowledge/               Knowledge graph
+  lessons/                 Lessons learned
+  policies/                Policy specifications
+  queries/                 Query specifications
+  concepts/                Concept definitions
+  references/              Cross-references
+  evolution/               Evolution history
+  graph/                   Graph definitions
+  timeline/                Timeline of events
+  orchestrator/            Orchestration reference
+  patterns/                Resilience patterns
+  standards/               Naming, levels, states, relations
+  insights/                System insights
+  discovery/               Discovery specifications
+  features/                Feature specifications
+  stack/                   Stack specifications
+  skills/                  Engineering skills
 
-project/                   # AI-generated source code
+project/                   # AI-generated source code (derived, regenerated)
   backend/
   frontend/
   mobile/
   database/
 
-prompts/                   # Root-level prompt inbox (user submissions)
+docs/                      # Human-readable documentation (1:1 mapping to project/)
+  00-about/
+  20-architecture/
+  30-backend/
+  40-frontend/
+  60-database/
+  70-api/
+  100-devops/
+
+prompts/                   # Root-level prompt inbox (user submissions, flat storage)
 ```
 
 ---
@@ -1114,7 +1135,7 @@ prompts/                   # Root-level prompt inbox (user submissions)
 ### Git Commits
 - All commits MUST follow semantic format: `<type>(<scope>): <subject> [DEC:<id>] [TASK:<id>]`
 - Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `revert`
-- Valid scopes: `sdd`, `project`, `docs`, `chains`, `skills`, `prompts`, `commands`, `templates`, `patterns`, `workflows`, `decisions`, `gates`, `tests`, `testing`, `orchestrator`, `agent`, `security`, `architecture`, `stages`, `state`, `tasks`, `plugins`, `context`, `dependencies`, `observability`, `runtime`, `schemas`, `standards`, `cases`, `bugs`
+- Valid scopes (per `.sdd/branches/INDEX.sdd` [B2] and `.sdd/PROJECT.sdd` [R33]): `sdd`, `project`, `docs`, `chains`, `skills`, `prompts`, `commands`, `templates`, `patterns`, `workflows`, `decisions`, `gates`, `tests`
 - Breaking changes MUST include `!` and footer: `BREAKING CHANGE: <description>`
 
 ### Git Hooks
@@ -1198,12 +1219,15 @@ Every developer MUST run:
 | `/sdd-status` | Show execution status |
 | `/sdd-decisions` | List decisions |
 | `/sdd-health` | Check system integrity |
-| `/sdd-backup` | Create backup of critical files |
+| `/sdd-backup` | Create backup |
 | `/sdd-restore` | Restore from backup |
 | `/sdd-resume` | Resume from checkpoint |
+| `/sdd-migrate` | Run migrations |
 | `/sdd-compact` | Compress context after task |
 | `/sdd-clear` | Clear context for next task |
 | `/sdd-next` | Advance decision chain to next step |
+| `/sdd-knowledge` | Report knowledge graph health and trust |
+| `/sdd-explain` | Explain completed task on demand |
 
 ---
 
@@ -1273,32 +1297,30 @@ All DevOps practices are encoded as skills:
 
 ## 29. Connecting AI Agents
 
-### Supported Agents
-- Claude (Anthropic) — primary
-- GPT-4 (OpenAI) — supported
-- Gemini (Google) — supported
-- Llama (Meta) — supported
-- Custom agents — via adapter pattern
-
 ### How to Connect
 1. Read `.sdd/PROJECT.sdd` for system rules
 2. Read `.sdd/INDEX.sdd` for routing
-3. Read `.sdd/protocol/ROOT.sdd` for principles
-4. Implement agent adapter in `.sdd/plugins/`
-5. Follow chain graph: D0 → arm → D0
-6. Respect human gates
-7. Record token usage
-8. Create decisions for significant changes
+3. Read `.sdd/protocol/ROOT.sdd` for universal principles
+4. Read `.sdd/agent/INDEX.sdd` for the agent system contract (capabilities, policies, permissions, approvals, execution, limits, rollback, audit, roles, contract, shared-state, coordination, conflicts, handoff)
+5. Implement agent adapter in `.sdd/plugins/` (per `.sdd/agent/contract.sdd`)
+6. Follow chain graph: D0 → arm → D0
+7. Respect human gates (chain-level and SDLC-level)
+8. Record token usage
+9. Create decision records for significant changes
+
+The SDDRA protocol is **agent-agnostic** — any agent that can read `.sdd/`, follow the chain graph, respect human gates, and satisfy the agent contract in `.sdd/agent/` can act as an executor. No vendor lock-in.
 
 ### Agent Requirements
-- Must read `.sdd/` before touching `project/`
-- Must follow semantic commits
-- Must run local validation before push
-- Must respect immutability of `.sdd/`
-- Must create files in `project/`, never in `.sdd/`
-- Must update `.sdd/` only for new decisions, tasks, or states
-- Must record token usage
-- Must create decision records
+- MUST read `.sdd/` before touching `project/`
+- MUST follow the chain graph in `.sdd/chains/graph.sdd`
+- MUST follow semantic commits per `.sdd/branches/INDEX.sdd`
+- MUST run local validation before push
+- MUST respect immutability of `.sdd/` (source of truth)
+- MUST create files in `project/`, never in `.sdd/` (except for new decisions, tasks, or states per `.sdd/PROJECT.sdd` [R14])
+- MUST record token usage
+- MUST create decision records
+- MUST obey modes: PLAN, ANALYZE, IMPLEMENT, REVIEW, TEST, SECURITY, DEPLOY, DIAGNOSE, AUDIT
+- MUST enforce rules [AG1]–[AG10] in `.sdd/agent/INDEX.sdd`
 
 ---
 
