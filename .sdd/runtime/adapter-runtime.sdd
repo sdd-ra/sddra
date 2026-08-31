@@ -41,13 +41,31 @@ AdapterComponents:
   MemoryBridge:
     definition: Connects .sdd/runtime/memory-model.sdd to claude-mem stores
     responsibility: Route observations to claude-mem persistence; recall context on demand
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
+    ExtractionPhase:
+      rule: Input sanitization at extraction boundary BEFORE any processing
+      rule: TLS termination inside trusted boundary (no plaintext on host network stack)
+      rule: PII stripping before storage to claude-mem
+      rule: Content validation against schema before ingestion
+    SecurityControls:
+      trust_markers: Emit trustLevel/provenance/readiness with every observation
+      policy_enforcement: Access control via PolicyAsCode (OPA/Wasm) at recall
+      attestation: Attestation-bound tokens for secure context injection
+      audit_log: Tamper-evident, cryptographically chained logs
+      crypto_erasure: Data Unit Keys per memory unit for GDPR compliance
     lifecycle:
       on: PostToolUse (all tools)
       action: sanitize observation (L0 sanitization step)
+      action: strip PII and prompt-injection payloads
+      action: validate trust level (external-import requires downstream marker)
       action: SHA-256 content-hash dedup
       action: store to claude-mem SQLite + ChromaDB
+      action: emit receipt with verdict + reason_code
       on: UserPromptSubmit
       action: load context from claude-mem (tier routing, ~52% token savings)
+      action: enforce access control via PolicyAsCode
+      action: validate attestation-bound token
+      action: sanitize on retrieval (defense in depth)
       action: inject into context window
 
   EventBridge:
@@ -134,13 +152,19 @@ Rules:
   [ADAPTER14] External dependencies (claude-code, claude-mem) MUST be version-pinned, not @latest.
   [ADAPTER15] Adapter MUST support graceful degradation if external dependency is unavailable.
 
-Navigation:
+  Navigation:
   Runtime: @INDEX.sdd
   Gates: @../gates/INDEX.sdd
   Security: @../gates/security.sdd
   Security Levels: @../security/levels.sdd
+  Security Controls: @../security/controls.sdd
+  Security Enforcement: @../gates/security-enforcement.sdd
   Events: @events.sdd
   Memory Model: @memory-model.sdd
+  Memory Consolidation: @memory-consolidation.sdd
+  Trust Markers: @memory-model.sdd (TrustMarkers section)
+  Crypto Erasure: @memory-model.sdd (CryptoErasure section)
+  Policy As Code: @memory-model.sdd (PolicyAsCode section)
   Execution: @execution.sdd
   Protocol: @../protocol/ROOT.sdd
 

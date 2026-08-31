@@ -78,31 +78,43 @@ Controls:
     scan: custom tests, BDD security scenarios
     scope: payment, refund, auth, admin
 
-  RuntimePatternSet:
+RuntimePatternSet:
     definition: 17 regex patterns seeded from claude-code patterns.py:30-345
     source: anthropics/claude-code plugins/security-guidance/hooks/patterns.py:30-345
     execution: claude-code PostToolUse[Edit/Write] hook via adapter-runtime.sdd
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-findings-3-4-6-9
+    reachability_classification:
+      reachable_critical: Block immediately (exit 2)
+      reachable_high: Block (exit 2)
+      reachable_medium: Warn + ticket
+      unreachable_any: Log only (no block)
 
     patterns:
       PAT.yaml_load:
-        regex: yaml\.load\s*\(
+        regex: yaml\.load\s\(*
         description: Unsafe YAML deserialization (RCE)
         severity: CRITICAL
         L_level: L3
+        reachability: runtime — only dangerous if loading untrusted YAML at runtime
+        sdlt_stage: build_time + pr_time
         fix: Use yaml.safe_load() instead
 
       PAT.pickle_loads:
-        regex: pickle\.(loads|load)\s*\(
+        regex: pickle\.(loads|load)\s\(*
         description: Unsafe pickle deserialization (RCE)
         severity: CRITICAL
         L_level: L4
+        reachability: runtime — only dangerous with untrusted serialized data
+        sdlt_stage: build_time + pr_time
         fix: Use JSON or struct for serialization
 
       PAT.eval_exec:
-        regex: \b(eval|exec)\s*\(
+        regex: \b(eval|exec)\s\(*
         description: Arbitrary code execution
         severity: CRITICAL
         L_level: L4
+        reachability: runtime — direct code execution risk
+        sdlt_stage: build_time + pr_time
         fix: Avoid eval/exec; use ast.literal_eval or sandboxed alternatives
 
       PAT.shell_true:
@@ -110,6 +122,8 @@ Controls:
         description: Shell command injection risk via subprocess
         severity: HIGH
         L_level: L3
+        reachability: runtime — only dangerous with user-controlled input
+        sdlt_stage: build_time + pr_time
         fix: Use shell=False with argument list
 
       PAT.innerHTML:
@@ -117,6 +131,8 @@ Controls:
         description: XSS via unsafe HTML injection (React)
         severity: HIGH
         L_level: L2
+        reachability: runtime — only dangerous with untrusted content
+        sdlt_stage: build_time + pr_time
         fix: Use DOMPurify or text content instead
 
       PAT_sql_concat:
@@ -124,6 +140,8 @@ Controls:
         description: SQL injection via string concatenation
         severity: CRITICAL
         L_level: L3
+        reachability: runtime — only dangerous with user input reaching query
+        sdlt_stage: build_time + pr_time
         fix: Use parameterized queries / prepared statements
 
       PAT_hardcoded_secret:
@@ -131,6 +149,8 @@ Controls:
         description: Hardcoded secret in source
         severity: CRITICAL
         L_level: L4
+        reachability: always — secrets in source are always exploitable
+        sdlt_stage: pr_time + build_time
         fix: Use environment variables / vault / secrets manager
 
       PAT_weak_random:
@@ -138,20 +158,26 @@ Controls:
         description: Weak randomness (not for security/cryptography)
         severity: MEDIUM
         L_level: L2
+        reachability: context-dependent — dangerous only for security tokens
+        sdlt_stage: build_time + pr_time
         fix: Use secrets module for security-sensitive randomness
 
       PAT_weak_crypto:
-        regex: hashlib\.(md5|sha1)\s*\(
+        regex: hashlib\.(md5|sha1)\s*(*
         description: Weak hash algorithm (MD5/SHA1)
         severity: MEDIUM
         L_level: L2
+        reachability: runtime — dangerous for password hashing, signatures
+        sdlt_stage: build_time + pr_time
         fix: Use SHA-256 or stronger
 
       PAT_path_traversal:
-        regex: (open\(|readFile|writeFile)\s*\([^)]*(\.|\.\.)*[/\\]
+        regex: (open\(|readFile|writeFile)\s\(*[^)]*(\.|..)*[/\\]
         description: Potential path traversal
         severity: HIGH
         L_level: L3
+        reachability: runtime — only dangerous with user-controlled paths
+        sdlt_stage: build_time + pr_time
         fix: Validate and canonicalize file paths; use safe join
 
       PAT_cors_wildcard:
@@ -159,27 +185,35 @@ Controls:
         description: CORS wildcard allows all origins
         severity: MEDIUM
         L_level: L3
+        reachability: runtime — exploitable if API serves sensitive data
+        sdlt_stage: build_time + pr_time
         fix: Restrict to specific trusted origins
 
       PAT_missing_auth:
-        regex: (def\s+(login|auth|admin)[^)]*\)\s*:)|(app\.(post|get)\s*\(['"]\/(admin|api))
+        regex: (def\s+(login|auth|admin)[]+)\s*:)|(app\.(post|get)\s\(*['"]/(admin|api)
         description: Missing authentication/authorization check
         severity: CRITICAL
         L_level: L4
+        reachability: runtime — directly exploitable
+        sdlt_stage: build_time + pr_time + staging_time
         fix: Add auth middleware and authorization checks
 
       PAT_ssrf:
-        regex: (fetch\(|requests\.(get|post|put|delete))\s*\([^)]*(\+|f['"]|concat|format)
+        regex: (fetch\(|requests\.(get|post|put|delete))\s*\(.*(\+|f['"]|concat|format)
         description: Potential SSRF via user-controlled URL
         severity: HIGH
         L_level: L4
+        reachability: runtime — only dangerous if URL reaches internal network
+        sdlt_stage: build_time + pr_time + staging_time
         fix: Validate and allowlist URL schemas/hosts
 
       PAT_open_redirect:
-        regex: redirect\s*\([^)]*request\.
+        regex: redirect\s*\(.*request\.
         description: Open redirect via user-controlled URL
         severity: MEDIUM
         L_level: L2
+        reachability: runtime — exploitable for phishing campaigns
+        sdlt_stage: build_time + pr_time
         fix: Validate redirect targets against allowlist
 
       PAT_deserialize_untrusted:
@@ -187,27 +221,89 @@ Controls:
         description: Deserialization of untrusted user input
         severity: CRITICAL
         L_level: L3
+        reachability: runtime — directly exploitable
+        sdlt_stage: build_time + pr_time
         fix: Never deserialize untrusted input; use JSON/Protocol Buffers
 
       PAT_redos:
-        regex: \([a-zA-Z+\*]*\*\?\)|\(\.\*\)\{.*,.*\}
+        regex: \([a-zA-Z+\*]*\*\?)|\(\.\*\)\{.*,.\\}
         description: Potential regex denial of service (ReDoS)
         severity: LOW
         L_level: L1
+        reachability: runtime — only dangerous with user-controlled regex input
+        sdlt_stage: build_time + pr_time
         fix: Avoid nested quantifiers in regex patterns
 
       PAT_no_rate_limit:
-        regex: (def\s+login|app\.post\s*\(['"]\/(login|api))
+        regex: (def\s+login|app\.post\s\(*['"]/(login|api)
         description: Missing rate limiting on auth/API endpoints
         severity: LOW
         L_level: L1
+        reachability: runtime — exploitable via brute force / DoS
+        sdlt_stage: build_time + pr_time + staging_time
         fix: Add rate limiting middleware (e.g., express-rate-limit)
 
-    Enforcement:
-      mode_observe: L0-L3 patterns below project threshold — warn only (OBS12)
-      mode_enforce: L4-L5 patterns at or above threshold — block (OBS13, exit 2)
-      source: .sdd/runtime/adapter-runtime.sdd (HookBridge)
-      source: .sdd/gates/security-enforcement.sdd (EnforcementModel)
+      PAT_ai_missing_auth:
+        description: AI-generated auth routes without explicit authorization checks
+        severity: CRITICAL
+        L_level: L4
+        reachability: runtime — directly exploitable if deployed
+        sdlt_stage: pr_time + build_time
+        best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-9
+        rule: AI-generated code touching auth MUST have human review
+        fix: Add explicit auth middleware and authorization checks
+
+      PAT_ai_hardcoded_credential:
+        description: AI autocomplete inserting API keys or tokens
+        severity: CRITICAL
+        L_level: L4
+        reachability: always — secrets in source are always exploitable
+        sdlt_stage: pr_time + build_time
+        fix: Use environment variables / vault / secrets manager
+
+      PAT_ai_eval_usage:
+        description: AI-generated eval/exec for dynamic code execution
+        severity: CRITICAL
+        L_level: L4
+        reachability: runtime — direct code execution risk
+        sdlt_stage: pr_time + build_time
+        fix: Avoid eval/exec; use ast.literal_eval or sandboxed alternatives
+
+      PAT_ai_shell_true:
+        description: AI-generated subprocess calls with shell=True
+        severity: HIGH
+        L_level: L3
+        reachability: runtime — dangerous with user-controlled input
+        sdlt_stage: pr_time + build_time
+        fix: Use shell=False with argument list
+
+      PAT_ai_yaml_load:
+        description: AI-generated yaml.load instead of yaml.safe_load
+        severity: CRITICAL
+        L_level: L4
+        reachability: runtime — dangerous if loading untrusted YAML
+        sdlt_stage: pr_time + build_time
+        fix: Use yaml.safe_load() instead
+
+      Enforcement:
+        best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-3
+        diff_aware_gating:
+          rule: Only block on findings introduced by the change under review
+          rule: Track pre-existing findings as scheduled remediation, not merge blockers
+        gate_actions:
+          reachable_critical: BLOCK (exit 2)
+          reachable_high: BLOCK (exit 2)
+          reachable_medium: WARN + ticket
+          unreachable_critical: WARN + ticket
+          unreachable_any: LOG only (no block)
+          kev_listed: BLOCK if reachable
+        mode_observe: L0-L3 patterns below project threshold — warn only (OBS12)
+        mode_enforce: L4-L5 patterns at or above threshold — block (OBS13, exit 2)
+        source: .sdd/runtime/adapter-runtime.sdd (HookBridge)
+        source: .sdd/gates/security-enforcement.sdd (EnforcementModel)
+        rule: Block on findings that are BOTH reachable AND exploitable
+        rule: Warn + ticket on reachable-but-not-exploitable findings
+        rule: Log-only for unreachable findings (no merge block)
 
 ControlSelection:
   Controls are selected based on:

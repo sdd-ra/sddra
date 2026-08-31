@@ -32,44 +32,72 @@ GateTypes:
     Condition: No unresolved high/critical findings
     Fields: Scope, Tester, Date, Environment, Findings, Remediation, Retest
 
-  SemanticReview:
-    source: anthropics/claude-code-security-review
-    definition: AI-powered semantic security review of PR diffs
-    components:
-      PromptFactory:
-        source: claudecode/prompts.py
-        role: Generates system + user prompt with PR diff injected
-        phases:
-          - Repository Context Research (file-search tools)
-          - Comparative Analysis (compare new code to existing patterns)
-          - Vulnerability Assessment (trace data flows, trace boundaries)
+    SemanticReview:
+      source: anthropics/claude-code-security-review
+      definition: AI-powered semantic security review of PR diffs
+      best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-5
+      design_principle: Separate deterministic controls, probabilistic analysis, verification, and human decision-making
+      receipt_first: true
+      trust_markers:
+        source: memory-seam receipt model (jeremyknows/memory-seam)
+        markers:
+          - trustLevel: "external-import" | "internal-verified" | "runtime-generated"
+          - version: 1
+          - provenance: "script_confirmed" | "provider_untrusted" | "llm_asserted"
+          - readiness: "fresh" | "stale" | "degraded" | "not-run" | "unknown"
 
-      ClaudeCodeRunner:
-        source: claudecode/github_action_audit.py:227
-        role: Invokes claude CLI subprocess with PR diff
-        config:
-          output_format: json
-          model: from .sdd security levels (L4 -> opus, L3 -> default)
-          disallowed_tools: Bash(ps:*)  (prevents process listing)
-        failure_mode: Prompt too long -> retry WITHOUT diff (file-exploration only)
+      components:
+        PromptFactory:
+          source: claudecode/prompts.py
+          role: Generates system + user prompt with PR diff injected
+          phases:
+            - Repository Context Research (file-search tools)
+            - Comparative Analysis (compare new code to existing patterns)
+            - Vulnerability Assessment (trace data flows, trace boundaries)
 
-      JSONParser:
-        source: claudecode/json_parser.py
-        role: Extracts findings array from Claude JSON output
-        fallback: markdown code blocks, raw balanced braces
+        ClaudeCodeRunner:
+          source: claudecode/github_action_audit.py:227
+          role: Invokes claude CLI subprocess with PR diff
+          config:
+            output_format: json
+            model: from .sdd security levels (L4 -> opus, L3 -> default)
+            disallowed_tools: Bash(ps:*)  (prevents process listing)
+            failure_mode: Prompt too long -> retry WITHOUT diff (file-exploration only)
 
-      FindingsFilter:
-        source: claudecode/findings_filter.py
-        stage_1: HardExclusionRules (regex, 16 patterns)
-        stage_2: ClaudeAPIClient per-finding confidence scoring (0-10)
-        stage_3: DirectoryExclusion (EXCLUDE_DIRECTORIES)
-        fail_open: API failure -> keep finding at confidence 10.0
+        JSONParser:
+          source: claudecode/json_parser.py
+          role: Extracts findings array from Claude JSON output
+          schema_validation: strict schema parse before acceptance
+          fallback: markdown code blocks, raw balanced braces
+          validation_checklist:
+            - parse against strict schema
+            - confirm path is eligible and changed in the immutable head SHA
+            - confirm reported line falls on, or intentionally refers to, a changed hunk
+            - deduplicate semantically equivalent findings
+            - reject unsupported categories or missing scenarios
+            - attach supporting tool output or mark finding as unverified
+            - cap comments; aggregate lower-priority items into summary
 
-      GateDecision:
-        input: filtered findings list
-        decision: PASS if no HIGH/CRITICAL remain
-        output: findings -> .sdd/reviews/<task>/security-findings.sdd
-        audit: OBS13 security_gate_blocked if FAIL
+        FindingsFilter:
+          source: claudecode/findings_filter.py
+          stage_1: HardExclusionRules (regex, 16 patterns)
+          stage_2: ClaudeAPIClient per-finding confidence scoring (0-10)
+          stage_3: DirectoryExclusion (EXCLUDE_DIRECTORIES)
+          fail_open: API failure -> keep finding at confidence 10.0
+          model_confidence_note: "modelConfidence is metadata for analysis, NOT a calibrated probability. Never let 0.7 become unconditional publish or merge threshold."
+
+        GateDecision:
+          input: filtered findings list
+          receipt_first:
+            verdict: "useful" | "not_useful" | "not_useful"
+            reason_code: "safe_context_sufficient" | "acted" | "too_degraded" | "disabled_baseline_better"
+            safe_posture: "service_started" | "runtime_registry_consumed" | "raw_fallback_used" | "write_custody_or_reindex"
+          diff_aware:
+            rule: Only block on findings introduced by the change under review, not pre-existing backlog
+            rule: Track pre-existing findings as scheduled remediation, not merge blockers
+          decision: PASS if no HIGH/CRITICAL remain
+          output: findings -> .sdd/reviews/<task>/security-findings.sdd
+          audit: OBS13 security_gate_blocked if FAIL
 
     CacheFalseGreenMitigation:
       problem: GitHub Actions restore-keys prefix-match causes stale
@@ -83,11 +111,45 @@ GateTypes:
       output: GateDecision (PASS/FAIL) + findings to .sdd/reviews/
       rule: CRITICAL/HIGH findings MUST block VR stage regardless of other gates
 
-Rules:
-  [SG1] Security gates are first-class gates.
-  [SG2] Security gate failure blocks release.
-  [SG3] SAST runs before DAST.
-  [SG4] Pentest is separate from automated security tests.
-  [SG5] Security findings MUST be tracked to tasks.
+    SDLCStageMapping:
+      best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-4
+      design_time:
+        gate: ThreatModel
+        purpose: Map data flows, identify trust boundaries, document authorization
+        tools: STRIDE, PASTA
+        what_it_catches: Missing authentication boundaries, overly broad trust assumptions
+      build_time:
+        gate: SAST
+        purpose: Static code security analysis
+        tools: Semgrep, Bandit, eslint-plugin-security, gosec
+      pr_time:
+        gate: SemanticReview + SAST + SCA + SecretsScan
+        purpose: AI-powered semantic review of PR diffs
+        tools: claude-code-security-review, CodeQL, Semgrep, Snyk
+        rule: Only block on findings introduced by the change under review (diff-aware)
+      build_time_sca:
+        gate: DependencyScan
+        purpose: Check known vulnerabilities in dependencies
+        rule: Block on KEV-listed CVEs that are reachable, warn on reachable-but-not-KEV
+      staging_time:
+        gate: DAST + IaC
+        purpose: Runtime security testing and infrastructure validation
+        tools: OWASP ZAP, Burp, Checkov, tfsec
+      production_time:
+        gate: ContinuousMonitoring
+        purpose: Continuous runtime security monitoring
+        rule: Catches config drift, zero-day CVEs, certificate expiry
 
-State: +
+    Rules:
+      [SG1] Security gates are first-class gates.
+      [SG2] Security gate failure blocks release.
+      [SG3] SAST runs before DAST.
+      [SG4] Pentest is separate from automated security tests.
+      [SG5] Security findings MUST be tracked to tasks.
+      [SG6] SemanticReview MUST validate findings against changed hunks only (diff-aware gating).
+      [SG7] SemanticReview MUST mark findings as verified/unverified based on supporting evidence.
+      [SG8] SemanticReview MUST attach trust markers (trustLevel, provenance, readiness) to findings.
+      [SG9] Exception workflows MUST be time-boxed (30-90 days) and auditable.
+      [SG10] Policy-as-code MUST be version-controlled and reviewed like code.
+
+    State: +

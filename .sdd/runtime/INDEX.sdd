@@ -12,7 +12,7 @@ ReadOrder:
    3 @events.sdd (runtime event log)
    4 @context.sdd (context engine and knowledge resolution)
 
-Rules:
+  Rules:
   [RT1] Runtime state MUST be preserved across chain stages.
   [RT2] Checkpoints MUST be created before risky operations.
   [RT3] Events MUST be logged for audit trail.
@@ -24,8 +24,12 @@ Rules:
   [RT9] Event ordering is guaranteed per execution_id.
   [RT10] Agent MUST NOT add signatures or sign-offs to runtime outputs.
   [RT11] Agent MUST NOT use emojis, icons, or decorative symbols in runtime output headers or titles.
+  [RT12] MemoryBridge MUST apply trust markers (trustLevel, provenance, readiness) to all stored observations.
+  [RT13] MemoryBridge MUST sanitize at BOTH storage AND retrieval (defense in depth).
+  [RT14] External memory bridges MUST enforce policy-as-code access control at recall.
+  [RT15] Cryptographic erasure MUST be supported for GDPR/compliance deletion.
 
-Navigation:
+  Navigation:
   Runtime: @INDEX.sdd
   Execution: @execution.sdd
   Events: @events.sdd
@@ -35,9 +39,13 @@ Navigation:
   Context: @context.sdd
   Adapter: @adapter-runtime.sdd
   IndexIntegrity: @INDEX-INTEGRITY.sdd
+  MemoryModel: @memory-model.sdd
+  MemoryConsolidation: @memory-consolidation.sdd
   Checkpoints: @../patterns/checkpoint-restore.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Protocol: @../protocol/INDEX.sdd
   State: @../standards/states.sdd
+  TrustMarkers: @memory-model.sdd (TrustMarkers section)
+  CryptoErasure: @memory-model.sdd (CryptoErasure section)
 
 State: +

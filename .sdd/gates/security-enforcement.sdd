@@ -110,6 +110,12 @@ Rules:
   [SECV10] Secrets in tool arguments MUST be scrubbed before logging.
   [SECV11] If claude-code hooks are unavailable, adapter MUST fail-open with OBS16 warning.
   [SECV12] Gate enforcement MUST support project-level disable (PROJECT.sdd opt-out).
+  [SECV13] Gate MUST be diff-aware: only block on findings introduced by the change under review.
+  [SECV14] Gate MUST use reachability classification: block on reachable+exploitable, warn on reachable+not-exploitable, log-only on unreachable.
+  [SECV15] SemanticReview MUST validate findings against changed hunks only (diff-aware gating).
+  [SECV16] SemanticReview MUST mark findings as verified/unverified based on supporting evidence.
+  [SECV17] Exception workflows MUST be time-boxed (30-90 days) and auditable with named approver.
+  [SECV18] Policy-as-code MUST be version-controlled and reviewed like code.
 
 Navigation:
   Gates: @INDEX.sdd

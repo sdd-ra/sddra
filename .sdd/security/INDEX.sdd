@@ -8,16 +8,19 @@ Purpose:
 
 Owns: ./
 
-ReadOrder:
+  ReadOrder:
   1  INDEX.sdd (this file)
-  2  levels.sdd (security level definitions L0-L5)
+  2  levels.sdd (security level definitions L0-L5 + SDLC stage mapping + policy-as-code)
   3  SECURITY.sdd (security policy and scope)
-  4  controls.sdd (security controls catalog)
+  4  controls.sdd (security controls catalog + runtime patterns with reachability)
   5  gates.sdd (security gates overview)
   6  gates/ (individual gate specifications)
-  7  threats.sdd (threat model)
-  8  scanners.sdd (security scanners and their configuration)
-  9  findings/ (security findings, when applicable)
+  7  gates/security.sdd (SemanticReview gate with receipt-first design)
+  8  gates/security-enforcement.sdd (runtime enforcement model)
+  9  threats.sdd (threat model)
+  10 scanners.sdd (security scanners and their configuration)
+  11 findings/ (security findings, when applicable)
+  12 best-practices-ref: tmp/web-research/best-practices-findings.md (external research)
 
 Modes:
   APPLY   — apply security controls to a task/chain
@@ -25,7 +28,7 @@ Modes:
   SCAN    — run security scanners
   GATE    — evaluate security gate pass/fail
 
-Rules:
+  Rules:
   [SEC1]  AI MUST load this index before reading any security file.
   [SEC2]  Security is mandatory for all changes — AI MUST NOT skip
           security applicability calculation.
@@ -47,15 +50,25 @@ Rules:
           and project/schema.sdd -> SecurityRiskBudget.
   [SEC10] Security MUST NOT be treated as a final-stage checkbox.
           It is a continuous control layer throughout the SDLC.
+  [SEC11] Gates MUST be diff-aware: only block on findings introduced by
+          the change under review, not pre-existing backlog.
+  [SEC12] Gates MUST use reachability classification: block on
+          reachable+exploitable, warn on reachable+not-exploitable,
+          log-only on unreachable.
+  [SEC13] Policy-as-code MUST be version-controlled and reviewed like code.
+  [SEC14] Exception workflows MUST be time-boxed (30-90 days) with named approver.
+  [SEC15] Gate failures MUST name the specific finding and offer a fix.
 
 
-SecurityLevels:
-  L0: baseline (no additional controls)
-  L1: baseline + automated scans
-  L2: scans + security tests
-  L3: threat model + DAST
-  L4: pentest + architecture security review
-  L5: continuous security + external assessment
+  SecurityLevels:
+    L0: baseline (no additional controls)
+    L1: baseline + automated scans
+    L2: scans + security tests
+    L3: threat model + DAST
+    L4: pentest + architecture security review
+    L5: continuous security + external assessment
+    Reference: levels.sdd (includes SDLCStageMapping, ReachabilityClassification,
+      PolicyAsCode, DriftPrevention, AIGeneratedCodeSecurity)
 
 
 Navigation:

@@ -128,30 +128,91 @@ Levels:
       PAT_missing_auth (block)
       PAT_ssrf (block)
 
-   L5:
-    name: Regulated / Mission-Critical
-    description: Regulated industries, government, critical infrastructure
-    controls:
-      - L4 controls
-      - ExternalAssessment
-      - ComplianceAudit
-      - SupplyChainSecurity
-      - RuntimeSecurity
-    gates:
-      - L4 gates
-      - EXTERNAL
-      - COMPLIANCE
-      - SUPPLY_CHAIN
-      - RUNTIME
-    tests:
-      - L4 tests
-      - external pentest
-      - compliance audit
-      - supply chain audit
-      - runtime security validation
-    RuntimePatterns:
-      - L4 patterns (all block)
-      PAT_redos (warn — performance, not security)
+    L5:
+     name: Regulated / Mission-Critical
+     description: Regulated industries, government, critical infrastructure
+     controls:
+       - L4 controls
+       - ExternalAssessment
+       - ComplianceAudit
+       - SupplyChainSecurity
+       - RuntimeSecurity
+     gates:
+       - L4 gates
+       - EXTERNAL
+       - COMPLIANCE
+       - SUPPLY_CHAIN
+       - RUNTIME
+     tests:
+       - L4 tests
+       - external pentest
+       - compliance audit
+       - supply chain audit
+       - runtime security validation
+     RuntimePatterns:
+       - L4 patterns (all block)
+     PAT_redos (warn — performance, not security)
+
+  SDLCStageMapping:
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-4
+    principle: Gate placement matters more than gate choice; same control catches
+      different risk classes depending on when it runs.
+    design_time:
+      purpose: Threat modeling, architecture decisions, authorization boundaries
+      gates: ThreatModel, SecurityArchitectureReview
+      what_catches: Missing authentication boundaries, overly broad trust assumptions
+      tools: STRIDE, PASTA, data flow diagrams
+      levels_applicable: L3, L4, L5
+    build_time:
+      purpose: Static analysis, secure coding standards enforcement
+      gates: SAST, ContainerScan, SupplyChainSecurity
+      tools: Semgrep, Bandit, gosec, Checkov, sigstore, SLSA
+      levels_applicable: L1, L2, L3, L4, L5
+    pr_time:
+      purpose: Code review gate, diff-aware scanning, secret detection
+      gates: SemanticReview, SAST (incremental), SCA, SecretsScan
+      tools: claude-code-security-review, CodeQL, Semgrep, Snyk, gitleaks
+      rule: Only block on findings introduced by the change under review
+      levels_applicable: L1, L2, L3, L4, L5
+    staging_time:
+      purpose: Runtime security testing, configuration validation
+      gates: DAST, IaC, API
+      tools: OWASP ZAP, Burp, Checkov, tfsec
+      levels_applicable: L2, L3, L4, L5
+    production_time:
+      purpose: Continuous monitoring, zero-day detection, compliance
+      gates: ContinuousMonitoring, IncidentResponse
+      tools: Runtime security monitoring, compliance auditors
+      levels_applicable: L4, L5
+
+  ReachabilityClassification:
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-3
+    principle: Gate on exploitability and business risk, not raw severity/CVSS alone.
+    rule: Block on findings that are BOTH reachable AND exploitable
+    rule: Warn + ticket on reachable-but-not-exploitable findings
+    rule: Log-only for unreachable findings (no merge block)
+    levels:
+      reachable_critical:
+        action: BLOCK
+        rationale: Exploitable, confirmed-in-wild, critical impact
+        example: Log4Shell in active code path
+      reachable_high:
+        action: BLOCK
+        rationale: Real, exploitable, fresh finding
+      reachable_medium:
+        action: WARN + ticket
+        rationale: Track, do not stop delivery
+        example: Medium CVE in direct dependency, not in KEV
+      unreachable_critical:
+        action: WARN + ticket
+        rationale: Theoretically severe but not exploitable in current context
+      unreachable_any:
+        action: LOG only
+        rationale: Not exploitable in current architecture
+        example: CVE in unused optional dependency
+      kev_listed:
+        action: BLOCK if reachable
+        rationale: CISA Known Exploited Vulnerabilities catalog
 
 Selection:
   AI MUST calculate SecurityLevel from project characteristics:
@@ -186,6 +247,65 @@ Selection:
 
   SecurityLevel is a project-specific value stored in project/security/INDEX.sdd.
   Root levels.sdd defines the scale, not the project's actual level.
+
+  PolicyAsCode:
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-10
+    principle: Security policies as version-controlled code, not manual configuration.
+    structure:
+      gate_policy:
+        service_tier: critical | standard | internal
+        block_on:
+          - severity: critical
+            exploitable: true
+          - severity: high
+            reachable: true
+          - cve_in_kev: true
+          - new_hardcoded_secret: true
+        route_to_ticket:
+          - severity: high
+            reachable: true
+          - severity: medium
+            reachable: true
+        warn:
+          - severity: medium
+            unreachable: true
+          - severity: low
+            any: true
+        exceptions:
+          require_approval: true
+          max_duration_days: 30
+          require_justification: true
+          rule: Exceptions MUST have expiration date and named approver
+          rule: Expired exceptions auto-retire and emit OBS14
+    rule: Policy lives in version control; teams can review, audit, apply uniformly
+    rule: Block on findings that are both exploitable AND have an available fix
+    rule: Separate fast local checks from deep pipeline analysis
+
+  DriftPrevention:
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-2
+    principle: CI sync gate that fails when committed spec and source-of-truth diverge.
+    sync_gate:
+      schema_first: Regenerate code from spec; fail if git diff --exit-code shows changes
+      code_first: Regenerate spec from code; fail if git diff --exit-code shows changes
+      rule: Drift between .sdd definitions and runtime enforcement is a gate drift issue
+      rule: Gate failures must name the specific finding and offer a fix
+      rule: Pre-commit hooks acceptable for fast feedback; CI is authoritative (hooks skippable)
+    single_source_of_truth:
+      rule: Thresholds live in ONE file (.sdd/security/levels.sdd)
+      rule: Documentation points to the constants file, not listing values
+      rule: When a threshold changes, there is one file to update
+
+  AIGeneratedCodeSecurity:
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-9
+    principle: Treat AI-generated code as untrusted third-party input. Assume insecure until gates prove otherwise.
+    patterns_to_flag:
+      - PAT_ai_missing_auth: AI-generated auth routes without explicit authorization checks
+      - PAT_ai_hardcoded_credential: AI autocomplete inserting API keys or tokens
+      - PAT_ai_eval_usage: AI-generated eval/exec for dynamic code execution
+      - PAT_ai_shell_true: AI-generated subprocess calls with shell=True
+      - PAT_ai_yaml_load: AI-generated yaml.load instead of yaml.safe_load
+    rule: AI-generated code touching auth, rate limiting, CSRF MUST have human review
+    rule: Existing SAST gates must be BLOCKING, not advisory, for AI-generated code
 
 Navigation:
   Project: @project/security/INDEX.sdd
