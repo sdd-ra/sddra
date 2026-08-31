@@ -26,22 +26,87 @@ ThreatCategories:
     A09:2021 Security Logging and Monitoring Failures
     A10:2021 Server-Side Request Forgery
 
-TrustBoundaries:
-  Internet
-    ?
-  WAF / CDN
-    ?
-  Load Balancer
-    ?
-  API Gateway
-    ?
-  Services
-    ?
-  Database
-    ?
-  Secrets Store
+  TrustBoundaries:
+    Internet
+      ?
+    WAF / CDN
+      ?
+    Load Balancer
+      ?
+    API Gateway
+      ?
+    Services
+      ?
+    Database
+      ?
+    Secrets Store
+    MemoryStore
+      ?
+      (claude-mem daemon, ChromaDB, SQLite — network-exposed if bound to 0.0.0.0)
 
   Each boundary is a potential attack surface.
+
+  KnownCVEs:
+    - CVE-2026-45829: ChromaDB remote code execution via unauthenticated
+      HTTP API (CVSS 9.8, CRITICAL)
+      source: hiddenlayer.com/advisory, NVD
+      mitigation: Pin ChromaDB >=1.5.8; use Rust server; bind 127.0.0.1
+      status: addressed via .sdd/security/levels.sdd L4 controls
+
+    - CVE-2026-45832: ChromaDB tenant isolation bypass
+      source: hiddenlayer.com/advisory, NVD
+      mitigation: Pin ChromaDB >=1.5.8; tenant isolation enforcement
+      status: addressed via .sdd/security/levels.sdd L4 controls
+
+    - CVE-2026-45833: ChromaDB data exfiltration via REST API
+      source: hiddenlayer.com/advisory, NVD
+      mitigation: Pin ChromaDB >=1.5.8; network policy restrictions
+      status: addressed via .sdd/security/levels.sdd L4 controls
+
+    - CVE-2025-32434: PyTorch arbitrary code execution
+      source: NVD, HackerOne
+      mitigation: Pin PyTorch >=2.2.2; dependency scanning
+      status: monitored via .sdd/security/controls.sdd SEC.DEP
+
+    - CVE-2026-1839: Transformers unsafe deserialization
+      source: NVD, HuggingFace advisory
+      mitigation: Pin transformers >=4.51.0; dependency scanning
+      status: monitored via .sdd/security/controls.sdd SEC.DEP
+
+    - CVE-2026-55607: Claude Code RCE
+      source: GitHub Security Advisory
+      mitigation: Upgrade claude-code >=2.1.65
+      status: monitored via .sdd/security/controls.sdd SEC.DEP
+
+  PromptInjectionKnownIssues:
+    - "Comment and Control" (CVSS 9.4): Claude Code Security Review,
+      Gemini CLI Action, GitHub Copilot Agent vulnerable to PR-title/body
+      prompt injection exfiltrating ANTHROPIC_API_KEY / GITHUB_TOKEN
+      source: aonanguan/Johns-Hopkins disclosure, April 2026
+      mitigation: Admit vulnerability in docs; implement fork-PR gating;
+        do NOT interpolate untrusted PR content into LLM prompts
+      status: documented in .sdd/gates/security.sdd SemanticReview.CacheFalseGreenMitigation
+
+    - Security-review not hardened against prompt injection (explicit admission)
+      source: claude-code-security-review README.md:45
+      mitigation: Adopt honest trust caveat; fork-PR gating required
+      status: documented in .sdd/gates/security.sdd SemanticReview
+
+  SupplyChainRisks:
+    - Unpinned npm install -g @anthropic-ai/claude-code in CI
+      source: claude-code-security-review action.yml:171
+      mitigation: Pin to specific version; verify npm integrity
+      status: monitored via .sdd/security/controls.sdd SEC.SUPPLY
+
+    - Unpinned system packages (sudo apt-get update)
+      source: claude-code-security-review action.yml:173
+      mitigation: Use pinned Docker image with pre-installed deps
+      status: monitored via .sdd/security/controls.sdd SEC.SUPPLY
+
+    - GitHub Actions restore-keys prefix-match cache poisoning
+      source: claude-code-security-review issue #120
+      mitigation: run_every_commit=true; sha comparison
+      status: addressed in .sdd/gates/security.sdd SemanticReview
 
 ThreatModel:
   A threat model MUST document:
