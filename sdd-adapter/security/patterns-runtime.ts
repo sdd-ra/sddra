@@ -1,17 +1,19 @@
-import { SddPattern, PatternMatch, GateResult } from "../types";
+import { SddPattern, PatternMatch, GateResult, SddSkillPatternSet } from "../types";
 import { loadSecuritySpecs } from "../spec-loader";
 
 export class PatternsRuntime {
   private patterns: SddPattern[] = [];
   private compiledPatterns: Map<string, RegExp> = new Map();
+  private skillPatternSets: SddSkillPatternSet[] = [];
 
   constructor() {
     this.loadPatterns();
   }
 
   loadPatterns(): void {
-    const { patterns } = loadSecuritySpecs();
+    const { patterns, skillPatternSets } = loadSecuritySpecs();
     this.patterns = patterns;
+    this.skillPatternSets = skillPatternSets;
     this.compiledPatterns.clear();
 
     for (const pattern of patterns) {
@@ -22,14 +24,38 @@ export class PatternsRuntime {
         console.error(`[patterns-runtime] Failed to compile regex for ${pattern.id}: ${pattern.regex}`, err);
       }
     }
+
+    for (const set of skillPatternSets) {
+      for (const pattern of set.patterns) {
+        try {
+          const regex = new RegExp(pattern.regex, "gi");
+          this.compiledPatterns.set(`${set.skillId}:${pattern.id}`, regex);
+        } catch (err) {
+          console.error(`[patterns-runtime] Failed to compile regex for ${set.skillId}:${pattern.id}: ${pattern.regex}`, err);
+        }
+      }
+    }
   }
 
-  scan(content: string, filePath: string = ""): PatternMatch[] {
+  getSkillPatterns(filePath: string): SddPattern[] {
+    const ext = filePath.includes(".") ? `.${filePath.split(".").pop()}` : "";
+    if (!ext) return [];
+
+    for (const set of this.skillPatternSets) {
+      if (set.fileExtensions.includes(ext)) {
+        return set.patterns;
+      }
+    }
+    return [];
+  }
+
+  scanWithPatterns(content: string, patterns: SddPattern[], prefix: string = ""): PatternMatch[] {
     const findings: PatternMatch[] = [];
     const lines = content.split(/\r?\n/);
 
-    for (const pattern of this.patterns) {
-      const regex = this.compiledPatterns.get(pattern.id);
+    for (const pattern of patterns) {
+      const key = prefix ? `${prefix}:${pattern.id}` : pattern.id;
+      const regex = this.compiledPatterns.get(key);
       if (!regex) continue;
 
       regex.lastIndex = 0;
@@ -39,7 +65,7 @@ export class PatternsRuntime {
         if (matches && matches.length > 0) {
           for (const match of matches) {
             findings.push({
-              patternId: pattern.id,
+              patternId: key,
               patternName: pattern.name,
               description: pattern.description,
               severity: pattern.severity,
@@ -52,6 +78,18 @@ export class PatternsRuntime {
           }
         }
       }
+    }
+
+    return findings;
+  }
+
+  scan(content: string, filePath: string = ""): PatternMatch[] {
+    const findings = this.scanWithPatterns(content, this.patterns);
+
+    const skillPatterns = this.getSkillPatterns(filePath);
+    if (skillPatterns.length > 0) {
+      const skillId = this.skillPatternSets.find(s => s.fileExtensions.some(ext => filePath.endsWith(ext)))?.skillId || "";
+      findings.push(...this.scanWithPatterns(content, skillPatterns, skillId));
     }
 
     return findings;

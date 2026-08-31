@@ -1,3 +1,9 @@
+export interface SddSkillPatternSet {
+  skillId: string;
+  fileExtensions: string[];
+  patterns: SddPattern[];
+}
+
 export interface SddPattern {
   id: string;
   name: string;

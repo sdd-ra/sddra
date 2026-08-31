@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { SddPattern, SddRuntimePatternSet, SddSecurityLevel, SddGateDecision } from "./types";
+import { SddPattern, SddRuntimePatternSet, SddSecurityLevel, SddGateDecision, SddSkillPatternSet } from "./types";
 
 interface SddNode {
   key: string;
@@ -196,17 +196,86 @@ function extractGateDecisions(nodes: SddNode[]): SddGateDecision[] {
   return decisions;
 }
 
+function extractSkillPatternSets(nodes: SddNode[]): SddSkillPatternSet[] {
+  const skillSetsSection = findNode(nodes, "SkillPatternSets");
+  if (!skillSetsSection || !Array.isArray(skillSetsSection.value)) return [];
+
+  const sets: SddSkillPatternSet[] = [];
+  for (const setNode of skillSetsSection.value as SddNode[]) {
+    const skillIdNode = findNode(setNode.value as SddNode[], "skill_id");
+    const extNode = findNode(setNode.value as SddNode[], "file_extensions");
+    const patternsNode = findNode(setNode.value as SddNode[], "patterns");
+
+    if (!skillIdNode || typeof skillIdNode.value !== "string") continue;
+    if (!extNode) continue;
+    if (!patternsNode || !Array.isArray(patternsNode.value)) continue;
+
+    const fileExtensions: string[] = [];
+    if (Array.isArray(extNode.value)) {
+      for (const v of extNode.value) {
+        if (typeof v === "string") fileExtensions.push(v.replace(/^- /, "").trim());
+      }
+    } else if (typeof extNode.value === "string") {
+      const parsed = extNode.value.replace(/[\[\]"]/g, "").split(",").map(s => s.trim()).filter(Boolean);
+      fileExtensions.push(...parsed);
+    }
+
+    if (fileExtensions.length === 0) continue;
+
+    const patterns: SddPattern[] = [];
+    for (const node of patternsNode.value as SddNode[]) {
+      if (!node.key.startsWith("PAT")) continue;
+
+      const regexNode = findNode(node.value as SddNode[], "regex");
+      const descNode = findNode(node.value as SddNode[], "description");
+      const severityNode = findNode(node.value as SddNode[], "severity");
+      const lLevelNode = findNode(node.value as SddNode[], "L_level");
+      const reachNode = findNode(node.value as SddNode[], "reachability");
+      const sdltNode = findNode(node.value as SddNode[], "sdlt_stage");
+      const fixNode = findNode(node.value as SddNode[], "fix");
+
+      if (!regexNode || typeof regexNode.value !== "string") continue;
+
+      const rawReach = typeof reachNode?.value === "string" ? reachNode.value : "";
+      const sdltStages: string[] = [];
+      if (Array.isArray(sdltNode?.value)) {
+        for (const v of sdltNode.value) {
+          if (typeof v === "string") sdltStages.push(v);
+        }
+      }
+
+      patterns.push({
+        id: node.key,
+        name: node.key,
+        description: descNode && typeof descNode.value === "string" ? descNode.value : "",
+        severity: severityNode && typeof severityNode.value === "string" ? severityNode.value : "MEDIUM",
+        LLevel: lLevelNode && typeof lLevelNode.value === "string" ? parseInt(lLevelNode.value, 10) || 1 : 1,
+        reachability: rawReach,
+        sdltStage: sdltStages,
+        fix: fixNode && typeof fixNode.value === "string" ? fixNode.value : "",
+        regex: (regexNode.value as string).trim(),
+      });
+    }
+
+    sets.push({ skillId: skillIdNode.value, fileExtensions, patterns });
+  }
+
+  return sets;
+}
+
 let cachedPatterns: SddPattern[] | null = null;
 let cachedLevels: Map<number, SddSecurityLevel> | null = null;
 let cachedDecisions: SddGateDecision[] | null = null;
+let cachedSkillPatternSets: SddSkillPatternSet[] | null = null;
 
 export function loadSecuritySpecs(sddRoot?: string): {
   patterns: SddPattern[];
   levels: Map<number, SddSecurityLevel>;
   decisions: SddGateDecision[];
+  skillPatternSets: SddSkillPatternSet[];
 } {
-  if (cachedPatterns !== null && cachedLevels !== null && cachedDecisions !== null) {
-    return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions };
+  if (cachedPatterns !== null && cachedLevels !== null && cachedDecisions !== null && cachedSkillPatternSets !== null) {
+    return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions, skillPatternSets: cachedSkillPatternSets };
   }
 
   const root = sddRoot || path.join(__dirname, "..", ".sdd");
@@ -230,16 +299,16 @@ export function loadSecuritySpecs(sddRoot?: string): {
   cachedPatterns = extractPatterns(controlsNodes);
   cachedLevels = extractSecurityLevels(levelsNodes);
   cachedDecisions = extractGateDecisions(controlsNodes);
+  cachedSkillPatternSets = extractSkillPatternSets(controlsNodes);
 
-  return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions };
-
-  return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions };
+  return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions, skillPatternSets: cachedSkillPatternSets };
 }
 
 export function resetCache(): void {
   cachedPatterns = null;
   cachedLevels = null;
   cachedDecisions = null;
+  cachedSkillPatternSets = null;
 }
 
 export function emitObsEvent(eventType: string, payload: Record<string, unknown>): void {

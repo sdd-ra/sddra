@@ -134,6 +134,68 @@ const passResult = runtime.evaluate(safeFindings, 2);
 assert(passResult.decision === "PASS", `Safe code passes: ${passResult.decision}`);
 assert(passResult.exitCode === 0, `Safe code exit code: ${passResult.exitCode}`);
 
+console.log("\nTesting skill-specific Go patterns:");
+const goInsecure = `
+package main
+
+import (
+    "os/exec"
+    "html/template"
+    "database/sql"
+    "crypto/md5"
+    "net/http"
+)
+
+func main() {
+    exec.Command("cat", "/tmp/" + fileName)
+    template.HTML(userContent)
+    db.Query("SELECT * FROM users WHERE id = " + userID)
+    md5.New()
+    http.Get("http://" + userInput)
+}
+`;
+const goInsecureFindings = runtime.scan(goInsecure, "main.go");
+const goInsecureIds = goInsecureFindings.map(f => f.patternId);
+assert(goInsecureIds.some(id => id.startsWith("languages/go:")), `Go patterns active: ${goInsecureIds.join(", ")}`);
+assert(goInsecureIds.some(id => id === "languages/go:PAT.go_exec_inject"), "Detects Go exec injection");
+assert(goInsecureIds.some(id => id === "languages/go:PAT.go_template_xss"), "Detects Go template XSS");
+assert(goInsecureIds.some(id => id === "languages/go:PAT.go_sql_concat"), "Detects Go SQL concat");
+assert(goInsecureIds.some(id => id === "languages/go:PAT.go_weak_crypto"), "Detects Go weak crypto");
+
+console.log("\nTesting skill-specific Go safe code:");
+const goSafe = `
+package main
+
+import (
+    "os/exec"
+    "html/template"
+    "database/sql"
+    "crypto/sha256"
+    "net/http"
+    "net/url"
+)
+
+func main() {
+    exec.Command("ls", "-la")
+    template.HTMLEscapeString(userContent)
+    db.Query("SELECT * FROM users WHERE id = ?", userID)
+    sha256.New()
+    u, _ := url.Parse("http://example.com")
+    http.Get(u.String())
+}
+`;
+const goSafeFindings = runtime.scan(goSafe, "main.go");
+assert(goSafeFindings.length === 0, `Go safe code has no skill findings: ${goSafeFindings.length}`);
+
+console.log("\nTesting non-Go file does not trigger Go patterns:");
+const tsCode = `
+const url = "http://" + userInput;
+const hash = md5(data);
+`;
+const tsFindings = runtime.scan(tsCode, "app.ts");
+const tsIds = tsFindings.map(f => f.patternId);
+assert(!tsIds.some(id => id.startsWith("languages/go:")), `TS file does not trigger Go patterns: ${tsIds.join(", ")}`);
+
 console.log("\n=== Results ===");
 console.log(`Passed: ${passCount}, Failed: ${failCount}`);
 
