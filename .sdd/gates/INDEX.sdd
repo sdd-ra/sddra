@@ -7,9 +7,10 @@ Purpose:
 
 Owns: ./
 
-GateTypes:
+  GateTypes:
   stage: @stage/gates.sdd — stage-specific pass/fail criteria
   security: @security/INDEX.sdd — security gate specifications
+  security_enforce: @security-enforcement.sdd — enforcement runtime for security gates
   policy: @policy.sdd — gate policy and waiver rules
   levels: @levels.sdd — adaptive gate levels L0-L5
   quality: @quality.sdd — quality gate criteria
@@ -77,8 +78,9 @@ ReadOrder:
     2  @levels.sdd
     3  @quality.sdd
     4  @testing.sdd
-    5  @security/INDEX.sdd
-    6  @performance.sdd
+     5  @security/INDEX.sdd
+     6  @security-enforcement.sdd
+     7  @performance.sdd
     7  @infrastructure.sdd
     8  @release.sdd
     9  @stage/gates.sdd
@@ -90,6 +92,7 @@ Navigation:
   Quality: @quality.sdd
   Testing: @testing.sdd
   Security: @security/INDEX.sdd
+  SecurityEnforcement: @security-enforcement.sdd
   Performance: @performance.sdd
   Infrastructure: @infrastructure.sdd
   Release: @release.sdd

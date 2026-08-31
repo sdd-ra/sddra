@@ -1,0 +1,147 @@
+Runtime: Adapter — Integration Bridge
+
+Purpose:
+  Turns `.sdd` specifications (gates, state, policies) into enforced
+  runtime checks via claude-code hooks (PostToolUse[Edit/Write], PreCommit)
+  and claude-mem stores (observation persistence, context recall).
+
+  This is the missing piece that converts `.sdd` from spec-only (advisory)
+  into a runtime-enforced system.
+
+Principles:
+  Spec-first brain, runtime-first body.
+  `.sdd` models declare intent; adapter enforces at tool-execution boundary.
+  Adapter is zero-dependency core; external integrations are optional plugins.
+  All enforcement decisions are observable (OBS1-20).
+  Failure is fail-open in observe mode; fail-closed in enforce mode.
+
+AdapterComponents:
+  HookBridge:
+    definition: Bidirectional bridge between .sdd gates and claude-code hooks
+    responsibility: Translate .sdd security controls into claude-code hook exit codes
+    lifecycle:
+      on: PostToolUse[Write/Edit]
+      action: read .sdd/security/controls.sdd patterns
+      action: match against tool input
+      action: if match and L-level >= project threshold -> exit 2 (block)
+      action: if match and L-level < threshold -> log OBS (warn mode)
+      output: OBS1-20 event with gate decision, pattern matched, file, severity
+
+  GateRuntime:
+    definition: Executes .sdd/gates/*.sdd decisions at tool-execution time
+    responsibility: Read gate schema, evaluate condition, enforce threshold
+    lifecycle:
+      on: pre-tool-execution
+      action: load gate from .sdd/gates/<type>.sdd
+      action: evaluate Condition against tool context
+      action: compare result to Threshold
+      action: emit GateDecision event
+      output: PASS -> allow | FAIL -> block + emit OBS
+
+  MemoryBridge:
+    definition: Connects .sdd/runtime/memory-model.sdd to claude-mem stores
+    responsibility: Route observations to claude-mem persistence; recall context on demand
+    lifecycle:
+      on: PostToolUse (all tools)
+      action: sanitize observation (L0 sanitization step)
+      action: SHA-256 content-hash dedup
+      action: store to claude-mem SQLite + ChromaDB
+      on: UserPromptSubmit
+      action: load context from claude-mem (tier routing, ~52% token savings)
+      action: inject into context window
+
+  EventBridge:
+    definition: Maps .sdd/runtime/events.sdd to claude-code hook events
+    responsibility: Emit OBS1-20 observations for all gate decisions, tool calls, memory operations
+    lifecycle:
+      on: every hook event
+      action: create Observation record
+      action: log to .sdd/runtime/events.sdd append-only log
+      output: OBS1-20 observability event
+
+GateExecution:
+  flow:
+    claude-code PostToolUse[Edit] ->
+      HookBridge reads .sdd/security/controls.sdd ->
+      Pattern match against file content ->
+      L-level determination from .sdd/security/levels.sdd ->
+      Project security level from PROJECT.sdd ->
+      if L-level >= project_threshold: exit 2 (block) ->
+      else: log OBS12 security_gate_warned ->
+      claude continues
+
+  observe_vs_enforce:
+    OBSERVE: warnings logged, tool proceeds, OBS emitted
+    ENFORCE: exit 2 on HIGH/CRITICAL, blocks tool call entirely
+
+  configuration:
+    source: PROJECT.sdd SecurityLevel (L0-L5)
+    source: .sdd/security/controls.sdd L-level per pattern
+    source: .sdd/security/levels.sdd decision thresholds
+    default: ENFORCE for L4+Critical, OBSERVE for L1-L3
+
+MemoryObservationFlow:
+  store:
+    sanitize: L0 sanitization strip (prompt-injection prevention)
+    dedup: SHA-256 content-hash, ON CONFLICT DO NOTHING
+    tier: promote based on .sdd/runtime/memory-consolidation.sdd rules (100 events -> 3 decisions + 1 skill)
+    persist: claude-mem SQLite (hot) + ChromaDB (semantic) + SHA-256 (dedup)
+
+  recall:
+    tier_route: filter -> ChromaDB semantic -> FTS5 fallback
+    recency_gate: 90-day window (configurable)
+    token_budget: progressive disclosure (metadata first, instructions on activate, resources on demand)
+    inject: sanitized, deduplicated, tier-routed context into claude-code session
+
+Migrations:
+  pattern: 49 idempotent migrations from claude-mem SessionStore.ts
+  rule: migrations tracked in .sdd/runtime/migrations.sdd
+  rule: crash-safe — re-running migration is safe
+  rule: version recorded in runtime state DB
+
+IntegrationPoints:
+  claude-code:
+    hooks: PostToolUse[Edit/Write], PreCommit, SessionStart, UserPromptSubmit
+    configuration: .clauderc.json or settings.json hook definitions
+    plugin: .claude-plugin/adapter.json (optional)
+
+  claude-mem:
+    daemon: per-user port (default 37700 + uid % 100)
+    API: REST endpoints for observation store/recall
+    database: SQLite (metadata) + ChromaDB (embeddings) + SHA-256 (dedup)
+    config: CLAUDE_MEM_TIER_ROUTING_ENABLED, CLAUDE_MEM_SANITIZATION_ENABLED
+
+  security-review:
+    engine: claudecode/github_action_audit.py
+    integration: .sdd review-stage plugin, invoked from CR gate
+    output: findings -> .sdd/reviews/<task>/security-findings.sdd
+    filter: findings_filter.py two-stage (hard-regex + Claude API confidence)
+
+Rules:
+  [ADAPTER1] Adapter MUST translate .sdd gate schema into claude-code hook exit codes.
+  [ADAPTER2] Adapter MUST NOT modify .sdd specification files — it only reads them.
+  [ADAPTER3] In OBSERVE mode, adapter MUST emit OBS1-20 events for all gate decisions.
+  [ADAPTER4] In ENFORCE mode, adapter MUST exit non-zero on gate failure for L-level >= project threshold.
+  [ADAPTER5] All memory observations MUST pass through sanitization before storage.
+  [ADAPTER6] Duplicate observations MUST be suppressed via SHA-256 content-hash dedup.
+  [ADAPTER7] Memory recall MUST use tier routing (filter → semantic → FTS5 fallback).
+  [ADAPTER8] Adapter MUST persist runtime state in DB, not RAM.
+  [ADAPTER9] Adapter MUST support crash recovery — resume from last checkpoint.
+  [ADAPTER10] Migration execution MUST be idempotent and crash-safe.
+  [ADAPTER11] Adapter MUST emit audit trail for every gate decision (GateDecision event).
+  [ADAPTER12] Adapter MUST NOT hard-code model versions — read from .sdd standards.
+  [ADAPTER13] Adapter MUST NOT log secrets — scrub ANTHROPIC_API_KEY, GITHUB_TOKEN from logs.
+  [ADAPTER14] External dependencies (claude-code, claude-mem) MUST be version-pinned, not @latest.
+  [ADAPTER15] Adapter MUST support graceful degradation if external dependency is unavailable.
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Gates: @../gates/INDEX.sdd
+  Security: @../gates/security.sdd
+  Security Levels: @../security/levels.sdd
+  Events: @events.sdd
+  Memory Model: @memory-model.sdd
+  Execution: @execution.sdd
+  Protocol: @../protocol/ROOT.sdd
+
+State: +

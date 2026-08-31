@@ -33,6 +33,7 @@ Navigation:
   Agent: @state.sdd
   Session: @state.sdd
   Current: @state.sdd
+  Adapter: @adapter-runtime.sdd
   Checkpoints: @../patterns/checkpoint-restore.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Protocol: @../protocol/INDEX.sdd
