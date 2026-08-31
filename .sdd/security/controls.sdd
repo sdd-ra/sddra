@@ -285,7 +285,85 @@ RuntimePatternSet:
         sdlt_stage: pr_time + build_time
         fix: Use yaml.safe_load() instead
 
-      Enforcement:
+SkillPatternSets:
+  purpose: Language-specific security patterns activated only when the corresponding programming language skill is in use
+  selection: Inferred from file_path extension in hook payload; merged with base RuntimePatternSet
+  execution: sdd-adapter/hook-bridge.ts selects active skill set; patterns-runtime.ts scans with merged set
+
+  languages/go:
+    skill_id: languages/go
+    file_extensions:
+      - .go
+    patterns:
+      PAT.go_exec_inject:
+        regex: exec\.Command\s*\(.*\+
+        description: Go exec.Command with string concatenation (command injection)
+        severity: CRITICAL
+        L_level: L4
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use argument list; never concatenate user input into command
+
+      PAT.go_template_xss:
+        regex: template\.HTML\s*\(
+        description: Go template.HTML allows raw HTML injection (XSS)
+        severity: HIGH
+        L_level: L3
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use template.HTML only with sanitized content; prefer text/template
+
+      PAT.go_sql_concat:
+        regex: (db\.Query|db\.Exec|sql\.Raw)\s*\(.*\+
+        description: Go SQL query with string concatenation
+        severity: CRITICAL
+        L_level: L3
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use parameterized queries / prepared statements
+
+      PAT.go_weak_crypto:
+        regex: (md5|sha1)\.New\(\)
+        description: Go weak hash algorithm (MD5/SHA1)
+        severity: MEDIUM
+        L_level: L2
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use SHA-256 or stronger via crypto/sha256
+
+      PAT.go_insecure_http:
+        regex: http\.(Get|Post|Do)\s*\(.*\+.*\)
+        description: Go HTTP request with user-controlled URL
+        severity: HIGH
+        L_level: L3
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Validate and allowlist URL schemes/hosts
+
+  languages/python:
+    skill_id: languages/python
+    file_extensions:
+      - .py
+    patterns:
+      PAT.py_os_system:
+        regex: os\.system\s*\(
+        description: os.system() allows shell injection
+        severity: HIGH
+        L_level: L3
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use subprocess.run with shell=False and argument list
+
+      PAT.py_subprocess_popen:
+        regex: subprocess\.(call|run|Popen)\s*\(.*shell\s*=\s*True
+        description: subprocess with shell=True enables command injection
+        severity: HIGH
+        L_level: L3
+        reachability: runtime
+        sdlt_stage: pr_time + build_time
+        fix: Use shell=False with explicit argument list
+
+Enforcement:
         best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-3
         diff_aware_gating:
           rule: Only block on findings introduced by the change under review
