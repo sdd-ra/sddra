@@ -1,0 +1,54 @@
+# Query Language: Syntax Reference
+
+Spec: QuerySyntax
+Purpose:
+  Define the formal syntax of the SDD query language.
+
+Owns: queries/syntax.sdd
+
+TokenReference:
+  @<concept_name>
+    Resolves canonical concept and all related knowledge:
+      concept → skills → tasks → architecture → decisions → tests → failures → proofs
+
+  @<type>:<state>
+    Type-filtered queries:
+      @task:open        — tasks with execution state PENDING or READY
+      @task:running     — tasks currently executing
+      @task:blocked     — tasks blocked by dependencies
+      @task:review      — tasks awaiting review
+      @task:failed      — tasks that have failed
+      @task:completed   — tasks that are done
+      @skill:active     — skills in ACTIVE status
+      @skill:dormant    — skills not currently referenced
+      @decision:approved — decisions in APPROVED state
+      @decision:challenged — decisions under challenge
+      @proof:verified   — proofs that passed verification
+      @proof:pending    — proofs awaiting verification
+
+  @impact:<concept>
+    Blast radius query — what is affected if this concept changes?
+
+  @unknown:<scope>
+    @unknown:blocking   — unknowns blocking active tasks
+    @unknown:unresolved — all unresolved unknowns
+    @unknown:all        — all registered unknowns
+
+  @risk:<level>
+    @risk:low
+    @risk:medium
+    @risk:high
+    @risk:critical
+
+  @domain:<name>
+    Scope-limited queries to a specific domain
+
+  @why:<task> uses <skill>
+    Why-chain query — trace reasoning chain
+
+RelationshipNavigation:
+  @task.T2041 → uses → @skill.idempotency
+  @decision.D88 → selects → @architecture.ddd
+  @concept.transaction → defined_by → @reference.R12
+
+State: +

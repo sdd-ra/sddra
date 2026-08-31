@@ -1,0 +1,82 @@
+# Evolution Candidate Pool
+
+Spec: CandidatePool
+Purpose:
+  Define the candidate pool structure where AI-discovered
+  knowledge awaits validation and promotion to canonical knowledge.
+
+Owns: evolution/INDEX.sdd
+
+Structure:
+  .sdd/evolution/
+    ├── INDEX.sdd
+    ├── discovery.sdd
+    ├── candidates/      — proposed concepts/skills/decisions
+    ├── challenges/      — decision challenges (DEC-88 status: challenged)
+    ├── proposals/       — architecture/skill proposals (A22)
+    └── approved/        — validated and approved items
+
+ReadOrder:
+  1  @discovery.sdd
+  2  ./candidates/
+  3  ./proposals/
+
+CrossReferences:
+  Policies: @../policies/evolution.sdd
+  Concepts: @../concepts/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+
+DiscoveryRecord:
+  @discovery.D901
+  source: payment/service.go
+  observed: retry + idempotency + transaction (seen together)
+  confidence: 0.91
+  existing_candidates:
+    - @skill.payment-retry
+    - @concept.idempotency
+  status: pending-analysis
+
+Comparison:
+  existing: @skill.payment-retry
+  new_observation: transaction boundary handling
+  result: PARTIAL_MATCH
+
+MatchTypes:
+  EXACT_MATCH   — concept already exists; AI references it, does NOT create duplicate
+  PARTIAL_MATCH — existing concept partially covers; AI proposes BUILDS_ON
+  NO_MATCH      — no equivalent found; candidate created
+
+PartialMatchFlow:
+  existing: @skill.retry
+  new: retry + idempotency + transaction
+  AI proposes: @skill.transaction-safe-retry
+  relationship: BUILDS_ON @skill.retry
+
+SkillTree:
+  skills/
+    ├── retry
+    │   ├── basic
+    │   ├── exponential-backoff
+    │   └── transaction-safe
+
+DecisionChallenge:
+  @challenge.C91
+  decision: @decision.D88
+  challenge: current evidence conflicts
+  evidence: @reference.R91
+  status: review-required
+
+  resolution:
+    architect agent resolves → @decision.D91
+    conflict: RESOLVED
+    old decision: preserved in history (superseded)
+
+Proposal:
+  @proposal.A22
+  observed: domain isolation pattern
+  existing: @architecture.layered
+  gap: domain rules leaking into application layer
+  candidate: domain-oriented architecture
+  evidence: T100, T133, T178
+
+State: +

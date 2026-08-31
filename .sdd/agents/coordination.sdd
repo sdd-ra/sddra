@@ -1,0 +1,77 @@
+# Agent Coordination
+
+Spec: AgentCoordination
+Purpose:
+  Define how agents coordinate: handoff protocols, context passing,
+  conflict resolution, and the agent activity log.
+
+Owns: agents/coordination.sdd
+
+CoordinationModel:
+  principle: agents coordinate via shared state, not direct messages
+  anti_pattern: Agent A says "I changed payment" → Agent B says "OK"
+  preferred: STATE records the change; Agent B reads state
+
+AgentHandoff:
+  mechanism: HANDFOFF-NN
+  fields:
+    done: [completed work]
+    pending: [remaining work]
+    important: [critical notes]
+    risk: risk level
+    next: [next steps]
+
+  ContextHandoff:
+    @handoff.H22
+    task: T2041
+    state: implementation-complete
+    references: [DEC-88, ARCH-12, SKILL-REFUND-3]
+    proof: unit-pass
+    unknown: [integration behavior]
+
+  UnknownTracking:
+    principle: unknown information must be tracked
+    @unknown.U44
+    question: "Should refund retry happen before or after transaction commit?"
+    context: payment/refund
+    status: unresolved
+
+    flow: unknown → research_task → reference → answer → decision
+
+ConflictResolution:
+  detection: two agents produce conflicting decisions
+  example:
+    Agent A: Redis
+    Agent B: PostgreSQL
+  system_response:
+    CONFLICT → DECISION_REQUIRED
+  record:
+    @conflict.C44
+    subject: caching strategy
+    position_a: Redis
+    position_b: PostgreSQL
+    evidence_a: [...]
+    evidence_b: [...]
+    resolution: pending
+
+  rule: AI must NOT silently pick one side; conflict must be explicit
+
+ConflictRecord:
+  flow:
+    CONFLICT
+     ↓
+    DECISION_REQUIRED
+     ↓
+    Architect agent resolves
+     ↓
+    @decision.D91 created
+     ↓
+    conflict: RESOLVED
+
+AgentActivityLog:
+  purpose: engineering timeline for later audit
+  entries:
+    - timestamp, agent_id, action, task_id, outcome
+  format: structured, append-only
+
+State: +

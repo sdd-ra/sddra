@@ -1,0 +1,35 @@
+# Agent Authority Policy
+
+Spec: AuthorityPolicy
+Purpose:
+  Define authority levels for multi-agent coordination. Links risk
+  levels to agent autonomy and graph modification permissions.
+
+Owns: policies/authority.sdd
+
+AuthorityLevels:
+  L0: observe-only — AI reports findings, human decides all actions
+  L1: human-approved actions — AI proposes, human approves each step
+  L2: autonomous within approved plan — AI executes, human reviews per gate
+  L3: autonomous with checkpoints — AI executes, human reviews at milestones
+  L4: autonomous with notification — AI executes, human is informed
+  L5: fully autonomous — AI executes, documents, and learns without human gate
+  default: L2
+
+RiskMapping:
+  LOW:     autonomous
+  MEDIUM:  autonomous + review
+  HIGH:    approval required / strong verification
+  CRITICAL: human approval required
+
+  rule: risk level determines autonomy ceiling
+
+GraphModification:
+  LOW:     auto
+  MEDIUM:  auto + log
+  HIGH:    review
+  CRITICAL: approval
+
+  rule: AI may not modify graph without appropriate authority
+
+State: +

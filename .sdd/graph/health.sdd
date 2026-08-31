@@ -1,0 +1,74 @@
+# Graph Health & Self-Test
+
+Spec: GraphHealth
+Purpose:
+  Define the self-test mechanism for the .sdd system. The graph
+  must be able to validate itself for consistency, completeness,
+  and drift.
+
+Owns: graph/health.sdd
+
+HealthMetrics:
+  Knowledge:
+    concepts: 183
+    active: 161
+    dormant: 12
+    deprecated: 10
+    broken_references: 2
+    unverified: 7
+
+  Graph:
+    isolated_nodes
+    orphan_tasks
+    broken_edges
+    duplicate_concepts
+    conflicting_decisions
+    stale_references
+    circular_dependencies
+
+SelfTest:
+  questions the system auto-asks:
+    - Are all active skills referenced?
+    - Are all critical decisions evidenced?
+    - Are all tasks connected to a goal?
+    - Are all architecture rules applicable?
+    - Are deprecated references still used?
+    - Are there contradictory decisions?
+
+SDDSelfReview:
+  evolution: CODE → REVIEW becomes SDD → SELF REVIEW
+  check:
+    - drift between .sdd and source code
+    - architecture drift (decision says DDD, code shows anemic model)
+    - principle violations (SOLID, KISS, YAGNI, DRY, CLEAR_ARCH)
+    - stale knowledge (unused concepts, orphaned tasks)
+
+DeadKnowledge:
+  detection: @skill.old-payment
+    references: 0
+    used_by: 0
+  classification:
+    ACTIVE     — in use
+    DORMANT    — unused but potentially valid
+    DEPRECATED — superseded by newer knowledge
+    ARCHIVED   — historical, no longer relevant
+  rule: dead knowledge is flagged, not immediately deleted
+
+ArchitectureDrift:
+  detection:
+    Decision: @decision.D88 architecture: DDD
+    Code: controller → repository → database (no domain layer)
+  system: ARCHITECTURE_DRIFT
+  resolution: @skill.evolution-review
+
+ViolationDetection:
+  @violation.V22
+  principle: KISS
+  found_in: payment/service.go
+  reason: unnecessary abstraction
+  resolution: removed abstraction
+
+  flow:
+    CODE → REVIEW → VIOLATION → PATTERN → KNOWLEDGE → SKILL → PREVENTION
+
+State: +

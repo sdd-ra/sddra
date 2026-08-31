@@ -1,0 +1,153 @@
+# SDD Tool Landscape
+
+Spec: SDDToolComparison
+Purpose:
+  Comparison of major Spec-Driven Development tools and frameworks,
+  based on industry research. Used for tool evaluation and selection
+  decisions (DEC-XXX).
+
+Owns: references/sdd/tool-comparison.sdd
+
+Tools:
+
+  GitHub Spec Kit:
+    type: open-source CLI
+    stars: 93,000+
+    workflow: Specify → Plan → Tasks → Implement
+    features:
+      - constitution.md (project-wide immutable rules)
+      - works with 30+ AI agents
+      - version-controlled specs
+    limitations:
+      - specs are static (no auto-update during implementation)
+      - substantial time overhead (1-3+ hours per feature)
+      - no multi-agent orchestration
+    best_for: agent-agnostic default, many stacks, portability
+    pricing: Free (MIT license)
+
+  AWS Kiro:
+    type: agentic IDE (VS Code fork)
+    workflow: Requirements (EARS) → Design → Tasks
+    features:
+      - EARS notation with formal requirements analysis (SMT solvers)
+      - agent hooks (automated guardrails)
+      - three-document system: requirements.md, design.md, tasks.md
+      - auto router: Claude Sonnet, Qwen, DeepSeek, GLM, MiniMax
+    limitations:
+      - specs are static
+      - ecosystem lock-in (Bedrock, .kiro/)
+      - metered credits with markup
+    best_for: AWS-native teams, greenfield projects
+    pricing: Free (50 credits/mo), Pro $20-200/month
+
+  BMAD-METHOD:
+    type: open-source framework
+    stars: 48,400+
+    workflow: multi-agent role-play (Mary, Preston, Winston, Sally, Devon, Quinn)
+    features:
+      - 21+ specialized agents for full SDLC
+      - file-based handoffs with traceable chain
+      - BMad Core / BMad Method / BMad Builder layers
+      - scale-adaptive intelligence
+    limitations:
+      - steep learning curve (2+ months)
+      - high token costs
+      - static specs with file-based handoffs
+    best_for: complex builds, full paper trail, compliance
+    pricing: Free (MIT license)
+
+  OpenSpec:
+    type: open-source framework
+    stars: 52,100+
+    workflow: proposal → apply → archive
+    features:
+      - brownfield-first with delta markers (ADDED/MODIFIED/REMOVED)
+      - Given/When/Then scenarios
+      - strict approval gates
+      - openspec validate --strict
+    limitations:
+      - specs do not update during implementation (static)
+      - no multi-agent orchestration
+      - manual spec drift management
+    best_for: brownfield iteration, change accountability
+    pricing: Free (MIT license)
+
+  Cursor with .cursor/rules:
+    type: IDE with rules system
+    workflow: Plan Mode + AGENTS.md
+    features:
+      - Plan Mode (read-only planning before implementation)
+      - .mdc rule files with YAML frontmatter
+      - glob-based rule scoping
+    limitations:
+      - pseudo-specs (no automated validation)
+      - rule activation can be inconsistent
+      - no living spec capability
+    best_for: existing Cursor users, lightweight convention enforcement
+    pricing: Free-200/month
+
+  Augment Code:
+    type: commercial platform
+    workflow: context-engine-first
+    features:
+      - Context Engine (400,000+ file semantic understanding)
+      - BYOA model
+      - event-driven triggers (GitHub, Linear, Slack, PagerDuty)
+      - Organization Knowledge layer
+    limitations:
+      - no free tier
+      - context layer, not spec authoring
+      - vendor-reported benchmarks
+    best_for: enterprise multi-service, context drift problems
+    pricing: $100/month (Business), custom (Enterprise)
+
+  Tessl:
+    type: commercial platform
+    workflow: spec-as-source
+    features:
+      - tiles installed in .tessl/ directory
+      - Spec Registry (10,000+ library specs)
+      - // GENERATED FROM SPEC - DO NOT EDIT
+      - MCP-compatible
+    limitations:
+      - regeneration engine non-deterministic
+      - JavaScript-only currently
+      - closed beta
+    best_for: spec-as-source bet tracking
+    pricing: Closed beta
+
+ComparisonDimensions:
+  Enforcement:
+    GitHub Spec Kit: None (convention)
+    Kiro: Review-gated
+    OpenSpec: Optional
+    BMAD: Process-gated (handoffs)
+    CodeMySpec: Mandatory BDD gate + live QA
+    Tessl: n/a (pre-product)
+    Augment: none
+    Cursor: none
+
+  Verification:
+    GitHub Spec Kit: None
+    Kiro: Agent Hooks (tests)
+    OpenSpec: None
+    BMAD: None built-in
+    CodeMySpec: Live browser QA + tests
+    Tessl: Spec Registry
+    Augment: None
+    Cursor: None
+
+  Portability:
+    High: GitHub Spec Kit, OpenSpec, BMAD-METHOD, Cursor, GSD
+    Low: Kiro (IDE), Augment (platform), Tessl (platform)
+
+  Spec Lifecycle:
+    Living: Augment Cosmos, OpenSpec (semi-living delta markers)
+    Static: Kiro, GitHub Spec Kit, BMAD-METHOD, Cursor, Tessl
+
+KeyInsight:
+  "Most SDD tools generate a spec and hand off to a separate agent.
+   The harder, more useful problem is making the spec govern the code
+   and verifying the result, end to end."
+
+State: +

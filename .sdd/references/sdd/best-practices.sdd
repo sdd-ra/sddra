@@ -1,0 +1,118 @@
+# SDD Best Practices
+
+Spec: SDDBestPractices
+Purpose:
+  Curated best practices for Spec-Driven Development, synthesized
+  from industry research (Allegro Tech Blog, Medium, and practitioner
+  guides). These are reference-level guidance, not project rules.
+
+Owns: references/sdd/best-practices.sdd
+
+ThreeLevelsOfSDD:
+  Spec-First:
+    description: well thought-out spec written first, then used in AI workflow
+  Spec-Anchored:
+    description: spec kept alongside code, both evolve together, both reviewed
+  Spec-as-Source:
+    description: spec is the main source file; code is regenerable artifact
+
+  focus: Spec-Anchored (specification lives alongside code, evolves together)
+
+CoreWorkflow:
+  Specify → Plan → Tasks → Implement
+
+  Specify:
+    - gather product/functional requirements
+    - gather technical/non-functional requirements
+    - gather integration requirements (API contracts, events)
+    - prepare mockups
+    - write acceptance criteria in EARS notation
+
+  Plan:
+    - translate spec into technical plan
+    - architecture choices and rationale
+    - data model and schemas
+    - API contracts
+    - library/framework selections (from project constitution)
+    - migration strategy
+
+  Tasks:
+    - decompose plan into atomic, independently-shippable tasks
+    - each task has: single objective, inputs, outputs, acceptance check
+
+  Implement:
+    - delegate tasks to coding agents
+    - verify against acceptance criteria
+
+SpecMustContains:
+  MUST:
+    - product description (what, why)
+    - users and roles
+    - functional requirements (features)
+    - non-functional requirements (reference shared doc)
+    - UI description
+    - use cases (especially complex logic and edge cases)
+
+  SHOULD:
+    - technical specification (architecture, ADRs, stack)
+    - data model
+    - API definition
+    - security and authentication
+    - edge cases, non-happy paths
+
+  SHOULD_NOT:
+    - implementation details (unless necessary)
+    - written by one person only
+
+RiskManagement:
+  LowCriticality = low consequences = low control → greater acceleration
+  HighCriticality = high consequences = high control → less acceleration
+
+  principle: specification detail level must depend on risk level
+
+SeparationWhatFromHow:
+  Specification: what to build (blueprint)
+  ExecutionPlan: which piece to build next, how (volatile, can be discarded)
+
+  rule: keep specification and execution plan as separate documents
+
+SharedTechnicalRequirements:
+  Shared file (e.g., SHARED-TECH-SPEC.md) defines org-wide standards:
+    - Availability & Reliability
+    - Performance & Scalability
+    - Security & Privacy
+    - Organizational Guidelines
+
+  principle: individual specs reference shared requirements, not repeat them
+
+SpecificationGranularity:
+  FeaturePerSpec:
+    works_better_for: medium-to-large projects, brownfield
+    benefits: lighter context window, easier maintenance, survives over time
+  MonolithicSpec:
+    works_better_for: small projects, greenfield
+    drawbacks: context size problems, hard to maintain as project grows
+
+QualityGates:
+  Pre-implementation: review the spec
+  Mid-implementation: run tests against acceptance criteria
+  Post-implementation: cleanup agent scan for scout-rule improvements
+  Rule: do not skip phase boundaries (spec → plan → tasks → code)
+
+HumanReview:
+  principle: humans review at every phase boundary
+  spec reviewed before plan
+  plan reviewed before tasks
+  tasks reviewed before implementation
+  Rule: "you are accountable for the code in production, regardless of who wrote it"
+
+EARSNotation:
+  Ubiquitous: "The system shall log every authentication attempt."
+  Event-driven: "WHEN [trigger] THE [system] SHALL [response]"
+  State-driven: "WHILE [state] THE [system] SHALL [behavior]"
+  Unwanted: "IF [condition] THEN THE [system] SHALL [response]"
+  Optional: "WHERE [feature is included] THE [system] SHALL [behavior]"
+
+  principle: each pattern collapses to a single testable claim
+
+State: +

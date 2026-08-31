@@ -131,8 +131,14 @@ ReadOrder:
      68 @projects/{project_name}/MAP.md (project map: real codebase location)
     71 @projects/{project_name}/STRUCTURE.md (project structure description)
     72 @runtime/events.sdd (runtime event log)
-    68 @standards/INDEX.sdd (standards registry)
-    69 @standards/states.sdd (state standards and compact symbols)
+     68 @standards/INDEX.sdd (standards registry)
+     69 @standards/states.sdd (state standards and compact symbols)
+      70 @timeline/INDEX.sdd (temporal knowledge, snapshots, evolution)
+      71 @agents/INDEX.sdd (multi-agent coordination, roles, shared state)
+      72 @policies/INDEX.sdd (evolution policy, authority policy)
+      73 @evolution/INDEX.sdd (candidate pool, discovery, challenges)
+      74 @queries/INDEX.sdd (SDD query language)
+      75 @references/sdd/ (SDD methodology references)
 
 Modes:
   ANALYZE   — project discovery and context building

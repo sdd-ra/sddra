@@ -119,7 +119,7 @@ TaskContract:
   structure:
     id: string (immutable, e.g. TASK-AUTH-001)
     title: string
-    type: string (FEATURE, BUGFIX, REFACTOR, MIGRATION, TEST, DOCUMENTATION, SECURITY, INFRASTRUCTURE, RESEARCH)
+    type: string (FEATURE, BUGFIX, REFACTOR, MIGRATION, TEST, DOCUMENTATION, SECURITY, INFRASTRUCTURE, RESEARCH, DISCOVERY, DESIGN, DECISION, IMPLEMENTATION, REVIEW, VALIDATION, CLEANUP)
     domain: string
     goal: string
     scope:
@@ -139,6 +139,14 @@ TaskContract:
       - tests
     estimated: duration
     risk: low | medium | high | critical
+    boundary:
+      MUST_CHANGE: [paths that must be modified]
+      MAY_CHANGE: [paths that may be modified]
+      MUST_NOT_CHANGE: [paths that must not be touched]
+    proof:
+      - unit-test
+      - integration-test
+      - architecture-check
 
 TaskTypes:
   FEATURE:
@@ -298,6 +306,194 @@ OrphanTask:
 DynamicTaskGraph:
   principle: task plan is NOT immutable
 
+  PLAN
+   ?
+  DISCOVERY
+   ?
+  ADAPTIVE PLAN
+
+  rule: AI does not blindly follow prior plan; new dependencies discovered during execution
+  rule: graph changes require authority level check (see @../policies/evolution.sdd)
+
+GraphVersion:
+  PLAN-v1
+   ?
+  PLAN-v2
+
+  v1: 8 tasks
+  v2: 11 tasks
+  reason: discovered ledger dependency
+
+TaskGraphNode:
+  structure:
+    id: string (e.g. T1004)
+    type: DISCOVERY | DESIGN | DECISION | IMPLEMENTATION | MIGRATION |
+          TEST | REVIEW | DOCUMENTATION | VALIDATION | CLEANUP
+    requires:
+      - T1002
+      - T1003
+    produces:
+      - RefundAPI
+    consumes:
+      - RefundAggregate
+    consumes:
+      - IdempotencyPattern
+    conflicts:
+      - none
+    risk: LOW | MEDIUM | HIGH | CRITICAL
+    proof:
+      - integration-test
+    rollback:
+      - revert-api-change
+    touch:
+      - payment/**
+
+  TypedEdges:
+    REQUIRES           — task cannot proceed without this dependency
+    BLOCKS             — task blocks another from starting
+    PRODUCES           — task produces an artifact/domain object
+    CONSUMES           — task consumes an artifact/domain object
+    CONFLICTS          — tasks conflict if run in parallel
+    OPTIONAL_AFTER     — dependency optional once another task completes
+    MUST_BE_BEFORE     — strict ordering constraint
+    CAN_RUN_PARALLEL   — explicitly safe for parallel execution
+
+  ResourceLock:
+    mechanism: LOCK(scope)
+    example:
+      Task A touches: payment/service.go ? LOCK(payment/**)
+      Task B touches: payment/service.go ? BLOCKED
+
+  SemanticLock:
+    mechanism: domain-level locking, not file-level
+    example:
+      @domain.Payment locked_by Agent-A
+      Agent-B modifying Payment aggregate ? SEMANTIC_LOCK
+    scope_hierarchy:
+      payment (parent)
+        ??? refund
+        ??? settlement
+        ??? balance
+    rule: locking parent scope locks all child scopes
+    rule: sibling sub-scopes (refund vs settlement) can run in parallel
+
+TaskExecutionState:
+  states:
+    PENDING: not yet scheduled
+    READY: dependencies satisfied, can be claimed
+    CLAIMED: agent has claimed the task (with lease)
+    RUNNING: actively being executed
+    BLOCKED: waiting for dependency or decision
+    WAITING_APPROVAL: risk CRITICAL, requires human approval
+    VERIFYING: post-execution proof verification
+    COMPLETED: all criteria met, proof verified
+    FAILED: execution failed
+    CANCELLED: abandoned or superseded
+
+  Lease:
+    duration: 30 min
+    mechanism: heartbeat renewal
+    expiration: LEASE_EXPIRED ? task returns to READY
+
+  Rule: execution state is separate from task lifecycle phases
+  (DISCOVERING, PLANNING, IMPLEMENTING, etc. in TaskLifecycle)
+
+FailureRecovery:
+  flow:
+    FAIL
+     ?
+    CLASSIFY
+     ?
+    RETRY? / REPLAN? / ROLLBACK? / ESCALATE?
+
+  Classification:
+    CODE_FAILURE: code-level error
+    TEST_FAILURE: test assertion failed
+    CONTEXT_FAILURE: missing or incorrect context
+    KNOWLEDGE_FAILURE: missing required knowledge
+    DEPENDENCY_FAILURE: dependency unavailable
+    ENVIRONMENT_FAILURE: runtime environment issue
+    POLICY_FAILURE: policy/gate violation
+
+  Action:
+    CODE_FAILURE     ? analyze root cause, fix, retry (budget-limited)
+    TEST_FAILURE     ? investigate: environment? test incorrect? code? (DO NOT blindly change code)
+    CONTEXT_FAILURE  ? retrieve missing context, recompile, retry
+    KNOWLEDGE_FAILURE ? initiate knowledge retrieval task
+    DEPENDENCY_FAILURE ? wait for dependency, replan schedule
+    ENVIRONMENT_FAILURE ? retry with backoff, escalate if persistent
+    POLICY_FAILURE   ? escalate to human, do not auto-fix
+
+RetryPolicy:
+  max_attempts: 3
+  rule: AI MUST describe WHAT CHANGED and WHY THIS ATTEMPT DIFFERS
+  rule: if difference = none, retry is forbidden
+  rule: after 3 failed attempts ? ESCALATE
+
+  LoopDetection:
+    pattern: T1 ? fail ? modify ? fail ? modify ? fail
+    system: EXECUTION_LOOP_DETECTED
+    action: stop retry, create investigation task
+
+  ExecutionMemory:
+    records:
+      - previous attempts with outcomes
+      - what was tried
+      - what failed
+      - what was learned
+
+InvestigationTask:
+  id_format: INV-NNN
+  fields:
+    problem: root cause description
+    goal: identify root cause
+    does_not_modify: production code (investigation only)
+  flow:
+    DISCOVERY
+     ?
+    ROOT_CAUSE
+     ?
+    PLAN_UPDATE
+
+NegativeKnowledge:
+  storage: @knowledge.negative
+  example:
+    DO_NOT: call repository from domain
+    WHY: violates dependency boundary
+    EVIDENCE: ARCH-FAIL-22
+
+  principle: "knowing what NOT to do is often more valuable than knowing what to do"
+
+FailurePatternLibrary:
+  patterns:
+    - @failure.circular-dependency
+    - @failure.transaction-leak
+    - @failure.duplicate-event
+    - @failure.context-overload
+    - @failure.unnecessary-abstraction
+
+  usage: pre-loaded as preventive context before similar tasks
+
+SelfHealingLoop:
+  flow:
+    PLAN
+     ?
+    CHECK
+     ?
+    EXECUTE
+     ?
+    VERIFY
+     ?
+    PROVE
+     ?
+    LEARN
+     ?
+    REPLAN
+     ?
+    NEXT TASK
+
+
+
   triggers:
     - research produces new decision
     - dependency invalidation
@@ -373,6 +569,30 @@ TaskRisk:
     medium -> autonomous + review
     high -> approval required
     critical -> human required
+
+TaskCheckpoint:
+  definition: milestone where state snapshot is captured
+  after_tasks: [list of task IDs]
+  snapshot_includes:
+    - CODE
+    - TEST
+    - PROOF
+    - STATE
+    - GRAPH
+  rule: AI continues after checkpoint; does not need to stop after every task
+  rule: checkpoint enables partial rollback boundary
+
+PlanRevision:
+  principle: Plan ? Contract
+  plan: AI-generated, mutable, can change
+  contract: immutable requirements, cannot violate
+  rule: AI may revise plan based on discovery
+  rule: AI may NOT revise requirements/contract
+
+  revision_record:
+    v1: 8 tasks
+    v2: 11 tasks
+    reason: discovered ledger dependency
 
 Directories:
   active:

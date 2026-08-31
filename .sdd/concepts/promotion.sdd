@@ -1,0 +1,85 @@
+# Concept Promotion Pipeline
+
+Spec: ConceptPromotion
+Purpose:
+  Define the pipeline by which temporary knowledge (tmp, inbox,
+  candidates) is promoted to canonical concepts. This enforces the
+  "reuse first, create second" principle.
+
+Owns: concepts/promotion.sdd
+
+PromotionLevels:
+  LEVEL 0: OBSERVATION — seen once in a single context
+  LEVEL 1: CANDIDATE — repeated pattern, potentially reusable
+  LEVEL 2: VALIDATED — confirmed by tests or review
+  LEVEL 3: PROJECT KNOWLEDGE — stable within a project
+  LEVEL 4: REUSABLE KNOWLEDGE — validated across multiple projects
+  LEVEL 5: CANONICAL — widely adopted, organization-global
+
+CreationThreshold:
+  rule: AI must NOT auto-create canonical concept from a single observation
+  triggers:
+    - frequency: seen N times across tasks
+    - semantic_importance: affects architecture or safety
+    - cross_module_usage: appears in multiple modules/domains
+    - architecture_relevance: relates to design decisions
+
+  example:
+    "Idempotency" seen in 20 documents
+    → candidate concept created
+    → eventually promoted to @concept.idempotency
+
+PromotionPipeline:
+  TMP → INBOX → CANDIDATES → VALIDATED → KNOWLEDGE
+
+  TMP:    ephemeral, may be deleted
+  INBOX:  potentially valuable but unclassified
+  CANDIDATES: proposed concepts awaiting validation
+  VALIDATED: confirmed by evidence
+  KNOWLEDGE: canonical, versioned, referenceable
+
+DuplicateDetection:
+  process:
+    1. AI observes new term in source
+    2. Search existing concepts (exact match, alias match, semantic match)
+    3. If EXACT_MATCH → reference existing, do not create new
+    4. If PARTIAL_MATCH → propose BUILDS_ON relationship
+    5. If NO_MATCH → create candidate with low promotion level
+
+  example:
+    observed: "Retry operations should be safe to repeat."
+    existing: @concept.idempotency
+    result: @reference.R31 SUPPORTS @concept.idempotency
+
+Canonicalization:
+  AI must classify term variants:
+    Idempotency
+    idempotent operation
+    idempotent request
+    safe retry
+    repeat-safe operation
+    → all map to @concept.idempotency
+
+  mechanism: aliases field on canonical concept
+
+ConceptVsSkillVsDecision:
+  Concept:  nədir? (what is it?)
+  Skill:    necə istifadə et? (how to use it?)
+  Decision: bu project-də niyə belə istifadə edirik? (why here?)
+
+  Example:
+    @concept.idempotency     — definition
+    @skill.idempotency       — implementation guidance
+    DEC-88                   — project chose to use it
+
+ReferenceResolution:
+  AI sees @concept.idempotency
+  Context compiler loads:
+    - task relevance
+    - scope (project/module/domain/task)
+    - version (pinned to task snapshot)
+    - authority (approval level required)
+
+  Output: minimal sufficient context for the task
+
+State: +

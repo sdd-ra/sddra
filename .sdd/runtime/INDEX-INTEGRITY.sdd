@@ -64,7 +64,7 @@ Rules:
 Navigation:
   Runtime: @INDEX.sdd
   Events: @events.sdd
-  Observability: @../../observability/INDEX.sdd
+   Observability: @../observability/INDEX.sdd
 
 State: +
   Note:

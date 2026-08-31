@@ -33,8 +33,14 @@ Resolution:
     6. ask human
 
 Navigation:
+  Canonicalization: @CANONICALIZATION.sdd
+  Promotion: @promotion.sdd
+  KnowledgeModel: @KNOWLEDGE-MODEL.sdd
+  RelationshipVocabulary: @RELATIONSHIP-VOCABULARY.sdd
   References: @../references/INDEX.sdd
   Skills: @../skills/INDEX.sdd
   Projects: @../projects/INDEX.sdd
+  Graph: @../graph/INDEX.sdd
+  Timeline: @../timeline/INDEX.sdd
 
 State: +

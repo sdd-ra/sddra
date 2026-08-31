@@ -1,0 +1,19 @@
+# Policies Index
+
+Spec: Policies
+Purpose:
+  Define system-wide policies for evolution, authority, and change
+  management. These policies constrain how the .sdd system may
+  modify itself.
+
+Owns: policies/
+
+Navigation:
+  EvolutionPolicy: @evolution.sdd
+  AuthorityPolicy: @authority.sdd
+
+ReadOrder:
+  1  @evolution.sdd
+  2  @authority.sdd
+
+State: +

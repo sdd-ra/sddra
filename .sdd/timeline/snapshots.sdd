@@ -1,0 +1,102 @@
+# Immutable Snapshots
+
+Spec: Snapshot
+Purpose:
+  Define the SystemSnapshot abstraction — an immutable pointer to a set
+  of versioned system components at a point in time. Snapshots are state
+  pointers, NOT full file copies. This prevents storage explosion while
+  enabling historical reconstruction.
+
+Owns: timeline/snapshots.sdd
+
+Immutable:
+  Once created, a snapshot is NEVER modified.
+  New state → new snapshot.
+
+Snapshot Structure:
+  SNAPSHOT-2026-08-31-001
+
+  references:
+    constitution: v4
+    skills:
+      code-review@3
+      ddd@2
+    architecture: v8
+    decisions:
+      DEC-44@2
+      DEC-51@1
+    knowledge:
+      index@12
+
+Snapshot Lifecycle:
+
+  Current State (HEAD):
+    SNAPSHOT-001 → SNAPSHOT-002 → SNAPSHOT-003 → HEAD
+
+  Tasks reference snapshots:
+    TASK-100 → SNAPSHOT-001
+    TASK-200 → SNAPSHOT-081
+
+  AI can answer:
+    "TASK-100 was written in which context?"
+    → Follow task.snapshot → SNAPSHOT-001 → load pinned versions
+
+Content Immutability:
+  Versioned knowledge content is immutable.
+    @skill.ddd@2 never changes.
+    New variant → @skill.ddd@3.
+  Snapshot references the correct version.
+
+Event Timeline:
+  Changes between snapshots are recorded as CHANGE EVENTS:
+
+  EVT-001: Architecture changed.
+  EVT-002: Added refund domain.
+  EVT-003: Introduced idempotency skill.
+  EVT-004: Deprecated old payment flow.
+
+Current State:
+  Default query time is "now" unless a specific snapshot or timestamp
+  is provided.
+
+  context(
+    task=TASK-100,
+    project=payment,
+    time=2026-05-10
+  )
+
+  context(
+    task=TASK-100,
+    snapshot=SNAPSHOT-42
+  )
+
+  If no time specified → time = now
+  If task has snapshot → snapshot takes priority
+
+Reconstruction:
+  Given a timestamp or snapshot:
+    1. find snapshot
+    2. load valid decisions
+    3. load valid skills
+    4. load valid architecture
+    5. compile
+
+  This enables answering:
+    "What did payment architecture look like in 2026-03-01?"
+
+Evolution Diff:
+  Compare two timestamps:
+    2026-03 vs 2026-08
+
+    Architecture:
+      modular monolith → modular monolith + async payment boundary
+    DDD:
+      Order aggregate + Refund aggregate
+    Skills:
+      + idempotency
+      + proof-review
+    Decisions:
+      + DEC-88
+      - DEC-42
+
+State: +
