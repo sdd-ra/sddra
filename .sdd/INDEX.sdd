@@ -85,7 +85,7 @@ ReadOrder:
    26 @architecture/scaling.sdd (scaling rules)
    27 @architecture/availability.sdd (availability/RTO/RPO)
    28 @architecture/data.sdd (data architecture)
-   29 @architecture/observability.sdd (observability)
+   29 @architecture/observability/INDEX.sdd (observability)
    30 @architecture/networking.sdd (networking)
    31 @architecture/deployment.sdd (deployment)
    32 @chains/INDEX.sdd
@@ -214,7 +214,7 @@ Navigation:
   ArchitectureScaling: @architecture/scaling.sdd
   ArchitectureAvailability: @architecture/availability.sdd
   ArchitectureData: @architecture/data.sdd
-  ArchitectureObservability: @architecture/observability.sdd
+  ArchitectureObservability: @architecture/observability/INDEX.sdd
   ArchitectureNetworking: @architecture/networking.sdd
    ArchitectureDeployment: @architecture/deployment.sdd
    Concepts: @concepts/INDEX.sdd

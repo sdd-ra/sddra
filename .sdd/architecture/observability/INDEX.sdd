@@ -1,0 +1,27 @@
+# Observability
+
+Purpose:
+  Observability knowledge base router. Split into focused sub-specs
+  for system, AI, events, and operations observability.
+
+Owns: ./
+
+Navigation:
+  System: @system.sdd
+  AI: @ai.sdd
+  Events: @events.sdd
+  Operations: @operations.sdd
+
+ReadOrder:
+  1 @system.sdd
+  2 @ai.sdd
+  3 @events.sdd
+  4 @operations.sdd
+
+Rules:
+  [OBS-01] Observability MUST be designed into the system, not added later.
+  [OBS-02] AI decision provenance MUST be reproducible.
+  [OBS-03] Sensitive data MUST be redacted in all observability outputs.
+  [OBS-04] Observability data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+
+State: +
