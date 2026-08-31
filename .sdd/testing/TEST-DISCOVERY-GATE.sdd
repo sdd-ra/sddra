@@ -1,0 +1,42 @@
+# Test Discovery Gate
+
+Purpose:
+  Test file existence is insufficient proof of test coverage.
+  This gate enforces actual test discovery, execution, and result verification.
+
+Owns: testing\TEST-DISCOVERY-GATE.sdd
+
+## Gate Criteria
+
+Criteria:
+  - Test package is DISCOVERED by `go test`
+  - Expected test count > 0
+  - Tests actually executed with results present
+
+## Verification Steps
+
+Verify:
+  1. Run: go test ./... -v
+  2. Confirm discovery: package output shows test files loaded
+  3. Confirm count: test count > 0
+  4. Confirm execution: output contains PASS/FAIL/SKIP lines
+  5. Record results in test report
+
+## Failure Conditions
+
+Fail if:
+  - No test files discovered
+  - Test count = 0
+  - Tests compile but do not run
+  - Execution produces no results
+
+## Report Format
+
+Report:
+  discovery: discovered|missing
+  count: {number}
+  execution: ran|not_ran
+  result: pass|fail|mixed
+  timestamp: <timestamp>
+
+State: +

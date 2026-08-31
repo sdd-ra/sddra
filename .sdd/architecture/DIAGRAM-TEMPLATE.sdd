@@ -1,0 +1,38 @@
+# Diagram Template
+
+Purpose:
+  Architecture diagram requirements for every API implementation.
+  Shows data flow, entry point, dependencies, and fallback paths.
+
+Owns: architecture\DIAGRAM-TEMPLATE.sdd
+
+## Diagram Structure
+
+Type: why-how-what diagram
+
+Required_Elements:
+  - Entry point (API route / trigger)
+  - Data flow (request → processing → response)
+  - Dependencies (DB, external services, internal modules)
+  - Fallback paths (error handling, defaults, degradation)
+
+## Storage
+
+Location: Stored alongside the CASE spec.
+Format: Mermaid diagram-as-code per documentation.diagram_standard.
+Overlay: Docker icons where applicable.
+Legend: Academic-style legend and explanatory notes.
+
+## Example Structure
+
+Example:
+  ```mermaid
+  graph TD
+    A[Client] --> B{API Gateway}
+    B --> C[Service Layer]
+    C --> D[(Database)]
+    C --> E[External API]
+    E -->|fallback| F[Cache]
+  ```
+
+State: +

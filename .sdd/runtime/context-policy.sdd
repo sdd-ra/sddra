@@ -1,0 +1,160 @@
+Runtime: Context Policy
+
+Purpose:
+  Define policy rules for context loading, filtering, and human override.
+  Context policy governs what knowledge is always loaded, what is excluded,
+  how sufficiency is determined, and how humans may override AI context decisions.
+
+Principles:
+  Security and data-integrity constraints are never omitted.
+  Negative knowledge is as important as positive knowledge.
+  Context sufficiency is verified before implementation begins.
+  Human override always takes precedence over AI context decisions.
+  Hard rules are enforced; soft rules are advisory.
+
+AlwaysLoadAllowlist:
+  definition: references that MUST be loaded for every task regardless of apparent relevance
+  policy: never omitted from context
+  entries:
+    - @constitution.security
+    - @constitution.data-integrity
+  rule: always_load references are injected before budget enforcement
+  rule: always_load references cannot be excluded by @context.exclude
+
+NegativeKnowledgeRegistry:
+  definition: registry of approaches and patterns that MUST NOT be used
+  purpose: prevent AI from repeating known-failed approaches
+  structure:
+    id: @rejected.<name>
+    reason: explanation of why approach failed
+    failed_approach: description of rejected method
+    preferred: recommended alternative
+    status: active | superseded
+  examples:
+    - @rejected.direct-event-publishing
+      reason: transaction boundary mismatch
+      failed_approach: direct DB update then event publish
+      preferred: @pattern.transactional-outbox
+      status: active
+
+    - @payment.refund DO NOT patterns:
+      - refund directly from controller
+      - update balance without transaction
+      - retry non-idempotent provider call
+
+  rule: negative knowledge MUST be loaded alongside positive knowledge for relevant domains
+  rule: failed attempts MUST be recorded before preferred approach is adopted
+  rule: rejected approaches MUST NOT be silently removed; deprecated -> archive
+
+ContextSufficiencyCheck:
+  definition: confidence rating that loaded context is sufficient for implementation
+  required: true before implementation begins
+  confidence_levels:
+    insufficient:
+      action: expand context or request human input
+      next: escalation
+
+    partial:
+      action: load additional references
+      next: re-evaluate
+
+    sufficient:
+      action: proceed to implementation
+      next: plan
+
+    high:
+      action: proceed with high confidence
+      next: plan
+
+  check_criteria:
+    - all required references loaded
+    - all dependencies resolved
+    - all constraints identified
+    - negative knowledge checked
+    - decisions reviewed
+    - skills verified
+
+  rule: implementation MUST NOT begin with insufficient confidence
+  rule: confidence rating is recorded in context manifest
+
+HumanOverride:
+  @context.include:
+    definition: human directive to force-load a reference
+    syntax: "@context.include @architecture.event-driven"
+    effect: reference is loaded regardless of relevance scoring
+    precedence: higher than AI context decisions
+
+  @context.exclude:
+    definition: human directive to exclude a reference from context
+    syntax: "@context.exclude @legacy.payment-v1"
+    effect: reference is excluded unless in always_load allowlist
+    precedence: higher than AI context decisions
+
+  rule: human override directives are recorded in context manifest
+  rule: @context.include overrides exclusion; always_load overrides @context.exclude
+  rule: human overrides are logged with task ID and rationale
+
+HardSoftRules:
+  hard_rules:
+    definition: rules that MUST be enforced without exception
+    enforcement: blocking
+    examples:
+      - always_load allowlist is never omitted
+      - security constraints are never excluded
+      - context sufficiency check is always performed
+      - negative knowledge is always checked
+      - stale context is never used for execution decisions
+
+  soft_rules:
+    definition: rules that SHOULD be followed but may be overridden with justification
+    enforcement: advisory
+    examples:
+      - default context budget is Level0 -> Level1 -> Level2
+      - historical knowledge is not used for implementation by default
+      - low importance knowledge is not in default context
+      - cold knowledge is not loaded by default
+
+  rule: hard rules take precedence over soft rules
+  rule: soft rules may be overridden with explicit rationale in context manifest
+
+TrustHierarchy:
+  definition: ordering of trust when conflicting knowledge exists
+  order:
+    1. explicit project constraints
+    2. decisions
+    3. validated project skills
+    4. established org knowledge
+    5. general best practices
+    6. AI suggestions
+
+  rule: higher trust knowledge overrides lower trust knowledge on conflict
+  rule: conflicts are recorded in context manifest with rationale
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Memory Model: @memory-model.sdd
+  Context Builder: @context-builder.sdd
+  Context Manifest: @context-manifest.sdd
+  Memory Consolidation: @memory-consolidation.sdd
+  Execution: @execution.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  References: @../references/INDEX.sdd
+
+Rules:
+  [RT-CTX-POL-01] always_load allowlist references MUST be loaded for every task.
+  [RT-CTX-POL-02] always_load references cannot be excluded by @context.exclude.
+  [RT-CTX-POL-03] Negative knowledge MUST be loaded for relevant domains.
+  [RT-CTX-POL-04] Context sufficiency check MUST be performed before implementation.
+  [RT-CTX-POL-05] Implementation MUST NOT begin with insufficient confidence.
+  [RT-CTX-POL-06] Human override via @context.include/@context.exclude takes precedence over AI decisions.
+  [RT-CTX-POL-07] @context.include overrides exclusion; always_load overrides @context.exclude.
+  [RT-CTX-POL-08] Hard rules are enforced without exception; soft rules are advisory.
+  [RT-CTX-POL-09] Trust hierarchy: explicit constraints > decisions > validated skills > established knowledge > best practices > AI suggestions.
+  [RT-CTX-POL-10] Higher trust knowledge overrides lower trust knowledge on conflict.
+  [RT-CTX-POL-11] Stale context MUST NOT be used for execution decisions.
+  [RT-CTX-POL-12] Negative knowledge MUST be recorded before preferred approach is adopted.
+  [RT-CTX-POL-13] Human overrides are logged with task ID and rationale.
+  [RT-CTX-POL-14] Agent MUST NOT add signatures or sign-offs to context policy outputs.
+  [RT-CTX-POL-15] Agent MUST NOT use emojis, icons, or decorative symbols in context policy output headers or titles.
+
+State: +

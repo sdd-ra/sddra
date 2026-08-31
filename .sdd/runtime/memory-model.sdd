@@ -1,0 +1,204 @@
+Runtime: Memory Model
+
+Purpose:
+  Define the 4-tier memory hierarchy and TMP memory for AI working memory.
+  Memory tiers govern what knowledge is loaded, retained, and promoted
+  across task executions, optimizing token usage and preserving engineering
+  truth at the appropriate persistence level.
+
+Principles:
+  Working memory is runtime-only and never persisted to .sdd/.
+  TMP memory is transient for external analysis only.
+  Memory promotion is evidence-driven, not assumed.
+  AI remembers decisions, not conversations.
+  Token budget is optimized by loading only relevant memory tier content.
+
+MemoryTiers:
+  LongTermKnowledge:
+    definition: permanent engineering truth
+    scope: cross-project, survives project deletion
+    examples:
+      - @best-practice.solid
+      - @best-practice.kiss
+      - @ddd.aggregate
+      - @architecture.hexagonal
+      - @security.password-hashing
+    schema:
+      id: canonical reference
+      type: concept | pattern | skill
+      status: established
+      trust: proven
+      evidence_count: integer
+      projects_used: integer
+      tasks_referenced: integer
+    ttl: indefinite
+    importance_rating: critical | high | normal | low | temporary
+    persistence: permanent
+
+  ProjectMemory:
+    definition: project-specific knowledge
+    scope: single project lifecycle
+    examples:
+      - @project.payment (PostgreSQL, modular-monolith, RabbitMQ, JWT)
+      - @project.api-gateway
+    schema:
+      id: canonical reference
+      project: project_id
+      type: architecture | decision | constraint | skill
+      status: active | deprecated
+      trust: validated
+      evidence:
+        - task_id
+        - decision_id
+        - test_result
+    ttl: project lifetime
+    importance_rating: critical | high | normal | low | temporary
+    persistence: project-scoped
+
+  TaskMemory:
+    definition: current task knowledge
+    scope: active task execution only
+    examples:
+      - TASK-1023: implement wallet withdrawal
+      - relevant: @payment.idempotency, @wallet.aggregate
+      - decisions: @decision.atomic-balance-update
+    schema:
+      task_id: string
+      goal: string
+      relevant:
+        - reference_id
+      decisions:
+        - decision_id
+      status: active | completed
+    ttl: task lifetime
+    importance_rating: critical | high | normal | low | temporary
+    persistence: task-scoped
+
+  WorkingMemory:
+    definition: current reasoning context
+    scope: single task execution iteration
+    examples:
+      - file: wallet.go
+      - problem: balance mutation
+      - constraints: atomic, idempotent
+      - candidate: transaction + aggregate lock
+    schema:
+      current:
+        file: string
+        problem: string
+        constraints: list
+      candidate: string
+      observation: string
+      insight: string
+    ttl: task execution iteration
+    importance_rating: critical | high | normal | low | temporary
+    persistence: runtime-only, never persisted to .sdd/
+
+  TmpMemory:
+    definition: external material and temporary analysis
+    scope: transient analysis, never part of project knowledge
+    examples:
+      - scratchpad notes
+      - external research snippets
+      - temporary debug hypotheses
+    schema:
+      source: external | scratch
+      content: string
+      analysis: string
+    ttl: immediate (end of reasoning step)
+    importance_rating: temporary
+    persistence: runtime-only, never persisted
+
+MemoryPromotionPipeline:
+  stages:
+    WORKING_MEMORY:
+      description: active reasoning context
+      next: OBSERVATION
+
+    OBSERVATION:
+      description: noticed pattern or fact without evidence
+      next: INSIGHT
+
+    INSIGHT:
+      description: hypothesis or connection with some evidence
+      next: CANDIDATE
+
+    CANDIDATE:
+      description: proposed knowledge awaiting validation
+      ttl: 30 days (auto-expires to ARCHIVE if unvalidated)
+      next: VALIDATED_KNOWLEDGE
+
+    VALIDATED_KNOWLEDGE:
+      description: confirmed by evidence, ready for promotion
+      next: LONG_TERM_KNOWLEDGE
+
+    LONG_TERM_KNOWLEDGE:
+      description: permanent engineering truth
+      persistence: permanent
+
+  promotion_rules:
+    - promotion requires evidence: CODE, TEST, TASK, DECISION, PROJECT, PRODUCTION, EXTERNAL, HUMAN
+    - candidate without validation after 30 days is archived
+    - validated knowledge may be promoted to long-term after project verification
+    - project-specific knowledge does not auto-promote to long-term
+    - trust hierarchy: explicit project constraints > decisions > validated project skills > established org knowledge > general best practices > AI suggestions
+
+MemoryImportance:
+  critical:
+    description: security decisions, data integrity, architectural invariants
+    examples:
+      - @constitution.security
+      - @constitution.data-integrity
+    always_load: true
+
+  high:
+    description: core domain decisions, primary patterns
+    examples:
+      - @decision.rabbitmq
+      - @payment.idempotency
+
+  normal:
+    description: supporting knowledge, secondary patterns
+    examples:
+      - @ddd.specification
+      - @architecture.repository
+
+  low:
+    description: rarely used, historical, optional
+    examples:
+      - @legacy.payment-v1
+    default_context: false
+
+  temporary:
+    description: debugging hypothesis, migration scratch, transient analysis
+    examples:
+      - @insight.current-migration
+    ttl: task-lifetime or explicit expires
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Context: @context.sdd
+  Context Builder: @context-builder.sdd
+  Context Policy: @context-policy.sdd
+  Context Manifest: @context-manifest.sdd
+  Memory Consolidation: @memory-consolidation.sdd
+  Execution: @execution.sdd
+  Agent: @../agent/INDEX.sdd
+
+Rules:
+  [RT-MM-01] Working memory is runtime-only and MUST NOT be persisted to .sdd/.
+  [RT-MM-02] TMP memory is transient for external analysis only and MUST NOT be persisted.
+  [RT-MM-03] Long-term knowledge survives project deletion; project memory does not.
+  [RT-MM-04] Memory promotion is evidence-driven; candidates without validation expire after 30 days.
+  [RT-MM-05] AI MUST remember decisions, not conversations.
+  [RT-MM-06] Trust hierarchy: explicit project constraints > decisions > validated project skills > established org knowledge > general best practices > AI suggestions.
+  [RT-MM-07] Memory importance rating determines default context inclusion.
+  [RT-MM-08] Critical importance knowledge MUST be always loaded.
+  [RT-MM-09] Low importance knowledge MUST NOT be in default context; loaded on demand only.
+  [RT-MM-10] Temporary importance knowledge MUST have explicit TTL or task-lifetime bound.
+  [RT-MM-11] Project memory does not auto-promote to long-term knowledge.
+  [RT-MM-12] Memory consolidation occurs at end of each task execution.
+  [RT-MM-13] Agent MUST NOT add signatures or sign-offs to memory outputs.
+  [RT-MM-14] Agent MUST NOT use emojis, icons, or decorative symbols in memory output headers or titles.
+
+State: +

@@ -1,0 +1,198 @@
+Runtime: Context Builder
+
+Purpose:
+  Define the context discovery pipeline, budget, and escalation mechanisms
+  for AI task execution. Context builder determines which knowledge, skills,
+  decisions, and constraints are loaded for a given task, optimizing for
+  relevance and token efficiency.
+
+Principles:
+  Minimal context is better than full context.
+  Load what is relevant; expand only when necessary.
+  Context is resolved per task, not per project.
+  Token budget is enforced before injection.
+  Stale context MUST be detected and refreshed.
+
+ContextDiscoveryPipeline:
+  flow:
+    task
+      ↓
+    project
+      ↓
+    module
+      ↓
+    domain
+      ↓
+    dependencies
+      ↓
+    relevant_concepts
+      ↓
+    relevant_skills
+      ↓
+    relevant_decisions
+      ↓
+    relevant_constraints
+
+  output:
+    TASK_CONTEXT:
+      loaded: list of references
+      relevance: map of reference -> direct | indirect | historical | optional
+      confidence: integer (0-100)
+
+  rule: discovery is deterministic for same task inputs
+  rule: historical knowledge is discovered but not used for implementation by default
+
+ContextBudget:
+  definition: maximum tokens and reference count allocated for context
+  levels:
+    Level0:
+      description: task definition only
+      default_tokens: 10% of budget
+      default_refs: 1-2
+
+    Level1:
+      description: direct references
+      default_tokens: 20% of budget
+      default_refs: 3-5
+
+    Level2:
+      description: dependencies
+      default_tokens: 30% of budget
+      default_refs: 5-10
+
+    Level3:
+      description: related decisions
+      default_tokens: 25% of budget
+      default_refs: 5-10
+
+    Level4:
+      description: historical knowledge
+      default_tokens: 15% of budget
+      default_refs: 5-20
+
+  default_policy: 0 -> 1 -> 2
+  escalation_policy: expand to 3 -> 4 on demand
+  overflow_handling:
+    - trim LOW relevance first
+    - trim optional next
+    - trim historical last
+    - NEVER trim CRITICAL context
+  rule: budget is enforced before context injection
+  rule: overflow MUST be logged and reported
+
+ContextEscalation:
+  trigger: insufficient evidence for implementation decision
+  flow:
+    agent_detects_gap:
+      - reference is referenced but implementation insufficient
+      - decision requires additional context
+      - dependency is unresolved
+    agent_requests_expansion:
+      - identify missing reference
+      - request Level3 or Level4 load
+    context_expands:
+      - load related decisions
+      - load historical knowledge
+    re_evaluate:
+      - confidence check
+      - proceed or escalate further
+
+  example:
+    agent_sees: @payment.refund
+    agent_finds: implementation insufficient
+    agent_requests: @decision.refund-consistency
+    still_insufficient: @payment.idempotency
+    context_expands: Level3 -> Level4
+
+KnowledgeRetrievalEngine:
+  stages:
+    RETRIEVE:
+      input: task keywords, project, module, domain
+      sources: concepts/, references/, skills/, decisions/, constraints/
+      output: candidate reference set
+
+    RANK:
+      criteria:
+        1. scope: task-level > project-level > org-level
+        2. applicability: direct > indirect > historical
+        3. trust: explicit constraint > decision > validated skill > best practice
+        4. direct_dependency: required by current task
+        5. usage: frequently referenced across tasks
+        6. recency: recently validated
+        7. project_fit: matches current project patterns
+      output: ranked reference list
+
+    FILTER:
+      rules:
+        - remove unauthorized references
+        - remove excluded references per @context.exclude
+        - remove deprecated knowledge
+        - remove low-trust knowledge below threshold
+      output: filtered reference list
+
+    LOAD:
+      action: inject filtered references into agent context
+      order: highest rank first
+      budget_check: enforce token budget before injection
+
+    REASON:
+      agent_receives: compiled task context
+      agent_outputs: implementation with traceable references
+
+ContextRelevance:
+  levels:
+    direct:
+      description: explicitly referenced in task requirements
+      load_priority: highest
+
+    indirect:
+      description: required by direct references
+      load_priority: high
+
+    historical:
+      description: past decisions, deprecated patterns
+      load_priority: low (loaded only on demand)
+
+    optional:
+      description: related but not required
+      load_priority: lowest (trimmed first on overflow)
+
+  rule: historical knowledge is discovered but not used for implementation by default
+  rule: deprecated knowledge is marked with status: deprecated and usage: historical reference only
+
+ContextSufficiency:
+  definition: agent confidence that loaded context is sufficient for implementation
+  check_points:
+    - before planning: all required references loaded?
+    - before implementation: all dependencies resolved?
+    - before review: all constraints satisfied?
+  insufficient_response:
+    - expand context
+    - request human input
+    - escalate to higher level
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Memory Model: @memory-model.sdd
+  Context Policy: @context-policy.sdd
+  Context Manifest: @context-manifest.sdd
+  Memory Consolidation: @memory-consolidation.sdd
+  Execution: @execution.sdd
+  Graph: @../graph/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+
+Rules:
+  [RT-CTX-BLD-01] Context discovery follows deterministic pipeline: task -> project -> module -> domain -> dependencies -> concepts -> skills -> decisions -> constraints.
+  [RT-CTX-BLD-02] Default context budget is Level0 -> Level1 -> Level2; expand to Level3 -> Level4 on demand.
+  [RT-CTX-BLD-03] Context escalation is triggered when implementation evidence is insufficient.
+  [RT-CTX-BLD-04] Token budget is enforced before context injection.
+  [RT-CTX-BLD-05] Stale context MUST be detected and refreshed before use.
+  [RT-CTX-BLD-06] Context relevance is classified as direct, indirect, historical, or optional.
+  [RT-CTX-BLD-07] Historical knowledge is discovered but not used for implementation by default.
+  [RT-CTX-BLD-08] Knowledge retrieval ranks by scope, applicability, trust, direct dependency, usage, recency, project fit.
+  [RT-CTX-BLD-09] CRITICAL context is NEVER trimmed; LOW context is first trimmed on overflow.
+  [RT-CTX-BLD-10] Agent MUST perform context sufficiency check before implementation.
+  [RT-CTX-BLD-11] Agent MUST NOT add signatures or sign-offs to context builder outputs.
+  [RT-CTX-BLD-12] Agent MUST NOT use emojis, icons, or decorative symbols in context builder output headers or titles.
+
+State: +

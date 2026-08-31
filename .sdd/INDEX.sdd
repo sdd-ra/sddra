@@ -66,14 +66,19 @@ ReadOrder:
    55 @skills/cross-cutting/security/
    56 @skills/cross-cutting/architecture/
    57 @skills/cross-cutting/observability/
-    58 @architecture/INDEX.sdd (architecture knowledge base)
-    59 @references/INDEX.sdd (reusable engineering knowledge)
-    60 @references/ddd/ (domain driven design references)
-    61 @references/architecture/ (architecture style references)
-    62 @references/patterns/ (design pattern references)
-    63 @references/database/ (database references)
-    64 @references/engineering/ (engineering principles)
-     65 @references/best-practices/ (default heuristics)
+     58 @architecture/INDEX.sdd (architecture knowledge base)
+     59 @concepts/INDEX.sdd (canonical concepts and knowledge model)
+     60 @references/INDEX.sdd (reusable engineering knowledge)
+     61 @references/ddd/ (domain driven design references)
+     62 @references/architecture/ (architecture style references)
+     63 @references/patterns/ (design pattern references)
+     64 @references/database/ (database references)
+     65 @references/engineering/ (engineering principles)
+     66 @references/best-practices/ (default heuristics)
+     67 @knowledge/INDEX.sdd (knowledge lifecycle and management)
+     68 @lessons/INDEX.sdd (negative knowledge and rejected approaches)
+     69 @legacy/INDEX.sdd (legacy audit and migration procedures)
+     70 @runtime/INDEX.sdd (runtime state and execution context)
     66 @projects/{project_name}/history/INDEX.sdd (customer input history)
     24 @architecture/levels.sdd (ProjectScale L0-L5)
    25 @architecture/patterns.sdd (architecture patterns)
@@ -204,14 +209,38 @@ Navigation:
   ArchitectureData: @architecture/data.sdd
   ArchitectureObservability: @architecture/observability.sdd
   ArchitectureNetworking: @architecture/networking.sdd
-  ArchitectureDeployment: @architecture/deployment.sdd
-  References: @references/INDEX.sdd
-  ReferencesDDD: @references/ddd/INDEX.sdd
-  ReferencesArchitecture: @references/architecture/INDEX.sdd
-  ReferencesPatterns: @references/patterns/INDEX.sdd
-  ReferencesDatabase: @references/database/INDEX.sdd
-  ReferencesEngineering: @references/engineering/INDEX.sdd
-  ReferencesBestPractices: @references/best-practices/INDEX.sdd
+   ArchitectureDeployment: @architecture/deployment.sdd
+   Concepts: @concepts/INDEX.sdd
+   ConceptsKnowledgeModel: @concepts/KNOWLEDGE-MODEL.sdd
+   ConceptsCanonicalization: @concepts/CANONICALIZATION.sdd
+   ConceptsRelationshipVocabulary: @concepts/RELATIONSHIP-VOCABULARY.sdd
+   References: @references/INDEX.sdd
+   ReferencesDDD: @references/ddd/INDEX.sdd
+   ReferencesArchitecture: @references/architecture/INDEX.sdd
+   ReferencesPatterns: @references/patterns/INDEX.sdd
+   ReferencesDatabase: @references/database/INDEX.sdd
+   ReferencesEngineering: @references/engineering/INDEX.sdd
+   ReferencesBestPractices: @references/best-practices/INDEX.sdd
+   Knowledge: @knowledge/INDEX.sdd
+   KnowledgeLifecycle: @knowledge/KNOWLEDGE-LIFECYCLE.sdd
+   KnowledgeCompression: @knowledge/COMPRESSION.sdd
+   KnowledgeVersioning: @knowledge/VERSIONING.sdd
+   KnowledgeGoldenRules: @knowledge/GOLDEN-RULES.sdd
+   Lessons: @lessons/INDEX.sdd
+   LessonsRejectedApproaches: @lessons/REJECTED-APPROACHES.sdd
+   Legacy: @legacy/INDEX.sdd
+   LegacyAudit: @legacy/AUDIT-README.sdd
+   Runtime: @runtime/INDEX.sdd
+   RuntimeMemory: @runtime/memory-model.sdd
+   RuntimeContextBuilder: @runtime/context-builder.sdd
+   RuntimeContextPolicy: @runtime/context-policy.sdd
+   RuntimeContextManifest: @runtime/context-manifest.sdd
+   RuntimeConsolidation: @runtime/memory-consolidation.sdd
+   SpecDD: @projects/{project_name}/.specdd/
+   SpecDDFlowIndex: @projects/{project_name}/.specdd/flow-index.md
+   SpecDDFixIndex: @projects/{project_name}/.specdd/fix-index.sdd
+   SpecDDDependencyLedger: @projects/{project_name}/.specdd/dependency-ledger.md
+   SpecDDTaskContext: @projects/{project_name}/.specdd/task-context/
   History: @projects/{project_name}/history/INDEX.sdd
   HistoryInputs: @projects/{project_name}/history/inputs/
   HistoryActions: @projects/{project_name}/history/actions/
@@ -504,7 +533,11 @@ State: +
    (added workflow lifecycle engine to ReadOrder and Navigation)
    (added observability and incident engine to ReadOrder and Navigation)
    (added CLI commands to ReadOrder and Navigation)
-   (added plugin adapters to ReadOrder and Navigation)
+    (added plugin adapters to ReadOrder and Navigation)
+    (added concepts/, knowledge/, lessons/, runtime/, legacy/, references/
+    navigation entries for PHASE 120-124 knowledge system integration.)
+    (added specdd/ navigation entries for per-project .specdd/ runtime
+    artifacts: flow-index, fix-index, dependency-ledger, task-context.)
 
 Note:
    INDEX.sdd is the first file AI reads when entering .sdd/. It does not

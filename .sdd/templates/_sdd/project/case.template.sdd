@@ -1,0 +1,56 @@
+# CASE Spec Template
+
+Purpose:
+  Template for CASE (business capability) specifications.
+  Replaces the legacy 3-file format (spec/tasks/status) with a single .sdd file.
+
+Owns: templates\_sdd\project\case.template.sdd
+
+## Header
+
+Spec: {CASE_NAME}
+Case: {CASE_ID}
+Module: {MODULE_ID}
+Layer: {layer}
+Status: draft|approved|in_progress|completed|blocked
+
+## Ownership
+
+Owns:
+  ./{case_file}.go
+  ./{case_file}_test.go
+
+## Requirements
+
+Must:
+  {acceptance criteria from MASTER_PROMPT}
+
+Forbids:
+  {dependencies this case must not touch}
+
+## Tasks
+
+Tasks:
+  [ ] #1 {task title}
+  [ ] #2 {task title}
+
+## Completion Criteria
+
+Done when:
+  BDD scenarios are covered by tests.
+  Security-review has no critical/high findings.
+  Ultra-review has no architecture boundary violations.
+
+## Behavior
+
+Scenario: {BDD scenario name}
+  Given {condition}
+  When {action}
+  Then {result}
+
+## Lifecycle
+
+Created_At: <timestamp>
+Updated_At: <timestamp>
+
+State: +

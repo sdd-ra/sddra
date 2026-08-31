@@ -1,0 +1,143 @@
+# Tasks: PARTIAL-DONE
+
+Purpose:
+  Define the partial completion model for tasks that cannot fully
+  complete. Some tasks span multiple layers (backend, frontend, mobile)
+  where one layer finishes while another is blocked. Declaring
+  PARTIALLY_COMPLETED prevents the illusion of full completion when
+  only part of the work is done.
+
+Owns:
+  Per-layer completion status
+  PARTIALLY_COMPLETED declaration
+  Partial completion state transition
+
+PartialCompletion:
+
+  definition: task where one or more layers are complete but others
+              are blocked, not started, or partially done
+  declaration: PARTIALLY_COMPLETED (terminal-adjacent, not terminal)
+
+  status_levels:
+    complete     — all work for this layer done and verified
+    in_progress  — work started, partial progress
+    blocked      — blocked by external dependency or decision
+    not_started  — no work begun on this layer
+    skipped      — layer intentionally not needed for this task
+
+  Example:
+    backend:  complete
+    frontend: blocked
+    mobile:   not_started
+
+  rule: [PD1] PARTIALLY_COMPLETED MUST list every affected layer
+        with an explicit status.
+
+LayerCompletionModel:
+
+  layers:
+    - backend      (BE)
+    - frontend     (FE)
+    - mobile       (MD)
+    - database     (DB)
+    - api          (API)
+    - infrastructure (DO)
+    - devops       (CI/CD)
+    - security     (SC)
+    - documentation (DOCS)
+    - quality      (QA)
+
+  PerLayerStatus:
+    layer_name:
+      status: complete | in_progress | blocked | not_started | skipped
+      blocker: <explicit reason if blocked>
+      required_human_action: <what human needs to do if blocked>
+
+  Example:
+    backend:
+      status: complete
+    frontend:
+      status: blocked
+      blocker:
+        type: DEPENDENCY
+        ref: BE-API-SPEC-003
+        description: backend API contract not yet finalized
+      required_human_action:
+        approve API contract @decision.api-contract-v2
+
+StateTransition:
+
+  full_completion:
+    all layers complete + Done Proof achieved -> COMPLETED
+
+  partial_completion:
+    some layers complete, others blocked/not_started ->
+    PARTIALLY_COMPLETED
+    action: record per-layer status, declare blocker,
+            keep task open
+
+  recovery:
+    blocker resolved -> resume at the blocked layer's state
+    (does NOT restart completed layers)
+
+  rule: [PD2] PARTIALLY_COMPLETED is NOT terminal — task remains active.
+  rule: [PD3] COMPLETED requires ALL relevant layers complete.
+
+WhenPartialApplies:
+
+  triggers:
+    - dependency on another team's deliverable
+    - external API not yet available
+    - environment not provisioned
+    - human decision pending
+    - security review blocking deployment layer
+    - upstream architecture decision pending
+
+  rule: [PD4] If a layer is blocked, the AI MUST declare the blocker
+        with type and ref — "blocked" alone is insufficient.
+
+DoneProofForPartial:
+
+  definition: Done Proof for the completed layers only
+  format: same template as DONE-PROOF.sdd but scoped per layer
+
+  Example:
+    TASK-1023 PARTIAL DONE PROOF
+
+    backend:
+      requirements:       ✓
+      tests:              ✓
+      architecture:       ✓
+      review:             ✓
+      documentation:     ✓
+      status: COMPLETE
+
+    frontend:
+      requirements:       ✗
+      tests:              ✗
+      status: BLOCKED
+      blocker:
+        type: DEPENDENCY
+        ref: API-CONTRACT-003
+        description: backend API not finalized
+
+Rules:
+
+  [PD1] PARTIALLY_COMPLETED MUST declare per-layer status explicitly.
+  [PD2] PARTIALLY_COMPLETED is NOT terminal — task stays active.
+  [PD3] COMPLETED requires all relevant layers to be complete.
+  [PD4] Blocked layers MUST declare type + ref + required_human_action.
+  [PD5] Completed layers within a partial task MUST pass their Done Proof.
+  [PD6] When blocker resolves, task resumes at blocked layer state.
+  [PD7] AI MUST NOT hide incomplete work behind "completed" status.
+  [PD8] PARTIALLY_COMPLETED MUST be recorded in execution trace and summary.
+
+Navigation:
+
+  StateMachine: @TASK-STATE-MACHINE.sdd
+  DoneProof: @DONE-PROOF.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +

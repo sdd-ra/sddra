@@ -33,9 +33,87 @@ Principles:
   Acceptance criteria are behavioral, not implementation.
 
 Lifecycle:
-  DRAFT -> READY -> IN_PROGRESS -> BLOCKED -> DONE
-  CANCELLED
-  FAILED (execution state, not task state)
+  DISCOVERING -> PLANNING -> IMPLEMENTING -> TESTING -> REVIEWING -> COMPLETED
+                                    |
+                                    +-> FIXING -> TESTING (iterative loop, bounded)
+                                    +-> DOCUMENTING -> LEARNING -> COMPLETED
+                                    +-> BLOCKED
+                                    +-> ESCALATED
+
+  Legacy state mapping (6-state -> 10-state):
+    DRAFT      -> DISCOVERING
+    READY      -> PLANNING
+    IN_PROGRESS -> IMPLEMENTING
+    BLOCKED    -> BLOCKED
+    DONE       -> COMPLETED
+    CANCELLED  -> ESCALATED
+    FAILED     -> execution sub-state within FIXING loop (not a top-level task state)
+
+  State definitions:
+    DISCOVERING: Task intent is being clarified; context is being loaded.
+    PLANNING: Implementation plan is being created; constraints are verified.
+    IMPLEMENTING: Code changes are being made per the plan.
+    TESTING: Automated and manual tests are being executed.
+    REVIEWING: Human review of implementation and tests is pending.
+    FIXING: Implementation or tests failed; agent is analyzing and correcting.
+    DOCUMENTING: Code is complete; documentation and API specs are being generated.
+    LEARNING: Knowledge gate is being evaluated; consolidation pipeline runs.
+    COMPLETED: All criteria met, done-proof verified, knowledge consolidated.
+    BLOCKED: External dependency or decision is pending; task is suspended.
+    ESCALATED: Human intervention is required; autonomy ceiling reached.
+
+  FailureClassification:
+    BUILD_FAILURE: compilation, dependency, or build pipeline failure
+    TEST_FAILURE: automated test did not pass
+    LOGIC_FAILURE: code runs but behavior is incorrect
+    ARCHITECTURE_FAILURE: design or structural violation detected
+    CONSTRAINT_FAILURE: policy, security, or architectural constraint violated
+    ENVIRONMENT_FAILURE: infrastructure, dependency, or runtime unavailability
+    KNOWLEDGE_GAP: insufficient knowledge to proceed without retrieval
+    AMBIGUITY: task specification is unclear; requires human clarification
+    EXTERNAL_DEPENDENCY: third-party service or external system failure
+
+LoopProtection:
+  loop_score:
+    definition: cumulative risk score for the current FIXING loop
+    increments:
+      same_action: +30 (agent repeated an unchanged action)
+      same_error: +25 (same error recurred after fix attempt)
+      no_progress: +30 (no measurable change between iterations)
+      plan_reverted: +20 (plan was rolled back to a prior version)
+    decrements:
+      new_evidence: -20 (new knowledge was retrieved)
+      meaningful_change: -30 (structural change with evidence of progress)
+    threshold: >= 60 triggers LOOP_RISK_HIGH
+    action_on_high: task is BLOCKED and human is notified
+
+  failure_budget:
+    definition: remaining allowable failure iterations per task
+    default: 3
+    action_on_exhausted: task is ESCALATED to human
+    reset_on_meaningful_change: +1 budget when meaningful_change decrement applies
+    scope: per FIXING loop; resets on transition to new top-level state
+
+  autonomy_level:
+    L0: observe-only — AI reports findings, human decides all actions
+    L1: human-approved actions — AI proposes, human approves each step
+    L2: autonomous within approved plan — AI executes, human reviews per gate
+    L3: autonomous with checkpoints — AI executes, human reviews at milestones
+    L4: autonomous with notification — AI executes, human is informed of outcomes
+    L5: fully autonomous — AI executes, documents, and learns without human gate
+    default: L2
+    policy_override: domain-specific autonomy caps defined in @runtime/context-policy.sdd
+
+TaskMemory:
+  scope: per-task working state loaded during execution
+  source: @runtime/memory-model.sdd (4-tier model: Long-Term -> Project -> Task -> Working)
+  context_builder: @runtime/context-builder.sdd (task -> project -> module -> domain -> dependencies)
+  context_policy: @runtime/context-policy.sdd (always_load allowlist, negative knowledge, DO NOT registry)
+  context_manifest: @runtime/context-manifest.sdd (loaded:, excluded:, context_confidence:, missed:)
+  consolidation: @runtime/memory-consolidation.sdd (end-of-task: DROP | ARCHIVE | LINK | PROMOTE)
+  rule: task memory is runtime-only — not persisted to .sdd/
+  rule: context budget defaults to Level 0-1-2; expand to 3-4 on demand (PHASE 123 §10)
+  rule: context sufficiency check (confidence rating) MUST pass before implementation begins
 
 TaskContract:
   structure:
@@ -349,6 +427,11 @@ Navigation:
   Tasks: @tasks.sdd
   ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
+  RuntimeMemoryModel: @../runtime/memory-model.sdd
+  RuntimeContextBuilder: @../runtime/context-builder.sdd
+  RuntimeContextPolicy: @../runtime/context-policy.sdd
+  RuntimeContextManifest: @../runtime/context-manifest.sdd
+  RuntimeConsolidation: @../runtime/memory-consolidation.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Graph: @../graph/INDEX.sdd
 

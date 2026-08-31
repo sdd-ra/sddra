@@ -1,0 +1,50 @@
+# Toolchain
+
+Purpose:
+  Maintain current, supported versions of Node, pnpm, and Go.
+  CI scans this spec on every run and creates tasks on violation.
+
+Owns:
+  /.nvmrc
+  /DO/Dockerfile
+  /DO/ci-cd/*.yml
+
+## Version Registry
+
+Versions:
+  node: {version from .nvmrc}
+  pnpm: {version from package.json or CI config}
+  go: {version from go.mod}
+  docker_base: {image:tag from DO/Dockerfile}
+
+## Requirements
+
+Must:
+  CI-used Node/pnpm version is not EOL.
+  Go version is supported by the project.
+  Docker base image is maintained.
+
+## CI Integration
+
+CI_Scan:
+  Trigger: Every CI run
+  Action:
+    - Read versions from owned files
+    - Compare against this spec
+    - IF violation:
+        → Auto-create new [ ] task in this spec
+        → Notify operator
+    - IF compliant:
+        → No action
+
+## Tasks
+
+Tasks:
+  [ ] #1 Verify Node version is not EOL
+  [ ] #2 Verify pnpm version is not EOL
+  [ ] #3 Verify Go version is supported
+
+Created_At: <timestamp>
+Updated_At: <timestamp>
+
+State: +

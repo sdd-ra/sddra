@@ -1,0 +1,138 @@
+# Tasks: DONE-PROOF
+
+Purpose:
+  Define the Done Proof template that every task MUST produce before
+  being marked COMPLETED. AI cannot simply claim "task completed" —
+  it must provide evidence across five dimensions. Distinguishes
+  Functional Done (code works) from Engineering Done (code works +
+  tests pass + architecture valid + rules respected + documentation
+  exists + review complete).
+
+Owns:
+  Done Proof template
+  Functional Done vs Engineering Done
+  Completion evidence requirements
+
+DoneProofTemplate:
+
+  TASK-<ID> DONE PROOF
+
+  requirements:
+    <description>  ✓ / ✗
+  tests:
+    unit:         ✓ / ✗
+    integration:  ✓ / ✗
+    BDD:          ✓ / ✗
+  architecture:
+    boundary_valid: ✓ / ✗
+  review:
+    no_critical_violations: ✓ / ✗
+  documentation:
+    generated: ✓ / ✗
+
+  Example:
+    TASK-1023 DONE PROOF
+
+    requirements:
+      refund created           ✓
+      duplicate refund blocked ✓
+      transaction atomic       ✓
+      API response updated     ✓
+    tests:
+      unit:        ✓
+      integration: ✓
+      BDD:         ✓
+    architecture:
+      boundary_valid: ✓
+    review:
+      no_critical_violations: ✓
+    documentation:
+      generated: ✓
+
+FunctionalDone:
+
+  definition: "code works" — the feature behaves as described
+  indicators:
+    - manual demonstration
+    - happy-path test passes
+    - no obvious errors in log
+  limitation: This is NOT sufficient for COMPLETED state.
+
+EngineeringDone:
+
+  definition: code works + all quality bars met
+  requirements:
+    - tests pass (unit, integration, BDD)
+    - architecture valid (boundaries, patterns respected)
+    - review passed (no critical violations)
+    - documentation generated
+    - rules respected (conventions, security, constraints)
+  rule: Task is only COMPLETED when Engineering Done is achieved.
+
+DoneProofDimensions:
+
+  1. Requirements
+     check: every acceptance criterion from the task contract is satisfied
+     evidence: test assertions, API responses, behavior demonstrations
+     requirement: ALL ✓
+
+  2. Tests
+     check: appropriate test levels pass
+     levels: unit, integration, BDD (per testing/ levels)
+     requirement: ALL ✓
+
+  3. Architecture
+     check: no boundary violations, correct layer placement, no cycles
+     evidence: architecture review checklist (bax REVIEWING checklists)
+     requirement: ✓
+
+  4. Review
+     check: code review passed with no critical violations
+     evidence: review status = PASS or PASS_WITH_WARNINGS
+     requirement: no CRITICAL or BLOCKED findings
+     rule: SECURITY_CRITICAL findings force BLOCKED (not PASS_WITH_WARNINGS)
+
+  5. Documentation
+     check: human-readable documentation generated
+     evidence: @human-docs-gate entry created
+     requirement: ✓
+
+ReviewResults:
+
+  PASS               — all criteria met
+  PASS_WITH_WARNINGS — passed, but warnings noted (does NOT block completion
+                        unless warning is security-critical)
+  CHANGES_REQUIRED   — fixes must be applied, return to FIXING
+  BLOCKED            — finding blocks progress
+  ESCALATE           — finding requires human decision
+
+  rule: Only PASS or PASS_WITH_WARNINGS (without security-critical items)
+        allows proceeding to DOCUMENTING.
+
+Rules:
+
+  [DP1] AI MUST NOT mark a task COMPLETED without a Done Proof.
+  [DP2] Done Proof MUST cover all 5 dimensions: requirements, tests,
+        architecture, review, documentation.
+  [DP3] Functional Done alone is insufficient — Engineering Done is required.
+  [DP4] Any ✗ in Done Proof means the task is NOT complete.
+  [DP5] Review with SECURITY_CRITICAL findings MUST block completion.
+  [DP6] Done Proof is reviewed by the next gate (LEARNING / CONSOLIDATION).
+  [DP7] Partial completion is handled via PARTIAL-DONE.sdd, not a
+        partial Done Proof.
+  [DP8] Done Proof MUST be machine-checkable where possible.
+  [DP9] Each test level (unit, integration, BDD) MUST have explicit evidence.
+  [DP10] Architecture validation MUST check boundary validity, not just
+         "code compiles."
+
+Navigation:
+
+  StateMachine: @TASK-STATE-MACHINE.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  PartialDone: @PARTIAL-DONE.sdd
+  HumanDocsGate: @../workflow/human-docs-gate.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  Testing: @../testing/gates.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +

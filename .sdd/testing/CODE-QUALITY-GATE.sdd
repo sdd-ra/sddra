@@ -1,0 +1,47 @@
+# Code Quality Gate
+
+Purpose:
+  Per-language linters and formatters enforced before review stage.
+  Ensures code cleanliness before human or AI review.
+
+Owns: testing\CODE-QUALITY-GATE.sdd
+
+## Language Tool Registry
+
+Tools:
+  go:
+    lint: golangci-lint run
+    format: go fmt ./...
+  typescript:
+    lint: tsc --noEmit
+    format: prettier --write .
+  javascript:
+    lint: eslint .
+    format: prettier --write .
+  python:
+    lint: pylint **/*.py
+    format: black .
+  php:
+    lint: php -l **/*.php
+    format: php-cs-fixer fix
+  rust:
+    lint: cargo clippy
+    format: rustfmt --check .
+
+## Gate Rules
+
+Gate:
+  - ALL tools for the project languages must pass.
+  - Gate runs BEFORE review stage.
+  - Fix auto-applied where possible (format).
+  - Lint errors must be resolved before proceeding.
+
+## Report
+
+Report:
+  language: {lang}
+  lint: pass|fail
+  format: pass|fail|fixed
+  issues: [list]
+
+State: +

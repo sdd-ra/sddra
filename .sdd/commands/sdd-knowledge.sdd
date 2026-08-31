@@ -1,0 +1,105 @@
+# /sdd-knowledge
+
+Purpose:
+  Report on the health and trustworthiness of the .sdd/ knowledge graph.
+  Extends /sdd-health with knowledge-specific diagnostics: trust coverage,
+  candidate pipeline, conflicts, gaps, unused references, and duplicate
+  concepts. Supports diff against a previous snapshot to track knowledge
+  evolution over time.
+
+Owns: commands/sdd-knowledge.sdd
+
+Description:
+  Scans .sdd/references/, .sdd/knowledge/, .sdd/insights/, and
+  .sdd/concepts/ to produce a knowledge health report. Detects stale,
+  unused, duplicated, and conflicting knowledge. Read-only — does not
+  modify any files unless --fix is supplied.
+
+Usage:
+  /sdd-knowledge
+  /sdd-knowledge --diff
+  /sdd-knowledge --diff <snapshot_file>
+  /sdd-knowledge --json
+  /sdd-knowledge --verbose
+
+Options:
+  --diff          Compare current knowledge against previous snapshot
+  --json          Output machine-readable JSON
+  --verbose       Show per-reference detail
+  --fix           Archive deprecated references (requires human approval)
+
+Output:
+  KNOWLEDGE HEALTH
+
+    References:        142
+    Established:         87
+    Validated:           31
+    Candidates:          19
+    Deprecated:           5
+    Conflicts:            3
+    Knowledge gaps:       8
+    Unused references:   11
+    Duplicate concepts:   6
+    Stale knowledge:      2
+    Unknown status:       4
+
+  Trust coverage:
+    low:     24 (trust.low  references)
+    medium:   9 (trust.medium references)
+    high:     6 (trust.high   references)
+
+  Candidate pipeline:
+    candidate:  13
+    validated:  5 (promoted this cycle)
+    expired:    1 (candidate expired, no promotion)
+
+Knowledge Diff Format:
+  + reference.id      newly added
+  ~ reference.id      changed (trust / confidence / evidence updated)
+  - reference.id      removed / archived
+  ! reference.id      conflict detected
+  ? reference.id      status unknown / insufficient evidence
+
+  Example:
+    + @skill.retry-with-backoff   (candidate to validated)
+    ~ @best-practice.kiss         (trust: medium to high)
+    - @pattern.legacy-queue       (deprecated)
+    ! @architecture.event-driven  (conflict with @architecture.simple)
+    ? @skill.async-handler        (insufficient evidence)
+
+Health Scoring:
+  health_score  = (established + validated) / total_references
+  trust_average   = mean(trust.level across all references)
+  gap_ratio       = knowledge_gaps / total_references
+  conflict_ratio  = conflicts / total_references
+
+  Status thresholds:
+    HEALTHY   — health_score >= 0.7, conflicts = 0
+    WEAK      — 0.4 <= health_score < 0.7, conflicts <= 2
+    CRITICAL  — health_score < 0.4, conflicts > 2
+
+  AI behavior by status:
+    HEALTHY   — proceed, reuse established references
+    WEAK      — propose candidate promotion, flag gaps
+    CRITICAL  — pause and escalate to human review
+
+Rules:
+  [KD1] The command MUST NOT auto-delete or auto-deprecate any
+        reference without explicit human confirmation.
+  [KD2] Trust levels MUST be derived from evidence_count, not
+        from reference popularity.
+  [KD3] Unused references older than 6 months MUST be flagged
+        for human review.
+  [KD4] Duplicate concepts MUST propose a merge target per
+        CANONICALIZATION.sdd merge protocol.
+  [KD5] Conflict pairs MUST be linked with a conflicts-with edge
+        in the knowledge graph.
+  [KD6] Diff snapshots MUST be stored in .sdd/runtime/knowledge-diff/.
+
+Navigation:
+  sdd-health: @../commands/sdd-health.sdd
+  References: @../references/INDEX.sdd
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Lifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+
+State: +

@@ -1,0 +1,32 @@
+# Pre-flight Template
+
+Purpose:
+  Pre-flight command execution document.
+  Run before invoking an API to verify environment readiness.
+
+Owns: templates\specdd\preflight-template.sdd
+
+## Checks
+
+Preflight_Checks:
+  - server_alive: Health endpoint returns 200
+  - db_migration_applied: Latest migration version matches expected
+  - credentials_loaded: Required env vars present
+  - dependency_running: Required services (DB, cache, queue) are up
+
+## Format
+
+Preflight_Doc:
+  API: {API_NAME}
+  Before running:
+    1. Check server alive: curl {health_url}
+    2. Check DB migration: {migration_check_command}
+    3. Check credentials: {credential_check_command}
+    4. Check dependencies: {dependency_check_command}
+
+  If any check fails:
+    → STOP
+    → Do not proceed with API call
+    → Notify operator
+
+State: +

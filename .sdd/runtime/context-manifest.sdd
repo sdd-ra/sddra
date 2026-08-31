@@ -1,0 +1,147 @@
+Runtime: Context Manifest
+
+Purpose:
+  Define the context manifest template and usage for debugging AI decisions.
+  Context manifest records what knowledge was loaded, excluded, missed, and
+  the confidence rating for each task execution, enabling explainability
+  and debugging of AI context decisions.
+
+Principles:
+  Context manifest is created for every task execution.
+  Manifest is immutable once created.
+  Manifest enables debugging of incorrect AI decisions.
+  Manifest is versioned with execution for reproducibility.
+  Manifest is never used as knowledge source; it is audit artifact only.
+
+ManifestTemplate:
+  task: task_id
+  execution_id: execution_id
+  timestamp: ISO8601
+
+  loaded:
+    - reference: canonical reference id
+      relevance: direct | indirect | historical | optional
+      trust: explicit_constraint | decision | validated_skill | established | best_practice | ai_suggestion
+      importance: critical | high | normal | low | temporary
+      source: file_path or knowledge_store
+      loaded_by: auto | always_load | human_override | escalation
+      rationale: why this reference was loaded
+
+  excluded:
+    - reference: canonical reference id
+      reason: irrelevant | excluded_by_policy | budget_overflow | stale | deprecated | excluded_by_human
+      excluded_by: auto | human_override | budget
+      rationale: why this reference was excluded
+
+  missed:
+    - reference: canonical reference id or keyword
+      reason: not_found | unresolved_dependency | access_denied | not_available
+      impact: implementation_blocker | partial | minor
+      action: expand_context | human_escalation | defer
+
+  context_confidence:
+    level: insufficient | partial | sufficient | high
+    score: integer (0-100)
+    criteria_met:
+      - all_required_references_loaded: boolean
+      - all_dependencies_resolved: boolean
+      - all_constraints_identified: boolean
+      - negative_knowledge_checked: boolean
+      - decisions_reviewed: boolean
+      - skills_verified: boolean
+    rationale: explanation of confidence level
+
+  overrides:
+    - type: @context.include | @context.exclude
+      reference: canonical reference id
+      rationale: human-provided reason
+      authority: human_id or role
+
+  trust_conflicts:
+    - reference_a: reference id
+      reference_b: reference id
+      conflict: description
+      resolution: higher_trust_wins | human_decision
+      rationale: explanation
+
+  escalation:
+    - trigger: insufficient_context | knowledge_gap | ambiguity | conflict
+      action: expand_context | request_human | defer_task
+      result: resolved | pending | escalated
+
+  budget:
+    allocated_tokens: integer
+    used_tokens: integer
+    allocated_refs: integer
+    used_refs: integer
+    overflow_handling: trim_low | trim_optional | trim_historical | request_more
+
+ManifestUsage:
+  debugging:
+    scenario: AI made incorrect decision
+    action: inspect manifest loaded and missed sections
+    example:
+      developer: "AI why did it choose Kafka?"
+      manifest:
+        loaded:
+          - @generic.messaging.kafka
+        missed:
+          - @project.messaging.rabbitmq
+      diagnosis: context retrieval was incorrect
+
+  explainability:
+    scenario: AI decision trace
+    action: generate decision trace from manifest
+    example:
+      input: async notification
+      loaded: @messaging, @project.payment, @decision.rabbitmq
+      rejected: Kafka
+      reason: project decision explicitly prefers RabbitMQ
+
+  auditing:
+    scenario: compliance or security review
+    action: verify context included required constraints
+    example:
+      check: @constitution.security in loaded?
+      check: @constitution.data-integrity in loaded?
+
+  optimization:
+    scenario: improve context retrieval accuracy
+    action: analyze missed references to improve ranking
+    example:
+      missed: @project.payment.rabbitmq
+      action: adjust ranking weight for project-scoped decisions
+
+ManifestLifecycle:
+  created: at task start, before context loading
+  finalized: at task completion, after consolidation
+  stored: with execution record
+  retained: for debugging and auditing
+  rule: manifest is immutable after finalization
+  rule: manifest is never used as knowledge source
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Memory Model: @memory-model.sdd
+  Context Builder: @context-builder.sdd
+  Context Policy: @context-policy.sdd
+  Memory Consolidation: @memory-consolidation.sdd
+  Execution: @execution.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+
+Rules:
+  [RT-CTX-MAN-01] Context manifest is created for every task execution.
+  [RT-CTX-MAN-02] Manifest is immutable once finalized.
+  [RT-CTX-MAN-03] Manifest is never used as knowledge source; it is an audit artifact only.
+  [RT-CTX-MAN-04] Manifest records loaded, excluded, missed, confidence, overrides, and trust conflicts.
+  [RT-CTX-MAN-05] Manifest is versioned with execution for reproducibility.
+  [RT-CTX-MAN-06] Human overrides are logged with task ID and rationale.
+  [RT-CTX-MAN-07] Missed references include impact assessment and required action.
+  [RT-CTX-MAN-08] Trust conflicts are recorded with resolution and rationale.
+  [RT-CTX-MAN-09] Manifest enables debugging of incorrect AI context decisions.
+  [RT-CTX-MAN-10] Manifest enables explainability of AI decisions on demand.
+  [RT-CTX-MAN-11] Manifest retention period matches execution record retention.
+  [RT-CTX-MAN-12] Agent MUST NOT add signatures or sign-offs to manifest outputs.
+  [RT-CTX-MAN-13] Agent MUST NOT use emojis, icons, or decorative symbols in manifest output headers or titles.
+
+State: +

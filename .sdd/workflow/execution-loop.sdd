@@ -1,0 +1,214 @@
+# Workflow: EXECUTION-LOOP
+
+Purpose:
+  Define the full autonomous execution machine — the end-to-end flow
+  from task creation to completion, including failure handling, loop
+  protection, done proof, and knowledge consolidation. This is the
+  master diagram that orchestrates TASK-STATE-MACHINE.sdd,
+  LOOP-PROTECTION.sdd, FAILURE-CLASSIFICATION.sdd, DONE-PROOF.sdd,
+  LEARNING-GATE.sdd, and HUMAN-DOCS-GATE.sdd.
+
+Owns:
+  Execution loop diagram
+  Failure handling sub-routine
+  Completion verification
+
+FullExecutionMachine:
+
+                  TASK
+                    |
+              DISCOVER
+                    |
+          BUILD CONTEXT
+                    |
+                PLAN
+                    |
+             PLAN CHECK
+                    |
+               IMPLEMENT
+                    |
+                TEST
+                    |
+             |-- PASS --|
+             |          |
+            FAIL     REVIEW
+             |          |
+         CLASSIFY       |
+             |          |
+        |-- FIXABLE --| |
+        |             | |
+       FIX      BLOCKED  |
+        |               |
+        |               |
+        | (loop guard check on each cycle)
+        |
+        TEST
+        |
+        (PASS returns to REVIEW)
+
+        PASS
+          |
+    DONE PROOF
+          |
+      DOCUMENTATION
+          |
+      KNOWLEDGE GATE
+          |
+      CONSOLIDATION
+          |
+        COMPLETE
+
+ExecutionSteps:
+
+  1. TASK
+     input: goal, scope, contract (bax EXECUTION-CONTRACT.sdd)
+     output: task instance with initial state DISCOVERING
+
+  2. DISCOVER
+     state: DISCOVERING
+     actions: understand goal, gather requirements, identify stakeholders
+     output: task scope, acceptance criteria, dependencies
+
+  3. BUILD CONTEXT
+     actions: load @policy.autonomy, @references/, @skills/,
+              @decisions/, project architecture
+     budget: CONTEXT LEVEL 0→1→2 default (bax runtime/context-builder.sdd)
+     output: context manifest, context_confidence rating
+     gate: confidence must be sufficient before PLAN (no guessing)
+
+  4. PLAN
+     state: PLANNING
+     actions: synthesize plan from context, skills, and knowledge
+     output: plan with steps, risks, dependencies
+     rule: plan is NOT immutable — evolves with new evidence (bax
+           EXECUTION-CONTRACT.sdd -> PlanEvolution)
+
+  5. PLAN CHECK
+     actions: validate plan against contract (allowed, forbidden,
+              approval_required), check autonomy level sufficiency
+     gate: approval_required items must get human sign-off
+     on_reject: return to PLAN with feedback
+
+  6. IMPLEMENT
+     state: IMPLEMENTING
+     actions: produce code, tests, documentation within contract scope
+     rule: must stay within allowed_actions and allowed scope
+     on_violation: CONSTRAINT_FAILURE (escalate immediately)
+
+  7. TEST
+     state: TESTING
+     sub_state: PASSED | FAILED
+     actions: run test suite (unit, integration, BDD)
+     PASS -> REVIEW
+     FAIL -> CLASSIFY
+
+  8. CLASSIFY
+     actions: classify failure (bax FAILURE-CLASSIFICATION.sdd)
+     output: failure type + severity + action
+     dispatch:
+       FIXABLE  -> FIX (consume failure budget)
+       BLOCKED  -> BLOCKED state (declare blocker)
+       ESCALATE -> ESCALATED state (human intervention)
+
+  9. FIX
+     state: FIXING
+     actions: apply remedy from failure → action map
+     rule: each fix iteration MUST record BEFORE / CHANGE / AFTER
+           / RESULT / PROGRESS (bax TASK-STATE-MACHINE.sdd -> ProgressRule)
+     loop_guard: LOOP_SCORE recalculated, guards checked (bax
+                 LOOP-PROTECTION.sdd)
+       - LOOP_RISK_HIGH -> strategy change required
+         (do NOT retry same approach)
+     on_fix: return to TEST
+
+  10. REVIEW
+      state: REVIEWING
+      sub_state: PASS | PASS_WITH_WARNINGS | CHANGES_REQUIRED | BLOCKED | ESCALATE
+      actions:
+        - correctness check
+        - security check
+        - architecture check
+        - DDD boundaries
+        - SOLID, KISS, DRY, YAGNI
+        - performance, observability, testability, maintainability
+        - project conventions
+        - existing skills and decisions
+      rule: only EFFECTIVE knowledge applies (bax context/priorities.sdd)
+      PASS / PASS_WITH_WARNINGS -> DONE PROOF
+      CHANGES_REQUIRED -> FIX -> TEST -> REVIEW
+      BLOCKED -> BLOCKED state
+      ESCALATE -> ESCALATED state
+
+  11. DONE PROOF
+      actions: produce Done Proof (bax DONE-PROOF.sdd)
+      gate: ALL dimensions ✓ (requirements, tests, architecture,
+            review, documentation)
+      FAIL -> return to the failing dimension's stage
+      PASS -> DOCUMENTATION
+
+  12. DOCUMENTATION
+      state: DOCUMENTING
+      actions: generate human docs (bax HUMAN-DOCS-GATE.sdd)
+      gate: documentation complete and reviewed
+
+  13. KNOWLEDGE GATE
+      state: LEARNING
+      actions: classify knowledge (bax LEARNING-GATE.sdd)
+      output: promoted skills, updated decisions, new lessons
+      gate: at least one knowledge artifact produced (or NO_NEW_KNOWLEDGE
+            explicitly justified)
+
+  14. CONSOLIDATION
+      actions: collapse runtime trace into persistent knowledge
+      rule: 100 events -> 3 decisions + 1 new skill (bax
+            EXECUTION-CONTRACT.sdd -> ExecutionSummary)
+      output: execution summary, knowledge artifacts
+
+  15. COMPLETE
+      state: COMPLETED
+      actions: archive task, update task registry, release resources
+
+LoopProtectionIntegration:
+
+  guards run at every TEST -> FIX -> TEST cycle:
+    1. max_iterations (from EXECUTION-CONTRACT)
+    2. failure_budget (severity-weighted, from ExecUTION-CONTRACT)
+    3. no_progress_detection (consecutive no-progress iterations)
+    4. duplicate_action_detection (same action + same reasoning)
+    5. state_transition_rules (allowed transitions enforced)
+    6. human_escalation (6th guard, bax LOOP-PROTECTION.sdd -> Guards)
+
+  LOOP_SCORE recalculated after every cycle iteration.
+  LOOP_SCORE >= 60 -> LOOP_RISK_HIGH -> strategy change required.
+
+Rules:
+
+  [EL1] The execution machine starts at TASK and ends at COMPLETE.
+  [EL2] Every state transition MUST be recorded in the execution trace.
+  [EL3] TEST -> FAIL MUST classify the failure before choosing FIX/FIXABLE.
+  [EL4] Context confidence MUST be sufficient before PLAN (no guessing).
+  [EL5] Review is embedded in the loop — NOT a post-completion step.
+  [EL6] Done Proof is required before DOCUMENTATION — not optional.
+  [EL7] Knowledge gate MUST produce at least one artifact OR justify
+        NO_NEW_KNOWLEDGE.
+  [EL8] Consolidation collapses trace into 3 categories: decisions,
+        skills, lessons.
+  [EL9] COMPLETED requires Engineering Done, not Functional Done.
+  [EL10] LOOP_SCORE >= 60 forces strategy change — AI MUST NOT retry
+         the same approach.
+
+Navigation:
+
+  StateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+  LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+  FailureClassification: @../tasks/FAILURE-CLASSIFICATION.sdd
+  ExecutionContract: @../tasks/EXECUTION-CONTRACT.sdd
+  AutonomyPolicy: @../tasks/AUTONOMY-POLICY.sdd
+  DoneProof: @../tasks/DONE-PROOF.sdd
+  PartialDone: @../tasks/PARTIAL-DONE.sdd
+  LearningGate: @learning-gate.sdd
+  HumanDocsGate: @human-docs-gate.sdd
+  ContextBuilder: @../runtime/context-builder.sdd
+  TasksIndex: @../tasks/INDEX.sdd
+
+State: +

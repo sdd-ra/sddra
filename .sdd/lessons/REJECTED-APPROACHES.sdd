@@ -1,0 +1,73 @@
+Category: Rejected Approaches
+Purpose:
+  Negative knowledge store for approaches that were considered
+  and rejected. Prevents repeated exploration of failed paths.
+  Integrates with knowledge diff (! conflicted) to flag contradictions.
+
+Owns: ./
+
+Structure:
+
+  Each rejected approach uses the @rejected.<name> convention:
+
+    @rejected.<name>
+      reason: <why this approach failed>
+      failed_approach: <description of what was tried>
+      preferred: <what to use instead>
+      observed_in: @project.<name>
+      rejected_at: <timestamp>
+      rejected_by: <human/agent>
+      evidence: [supporting observations]
+
+  Example:
+    @rejected.synchronous-outbox
+      reason: caused deadlocks under high concurrency
+      failed_approach: synchronous outbox publishing in request thread
+      preferred: @skill.async-outbox-polling
+      observed_in: @project.payment
+      rejected_at: 2026-08-15
+      rejected_by: human
+      evidence:
+        - deadlock in load test #47
+        - p99 latency exceeded 5s
+
+Rejected Approach Rules:
+  [R1] Every rejected approach MUST have a reason.
+  [R2] Every rejected approach MUST reference a preferred alternative.
+  [R3] Rejected approaches are preserved — never deleted.
+  [R4] Rejected approaches can be revisited if new evidence emerges.
+  [R5] Revisiting requires explicit human approval.
+
+Integration with Knowledge Diff:
+
+  When a new observation contradicts established knowledge,
+  it produces a ! conflicted marker in the knowledge diff.
+
+  Flow:
+    1. Observation contradicts existing knowledge.
+    2. Knowledge diff flags: ! @skill.<name>
+    3. AI checks REJECTED-APPROACHES.sdd for prior rejections.
+    4. If prior rejection exists: prefer the documented alternative.
+    5. If no prior rejection: create human escalation.
+
+  This prevents repeating known failed approaches.
+
+Entry Protocol:
+
+  1. Approach fails in code, review, or production.
+  2. Create @rejected.<name> entry with reason and evidence.
+  3. Link to preferred alternative.
+  4. If related to a decision, reference @decision.<id>.
+  5. Update related concept's conflicts-with edges.
+
+Revisitation Conditions:
+  - New evidence that invalidates the original rejection reason.
+  - Significant change in project context or constraints.
+  - Human explicitly requests re-evaluation.
+
+Navigation:
+  Golden Rules: @../knowledge/GOLDEN-RULES.sdd
+  Compression: @../knowledge/COMPRESSION.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+
+State: +

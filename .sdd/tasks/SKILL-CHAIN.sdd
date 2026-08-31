@@ -1,0 +1,40 @@
+# Skill Chain
+
+Purpose:
+  Defines the 5-step execution chain applied to every CASE during the Change step.
+  Each step is a verification gate within the Execution Contract.
+
+Owns: tasks\SKILL-CHAIN.sdd
+
+## Chain Steps
+
+Chain:
+  1. FEATURE
+     Action: Write code per spec Must/Tasks.
+     Verify: Implementation matches requirements.
+
+  2. FIX
+     Action: Adjust written code to match previous dependencies.
+     Verify: Compatibility with owned symbols.
+
+  3. BUG
+     Action: Search for edge cases and null checks.
+     Verify: RECHECK — do not assume fix is clean; re-inspect.
+
+  4. SECURITY-REVIEW
+     Action: Scan for critical/high findings.
+     Verify: No critical/high findings remain.
+     Block: If critical/high found → task [!], notify operator, stop.
+
+  5. ULTRA-REVIEW
+     Action: Check architecture boundary (Forbids/Owns violations).
+     Verify: No architecture boundary violations remain.
+     Block: Major finding → task [?], minor finding → fix + RECHECK.
+
+## Execution Rules
+
+Order: FEATURE → FIX → BUG → SECURITY-REVIEW → ULTRA-REVIEW (immutable)
+Scope: Each step is part of the Verify stage per bootstrap.md Execution Contract.
+Layer: BE → FE → MD resolved via Depends on declarations.
+
+State: +

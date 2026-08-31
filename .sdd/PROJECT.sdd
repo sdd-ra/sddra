@@ -87,6 +87,56 @@ Directories:
     path: ./state
     purpose: State symbols
 
+  specdd:
+    path: ./.specdd
+    purpose: Per-project runtime artifacts (flow-index, fix-index, dependency-ledger, task context)
+    flow_index: .specdd/flow-index.md
+    fix_index: .specdd/fix-index.sdd
+    dependency_ledger: .specdd/dependency-ledger.md
+    task_context: .specdd/task-context/
+    rule: .specdd/ artifacts are runtime-only — they do not live in .sdd/
+    rule: flow-index.md tracks CASE dependency trees (depends-on, related)
+    rule: fix-index.sdd is the local fix-lookup table checked before web search
+
+  concepts:
+    path: ./concepts
+    purpose: Canonical concepts, knowledge model, relationship vocabulary
+    knowledge_model: @concepts/KNOWLEDGE-MODEL.sdd
+    canonicalization: @concepts/CANONICALIZATION.sdd
+    relationship_vocabulary: @concepts/RELATIONSHIP-VOCABULARY.sdd
+
+  knowledge:
+    path: ./knowledge
+    purpose: Knowledge lifecycle, compression, versioning, golden rules
+    lifecycle: @knowledge/KNOWLEDGE-LIFECYCLE.sdd
+    compression: @knowledge/COMPRESSION.sdd
+    versioning: @knowledge/VERSIONING.sdd
+    golden_rules: @knowledge/GOLDEN-RULES.sdd
+
+  lessons:
+    path: ./lessons
+    purpose: Negative knowledge and rejected approaches
+    rejected_approaches: @lessons/REJECTED-APPROACHES.sdd
+
+  runtime:
+    path: ./runtime
+    purpose: Runtime-only state (memory, traces, ledgers)
+    memory_model: @runtime/memory-model.sdd
+    context_builder: @runtime/context-builder.sdd
+    context_policy: @runtime/context-policy.sdd
+    context_manifest: @runtime/context-manifest.sdd
+    consolidation: @runtime/memory-consolidation.sdd
+
+  references:
+    path: ./references
+    purpose: Trust-weighted references and knowledge registries
+    index: @references/INDEX.sdd
+
+  legacy:
+    path: ./legacy
+    purpose: Legacy audit and migration procedures
+    audit: @legacy/AUDIT-README.sdd
+
 Navigation:
   start: PROJECT.sdd
   cases: @cases
@@ -104,8 +154,31 @@ Navigation:
   projectMap: @projects/{project_name}/MAP.md
   projectStructure: @projects/{project_name}/STRUCTURE.md
   tasks: @tasks
-  decisions: @decisions
-  state: @state
+   decisions: @decisions
+   state: @state
+   specdd: @projects/{project_name}/.specdd/
+   specdd_flow_index: @projects/{project_name}/.specdd/flow-index.md
+   specdd_fix_index: @projects/{project_name}/.specdd/fix-index.sdd
+   specdd_dependency_ledger: @projects/{project_name}/.specdd/dependency-ledger.md
+   specdd_task_context: @projects/{project_name}/.specdd/task-context/
+   concepts: @concepts/INDEX.sdd
+   concepts_knowledge_model: @concepts/KNOWLEDGE-MODEL.sdd
+   concepts_canonicalization: @concepts/CANONICALIZATION.sdd
+   concepts_relationship_vocabulary: @concepts/RELATIONSHIP-VOCABULARY.sdd
+   knowledge: @knowledge/INDEX.sdd
+   knowledge_lifecycle: @knowledge/KNOWLEDGE-LIFECYCLE.sdd
+   knowledge_compression: @knowledge/COMPRESSION.sdd
+   knowledge_versioning: @knowledge/VERSIONING.sdd
+   knowledge_golden_rules: @knowledge/GOLDEN-RULES.sdd
+   lessons: @lessons/INDEX.sdd
+   lessons_rejected: @lessons/REJECTED-APPROACHES.sdd
+   runtime: @runtime/INDEX.sdd
+   runtime_memory_model: @runtime/memory-model.sdd
+   runtime_context_builder: @runtime/context-builder.sdd
+   runtime_context_policy: @runtime/context-policy.sdd
+   runtime_consolidation: @runtime/memory-consolidation.sdd
+   legacy: @legacy/INDEX.sdd
+   legacy_audit: @legacy/AUDIT-README.sdd
 
 Rules:
   [R1] PROJECT.sdd is the root entry point.
@@ -186,4 +259,14 @@ Rules:
   [R77] Flow is fixed: BE->BE_TS->CR->FE->FE_TS->CR->MD->MD_TS->CR->BRU/CRU->MANUAL.
   [R78] BRU = Business Requirement Unit, CRU = Code Requirement Unit — both are mandatory gates.
   [R79] Manual check requires user login with full permissions — credentials are environment-provided.
-  [R80] /sdd next advances the decision chain to the next step automatically.
+   [R80] /sdd next advances the decision chain to the next step automatically.
+   [R81] Prefer reuse over creation — search existing knowledge before creating new concepts.
+   [R82] Prefer linking over copying — use @reference links instead of duplicating content.
+   [R83] Prefer specialization over duplication — extend existing concepts rather than creating variants.
+   [R84] Prefer evidence over assumption — every knowledge entry must have evidence metadata.
+   [R85] Prefer canonical concepts over synonyms — use the canonical namespace (e.g. @concept.*).
+   [R86] Never silently learn — all knowledge additions require explicit promotion or human approval.
+   [R87] Never silently overwrite — existing knowledge entries must be deprecated before replacement.
+   [R88] Never silently delete — deprecated knowledge is archived, not removed.
+   [R89] Scope every project-specific rule — project rules do not propagate to global .sdd/.
+   [R90] Preserve why a decision was made — every DEC must include rationale and evidence.

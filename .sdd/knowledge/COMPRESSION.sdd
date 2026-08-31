@@ -1,0 +1,105 @@
+Category: Knowledge Compression
+Purpose:
+  Defines the knowledge compression pipeline that transforms
+  raw observations into canonical knowledge. Prevents knowledge
+  dump by enforcing semantic clustering and normalization.
+
+Owns: ./
+
+Compression Pipeline:
+
+  CODE
+    ↓
+  OBSERVATIONS
+    ↓
+  CONCEPT EXTRACTION
+    ↓
+  SEMANTIC CLUSTERING
+    ↓
+  CANONICALIZATION
+    ↓
+  RELATION DETECTION
+    ↓
+  REFERENCE CREATION
+
+  Input: raw observations from code analysis, tasks, decisions.
+  Output: minimal set of canonical concepts with typed relations.
+
+  Example:
+    20 observations
+      ↓
+    semantic clustering
+      ↓
+    1 concept
+      ↓
+    3 contextual rules
+
+Three Knowledge Levels:
+
+  Concept   — What is it? (@concept.idempotency)
+  Rule      — How applied in our project? (@payment.idempotency)
+  Skill     — How do we implement it? (@skill.idempotent-command)
+
+  These three MUST NOT be conflated.
+
+Knowledge Extraction Rules:
+  [K1] AI MUST search for existing concepts before creating new ones.
+  [K2] AI MUST cluster semantically similar observations.
+  [K3] AI MUST canonicalize to preferred terminology.
+  [K4] AI MUST detect and declare relations between concepts.
+  [K5] AI MUST produce contextual rules, not generic statements.
+
+Knowledge Diff Format:
+
+  When comparing current knowledge vs observed project state:
+
+  + <concept>     — NEW: exists in project, not in knowledge
+  ~ <concept>     — CHANGED: exists in both, definition differs
+  - <concept>     — REMOVED: in knowledge, no longer in project
+  ! <concept>     — CONFLICT: contradicts existing knowledge
+  ? <concept>     — UNKNOWN: cannot determine status
+
+  Example:
+    + @skill.idempotent-command
+    ~ @architecture.event-driven
+    - @candidate.old-retry-pattern
+    ! @decision.transaction-boundary
+
+  Diff Categories:
+    NEW:       knowledge gap, needs candidate creation
+    CHANGED:   knowledge drift, needs version bump
+    REMOVED:   orphaned knowledge, needs archival
+    CONFLICT:  contradiction, needs human resolution
+    UNKNOWN:   insufficient evidence, needs investigation
+
+Knowledge Locality:
+
+  Tasks do NOT require the entire knowledge graph.
+  AI loads only relevant nodes based on task context.
+
+  Task: @task.withdraw
+    Relevant:     @payment, @wallet, @transaction, @aggregate, @idempotency
+    Not loaded:   @frontend.animation, @marketing, @analytics.dashboard
+
+  Locality Rules:
+    [L1] Start with task's direct references (radius 1).
+    [L2] Expand to radius 2 only when context is insufficient.
+    [L3] always_load nodes are always included regardless of task.
+    [L4] Loading stops when context confidence is sufficient.
+
+Reference Radius:
+
+  radius = 1  — direct references (task → skill)
+  radius = 2  — references of references (skill → concept)
+  radius = 3  — full chain (concept → decision → code → test)
+
+  Default: 1 → 2
+  Maximum: 3 (on-demand only)
+
+Navigation:
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  Versioning: @VERSIONING.sdd
+  Golden Rules: @GOLDEN-RULES.sdd
+  Rejected Approaches: @../../lessons/REJECTED-APPROACHES.sdd
+
+State: +

@@ -1,0 +1,239 @@
+Runtime: Memory Consolidation
+
+Purpose:
+  Define the end-of-task memory consolidation pipeline and garbage collection
+  rules. Consolidation determines what working memory becomes permanent
+  knowledge, what is archived, and what is discarded, keeping the knowledge
+  base clean and relevant.
+
+Principles:
+  Working memory is not automatically permanent knowledge.
+  Consolidation is evidence-driven, not assumed.
+  Temporary knowledge is cleaned up to prevent .sdd pollution.
+  Knowledge importance ratings guide retention and promotion.
+  Hot/cold classification optimizes retrieval performance.
+
+ConsolidationPipeline:
+  trigger: end of task execution
+  input: working memory contents
+  output: consolidation decisions
+
+  actions:
+    DROP:
+      description: discard working memory; no evidence, no reuse, no decision
+      criteria:
+        - no evidence found
+        - no future reuse identified
+        - no decision made
+      example:
+        thought: "Maybe repository should return DTO"
+        result: no evidence, no reuse, no decision
+        action: DROP
+
+    ARCHIVE:
+      description: move to archive for historical reference
+      criteria:
+        - valid but not currently needed
+        - superseded by newer knowledge
+        - task-specific insight with no project-wide applicability
+      destination: .sdd/memory/archive/
+      example:
+        migration insight: current-migration approach
+        status: completed
+        action: ARCHIVE
+
+    LINK:
+      description: connect to existing knowledge
+      criteria:
+        - insight connects to existing concept
+        - no new knowledge created
+        - relationship identified
+      action: update existing reference with new link
+      example:
+        observed: same pattern in 7 modules
+        existing: @pattern.transactional-outbox
+        action: LINK observation to existing pattern
+
+    PROMOTE:
+      description: advance to higher memory tier
+      criteria:
+        - validated by evidence
+        - cross-project applicability
+        - high usage across tasks
+      stages:
+        OBSERVATION -> INSIGHT -> CANDIDATE -> VALIDATED_KNOWLEDGE -> LONG_TERM_KNOWLEDGE
+      example:
+        observed: direct DB + event publish causes inconsistency
+        validated: in 3 projects, 12 tasks
+        action: PROMOTE to CANDIDATE -> VALIDATED -> LONG_TERM
+
+    UPDATE:
+      description: modify existing knowledge
+      criteria:
+        - existing knowledge is partially correct
+        - new evidence refines understanding
+        - decision is updated
+      action: update reference with new evidence and rationale
+      example:
+        existing: @decision.messaging
+        new_evidence: throughput requirement increased
+        action: UPDATE to Kafka preferred for high-throughput scenarios
+
+GarbageCollectionRules:
+  temporary:
+    description: working memory, debug hypotheses, transient analysis
+    retention: task execution only
+    action_at_end_of_task: DROP
+    rule: never persisted to .sdd/
+
+  candidate:
+    description: unvalidated knowledge awaiting promotion
+    retention: 30 days from creation
+    action_at_expiry: ARCHIVE if unvalidated
+    rule: candidates without validation after 30 days are archived, not deleted
+    rule: archived candidates may be reactivated with new evidence
+
+  validated:
+    description: confirmed knowledge with evidence
+    retention: persistent
+    action: promote to long-term or keep as project-scoped validated
+    rule: validated knowledge is not auto-deleted
+    rule: validated knowledge may be deprecated, not deleted
+
+  established:
+    description: long-term engineering truth
+    retention: indefinite
+    action: maintain, update on new evidence, deprecate on obsolescence
+    rule: established knowledge is never deleted
+    rule: established knowledge may be deprecated with replacement reference
+
+  archive:
+    description: historical reference, no longer active
+    retention: indefinite (read-only)
+    action: none (retained for audit)
+    rule: archive is never auto-deleted
+    rule: archive may be searched but not loaded into default context
+
+MemoryImportanceRatings:
+  critical:
+    description: security decisions, data integrity, architectural invariants
+    always_load: true
+    examples:
+      - @constitution.security
+      - @constitution.data-integrity
+    consolidation: always promote to long-term if validated
+
+  high:
+    description: core domain decisions, primary patterns
+    always_load: false
+    default_context: true
+    examples:
+      - @decision.rabbitmq
+      - @payment.idempotency
+    consolidation: promote to project or long-term based on scope
+
+  normal:
+    description: supporting knowledge, secondary patterns
+    always_load: false
+    default_context: true
+    examples:
+      - @ddd.specification
+      - @architecture.repository
+    consolidation: keep as project-scoped knowledge
+
+  low:
+    description: rarely used, historical, optional
+    always_load: false
+    default_context: false
+    examples:
+      - @legacy.payment-v1
+    consolidation: archive if not referenced for 90 days
+
+  temporary:
+    description: debugging hypothesis, migration scratch, transient analysis
+    always_load: false
+    default_context: false
+    ttl: task-lifetime or explicit expires
+    consolidation: DROP at end of task or at explicit expiry
+
+HotColdKnowledge:
+  hot:
+    definition: frequently referenced knowledge across recent tasks
+    criteria:
+      - referenced in >= 50% of recent tasks
+      - or referenced >= 10 times in last 30 days
+    examples:
+      - @payment.idempotency
+      - @security.authorization
+      - @database.transaction
+    behavior:
+      - prioritized in context discovery
+      - easier to retrieve
+      - kept in active index
+
+  cold:
+    definition: infrequently referenced, historical, rarely applicable
+    criteria:
+      - referenced in < 10% of recent tasks
+      - or not referenced in last 90 days
+    examples:
+      - @legacy.payment-v1
+      - @ddd.specification (if unused)
+    behavior:
+      - not loaded in default context
+      - searchable on demand
+      - considered for archival if consistently cold
+
+  classification_update:
+    frequency: daily
+    trigger: new task execution
+    rule: hot/cold status is recalculated based on usage statistics
+
+ConsolidationDecisionTree:
+  root: end_of_task
+    has_evidence: yes
+      has_cross_project_value: yes
+        action: PROMOTE to long-term
+      has_project_value: yes
+        action: PROMOTE to project memory
+      has_task_value: yes
+        action: LINK to existing or keep in task memory
+    has_evidence: no
+      is_transient: yes
+        action: DROP
+      is_historical_reference: yes
+        action: ARCHIVE
+      has_connection_to_existing: yes
+        action: LINK
+      no_value: yes
+        action: DROP
+
+Navigation:
+  Runtime: @INDEX.sdd
+  Memory Model: @memory-model.sdd
+  Context Builder: @context-builder.sdd
+  Context Policy: @context-policy.sdd
+  Context Manifest: @context-manifest.sdd
+  Execution: @execution.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  Memory: @../memory/INDEX.sdd
+
+Rules:
+  [RT-MEM-CON-01] Consolidation occurs at end of every task execution.
+  [RT-MEM-CON-02] Working memory is not automatically permanent knowledge.
+  [RT-MEM-CON-03] Consolidation actions are DROP, ARCHIVE, LINK, PROMOTE, UPDATE.
+  [RT-MEM-CON-04] Temporary knowledge is DROPped at end of task; never persisted.
+  [RT-MEM-CON-05] Candidate knowledge expires after 30 days if unvalidated; archived, not deleted.
+  [RT-MEM-CON-06] Validated knowledge is persistent; may be promoted to long-term.
+  [RT-MEM-CON-07] Established knowledge is long-term; never deleted, only deprecated.
+  [RT-MEM-CON-08] Archive is retained indefinitely for audit; never auto-deleted.
+  [RT-MEM-CON-09] Memory importance rating determines consolidation priority.
+  [RT-MEM-CON-10] Critical importance knowledge is promoted to long-term if validated.
+  [RT-MEM-CON-11] Low importance knowledge not referenced for 90 days is archived.
+  [RT-MEM-CON-12] Hot knowledge is prioritized in context discovery.
+  [RT-MEM-CON-13] Cold knowledge is not loaded in default context; searchable on demand.
+  [RT-MEM-CON-14] Hot/cold classification is recalculated daily based on usage.
+  [RT-MEM-CON-15] Agent MUST NOT add signatures or sign-offs to consolidation outputs.
+  [RT-MEM-CON-16] Agent MUST NOT use emojis, icons, or decorative symbols in consolidation output headers or titles.
+
+State: +

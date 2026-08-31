@@ -1,0 +1,37 @@
+# Flow Index Template
+
+Purpose:
+  Navigable tree of CASE depends-on and related relationships.
+  Outputs to .specdd/flow-index.md at project level for /sdd-next consumption.
+
+Owns: templates\specdd\flow-index.template.sdd
+
+## Structure
+
+Root: .specdd/flow-index.md
+
+## CASE Tree Format
+
+Flow_Index:
+  {CASE_ID_01} ({CASE_NAME_01})
+    ├── depends-on: {DEPENDS_ON_ID_01} [{✅|🔄|⏳}]
+    ├── depends-on: {DEPENDS_ON_ID_02} [{✅|🔄|⏳}]
+    └── related: {RELATED_ID_01} [{✅|🔄|⏳}]
+
+  {CASE_ID_02} ({CASE_NAME_02})
+    └── depends-on: {DEPENDS_ON_ID_03} [{✅|🔄|⏳}]
+
+## Status Legend
+
+Status:
+  ✅ Closed / verified
+  🔄 In progress / open
+  ⏳ Planned / pending
+
+## Usage
+
+Used_By: /sdd-next command
+Output: .specdd/flow-index.md
+Refresh: On CASE status change or new CASE creation
+
+State: +

@@ -1,0 +1,50 @@
+# Dependency Ledger
+
+Purpose:
+  Continuous security and dependency monitoring triggered on every git push.
+  Tracks seen-resolved problems to prevent re-triggering stops for known issues.
+
+Owns: security\DEPENDENCY-LEDGER.sdd
+
+## Monitoring Flow
+
+Trigger: git push
+
+Flow:
+  1. Run dependency/security scan (npm audit, go list -u, Dependabot alerts).
+  2. IF new problem found:
+       → STOP current work regardless of context
+       → Focus entirely on this problem
+       → Apply fix
+       → Run regression test suite
+       → ONLY return to previous work after regression passes
+       → Record problem in ledger
+  3. IF problem already in ledger as RESOLVED:
+       → Log as "known, skip"
+       → Do NOT stop execution
+  4. IF problem not in ledger:
+       → Execute step 2 flow
+
+## Ledger Format
+
+Ledger_File: .specdd/dependency-ledger.md
+
+Format:
+  | Date       | Problem/CVE               | Status    | Fix commit |
+  |------------|---------------------------|-----------|------------|
+  | 2026-08-18 | lodash CVE-2026-XXXX      | RESOLVED  | a1b2c3d    |
+
+Fields:
+  Date: ISO date of discovery/fix
+  Problem/CVE: Issue identifier or CVE ID
+  Status: RESOLVED | OPEN | SKIPPED
+  Fix_commit: Git commit hash that resolved the issue
+
+## Memory Behavior
+
+Memory:
+  - Ledger is the single source of truth for seen problems.
+  - RESOLVED entries prevent re-triggering stops.
+  - Only NEW (not in ledger) problems trigger full stop-and-fix flow.
+
+State: +
