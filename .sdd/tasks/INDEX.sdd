@@ -32,8 +32,10 @@ Navigation:
    LearningGate: @../workflow/learning-gate.sdd
    HumanDocsGate: @../workflow/human-docs-gate.sdd
    ExplainCommand: @../commands/sdd-explain.sdd
-   Branches: @../branches/DOWN-UP-TRANSITION.sdd
-   SDLC: @../branches/sdlc.sdd
-   STLC: @../branches/stlc.sdd
+    Branches: @../branches/DOWN-UP-TRANSITION.sdd
+    SDLC: @../branches/sdlc.sdd
+    STLC: @../branches/stlc.sdd
+    AdapterRuntime: @../runtime/adapter-runtime.sdd
+    SecurityEnforcement: @../gates/security-enforcement.sdd
 
 State: +
