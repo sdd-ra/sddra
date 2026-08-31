@@ -1,0 +1,19 @@
+{
+  "name": "sdd-adapter",
+  "version": "0.1.0",
+  "description": "Runtime adapter that bridges .sdd specs to claude-code hooks",
+  "main": "hook-bridge.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node --transpile-only __tests__/run.ts",
+    "patterns": "ts-node --transpile-only __tests__/patterns-runtime.test.ts",
+    "hook": "ts-node --transpile-only __tests__/hook-bridge.test.ts",
+    "integration": "ts-node --transpile-only __tests__/integration.test.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.10.0"
+  }
+}
