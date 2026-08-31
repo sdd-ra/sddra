@@ -1,0 +1,39 @@
+# Documentation Reference Graph Template
+
+Purpose:
+  Documentation reference graph showing method → base class → base → API → interface relationships.
+  Stored as .specdd/doc-index/ per module.
+
+Owns: templates\specdd\doc-template.sdd
+
+## Graph Structure
+
+Nodes:
+  - method
+  - base_class
+  - base
+  - api
+  - interface
+
+Edges:
+  method → base_class
+  base_class → base
+  base → api
+  api → interface
+
+## Storage
+
+Location: .specdd/doc-index/{module}.md
+Format: Markdown with reference links
+
+## Example
+
+Example:
+  # Documentation Index: {MODULE_ID}
+
+  ## Method → Class Graph
+
+  - `ProcessPayment()` → `PaymentService` → `BaseService` → `POST /v1/payment`
+  - `Refund()` → `PaymentService` → `BaseService` → `POST /v1/refund`
+
+State: +

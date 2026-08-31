@@ -1,0 +1,175 @@
+Category: Knowledge Model
+Purpose:
+  Defines the evidence-weighted knowledge trust system. Every piece of
+  knowledge carries evidence, trust, confidence, and provenance metadata
+  so AI decisions are auditable and traceable. Introduces the 4-tier
+  lifecycle (OBSERVED to ESTABLISHED), the trust/confidence/evidence
+  metadata schema, the evidence type taxonomy, the priority hierarchy
+  for conflict resolution, decision override rules, and the
+  decision_score model that weights trust against project fit.
+
+Owns: ./
+
+Knowledge Lifecycle:
+  Every knowledge entry progresses through four tiers:
+
+  OBSERVED
+    AI has seen this pattern in a tmp workspace or project scan.
+    Reference form: @insight.* or @tmp.*
+    Default metadata: trust.low | status.candidate | confidence.low
+
+  CANDIDATE
+    Pattern repeated and appears reusable across contexts.
+    Reference form: @candidate.*
+    Default metadata: trust.low | status.candidate | confidence.low
+
+  VALIDATED
+    Confirmed by passing tests, completed tasks, or human review.
+    Reference form: @skill.* / @pattern.* / @architecture.*
+    Default metadata: trust.medium | status.validated | confidence.medium
+
+  ESTABLISHED
+    Successfully applied across multiple projects with no regressions.
+    Reference form: @skill.* / @pattern.* / @architecture.*
+    Default metadata: trust.high | status.established | confidence.high
+
+  Promotion Rules:
+    [K-L1] Promotion is NEVER automatic — it requires evidence.
+    [K-L2] CANDIDATE to VALIDATED requires human approval.
+    [K-L3] ESTABLISHED requires multi-project success evidence.
+    [K-L4] Downgrades are permitted when evidence is invalidated;
+           original evidence is preserved.
+    [K-L5] Obsolete references are deprecated, NEVER deleted.
+
+Trust Metadata Schema:
+  Every reference MUST carry:
+
+  trust:
+    level: low | medium | high | established
+    confidence: low | medium | high
+    human_verified: true | false
+    production_verified: true | false
+
+  evidence_count:
+    total: <integer>
+    by_type:
+      code: <integer>
+      tests: <integer>
+      tasks: <integer>
+      decisions: <integer>
+      projects: <integer>
+      production: <integer>
+      external: <integer>
+      human: <integer>
+
+  provenance:
+    discovered_from: <@reference or @tmp>
+    source: <external source / repository / project>
+    extracted_by: AI | human | @human
+    validated_by: <@reference or @human>
+    validated_at: <YYYY-MM-DD>
+
+Evidence Types:
+  CODE        — observed in source files
+  TEST        — covered by passing tests
+  TASK        — applied in a completed task
+  DECISION    — referenced by a human-approved decision
+  PROJECT     — used in a project context
+  PRODUCTION  — deployed and running in production
+  EXTERNAL    — cited from an external source (paper, repo, doc)
+  HUMAN       — explicitly reviewed or approved by a human
+
+Example:
+  @skill.idempotent-command
+    purpose: Prevent duplicate command execution.
+    evidence:
+      - @task.1023
+      - @task.1044
+      - @project.payment
+      - @test.payment-idempotency
+    observed_in: tmp/payment-service
+    reason: Same external request may be retried.
+    status: validated
+    trust:
+      level: medium
+      confidence: high
+      human_verified: false
+      production_verified: false
+    evidence_count:
+      total: 4
+      by_type:
+        task: 2
+        project: 1
+        test: 1
+    provenance:
+      discovered_from: @tmp.payment-service
+      source: payment-service repository
+      extracted_by: AI
+      validated_by: @task.1044
+      validated_at: 2026-08-31
+
+AI Generated to Truth:
+  [TR1] A reference with no evidence MUST have trust.low and
+        status.candidate.
+  [TR2] AI MUST NOT present low-trust references as authoritative.
+  [TR3] Trust level describes evidence breadth, not popularity.
+  [TR4] Trust is NOT the automatic winner — applicability and
+        project fit also determine selection (see decision_score).
+
+decision_score Model:
+  decision_score = trust * applicability * project_fit
+  A high-trust pattern that does not fit the project context MAY be
+  passed over for a lower-trust, higher-fit alternative. This prevents
+  the AI from blindly applying popular patterns everywhere.
+
+Priority Hierarchy:
+  When references conflict, resolution follows (highest first):
+    1. Explicit project constraint
+    2. Approved project decision
+    3. Validated project skill
+    4. Established organization knowledge
+    5. General best practice
+    6. AI suggestion
+
+  [PH1] Generic best practice MUST NOT override a project-specific
+        decision.
+  [PH2] Explicit project constraints always win over global defaults.
+
+Decision Override:
+  A project or decision MAY override a reference via:
+    overrides:
+      - @reference.id
+    reason:
+      <why the override is required>
+
+  [OV1] Every override MUST include a reason.
+  [OV2] Overrides are scoped to the project/decision context only.
+  [OV3] AI MUST NOT auto-generate overrides without human review.
+  [OV4] Override targets MUST be preserved in the knowledge graph
+        as a conflicts-with edge.
+
+Conflict Resolution:
+  [CR1] When two references with the same intent conflict, AI MUST
+        raise a CONFLICT flag — never guess.
+  [CR2] Project-specific decisions resolve conflicts in their domain.
+  [CR3] Unresolved conflicts MUST be escalated to human review.
+  [CR4] Conflicting references MUST be linked with a conflicts-with
+        edge in the knowledge graph.
+
+Unknown Status:
+  [UN1] When evidence is insufficient, status MUST be recorded as
+        unknown.
+  [UN2] AI MUST state "Evidence insufficient to classify" rather than
+        guessing.
+
+Navigation:
+  Lifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+  References: @../references/INDEX.sdd
+  Candidates: @../knowledge/candidates/INDEX.sdd
+  Lessons: @../knowledge/lessons/INDEX.sdd
+  Insights: @../insights/INDEX.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  Relationships: @../concepts/RELATIONSHIP-VOCABULARY.sdd
+  Knowledge Command: @../commands/sdd-knowledge.sdd
+
+State: +

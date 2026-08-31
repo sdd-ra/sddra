@@ -1,0 +1,41 @@
+# Down-Up Transition
+
+Purpose:
+  Defines the two-directional execution and verification flow for chained tasks.
+  DOWN execution builds top-down; UP verification closes bottom-up.
+
+Owns: branches\DOWN-UP-TRANSITION.sdd
+
+## DOWN Execution (Build Phase)
+
+Direction: Top → Bottom
+
+Flow:
+  MODUL → CASE → TASK → SUBTASK
+
+Rule:
+  - Resolve and execute in top-down order.
+  - Each level inherits requirements from the level above.
+  - Path-based spec resolution applies at each step.
+
+## UP Verification (Close Phase)
+
+Direction: Bottom → Top
+
+Flow:
+  SUBTASK → TASK → CASE → MODUL
+
+Rule:
+  - A level cannot be closed until ALL lower levels are closed.
+  - Verification cascades upward: if a SUBTASK fails, its TASK cannot close.
+  - If a TASK fails, its CASE cannot close.
+  - If a CASE fails, its MODUL cannot close.
+
+## Summary
+
+Principle:
+  Construction goes top-down.
+  Verification goes bottom-up.
+  Every level must fully close before the level above can close.
+
+State: +

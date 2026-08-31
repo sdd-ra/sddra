@@ -1,0 +1,162 @@
+# Tasks: AUTONOMY-POLICY
+
+Purpose:
+  Define the L0–L5 autonomy levels and project-level autonomy policy.
+  The AI does NOT choose its autonomy level — it is determined by
+  project policy. Autonomy decreases as risk increases: high-risk
+  work always requires more human involvement regardless of the
+  level assigned to a domain.
+
+Owns:
+  Autonomy levels L0–L5
+  Project-level @policy.autonomy declarations
+  Reversible vs irreversible action classification
+  Risk level to authority mapping
+
+AutonomyLevels:
+
+  L0 — Observe Only
+    description: AI may read and summarize, no actions
+    authority: none
+    actions: observe, report
+    approval_required: all actions
+
+  L1 — Suggest
+    description: AI proposes changes, human executes
+    authority: recommend only
+    actions: propose code changes, propose tests
+    approval_required: all changes
+
+  L2 — Implement + Test
+    description: AI implements and tests, human reviews
+    authority: write code and tests
+    approval_required: architecture changes, irreversible actions
+    human_gate: review before merge
+
+  L3 — Implement + Review + Fix
+    description: AI implements, reviews, and fixes autonomously
+    authority: full local development cycle
+    approval_required: irreversible actions, high-risk decisions
+    human_gate: final review on completion
+
+  L4 — Autonomous Execution
+    description: AI runs entire execution loop autonomously
+    authority: execute full task lifecycle
+    approval_required: irreversible actions, critical risk
+    human_gate: escalation only
+
+  L5 — Autonomous Multi-Task
+    description: AI executes and coordinates multiple tasks
+    authority: full autonomy across task portfolio
+    approval_required: irreversible actions, security, critical risk
+    human_gate: strategic oversight only
+
+ProjectPolicy:
+
+  declaration: @policy.autonomy
+  format:
+    <domain>:
+      max: L<n>
+
+  examples:
+    @policy.autonomy
+    payment:
+      max: L2
+    documentation:
+      max: L4
+    security:
+      max: L1
+
+  rules:
+    [PA1] AI MUST read @policy.autonomy for the task's domain before
+          starting.
+    [PA2] AI MUST NOT exceed the max autonomy level for any domain.
+    [PA3] If a task spans multiple domains, the LOWEST max applies
+          (most restrictive wins).
+    [PA4] Autonomy levels are per-domain — a task touching payment
+          and docs uses min(payment=L2, documentation=L4) = L2.
+
+ReversibleActions:
+
+  definition: changes that can be undone without lasting impact
+  examples:
+    - rename local variable
+    - refactor function
+    - add test
+    - add logging
+    - update documentation
+    - reorder imports
+  rule: AI MAY perform reversible actions within the allowed autonomy level.
+
+IrreversibleActions:
+
+  definition: changes that cannot be undone without cost or risk
+  examples:
+    - delete data
+    - change public API contract
+    - database migration without rollback
+    - security policy change
+    - delete or rename a production entity
+    - drop database column
+  rule: AI MUST request human approval for ALL irreversible actions,
+        regardless of autonomy level.
+
+RiskLevelMapping:
+
+  risk: low
+    description: minimal impact if wrong
+    autonomous_actions: full (within autonomy level)
+    example: change README, add logging
+
+  risk: medium
+    description: moderate impact, reversible with effort
+    autonomous_actions: yes, but review required on completion
+    example: add new endpoint, refactor module
+
+  risk: high
+    description: significant impact, careful handling required
+    autonomous_actions: no — approval required
+    example: change payment algorithm, modify data schema
+
+  risk: critical
+    description: severe impact, requires human
+    autonomous_actions: none — human required
+    example: change authentication, delete production data
+
+  rule: [RM1] Risk determines which review gates are activated.
+  rule: [RM2] CRITICAL risk tasks MUST receive human approval before
+          IN_PROGRESS.
+
+AuthorityMatrix:
+
+  | Autonomy | Reversible | Irreversible | Low Risk | Med Risk | High Risk | Critical Risk |
+  |----------|------------|--------------|----------|----------|-----------|---------------|
+  | L0       | observe    | none         | none     | none     | none      | none          |
+  | L1       | propose    | propose      | propose  | propose  | propose   | propose       |
+  | L2       | do         | propose      | do       | do+rev   | approve   | human         |
+  | L3       | do         | propose      | do       | do+rev   | approve   | human         |
+  | L4       | do         | propose      | do       | do       | approve   | human         |
+  | L5       | do         | propose      | do       | do       | approve   | human         |
+
+  Legend: observe = read only | propose = suggest only | do = execute |
+          rev = review | approve = needs approval | human = needs human
+
+Rules:
+
+  [AP1] AI MUST NOT select its own autonomy level — it is set by policy.
+  [AP2] AI MUST check both domain policy AND task risk before acting.
+  [AP3] Irreversible actions ALWAYS require approval, regardless of level.
+  [AP4] Critical risk ALWAYS requires human, regardless of level.
+  [AP5] Autonomy level determines the depth of autonomous loop execution.
+  [AP6] Domain policy overrides default task autonomy.
+  [AP7] Escalating autonomy beyond project policy is a violation.
+
+Navigation:
+
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  FailureClassification: @FAILURE-CLASSIFICATION.sdd
+  DoneProof: @DONE-PROOF.sdd
+  TasksIndex: @INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+
+State: +

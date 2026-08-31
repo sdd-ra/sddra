@@ -1,0 +1,180 @@
+# Workflow: LEARNING-GATE
+
+Purpose:
+  Define the learning gate — the checkpoint at end of task execution
+  where the AI asks: "Did we learn anything?" This is the execution
+  layer of the "AI improves itself as it works" principle. Knowledge
+  is classified and either discarded, archived, linked, or promoted
+  into persistent knowledge.
+
+Owns:
+  Learning gate classification
+  Knowledge promotion paths
+  Negative knowledge registration
+
+LearningGate:
+
+  definition: checkpoint before task completion where knowledge
+              extracted during execution is evaluated
+  position: after DOCUMENTATION, before CONSOLIDATION (bax
+            execution-loop.sdd)
+
+  Question: Did we learn anything?
+
+  Outcomes:
+
+    NO_NEW_KNOWLEDGE
+      meaning: no new learning occurred; all knowledge was already
+               covered by existing references and skills
+      action: discard runtime observations, archive trace
+      requirement: must justify why no new knowledge (e.g., routine
+                   task, no novel approach needed)
+
+    EXISTING_KNOWLEDGE_UPDATED
+      meaning: an existing skill, decision, or reference was
+               confirmed, refined, or its context expanded
+      action: link execution evidence to existing knowledge artifact
+      example: @skill.payment.idempotency confirmed valid in
+               new context (refund flow)
+
+    NEW_CANDIDATE
+      meaning: a new pattern or approach was observed that may be
+               valuable but is not yet validated
+      action: register as candidate with evidence trace
+      artifact: @candidate.<name>
+      rule: candidates expire (default 30 days) unless validated
+
+    NEW_VALIDATED_SKILL
+      meaning: a genuinely new, validated, reusable skill was
+               discovered and demonstrated
+      action: promote to @skill.* with full metadata
+      artifact: @skill.<name>
+      requirement: must have evidence (code, test, task link)
+
+    NEW_DECISION
+      meaning: a new project-level decision was made during
+               execution (architecture, approach, trade-off)
+      action: create decision record (bax decisions/)
+      artifact: @decision.<name>
+      requirement: decision MUST be recorded before COMPLETED
+
+    NEW_LESSON
+      meaning: a failed approach or rejected pattern was learned
+      action: register in negative knowledge / rejected approaches
+      artifact: @rejected.<name>
+      requirement: includes reason + preferred alternative
+
+KnowledgePromotion:
+
+  flow:
+    Runtime Observation -> Classification -> Action
+
+  paths:
+    observation is routine
+      -> NO_NEW_KNOWLEDGE (discard)
+
+    observation confirms existing knowledge
+      -> EXISTING_KNOWLEDGE_UPDATED (link evidence)
+
+    observation is novel but unvalidated
+      -> NEW_CANDIDATE (register with TTL)
+
+    observation is novel, validated, and reusable
+      -> NEW_VALIDATED_SKILL (promote to @skill.*)
+
+    execution produced a decision
+      -> NEW_DECISION (create @decision.*)
+
+    execution tried an approach that failed
+      -> NEW_LESSON (register @rejected.*)
+
+  rules:
+    [KG1] Every NEW_VALIDATED_SKILL MUST have code or test evidence.
+    [KG2] Every NEW_DECISION MUST be recorded before COMPLETED.
+    [KG3] NEW_CANDIDATE without validation within TTL is archived.
+    [KG4] Negative knowledge (@rejected.*) is retained permanently
+          as @lessons (bax lessons/).
+    [KG5] Knowledge promoted to ESTABLISHED status requires human
+          verification (bax concepts/KNOWLEDGE-MODEL.sdd).
+
+KnowledgeArtifacts:
+
+  candidate:
+    prefix: @candidate.
+    schema:
+      name: <identifier>
+      discovered: <task_id>
+      evidence: [<trace_refs>]
+      status: candidate
+      ttl: 30d
+
+  skill:
+    prefix: @skill.
+    schema:
+      name: <identifier>
+      discovered: <task_id>
+      evidence: [<code_refs, test_refs>]
+      status: validated
+      related_skills: [<skill_refs>]
+
+  decision:
+    prefix: @decision.
+    schema:
+      name: <identifier>
+      discovered: <task_id>
+      evidence: [<trace_refs>]
+      status: implemented
+      related_decisions: [<decision_refs>]
+
+  lesson:
+    prefix: @rejected.
+    schema:
+      name: <identifier>
+      discovered: <task_id>
+      failed_approach: <description>
+      preferred: <alternative>
+      reason: <why it failed>
+
+Consolidation:
+
+  definition: collapse runtime trace (100+ events) into persistent artifacts
+  flow:
+    1. Review execution trace
+    2. Identify decisions, skills, lessons
+    3. Drop temporary observations
+    4. Archive ambiguous items
+    5. Link confirmed items to existing knowledge
+    6. Promote new validated items
+
+  example:
+    100 execution events
+      -> 3 important decisions (@decision.*)
+      -> 1 new skill (@skill.*)
+      -> 2 rejected approaches (@rejected.*)
+
+Rules:
+
+  [LG1] The learning gate MUST run before task COMPLETED.
+  [LG2] NO_NEW_KNOWLEDGE MUST be explicitly justified.
+  [LG3] NEW_DECISION artifacts MUST be recorded before completion.
+  [LG4] NEW_VALIDATED_SKILLs MUST include evidence links.
+  [LG5] Negative knowledge MUST be retained — never silently deleted.
+  [LG6] Candidates without validation within TTL are archived, not
+        deleted.
+  [LG7] Knowledge promotion follows the trust hierarchy (see
+        LOOP-PROTECTION.sdd -> TrustHierarchy).
+  [LG8] All learning gate outcomes MUST be recorded in execution summary.
+  [LG9] New skills that duplicate existing canonical concepts MUST
+        link to the canonical concept instead of creating duplicates.
+  [LG10] Learning gate is the feedback loop that drives system evolution.
+
+Navigation:
+
+  ExecutionLoop: @execution-loop.sdd
+  PartialDone: @../tasks/PARTIAL-DONE.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  HumanDocsGate: @human-docs-gate.sdd
+  RejectedApproaches: @../lessons/INDEX.sdd
+  TasksIndex: @../tasks/INDEX.sdd
+
+State: +

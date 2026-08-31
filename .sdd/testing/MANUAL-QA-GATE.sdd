@@ -1,0 +1,42 @@
+# Manual QA Gate
+
+Purpose:
+  Enforces human verification before L0 → L1 transition.
+  Uses hash-referenced test cases for token-efficient operator feedback.
+
+Owns: testing\MANUAL-QA-GATE.sdd
+
+## Hash-Referenced Test Cases
+
+Format:
+  Each manual test case receives a unique short hash displayed as a paragraph before the test description.
+
+Example:
+  #a3f9 — User profile page loads Story component when navigating to profile.
+  #b71c — Expired subscriber sees rejection message on 5th video access attempt.
+
+## Operator Response Format
+
+Response:
+  Operator replies per hash only (token efficiency):
+    #a3f9: OK
+    #b71c: FAIL — rejection message missing, video only buffers
+
+## L0 → L1 Transition Rule
+
+Rule:
+  - AI MUST NOT self-declare "L0 complete, advancing to L1".
+  - Transition requires explicit operator confirmation for EVERY hash.
+  - Generic "tested, works" confirmation is NOT accepted.
+  - Each hash must receive its own explicit OK or FAIL response.
+  - ONLY after all hashes have explicit OK/FAIL does L0 become a "product".
+  - ONLY then does L1 advancement begin.
+
+## Lifecycle
+
+L0_Status: pending|in_progress|awaiting_verification|complete
+L1_Status: pending|blocked|in_progress
+Hashes: [list of {hash}: {status}]
+Operator_Verified_At: <timestamp>
+
+State: +

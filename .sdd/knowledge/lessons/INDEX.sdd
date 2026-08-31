@@ -1,0 +1,110 @@
+@lessons
+
+Purpose:
+  Registry of lessons learned — validated negative knowledge and
+  hard-won experience from tasks and projects. Lessons capture what
+  worked, what failed, and why, so the AI and humans can avoid repeating
+  mistakes. This is the long-term archive tier of the knowledge
+  pipeline: deprecated candidates, rejected approaches, stale references,
+  and project-specific learnings.
+
+Use this index to check whether an approach has been tried and rejected
+before proposing it again.
+
+Owns: ./
+
+Entry Schema:
+  Each lesson entry MUST carry the following fields:
+
+  Fields:
+    id:             @lesson.<name>
+    title:          human-readable summary
+    type:           failure | success | stale | deprecated_candidate |
+                    rejected_approach | negative_knowledge
+    origin:         @task.* / @project.* / @candidate.* / @reference.*
+    status:         active | archived
+    observed_at:    YYYY-MM-DD
+    resolved_at:    YYYY-MM-DD (when the lesson was captured)
+    context:
+      project:     optional project name
+      domain:      optional domain name
+      technology:  optional technology stack
+    problem:        description of what happened
+    why_it_failed:  root cause analysis
+    preferred:       [alternative references or approaches that work better]
+    references:      [related @reference.* / @candidate.* already deprecated]
+    evidence_count:  integer (evidence sources validating this lesson)
+    trust:           low | medium | high
+    confidence:      low | medium | high
+
+  Example (failure):
+    @lesson.no-raw-sql-in-go
+      title: Raw SQL strings cause injection and maintenance pain
+      type: failure
+      origin: @project.payment
+      status: active
+      observed_at: 2026-03-12
+      resolved_at: 2026-03-15
+      context:
+        project: payment-service
+        technology: Go
+      problem: Raw SQL string concatenation led to SQL injection
+      why_it_failed: No parameterized query enforcement; queries scattered
+      preferred:
+        - @skill.query-builder
+      references: []
+      evidence_count: 3
+      trust: high
+      confidence: high
+
+  Example (success):
+    @lesson.payment-idempotency-works
+      title: Idempotent command pattern prevented duplicate payments
+      type: success
+      origin: @task.1044
+      status: active
+      observed_at: 2026-08-20
+      resolved_at: 2026-08-25
+      context:
+        project: payment-service
+      problem: External retries could cause duplicate payment processing
+      why_it_failed: N/A (this was a successful application)
+      preferred:
+        - @skill.idempotent-command
+      references: []
+      evidence_count: 2
+      trust: high
+      confidence: high
+
+Rules:
+  [L1] Every lesson MUST include a root cause analysis (why_it_failed)
+       unless type is success.
+  [L2] Lessons MUST be append-only — never modified, only superseded.
+  [L3] Failed approaches MUST reference the preferred alternative.
+  [L4] Lessons with type.stale or type.deprecated_candidate MUST
+       point to their replacement reference.
+  [L5] Negative knowledge (lessons) has HIGHER priority than
+       positive suggestions — do not retry a rejected approach
+       without explicit human override.
+  [L6] Expired candidates from candidates/INDEX.sdd are archived here
+       with reason.expired_unpromoted.
+  [L7] Deprecated references from references/index.sdd are mirrored here
+       with reason.replaced_by and a pointer to the successor.
+  [L8] Stale references flagged by sdd-knowledge are summarized here
+       with reason.stale_review_required.
+
+Integration:
+  - candidates/INDEX.sdd → on expiration, archived here.
+  - references/index.sdd → on deprecation, mirrored here.
+  - REJECTED-APPROACHES.sdd (concepts/) → cross-referenced via
+    conflicts_with and related edges.
+
+Navigation:
+  Knowledge Lifecycle: @../KNOWLEDGE-LIFECYCLE.sdd
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Candidates: @../candidates/INDEX.sdd
+  References: @../../references/INDEX.sdd
+  Insights: @../../insights/INDEX.sdd
+  RejectedApproaches: @../../concepts/REJECTED-APPROACHES.sdd
+
+State: +

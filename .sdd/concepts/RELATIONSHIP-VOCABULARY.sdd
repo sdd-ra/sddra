@@ -1,0 +1,102 @@
+Category: Relationship Vocabulary
+Purpose:
+  Formal specification for how concepts reference each other
+  in the knowledge graph. Defines typed edges, cardinality
+  constraints, and traversal rules for semantic navigation.
+
+Owns: ./
+
+Knowledge Graph Structure:
+
+  Node Types:
+    @concept.*     — abstract, reusable knowledge
+    @reference.*   — trust-weighted engineering knowledge
+    @skill.*       — concrete implementation guidance
+    @decision.*    — human-approved project choices
+    @code.*        — implementation artifacts
+    @test.*        — verification artifacts
+
+  Edge Types (from CANONICALIZATION.sdd):
+    same-as, alias-of, extends, specializes, implements,
+    depends-on, related-to, conflicts-with, replaces,
+    derived-from, observed-in, validated-by
+
+Typed Edges by Node Pair:
+
+  Concept → Concept:
+    allowed: same-as, alias-of, extends, specializes,
+             depends-on, related-to, conflicts-with,
+             replaces, derived-from
+    cardinality: many-to-many
+
+  Concept → Reference:
+    allowed: validated-by, observed-in, derived-from
+    cardinality: one-to-many
+
+  Reference → Skill:
+    allowed: implements, extends, specializes
+    cardinality: one-to-many
+
+  Skill → Decision:
+    allowed: derived-from, depends-on, validated-by
+    cardinality: many-to-one
+
+  Decision → Code:
+    allowed: implements, observed-in
+    cardinality: one-to-many
+
+  Code → Test:
+    allowed: validated-by
+    cardinality: one-to-many
+
+  Skill → Concept:
+    allowed: implements, specializes
+    cardinality: many-to-one
+
+Edge Rules:
+  [E1] Every edge MUST have a type from the vocabulary.
+  [E2] Edges are directional: A depends-on B != B depends-on A.
+  [E3] Bidirectional edges require two explicit edge declarations.
+  [E4] Cyclic dependencies between concepts MUST be flagged as conflicts.
+  [E5] same-as edges are transitive: A same-as B AND B same-as C → A same-as C.
+
+Traversal Rules:
+  [T1] Default traversal depth: radius 1-2 (direct references).
+  [T2] Expand radius only on-demand when context is insufficient.
+  [T3] always_load nodes bypass radius restrictions.
+  [T4] conflicts-with edges terminate traversal in that direction.
+  [T5] replaced edges redirect to the canonical successor.
+
+Reference Radius:
+
+  radius = 1  — direct references only
+  radius = 2  — references of references
+  radius = 3  — full decision chain (rare, on-demand)
+
+  Default: 1 → 2
+  Expansion: only when task context requires deeper traversal.
+
+  Example:
+    TASK
+      ↓ radius 1
+    SKILL
+      ↓ radius 2
+    REFERENCE
+      ↓ radius 3
+    DECISION
+
+Cardinality Constraints:
+
+  same-as:     1 concept → N aliases (aliases collapse to 1 canonical)
+  alias-of:    N aliases → 1 canonical concept
+  implements:  N skills → 1 concept (many implementations, one idea)
+  depends-on:  1 concept → N dependencies (fan-out allowed)
+  conflicts-with: symmetric (A conflicts B → B conflicts A)
+
+Navigation:
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  Compression: @../knowledge/COMPRESSION.sdd
+  Versioning: @../knowledge/VERSIONING.sdd
+  Concept Index: @../concepts/INDEX.sdd
+
+State: +

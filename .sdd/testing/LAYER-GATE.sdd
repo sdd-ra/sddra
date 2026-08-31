@@ -1,0 +1,43 @@
+# Layer Gate
+
+Purpose:
+  Layer-based L0–L4 quality and verification gate.
+  Each layer completion is marked with a git tag for traceability.
+
+Owns: testing\LAYER-GATE.sdd
+
+## Layer Levels
+
+Layers:
+  L0: Backend (BE)
+  L1: Frontend (FE)
+  L2: Mobile (MD)
+  L3: Integration
+  L4: E2E / Production
+
+## Gate Rules
+
+Rules:
+  - Each layer must pass its quality gate before advancing.
+  - L0 → L1 requires Manual QA Gate completion (hash verification).
+  - Layer completion triggers a git tag.
+
+## Git Tag Format
+
+Tag_Format: [layer]-[module]-[case]-L[level]-[date]
+Example: be-payment-escrow-L0-20260818
+
+## Tag Creation
+
+Create_Tag:
+  Trigger: Layer gate passed
+  Command: git tag {tag_format}
+  Push: git push origin {tag_format}
+
+## Traceability
+
+Purpose:
+  Operator can checkout or create mini-development from any layer tag.
+  Provides stable, revertible points in code history.
+
+State: +

@@ -2,10 +2,35 @@
 
 Purpose:
   AI-discovered observations about the system and project.
-  Insights are patterns, gaps, smells, and repeated decisions
-  observed during task execution.
+  Insights are the OBSERVED tier of knowledge — patterns, gaps, smells,
+  and repeated decisions observed during task execution that are not yet
+  promoted to candidates. Each insight carries trust, confidence, and
+  evidence metadata so it can be evaluated for promotion.
+
+Use this index before promoting observations into reusable knowledge.
 
 Owns: ./
+
+Lifecycle:
+  OBSERVED (this registry)
+    ↓  3+ occurrences or strategic relevance
+  CANDIDATE (candidates/INDEX.sdd)
+    ↓  evidence + human approval
+  VALIDATED (references/)
+    ↓  multi-project success
+  ESTABLISHED (references/)
+
+Entry Schema:
+  Each insight entry SHOULD carry:
+    id:             @insight.<name>
+    observed_in:    <@tmp.* or project/task context>
+    trust:          low (default for all observations)
+    confidence:     low (default for all observations)
+    status:         observed
+    evidence_count: integer (sources of evidence for this observation)
+    by_type:        breakdown of evidence types (code, tests, tasks, etc.)
+    provenance:     discovered_from / source / extracted_by
+    promoted_to:    optional @candidate.* or @reference.* if promoted
 
 Directories:
   gaps:
@@ -26,20 +51,36 @@ Directories:
 
 Rules:
   [I1] Insights MUST be based on evidence, not speculation.
-  [I2] Patterns MUST appear in 3+ occurrences before recording.
+  [I2] Patterns MUST appear in 3+ occurrences before promotion
+       to candidate. Single-occurrence strategic observations MAY
+       be promoted at human discretion.
   [I3] Gaps MUST include impact assessment.
   [I4] Smells MUST include severity and recommendation.
   [I5] Repeated decisions MUST include context.
   [I6] Insights MAY be promoted to references/ after validation.
   [I7] Insights MUST be timestamped.
   [I8] Insights are append-only.
+  [I9] All insights MUST have trust.low and status.observed until
+       promoted — AI MUST NOT present them as authoritative.
+  [I10] Promoted insights MUST carry forward their original evidence
+        and provenance into the new @candidate.* or @reference.* entry.
+
+Promotion Checklist:
+  An insight is eligible for candidate promotion when:
+    - observed in 3+ independent contexts (or 1 strategic context),
+    - evidence_count >= 2 independent sources,
+    - no conflicts-with an established reference,
+    - human reviewer approves.
 
 Navigation:
   Gaps: @gaps.sdd
   Patterns: @patterns.sdd
   Smells: @smells.sdd
   RepeatedDecisions: @repeated-decisions.sdd
-  Knowledge: @../knowledge/INDEX.sdd
+  Candidates: @../knowledge/candidates/INDEX.sdd
+  Lessons: @../knowledge/lessons/INDEX.sdd
   References: @../references/INDEX.sdd
+  Knowledge Lifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
 
 State: +

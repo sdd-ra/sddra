@@ -1,0 +1,127 @@
+# Tasks: TASK-STATE-MACHINE
+
+Purpose:
+  Define the 10-state task lifecycle for the AI autonomous execution loop.
+  A task is no longer a static TODO — it is a state machine that progresses
+  through well-defined phases. States drive execution; sub-states handle
+  failure/retry cycles within a phase.
+
+Owns:
+  Task lifecycle states
+  State transitions
+  Sub-state transitions
+  Progress recording
+
+States:
+
+  DISCOVERING    — Task goal understood, context being gathered
+  PLANNING       — Plan synthesized from context and knowledge
+  IMPLEMENTING   — Code, tests, or artifacts being produced
+  TESTING        — Work is under validation (unit, integration, BDD)
+  REVIEWING      — Code, architecture, and rules under human-system review
+  FIXING         — Deficiencies identified, remediation in progress
+  DOCUMENTING    — Human-readable documentation generated
+  LEARNING       — Knowledge extracted, consolidated, and promoted
+  COMPLETED      — Task fully done (Engineering Done, not just Functional Done)
+  BLOCKED        — Cannot proceed: explicit blocker declared
+  ESCALATED      — Transferred to human; requires external input
+
+SubStates:
+
+  TESTING:
+    state: TESTING
+    sub_states:
+      PASSED   — tests green, proceed to REVIEWING
+      FAILED   — tests red, transition to FIXING
+
+  FIXING:
+    state: FIXING
+    sub_states:
+      IN_PROGRESS — fix being applied
+      READY       — fix applied, ready to RETURN to TESTING
+
+  REVIEWING:
+    state: REVIEWING
+    sub_states:
+      PASS               — all review criteria met
+      PASS_WITH_WARNINGS — passed but warnings noted
+      CHANGES_REQUIRED   — fixes must be applied, return to FIXING
+      BLOCKED            — review finding blocks progress
+      ESCALATE           — review finding requires human decision
+
+Transitions:
+
+  Main flow:
+    DISCOVERING -> PLANNING -> IMPLEMENTING -> TESTING -> REVIEWING ->
+    DOCUMENTING -> LEARNING -> COMPLETED
+
+  Testing failure:
+    TESTING -> FAILED -> FIXING -> TESTING
+    (repeat until tests pass or loop guards trigger)
+
+  Reviewing failure:
+    REVIEWING -> CHANGES_REQUIRED -> FIXING -> TESTING -> REVIEWING
+
+  Blocked:
+    ANY_STATE -> BLOCKED  (requires explicit blocker declaration)
+    BLOCKED -> previous_state  (when blocker resolved)
+
+  Escalated:
+    ANY_STATE -> ESCALATED  (requires explicit escalation reason)
+    ESCALATED is terminal until human intervention
+
+ProgressRule:
+
+  Each iteration within a cycle (TESTING -> FAILED -> FIXING -> TESTING)
+  MUST record:
+    BEFORE:    measurable state before action
+    CHANGE:    what was changed
+    AFTER:     measurable state after action
+    RESULT:    outcome (pass/fail)
+    PROGRESS:  yes / no
+
+  Example:
+    BEFORE:
+      3 tests failing
+    CHANGE:
+      moved lock acquisition into transaction boundary
+    AFTER:
+      1 test failing
+    RESULT:
+      tests failed
+    PROGRESS:
+      yes
+
+Rules:
+
+  [TM1] A task MUST occupy exactly one primary state at any time.
+  [TM2] The TESTING -> FAILED -> FIXING -> TESTING cycle MUST NOT be
+        infinite — loop guards in LOOP-PROTECTION.sdd apply.
+  [TM3] Each iteration in a failure cycle MUST record progress evidence
+        (BEFORE / CHANGE / AFTER / RESULT / PROGRESS).
+  [TM4] AI MUST NOT claim "tests passed" without a measurable BEFORE/AFTER
+        delta showing progress.
+  [TM5] BLOCKED state MUST declare an explicit blocker with type and ref.
+  [TM6] ESCALATED state is terminal — task remains in ESCALATED until
+        human action resolves it.
+  [TM7] COMPLETED requires Engineering Done, not Functional Done
+        (bax DONE-PROOF.sdd).
+  [TM8] REVIEWING is embedded inside the execution loop — it is NOT a
+        separate post-completion step.
+  [TM9] State history MUST be append-only — past transitions are immutable.
+  [TM10] The LEARNING state MUST produce at least one knowledge artifact
+         (skill, decision, or lesson) before COMPLETED.
+
+Navigation:
+
+  LoopProtection: @LOOP-PROTECTION.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  FailureClassification: @FAILURE-CLASSIFICATION.sdd
+  DoneProof: @DONE-PROOF.sdd
+  PartialDone: @PARTIAL-DONE.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  LearningGate: @../workflow/learning-gate.sdd
+  TasksIndex: @INDEX.sdd
+  TasksSpec: @tasks.sdd
+
+State: +

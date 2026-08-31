@@ -1,0 +1,77 @@
+Category: Golden Rules
+Purpose:
+  The 10 foundational knowledge principles for the .sdd system.
+  These principles govern how knowledge is created, maintained,
+  and consumed. They serve as the constitution for AI learning behavior.
+
+Owns: ./
+
+Knowledge Principles:
+
+  1. Prefer reuse over creation.
+     Before creating any new knowledge element, search for existing
+     concepts, references, skills, or patterns that already solve
+     the problem. Creation is the last resort.
+
+  2. Prefer linking over copying.
+     When existing knowledge applies, reference it. Never duplicate
+     knowledge across files. Single source of truth, many pointers.
+
+  3. Prefer specialization over duplication.
+     When knowledge is similar but not identical, create a
+     specialization (typed edge) rather than a near-duplicate.
+
+  4. Prefer evidence over assumption.
+     Every knowledge claim requires evidence: code, tests, decisions,
+     production observations, or human validation. Unfounded assertions
+     are candidates at best.
+
+  5. Prefer canonical concepts over synonyms.
+     When multiple terms describe the same concept, canonicalize to
+     the preferred term. Store alternatives as aliases, not new concepts.
+
+  6. Never silently learn.
+     When AI observes something new, it MUST declare it as a candidate.
+     Undeclared learning is knowledge corruption. All learning is
+     visible and traceable.
+
+  7. Never silently overwrite.
+     When existing knowledge changes, the previous version is preserved
+     with history. Overwrite without trace is knowledge destruction.
+
+  8. Never silently delete.
+     When knowledge is no longer valid, mark it deprecated. Deletion
+     removes the ability to understand why something was rejected.
+
+  9. Scope every project-specific rule.
+     Rules that apply only to one project MUST be scoped accordingly.
+     Universal rules and project-specific rules live in different layers.
+
+  10. Preserve why a decision was made.
+      Every decision record explains the rationale. Future changes
+      require understanding prior context. "Why" is as important as "what".
+
+Principle Mapping:
+
+  Anti-dump:     Principles 1, 2, 3, 5
+  Anti-corruption: Principles 6, 7, 8
+  Anti-amnesia:  Principles 9, 10
+
+Rule Strength:
+
+  MUST     — violation is critical (principles 6, 7, 8)
+  SHOULD   — violation is warning (principles 1, 2, 3, 5)
+  AVOID    — violation is minor issue (principles 4, 9, 10)
+
+  AI review behavior:
+    MUST violation    → block and report
+    SHOULD violation  → warn and suggest fix
+    AVOID violation   → note but allow
+
+Navigation:
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  Compression: @COMPRESSION.sdd
+  Versioning: @VERSIONING.sdd
+  Rejected Approaches: @../../lessons/REJECTED-APPROACHES.sdd
+
+State: +

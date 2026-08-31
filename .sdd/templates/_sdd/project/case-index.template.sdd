@@ -1,0 +1,40 @@
+# CASE Index Template
+
+Purpose:
+  Index of all CASE specifications within a MODULE.
+  Provides a navigable tree of depends-on and related relationships.
+
+Owns: templates\_sdd\project\case-index.template.sdd
+
+## Module Overview
+
+Module: {MODULE_ID}
+Module_Name: {module display name}
+Layer: {layer}
+Cases: {count}
+
+## Case Registry
+
+Cases:
+  - CASE: {CASE_ID}
+    Name: {CASE_NAME}
+    File: ./{case_file}.sdd
+    Status: {status}
+    Depends_On:
+      - {DEPENDS_ON_CASE_ID} [{✅|🔄|⏳}]
+    Related:
+      - {RELATED_CASE_ID} [{✅|🔄|⏳}]
+
+## Flow Tree
+
+Flow_Index:
+  {CASE_ID_01} ({CASE_NAME_01})
+    ├── depends-on: {DEPENDS_ON_ID} [{✅|🔄|⏳}]
+    └── related: {RELATED_ID} [{✅|🔄|⏳}]
+
+## Metadata
+
+Generated_At: <timestamp>
+Source: .specdd/flow-index.md
+
+State: +

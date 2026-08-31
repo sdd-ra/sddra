@@ -1,0 +1,144 @@
+# Tasks: LOOP-PROTECTION
+
+Purpose:
+  Define the loop protection system that prevents the AI autonomous
+  execution loop from spinning infinitely. Five automated guards plus
+  one human escalation guard ensure that the AI never repeats the
+  same failing approach without adding value.
+
+Owns:
+
+  Loop guards (5 automated + 1 human)
+  LOOP_SCORE calculation
+  Loop risk thresholds
+  Strategy change rules
+  Retry vs Repeat enforcement
+
+TrustHierarchy:
+  1. Explicit project constraints (project-level policy)
+  2. Decisions (bax decisions/)
+  3. Validated project skills (bax skills/)
+  4. Established organization knowledge (bax references/)
+  5. General best practices (bax references/best-practices/)
+  6. AI suggestions (lowest priority)
+
+Guards:
+
+  1. MaxIterations
+     definition: total iteration count for a task
+     config: max_iterations (per EXECUTION-CONTRACT.sdd)
+     action on breach: ESCALATE with reason
+
+  2. FailureBudget
+     definition: weighted failure allowance (severity-weighted)
+     config: max_failure_budget (per EXECUTION-CONTRACT.sdd)
+     weighting: minor=1, major=2, critical=5
+     action on breach: ESCALATE with reason
+
+  3. NoProgressDetection
+     definition: consecutive iterations with no meaningful change
+     detection: same failure count across N iterations
+     action on trigger: LOOP_RISK_HIGH, strategy change required
+
+  4. DuplicateActionDetection
+     definition: same action + same reasoning applied repeatedly
+     detection: action signature + reasoning hash compared across attempts
+     action on trigger: DUPLICATE_ATTEMPT, block same approach
+
+  5. StateTransitionRules
+     definition: allowed state transitions are constrained
+     rule: TESTING -> FIXING -> TESTING is permitted only with
+           progress evidence (bax TASK-STATE-MACHINE.sdd -> ProgressRule)
+     rule: ESCALATED and COMPLETED are terminal
+     rule: BLOCKED cannot be bypassed without blocker resolution
+
+  6. HumanEscalation
+     definition: 6th guard — human review triggers
+     triggers:
+       - irreversible decision
+       - security concern
+       - ambiguous requirement
+       - conflicting architecture
+       - missing external dependency
+       - budget exceeded
+       - high-risk migration
+     action: pause autonomous execution, request human input
+
+LOOP_SCORE:
+
+  Calculation:
+    same_action:      +30   (same approach attempted again)
+    same_error:       +25   (same error encountered again)
+    no_progress:      +30   (consecutive iterations without measurable change)
+    plan_reverted:    +20   (plan changed back to previous version)
+    new_evidence:     -20   (genuinely new information discovered)
+    meaningful_change: -30  (measurable improvement: fewer failures, fewer errors)
+
+  Scoring example:
+    iteration 3: tried repository fix (same_action +30)
+                 same deadlock error (same_error +25)
+                 3 failures before, 3 failures now (no_progress +30)
+                 loop_score = 85
+
+  Threshold:
+    LOOP_SCORE >= 60  -> LOOP_RISK_HIGH
+    action: require new strategy, do NOT retry same approach
+
+  Enforcement:
+    LOOP_RISK_HIGH -> AI MUST switch strategy
+    LOOP_RISK_HIGH + loop_score >= 90 -> ESCALATE to human
+
+StrategyChange:
+
+  Rules:
+    [SP1] When LOOP_RISK_HIGH, AI MUST adopt Strategy B (different approach).
+    [SP2] Strategy A can only be revisited if NEW evidence emerges that
+          was not present when Strategy A was abandoned.
+    [SP3] Each strategy MUST be attempted at most once per evidence set.
+    [SP4] Strategy change MUST be recorded with reason and evidence delta.
+
+  Example:
+    Strategy A: repository fix         (failed: deadlock persists)
+    Strategy B: application service redesign  (attempt)
+    Strategy C: architecture / context investigation  (if B fails)
+    Return to A: only if new evidence about locking model discovered
+
+RetryVsRepeat:
+
+  ALLOW:
+    retry when new evidence AND new strategy are present
+  BLOCK:
+    same evidence + same strategy + same result = repeat (forbidden)
+
+  Distinction:
+    Retry:  Eyni məqsədə yeni məlumatla yenidən cəhd.
+    Repeat: Eyni şeyi heç nə dəyişmədən yenidən etmək.
+
+Rules:
+
+  [LP1] The 5 automated guards ALWAYS run concurrently during execution.
+  [LP2] LOOP_SCORE is recalculated after every iteration within a
+        TESTING -> FIXING -> TESTING cycle.
+  [LP3] LOOP_SCORE >= 60 requires a strategy change — AI MUST NOT
+        retry the same approach.
+  [LP4] Human escalation is the final guard — it can trigger at any
+        LOOP_SCORE if the escalation conditions in section 6 are met.
+  [LP5] AI MUST NOT continue in TESTING -> FIXING -> TESTING cycle
+        when no meaningful progress is detected across iterations.
+  [LP6] Failure budget is severity-weighted, not a simple failure count.
+  [LP7] Strategy A may only be revisited with genuinely new evidence.
+  [LP8] Retry (new evidence + new strategy) is required; Repeat is
+        blocked.
+  [LP9] All loop guard triggers MUST be recorded in the execution trace.
+  [LP10] When all strategies are exhausted within the iteration budget,
+         the task MUST be ESCALATED.
+
+Navigation:
+
+  StateMachine: @TASK-STATE-MACHINE.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  FailureClassification: @FAILURE-CLASSIFICATION.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +

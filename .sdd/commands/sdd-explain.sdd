@@ -1,0 +1,137 @@
+# Commands: sdd-explain
+
+Purpose:
+  Explainability-on-demand command. When a human requests an explanation
+  of a completed task, the AI produces a structured explanation covering
+  WHY the approach was chosen, WHAT changed, alternatives rejected,
+  references, and risks. This supports the "AI + Human = simple"
+  principle — humans get clarity without parsing 100 execution events.
+
+Owns:
+  /sdd-explain command definition
+  Explanation template
+  Explainability output format
+
+Command:
+
+  name: /sdd-explain
+  alias: @explain
+  description:
+    Explain a completed task on demand. Provides WHY, WHAT changed,
+    approach rationale, alternatives rejected, references, and risks.
+
+  Usage:
+    /sdd-explain TASK-<ID>
+    @explain TASK-<ID>
+
+  Options:
+    --verbose    Include full execution trace
+    --short      One-line summary only (default)
+
+  Mode: READ_ONLY
+
+ExplainabilityTemplate:
+
+  /sdd-explain TASK-<ID>
+
+  WHY:
+    <business or technical reason this task was necessary>
+
+  WHAT CHANGED:
+    <concise summary of changes made>
+    <files/layers affected>
+
+  WHY THIS APPROACH:
+    <rationale for the chosen approach>
+    <how it satisfies constraints and knowledge)
+
+  ALTERNATIVES REJECTED:
+    <approach A>: <why it was not chosen>
+    <approach B>: <why it was not chosen>
+
+  REFERENCES:
+    @decision.* <reason>
+    @skill.* <reason>
+    @concept.* <reason>
+    @pattern.* <reason>
+
+  RISKS:
+    <risk 1>: <mitigation>
+    <risk 2>: <mitigation>
+
+  Example:
+    /sdd-explain TASK-1023
+
+    WHY:
+      Refund operation lacked idempotency protection, causing duplicate
+      payments when payment providers retried requests.
+
+    WHAT CHANGED:
+      - PaymentService: added idempotency key check before processing refund
+      - RefundRepository: persisted idempotency key in transaction
+      - Refund API: returns 409 Conflict on duplicate key
+      - Outbox: transactional outbox for provider event publishing
+
+    WHY THIS APPROACH:
+      Idempotency key + transaction + outbox is the established pattern
+      for payment reliability (@skill.payment.idempotency). The existing
+      @decision.outbox-for-provider-events confirms the outbox approach
+      for provider events.
+
+    ALTERNATIVES REJECTED:
+      Direct provider publish: caused deadlock under concurrent retries
+        (observed in TASK-1018)
+      In-memory dedup: not durable across restarts, violates
+        @constraint.payment.durability
+
+    REFERENCES:
+      @skill.payment.idempotency — established pattern for payment operations
+      @decision.outbox-for-provider-events — prior decision for event publishing
+      @pattern.transactional-outbox — pattern for reliable event delivery
+      @concept.idempotency — canonical concept definition
+
+    RISKS:
+      Idempotency key collision under high volume: mitigated by UUID v4
+        + DB unique constraint
+      Outbox table growth: mitigated by @decision.outbox-retention policy
+      Breaking API change reverted: reverted during review, no impact
+
+DefaultResponse:
+
+  definition: when no --verbose flag, output is concise
+  format:
+    WHY: <one line>
+    WHAT: <one line>
+    HOW: <one line>
+    RISK: <one line if any>
+
+ExplainabilityRules:
+
+  [EX1] /sdd-explain MUST ONLY run on COMPLETED tasks (or ESCALATED
+        with human summary).
+  [EX2] Explanation MUST reference @knowledge and @decision artifacts
+        used during the task.
+  [EX3] Alternatives rejected MUST include a rationale — "not chosen"
+        alone is insufficient.
+  [EX4] Risks MUST include a mitigation — "risk exists" alone is
+        insufficient.
+  [EX5] The default response is short; --verbose includes full trace.
+  [EX6] Explainability is built from execution summary
+        (bax EXECUTION-CONTRACT.sdd -> ExecutionSummary), not from
+        raw runtime events.
+  [EX7] If no NEW_DECISION was created by the task, the command MUST
+        still cite the relevant existing decisions consulted.
+  [EX8] Explainability supports the human-in-the-loop model — it does
+        not replace human judgment, it informs it.
+
+Navigation:
+
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  ExecutionContract: @../tasks/EXECUTION-CONTRACT.sdd
+  LearningGate: @../workflow/learning-gate.sdd
+  DoneProof: @../tasks/DONE-PROOF.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Concepts: @../concepts/INDEX.sdd
+  CommandsIndex: @INDEX.sdd
+
+State: +

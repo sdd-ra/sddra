@@ -1,0 +1,46 @@
+# API Test Template
+
+Purpose:
+  Manual API testing instructions for DB → BE → BE_TS → API → API_TS chain.
+  Used when the task chain is purely backend (no UI layer yet).
+
+Owns: testing\API-TEST-TEMPLATE.sdd
+
+## Chain Context
+
+Chain: DB → BE → BE_TS → API → API_TS
+Mode: Manual API testing via curl
+
+## Test Case Format
+
+Test_Case:
+  Hash: #{hash}
+  Endpoint: {HTTP_METHOD} {URL}
+  Headers:
+    - Content-Type: application/json
+    - Authorization: Bearer <TEST_TOKEN>
+  Body:
+    {json_payload}
+  Expected_Response:
+    {expected_json_or_status}
+
+## Example
+
+Example:
+  #c4d1 — Escrow calculation endpoint:
+    curl -X POST https://api.edunexusaz.local/v1/payment/escrow \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer <TEST_TOKEN>" \
+      -d '{"completion_pct": 60, "course_price": 100}'
+
+    Expected response:
+      {"teacher_payout": 50, "platform_fee": 15, "status": "escrowed"}
+
+## Operator Feedback
+
+Feedback:
+  Operator responds per hash:
+    #c4d1: OK
+    #c4d2: FAIL — wrong payout amount
+
+State: +

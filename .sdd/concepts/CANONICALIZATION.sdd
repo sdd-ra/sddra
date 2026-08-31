@@ -1,0 +1,96 @@
+Category: Canonicalization
+Purpose:
+  Defines the canonical concept structure for the knowledge graph.
+  Ensures every concept has a single canonical form with aliases,
+  related concepts, and typed relations. Prevents knowledge dump
+  by enforcing normalization before storage.
+
+Owns: ./
+
+Canonical Structure:
+  Every concept MUST have:
+    - concept_id: @concept.<name>
+    - canonical_name: human-readable preferred term
+    - definition: single-sentence description
+    - aliases: [alternative names that mean the same]
+    - related: [nearby concepts that are NOT the same]
+    - relation: typed edge to related concepts (see RELATIONSHIP-VOCABULARY.sdd)
+
+  Example:
+    @concept.idempotency
+      canonical_name: Idempotency
+      definition: Producing the same result regardless of execution count.
+      aliases:
+        - duplicate protection
+        - retry-safe operation
+        - duplicate request prevention
+      related:
+        - @concept.exactly-once
+      relation:
+        @concept.exactly-once: different-but-related
+
+  Key Distinction:
+    aliases == same meaning, different words
+    related  == different meaning, semantic proximity
+
+  semantic_similarity != semantic_equality
+
+Relationship Vocabulary:
+  same-as         — identical meaning, merge candidates
+  alias-of        — synonym, canonical form preferred
+  extends         — adds behavior to existing concept
+  specializes     — narrower form of a broader concept
+  implements      — concrete realization of abstract concept
+  depends-on      — requires another concept to function
+  related-to      — semantic proximity, not equivalence
+  conflicts-with  — mutually exclusive in same context
+  replaces        — successor concept, old form deprecated
+  derived-from    — originated from another concept
+  observed-in     — detected in specific project/context
+  validated-by    — confirmed by evidence or decision
+
+Concept Merging Rules:
+  [M1] Two concepts with >90% semantic overlap MUST be merge candidates.
+  [M2] AI MUST NOT auto-merge — only propose candidate merges.
+  [M3] Merge proposals require human approval.
+  [M4] On merge, the surviving concept absorbs aliases of the deprecated one.
+  [M5] Deprecated concept status changes to "replaced" with pointer to canonical.
+  [M6] Merged concepts retain history in versioning log.
+
+Candidate Merge Protocol:
+  1. AI detects semantic overlap between candidates.
+  2. AI generates merge proposal:
+     - candidate_a: <id>
+     - candidate_b: <id>
+     - overlap_score: <percentage>
+     - suggested_canonical: <proposed concept_id>
+     - reason: <why merge is recommended>
+  3. Human reviews and approves/rejects.
+  4. On approval: execute merge, update aliases, deprecate redundant concept.
+  5. On rejection: keep separate, record reason in REJECTED-APPROACHES.sdd.
+
+  Example:
+    Possible merge:
+      A: @candidate.retry-safety
+      B: @candidate.retry-consistency
+    Suggested canonical: @concept.retry-safety
+    Reason: B is mostly a consequence of A.
+
+Anti-Chaos Rule:
+  Don't create knowledge when a link is enough.
+
+  Before creating ANY new concept, AI MUST verify:
+    - Can existing concept solve this?
+    - Can existing reference describe this?
+    - Can this be an alias?
+    - Can this be a specialization?
+
+  Only if ALL answers are NO, create new knowledge.
+
+Navigation:
+  Relationship Vocabulary: @../concepts/RELATIONSHIP-VOCABULARY.sdd
+  Compression: @../knowledge/COMPRESSION.sdd
+  Golden Rules: @../knowledge/GOLDEN-RULES.sdd
+  Concept Index: @../concepts/INDEX.sdd
+
+State: +

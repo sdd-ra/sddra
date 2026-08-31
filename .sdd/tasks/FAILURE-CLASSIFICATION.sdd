@@ -1,0 +1,183 @@
+# Tasks: FAILURE-CLASSIFICATION
+
+Purpose:
+  Define the 9 failure types for the autonomous execution loop, the
+  failure → action map, and severity levels. Not all failures are equal:
+  a BUILD_FAILURE requires different handling than an AMBIGUITY. This
+  classification drives the corrective response.
+
+Owns:
+  Failure types
+  Failure severity levels
+  Failure → action mapping
+
+FailureTypes:
+
+  1. BUILD_FAILURE
+     description: Code does not compile or build fails
+     examples: syntax error, missing dependency in build, Docker build failure
+     severity_default: minor
+
+  2. TEST_FAILURE
+     description: Tests fail after implementation
+     examples: unit test failure, integration test failure, BDD scenario failure
+     severity_default: minor
+
+  3. LOGIC_FAILURE
+     description: Code runs but behaves incorrectly
+     examples: wrong return value, incorrect branch taken, off-by-one
+     severity_default: major
+
+  4. ARCHITECTURE_FAILURE
+     description: Implementation violates architectural constraints
+     examples: wrong boundary, layer violation, cyclic dependency, pattern misuse
+     severity_default: major
+
+  5. CONSTRAINT_FAILURE
+     description: Hard project constraints violated
+     examples: forbidden API change, security rule violation, resource limit exceeded
+     severity_default: critical
+
+  6. ENVIRONMENT_FAILURE
+     description: Problem outside the code — environment cannot build/test
+     examples: missing credentials, network unreachable, Docker daemon down
+     severity_default: major
+
+  7. KNOWLEDGE_GAP
+     description: AI lacks required knowledge to proceed
+     examples: unknown library API, unclear external protocol, missing domain context
+     severity_default: major
+
+  8. AMBIGUITY
+     description: Requirement is unclear or contradictory
+     examples: conflicting requirements, underspecified behavior, missing acceptance criteria
+     severity_default: critical
+
+  9. EXTERNAL_DEPENDENCY
+     description: Dependency is unavailable or changed unexpectedly
+     examples: third-party API down, version changed, rate limited
+     severity_default: major
+
+FailureActionMap:
+
+  BUILD_FAILURE:
+    -> inspect build output
+    -> inspect compilation error
+    -> fix syntax or dependency
+    -> re-build
+
+  TEST_FAILURE:
+    -> inspect failing test
+    -> inspect implementation
+    -> determine if test or code is wrong
+    -> fix and re-test
+
+  LOGIC_FAILURE:
+    -> inspect test expectations vs implementation
+    -> verify with domain expert if needed
+    -> fix logic
+    -> add regression tests
+
+  ARCHITECTURE_FAILURE:
+    -> inspect boundary violation
+    -> inspect dependency rules
+    -> revisit design
+    -> re-implement within constraints
+
+  CONSTRAINT_FAILURE:
+    -> STOP implementation immediately
+    -> log constraint violation
+    -> escalate to architecture / security review
+
+  ENVIRONMENT_FAILURE:
+    -> environment recovery
+    -> check Docker, credentials, network
+    -> retry environment setup
+    -> escalate if persistent
+
+  KNOWLEDGE_GAP:
+    -> retrieve knowledge (references/, skills/)
+    -> inspect external reference
+    -> attempt to learn the missing concept
+    -> if still unknown, escalate
+
+  AMBIGUITY:
+    -> human escalation
+    -> declare what is ambiguous
+    -> request clarification
+    -> do NOT guess
+
+  EXTERNAL_DEPENDENCY:
+    -> check dependency status
+    -> check version compatibility
+    -> use fallback or mock
+    -> escalate if unavailable
+
+SeverityLevels:
+
+  minor:
+    weight: 1
+    description: Correctable within current iteration budget
+    impact: localized, no data loss, reversible
+    action: continue within failure budget
+
+  major:
+    weight: 2
+    description: Requires significant effort or strategy change
+    impact: affects multiple areas, may cause delays
+    action: consume failure budget, may trigger loop protection
+
+  critical:
+    weight: 5
+    description: Requires immediate stop and human intervention
+    impact: security, data integrity, or architectural collapse
+    action: immediate escalation, do NOT retry autonomously
+
+  CriticalTriggers:
+    - security violation
+    - constraint violation
+    - ambiguity without resolution path
+
+FailureBudget:
+
+  definition: severity-weighted budget, not a simple count
+  formula: sum of severity weights across all failures
+  example:
+    failure_budget: 5
+    failure 1: minor (+1) = budget_remaining 4
+    failure 2: major (+2) = budget_remaining 2
+    failure 3: critical (+5) = budget_remaining -3 -> BREACH -> ESCALATE
+
+ClassificationProcess:
+
+  1. Observe failure (test output, build log, review finding)
+  2. Classify by type using the 9 categories above
+  3. Assign severity (minor / major / critical)
+  4. Look up action in FailureActionMap
+  5. Execute action
+  6. If action is ESCALATE -> transition task to ESCALATED
+
+Rules:
+
+  [FC1] Every failure MUST be classified into one of the 9 types — never "other".
+  [FC2] Severity MUST be assigned based on impact, not on frustration.
+  [FC3] BUILD_FAILURE and TEST_FAILURE do NOT auto-trigger code changes —
+        inspect first.
+  [FC4] ENVIRONMENT_FAILURE MUST NOT be treated as a code problem.
+  [FC5] AMBIGUITY MUST escalate to human — AI MUST NOT guess.
+  [FC6] CONSTRAINT_FAILURE MUST stop implementation — do not proceed.
+  [FC7] Severity weights MUST be applied when consuming failure budget.
+  [FC8] Critical failures MUST escalate regardless of remaining budget.
+  [FC9] Failure → action mapping MUST be followed — no ad-hoc fixes.
+  [FC10] All failure classifications MUST be recorded in the execution trace.
+
+Navigation:
+
+  StateMachine: @TASK-STATE-MACHINE.sdd
+  LoopProtection: @LOOP-PROTECTION.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +

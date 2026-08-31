@@ -1,0 +1,120 @@
+@candidates
+
+Purpose:
+  Registry of knowledge candidates — the CANDIDATE tier of the
+  knowledge lifecycle. Candidates are repeated observations that appear
+  reusable but have not yet been validated by tests, tasks, or human
+  review. This file is the canonical template for candidate entries and
+  the promotion gate into validated references.
+
+Use this index to evaluate whether a candidate is ready for promotion.
+
+Owns: ./
+
+Lifecycle Context:
+  OBSERVED (insights/)
+    ↓  3+ occurrences or strategic relevance
+  CANDIDATE (this registry)
+    ↓  evidence + human approval
+  VALIDATED (references/)
+    ↓  multi-project success
+  ESTABLISHED (references/)
+
+Entry Schema:
+  Each candidate entry MUST carry the following fields:
+
+  Fields:
+    id:               @candidate.<name>
+    canonical_name:    human-readable preferred term
+    definition:        single-sentence description
+    aliases:           [alternative names that mean the same]
+    related:           [related candidates or references]
+    purpose:           one-line statement of the practice
+    origin:            @insight.<name> that originated this candidate
+    observed_in:       [contexts where observed]
+    evidence_count:    integer (total evidence sources gathered)
+    by_type:
+      code:          integer
+      tests:         integer
+      tasks:         integer
+      decisions:     integer
+      projects:      integer
+      production:    integer
+      external:      integer
+      human:         integer
+    trust:            low (default — no validation yet)
+    confidence:       low | medium
+    status:           candidate
+    conflicts_with:    [references this may conflict with]
+    promotion_target: optional @reference.* target on promotion
+    promoted_to:      @reference.* / @skill.* / @pattern.* (on success)
+    expired_at:        YYYY-MM-DD (auto-set 30 days after creation;
+                        candidates not promoted by this date expire)
+
+  Example:
+    @candidate.idempotent-command
+      canonical_name: Idempotent Command
+      definition: A command that produces the same result regardless of
+                  how many times it is executed.
+      aliases:
+        - duplicate protection
+        - retry-safe operation
+      related:
+        - @candidate.exactly-once
+      purpose: Prevent duplicate command execution.
+      origin: @insight.retry-pattern
+      observed_in:
+        - tmp/payment-service
+        - tmp/order-service
+      evidence_count: 2
+      by_type:
+        code: 2
+        tests: 0
+        tasks: 0
+        projects: 2
+      trust: low
+      confidence: low
+      status: candidate
+      conflicts_with: []
+      expired_at: 2026-09-30
+
+Promotion Gate:
+  A candidate MAY be promoted to VALIDATED when ALL of the following hold:
+    [C1] evidence_count >= 2 independent sources with at least one
+         test or human review.
+    [C2] No unresolved conflicts-with an established reference.
+    [C3] Human reviewer approves via the promotion workflow.
+    [C4] The candidate has been canonicalized per CANONICALIZATION.sdd.
+
+  On promotion:
+    - A new @skill.* / @pattern.* / @architecture.* entry is created
+      in .sdd/references/.
+    - status becomes validated.
+    - trust becomes medium / confidence medium.
+    - This @candidate.* entry is marked deprecated with a
+      promoted_to pointer.
+
+Expiration Policy:
+  [C5] Candidates expire 30 days after creation without promotion.
+  [C6] Expired candidates are moved to .sdd/knowledge/lessons/
+       with reason.expired_unpromoted.
+  [C7] Expired candidates are NEVER deleted — archived for history.
+
+Rules:
+  [R1] AI MUST NOT auto-promote a candidate without evidence and
+       human approval.
+  [R2] Each candidate MUST link back to its originating @insight.*.
+  [R3] Conflicting candidates MUST be flagged, not guessed.
+  [R4] Duplicate candidates MUST propose a merge per
+       CANONICALIZATION.sdd merge protocol.
+  [R5] Candidates with trust.low and 0 evidence are reviewed
+       within 7 days or archived.
+
+Navigation:
+  Knowledge Lifecycle: @../KNOWLEDGE-LIFECYCLE.sdd
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Insights: @../../insights/INDEX.sdd
+  References: @../../references/INDEX.sdd
+  Lessons: @../lessons/INDEX.sdd
+
+State: +

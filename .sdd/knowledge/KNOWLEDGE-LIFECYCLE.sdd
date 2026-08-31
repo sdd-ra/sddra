@@ -1,0 +1,110 @@
+Category: Knowledge Lifecycle
+Purpose:
+  Defines the full knowledge extraction pipeline that transforms raw
+  observations into trust-weighted references, and the promotion policy
+  that moves knowledge between lifecycle tiers. This is the operating
+  specification for how .sdd/ knowledge is discovered, normalized,
+  validated, and linked into the knowledge graph.
+
+Owns: ./
+
+Extraction Pipeline:
+  1. TMP to OBSERVATIONS
+     Raw source code, external repositories, and project files are
+     copied into .sdd/tmp/. AI scans for patterns, anti-patterns,
+     and decisions. Each observation is tagged @tmp.* and recorded as
+     an @insight.* entry in .sdd/insights/.
+
+  2. OBSERVATIONS to CONCEPT EXTRACTION
+     Repeated observations (3+ occurrences by default, or 1 occurrence
+     for security-sensitive concepts) are clustered by semantic
+     similarity. Each surviving cluster becomes a @candidate.* concept.
+     Single observations remain @insight.* entries.
+
+  3. CONCEPT EXTRACTION to SEMANTIC CLUSTERING
+     Clustering groups candidates by domain, pattern family, and
+     context. Overlapping clusters are flagged as candidate merge
+     targets (see CANONICALIZATION.sdd merge protocol).
+
+  4. SEMANTIC CLUSTERING to CANONICALIZATION
+     Each surviving cluster is canonicalized: a canonical_name, aliases,
+     definition, and primary reference are assigned. The anti-chaos
+     rule applies — AI MUST reuse an existing concept before creating a
+     new one.
+
+  5. CANONICALIZATION to RELATION DETECTION
+     Typed edges (see RELATIONSHIP-VOCABULARY.sdd) are established
+     between the new canonical concept and existing concepts/references.
+     conflicts-with and related-to edges are flagged for review.
+
+  6. RELATION DETECTION to REFERENCE CREATION
+     Validated candidates become @skill.*, @pattern.*,
+     @architecture.*, or @best-practice.* references in
+     .sdd/references/. Trust, confidence, evidence_count, and
+     provenance metadata are attached per KNOWLEDGE-MODEL.sdd.
+
+Knowledge Graph Wiring:
+  After reference creation, AI links the new reference everywhere it is
+  relevant: to concepts, to project tasks, to CASE specs, and to existing
+  decisions. The link replaces copy — documentation stays human-readable
+  while carrying a @reference pointer.
+
+Promotion Policy:
+  CANDIDATE to VALIDATED:
+    Triggered when evidence is gathered: passing tests, completed
+    tasks, or human review. Requires at least 2 independent evidence
+    sources. AI proposes; a human (or automated gate) must approve.
+
+  VALIDATED to ESTABLISHED:
+    Triggered when the reference is successfully applied across 2+
+    distinct projects without regression. Requires production or
+    project-level evidence. Human approval mandatory.
+
+  Rules:
+    [P1] Promotion is NEVER automatic — always requires evidence.
+    [P2] CANDIDATE to VALIDATED requires human approval.
+    [P3] ESTABLISHED requires multi-project success evidence.
+    [P4] Downgrades (ESTABLISHED to VALIDATED to CANDIDATE) are
+         permitted when evidence is invalidated; original evidence
+         is preserved.
+    [P5] Deprecated references retain history and a pointer to
+         their replacement.
+    [P6] Obsolete references are NEVER deleted — archived with
+         status.deprecated.
+
+Consolidation:
+  At task end, Working Memory is consolidated via:
+    DROP     — temporary observations with no reuse value
+    ARCHIVE  — candidates that did not validate, kept for history
+    LINK     — new knowledge linked to existing references
+    PROMOTE  — validated knowledge promoted to references/
+
+  Golden Rules (see GOLDEN-RULES.sdd for full list):
+    [G1] Never learn silently — every observation is recorded.
+    [G2] Never delete knowledge because it is unused — deprecate first.
+    [G3] Prefer linking over copying.
+    [G4] Prefer reuse over creation.
+    [G5] Prefer evidence over assumption.
+
+Garbage Collection:
+  - temporary (@tmp.*)           : expires 7 days after last reference
+  - candidate (@candidate.*)     : expires 30 days without promotion
+  - validated (@skill.* etc.)    : persistent, review every 6 months
+  - established                  : long-term, review annually
+
+Knowledge Drift Detection:
+  AI compares stale references against current code and documentation.
+  When the skill description no longer matches implementation practice,
+  a "review required" flag is raised and the reference is marked
+  drift.stale until human review.
+
+Navigation:
+  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Candidates: @candidates/INDEX.sdd
+  Lessons: @lessons/INDEX.sdd
+  Insights: @../insights/INDEX.sdd
+  References: @../references/INDEX.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  Relationships: @../concepts/RELATIONSHIP-VOCABULARY.sdd
+
+State: +

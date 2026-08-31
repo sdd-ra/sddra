@@ -1,0 +1,39 @@
+# Fix Index Template
+
+Purpose:
+  Local problem → fix lookup table for recurring project issues.
+  AI checks this index before web search to save tokens and time.
+
+Owns: templates\specdd\fix-index.template.sdd
+
+## Format
+
+Fix_Index_File: .specdd/fix-index.sdd
+
+Entries:
+  - Problem: {error message or symptom}
+    Fix: {exact command or procedure}
+    Context: {when this fix applies}
+    Hash: #{hash}
+
+## Example Entries
+
+Examples:
+  - Problem: pnpm ERR_PNPM_...
+    Fix: pnpm store prune && pnpm install
+    Context: Package store corruption
+
+  - Problem: Go module checksum mismatch
+    Fix: GOFLAGS=-mod=mod go mod tidy
+    Context: Go module verification failure
+
+## Usage Rules
+
+Rules:
+  1. AI checks .specdd/fix-index.sdd BEFORE web search.
+  2. If match found → execute fix directly.
+  3. If no match → proceed with normal search/debug.
+  4. When a new recurring problem is solved → ADD to this index.
+  5. This is NOT a search replacement — only for already-solved project issues.
+
+State: +

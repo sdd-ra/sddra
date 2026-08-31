@@ -1,0 +1,42 @@
+# Task Scheduling
+
+Purpose:
+  Weight-based task ordering to prevent context exhaustion and ensure safe execution.
+  Light tasks may run in parallel; heavy tasks run sequentially with operator confirmation.
+
+Owns: tasks\TASK-SCHEDULING.sdd
+
+## Weight Calculation
+
+Weight_Metrics:
+  - Files touched (higher = heavier)
+  - Layers affected (higher = heavier)
+  - Reversibility: DB migration / financial operation = always heavy
+
+## Ordering Rules
+
+Order:
+  1. Sort all tasks light → heavy by weight.
+  2. Light tasks: run in parallel if no Owns/Depends-on conflicts.
+  3. Heavy tasks: run one at a time.
+  4. After each heavy task: STOP and wait for operator "continue" confirmation.
+  5. Do not auto-advance to next heavy task.
+
+## Context Guard
+
+Context_Guard:
+  IF task list runs out of context (insufficient spec for next step):
+    → DO NOT ask operator to continue
+    → STOP and ask what is missing
+    → DO NOT fabricate steps
+
+## Cycle Guard
+
+Cycle_Guard:
+  Trigger: Same task reaches 3rd [!] occurrence (attempt_count >= 3).
+  Action:
+    → Agent STOPs execution
+    → Operator is notified
+  Rationale: bootstrap.md "Stop and ask the Operator" project-specific extension.
+
+State: +

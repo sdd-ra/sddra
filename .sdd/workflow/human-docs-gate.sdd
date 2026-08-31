@@ -1,0 +1,135 @@
+# Workflow: HUMAN-DOCS-GATE
+
+Purpose:
+  Define the human documentation gate — the checkpoint ensuring every
+  code change is accompanied by human-readable documentation that
+  explains WHY and WHAT, not just HOW. Code says HOW; documentation
+  explains WHY + WHAT. Documentation is project-specific and
+  generated from the project context.
+
+Owns:
+  Human documentation gate
+  Documentation template (project-based)
+  Code-to-docs mapping verification
+
+DocumentationGate:
+
+  definition: checkpoint between DOCUMENTING and KNOWLEDGE GATE
+              stages (bax execution-loop.sdd)
+  position: after Done Proof, before Knowledge Gate
+  prerequisite: Done Proof must pass (bax DONE-PROOF.sdd)
+
+  principle:
+    Code says HOW.
+    Documentation explains WHY + WHAT.
+
+  requirement: every code change MUST have a human-docs-gate entry
+
+HumanDocsTemplate:
+
+  format:
+    project: <project_name>
+    changed: <feature/component/module>
+    why: <business or technical reason for the change>
+    how: <mechanism: list of technical details>
+    affected:
+      - <affected_components>
+    references:
+      - <@knowledge_ref>*
+
+  Example:
+    project:
+      payment-service
+    changed:
+      refund
+    why:
+      prevent duplicate provider refunds
+    how:
+      idempotency key
+      transaction
+      outbox
+    affected:
+      PaymentService
+      RefundRepository
+      Refund API
+    references:
+      @payment.idempotency
+      @decision.outbox
+
+BadDocumentation:
+
+  anti_patterns:
+    - "This function calls Refund." (just restates code)
+    - copy-pasted docstrings that repeat signature
+    - "The code below does X" followed by code (tautology)
+    - implementation details without business context
+
+  rule: [HD1] Documentation MUST NOT restate what the code literally does.
+
+GoodDocumentation:
+
+  example:
+    "Refund operation is protected against duplicate execution because
+    external payment providers may retry requests. The system persists
+    the idempotency key before processing the financial mutation."
+
+  quality:
+    - explains business/technical reason (WHY)
+    - summarizes scope and mechanism (WHAT)
+    - links to decisions and knowledge artifacts
+
+CodeDocsMapping:
+
+  definition: every code change traces to a human docs entry
+  verification:
+    - docs/ has 1:1 mapping to .sdd/project/
+    - every modified source file maps to a documentation section
+    - documentation review is a required gate
+
+  rule: [HD2] If documentation does not exist, the task is NOT
+        Engineering Done.
+
+ReviewResult:
+
+  PASS               — documentation explains WHY + WHAT
+  CHANGES_REQUIRED   — documentation restates code or misses context
+  BLOCKED            — documentation missing for a changed component
+  ESCALATE           — documentation conflict or ambiguity
+
+  flow:
+    PASS -> Knowledge Gate
+    CHANGES_REQUIRED -> update docs -> re-review
+    BLOCKED -> document the missing piece -> re-review
+    ESCALATE -> human clarification -> resolve
+
+ProjectScope:
+
+  rule: [HD3] Documentation is project_name-based — generated from
+        the specific project's context, conventions, and architecture.
+  rule: [HD4] Project-level docs take precedence over generic templates.
+  rule: [HD5] Documentation MUST reference @knowledge and @decision artifacts.
+
+Rules:
+
+  [HD1] Documentation MUST NOT restate code — it explains WHY + WHAT.
+  [HD2] Missing documentation = task NOT Engineering Done.
+  [HD3] Documentation is project_name-specific.
+  [HD4] Project-level docs take precedence over generic knowledge.
+  [HD5] Every changed component MUST have a documentation entry.
+  [HD6] Documentation MUST link to @decision and @knowledge references.
+  [HD7] Documentation review is a required gate — not optional.
+  [HD8] Bad documentation (restatement of code) requires rewrite.
+  [HD9] Documentation is validated alongside Done Proof (bax DONE-PROOF.sdd).
+  [HD10] Human-readable docs provide the WHY context for future engineers.
+
+Navigation:
+
+  ExecutionLoop: @execution-loop.sdd
+  DoneProof: @../tasks/DONE-PROOF.sdd
+  LearningGate: @learning-gate.sdd
+  KnowledgeModel: @../concepts/INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  ProjectsDocs: @../projects/{project_name}/docs/INDEX.sdd
+  TasksIndex: @../tasks/INDEX.sdd
+
+State: +

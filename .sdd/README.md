@@ -30,17 +30,114 @@ Humans modify it to change the system.
   INDEX.sdd                Master routing table - how to find everything
   protocol/ROOT.sdd        Universal rules - above everything else
   architecture/            System architecture knowledge
+  concepts/                Canonical concepts and knowledge model (PHASE 122)
+  knowledge/               Knowledge lifecycle, compression, versioning (PHASE 120-122)
+  lessons/                 Negative knowledge and rejected approaches (PHASE 123)
+  references/              Trust-weighted references and evidence graph (PHASE 120)
+  legacy/                  Legacy audit and migration procedures
+  runtime/                 Runtime-only state: memory, context, traces (PHASE 123-124)
   chains/                  Execution graph and rules
   skills/                  Engineering skills (L1-L5)
     devops/                DevOps skills (git, ci-cd, security)
   commands/                CLI commands (/sdd, /sdd-analyze, etc.)
   patterns/                Resilience patterns
-  workflow/               Execution workflows
+  workflow/                Execution workflows
   decisions/               Decision ledger
-  tasks/                   Task lifecycle
+  tasks/                   Task lifecycle (10-state machine, PHASE 124)
   templates/               Reusable project scaffolding
   ...
 ```
+
+### Knowledge Memory Model (PHASE 120-124)
+
+The knowledge memory model is a 4-tier system that governs how AI agents
+acquire, validate, store, and retrieve knowledge during execution:
+
+```
+Long-Term Knowledge  (established concepts, validated skills, architecture decisions)
+       |
+Project Memory       (project-specific rules, module context, decision history)
+       |
+Task Memory           (per-task context loaded during execution, task-scoped skills)
+       |
+Working Memory        (active reasoning context, temporary observations)
+       |
+TMP Memory            (raw observations before concept extraction — not persisted)
+```
+
+**Tier characteristics:**
+
+| Tier | Persistence | TTL | Promotion gate |
+|------|-------------|-----|----------------|
+| TMP | None (runtime) | End of session | Observation threshold |
+| Working | None (runtime) | End of task | Context sufficiency check |
+| Task | .specdd/task-context/ | Task lifecycle | End-of-task consolidation |
+| Project | .sdd/knowledge/ | Persistent | Human or automated review |
+| Long-Term | .sdd/concepts/, .sdd/references/ | Permanent | Deprecated only, never deleted |
+
+**Context Budget (PHASE 123 §10):**
+- Default loading: Level 0 (Long-Term) → Level 1 (Project) → Level 2 (Task)
+- Expand to Level 3 (Domain) and Level 4 (Dependencies) on demand
+- Context sufficiency check: confidence rating MUST be recorded before implementation
+- Human override: `@context.include` and `@context.exclude` directives
+
+**Consolidation Pipeline (end-of-task):**
+1. **DROP**: Temporary or irrelevant observations are discarded
+2. **ARCHIVE**: Candidate knowledge is archived with TTL (30 days default)
+3. **LINK**: Validated knowledge is linked to existing canonical concepts
+4. **PROMOTE**: Established knowledge is promoted to Long-Term tier
+
+**Trust Hierarchy (PHASE 120 §13):**
+Explicit project constraints > decisions > validated project skills >
+established org knowledge > general best practices > AI suggestions
+
+### Knowledge Lifecycle
+
+Every knowledge entry in `.sdd/` follows a lifecycle:
+
+```
+OBSERVED → CANDIDATE → VALIDATED → ESTABLISHED
+              ↓              ↓
+           DEPRECATED ←────────┘
+```
+
+**OBSERVED**: Raw observation from code, test, task, or human input.
+  - Stored in TMP memory or .sdd/lessons/
+  - Has evidence metadata: type, source, timestamp
+
+**CANDIDATE**: Extracted concept or skill not yet validated.
+  - Stored in .sdd/knowledge/
+  - Has trust: low, confidence: estimated
+  - Aging threshold: 30 days without promotion → deprecation review
+
+**VALIDATED**: Concept verified through evidence (tests, production, human review).
+  - Trust: medium, confidence: high
+  - Evidence count >= threshold (configurable per domain)
+  - Links to @concept.* canonical namespace
+
+**ESTABLISHED**: Canonical knowledge used across multiple projects.
+  - Trust: high, confidence: verified
+  - Immutable — deprecated only, never silently overwritten or deleted
+  - Governed by knowledge golden rules (K1-K10)
+
+**DEPRECATED**: No longer valid or superseded by better knowledge.
+  - Archived with `deprecated_reason:` and `replaced_by:` metadata
+  - Retained for audit trail — never silently deleted (K8)
+
+### Per-Project Runtime Artifacts (.specdd/)
+
+Each project instance (`projects/{project_name}/`) contains a `.specdd/`
+directory with runtime artifacts:
+
+| File | Purpose |
+|------|---------|
+| `flow-index.md` | CASE dependency tree (depends-on, related) for `/sdd next` navigation |
+| `fix-index.sdd` | Local fix-lookup table — AI checks before web search |
+| `dependency-ledger.md` | Security and dependency monitoring log |
+| `task-context/` | Per-task context artifacts from execution |
+
+`.specdd/` artifacts are **runtime-only** — they are not part of the immutable
+`.sdd/` specification system and can be updated during execution.
 
 ### Key Principles
 
@@ -49,6 +146,24 @@ Humans modify it to change the system.
 3. **No Duplication**: Global files route only; project files contain details.
 4. **Explicit References**: Use `@path` to reference other files.
 5. **Human Gates**: Every significant change requires human approval.
+
+### Knowledge Golden Rules (K1-K10)
+
+The 10 knowledge principles govern all knowledge operations in `.sdd/`:
+
+1. **Reuse over creation** — Search existing knowledge before creating new concepts.
+2. **Link over copy** — Use `@reference` links instead of duplicating content.
+3. **Specialize over duplicate** — Extend existing concepts rather than creating variants.
+4. **Evidence over assumption** — Every knowledge entry must have evidence metadata.
+5. **Canonical over synonyms** — Use the canonical namespace (`@concept.*`).
+6. **Never silently learn** — All knowledge additions require explicit promotion or human approval.
+7. **Never silently overwrite** — Existing knowledge entries must be deprecated before replacement.
+8. **Never silently delete** — Deprecated knowledge is archived, not removed.
+9. **Scope project rules** — Project-specific rules do not propagate to global `.sdd/`.
+10. **Preserve rationale** — Every decision must include why it was made and what evidence supports it.
+
+These rules are encoded in `.sdd/knowledge/GOLDEN-RULES.sdd` and enforced by
+the AI runtime during knowledge consolidation.
 
 ### File Format
 
@@ -329,6 +444,16 @@ Every developer MUST run:
 | `.sdd/patterns/` | Resilience patterns |
 | `.sdd/workflow/` | Execution workflows |
 | `.sdd/commands/` | CLI commands |
+| `.sdd/architecture/` | System architecture knowledge |
+| `.sdd/concepts/` | Canonical concepts and knowledge model |
+| `.sdd/knowledge/` | Knowledge lifecycle, compression, versioning |
+| `.sdd/lessons/` | Negative knowledge and rejected approaches |
+| `.sdd/references/` | Trust-weighted references and evidence graph |
+| `.sdd/runtime/` | Runtime-only state (memory, context, traces) |
+| `.sdd/legacy/` | Legacy audit and migration procedures |
+| `.sdd/tasks/` | Task lifecycle (10-state machine) |
+| `.sdd/commands/sdd-analyze.sdd` | System analysis (knowledge, .specdd/) |
+| `projects/{project_name}/.specdd/` | Per-project runtime artifacts |
 | `prompts/` | Root-level prompt registry |
 | `project/` | Concrete source code |
 | `old/` | Archived external assets |

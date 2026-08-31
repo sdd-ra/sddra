@@ -1,22 +1,117 @@
 # /sdd-analyze
 
-Description:
+Purpose:
   Analyze and explain the .sdd/ system structure. Read-only — does not
-  modify any files.
+  modify any files. Performs integrated analysis across .sdd/ and .specdd/
+  runtime artifacts.
+
+Owns: commands\sdd-analyze.sdd
+
+Description:
+  Multi-mode system analysis command. Scans .sdd/ specifications,
+  .specdd/ runtime artifacts, and knowledge health. Produces an integrated
+  analysis report covering system health, knowledge integrity, and
+  recommended next steps.
 
 Usage:
   /sdd-analyze
   /sdd-analyze --chains
   /sdd-analyze --decisions
   /sdd-analyze --project
+  /sdd-analyze --knowledge
+  /sdd-analyze --specdd
+  /sdd-analyze --all
 
 Options:
   --chains     Focus on chain graph
   --decisions  Focus on decision ledger
   --project    Focus on project structure
+  --knowledge  Focus on knowledge health (references, trust, lifecycle status)
+  --specdd     Focus on .specdd/ runtime artifacts (flow-index, fix-index)
+  --all        Full integrated analysis (default when no option specified)
+
+ScanScope:
+  sdd_specs:
+    - @INDEX.sdd
+    - @PROJECT.sdd
+    - @protocol/ROOT.sdd
+    - @architecture/INDEX.sdd
+    - @chains/graph.sdd
+    - @workflow/INDEX.sdd
+    - @tasks/tasks.sdd
+    - @commands/INDEX.sdd
+
+  knowledge_system:
+    - @concepts/KNOWLEDGE-MODEL.sdd
+    - @knowledge/KNOWLEDGE-LIFECYCLE.sdd
+    - @references/INDEX.sdd
+    - @knowledge/GOLDEN-RULES.sdd
+    - @lessons/REJECTED-APPROACHES.sdd
+    - trust metadata validation
+    - lifecycle status (OBSERVED -> CANDIDATE -> VALIDATED -> ESTABLISHED)
+    - evidence type coverage (CODE, TEST, TASK, DECISION, PROJECT,
+      PRODUCTION, EXTERNAL, HUMAN)
+    - orphaned or stale knowledge entries
+    - duplicate concepts detection
+
+  specdd_artifacts:
+    - .specdd/flow-index.md (CASE dependency tree: depends-on, related)
+    - .specdd/fix-index.sdd (problem -> fix lookup table)
+    - .specdd/dependency-ledger.md (security and dependency state)
+    - .specdd/task-context/ (per-task context artifacts)
+    - fix-index integrity (entries are linked, not orphaned)
+    - flow-index acyclicity (depends-on tree has no cycles)
+    - dependency-ledger currency (no unresolved security findings)
+
+  runtime_state:
+    - @runtime/memory-model.sdd (4-tier memory health)
+    - @runtime/context-builder.sdd (context loading completeness)
+    - context budget utilization (current level vs. allowed levels)
 
 Output:
-  System overview, chain graph, decisions, project modules,
-  and recommended next steps.
+  Integrated analysis report containing:
+    SystemOverview:
+      - .sdd/ file count and header validity
+      - Reference resolution health (broken @references)
+      - Navigation consistency
+
+    KnowledgeHealth:
+      - Reference count by status (OBSERVED, CANDIDATE, VALIDATED, ESTABLISHED, DEPRECATED)
+      - Trust distribution across knowledge hierarchy
+      - Evidence coverage ratio (entries with evidence / total entries)
+      - Stale entries (older than 30 days without status change)
+      - Orphaned concepts (no @reference links)
+      - Duplicate concepts (same-as conflicts)
+      - Knowledge gaps (CANDIDATE aging without promotion)
+
+    SpecDDAnalysis:
+      - Flow index: open vs. completed CASE dependencies
+      - Fix index: coverage count, last-updated entries, recurrence patterns
+      - Dependency ledger: open vs. resolved CVEs, remediation status
+      - Task context: loaded vs. missing context per active task
+
+    IntegratedFindings:
+      - Cross-artifact conflicts (e.g. flow-index references non-existent CASE)
+      - Knowledge-to-code traceability gaps
+      - Recommended next actions prioritized by risk
+      - Suggested knowledge promotions (CANDIDATE -> VALIDATED)
+
+    RecommendedNextSteps:
+      - Prioritized action list with rationale
+      - Risk and effort estimates per action
+
+Rules:
+  [A1] /sdd-analyze MUST NOT modify any file — read-only operation.
+  [A2] /sdd-analyze MUST resolve all @references before reporting broken links.
+  [A3] /sdd-analyze MUST scan .specdd/ artifacts when --specdd or --all is used.
+  [A4] /sdd-analyze MUST validate flow-index acyclicity when --specdd is used.
+  [A5] /sdd-analyze MUST cross-reference fix-index with open tasks when --all is used.
+  [A6] /sdd-analyze MUST NOT expose secrets or credentials in output.
+  [A7] /sdd-analyze MUST report knowledge health metrics when --knowledge or --all is used.
+  [A8] /sdd-analyze MUST flag stale knowledge entries (>30 days without promotion).
+  [A9] /sdd-analyze output format is structured text — suitable for both human and AI consumption.
+  [A10] /sdd-analyze MUST report broken @references even in partial (--chains, --decisions) mode.
 
 State: +
+   (extended to scan .specdd/ runtime artifacts and knowledge health per PHASE 120-124)
+   (integrated analysis output covering .sdd/ specs, .specdd/ runtime, and knowledge system)

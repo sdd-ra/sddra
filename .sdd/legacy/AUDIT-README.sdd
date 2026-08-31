@@ -1,0 +1,35 @@
+# Legacy Audit
+
+Purpose:
+  One-time transition procedure for pre-existing (vibe-coded) code before CASE spec creation.
+  Reviews existing code against the 5-step skill chain and records findings as tasks.
+
+Owns: legacy\AUDIT-README.sdd
+
+## Procedure
+
+Trigger:
+  When a new .sdd spec is created for an existing BE/FE/MD directory.
+
+Steps:
+  1. Read real code in the target directory.
+  2. Review against the 5-step skill chain (FEATURE → FIX → BUG → SECURITY-REVIEW → ULTRA-REVIEW) in review mode.
+  3. IF no findings:
+       - CASE Tasks list starts fully marked [x].
+  4. IF findings exist:
+       - Add each finding as [ ] in the CASE Tasks list.
+       - Annotate continuation line with: `origin: legacy-audit`
+
+## Task Annotation Format
+
+Tasks:
+  [ ] #1 {finding description}
+      origin: legacy-audit, attempt_count: 0/3
+
+## Lifecycle
+
+Legacy_Status: pending|in_progress|completed
+Audit_Date: <timestamp>
+Auditor: <agent or human>
+
+State: +

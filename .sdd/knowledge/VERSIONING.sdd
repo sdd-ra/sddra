@@ -1,0 +1,97 @@
+Category: Knowledge Versioning
+Purpose:
+  Defines knowledge versioning with history preservation,
+  change tracking, rollback procedures, and promotion rules.
+  Ensures every knowledge change is traceable and reversible.
+
+Owns: ./
+
+Versioning Schema:
+
+  Every knowledge element has a version field:
+
+    @skill.repository
+      v: 1
+      definition: repository owns persistence
+      changed_reason: initial definition
+      changed_at: <timestamp>
+      changed_by: <agent/human>
+
+  On change, version increments:
+
+    v1:
+      definition: repository owns persistence
+      changed_reason: initial definition
+
+    v2:
+      definition: repository owns persistence, but domain policy remains outside
+      changed_reason: observed 4 production cases requiring policy separation
+
+Versioning Rules:
+  [V1] Every change MUST increment the version number.
+  [V2] Every version MUST have a changed_reason field.
+  [V3] Every version MUST record changed_at timestamp.
+  [V4] Every version MUST record changed_by (agent or human).
+  [V5] Previous versions are preserved — never overwritten.
+  [V6] The latest active version is the default reference target.
+
+Change Tracking:
+
+  changed_reason MUST reference evidence:
+    - @project.<name>      — which project triggered the change
+    - @review.<id>         — which review identified the need
+    - @decision.<id>       — which decision mandated the change
+    - @observation.<type>  — what was observed in code/production
+
+  Example:
+    changed_reason:
+      observed: 4 production cases of policy leakage
+      decision: @decision.088
+      project: @project.payment
+
+Rollback Procedure:
+
+  Trigger: regression detected in production from new knowledge pattern.
+
+  Steps:
+    1. Identify problematic version (e.g., v3).
+    2. Mark status: deprecated.
+    3. Revert to last known stable version (e.g., v2).
+    4. Record rollback reason and evidence.
+    5. Create candidate for alternative approach.
+
+  State transitions:
+    v3 (active) → v3 (deprecated) → v2 (active)
+
+  Example:
+    @skill.new-pattern
+      v: 3
+      status: deprecated
+      rollback_to: v2
+      rollback_reason: production incident INC-2041
+
+Version Promotion Rules:
+
+  Knowledge progresses through trust levels:
+
+    CANDIDATE     — newly observed, unvalidated
+    VALIDATED      — confirmed by evidence or human review
+    ESTABLISHED    — proven across multiple projects/tasks
+    DEPRECATED     — superseded or disproven
+
+  Promotion conditions:
+    CANDIDATE → VALIDATED:    evidence from ≥1 project + human review
+    VALIDATED → ESTABLISHED:  evidence from ≥3 projects or ≥5 tasks
+    ANY → DEPRECATED:         contradicted by evidence or replaced
+
+  [P1] AI MUST NOT promote knowledge without meeting evidence thresholds.
+  [P2] Human can manually promote/demote at any time.
+  [P3] Promoted knowledge inherits version history.
+  [P4] Deprecated knowledge remains visible with status label.
+
+Navigation:
+  Compression: @COMPRESSION.sdd
+  Golden Rules: @GOLDEN-RULES.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+
+State: +

@@ -1,0 +1,148 @@
+# Tasks: EXECUTION-CONTRACT
+
+Purpose:
+  Define the per-task execution contract that the AI must establish
+  before beginning autonomous work. The contract declares the goal,
+  allowed scope, forbidden actions, approval requirements, budgets,
+  and autonomy level. The AI then operates strictly within this contract.
+
+Owns:
+  Execution contract schema
+  Plan immutability vs evolution
+  Execution trace format
+  Execution summary format
+
+Contract:
+
+  schema:
+    task_id: string (e.g. TASK-1023)
+    goal: string (single primary objective)
+    allowed: [paths or scopes]
+    allowed_actions: [code, tests, docs, config, refactor, research]
+    forbidden: [actions, paths, or changes]
+    approval_required: [trigger conditions needing human approval]
+    max_iterations: integer
+    max_failure_budget: integer (severity-weighted)
+    autonomy: L0 | L1 | L2 | L3 | L4 | L5
+    plan_version: integer (starts at 1)
+    state: current task state (bax TASK-STATE-MACHINE.sdd)
+
+  Example:
+    TASK EXECUTION CONTRACT
+    task_id: TASK-1023
+    goal:
+      implement refund
+    allowed:
+      backend/payment
+    allowed_actions:
+      code
+      tests
+      docs
+    forbidden:
+      DB destructive migration
+    approval_required:
+      public API change
+    max_iterations: 8
+    max_failure_budget: 5
+    autonomy: L3
+    plan_version: 1
+    state: PLANNING
+
+PlanEvolution:
+
+  principle: plan is NOT immutable — it evolves with new evidence
+  rule: plan changes MUST be recorded with reason and evidence
+  rule: reverting a plan counts as plan_reverted (+20 LOOP_SCORE)
+  rule: plan evolution triggered by new evidence is encouraged
+  rule: plan thrashing (flip-flop without new evidence) triggers
+        loop protection
+
+  PlanChangeLog:
+    PLAN CHANGE
+    task_id: TASK-1023
+    from:
+      direct event publish
+    to:
+      transactional outbox
+    reason:
+      discovered existing project decision @decision.outbox-for-provider-events
+    evidence:
+      - @references/architecture/event-driven.sdd
+      - prior task TASK-1018 found deadlock with direct publish
+
+ExecutionTrace:
+
+  format:
+    #01 <action> <result>
+    #02 <action> <result>
+    ...
+
+  rules:
+    [ET1] Every significant action gets a trace entry.
+    [ET2] Failure entries MUST classify the failure (bax
+          FAILURE-CLASSIFICATION.sdd).
+    [ET3] Trace entries MUST be numbered sequentially per task.
+    [ET4] Trace is runtime-only — compressed into knowledge at task end.
+
+  Example:
+    #01 Discover
+    #02 Load @payment.idempotency
+    #03 Plan transaction
+    #04 Implement
+    #05 Test
+    #06 Failure: ENVIRONMENT_FAILURE — missing provider credentials
+    #07 Analyze
+    #08 Change locking order
+    #09 Test
+    #10 Pass
+    #11 Review
+    #12 Complete
+
+ExecutionSummary:
+
+  format:
+    TASK-<ID> SUMMARY
+    Goal: <goal>
+    Result: completed | blocked | escalated | partially_completed
+    Iterations: <n>
+    Tests: <count> passed
+    Architecture: valid | invalid
+    New knowledge: @skill.* or @decision.* (or none)
+    Important decision: @decision.* (or none)
+    Failed approach: <description> (or none)
+
+  rules:
+    [ES1] Summary is the persistent artifact from runtime trace.
+    [ES2] Runtime trace (100+ events) collapses into: important
+          decisions + new skills + failed approaches.
+    [ES3] Summary is human-readable and machine-parseable.
+
+Rules:
+
+  [EC1] AI MUST establish the execution contract before starting a task.
+  [EC2] AI MUST NOT perform actions outside `allowed_actions`.
+  [EC3] AI MUST NOT modify files outside `allowed` scope.
+  [EC4] AI MUST stop immediately when a `forbidden` action is required
+        to meet the goal — this is a CONSTRAINT_FAILURE.
+  [EC5] AI MUST request human approval before any action matching
+        `approval_required`.
+  [EC6] `max_iterations` and `max_failure_budget` are enforced by
+        LOOP-PROTECTION.sdd.
+  [EC7] `autonomy` level determines what the AI can do without approval
+        (bax AUTONOMY-POLICY.sdd).
+  [EC8] Plan changes MUST record the reason — plan thrashing is forbidden.
+  [EC9] Every task MUST produce an execution summary at completion.
+  [EC10] The contract is the boundary — crossing it without approval
+         is a violation.
+
+Navigation:
+
+  StateMachine: @TASK-STATE-MACHINE.sdd
+  LoopProtection: @LOOP-PROTECTION.sdd
+  FailureClassification: @FAILURE-CLASSIFICATION.sdd
+  AutonomyPolicy: @AUTONOMY-POLICY.sdd
+  DoneProof: @DONE-PROOF.sdd
+  PartialDone: @PARTIAL-DONE.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +
