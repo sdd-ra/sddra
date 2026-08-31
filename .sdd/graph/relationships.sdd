@@ -1,0 +1,67 @@
+# Relationship Rules
+
+Spec: RelationshipRules
+Purpose:
+  Define the rules that constrain how nodes in the engineering graph
+  can relate to each other. Prevents AI from creating arbitrary
+  relationships — every edge must be typed and follow the schema.
+
+Owns: graph/relationships.sdd
+
+NodeTypes:
+  @concept.*     — abstract, reusable knowledge
+  @reference.*   — trust-weighted engineering knowledge
+  @skill.*       — concrete implementation guidance
+  @decision.*    — human-approved project choices
+  @architecture.* — structural design decisions
+  @code.*        — implementation artifacts
+  @test.*        — verification artifacts
+  @task.*        — executable work units
+  @agent.*       — execution roles
+  @proof.*       — verification results
+  @failure.*     — recorded failure patterns
+  @document.*    — documentation artifacts
+
+RelationshipSchema:
+  TASK --USES--> SKILL
+  TASK --REQUIRES--> CONCEPT
+  TASK --IMPLEMENTS--> ARCHITECTURE
+  TASK --VERIFIED_BY--> PROOF
+  TASK --DEPENDS_ON--> TASK
+  TASK --CONSUMES--> ARTIFACT
+  TASK --PRODUCES--> ARTIFACT
+
+  SKILL --BUILDS_ON--> CONCEPT
+  SKILL --REFERENCES--> REFERENCE
+
+  DECISION --BASED_ON--> EVIDENCE
+  DECISION --SELECTS--> ARCHITECTURE
+  DECISION --SUPERSEDES--> DECISION
+
+  ARCHITECTURE --APPLIES_TO--> DOMAIN
+  ARCHITECTURE --BASED_ON--> REFERENCE
+
+  CONCEPT --SAME_AS--> CONCEPT
+  CONCEPT --EXTENDS--> CONCEPT
+  CONCEPT --DEPENDS_ON--> CONCEPT
+  CONCEPT --CONFLICTS_WITH--> CONCEPT
+
+  CODE --IMPLEMENTS--> TASK
+  CODE --RELATES_TO--> CODE
+  CODE --CONFLICTS_WITH--> CODE
+
+  TASK --CAUSED_BY--> INCIDENT (reverse: INCIDENT --AFFECTS--> TASK)
+
+RelationshipRules:
+  [R1] Every relationship MUST have a typed edge, not a generic "related"
+  [R2] AI MAY NOT override relationship constraints without approval
+  [R3] Circular dependencies between tasks MUST be detected (GR5 in INDEX)
+  [R4] Conflicting decisions MUST be flagged, not resolved by AI
+  [R5] Deprecated relationships MUST be marked, not silently removed
+
+NoSilentConflict:
+  principle: AI must not silently choose between conflicting positions
+  flow:
+    CONFLICT → DECISION_REQUIRED → HUMAN REVIEW → DECISION
+
+State: +

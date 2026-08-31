@@ -1,0 +1,105 @@
+# Evolution Engine
+
+Spec: Evolution
+Purpose:
+  Define the system evolution framework: how the .sdd system evolves
+  itself through change records, why-changed attribution, migration
+  tracking, and evolution health metrics. This enables architecture
+  archaeology — answering "why does this code exist?" from historical
+  context.
+
+Owns: timeline/evolution.sdd
+
+Change Record:
+  @change.CH-204
+  type: ARCHITECTURE
+  from: modular-monolith@4
+  to: modular-monolith@5
+  reason: payment isolation
+  decision: DEC-88
+  impact:
+    payment/*
+
+Why Changed:
+  Every change record MUST include a "why":
+
+  WHY: Payment provider introduced asynchronous settlement.
+
+  This is critical for future AI understanding.
+
+Before/After:
+  Before: Payment was synchronous.
+  After: Payment settlement is asynchronous.
+  Why: Provider latency and retry behavior.
+
+  This human-readable format becomes valuable over time.
+
+Architecture Archaeology:
+  @skill.architecture-archaeology
+
+  Input:
+    code, git history, .sdd history, decisions, migrations
+
+  Output:
+    why this exists
+    when introduced
+    what problem it solved
+    whether still valid
+
+Evolution Health:
+  New metric tracked:
+
+  Evolution Health: 92%
+  Stale skills: 3
+  Pending migrations: 2
+  Historical conflicts: 1
+  Unresolved evolution debt: 4
+
+Stale Knowledge Detection:
+  Graph detects orphaned knowledge:
+    @skill.old-payment
+    references: 0
+    used_by: 0
+    status: DORMANT (not immediately deleted)
+
+  Status levels: ACTIVE, DORMANT, DEPRECATED, ARCHIVED
+
+Impact Analysis:
+  Change to @concept.idempotency propagates through graph:
+    affected skills: 4
+    affected tasks: 12
+    affected architecture decisions: 3
+    affected docs: 8
+    affected tests: 17
+
+  Blast radius: HIGH
+
+  If blast_radius = HIGH:
+    Use plan → impact review → execute
+  Instead of automatic execution.
+
+Change Propagation:
+  When DEC-88 is deprecated:
+    find dependent skills
+    find dependent tasks
+    find dependent docs
+    find dependent proofs
+    → STALE_DEPENDENCY
+
+  This connects to Knowledge Debt:
+    OLD DECISION → DEPENDENT SKILL → OLD DOC → OLD TASK TEMPLATE
+    If not updated → EVOLUTION_DEBT
+
+Evolution Review:
+  @skill.evolution-review
+
+  When architecture changes:
+    What changed?
+    Why?
+    What depends on it?
+    What becomes stale?
+    Which skills need update?
+    Which docs need update?
+    Which tests need update?
+
+State: +

@@ -1,0 +1,38 @@
+# Evolution: Discovery & Challenges
+
+Spec: EvolutionDiscovery
+Purpose:
+  Define discovery records, decision challenges, and the flow
+  from unknown to research task to resolved knowledge.
+
+Owns: evolution/discovery.sdd
+
+DiscoveryFlow:
+  OBSERVE → DISCOVER → CLASSIFY → COMPARE → GAP? → PROPOSE → VALIDATE → PROMOTE → VERSION → RE-EVALUATE
+
+UnknownRegistry:
+  @unknown.U44
+  question: "Should refund retry happen before or after transaction commit?"
+  context: payment/refund
+  status: unresolved
+
+  flow: unknown → research_task → reference → answer → decision → RESOLVED
+
+ResearchTask:
+  created_from: @unknown.U44
+  id_format: @task.RESEARCH-NNN
+  fields:
+    problem: root cause description
+    goal: identify root cause
+    does_not_modify: production code (investigation only)
+
+ResearchOutcome:
+  RESEARCH → REFERENCE → ANSWER → DECISION
+  unknown: RESOLVED
+
+EvolutionPrinciples:
+  [E1] System must prefer discovering and extending existing knowledge over creating duplicates
+  [E2] No knowledge becomes canonical merely because AI generated it
+  [E3] Every important evolution must have evidence, provenance, and a reason
+
+State: +

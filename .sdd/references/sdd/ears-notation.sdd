@@ -1,0 +1,49 @@
+# EARS Notation Reference
+
+Spec: EARSNotation
+Purpose:
+  Reference for EARS (Easy Approach to Requirements Syntax) notation,
+  used in SDD specifications to produce testable, AI-parseable
+  requirements.
+
+Owns: references/sdd/ears-notation.sdd
+
+Origin:
+  Created by Alistair Mavin and colleagues at Rolls-Royce, 2009
+  Adopted by SDD frameworks (AWS Kiro, GitHub Spec Kit, BMAD-METHOD)
+
+FivePatterns:
+
+  Ubiquitous:
+    "The system shall log every authentication attempt."
+    Always true, no specific trigger.
+
+  Event-driven:
+    "WHEN [trigger] THE [system] SHALL [response]"
+    Example: "WHEN a user submits the login form THE system SHALL validate credentials."
+
+  State-driven:
+    "WHILE [state] THE [system] SHALL [behavior]"
+    Example: "WHILE a sync is in progress THE system SHALL display a non-dismissable progress indicator."
+
+  Unwanted-behavior:
+    "IF [condition] THEN THE [system] SHALL [response]"
+    Example: "IF credential validation fails three times in 60 seconds THEN THE system SHALL lock the account for 15 minutes."
+
+  Optional-feature:
+    "WHERE [feature is included] THE [system] SHALL [behavior]"
+    Example: "WHERE multi-factor authentication is enabled THE system SHALL require a TOTP code after password validation."
+
+UsageInSDD:
+  Each EARS pattern collapses to a single testable claim.
+  No ambiguity about scope, trigger, or response.
+  AI can read, generate code, and write tests — all without guessing.
+
+Constitution:
+  The project "constitution" is essentially a list of ubiquitous
+  EARS statements about the project itself:
+    - The system shall use TypeScript strict mode.
+    - The system shall reject PRs that lower test coverage.
+    - The system shall avoid runtime dependencies on unmaintained packages.
+
+State: +

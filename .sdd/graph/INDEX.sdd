@@ -14,6 +14,7 @@ Modes:
   SECURITY  — security analysis context
   SUPPORT   — support/troubleshooting context
   AUDIT     — full traceability audit
+  ARCHAEOLOGY — historical context reconstruction
 
 Rules:
   [GR1]  Graph stores relationships, NOT copies of source files.
@@ -28,13 +29,21 @@ Rules:
   [GR10] Graph MUST detect untraceable changes.
   [GR11] Decision history MUST be preserved (SUPERSEDES).
   [GR12] Graph MUST support scale-aware analysis.
+  [GR13] Graph MUST support archaeology mode (historical reconstruction).
+  [GR14] Graph MUST support self-test for consistency and completeness.
 
 ReadOrder:
    1  @model.sdd
+   2  @relationships.sdd
+   3  @traversal.sdd
+   4  @health.sdd
 
 Navigation:
   Graph: @graph/INDEX.sdd
   Model: @graph/model.sdd
+  Relationships: @graph/relationships.sdd
+  Traversal: @graph/traversal.sdd
+  Health: @graph/health.sdd
   ProjectGraph: @projects/{project_name}/graph/INDEX.sdd
 
 State: +

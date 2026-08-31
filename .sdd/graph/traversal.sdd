@@ -1,0 +1,77 @@
+# Graph Traversal
+
+Spec: GraphTraversal
+Purpose:
+  Define traversal patterns for the engineering knowledge graph.
+  These enable AI to answer "why" and "what if" questions by
+  following typed relationship chains.
+
+Owns: graph/traversal.sdd
+
+ReadOrder:
+  1  @INDEX.sdd
+  2  @model.sdd
+  3  @relationships.sdd
+
+TraversalModes:
+  IMPLEMENT       — task implementation context
+  DEBUG           — incident debugging context
+  SECURITY        — security analysis context
+  SUPPORT         — support/troubleshooting context
+  AUDIT           — full traceability audit
+  ARCHAEOLOGY     — historical context reconstruction
+
+PathQuery:
+  example:
+    @task.T2041
+      → USES → @skill.idempotency
+      → REQUIRES → @concept.transaction
+      → DEFINED_BY → @reference.R12
+
+  purpose: path becomes reasoning evidence for AI decisions
+
+WhyChain:
+  question: "Why is this code written this way?"
+  path:
+    CODE → TASK → DECISION → ARCHITECTURE → PRINCIPLE → REFERENCE
+
+  example:
+    refund/service.go
+      ↓
+    T2041
+      ↓
+    D88
+      ↓
+    DDD
+      ↓
+    Domain Isolation
+      ↓
+    Architecture Reference
+
+WhyNotChain:
+  question: "Why was the alternative not chosen?"
+  path:
+    DECISION
+      ├── SELECTED → architecture
+      └── REJECTED → alternative
+        reason: "insufficient domain complexity"
+
+  principle: Növbəti səviyyədə AI həm "nə etdik"ı deyil,
+  "nəyi niyə etmədik"ı da bilir.
+
+ImpactAnalysis:
+  question: "What breaks if @concept.transaction changes?"
+  computation:
+    affected skills: 4
+    affected tasks: 12
+    affected architecture decisions: 3
+    affected docs: 8
+    affected tests: 17
+
+  output: BLAST_RADIUS with domain breakdown
+
+  ChangeImpactGate:
+    if blast_radius = HIGH:
+      automatic execution → plan → impact review → execute
+
+State: +

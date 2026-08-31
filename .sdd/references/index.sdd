@@ -61,7 +61,9 @@ Navigation:
   Patterns: @patterns
   Database: @database
   Engineering: @engineering
-  BestPractices: @best-practices
+  BestPractices: @sdd/best-practices.sdd
+  SDDTools: @sdd/tool-comparison.sdd
+  EARSNotation: @sdd/ears-notation.sdd
 
 DecisionGuide:
   Need domain modeling?

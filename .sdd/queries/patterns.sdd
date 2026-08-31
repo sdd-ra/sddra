@@ -1,0 +1,44 @@
+# Query Language: Patterns
+
+Spec: QueryPatterns
+Purpose:
+  Document common query patterns used by AI and human users
+  when navigating the engineering knowledge graph.
+
+Owns: queries/patterns.sdd
+
+CommonPatterns:
+
+  "Show me all architecture decisions for payment"
+    → @domain:payment shows decisions
+
+  "Why does this code exist?"
+    → CODE → TASK → DECISION → ARCHITECTURE → PRINCIPLE → REFERENCE
+
+  "What will break if I change idempotency?"
+    → @impact:@concept.idempotency
+    → shows affected skills, tasks, decisions, docs, tests
+
+  "Which skills have no proof?"
+    → @skill where proof=none
+
+  "Find duplicated concepts"
+    → find concepts with >90% semantic overlap
+
+  "Show unknowns blocking this task"
+    → @unknown:blocking @task.T2041
+
+  "Show architecture drift"
+    → compare @decision.D88 (says DDD) vs actual code structure
+
+  "What alternatives were considered for this decision?"
+    → @decision.D88 → REJECTED → alternatives + reasons
+
+PatternLibrary:
+  Archaeology:  CODE → TASK → DECISION → ARCHITECTURE → PRINCIPLE → REFERENCE
+  ImpactAnalysis: CONCEPT → [USES] → SKILLS → TASKS → DECISIONS → DOCS → TESTS
+  UnknownTracking: UNKNOWN → RESEARCH_TASK → DECISION
+  EvolutionTrace: OLD_KNOWLEDGE → CHALLENGE → NEW_DECISION → PROMOTION
+  FailureAnalysis: FAILURE → ROOT_CAUSE → KNOWLEDGE_UPDATE → SKILL_UPDATE
+
+State: +

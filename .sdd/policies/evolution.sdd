@@ -1,0 +1,78 @@
+# Evolution Policy
+
+Spec: EvolutionPolicy
+Purpose:
+  Define approval levels for system evolution. AI may detect
+  potential knowledge evolution, but must NEVER silently change
+  core rules, architecture, or policies. Every evolution must
+  pass through the appropriate approval gate.
+
+Owns: policies/evolution.sdd
+
+ApprovalLevels:
+  AUTO:
+    changes:
+      - add reference link
+      - update usage counter
+      - create task relationship
+    rule: AI may execute without approval
+
+  ASSISTED:
+    changes:
+      - create candidate skill
+      - merge aliases
+      - suggest concept
+    rule: AI proposes; system validates
+
+  REVIEW:
+    changes:
+      - architecture change
+      - new global skill
+      - change project rule
+    rule: requires human review before promotion
+
+  HUMAN_ONLY:
+    changes:
+      - security policy
+      - production architecture
+      - compliance rule
+      - destructive migration
+    rule: AI creates proposal only; human must approve
+
+LevelAssignment:
+  CONCEPT:            AUTO
+  PROJECT_SKILL:      ASSISTED
+  ARCHITECTURE:       REVIEW
+  GLOBAL_RULE:        HUMAN_ONLY
+
+  rule: AI must NOT auto-create canonical concepts from single observation
+
+EvolutionBudget:
+  max_new_concepts_per_task: 3
+  max_new_skills_per_task: 1
+  max_architecture_changes_per_task: 0
+
+  rule: EVOLUTION_LIMIT_EXCEEDED → defer candidates, create knowledge review task
+
+  KnowledgeExplosionProtection:
+    if AI attempts: 1 task → 14 concepts → 9 skills → 4 rules → 3 architectures
+    system: EVOLUTION_LIMIT_EXCEEDED
+    action: defer candidates, create separate review task
+
+CandidatePool:
+  .sdd/evolution/
+    ├── candidates/
+    ├── challenges/
+    ├── proposals/
+    └── approved/
+
+  Lifecycle: /tmp → /inbox → /candidates → /validated → /knowledge
+
+InboxLifecycle:
+  TMP     → ephemeral, may be deleted
+  INBOX   → potentially valuable but unclassified
+  CANDIDATES → proposed concepts awaiting validation
+  VALIDATED   → confirmed by evidence
+  KNOWLEDGE   → canonical, versioned, referenceable
+
+State: +

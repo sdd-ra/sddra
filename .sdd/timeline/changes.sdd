@@ -1,0 +1,71 @@
+# Temporal Knowledge
+
+Spec: TemporalKnowledge
+Purpose:
+  Define how temporal knowledge (valid_from / valid_until) is recorded,
+  queried, and reconciled. Temporal awareness lets AI answer historical
+  context questions without creating duplicate concepts for each era.
+
+Owns: timeline/changes.sdd
+
+Temporal Validity:
+  Every time-sensitive knowledge entry MUST carry:
+    valid_from: timestamp when the entry became valid
+    valid_until: timestamp when the entry was superseded (or "now")
+
+  Example:
+    @architecture.modular-monolith
+    valid:
+      2026-01-01 → 2027-06-15
+
+    @architecture.microservices
+    valid:
+      2027-06-15 → now
+
+Versioning Policy:
+  Versioning is NOT based on file edits. Version increments only occur on
+  semantic changes. Cosmetic changes (typo, formatting, comment) do NOT
+  trigger a version bump.
+
+  Semantic change triggers:
+    - architecture changed
+    - decision changed
+    - skill behavior changed
+    - policy changed
+    - constraint added or removed
+
+Semantic Change Classification:
+  COSMETIC      — typo, formatting, comment only
+  CONTENT       — factual information added/removed
+  SEMANTIC      — meaning changed (same structure, different interpretation)
+  BEHAVIORAL    — skill/decision behavior changed
+  ARCHITECTURAL — architecture pattern or boundary changed
+  POLICY        — rules or governance changed
+
+  Example:
+    "Use PostgreSQL" → "Use PostgreSQL for transactional data"
+    → SEMANTIC_CHANGE
+
+    "PostgreSQL" → "PostgreSQL "
+    → COSMETIC (formatting only)
+
+Version Semantics (MAJOR.MINOR.PATCH):
+  MAJOR → behavior/contract significantly changed
+  MINOR → new capability added (backward compatible)
+  PATCH → correction/improvement (backward compatible)
+
+  Example:
+    @skill.code-review v3.2.1
+
+Skill Evolution:
+  Skills evolve through versions. Existing tasks are NOT automatically
+  upgraded to newer versions. This preserves historical reproducibility.
+
+  Task context pins specific versions:
+    skills:
+      code-review@1.0
+      ddd@2.1
+
+  This is the snapshot of the task's environment.
+
+State: +

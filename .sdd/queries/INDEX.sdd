@@ -1,0 +1,64 @@
+# SDD Query Language
+
+Spec: QueryLanguage
+Purpose:
+  Define the query language for the .sdd system. Enables both
+  human and AI to query the engineering knowledge graph with
+  short, expressive syntax. No SQL or GraphQL required.
+
+Owns: queries/
+
+SyntaxExamples:
+  @payment                          — show all knowledge related to payment
+  @ddd where used=true              — show DDD references that are active
+  show all architecture decisions affecting @payment
+  why @task.T2041 uses @skill.idempotency?
+  what breaks if @concept.transaction changes?
+  find duplicated concepts
+  find skills that have no proof
+  show unknowns blocking @task.T2041
+  show all architecture drift
+
+SimpleSyntax:
+  @<concept>                — resolve concept and show related knowledge
+  @<type>:<state>           — filter by state (e.g., @task:open, @skill:active)
+  @impact:<concept>         — show blast radius of changing a concept
+  @unknown:<scope>          — show unknowns (e.g., @unknown:blocking, @unknown:all)
+  @risk:<level>             — show tasks at risk level (e.g., @risk:high)
+  @domain:<name>            — show all knowledge scoped to a domain
+
+QueryTypes:
+  ConceptResolution:
+    @payment → architecture + concepts + skills + decisions + tasks + tests
+
+  StateFilter:
+    @task:open         — tasks not yet completed
+    @skill:active      — skills currently in use
+    @decision:approved — approved decisions
+    @proof:pending     — proofs awaiting verification
+
+  ImpactAnalysis:
+    @impact:@concept.idempotency
+    → affected skills, tasks, decisions, docs, tests
+
+  UnknownTracking:
+    @unknown:blocking    — unknowns blocking active tasks
+    @unknown:unresolved  — all unresolved questions
+
+RiskAware:
+  @risk:high    — high-risk tasks/decisions
+  @risk:medium  — medium-risk items
+
+DomainScoped:
+  @domain:payment     — payment domain knowledge
+  @domain:auth        — authentication domain
+
+ReadOrder:
+  1  @syntax.sdd
+  2  @patterns.sdd
+
+Navigation:
+  Syntax: @syntax.sdd
+  Patterns: @patterns.sdd
+
+State: +

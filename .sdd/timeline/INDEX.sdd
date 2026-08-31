@@ -1,0 +1,29 @@
+# Timeline System
+
+Spec: Timeline
+Purpose:
+  Provide temporal awareness to the .sdd system. The system must not only
+  answer "what is true?" but also "what was true when?" and ""why did it change?"
+  This is critical for historical code analysis, legacy system understanding,
+  and audit trails on long-running projects.
+
+Owns: timeline/
+
+Navigation:
+  Changes: @changes.sdd
+  Snapshots: @snapshots.sdd
+  Migrations: @migrations.sdd
+  Evolution: @evolution.sdd
+
+ReadOrder:
+  1  @snapshots.sdd
+  2  @changes.sdd
+  3  @migrations.sdd
+  4  @evolution.sdd
+
+CrossReferences:
+  Graph: @../graph/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  EvolutionPolicy: @../policies/evolution.sdd
+
+State: +

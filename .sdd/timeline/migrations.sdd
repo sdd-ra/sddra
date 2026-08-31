@@ -1,0 +1,110 @@
+# System Migrations
+
+Spec: Migration
+Purpose:
+  Track migrations between architecture versions, decision versions,
+  and skill versions. Each migration has a state, steps, and rollback
+  strategy.
+
+Owns: timeline/migrations.sdd
+
+Migration Record:
+  @migration.M-20
+  from: repository-based payment
+  to: domain service + event boundary
+  steps:
+    1. introduce interface
+    2. migrate service
+    3. migrate tests
+    4. remove legacy
+  rollback:
+    revert to M-19 state
+
+Migration States:
+  PLANNED       — defined but not started
+  IN_PROGRESS   — actively being worked
+  PARTIAL       — some components migrated, system in mixed state
+  COMPLETED     — fully migrated
+  FAILED        — migration failed, rolled back
+  ROLLED_BACK   — reverted to previous state
+
+Partial Migration:
+  Real projects rarely migrate everything at once.
+  System records partial state:
+
+  Payment:     100%
+  Refund:      100%
+  Settlement:  40%
+  Architecture: MIGRATION_PARTIAL
+
+  AI encounters this state and knows the system is not yet fully
+  on the new architecture.
+
+Why Legacy Exists:
+  Legacy code paths carry historical decisions.
+  AI must consult decision history before refactoring:
+
+  legacy/payment.go
+  → looks up → DEC-32
+  → reason: provider did not support idempotency in 2025
+  → AI understands: this code exists for a reason
+
+Historical Decision Protection:
+  Old decisions are preserved in historical context:
+
+  DEC-32
+  status: deprecated (in current context)
+  but VALID_AT: 2025-06-10 (in historical context)
+
+  AI must distinguish current truth from historical truth.
+
+Compatibility:
+  New skills may not work on older projects.
+
+  @skill.architecture-v5
+  requires:
+    architecture >= 5
+
+  Project at architecture=4 cannot use this skill.
+
+Compatibility Matrix:
+  | Component      | v1 | v2 | v3 |
+  | -------------- | -: | -: | -: |
+  | Skill A        |  ✅ |  ✅ |  ❌ |
+  | Skill B        |  ✅ |  ✅ |  ✅ |
+  | Architecture X |  ❌ |  ✅ |  ✅ |
+
+  Compiler uses this matrix for skill selection.
+
+Evolution Graph:
+  Versions form an evolution graph, not always linear:
+
+  Linear:
+    v1 → v2 → v3 → v4
+
+  Branch/merged:
+        v2
+       /  \
+    v3a  v3b
+       \  /
+        v4
+
+  Forked knowledge:
+    @skill.api-design (global)
+    @skill.api-design/payment (project A fork)
+    @skill.api-design/internal (project B fork)
+    relationship: FORKED_FROM
+
+  Upstream/Downstream inheritance:
+    GLOBAL SKILL → ORG SKILL → PROJECT SKILL → MODULE SKILL
+    Project-local overrides allowed within project scope.
+
+Inheritance Chain:
+  @skill.api → @skill.rest-api → @skill.payment-api → @skill.refund-api
+
+  Each layer adds rules; AI reads only delta rules at each layer.
+
+  This aligns with token-efficient architecture: context is
+  composed from versioned, scoped references rather than full copies.
+
+State: +
