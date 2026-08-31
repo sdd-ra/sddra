@@ -78,6 +78,137 @@ Controls:
     scan: custom tests, BDD security scenarios
     scope: payment, refund, auth, admin
 
+  RuntimePatternSet:
+    definition: 17 regex patterns seeded from claude-code patterns.py:30-345
+    source: anthropics/claude-code plugins/security-guidance/hooks/patterns.py:30-345
+    execution: claude-code PostToolUse[Edit/Write] hook via adapter-runtime.sdd
+
+    patterns:
+      PAT.yaml_load:
+        regex: yaml\.load\s*\(
+        description: Unsafe YAML deserialization (RCE)
+        severity: CRITICAL
+        L_level: L3
+        fix: Use yaml.safe_load() instead
+
+      PAT.pickle_loads:
+        regex: pickle\.(loads|load)\s*\(
+        description: Unsafe pickle deserialization (RCE)
+        severity: CRITICAL
+        L_level: L4
+        fix: Use JSON or struct for serialization
+
+      PAT.eval_exec:
+        regex: \b(eval|exec)\s*\(
+        description: Arbitrary code execution
+        severity: CRITICAL
+        L_level: L4
+        fix: Avoid eval/exec; use ast.literal_eval or sandboxed alternatives
+
+      PAT.shell_true:
+        regex: shell\s*=\s*True
+        description: Shell command injection risk via subprocess
+        severity: HIGH
+        L_level: L3
+        fix: Use shell=False with argument list
+
+      PAT.innerHTML:
+        regex: (innerHTML|dangerouslySetInnerHTML)
+        description: XSS via unsafe HTML injection (React)
+        severity: HIGH
+        L_level: L2
+        fix: Use DOMPurify or text content instead
+
+      PAT_sql_concat:
+        regex: (['"]\s*\+\s*sql|['"]\s*\+\s*query|['"]\s*f['"].*SELECT)
+        description: SQL injection via string concatenation
+        severity: CRITICAL
+        L_level: L3
+        fix: Use parameterized queries / prepared statements
+
+      PAT_hardcoded_secret:
+        regex: (?i)(api[_-]?key|secret|password|token|passwd)\s*[:=]\s*['"a-zA-Z0-9]{8,}
+        description: Hardcoded secret in source
+        severity: CRITICAL
+        L_level: L4
+        fix: Use environment variables / vault / secrets manager
+
+      PAT_weak_random:
+        regex: random\.(random|uniform|randint|choice)
+        description: Weak randomness (not for security/cryptography)
+        severity: MEDIUM
+        L_level: L2
+        fix: Use secrets module for security-sensitive randomness
+
+      PAT_weak_crypto:
+        regex: hashlib\.(md5|sha1)\s*\(
+        description: Weak hash algorithm (MD5/SHA1)
+        severity: MEDIUM
+        L_level: L2
+        fix: Use SHA-256 or stronger
+
+      PAT_path_traversal:
+        regex: (open\(|readFile|writeFile)\s*\([^)]*(\.|\.\.)*[/\\]
+        description: Potential path traversal
+        severity: HIGH
+        L_level: L3
+        fix: Validate and canonicalize file paths; use safe join
+
+      PAT_cors_wildcard:
+        regex: Access-Control-Allow-Origin\s*:\s*['"]?\*['"]?
+        description: CORS wildcard allows all origins
+        severity: MEDIUM
+        L_level: L3
+        fix: Restrict to specific trusted origins
+
+      PAT_missing_auth:
+        regex: (def\s+(login|auth|admin)[^)]*\)\s*:)|(app\.(post|get)\s*\(['"]\/(admin|api))
+        description: Missing authentication/authorization check
+        severity: CRITICAL
+        L_level: L4
+        fix: Add auth middleware and authorization checks
+
+      PAT_ssrf:
+        regex: (fetch\(|requests\.(get|post|put|delete))\s*\([^)]*(\+|f['"]|concat|format)
+        description: Potential SSRF via user-controlled URL
+        severity: HIGH
+        L_level: L4
+        fix: Validate and allowlist URL schemas/hosts
+
+      PAT_open_redirect:
+        regex: redirect\s*\([^)]*request\.
+        description: Open redirect via user-controlled URL
+        severity: MEDIUM
+        L_level: L2
+        fix: Validate redirect targets against allowlist
+
+      PAT_deserialize_untrusted:
+        regex: (pickle|yaml\.load|marshal\.load)\s*\(\s*request\.
+        description: Deserialization of untrusted user input
+        severity: CRITICAL
+        L_level: L3
+        fix: Never deserialize untrusted input; use JSON/Protocol Buffers
+
+      PAT_redos:
+        regex: \([a-zA-Z+\*]*\*\?\)|\(\.\*\)\{.*,.*\}
+        description: Potential regex denial of service (ReDoS)
+        severity: LOW
+        L_level: L1
+        fix: Avoid nested quantifiers in regex patterns
+
+      PAT_no_rate_limit:
+        regex: (def\s+login|app\.post\s*\(['"]\/(login|api))
+        description: Missing rate limiting on auth/API endpoints
+        severity: LOW
+        L_level: L1
+        fix: Add rate limiting middleware (e.g., express-rate-limit)
+
+    Enforcement:
+      mode_observe: L0-L3 patterns below project threshold — warn only (OBS12)
+      mode_enforce: L4-L5 patterns at or above threshold — block (OBS13, exit 2)
+      source: .sdd/runtime/adapter-runtime.sdd (HookBridge)
+      source: .sdd/gates/security-enforcement.sdd (EnforcementModel)
+
 ControlSelection:
   Controls are selected based on:
     SecurityLevel (L0-L5)

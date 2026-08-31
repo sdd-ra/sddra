@@ -34,6 +34,14 @@ Levels:
       - SAST
     tests:
       - basic security tests
+    RuntimePatterns:
+      PAT_hardcoded_secret (block)
+      PAT.yaml_load (block)
+      PAT.pickle_loads (block)
+      PAT.eval_exec (block)
+      PAT.sql_concat (block)
+      PAT_deserialize_untrusted (block)
+      PAT_missing_auth (block)
 
   L2:
     name: Standard Production
@@ -56,8 +64,15 @@ Levels:
       - security unit tests
       - integration security tests
       - API security tests
+    RuntimePatterns:
+      - L1 patterns
+      PAT.innerHTML (block)
+      PAT_weak_random (warn)
+      PAT_weak_crypto (warn)
+      PAT_open_redirect (block)
+      PAT_no_rate_limit (warn)
 
-  L3:
+   L3:
     name: High-Risk Production
     description: High-risk systems with sensitive data or financial impact
     controls:
@@ -77,8 +92,16 @@ Levels:
       - penetration tests
       - load/abuse tests
       - threat model validation
+    RuntimePatterns:
+      - L2 patterns
+      PAT.yaml_load (block)
+      PAT_shell_true (block)
+      PAT_sql_concat (block)
+      PAT_path_traversal (block)
+      PAT_cors_wildcard (warn)
+      PAT_ssrf (block)
 
-  L4:
+   L4:
     name: Critical System
     description: Mission-critical systems with maximum security requirements
     controls:
@@ -97,8 +120,15 @@ Levels:
       - DDoS simulation
       - incident response drills
       - architecture security review
+    RuntimePatterns:
+      - L3 patterns
+      PAT.pickle_loads (block)
+      PAT_eval_exec (block)
+      PAT_hardcoded_secret (block)
+      PAT_missing_auth (block)
+      PAT_ssrf (block)
 
-  L5:
+   L5:
     name: Regulated / Mission-Critical
     description: Regulated industries, government, critical infrastructure
     controls:
@@ -119,6 +149,9 @@ Levels:
       - compliance audit
       - supply chain audit
       - runtime security validation
+    RuntimePatterns:
+      - L4 patterns (all block)
+      PAT_redos (warn — performance, not security)
 
 Selection:
   AI MUST calculate SecurityLevel from project characteristics:
