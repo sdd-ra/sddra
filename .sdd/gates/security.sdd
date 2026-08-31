@@ -32,6 +32,57 @@ GateTypes:
     Condition: No unresolved high/critical findings
     Fields: Scope, Tester, Date, Environment, Findings, Remediation, Retest
 
+  SemanticReview:
+    source: anthropics/claude-code-security-review
+    definition: AI-powered semantic security review of PR diffs
+    components:
+      PromptFactory:
+        source: claudecode/prompts.py
+        role: Generates system + user prompt with PR diff injected
+        phases:
+          - Repository Context Research (file-search tools)
+          - Comparative Analysis (compare new code to existing patterns)
+          - Vulnerability Assessment (trace data flows, trace boundaries)
+
+      ClaudeCodeRunner:
+        source: claudecode/github_action_audit.py:227
+        role: Invokes claude CLI subprocess with PR diff
+        config:
+          output_format: json
+          model: from .sdd security levels (L4 -> opus, L3 -> default)
+          disallowed_tools: Bash(ps:*)  (prevents process listing)
+        failure_mode: Prompt too long -> retry WITHOUT diff (file-exploration only)
+
+      JSONParser:
+        source: claudecode/json_parser.py
+        role: Extracts findings array from Claude JSON output
+        fallback: markdown code blocks, raw balanced braces
+
+      FindingsFilter:
+        source: claudecode/findings_filter.py
+        stage_1: HardExclusionRules (regex, 16 patterns)
+        stage_2: ClaudeAPIClient per-finding confidence scoring (0-10)
+        stage_3: DirectoryExclusion (EXCLUDE_DIRECTORIES)
+        fail_open: API failure -> keep finding at confidence 10.0
+
+      GateDecision:
+        input: filtered findings list
+        decision: PASS if no HIGH/CRITICAL remain
+        output: findings -> .sdd/reviews/<task>/security-findings.sdd
+        audit: OBS13 security_gate_blocked if FAIL
+
+    CacheFalseGreenMitigation:
+      problem: GitHub Actions restore-keys prefix-match causes stale
+        marker restore, silently disabling scan on new commits
+      fix: run_every_commit=true (never skip); compare restored marker
+        sha against current github.sha; surface freshness in Checks UI
+
+    Integration:
+      trigger: CR stage gate in .sdd workflow/stages.sdd
+      input: git diff against baseline SHA (git stash create pattern)
+      output: GateDecision (PASS/FAIL) + findings to .sdd/reviews/
+      rule: CRITICAL/HIGH findings MUST block VR stage regardless of other gates
+
 Rules:
   [SG1] Security gates are first-class gates.
   [SG2] Security gate failure blocks release.
