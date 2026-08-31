@@ -46,3 +46,5 @@ Migration Rules:
   [R5] Rollback on failure
 
 State: *
+
+State: +

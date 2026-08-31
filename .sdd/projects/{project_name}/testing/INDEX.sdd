@@ -1,1 +1,3 @@
 # Project: TestingPurpose:  Project-specific test state and execution history.  Tracks coverage, test runs, failures, and exceptions  for the current project.Owns: ./ReadOrder:   1 @INDEX.sdd   2 @coverage.sdd   3 @runs/   4 @failures/   5 @exceptions/Rules:  [PT1] Test coverage MUST be tracked per component.  [PT2] Failed tests MUST be investigated before next stage.  [PT3] Flaky tests MUST be quarantined.Navigation:  Coverage: @coverage.sdd  Runs: @runs/  Failures: @failures/  Exceptions: @exceptions/  RootTesting: @../testing/INDEX.sdd  TestRunner: @../../testing/scripts/run.ps1  TestStrategy: @../../skills/testing/SKILL-TEST-STRATEGY.sddState: +
+
+State: +

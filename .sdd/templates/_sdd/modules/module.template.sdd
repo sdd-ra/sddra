@@ -47,3 +47,5 @@ Rules:
   [S4] Database information MUST be resolved through @db.
   [S5] API information MUST be resolved through @api.
   [S6] Business/test cases MUST be resolved through @cases.
+
+State: +

@@ -270,3 +270,5 @@ Rules:
    [R88] Never silently delete — deprecated knowledge is archived, not removed.
    [R89] Scope every project-specific rule — project rules do not propagate to global .sdd/.
    [R90] Preserve why a decision was made — every DEC must include rationale and evidence.
+
+State: +

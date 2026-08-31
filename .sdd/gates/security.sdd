@@ -168,3 +168,5 @@ GateTypes:
       [SG10] Policy-as-code MUST be version-controlled and reviewed like code.
 
     State: +
+
+State: +
