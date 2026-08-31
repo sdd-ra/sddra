@@ -71,6 +71,9 @@ Cargo.lock
 .claude/
 .kilo/
 
+# Prompt inbox (runtime artifacts)
+prompts/inbox/
+
 # General
 *.pid
 *.seed
