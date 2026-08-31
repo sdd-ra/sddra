@@ -189,6 +189,22 @@ HotColdKnowledge:
     trigger: new task execution
     rule: hot/cold status is recalculated based on usage statistics
 
+  RuntimeCompression:
+    source: thedotmack/claude-mem memory consolidation pipeline
+    ratio: 100 runtime events -> ~3 decisions + 1 new skill
+    mechanism:
+      - Claude SDK agent summarizes observations into structured decisions
+      - SHA-256 dedup prevents duplicate processing
+      - ON CONFLICT DO NOTHING in SQLite prevents duplicate storage
+      - Embedding-based dedup in ChromaDB for semantic duplicates
+    trigger: at end of task execution, after PROMOTE/LINK/UPDATE actions
+    output_format:
+      decisions: list of { decision_id, evidence, rationale, L_level }
+      new_skills: list of { skill_id, description, L_level, evidence }
+    storage: consolidated output stored to ProjectMemory / LongTermKnowledge
+      via SQLite (metadata) + ChromaDB (semantic index)
+    rule: consolidation MUST preserve evidence provenance for every decision
+
 ConsolidationDecisionTree:
   root: end_of_task
     has_evidence: yes

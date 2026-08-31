@@ -94,13 +94,9 @@ MemoryTiers:
     importance_rating: critical | high | normal | low | temporary
     persistence: runtime-only, never persisted to .sdd/
 
-  TmpMemory:
+   TmpMemory:
     definition: external material and temporary analysis
     scope: transient analysis, never part of project knowledge
-    examples:
-      - scratchpad notes
-      - external research snippets
-      - temporary debug hypotheses
     schema:
       source: external | scratch
       content: string
@@ -108,6 +104,53 @@ MemoryTiers:
     ttl: immediate (end of reasoning step)
     importance_rating: temporary
     persistence: runtime-only, never persisted
+
+  RuntimeBridge:
+    definition: Maps .sdd memory tiers to claude-mem physical stores
+    source: thedotmack/claude-mem SessionStore.ts + analysis-comprehensive.md
+    stores:
+      SQLite:
+        tier: TaskMemory + ProjectMemory metadata
+        schema: 49 migrations, SHA-256 content_hash, FTS5 for full-text
+        location: ~/.claude-mem.db (per-user)
+        role: primary metadata store for session_id, content_session_id, observations
+        dedup: SHA-256 content-hash, ON CONFLICT DO NOTHING
+
+      ChromaDB:
+        tier: LongTermKnowledge (semantic layer)
+        schema: vector embeddings (text-embedding-3-small)
+        location: Chroma server (default localhost:8000)
+        role: semantic search with tier routing
+        dedup: same as SQLite (content_hash foreign key)
+
+      SHA-256_HashStore:
+        tier: All tiers (dedup key)
+        schema: content_hash as primary key
+        role: cross-store dedup, integrity verification
+        note: Prevents duplicate observations from multiple harness hooks
+
+    PersistenceMapping:
+      LongTermKnowledge -> ChromaDB (semantic) + SQLite (metadata)
+      ProjectMemory -> SQLite (primary) + ChromaDB (semantic index)
+      TaskMemory -> SQLite (per-execution tables) + in-memory cache
+      WorkingMemory -> runtime-only (never persisted)
+      TmpMemory -> runtime-only (never persisted)
+
+    RecallMechanism:
+      tier_routing: filter -> ChromaDB semantic -> FTS5 fallback
+      recency_gate: 90-day window (configurable via CLAUDE_MEM_MAX_RECALL_AGE)
+      token_budget: progressive disclosure (metadata first ~100 tokens,
+        instructions < 5000 tokens, resources on demand)
+      sanitization: L0 sanitize step before injection (prompt-injection prevention)
+      hot_cold: hot (referenced ≥50% recent) loaded by default, cold (not
+        referenced 90 days) loaded on demand only
+
+    Consolidation:
+      ratio: 100 runtime events -> ~3 decisions + 1 new skill
+      source: .sdd/runtime/memory-consolidation.sdd
+      hot_classification: referenced in ≥50% of recent tasks in last 14 days
+      cold_classification: not referenced in 90 days
+      storage: consolidated output stored to ProjectMemory / LongTermKnowledge
 
 MemoryPromotionPipeline:
   stages:
