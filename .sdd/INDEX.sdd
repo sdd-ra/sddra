@@ -134,7 +134,7 @@ ReadOrder:
      68 @standards/INDEX.sdd (standards registry)
      69 @standards/states.sdd (state standards and compact symbols)
       70 @timeline/INDEX.sdd (temporal knowledge, snapshots, evolution)
-      71 @agents/INDEX.sdd (multi-agent coordination, roles, shared state)
+      71   @agent/INDEX.sdd (multi-agent coordination, roles, shared state)
       72 @policies/INDEX.sdd (evolution policy, authority policy)
       73 @evolution/INDEX.sdd (candidate pool, discovery, challenges)
       74 @queries/INDEX.sdd (SDD query language)

@@ -1,0 +1,77 @@
+# Shared Engineering State
+
+Spec: SharedState
+Purpose:
+  Define the shared project state that all agents observe. Agents
+  coordinate through state, not through direct messages. This enables
+  crash recovery, audit trails, and multi-agent parallelism.
+
+Owns: agents/shared-state.sdd
+
+StateComponents:
+  - tasks
+  - locks
+  - agents
+  - decisions
+  - changes
+  - proofs
+  - active_migrations
+
+ClaimedWork:
+  flow:
+    READY → CLAIMED
+  lease:
+    duration: 30 min
+    heartbeat: renewed by active agent
+    expiration: LEASE_EXPIRED → task returns to READY
+
+  claimed_by:
+    agent: AGENT-42
+
+FileLock:
+  mechanism: LOCK(file_path)
+  example:
+    Task A: payment/service.go → LOCK(payment/**)
+    Task B: payment/service.go → BLOCKED
+
+  rule: file locks prevent concurrent file modification
+
+SemanticLock:
+  mechanism: domain-level locking
+  example:
+    @domain.Payment locked_by Agent-A
+    Agent-B modifying Payment aggregate → SEMANTIC_LOCK
+
+  scope_hierarchy:
+    payment (parent)
+      ├── refund
+      ├── settlement
+      └── balance
+
+  rules:
+    - locking parent scope locks all child scopes
+    - sibling scopes (refund vs settlement) can run in parallel
+
+ScopeLock:
+  mechanism: @scope.<name>
+  example:
+    Agent A: lock @scope.payment.refund
+    Agent B: lock @scope.payment.balance
+    → both can run in parallel (siblings)
+
+Ownership:
+  precedence: GLOBAL → ORGANIZATION → PROJECT → DOMAIN → MODULE → TASK
+  rule: lower scope overrides higher scope within its boundary
+  rule: project-local overrides are project-scoped only
+
+AgentActivityLog:
+  format:
+    10:21 Agent-A claimed T2041
+    10:28 Agent-A modified refund service
+    10:34 Agent-A tests passed
+    10:37 Agent-B started review
+    10:41 Agent-B found architecture issue
+
+  type: Engineering Timeline (not just a log)
+
+State: +

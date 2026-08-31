@@ -1,33 +1,55 @@
-Agent: SDD
+# Agent System
 
+Spec: AgentSystem
 Purpose:
-  Agent Runtime and Tool Execution Engine. Defines what the AI
-  agent may do, how it does it, and under what policy constraints.
-  This is the execution layer that transforms .sdd specifications
-  into real actions in a Git repository.
+  Define the multi-agent coordination framework for the .sdd system.
+  Agents are execution units; roles define responsibilities; ownership
+  defines accountability. Agents are replaceable; state is not.
 
-Owns: ./
+Owns: agent/
+
+Navigation:
+  Capabilities: @capabilities.sdd
+  Policies: @policies.sdd
+  Permissions: @permissions.sdd
+  Approvals: @approvals.sdd
+  Execution: @execution.sdd
+  Limits: @limits.sdd
+  Rollback: @rollback.sdd
+  Audit: @audit.sdd
+  Roles: @roles.sdd
+  Contract: @contract.sdd
+  SharedState: @shared-state.sdd
+  Coordination: @coordination.sdd
+  Conflicts: @conflicts.sdd
+  Handoff: @handoff.sdd
 
 ReadOrder:
-   1  @capabilities.sdd
-   2  @policies.sdd
-   3  @permissions.sdd
-   4  @approvals.sdd
-   5  @execution.sdd
-   6  @limits.sdd
-   7  @rollback.sdd
-   8  @audit.sdd
+  1  @capabilities.sdd
+  2  @policies.sdd
+  3  @permissions.sdd
+  4  @approvals.sdd
+  5  @execution.sdd
+  6  @limits.sdd
+  7  @rollback.sdd
+  8  @audit.sdd
+  9  @roles.sdd
+  10 @contract.sdd
+  11 @shared-state.sdd
+  12 @coordination.sdd
+  13 @conflicts.sdd
+  14 @handoff.sdd
 
 Modes:
-  PLAN      — plan only, no execution
-  ANALYZE   — analysis only
-  IMPLEMENT — implement changes
-  REVIEW    — review changes
-  TEST      — run tests
-  SECURITY  — security checks
-  DEPLOY    — deployment operations
-  DIAGNOSE  — diagnose issues
-  AUDIT     — full audit
+  PLAN      â€” plan only, no execution
+  ANALYZE   â€” analysis only
+  IMPLEMENT â€” implement changes
+  REVIEW    â€” review changes
+  TEST      â€” run tests
+  SECURITY  â€” security checks
+  DEPLOY    â€” deployment operations
+  DIAGNOSE  â€” diagnose issues
+  AUDIT     â€” full audit
 
 Rules:
   [AG1]  AI MUST NEVER act on "I think this is okay" for production
@@ -58,6 +80,12 @@ Entry:
     limits
     rollback
     audit
+    roles
+    contract
+    shared-state
+    coordination
+    conflicts
+    handoff
 
 Navigation:
   Agent: @agent/INDEX.sdd
@@ -69,6 +97,12 @@ Navigation:
   Limits: @agent/limits.sdd
   Rollback: @agent/rollback.sdd
   Audit: @agent/audit.sdd
-  Runtime: @.runtime/INDEX.sdd
+  Roles: @agent/roles.sdd
+  Contract: @agent/contract.sdd
+  SharedState: @agent/shared-state.sdd
+  Coordination: @agent/coordination.sdd
+  Conflicts: @agent/conflicts.sdd
+  Handoff: @agent/handoff.sdd
+  Runtime: @../runtime/INDEX.sdd
 
 State: +
