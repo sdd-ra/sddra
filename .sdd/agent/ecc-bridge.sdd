@@ -1,0 +1,146 @@
+# ECC Agent to SDD Role Bridge
+
+Spec: EccBridge
+Purpose:
+  Define the bridge between ECC's 67 specialized agents and SDD's
+  @agent.* roles. Maps ECC implementation details (prompts, allowlists)
+  to SDD abstract role definitions.
+
+Owns: agent/ecc-bridge.sdd
+
+AgentRoles:
+  @agent.discovery:
+    ecc_equivalent: code-explorer
+    purpose: understand existing system, find knowledge gaps
+    capabilities: read_code, analyze_architecture, find_references
+    cannot: approve decisions, modify production
+    notes: Direct match - ECC code-explorer maps to discovery
+
+  @agent.architect:
+    ecc_equivalent: architect, code-architect
+    purpose: design architecture, produce decisions
+    capabilities: design, model, reason about constraints
+    cannot: execute implementation, modify code directly
+    notes: Two ECC agents map here - architect (high-level) + code-architect (blueprints)
+
+  @agent.implementer:
+    ecc_equivalent: build-error-resolver, go-build-resolver, java-build-resolver, 
+                    kotlin-build-resolver, cpp-build-resolver, dart-build-resolver,
+                    tdd-guide, refactor-cleaner
+    purpose: write code according to task contract
+    capabilities: read_code, modify_backend, run_tests
+    cannot: modify_production, approve_architecture
+    notes: 9 ECC agents map here - build resolvers + TDD guide + refactor cleaner
+
+  @agent.tester:
+    ecc_equivalent: e2e-runner
+    purpose: write and run tests, verify proofs
+    capabilities: write_tests, analyze_failures, generate_coverage
+    cannot: modify source code outside test scope
+    notes: ECC e2e-runner for Playwright tests
+
+  @agent.reviewer:
+    ecc_equivalent: code-reviewer, database-reviewer, python-reviewer, go-reviewer,
+                    rust-reviewer, kotlin-reviewer, java-reviewer, csharp-reviewer,
+                    cpp-reviewer, django-reviewer, flutter-reviewer, fastapi-reviewer,
+                    a11y-architect, comment-analyzer, code-simplifier, agent-evaluator
+    purpose: review implementation for quality and compliance
+    capabilities: code_review, principle_check, architecture_drift
+    cannot: approve own work, modify without review
+    notes: 16 ECC agents map here - all language-specific + quality reviewers
+
+  @agent.documentation:
+    ecc_equivalent: doc-updater, docs-lookup, prompt-engineering
+    purpose: generate and update documentation
+    capabilities: write_docs, extract_patterns, maintain_index
+    cannot: modify source code
+    notes: Doc-updater maintains codemaps; docs-lookup fetches library docs
+
+  @agent.security:
+    ecc_equivalent: security-reviewer, security-scan
+    purpose: enforce security constraints and review
+    capabilities: security_analysis, vulnerability_detection
+    cannot: approve production changes without human
+    notes: Both ECC security agents map here - OWASP audit + AgentShield scan
+
+  @agent.supervisor:
+    ecc_equivalent: loop-operator, harness-optimizer, orchestration-planner,
+                    orchestration-deployer
+    purpose: orchestrate task graph, detect blockers, manage scheduling
+    capabilities: observe_graph, assign_tasks, detect_blockers
+    cannot: write code, approve decisions (routing only)
+    notes: 4 ECC orchestration agents map here
+
+  @agent.knowledge:
+    ecc_equivalent: conversation-analyzer, agent-evaluator
+    purpose: extract, classify, and promote knowledge from tmp to canonical
+    capabilities: analyze_sources, classify_knowledge, manage_promotion
+    cannot: modify code, approve decisions
+    notes: Conversation-analyzer extracts patterns; agent-evaluator scores quality
+
+SpecialtyRoles:
+  @agent.healthcare:
+    ecc_equivalent: healthcare-reviewer
+    purpose: healthcare application code review for compliance
+    capabilities: clinical_safety, phi_compliance, cdss_accuracy
+    cannot: approve production changes without human review
+
+  @agent.ml:
+    ecc_equivalent: mle-reviewer, gan-generator, gan-evaluator, gan-planner
+    purpose: ML engineering review and generation
+    capabilities: ml_pipeline_audit, model_evaluation, feature_store_review
+    cannot: approve model deployment to production
+
+  @agent.devops:
+    ecc_equivalent: homelab-architect, mcp-setup
+    purpose: infrastructure and deployment operations
+    capabilities: network_design, mcp_configuration, deployment
+    cannot: modify production without approval
+
+  @agent.business:
+    ecc_equivalent: marketing-agent, chief-of-staff
+    purpose: business operations and communication
+    capabilities: content_creation, communication_triage, campaign_planning
+    cannot: modify source code
+
+Integration:
+  hook_bridge:
+    source: .sdd/runtime/adapter-runtime.sdd
+    purpose: Bridge ECC hooks to SDD gates
+    mapping:
+      ECC PostToolUse[Edit/Write] → SDD security controls enforcement
+      ECC SessionStart → SDD task context loading
+      ECC Stop hook → SDD session persistence + AutoCompact
+
+  memory_bridge:
+    source: .sdd/runtime/memory-model.sdd
+    purpose: Bridge ECC memory to SDD memory model
+    mapping:
+      ECC SessionStart hook → SDD TaskMemory loading
+      ECC Stop hook → SDD memory consolidation (100 events → 3 decisions + 1 skill)
+      ECC Session summary → SDD session state persistence
+
+  mcp_bridge:
+    source: .sdd/runtime/mcp-integration.sdd (to be created)
+    purpose: Bridge ECC MCP servers to SDD runtime
+    mapping:
+      ECC mcp-configs/ → SDD runtime MCP configuration
+      35 MCP servers → SDD integration layer
+
+Rules:
+  [ECC-BRIDGE-1] ECC agent prompts are stored in .sdd/agent/prompts/ for reference
+  [ECC-BRIDGE-2] SDD roles remain the source of truth; ECC agents are implementation
+  [ECC-BRIDGE-3] Language-specific ECC reviewers all map to @agent.reviewer
+  [ECC-BRIDGE-4] ECC agents with no SDD equivalent become new specialty roles
+  [ECC-BRIDGE-5] ECC hook integrations map to SDD adapter-runtime enforcement
+
+State: +
+
+Navigation:
+  Roles: @roles.sdd
+  Capabilities: @capabilities.sdd
+  Policies: @policies.sdd
+  Index: @INDEX.sdd
+  Runtime: @../runtime/adapter-runtime.sdd
+  Memory: @../runtime/memory-model.sdd
+  Import Plan: @../evolution/import-plan.sdd
