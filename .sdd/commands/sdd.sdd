@@ -26,11 +26,36 @@ Behavior:
   6. Implement code (C1)
   7. Review (R1)
   8. Deploy (DEP1) — requires explicit approval
+  9. AutoCompact at end (see AutoCompact rules)
+
+AutoCompact:
+  trigger: end of task execution
+  priority:
+    - MODULE: if working in module scope, compact module base
+    - TASK: if working in task scope, compact task base
+    - SUBTASK: if working in sub-task scope, compact sub-task base
+  default: task base
+  behavior:
+    1. Detect current scope from execution context
+    2. Load corresponding memory tier
+    3. Apply criteria-based cleanup (see @memory-model.sdd)
+    4. Remove temporary and low-importance observations
+    5. Promote validated insights to ProjectMemory
+    6. Persist compacted state
+    7. Emit OBS event
 
 Output:
-  [tokens: in=X, out=Y]
+  [tokens: in=X, out=Y, delta=Z]
   [decision: DEC-XXX]
   [gate: human_required|auto]
   [next: D0?D1]
+  [compacted: <scope>]
+
+Rules:
+  - Do NOT generate project/ code directly
+  - Do NOT skip human gates
+  - Use INDEX.sdd, do not scan directories
+  - Use short IDs: P1, D1, S1, C1, R1, DEP1
+  - Compact at end of every task unless user overrides
 
 State: +

@@ -1,0 +1,53 @@
+# /sdd-update
+
+Purpose:
+  Synchronize .sdd/ state from git repository. Reads branch structure,
+  commit history, and file changes to auto-update SDD metadata.
+
+Description:
+  Scans git repo to discover: current branch, recent commits, changed files,
+  active modules, tasks, and decisions. Updates .sdd/ files to reflect
+  actual repo state. Detects drift between code and specification.
+
+Usage:
+  /sdd-update
+  /sdd-update --full
+  /sdd-update --diff
+  /sdd-update --modules
+  /sdd-update --tasks
+
+Options:
+  --full      Full sync including all modules, tasks, decisions
+  --diff      Show drift between .sdd/ and project/
+  --modules   Sync module states only
+  --tasks     Sync task states only
+
+Behavior:
+  1. Read git branch, recent commits, changed files
+  2. Map commits to modules/tasks/decisions
+  3. Update .sdd/ state symbols based on git evidence
+  4. Detect orphaned .sdd entries (no matching code)
+  5. Detect unrecorded code (no matching .sdd)
+  6. Emit drift report
+  7. Update INDEX.sdd references if needed
+
+AutoMode:
+  trigger: git post-commit, post-checkout, post-merge
+  scope: incremental (affected modules/tasks only)
+  mode: background, non-blocking
+  fail: open (log drift, do not block workflow)
+
+Output:
+  [updated: modules=X, tasks=Y, decisions=Z]
+  [drift: orphaned=N, unrecorded=M]
+  [branch: main]
+  [last_commit: abc1234]
+
+Rules:
+  [UPD-01] git state is source of truth for module/task completion.
+  [UPD-02] Orphaned .sdd entries are flagged, not deleted.
+  [UPD-03] Unrecorded code blocks Write|Edit hooks until documented.
+  [UPD-04] Auto-update runs in background, never blocks human workflow.
+  [UPD-05] Drift report is appended to .sdd/state/drift.log.sdd.
+
+State: +
