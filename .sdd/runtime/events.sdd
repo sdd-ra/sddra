@@ -111,12 +111,33 @@ CausationID:
   rule: causation_id creates causal chain
   rule: causation_id enables root cause analysis
 
-Security:
-  rule: sensitive data MUST be redacted in events
-  rule: SECRET classified events are never logged in plain text
-  rule: event access is controlled by policy
+  Security:
+    rule: sensitive data MUST be redacted in events
+    rule: SECRET classified events are never logged in plain text
+    rule: event access is controlled by policy
 
-DataClassification:
+  ObservationSanitization:
+    source: claude-mem persistent-injection mitigation
+    purpose: Stop poisoned observations (prompt injection payloads stored as
+      memory) from re-injecting on context recall
+    pipeline:
+      - L0_strip: Remove executable code blocks, HTML tags, script tags
+        from all observation content before storage
+      - L0_whitelist: Allowlist technical terminology (function names,
+        library APIs, variable names) to prevent over-stripping
+      - L0_prompt_detector: Detect and neutralize embedded instruction
+        sequences (e.g., "ignore previous instructions", "you are now")
+      - L0_hash_replacement: Replace suspicious content with SHA-256 hash
+        reference, not plaintext
+    source_point: claude-mem hooks (PostToolUse, UserPromptSubmit, Stop)
+    storage_point: claude-mem SQLite (obs_content column) + ChromaDB vector
+    retrieval_point: claude-mem context injection (CLAUDE_MEM_SANITIZATION_ENABLED)
+    rule: sanitization MUST occur at BOTH storage AND retrieval (defense in depth)
+    rule: sanitized observations emit OBS16 (sanitization_applied) event
+    rule: if sanitization is bypassed or unavailable, emit OBS17 (sanitization_failed)
+    failure_mode: fail-open with loud OBS17 warning (never silent bypass)
+
+  DataClassification:
   levels: PUBLIC, INTERNAL, CONFIDENTIAL, SECRET
   rule: all event payloads MUST be classified
   rule: SECRET data is replaced with [REDACTED]
