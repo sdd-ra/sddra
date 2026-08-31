@@ -1,1 +1,3 @@
 # Project: GatesPurpose:  Project-specific gate state and active gates.  Tracks which quality/security/release gates are active  for the current project.Owns: ./ReadOrder:   1 @INDEX.sdd   2 @policy.sdd   3 @active.sddRules:  [PG1] All gates MUST pass before task advances to DONE.  [PG2] Gate failures MUST create findings.  [PG3] Waived gates MUST have explicit approval.Navigation:  Policy: @policy.sdd  Active: @active.sdd  RootGates: @../gates/INDEX.sddState: +
+
+State: +

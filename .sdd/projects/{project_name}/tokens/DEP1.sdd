@@ -1,3 +1,5 @@
 # Token Record: DEP1Purpose:  Token Record: DEP1Stage: DEP1RunID: RUN-TC2Timestamp: 2026-08-27T19:00:00ZTokensIn: 6000TokensOut: 12000TokensDelta: 6000Status: completedParent: D0DurationMs: 0RetryCount: 0 Error: NoneState: +
 
 Owns: projects\{project_name}\tokens\DEP1.sdd
+
+State: +

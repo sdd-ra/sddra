@@ -1,3 +1,5 @@
 # Token Record: D0Purpose:  Token Record: D0Stage: D0RunID: RUN-001Timestamp: 2026-08-27T19:28:00ZTokensIn: 36500TokensOut: 36500TokensDelta: 0Status: completedParent: nullDurationMs: 100RetryCount: 0 Error: nullState: +
 
 Owns: projects\{project_name}\tokens\D0.sdd
+
+State: +

@@ -46,3 +46,5 @@ Note:
   This document is a SCHEMA — concrete layer relationships (e.g. BE -> DB,
   FE -> API) are generated per project from templates/_sdd/architecture/.
   This file does not contain concrete project data.
+
+State: +
