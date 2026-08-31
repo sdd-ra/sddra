@@ -20,6 +20,8 @@ Rules:
   [CMD5] Commands MUST support --help for usage information.
 
 Commands:
+  /sdd-update: Sync .sdd/ state from git repository
+  /sdd-prompts: Automate prompt lifecycle (structure, inbox, archive)
   /sdd: Execute chain graph from prompt
   /sdd-analyze: Analyze .sdd/ structure
   /sdd-status: Show execution status
@@ -42,5 +44,7 @@ Navigation:
   KnowledgeCommand: @sdd-knowledge.sdd
   ExplainCommand: @sdd-explain.sdd
   NextCommand: @sdd-next.sdd
+  UpdateCommand: @sdd-update.sdd
+  PromptsCommand: @sdd-prompts.sdd
 
 State: +

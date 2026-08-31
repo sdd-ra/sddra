@@ -1,0 +1,57 @@
+# /sdd-prompts
+
+Purpose:
+  Automate prompt lifecycle: structure raw prompts, move to inbox,
+  formalize, and archive after human approval.
+
+Description:
+  Scans prompts/ folder for unstructured files, applies structure,
+  moves to inbox, then archives after review. Ensures all prompts
+  follow the standard workflow.
+
+Usage:
+  /sdd-prompts
+  /sdd-prompts --scan
+  /sdd-prompts --structure
+  /sdd-prompts --inbox
+  /sdd-prompts --archive
+  /sdd-prompts --approve <prompt-id>
+
+Options:
+  --scan      Scan prompts/ for unstructured files
+  --structure Apply structure to unstructured prompts
+  --inbox     Move structured prompts to inbox/
+  --archive   Archive approved prompts
+  --approve   Mark prompt as approved and archive
+
+Behavior:
+  1. Scan prompts/ root for unstructured files (non-markdown, missing frontmatter)
+  2. Structure:
+     - Add YAML frontmatter: id, type, status, created
+     - Add Purpose, Description, Usage sections
+     - Normalize naming: prompt-XXX.md
+  3. Move to prompts/inbox/
+  4. /sdd analyzes inbox prompts
+  5. Human approves formalized prompt
+  6. Move approved prompts to prompts/archive/
+
+AutoMode:
+  trigger: file created in prompts/
+  scope: single file
+  mode: background structure + inbox move
+  approval: required before archive
+
+Output:
+  [scanned: X files]
+  [structured: Y files]
+  [moved_to_inbox: Z files]
+  [archived: W files]
+
+Rules:
+  [PR-01] Unstructured prompts are auto-structured, never rejected.
+  [PR-02] Structured prompts move to inbox/ automatically.
+  [PR-03] Archive requires explicit human approval.
+  [PR-04] Prompts are NEVER deleted, only archived.
+  [PR-05] Duplicate detection runs before structuring.
+
+State: +

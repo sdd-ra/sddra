@@ -1192,6 +1192,8 @@ Every developer MUST run:
 | Command | Purpose |
 |---------|---------|
 | `/sdd` | Execute chain graph from prompt |
+| `/sdd-update` | Sync .sdd/ state from git repository |
+| `/sdd-prompts` | Automate prompt lifecycle (structure, inbox, archive) |
 | `/sdd-analyze` | Analyze `.sdd/` structure |
 | `/sdd-status` | Show execution status |
 | `/sdd-decisions` | List decisions |
