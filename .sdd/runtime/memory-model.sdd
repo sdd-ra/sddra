@@ -108,6 +108,7 @@ MemoryTiers:
   RuntimeBridge:
     definition: Maps .sdd memory tiers to claude-mem physical stores
     source: thedotmack/claude-mem SessionStore.ts + analysis-comprehensive.md
+    best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
     stores:
       SQLite:
         tier: TaskMemory + ProjectMemory metadata
@@ -128,6 +129,51 @@ MemoryTiers:
         schema: content_hash as primary key
         role: cross-store dedup, integrity verification
         note: Prevents duplicate observations from multiple harness hooks
+
+    TrustMarkers:
+      definition: Provenance classification for all imported/external content
+      best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
+      source: MemTrust + Memory Seam models
+      markers:
+        trustLevel:
+          values: "external-import" | "internal-verified" | "runtime-generated"
+          default: "runtime-generated" for agent observations
+          rule: Every imported memory carries trustLevel marker
+          rule: Downstream packaging code MUST read trustLevel before injection
+        provenance:
+          values: "script_confirmed" | "provider_untrusted" | "llm_asserted"
+          rule: External API results are provider_untrusted until schema-validated
+          rule: Local deterministic computations are script_confirmed
+          rule: AI-generated content is llm_asserted
+        readiness:
+          values: "fresh" | "stale" | "degraded" | "not-run" | "unknown"
+          rule: Provider results marked degraded if schema validation passes but
+            freshness is uncertain
+          rule: Fail-safe on unavailable provider: mark unknown, emit OBS17
+
+    CryptoErasure:
+      definition: Cryptographic erasure (crypto-shredding) for GDPR/right-to-be-forgotten
+      best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
+      source: MemTrust Layer 3 (Learning & Evolution)
+      design:
+        DUK_per_memory_unit: Each memory unit gets unique Data Unit Key
+        key_hierarchy: DUK -> DEK (Data Encryption Key) -> MEK (Master Encryption Key)
+        deletion_mechanism: Destroy DUK to render encrypted data computationally
+          intractable (no need to scrub storage)
+        key_storage: DUKs stored in TEE-protected key vault
+        audit: Key destruction events are cryptographically chained
+
+    PolicyAsCode:
+      definition: Access control policies enforced at runtime
+      best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
+      source: MemTrust Governance Layer
+      engine: Open Policy Agent (OPA) compiled to WebAssembly
+      policy_binding: Policies hashed and bound to enclave measurement
+      rule: Policy changes invalidate attestation (cannot be silently modified)
+      attestation: Attestation-bound OIDC tokens for secure access
+      rule: Tokens cryptographically bound to TLS channel + TEE session
+      tamper_evidence: Audit logs cryptographically chained; head hash signed
+        and anchored to immutable ledger (blockchain/transparency log)
 
     PersistenceMapping:
       LongTermKnowledge -> ChromaDB (semantic) + SQLite (metadata)
