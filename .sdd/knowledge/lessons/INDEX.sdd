@@ -101,10 +101,10 @@ Integration:
 
 Navigation:
   Knowledge Lifecycle: @../KNOWLEDGE-LIFECYCLE.sdd
-  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Knowledge Model: @../../concepts/KNOWLEDGE-MODEL.sdd
   Candidates: @../candidates/INDEX.sdd
   References: @../../references/INDEX.sdd
   Insights: @../../insights/INDEX.sdd
-  RejectedApproaches: @../../concepts/REJECTED-APPROACHES.sdd
+  RejectedApproaches: @../../lessons/REJECTED-APPROACHES.sdd
 
 State: +

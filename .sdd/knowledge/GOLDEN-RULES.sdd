@@ -72,6 +72,6 @@ Navigation:
   Canonicalization: @../concepts/CANONICALIZATION.sdd
   Compression: @COMPRESSION.sdd
   Versioning: @VERSIONING.sdd
-  Rejected Approaches: @../../lessons/REJECTED-APPROACHES.sdd
+  Rejected Approaches: @../lessons/REJECTED-APPROACHES.sdd
 
 State: +

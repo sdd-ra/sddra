@@ -77,7 +77,7 @@ Navigation:
   Skills: @skills/INDEX.sdd
   Tasks: @projects/{project_name}/tasks/tasks.sdd
   Security: @security/INDEX.sdd
-  State: @standards/states.sdd
+  State: @../standards/states.sdd
 
 State: +
   Note:

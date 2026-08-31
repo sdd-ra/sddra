@@ -67,7 +67,7 @@ PlanEvolution:
     reason:
       discovered existing project decision @decision.outbox-for-provider-events
     evidence:
-      - @references/architecture/event-driven.sdd
+      - @../references/architecture/event-driven.sdd
       - prior task TASK-1018 found deadlock with direct publish
 
 ExecutionTrace:

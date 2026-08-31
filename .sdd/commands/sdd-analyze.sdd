@@ -32,21 +32,21 @@ Options:
 
 ScanScope:
   sdd_specs:
-    - @INDEX.sdd
-    - @PROJECT.sdd
-    - @protocol/ROOT.sdd
-    - @architecture/INDEX.sdd
-    - @chains/graph.sdd
-    - @workflow/INDEX.sdd
-    - @tasks/tasks.sdd
-    - @commands/INDEX.sdd
-
+    - @../INDEX.sdd
+    - @../PROJECT.sdd
+    - @../protocol/ROOT.sdd
+    - @../architecture/INDEX.sdd
+    - @../chains/graph.sdd
+    - @../workflow/INDEX.sdd
+    - @../tasks/tasks.sdd
+    - @../commands/INDEX.sdd
+ 
   knowledge_system:
-    - @concepts/KNOWLEDGE-MODEL.sdd
-    - @knowledge/KNOWLEDGE-LIFECYCLE.sdd
-    - @references/INDEX.sdd
-    - @knowledge/GOLDEN-RULES.sdd
-    - @lessons/REJECTED-APPROACHES.sdd
+    - @../concepts/KNOWLEDGE-MODEL.sdd
+    - @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+    - @../references/INDEX.sdd
+    - @../knowledge/GOLDEN-RULES.sdd
+    - @../lessons/REJECTED-APPROACHES.sdd
     - trust metadata validation
     - lifecycle status (OBSERVED -> CANDIDATE -> VALIDATED -> ESTABLISHED)
     - evidence type coverage (CODE, TEST, TASK, DECISION, PROJECT,
@@ -64,8 +64,8 @@ ScanScope:
     - dependency-ledger currency (no unresolved security findings)
 
   runtime_state:
-    - @runtime/memory-model.sdd (4-tier memory health)
-    - @runtime/context-builder.sdd (context loading completeness)
+    - @../runtime/memory-model.sdd (4-tier memory health)
+    - @../runtime/context-builder.sdd (context loading completeness)
     - context budget utilization (current level vs. allowed levels)
 
 Output:

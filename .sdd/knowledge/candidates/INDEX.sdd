@@ -112,9 +112,9 @@ Rules:
 
 Navigation:
   Knowledge Lifecycle: @../KNOWLEDGE-LIFECYCLE.sdd
-  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd
+  Knowledge Model: @../../concepts/KNOWLEDGE-MODEL.sdd
   Insights: @../../insights/INDEX.sdd
   References: @../../references/INDEX.sdd
-  Lessons: @../lessons/INDEX.sdd
+  Lessons: @../../lessons/INDEX.sdd
 
 State: +

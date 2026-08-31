@@ -8,10 +8,10 @@ Owns: templates\_sdd\project\case.template.sdd
 
 ## Header
 
-Spec: {CASE_NAME}
-Case: {CASE_ID}
-Module: {MODULE_ID}
-Layer: {layer}
+Spec: {CASE_NAME}               # Placeholder: CASE_NAME - business capability identifier
+Case: {CASE_ID}                 # Placeholder: CASE_ID - unique case identifier
+Module: {MODULE_ID}             # Placeholder: MODULE_ID - parent module identifier
+Layer: {layer}                  # Placeholder: layer - deployment layer (L0-L4)
 Status: draft|approved|in_progress|completed|blocked
 
 ## Ownership

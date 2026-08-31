@@ -185,5 +185,55 @@ Stages:
       Activates: after MD implementation, before CR
 
 
+Phase124StateMapping:
+  Purpose:
+    Maps the PHASE 124 10-state task lifecycle to SDLC/STLC stages.
+    The task lifecycle is the runtime engine state; SDLC stages are the
+    engineering disciplines executed within those states.
+
+  StateToStageMap:
+    DISCOVERING    -> AN          (Analyze: scope, requirements, constraints)
+    PLANNING       -> AR, BDD     (Architect: design, boundaries; BDD: acceptance criteria)
+    IMPLEMENTING   -> DB, BE, API, FE, MD  (Engineering: database, backend, API, frontend, mobile)
+    TESTING        -> BE_TS, FE_TS, MD_TS, QA  (Testing: per-layer test suites + quality assurance)
+    FIXING         -> (returns to TESTING)  (Failure classification -> targeted fix -> retest)
+    REVIEWING      -> ARCH, CR, BRU, CRU  (Architecture review, code review, business/quality gates)
+    DOCUMENTING    -> D1          (Docs arm: human-readable documentation)
+    LEARNING       -> Knowledge Gate  (Evaluate learning gate: NEW_KNOWLEDGE | EXISTING_UPDATED | ...)
+    COMPLETED      -> VR          (Final verification and acceptance)
+    BLOCKED        -> (suspended)  (External dependency or decision pending)
+    ESCALATED      -> (human)     (Autonomy ceiling reached; human intervention required)
+
+  SubStateTransitions:
+    TESTING -> FAILED -> FIXING -> TESTING  (bounded by failure_budget and loop_score)
+    IMPLEMENTING -> TESTING -> REVIEWING -> COMPLETED
+    All states can -> BLOCKED (on dependency/decision stall)
+    All states can -> ESCALATED (on autonomy ceiling breach)
+
+  TaskLifecycleTrace:
+    #01  DISCOVERING    -> Load task context (context-builder.sdd, memory-model.sdd)
+    #02  PLANNING       -> Create plan, validate DAG (tasks.sdd, chains/graph.sdd)
+    #03  IMPLEMENTING   -> Write code (project/ scaffold, stage outputs)
+    #04  TESTING        -> Run tests (TEST-DISCOVERY-GATE, CHANGE-FILES-ONLY rule)
+    #05  REVIEWING      -> Human gates (BRU, CRU, MANUAL-QA-GATE)
+    #06  FIXING         -> Failure -> Classify -> Fix -> Re-test (LOOP-PROTECTION)
+    #07  DOCUMENTING    -> Generate docs/ (HUMAN-DOCS-GATE)
+    #08  LEARNING       -> Knowledge gate (LEARNING-GATE, memory-consolidation.sdd)
+    #09  COMPLETED      -> Done proof (DONE-PROOF.sdd, VR)
+    #10  BLOCKED/ESCALATED -> Human notification (AUTONOMY-POLICY.sdd)
+
+  Navigation:
+    TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+    LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+    FailureClassification: @../tasks/FAILURE-CLASSIFICATION.sdd
+    AutonomyPolicy: @../tasks/AUTONOMY-POLICY.sdd
+    DoneProof: @../tasks/DONE-PROOF.sdd
+    LearningGate: @../workflow/learning-gate.sdd
+    HumanDocsGate: @../workflow/human-docs-gate.sdd
+    ExecutionContract: @../tasks/EXECUTION-CONTRACT.sdd
+    ExecutionLoop: @../workflow/execution-loop.sdd
+
 State: +
+   (extended with PHASE 124 10-state task lifecycle mapping to SDLC/STLC stages)
+   (added sub-state transitions, task lifecycle trace, and cross-references)
   
