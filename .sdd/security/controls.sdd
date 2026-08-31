@@ -91,7 +91,7 @@ RuntimePatternSet:
 
     patterns:
       PAT.yaml_load:
-        regex: yaml\.load\s\(*
+        regex: yaml\.load\s*\(
         description: Unsafe YAML deserialization (RCE)
         severity: CRITICAL
         L_level: L3
@@ -100,7 +100,7 @@ RuntimePatternSet:
         fix: Use yaml.safe_load() instead
 
       PAT.pickle_loads:
-        regex: pickle\.(loads|load)\s\(*
+        regex: pickle\.(loads|load)\s*\(
         description: Unsafe pickle deserialization (RCE)
         severity: CRITICAL
         L_level: L4
@@ -109,7 +109,7 @@ RuntimePatternSet:
         fix: Use JSON or struct for serialization
 
       PAT.eval_exec:
-        regex: \b(eval|exec)\s\(*
+        regex: \b(eval|exec)\s*\(
         description: Arbitrary code execution
         severity: CRITICAL
         L_level: L4
@@ -145,7 +145,7 @@ RuntimePatternSet:
         fix: Use parameterized queries / prepared statements
 
       PAT_hardcoded_secret:
-        regex: (?i)(api[_-]?key|secret|password|token|passwd)\s*[:=]\s*['"a-zA-Z0-9]{8,}
+        regex: (api[_-]?key|secret|password|token|passwd)\s*[:=]\s*[a-zA-Z0-9'"]{8,}
         description: Hardcoded secret in source
         severity: CRITICAL
         L_level: L4
@@ -163,7 +163,7 @@ RuntimePatternSet:
         fix: Use secrets module for security-sensitive randomness
 
       PAT_weak_crypto:
-        regex: hashlib\.(md5|sha1)\s*(*
+        regex: hashlib\.(md5|sha1)\s*\(
         description: Weak hash algorithm (MD5/SHA1)
         severity: MEDIUM
         L_level: L2
@@ -172,7 +172,7 @@ RuntimePatternSet:
         fix: Use SHA-256 or stronger
 
       PAT_path_traversal:
-        regex: (open\(|readFile|writeFile)\s\(*[^)]*(\.|..)*[/\\]
+        regex: (open\(|readFile|writeFile)\s*[^)]*(\.|..)*[/\\]
         description: Potential path traversal
         severity: HIGH
         L_level: L3
@@ -190,7 +190,7 @@ RuntimePatternSet:
         fix: Restrict to specific trusted origins
 
       PAT_missing_auth:
-        regex: (def\s+(login|auth|admin)[]+)\s*:)|(app\.(post|get)\s\(*['"]/(admin|api)
+        regex: (def\s+(login|auth|admin)\w*\s*[:\(])|(app\.(post|get)\s*\(*['"](/admin|/api))
         description: Missing authentication/authorization check
         severity: CRITICAL
         L_level: L4
@@ -226,7 +226,7 @@ RuntimePatternSet:
         fix: Never deserialize untrusted input; use JSON/Protocol Buffers
 
       PAT_redos:
-        regex: \([a-zA-Z+\*]*\*\?)|\(\.\*\)\{.*,.\\}
+        regex: (\([a-zA-Z+\*]*\*\?)|(\(\.\*\)\{.*,.\\})
         description: Potential regex denial of service (ReDoS)
         severity: LOW
         L_level: L1
@@ -235,7 +235,7 @@ RuntimePatternSet:
         fix: Avoid nested quantifiers in regex patterns
 
       PAT_no_rate_limit:
-        regex: (def\s+login|app\.post\s\(*['"]/(login|api)
+        regex: (def\s+login|app\.post\s*\(['"](/login|/api))
         description: Missing rate limiting on auth/API endpoints
         severity: LOW
         L_level: L1

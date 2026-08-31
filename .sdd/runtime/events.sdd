@@ -39,6 +39,38 @@ EventTypes:
   CHECKPOINT: checkpoint created
   ERROR: error occurred
   METRIC: metric recorded
+  HOOK: hook event fired (PreToolUse, PostToolUse)
+
+HookEvents:
+  PreToolUse:
+    source: sdd-adapter/hook-bridge.ts
+    trigger: claude-code PreToolUse[Write/Edit]
+    payload:
+      hook_event_name: PreToolUse
+      permission_decision: allow | deny
+      permission_decision_reason: string
+      tool_name: string
+      file_path: string
+      findings: array
+      decision: PASS | WARN | BLOCK
+    rules:
+      - PreToolUse MUST block before file is written if decision is BLOCK
+      - PreToolUse MUST emit GATE event with decision
+      - PreToolUse MUST emit OBS13 if blocked, OBS12 if warned
+
+  PostToolUse:
+    source: sdd-adapter/hook-bridge.ts
+    trigger: claude-code PostToolUse[Write/Edit]
+    payload:
+      hook_event_name: PostToolUse
+      tool_name: string
+      file_path: string
+      findings: array
+      decision: PASS | WARN | BLOCK
+    rules:
+      - PostToolUse scans after write for audit-only mode
+      - PostToolUse MUST emit OBS12 security_gate_warned on findings
+      - PostToolUse MUST NOT block — audit only
 
 EventCategories:
   DomainEvents: business-level events (UserCreated, PaymentCompleted, OrderCancelled)
