@@ -1,0 +1,108 @@
+# Observability: Events
+
+Purpose:
+  Define event architecture for observability: envelope, versioning,
+  producers, consumers, bus configuration, and delivery guarantees.
+
+Owns: architecture/observability/events.sdd
+
+Principles:
+  Events are immutable and append-only.
+  Event ordering is guaranteed per execution_id.
+  Event consumers MUST be idempotent.
+
+EventEnvelope:
+  structure:
+    event:
+      id: string
+      type: string
+      version: string
+      timestamp: ISO 8601
+      correlation_id: string
+      causation_id: string
+      actor: string
+      source: string
+      payload: object
+
+EventVersioning:
+  rule: event schemas are versioned
+  example:
+    ToolCalled.v1
+    ToolCalled.v2
+
+  rule: consumers MUST handle old event versions
+
+EventProducer:
+  examples:
+    Execution Engine: ExecutionStarted
+    Tool Runner: ToolCompleted
+
+EventConsumer:
+  examples:
+    Observability Service: metrics, traces
+    Audit Service: audit log
+    Notification Service: alerts
+
+EventBus:
+  purpose: decouple producers from consumers
+  properties:
+    ordering: per execution_id
+    delivery: at-least-once
+    retry: with backoff
+    dead-letter: DLQ for failed events
+    idempotency: event_id based deduplication
+    partitioning: by execution_id
+    retention: configurable
+
+DuplicateEvents:
+  rule: consumers MUST be idempotent
+  rule: deduplication by event_id
+
+DeadLetterQueue:
+  rule: failed events go to DLQ
+  rule: DLQ is monitored and reprocessed
+
+Ordering:
+  rule: ordering is required per execution_id
+  rule: global ordering is NOT required (too expensive)
+
+EventCategories:
+  DomainEvents:
+    UserCreated, PaymentCompleted, OrderCancelled
+
+  SystemEvents:
+    ExecutionStarted, ToolCalled, ToolFailed, AgentAssigned, PolicyDenied
+
+EndToEndTrace:
+  structure:
+    REQ-100
+      ?
+    TASK-200
+      ?
+    EXEC-300
+      ?
+    +-- AGENT-10
+      ¦     +-- SKILL-20
+      ¦     +-- CTX-30
+      ¦     +-- PROMPT-40
+      +-- POLICY-50
+      +-- ACTION-60
+      ¦     +-- TOOL-70
+      +-- VALIDATION-80
+      +-- ARTIFACT-90
+
+  rule: every node has ID, Version, Timestamp, Actor, Parent, Correlation
+
+Navigation:
+  Architecture: @../INDEX.sdd
+  System: @../system.sdd
+  AI: @../ai.sdd
+  Operations: @../operations.sdd
+
+Rules:
+  [OBS-05] Events are immutable and append-only.
+  [OBS-06] Event ordering is guaranteed per execution_id.
+  [OBS-07] Event consumers MUST be idempotent.
+  [OBS-13] End-to-end trace links Requirement to Artifact.
+
+State: +

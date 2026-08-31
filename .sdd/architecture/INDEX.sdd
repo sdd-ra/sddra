@@ -16,7 +16,7 @@ ReadOrder:
    6 @scaling.sdd
    7 @availability.sdd
    8 @data.sdd
-   9 @observability.sdd
+    9 @observability/INDEX.sdd
    10 @networking.sdd
    11 @deployment.sdd
 
@@ -34,7 +34,7 @@ Navigation:
   Scaling: @scaling.sdd
   Availability: @availability.sdd
   Data: @data.sdd
-  Observability: @observability.sdd
+  Observability: @observability/INDEX.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
 

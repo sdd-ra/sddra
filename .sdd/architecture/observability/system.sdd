@@ -1,0 +1,102 @@
+# Observability: System
+
+Purpose:
+  Define system observability requirements: logs, metrics, traces,
+  monitoring, and alerting for production services.
+
+Owns: architecture/observability/system.sdd
+
+Principles:
+  Observability MUST be designed into the system, not added later.
+  Logs, metrics, and traces are complementary, not interchangeable.
+  Alert on symptoms, not causes.
+  Every service MUST expose health checks.
+  Sensitive data MUST be redacted in all observability outputs.
+  Observability data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+
+Logs:
+  levels:
+    ERROR: system errors requiring immediate attention
+    WARN: potential problems, degraded functionality
+    INFO: significant state changes, business events
+    DEBUG: detailed diagnostic information
+
+  requirements:
+    structured: JSON format with timestamp, level, service, trace_id
+    context: include request_id, user_id (anonymized), operation
+    correlation: trace_id MUST link logs to traces
+    sensitive_data: MUST NOT log PII, secrets, tokens
+    volume: log volume MUST be bounded and monitored
+
+  retention:
+    hot: 7 days (searchable)
+    warm: 30 days (slower search)
+    cold: 1 year (compliance archive)
+
+Metrics:
+  types:
+    counter: cumulative value (requests_total, errors_total)
+    gauge: point-in-time value (queue_depth, active_connections)
+    histogram: distribution (request_duration_seconds)
+    summary: streaming quantiles
+
+  golden_signals:
+    latency: request duration (p50, p95, p99)
+    traffic: requests per second
+    errors: error rate (4xx, 5xx)
+    saturation: resource utilization (CPU, memory, connections)
+
+  retention:
+    high resolution (1s): 1 hour
+    medium resolution (1m): 7 days
+    low resolution (5m): 90 days
+
+Traces:
+  requirements:
+    every request MUST generate trace_id
+    trace_id MUST propagate across service boundaries
+    spans MUST include service name, operation, start/end time
+    spans MUST link to parent span_id
+    sampling rate MUST be configurable
+
+  sampling:
+    production: 1-10% of requests
+    error traces: 100% of failed requests
+
+Monitoring:
+  health_checks:
+    liveness: process alive, basic functionality
+    readiness: dependencies available, cache warm
+    startup: migrations complete, cache populated
+
+  dashboards:
+    service_dashboard: golden signals, SLO compliance, recent deploys
+    infrastructure_dashboard: CPU, memory, disk, network
+    business_dashboard: key business metrics, user activity
+
+Alerting:
+  principles:
+    alert_on_symptoms: SLO at risk, user experience degraded
+    actionable: every alert has runbook and owner
+    noise_reduction: group, deduplicate, suppress during deploys
+
+  severity:
+    page: SLO at risk, service down, data loss, security incident
+    warn: degraded performance, approaching SLO
+    info: deploy completed, capacity planning
+
+Navigation:
+  Architecture: @../INDEX.sdd
+  AI: @../ai.sdd
+  Events: @../events.sdd
+  Operations: @../operations.sdd
+
+Rules:
+  [OBS-01] Observability MUST be designed into the system, not added later.
+  [OBS-02] Logs, metrics, and traces are complementary, not interchangeable.
+  [OBS-03] Alert on symptoms, not causes.
+  [OBS-04] Every service MUST expose health checks.
+  [OBS-05] Sensitive data MUST be redacted in all observability outputs.
+  [OBS-06] Observability data MUST be classified (PUBLIC, INTERNAL, CONFIDENTIAL, SECRET).
+
+State: +

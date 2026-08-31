@@ -1,0 +1,102 @@
+# Observability: AI
+
+Purpose:
+  Define observability requirements for AI execution: decision traces,
+  context traces, policy traces, snapshots, and execution fingerprints.
+
+Owns: architecture/observability/ai.sdd
+
+Principles:
+  AI decision provenance MUST be reproducible.
+  Decision trace records summary and factors, not full chain-of-thought.
+  Context trace is recorded with execution.
+  Policy snapshot is immutable at execution time.
+
+DecisionTrace:
+  definition:
+    record of why AI made a specific decision
+
+  structure:
+    decision:
+      type: DATABASE_SELECTION
+      candidates: [PostgreSQL, MySQL, MongoDB]
+      selected: PostgreSQL
+      constraints: ACID required, relational model required
+      source: ADR-012
+      factors: [relational_data, transaction_support, existing_stack]
+
+  rule: system records decision summary, not full chain-of-thought
+  rule: decision trace enables reproducibility
+
+ContextTrace:
+  definition:
+    record of what context was used for a task
+
+  structure:
+    context:
+      task: TASK-100
+      files: [user.go, repository.go]
+      docs: [auth.md]
+      decisions: [ADR-12]
+      policies: [SEC-01]
+
+  rule: context trace is recorded with execution
+
+PolicyTrace:
+  definition:
+    record of which policies were evaluated and their decisions
+
+  structure:
+    policy_snapshot: POLICY-SNAPSHOT-20
+    decisions:
+      - policy: DEV-WRITE-01
+        result: ALLOW
+        reason: resource_in_write_scope
+
+ContextSnapshot:
+  definition:
+    immutable snapshot of context at execution time
+
+  structure:
+    snapshot_id: CTX-100
+    execution: EXEC-500
+    sdd_version: 15
+    source_revision: abc123
+    items: [API-10, DOMAIN-AUTH, ARCH-5, auth/login.go]
+
+PolicySnapshot:
+  definition:
+    immutable snapshot of active policies at execution time
+
+  structure:
+    snapshot_id: POLICY-SNAPSHOT-20
+    execution: EXEC-500
+    policies: [DEV-WRITE-01, SEC-AUTH-01, ...]
+
+AIExecutionFingerprint:
+  definition:
+    hash of all execution dependencies for reproducibility
+
+  structure:
+    fingerprint:
+      agent_version: 3.2.1
+      skill_version: 2.1
+      prompt_version: 7
+      model_version: 1.5
+      context_snapshot: CTX-100
+      policy_snapshot: POLICY-SNAPSHOT-20
+
+Navigation:
+  Architecture: @../INDEX.sdd
+  System: @../system.sdd
+  Events: @../events.sdd
+  Operations: @../operations.sdd
+
+Rules:
+  [OBS-08] Decision trace records summary and factors, not full chain-of-thought.
+  [OBS-09] Cost and token metrics are required for AI operations.
+  [OBS-10] Skill performance metrics drive improvement decisions.
+  [OBS-13] End-to-end trace links Requirement to Artifact.
+  [OBS-14] Root cause analysis traces failures through execution chain.
+
+State: +
