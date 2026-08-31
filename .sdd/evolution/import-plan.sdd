@@ -1,0 +1,140 @@
+# ECC → SDD Skill Import Plan
+
+Spec: ImportPlan
+Purpose:
+  Define the plan to import high-value ECC skills into the SDD system,
+  bridging ECC's 281 skills with SDD's skill registry and chain graph.
+
+Owns: evolution/import-plan.sdd
+
+Source:
+  ECC repository: https://github.com/affaan-m/ECC
+  Total skills: 281
+  High-relevance skills: ~20 (score >= 80%)
+  Total agents: 67
+  Total commands: 94
+
+ImportPriority:
+  P0_CRITICAL:
+    description: Must-have for SDD chain execution
+    criteria:
+      - Directly maps to SDD chain arms (P1, D1, S1, C1, R1, DEP1)
+      - Used in every project
+      - No SDD equivalent exists
+    skills:
+      - tdd-workflow         → C1 (code) - test-first cycle
+      - security-review      → R1 (review) - OWASP audit
+      - build-error-resolver → C1 (code) - build fixes
+      - code-architect       → D1 (docs) - architecture blueprints
+      - refactor-clean       → C1 (code) - dead code removal
+      - bdd-verification     → D1/S1 - behavior-driven specs
+
+  P1_HIGH:
+    description: High value, project-enables skills
+    criteria:
+      - Maps to specific SDD phases
+      - 70%+ relevance to SDD workflows
+      - Well-maintained ECC skills
+    skills:
+      - django-tdd           → C1 - Django test-first
+      - django-security      → R1 - Django security audit
+      - golang-patterns      → S1/C1 - Go conventions
+      - typescript-patterns  → S1/C1 - TS conventions
+      - react-patterns       → S1/C1 - React patterns
+      - nextjs-patterns      → S1/C1 - Next.js patterns
+      - python-patterns      → S1/C1 - Python conventions
+      - database-reviewer    → R1 - DB query/schema review
+      - security-scan        → R1 - AgentShield integration
+      - code-review          → R1 - general code review
+
+  P2_MEDIUM:
+    description: Language-specific or niche skills
+    criteria:
+      - 50-70% relevance
+      - Useful for specific stacks
+    skills:
+      - rust-patterns        → S1 - Rust conventions
+      - go-reviewer          → R1 - Go-specific review
+      - rust-reviewer        → R1 - Rust-specific review
+      - java-reviewer        → R1 - Java-specific review
+      - kotlin-reviewer      → R1 - Kotlin/Android review
+      - cpp-reviewer         → R1 - C++ review
+      - django-patterns      → S1 - Django architecture
+      - go-build-resolver    → C1 - Go build fixes
+      - java-build-resolver  → C1 - Java build fixes
+      - flutter-reviewer     → R1 - Flutter/Dart review
+
+  P3_LOW:
+    description: Specialty or experimental skills
+    criteria:
+      - < 50% relevance to core
+      - Highly specialized domains
+    skills:
+      - healthcare-reviewer  → R1 - healthcare compliance
+      - homelab-architect    → D1 - home lab planning
+      - marketing-agent      → D1/P1 - content planning
+      - gan-planner          → D1 - GAN workflow planning
+      - network-architect    → D1 - network design
+
+ImportStrategy:
+  phase_1:
+    description: Import P0 critical skills
+    target: .sdd/skills/
+    format: Convert ECC Markdown SKILL.md → SDD .sdd spec files
+    mapping:
+      purpose: Use ECC skill "description" as SDD purpose
+      steps: Use ECC skill "steps" as SDD execution
+      constraints: Use ECC skill "constraints" as SDD rules
+      output: Use ECC skill "expected output" as SDD output format
+
+  phase_2:
+    description: Import P1 high-value skills
+    target: .sdd/skills/{domain}/
+    format: Same conversion as phase 1
+    additional:
+      - Create domain directories (django/, go/, react/)
+      - Link to existing SDD chain arms
+      - Add to INDEX.sdd navigation
+
+  phase_3:
+    description: Import P2 medium-value skills
+    target: .sdd/skills/{domain}/
+    format: Same as above
+    note: Language-specific reviewers map to @agent.reviewer
+
+  phase_4:
+    description: Document P3 low-value skills as references
+    action: Create cross-reference entries in .sdd/references/sdd/
+    note: Do not import full skill files — just reference links
+
+AgentImport:
+  target: .sdd/agent/ecc-bridge.sdd
+  mapping:
+    ECC agents → SDD @agent.* roles
+    67 agents → 14 SDD roles + 23 specialty roles
+    Store agent prompts as .sdd/agent/prompts/ (human-readable)
+
+CommandImport:
+  target: .claude/commands/
+  existing: 14 SDD commands already exist
+  new: Import ECC slash commands as .claude/commands/ entries
+  mapping:
+    /ecc:plan → /sdd-plan (alias to sdd.md)
+    /code-review → extend existing review
+    /security-scan → add to R1 review arm
+    /build-fix → add to C1 code arm
+
+RiskMitigation:
+  - Each imported skill retains original ECC attribution
+  - Import only skills with MIT license (ECC is MIT)
+  - Validate skill structure before import
+  - Create cross-references, not duplicates
+  - Mark imported skills with @import.source = @ecc
+
+Validation:
+  - All imported .sdd files pass unit tests
+  - Cross-references resolve correctly
+  - No duplicate skills created
+  - Chain graph updated with new skill references
+
+State: +
