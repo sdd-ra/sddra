@@ -478,9 +478,9 @@ Navigation:
    Documentation: @DOCUMENTATION.md
    Analysis: @ANALYSIS.md
    SkillExecution: @skills/SKILL-EXECUTION.sdd
-   SkillDiscovery: @skills/SKILL-DISCOVERY.sdd
-   SkillRecommendation: @skills/SKILL-RECOMMENDATION.sdd
-   SkillGapAnalysis: @skills/SKILL-GAP-ANALYSIS.sdd
+    SkillDiscovery: @skills/meta/SKILL-DISCOVERY.sdd
+    SkillRecommendation: @skills/meta/SKILL-RECOMMENDATION.sdd
+    SkillGapAnalysis: @skills/meta/SKILL-GAP-ANALYSIS.sdd
     SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
     FastPath: @chains/fast-path.sdd
    BugTracking: @projects/{project_name}/bugs/INDEX.sdd
