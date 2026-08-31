@@ -32,8 +32,9 @@ Navigation:
   Context: @context.sdd
   Agent: @state.sdd
   Session: @state.sdd
-  Current: @state.sdd
+  Context: @context.sdd
   Adapter: @adapter-runtime.sdd
+  IndexIntegrity: @INDEX-INTEGRITY.sdd
   Checkpoints: @../patterns/checkpoint-restore.sdd
   Orchestrator: @../orchestrator/INDEX.sdd
   Protocol: @../protocol/INDEX.sdd
