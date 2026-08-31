@@ -47,6 +47,11 @@ Contract:
     autonomy: L3
     plan_version: 1
     state: PLANNING
+    adapter_bindings:
+      - hook: PreToolUse[Write/Edit]
+        runtime: sdd-adapter/hook-bridge.ts
+        enforce: true
+        patterns: .sdd/security/controls.sdd RuntimePatternSet
 
 PlanEvolution:
 

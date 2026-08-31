@@ -111,6 +111,21 @@ GateTypes:
       output: GateDecision (PASS/FAIL) + findings to .sdd/reviews/
       rule: CRITICAL/HIGH findings MUST block VR stage regardless of other gates
 
+    AdapterExecutionContract:
+      source: sdd-adapter/hook-bridge.ts
+      purpose: Enforce .sdd security patterns at tool-execution boundary
+      hook: PreToolUse[Write/Edit]
+      exit_codes:
+        PASS: 0
+        WARN: 0 (allow + OBS12)
+        BLOCK: 2 (deny + OBS13)
+      fail_mode: fail-open on spec load failure (emit OBS17)
+      output_format: claude-code hook JSON with hookSpecificOutput
+      pattern_source: .sdd/security/controls.sdd RuntimePatternSet
+      evaluation: patterns-runtime.ts evaluates 17 regex patterns
+      threshold: project security level from .sdd/security/levels.sdd
+      diff_aware: only block on findings introduced by the change under review
+
     SDLCStageMapping:
       best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-4
       design_time:
