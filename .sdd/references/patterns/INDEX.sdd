@@ -1,0 +1,51 @@
+@patterns
+
+Purpose:
+  Reusable software design patterns.
+
+Use this index before applying a known pattern.
+
+Owns: references\patterns\index.sdd
+Patterns:
+  @patterns.repository
+      Abstraction over data source.
+
+  @patterns.strategy
+      Interchangeable algorithm family.
+
+  @patterns.factory
+      Object creation without specifying exact class.
+
+  @patterns.observer
+      One-to-many dependency notification.
+
+  @patterns.decorator
+      Add behavior without modifying original.
+
+  @patterns.command
+      Encapsulate request as object.
+
+DecisionGuide:
+  Need to abstract data source?
+    → @patterns.repository
+
+  Need interchangeable behavior?
+    → @patterns.strategy
+
+  Need flexible object creation?
+    → @patterns.factory
+
+  Need event notification?
+    → @patterns.observer
+
+  Need to add behavior dynamically?
+    → @patterns.decorator
+
+  Need to parameterize actions?
+    → @patterns.command
+
+RelatedReferences:
+  @ddd.repository
+  @architecture.hexagonal
+
+State: +
