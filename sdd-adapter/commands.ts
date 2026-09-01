@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { HookBridge } from "./hook-bridge";
+import { ProvenanceClient } from "./provenance-client";
 
 export interface CommandResult {
   command: string;
@@ -19,7 +20,7 @@ export class CommandRunner {
     this.projectRoot = projectRoot;
   }
 
-  run(commandName: string, args: string[] = []): CommandResult {
+  async run(commandName: string, args: string[] = []): Promise<CommandResult> {
     const normalized = commandName.startsWith("/") ? commandName : `/${commandName}`;
 
     switch (normalized) {
@@ -33,6 +34,8 @@ export class CommandRunner {
         return this.runAssumptionsCommand(args);
       case "/sdd-intents":
         return this.runIntentsCommand(args);
+      case "/sdd-purge":
+        return this.runPurgeCommand(args);
       default:
         return {
           command: normalized,
@@ -100,10 +103,12 @@ export class CommandRunner {
     };
   }
 
-  private runScanCommand(args: string[]): CommandResult {
+  private async runScanCommand(args: string[]): Promise<CommandResult> {
     const bridge = new HookBridge();
     const targetPath = args[args.findIndex(a => a === "--file" || a === "--directory") + 1];
     const severityFilter = args.find(a => a.startsWith("--severity"))?.split("=")[1];
+    const provenanceMode = args.find(a => a.startsWith("--provenance")) ? "inspect" :
+                           args.find(a => a.startsWith("--purge")) ? "clean" : "none";
 
     if (!targetPath) {
       return {
@@ -141,7 +146,7 @@ export class CommandRunner {
 
     for (const file of filesToScan) {
       const content = fs.readFileSync(file, "utf-8");
-      const result = bridge.processHook({
+      const result = await bridge.processHook({
         session_id: `scan-${Date.now()}`,
         tool_name: "Read",
         tool_input: { file_path: file, content },
@@ -161,6 +166,14 @@ export class CommandRunner {
         else if (finding.severity === "HIGH") totalHigh++;
         else if (finding.severity === "MEDIUM") totalMedium++;
         else if (finding.severity === "LOW") totalLow++;
+      }
+
+      if (provenanceMode !== "none") {
+        const provenance = await this.runProvenanceOnFile(file, content, provenanceMode);
+        for (const finding of provenance) {
+          allFindings.push(finding);
+          totalMedium++;
+        }
       }
     }
 
@@ -197,6 +210,36 @@ export class CommandRunner {
       output: outputLines.join("\n"),
       findings: allFindings,
     };
+  }
+
+  private async runProvenanceOnFile(
+    file: string,
+    content: string,
+    mode: "inspect" | "clean",
+  ): Promise<Array<Record<string, unknown>>> {
+    const findings: Array<Record<string, unknown>> = [];
+    const serviceUrl = process.env.WATERMARKS_SERVICE_URL || "http://127.0.0.1:8765";
+    const apiKey = process.env.WATERMARKS_SERVER_API_KEY;
+    const client = new ProvenanceClient({ serviceUrl, apiKey, timeoutMs: 5000 });
+
+    const fileName = file.split(/[\\/]/).pop() || file;
+    const report = await (mode === "clean"
+      ? client.clean(fileName, content)
+      : client.inspect(fileName, content, false));
+
+    if (!report.available || !report.suspicious) return findings;
+
+    for (const finding of report.report) {
+      findings.push({
+        patternId: `PROV:${finding.kind}`,
+        severity: "MEDIUM",
+        line: 1,
+        file,
+        message: `[${finding.layer || "provenance"}] ${finding.report || finding.kind}`,
+      });
+    }
+
+    return findings;
   }
 
   private runDependenciesCommand(_args: string[]): CommandResult {
@@ -375,6 +418,121 @@ export class CommandRunner {
       decision: "PASS",
       exitCode: 0,
       output: outputLines.join("\n"),
+    };
+  }
+
+  private async runPurgeCommand(args: string[]): Promise<CommandResult> {
+    const serviceUrl = process.env.WATERMARKS_SERVICE_URL || "http://127.0.0.1:8765";
+    const apiKey = process.env.WATERMARKS_SERVER_API_KEY;
+    const client = new ProvenanceClient({ serviceUrl, apiKey, timeoutMs: 5000 });
+    const inspectOnly = args.includes("--inspect");
+    const layerArg = args.find(a => a.startsWith("--layer"))?.split("=")[1] || "all";
+    const targetPath = args[args.findIndex(a => a === "--file" || a === "--directory") + 1];
+
+    if (!targetPath) {
+      return {
+        command: "/sdd-purge",
+        decision: "PASS",
+        exitCode: 0,
+        output: "Usage: /sdd-purge --file <path> or /sdd-purge --directory <path>",
+      };
+    }
+
+    const resolved = path.resolve(this.projectRoot, targetPath);
+    if (!fs.existsSync(resolved)) {
+      return {
+        command: "/sdd-purge",
+        decision: "PASS",
+        exitCode: 0,
+        output: `Target not found: ${resolved}`,
+      };
+    }
+
+    const filesToScan: string[] = [];
+    if (fs.statSync(resolved).isDirectory()) {
+      const walk = (dir: string) => {
+        for (const entry of fs.readdirSync(dir)) {
+          const full = path.join(dir, entry);
+          if (fs.statSync(full).isDirectory()) {
+            walk(full);
+          } else {
+            filesToScan.push(full);
+          }
+        }
+      };
+      walk(resolved);
+    } else {
+      filesToScan.push(resolved);
+    }
+
+    let totalLayerA = 0;
+    let totalLayerFiles = 0;
+    const allFindings: Array<Record<string, unknown>> = [];
+
+    for (const file of filesToScan) {
+      const content = fs.readFileSync(file, "utf-8");
+      const fileName = file.split(/[\\/]/).pop() || file;
+      const report = await client.inspect(fileName, content, false);
+
+      if (!report.available) {
+        allFindings.push({
+          patternId: "PROV:unavailable",
+          severity: "LOW",
+          line: 1,
+          file,
+          message: `Provenance service unavailable: ${report.error || "unknown"}`,
+        });
+        continue;
+      }
+
+      if (!report.suspicious) continue;
+
+      for (const finding of report.report) {
+        const layer = (finding.layer || "").toLowerCase();
+        if (layerArg === "a" && layer !== "layer_a") continue;
+        if (layerArg === "files" && layer !== "layer_files") continue;
+
+        allFindings.push({
+          patternId: `PROV:${finding.kind}`,
+          severity: "MEDIUM",
+          line: 1,
+          file,
+          message: `[${finding.layer || "provenance"}] ${finding.report || finding.kind}`,
+        });
+
+        if (layer === "layer_a") totalLayerA++;
+        else if (layer === "layer_files") totalLayerFiles++;
+      }
+    }
+
+    const decision = allFindings.length > 0 ? "WARN" : "PASS";
+    const outputLines = [
+      "PROVENANCE AUDIT",
+      "",
+      `Files Scanned:    ${filesToScan.length}`,
+      `Findings:         ${allFindings.length}`,
+      `  Layer A:        ${totalLayerA}`,
+      `  Layer Files:    ${totalLayerFiles}`,
+      `Decision:         ${decision}`,
+      "",
+    ];
+
+    if (allFindings.length > 0) {
+      outputLines.push("Findings Detail:");
+      for (const f of allFindings.slice(0, 50)) {
+        outputLines.push(`  [${f.severity}] ${f.patternId} | ${f.file}:${f.line}`);
+        if (typeof f.message === "string" && f.message) {
+          outputLines.push(`    ${f.message}`);
+        }
+      }
+    }
+
+    return {
+      command: "/sdd-purge",
+      decision,
+      exitCode: inspectOnly ? 0 : 0,
+      output: outputLines.join("\n"),
+      findings: allFindings,
     };
   }
 }

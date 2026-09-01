@@ -5,9 +5,12 @@ import fs from "fs";
 const tests = [
   { name: "patterns-runtime", file: "__tests__/patterns-runtime.test.ts" },
   { name: "hook-bridge", file: "__tests__/hook-bridge.test.ts" },
+  { name: "hook-bridge-provenance", file: "__tests__/hook-bridge-provenance.test.ts" },
   { name: "integration", file: "__tests__/integration.test.ts" },
   { name: "hook-binding", file: "__tests__/hook-binding.test.ts" },
   { name: "commands", file: "__tests__/commands.test.ts" },
+  { name: "commands-purge", file: "__tests__/commands-purge.test.ts" },
+  { name: "provenance-client", file: "__tests__/provenance-client.test.ts" },
 ];
 
 let totalPass = 0;

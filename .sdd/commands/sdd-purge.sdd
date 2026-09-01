@@ -1,0 +1,80 @@
+# /sdd-purge
+
+Purpose:
+  Audit and clean AI provenance marks from generated artifacts.
+  Bridges SDDRA to watermarks-remover service for Layer A (deterministic Unicode)
+  and Layer Files (C2PA, EXIF, XMP, doc-provenance) hygiene.
+
+Owns: commands/sdd-purge.sdd
+
+Description:
+  Calls the watermarks-remover HTTP service to inspect and clean generated
+  artifacts for hidden AI metadata. Operates in two modes:
+  inspect (detect only) and clean (strip in place). Activate as post-write
+  gate in C1 (Code Generation) and D1 (Documentation) arms, and as
+  pre-publish audit in DEP1 (Deploy) arm.
+
+Usage:
+  /sdd-purge
+  /sdd-purge --file <path>
+  /sdd-purge --directory <path>
+  /sdd-purge --inspect
+  /sdd-purge --layer <a|files|all>
+  /sdd-purge --json
+
+Options:
+  --file        Target single file
+  --directory   Target directory recursively
+  --inspect     Detect only, do not mutate files
+  --layer       Select detection layer: a (Unicode), files (metadata), all (default: all)
+  --json        Output machine-readable JSON
+
+Mode: READ_WRITE
+
+Layers:
+  layer_a: Invisible Unicode, exotic spaces, bidi, tag chars (deterministic)
+  layer_files: C2PA, EXIF, XMP, doc-provenance metadata (deterministic)
+  layer_b: Statistical text watermarks (best-effort, requires model backend)
+
+ChainArmMapping:
+  C1: post-write provenance check on generated code
+  D1: post-write provenance check on generated docs
+  DEP1: pre-publish provenance audit before deployment
+  R1: review enhancement with provenance findings
+
+Output:
+  PROVENANCE AUDIT
+
+    Files Scanned:    <count>
+    Findings:         <count>
+      Layer A:        <count>
+      Layer Files:    <count>
+    Decision:         PASS | WARN
+
+  Findings Detail:
+    [Layer A] file: notes.md:1
+      kind: zero-width-space
+      message: Invisible Unicode character detected
+      remediation: Run /sdd-purge --file notes.md to clean
+
+    [Layer Files] file: report.pdf:1
+      kind: c2pa
+      message: C2PA manifest found
+      remediation: Run /sdd-purge --file report.pdf to clean metadata
+
+Rules:
+  [PRG-01] /sdd-purge MUST NOT modify files when --inspect is supplied.
+  [PRG-02] /sdd-purge MUST fail open if the watermarks-remover service is unreachable.
+  [PRG-03] Layer A and Layer Files findings MUST be treated as MEDIUM severity.
+  [PRG-04] /sdd-purge MUST only scan files with registered artifact extensions.
+  [PRG-05] Cleaned files MUST be written atomically; original preserved on failure.
+  [PRG-06] /sdd-purge MUST emit OBS21 provenance_clean or OBS22 provenance_detected events.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   SecurityControls: @../security/controls.sdd
+   ProvenanceClient: @../../../sdd-adapter/provenance-client.ts
+   HookBridge: @../../../sdd-adapter/hook-bridge.ts
+   WatermarksRemover: https://github.com/guillaumemeyer/watermarks-remover
+
+State: +
