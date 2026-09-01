@@ -74,3 +74,43 @@ export interface ObsEvent {
   source: string;
   payload: Record<string, unknown>;
 }
+
+export interface ProvenanceFinding {
+  kind: string;
+  suspicious: boolean;
+  report: string;
+  layer?: string;
+}
+
+export interface ProvenanceReport {
+  ok: boolean;
+  kind: string;
+  suspicious: boolean;
+  report: ProvenanceFinding[];
+  cleaned?: string;
+  available?: boolean;
+  error?: string;
+}
+
+export interface ProvenanceCapabilities {
+  ok: boolean;
+  version?: string;
+  tools?: Record<string, boolean>;
+  detectors?: Record<string, boolean>;
+  available?: boolean;
+  error?: string;
+}
+
+export interface ProvenanceClientOptions {
+  serviceUrl: string;
+  apiKey?: string;
+  timeoutMs: number;
+}
+
+export interface ProvenanceClient {
+  health(): Promise<ProvenanceCapabilities>;
+  capabilities(): Promise<ProvenanceCapabilities>;
+  inspect(fileName: string, content: string, detect?: boolean): Promise<ProvenanceReport>;
+  detect(fileName: string, content: string): Promise<ProvenanceReport>;
+  clean(fileName: string, content: string, options?: Record<string, unknown>): Promise<ProvenanceReport>;
+}

@@ -42,6 +42,7 @@ Commands:
   /sdd-skills: Discover and map skill ecosystem
   /sdd-scan: Run security pattern scans against code files
   /sdd-dependencies: Analyze and visualize dependency graph
+  /sdd-purge: Audit and clean AI provenance marks from artifacts
 
 Navigation:
   Chains: @../chains/INDEX.sdd
@@ -68,5 +69,6 @@ Navigation:
   SkillsCommand: @sdd-skills.sdd
   ScanCommand: @sdd-scan.sdd
   DependenciesCommand: @sdd-dependencies.sdd
+  PurgeCommand: @sdd-purge.sdd
 
 State: +
