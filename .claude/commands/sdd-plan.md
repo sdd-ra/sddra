@@ -8,7 +8,15 @@ Steps:
   2. Read .sdd/chains/graph.sdd → extract execution trace and arms
   3. Read .sdd/decisions/INDEX.sdd → extract active decisions
   4. Read .sdd/projects/ → extract instantiated projects
-  5. Scan prompts/inbox/ → extract pending user requests (if exists)
+  5. Scan prompts/inbox/ → extract pending user requests
+     - Extract: intent, target arm (P1/D1/S1/C1/R1/DEP1), priority
+     - Tag each prompt with likely chain arm based on keywords:
+       "write/plan/design" → D1 (docs)
+       "implement/code/build" → C1 (code)  
+       "review/audit/test" → R1 (review)
+       "deploy/release" → DEP1 (deploy)
+       "analyze/explain" → P1 (prompt)
+       "spec/define" → S1 (.sdd)
   6. Scan prompts/archive/ → extract completed tasks (if exists)
   7. Scan .sdd/tasks/ → map task IDs to decisions
   8. For each chain arm (P1, D1, S1, C1, R1, DEP1):
