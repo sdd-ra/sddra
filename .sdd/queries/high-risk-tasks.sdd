@@ -1,0 +1,44 @@
+# Query: High-Risk Tasks
+
+Spec: QueryHighRiskTasks
+Purpose:
+  Reusable query to find tasks marked as high-risk that are currently
+  open or in-progress. Combines risk assessment with task status to
+  surface tasks requiring human attention.
+
+Query:
+  find high_risk tasks
+  where
+    status = open OR status = in_progress
+    AND risk = high
+
+  for each task:
+    show:
+      - task_id
+      - domain
+      - assigned_agent
+      - failure_count
+      - blocked_reason
+      - escalation_count
+
+  also:
+    impact analysis:
+      dependencies: count
+      blast_radius: calculation
+
+  output:
+    high_risk_tasks:
+      list: @task.* with risk=high and active status
+      with: impact_score, failure_count, dependency_count
+
+  confidence: HIGH (deterministic query)
+
+SavedAs:
+  @query:high-risk-tasks
+
+Navigation:
+  Parent: @INDEX.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+
+State: +

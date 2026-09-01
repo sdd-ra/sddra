@@ -1,0 +1,114 @@
+# Agent Handoff Protocol
+
+Spec: Handoff
+Purpose:
+  Define the structured handoff format for agent-to-agent communication.
+  Handoff transfers structured state, NOT conversation history.
+
+  Principle: "50k token conversation" → "2k token structured handoff"
+
+Owns: bootstrap/handoff.sdd
+
+## Handoff Manifest
+
+```
+@handoff.H44
+
+task:
+    @task.T2041
+
+completed:
+    domain model
+
+changed:
+    refund.go
+    refund_test.go
+
+discoveries:
+    provider async confirmation
+
+new:
+    @concept.async-confirmation
+
+pending:
+    webhook implementation
+
+proof:
+    @proof.P991
+```
+
+## Handoff Fields
+
+### task
+  The task identifier that was being executed.
+
+### completed
+  List of completed work (task scope, sub-tasks).
+
+### changed
+  List of files modified during execution.
+
+### discoveries
+  New information found during execution that may require replanning.
+
+### new
+  New .sdd objects created during execution (concepts, decisions, skills).
+
+### pending
+  Pending work — tasks not yet completed.
+
+### blocking
+  Items that are blocking further progress.
+
+### unknowns
+  New unknowns discovered during execution.
+
+### proof
+  Reference to evidence produced (test results, logs, etc.).
+
+## Handoff Rules
+
+  [HND-01] Handoff MUST be structured, not conversational.
+  [HND-02] Handoff MUST include completed, changed, discoveries, pending.
+  [HND-03] Handoff MUST NOT include conversation history or reasoning chains.
+  [HND-04] Receiving agent MUST bootstrap from handoff, not from conversation.
+  [HND-05] Handoff MUST reference proof evidence where available.
+
+## Handoff vs Conversation History
+
+  BAD:
+    - 50,000 tokens of reasoning, tool calls, intermediate thoughts
+
+  GOOD:
+    - 2,000 tokens of structured state:
+      - What was done
+      - What changed
+      - What was discovered
+      - What's pending
+      - Proof of correctness
+
+## Context Diff on Handoff
+
+  When a new agent receives a handoff:
+
+  Agent A context
+    → handoff manifest
+    → Agent B bootstrap
+
+  Agent B receives:
+    - Context diff (what changed from Agent A's context)
+    - Handoff manifest (structured state)
+    - New task resolution
+
+  Agent B does NOT re-bootstrap from scratch.
+  Agent B compiles context from handoff + current task.
+
+Navigation:
+  Parent: @INDEX.sdd
+  Bootstrap: @INDEX.sdd
+  Identity: @identity.sdd
+  Context: @../system/context/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Proof: @../testing/INDEX.sdd
+
+State: +

@@ -7,6 +7,7 @@ const tests = [
   { name: "hook-bridge", file: "__tests__/hook-bridge.test.ts" },
   { name: "integration", file: "__tests__/integration.test.ts" },
   { name: "hook-binding", file: "__tests__/hook-binding.test.ts" },
+  { name: "commands", file: "__tests__/commands.test.ts" },
 ];
 
 let totalPass = 0;

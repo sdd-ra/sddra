@@ -33,4 +33,9 @@ Exit Codes:
   2 - Backup not found
   3 - Backup corrupted
 
+Navigation:
+  INDEX: @INDEX.sdd
+  BackupCommand: @sdd-backup.sdd
+  Timeline: @../timeline/INDEX.sdd
+
 State: +

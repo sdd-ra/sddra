@@ -1,0 +1,170 @@
+# Challenge Entity
+
+Spec: ChallengeEntity
+Purpose:
+  Define the challenge entity — counter-evidence that contests a claim.
+  Challenges provide the mechanism for knowledge to evolve: when new
+  evidence contradicts an existing claim, a challenge is filed, the claim
+  is downgraded, and a human reviewer resolves the conflict.
+
+Owns: lifecycle/challenges.sdd
+
+## Challenge Entity Format
+
+  @challenge.C44
+
+  claim:
+      @claim.C11
+
+  counter_evidence:
+    - @evidence.E91
+
+  reason:
+      New provider behavior contradicts idempotency assumption
+
+  proposed_resolution:
+    INVALIDATE | MODIFY | SCOPE_LIMIT | REJECT_CHALLENGE | FIX | VERIFY
+
+  status:
+    CHALLENGED | RESOLVED
+
+  reviewed_by:
+      @human
+
+  reviewed_at:
+      2026-09-01
+
+  outcome:
+    ACCEPTED | FALSE_POSITIVE | FIXED | VERIFIED | REJECTED
+
+  evidence_count:
+    1
+
+## Challenge Lifecycle
+
+  CHALLENGED
+    ↓
+  REVIEWED
+    ↓
+  RESOLVED
+    ├── ACCEPTED
+    └── REJECTED
+
+  PROPOSED:
+    description: Initial challenge filed with counter-evidence
+    confidence_impact: claim downgraded to MEDIUM
+    action: claim flagged for review
+
+  CHALLENGED:
+    description: Challenge filed, claim status downgraded to CHALLENGED
+    confidence_impact: claim downgraded from current level to MEDIUM
+    action: claim flagged for review, excluded from new context
+
+  REVIEWED:
+    description: A human or automated gate has examined the challenge
+    action: outcome pending resolution
+
+  RESOLVED — ACCEPTED:
+    description: Counter-evidence is valid — claim is incorrect
+    claim_status: → INVALIDATED
+    action: claim marked INVALIDATED, superseded if appropriate
+    next_steps: FIX claim or mark FALSE_POSITIVE if challenge itself is invalid
+
+  RESOLVED — FALSE_POSITIVE:
+    description: The challenge was based on invalid or irrelevant counter-evidence
+    claim_status: → restored to prior status
+    action: challenge archived as FALSE_POSITIVE
+
+  RESOLVED — FIXED:
+    description: Claim is updated in response to valid challenge
+    claim_status: → updated claim, new generation created
+    action: create replacement claim, mark old as SUPERSEDED, VERIFIED after review
+
+  RESOLVED — VERIFIED:
+    description: Fix or modification has been verified through tests or review
+    claim_status: → VALIDATED or ACTIVE (depending on outcome)
+    action: claim confidence restored, challenge archived with outcome
+
+## Challenge Resolution Protocol
+
+  1. CHALLENGE FILED
+     AI creates @challenge.* with counter_evidence and proposed_resolution.
+     Claim status → CHALLENGED.
+     [RES-01] AI MUST NOT auto-resolve challenges.
+
+  2. CLAIM DOWNGRADE
+     Claim confidence downgraded to MEDIUM regardless of prior level.
+     Claim excluded from standard context compilation.
+     [RES-02] Claim confidence floor is enforced during challenge period.
+
+  3. REVIEW TRIGGERED
+     Notification sent to @agent.supervisor or human reviewer.
+     Review must begin within 24 hours.
+     [RES-03] Unresolved challenges for >7 days trigger escalation.
+
+  4. REVIEW
+     Reviewer examines:
+     - The original claim and its evidence
+     - The challenge and its counter-evidence
+     - Any supporting context (code, tests, decisions)
+     [RES-04] Reviewer MUST check evidence quality, not just quantity.
+
+  5. RESOLUTION
+     ACCEPTED:
+       - Claim status → INVALIDATED
+       - If claim is a project rule, create replacement @claim.* (generation +1)
+       - Original claim retained with INVALIDATED status + outcome pointer
+     REJECTED:
+       - Challenge archived with REJECTED outcome
+       - Claim confidence restored to prior level
+       - [RES-05] Rejected challenges MUST record why for future reference
+
+  6. POST-RESOLUTION
+     If ACCEPTED, the invalidated claim's references are:
+     - Redirected to replacement claim (if created)
+     - Or marked with qualifier (if no replacement)
+     - All affected skills, decisions, and architectures re-evaluated
+
+## Claim-Challenge Relationship
+
+  claims:
+    @claim.C11  →  challenged_by: @challenge.C44
+
+  challenges:
+    @challenge.C44  →  claim: @claim.C11
+
+  rules:
+    [REL-01] Every challenge MUST reference exactly one claim.
+    [REL-02] A claim MAY have zero or multiple challenges.
+    [REL-03] If any challenge on a claim is ACCEPTED, the claim → INVALIDATED.
+    [REL-04] All ACCEPTED challenges MUST be linked to a @decision.* record
+             explaining the new direction.
+
+## Example Resolution
+
+  @challenge.C44
+    claim: @claim.C11
+    counter_evidence:
+      - @evidence.E91
+      - @observation.O103
+    reason: New payment provider guarantees idempotency at provider level
+    proposed_resolution: INVALIDATE
+    status: RESOLVED
+    reviewed_by: @human
+    reviewed_at: 2026-09-01
+    outcome: ACCEPTED
+    evidence_count: 2
+
+  Result:
+    @claim.C11  →  status: INVALIDATED, superseded_by: @claim.C115
+    @claim.C115  →  generation: 2, supported_by: [@evidence.E91, @evidence.E104]
+
+Navigation:
+  Parent: @INDEX.sdd
+  Claims: @claims.sdd
+  EntitySchemas: @entity-schemas.sdd
+  States: @states.sdd
+  Confidence: @confidence.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+
+State: +

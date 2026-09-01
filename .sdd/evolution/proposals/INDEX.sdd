@@ -1,0 +1,34 @@
+# Evolution: Proposals
+
+Spec: ProposalsIndex
+Purpose:
+  Registry of architecture, skill, and concept proposals under review.
+  Proposals are the formal mechanism for introducing new system knowledge.
+
+Owns: evolution/proposals/
+
+Structure:
+  Proposals are .sdd files with @proposal.AXX IDs.
+  Status field: proposed | under-review | approved | rejected
+
+ProposalRecord:
+  @proposal.A22
+  observed: domain isolation pattern
+  existing: @architecture.layered
+  gap: domain rules leaking into application layer
+  candidate: domain-oriented architecture
+  evidence: T100, T133, T178
+
+Rules:
+  [PROP-01] Proposals MUST include observed evidence and candidate solution.
+  [PROP-02] Proposals MUST identify existing concepts they extend or supersede.
+  [PROP-03] Approved proposals move to @../approved/.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Discovery: @../discovery.sdd
+  Candidates: @../candidates/INDEX.sdd
+  Approved: @../approved/INDEX.sdd
+  EvolutionPolicy: @../../policies/evolution.sdd
+
+State: +

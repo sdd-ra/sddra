@@ -1,0 +1,123 @@
+# Execution Graph & Dependency Analysis
+
+Spec: ExecutionPlan
+Purpose:
+  Detailed execution graph schema — how tasks relate, how parallelism
+  is determined, how critical path is calculated, how agents are assigned,
+  and how crash recovery works via execution journal and checkpoints.
+
+Owns: plans/execution-plan.sdd
+
+## Dependency Graph
+
+  Tasks are nodes; edges define dependencies:
+    T100 → T103 (T103 depends on T100)
+    T101 → T103
+    T102 → T103
+
+  AI reads graph, NOT task IDs, to determine execution order.
+
+Example Graph:
+  T100 (Domain)
+  T101 (Repository)
+  T102 (Provider)
+    ↓  (all feed into T103)
+  T103 (Refund Service)
+    ↓
+  T104 (API)    T105 (Tests)
+    ↓              ↓
+    T106 (Review) ←┘
+
+## Sequential vs Parallel
+
+  Tasks without dependency edges between them run in PARALLEL.
+  Supervisor assigns to available agents based on:
+    - task requirements (domain, level, skills)
+    - agent capabilities
+    - agent availability and load
+    - resource locks
+    - risk level
+
+## Critical Path
+
+  Longest dependency chain in the graph.
+  Example: T100 → T103 → T104 → T106
+
+  Used for bottleneck identification and project duration estimation.
+
+## Parallel Capacity
+
+  Supervisor monitors:
+    READY: T100, T101, T102
+    → Agent A → T100
+    → Agent B → T101
+    → Agent C → T102
+
+## Task Risk Levels
+
+  LOW       → auto execution
+  MEDIUM    → agent + verification
+  HIGH      → implementation + independent review
+  CRITICAL  → human approval required
+
+## Task Capability Matching
+
+  T102 requires: Go, HTTP, Payment Provider, security
+  Agent A: Go ✓, HTTP ✓, Payment ✓
+  Agent B: Go ✓, HTTP ✓
+  Agent C: security ✓
+
+  → Agent A selected (best match)
+
+## Execution Checkpoint
+
+  For large tasks:
+    CP1: architecture complete
+    CP2: domain complete
+    CP3: integration complete
+    CP4: tests complete
+
+## Crash Recovery
+
+  If agent dies mid-task at 50%:
+    last_checkpoint: CP2
+    changes: recorded
+    proof: pending
+
+  New agent: resume T103 from CP2
+
+## Execution Journal
+
+  Each task has:
+    @task.T103
+    journal:
+      started
+      files_changed
+      commands_run
+      tests_run
+      discoveries
+      blockers
+      decisions
+      checkpoint
+
+  Enables agent handoff without loss of context.
+
+## Plan Repair
+
+  When missing dependency detected (e.g., @skill.idempotency missing):
+    INSERT research task: T110 (Research idempotency pattern)
+    INSERT creation task: T111 (Create project skill)
+    INSERT T103 after T110, T111
+
+  This is plan evolution, not plan corruption.
+
+Navigation:
+
+  Parent: @INDEX.sdd
+  Intent: @../intents/INDEX.sdd
+  TaskState: @../tasks/TASK-STATE-MACHINE.sdd
+  LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+  Supervisor: @../agent/supervisor.sdd
+  Graph: @../graph/INDEX.sdd
+
+State: +

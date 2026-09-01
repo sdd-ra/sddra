@@ -1,0 +1,138 @@
+# MCP Integration Layer
+
+Purpose:
+  Define the integration layer between MCP (Model Context Protocol) servers
+  and the SDDRA runtime. Bridges ECC's 35 MCP servers through the adapter-runtime
+  to SDD gate enforcement and memory management.
+
+Owns: runtime/mcp-integration.sdd
+
+MCPServerRegistry:
+  total_servers: 35
+  default_enabled:
+    - chrome-devtools
+  opt_in_required:
+    - github
+    - supabase
+    - vercel
+    - railway
+    - git
+    - sqlite-web
+    - postgres
+    - redis
+    - kubernetes
+    - docker
+    - cloudflare
+    - linear
+    - notion
+    - slack
+    - discord
+    - figma
+    - notion
+    - jira
+    - confluence
+    - github-issues
+    - gitlab
+    - bitbucket
+    - azure-devops
+    - aws
+    - gcp
+    - azure
+    - datadog
+    - newrelic
+    - sentry
+    - honeycomb
+    - loki
+    - prometheus
+
+ServerCategories:
+  Development:
+    - chrome-devtools (default enabled)
+    - git
+  Infrastructure:
+    - docker, kubernetes, aws, gcp, azure
+    - terraform
+  Application:
+    - github, gitlab, bitbucket, jira, linear
+    - notion, confluence, slack
+  Monitoring:
+    - datadog, newrelic, sentry, honeycomb
+    - prometheus, loki, grafana
+  Database:
+    - postgres, redis, sqlite-web
+    - mongodb, mysql, elasticsearch
+
+IntegrationLayers:
+
+  GateBridge:
+    definition: Maps MCP tool results to SDD gate conditions
+    lifecycle:
+      on: MCP tool return from claude-code
+      action: read .sdd/gates/<type>.sdd condition schema
+      action: evaluate condition against tool output
+      action: compare result to threshold from .sdd/gates/levels.sdd
+      action: if FAIL and L-level >= project threshold → exit 2 (block)
+      action: if FAIL and L-level < threshold → log OBS1-20 (warn mode)
+      output: GateDecision event with tool_id, condition, verdict
+
+  MemoryBridge:
+    definition: Routes MCP observations to claude-mem stores
+    lifecycle:
+      on: MCP tool return
+      action: sanitize observation (L0 sanitization step)
+      action: strip PII and prompt-injection payloads
+      action: validate against schema before ingestion
+      action: SHA-256 content-hash dedup
+      action: store to claude-mem SQLite + ChromaDB
+      action: emit receipt with verdict + reason_code
+      on: UserPromptSubmit
+      action: load context from claude-mem (tier routing)
+      action: enforce access control via PolicyAsCode
+      action: validate attestation-bound token
+
+  SecurityBridge:
+    definition: Maps AgentShield security patterns to MCP tool gating
+    lifecycle:
+      on: PreToolUse for any MCP tool
+      action: check .sdd/security/controls.sdd for MCP-specific patterns
+      action: evaluate against PAT_* rules and OWASP Top 10
+      action: if pattern matches and L-level >= threshold → block
+      output: OBS13 security_gate_blocked or OBS12 security_gate_warned
+
+SecurityControls:
+  TrustMarkers:
+    source: ECC AgentShield
+    fields: trustLevel, provenance, readiness, reason_code
+    rule: Every MCP observation carries trust markers through MemoryBridge
+
+  AllowList:
+    rule: Only allowlisted MCP servers may be activated
+    rule: Allowlist managed via .sdd/runtime/mcp-allowlist.sdd
+    rule: Human approval required for new server activation
+
+  SecretsScrubbing:
+    rule: ANTHROPIC_API_KEY, GITHUB_TOKEN, DATABASE_URL scrubbed from all MCP output
+    rule: Connection strings are masked in logs
+
+Rules:
+  [MCP-01] Adapter MUST translate MCP tool results into SDD gate conditions.
+  [MCP-02] Adapter MUST NOT modify .sdd specification files — it only reads them.
+  [MCP-03] Only allowlisted MCP servers may connect to the SDDRA runtime.
+  [MCP-04] All MCP observations MUST pass through L0 sanitization before storage.
+  [MCP-05] MCP server connections MUST be version-pinned, not @latest.
+  [MCP-06] MCP integration MUST emit OBS13 for security gate blocks.
+  [MCP-07] MCP server failures MUST result in graceful degradation (fail-open).
+  [MCP-08] Each MCP server MUST be tagged with L-level security context.
+  [MCP-09] MCP tool output MUST carry provenance metadata (server, version, timestamp).
+  [MCP-10] Adapter MUST persist MCP server state in DB, not RAM.
+
+Navigation:
+  Runtime: @INDEX.sdd
+  AdapterRuntime: @adapter-runtime.sdd
+  SecurityControls: @../security/controls.sdd
+  SecurityLevels: @../security/levels.sdd
+  Events: @events.sdd
+  MemoryModel: @memory-model.sdd
+  EccBridge: @../agent/ecc-bridge.sdd
+
+State: +

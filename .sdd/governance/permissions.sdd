@@ -1,0 +1,99 @@
+# Permission Matrix & Environment Policies
+
+Spec: Permissions
+Purpose:
+  Define the permission matrix that maps capabilities to resources
+  across environments, and environment policies that determine
+  whether an action requires AUTO, REVIEW, or HUMAN_ONLY approval.
+
+Owns: governance/permissions.sdd
+
+## Permission Matrix
+
+  Capability          Resource            Autonomy L1   L2   L3   L4   L5
+  ────────────────────────────────────────────────────────────────────────
+  code.read           source-code         ✓    ✓   ✓   ✓   ✓
+  code.write          source-code         ✓    ✓   ✓   REVIEW  HUMAN_ONLY
+  code.delete         source-code         ✗    REVIEW  HUMAN_ONLY  BLOCK  BLOCK
+  test.run            test-env            ✓    ✓   ✓   REVIEW  REVIEW
+  git.apply           git-repo            ✓    ✓   REVIEW  HUMAN_ONLY  BLOCK
+  deploy.local        local-env           ✓    ✓   ✓   ✓   ✓
+  deploy.staging      staging-env         ✓    REVIEW  HUMAN_ONLY  BLOCK  BLOCK
+  deploy.production   production-env      ✗    BLOCK  BLOCK  BLOCK  BLOCK*
+  db.read             database            ✓    ✓   REVIEW  HUMAN_ONLY  BLOCK
+  db.write            database            ✗    REVIEW  HUMAN_ONLY  BLOCK  BLOCK
+  db.migration        database            ✗    BLOCK  BLOCK  BLOCK  BLOCK
+  network.external    external-net        ✗    BLOCK  BLOCK  BLOCK  BLOCK
+  secret.access       secrets             ✗    BLOCK  BLOCK  BLOCK  BLOCK
+  system.modify       system-files        ✗    BLOCK  BLOCK  BLOCK  BLOCK
+  task.create         task-system         ✓    ✓   ✓   ✓   ✓
+  skill.propose       skill-system        ✓    ✓   ✓   ✓   ✓
+  decision.approve    decision-system     ✗    BLOCK  BLOCK  BLOCK  BLOCK
+
+  * deploy.production at L5 requires human approval token
+
+## Environment Policy
+
+  @policy.db-write
+
+  local:
+    AUTO
+  test:
+    AUTO
+  staging:
+    REVIEW
+  production:
+    HUMAN_ONLY
+
+  @policy.deploy
+
+  local:
+    AUTO
+  staging:
+    REVIEW
+  production:
+    HUMAN_ONLY
+
+  @policy.secret-access
+
+  local:
+    AUTO
+  test:
+    AUTO
+  staging:
+    HUMAN_ONLY
+  production:
+    HUMAN_ONLY
+
+## Autonomy Levels (from @../tasks/AUTONOMY-POLICY.sdd)
+
+  L0: Observe Only
+  L1: Suggest
+  L2: Implement + Test
+  L3: Implement + Review + Fix
+  L4: Autonomous Execution
+  L5: Autonomous Multi-Task
+
+## Action Outcomes
+
+  ALLOW    — capability granted for this environment
+  REVIEW   — capability allowed but requires review gate
+  DENY     — capability explicitly blocked
+  BLOCK    — capability denied, no escalation possible
+  HUMAN_ONLY — capability requires human approval token
+
+## Permission Resolution Chain
+
+  TASK.requires(CAPABILITY)
+    → AGENT.capabilities contains CAPABILITY
+    → ENVIRONMENT_POLICY.get(CAPABILITY, ENV) → OUTCOME
+    → LOCK.check(RESOURCE) → LOCKED? BLOCK : continue
+    → AUTHORITY.check(OUTCOME != BLOCK) → result
+
+Navigation:
+  Parent: @INDEX.sdd
+  Capabilities: @capabilities.sdd
+  Resources: @resources.sdd
+  AutonomyPolicy: @../tasks/AUTONOMY-POLICY.sdd
+
+State: +

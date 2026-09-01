@@ -77,6 +77,38 @@ AdapterComponents:
       action: log to .sdd/runtime/events.sdd append-only log
       output: OBS1-20 observability event
 
+  SecurityScanner:
+    definition: Integrates AgentShield security scanning into the adapter runtime
+    responsibility: Map ECC AgentShield patterns (102 static rules) to SDD L-levels
+    lifecycle:
+      on: PostToolUse[Edit/Write] + PreCommit
+      action: read .sdd/security/controls.sdd for PAT_* patterns
+      action: scan for secrets (14 patterns), permission over-grants, hook injection
+      action: scan MCP server risk profiles (read/write/call exposure)
+      action: scan agent config for prompt injection vectors
+      action: if L-level >= project threshold → exit 2 (block)
+      action: if L-level < threshold → log OBS13 (warn mode)
+      output: OBS13 security_gate_blocked or OBS12 security_gate_warned
+    integration: Invoked from /security-scan skill or R1 gate
+    output_formats: terminal (color), JSON (CI), Markdown, HTML
+    exit_codes:
+      0: clean (grade A-B)
+      1: findings (grade C-D)
+      2: critical (grade F)
+
+  MCPBridge:
+    definition: Bridges ECC MCP servers through the adapter runtime
+    responsibility: Route MCP tool results through SDD gate enforcement
+    source: @mcp-integration.sdd
+    lifecycle:
+      on: MCP tool return from claude-code
+      action: evaluate MCP results against gate conditions
+      action: sanitize observation (L0 sanitization step)
+      action: strip PII and prompt-injection payloads
+      action: SHA-256 content-hash dedup
+      action: store to claude-mem SQLite + ChromaDB
+      output: OBS1-20 event with gate decision
+
 GateExecution:
   flow:
     claude-code PostToolUse[Edit] ->
@@ -162,6 +194,9 @@ Rules:
   Events: @events.sdd
   Memory Model: @memory-model.sdd
   Memory Consolidation: @memory-consolidation.sdd
+  MCP: @mcp-integration.sdd
+  SecurityScanner: @SecurityScanner
+  MCPBridge: @MCPBridge
   Trust Markers: @memory-model.sdd (TrustMarkers section)
   Crypto Erasure: @memory-model.sdd (CryptoErasure section)
   Policy As Code: @memory-model.sdd (PolicyAsCode section)

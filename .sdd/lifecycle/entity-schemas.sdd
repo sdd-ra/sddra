@@ -1,0 +1,234 @@
+# Entity Schemas
+
+Spec: EntitySchemas
+Purpose:
+  Define schemas for knowledge entities introduced in Phase 139 that
+  are not yet covered by existing entity definitions. These entities
+  populate the knowledge lifecycle pipeline and the claim/challenge
+  system, enabling auditable knowledge evolution with confidence
+  tracking, version lineage, and drift detection.
+
+Owns: lifecycle/entity-schemas.sdd
+
+## Entity Types
+
+### @observation.*
+  Purpose: Raw AI observations — the L0 entry point of the learning loop.
+  Fields:
+    id:         @observation.<name>
+    observed_in: <@tmp.* or @project.* or @task.*>
+    type:       pattern | anti_pattern | smell | gap | drift | terminology_drift
+    description: one-sentence description of what was observed
+    detail:     multi-line explanation with context
+    evidence:   [<@code.* | @test.* | @task.* | @project.*>]
+    timestamp:  YYYY-MM-DDTHH:MM:SSZ
+    confidence: low (always low at L0)
+    trust:      low (always low at L0)
+    status:     observed
+    promoted_to: optional @discovery.* or @candidate.*
+
+  Example:
+    @observation.O88
+      type: pattern
+      observed_in: @project.payment
+      description: DB transaction + event publishing frequently cause inconsistency
+      evidence:
+        - @code.payment.transaction.go
+      timestamp: 2026-09-01T10:30:00Z
+      confidence: low
+      trust: low
+      status: observed
+      promoted_to: @discovery.D44
+
+### @discovery.*
+  Purpose: L1 discovery — a repeated or strategically important pattern
+  observed across multiple contexts.
+  Fields:
+    id:          @discovery.<name>
+    observations: [@observation.*] (source observations)
+    description:   one-sentence summary of the discovery
+    detail:       multi-line explanation
+    first_seen:    YYYY-MM-DD
+    occurrences:   integer (number of independent contexts)
+    domains:       [<domain names where observed>]
+    confidence:    low | medium
+    trust:          low (default — not yet validated)
+    status:         discovered
+    promoted_to:   optional @candidate.*
+
+  Example:
+    @discovery.D44
+      observations:
+        - @observation.O88
+        - @observation.O89
+        - @observation.O90
+      description: Transaction-event inconsistency is a widespread pattern
+      occurrences: 3
+      domains: [payment, order, inventory]
+      confidence: low
+      trust: low
+      status: discovered
+      promoted_to: @candidate.transaction-event-consistency
+
+### @candidate.*
+  Purpose: L2 candidate — reusable knowledge that may become a validated
+  skill or concept. Carries the Phase 139 candidate lifecycle status.
+  Fields:
+    id:            @candidate.<name>
+    discovery:      @discovery.* (originating discovery)
+    description:    one-sentence summary
+    detail:         multi-line definition
+    aliases:        [alternative names]
+    related:        [@concept.* | @candidate.*]
+    evidence:       [<@observation.* | @code.* | @test.* | @task.*>]
+    evidence_count: integer
+    confidence:     low | medium
+    confidence_score: float (0.0–1.0)
+    trust:            low (default)
+    status:            candidate
+    lifecycle_status: CANDIDATE | ACTIVE | STALE | DEPRECATED | ARCHIVED
+    conflicts_with:   [@reference.* | @skill.*]
+    promotion_target: optional @skill.* / @concept.* on promotion
+    promoted_to:      @skill.* / @concept.* (on success)
+    expired_at:        YYYY-MM-DD (30 days from creation)
+    generation:         integer (starts at 1)
+
+### @claim.*
+  Purpose: A claim represents a single, assertable truth about the
+  system — a statement that the project adopts, believes, or enforces.
+  Claims are the claim layer between evidence and knowledge.
+  Fields:
+    id:             @claim.<name>
+    statement:       single-sentence assertion
+    confidence:       LOW | MEDIUM | HIGH
+    confidence_score: float (0.0–1.0)
+    supported_by:     [@evidence.* | @code.* | @test.* | @decision.* | @observation.*]
+    challenged_by:    [@challenge.*]
+    status:            PROPOSED | SUPPORTED | VALIDATED | ACTIVE | CHALLENGED | INVALIDATED | SUPERSEDED
+    domain:            <project domain name>
+    scope:             local | project | global
+    origin:            @discovery.* | @observation.* | @insight.*
+    provenance:
+      discovered_from: <@reference or @tmp>
+      source: <external source / repository / project>
+      extracted_by: AI | human | @human
+      validated_by: <@task.* | @human>
+      validated_at: YYYY-MM-DD
+    supersedes:      optional @claim.* (if this claim replaces another)
+    superseded_by:   optional @claim.* (if this claim was replaced)
+    generation:      integer
+
+  Example:
+    @claim.C11
+      statement: Payment retries must be idempotent
+      confidence: HIGH
+      confidence_score: 0.91
+      supported_by:
+        - @evidence.E31
+        - @decision.D88
+      status: VALIDATED
+      domain: payment
+      scope: global
+      origin: @discovery.D44
+      provenance:
+        discovered_from: @tmp.payment-service
+        source: payment-service repository
+        extracted_by: AI
+        validated_by: @task.1044
+        validated_at: 2026-08-31
+      generation: 1
+
+### @challenge.*
+  Purpose: A challenge contests a claim with counter-evidence.
+  Fields:
+    id:                @challenge.<name>
+    claim:             @claim.* (the claim being challenged)
+    counter_evidence:  [@evidence.* | @code.* | @test.* | @observation.*]
+    reason:             why the claim may be wrong
+    proposed_resolution: INVALIDATE | MODIFY | SCOPE_LIMIT | REJECT_CHALLENGE
+    status:             CHALLENGED | RESOLVED
+    reviewed_by:        @task.* | @human
+    reviewed_at:         YYYY-MM-DD
+    outcome:             ACCEPTED | REJECTED
+    evidence_count:      integer
+
+  Example:
+    @challenge.C44
+      claim: @claim.C11
+      counter_evidence:
+        - @evidence.E91
+      reason: New provider behavior contradicts idempotency assumption
+      proposed_resolution: MODIFY
+      status: RESOLVED
+      reviewed_by: @human
+      reviewed_at: 2026-09-01
+      outcome: ACCEPTED
+      evidence_count: 1
+
+### @generation.*
+  Purpose: Track version lineage of a skill, concept, or claim.
+  Fields:
+    id:          @generation.<name>
+    entity:      @skill.* | @concept.* | @claim.*
+    generations:
+      - { gen: 1, at: YYYY-MM-DD, by: @discovery.*, reason: "<initial>" }
+      - { gen: 2, at: YYYY-MM-DD, by: @task.*, reason: "<refinement>" }
+      - { gen: 3, at: YYYY-MM-DD, by: @challenge.*, reason: "<challenge>" }
+    lineage_graph: [<entity_id>] (ordered list of ancestor entities)
+
+### @violation.*
+  Purpose: Architecture drift violation — detected mismatch between
+  declared architecture and observed code.
+  Fields:
+    id:          @violation.<name>
+    principle:    @architecture.* | @concept.* | project_policy
+    found_in:     <file path or @code.*>
+    reason:       description of the violation
+    severity:     LOW | MEDIUM | HIGH | CRITICAL
+    status:       DETECTED | REVIEWED | ACCEPTED | FALSE_POSITIVE | FIXED | VERIFIED
+    detected_at:  YYYY-MM-DDTHH:MM:SSZ
+    accepted_by:  optional @decision.* (if violation is knowingly accepted)
+    accepted_reason: optional explanation
+    exception:    optional @exception.* (if covered by an exception)
+
+### @exception.*
+  Purpose: Architecture exception — a deliberate, time-limited deviation
+  from an architecture rule.
+  Fields:
+    id:          @exception.<name>
+    rule:        @architecture.* | @concept.* | project_policy
+    exception:    <entity or module granted the exception>
+    reason:       why the exception is needed
+    expires:      YYYY-MM-DD
+    approved_by:  @human | @decision.*
+    status:       ACTIVE | EXPIRED | REVOKED
+
+  Example:
+    @exception.E22
+      rule: @architecture.ddd (domain cannot access infrastructure)
+      exception: RefundProviderAdapter
+      reason: legacy integration with external provider
+      expires: 2026-12-01
+      approved_by: @human
+      status: ACTIVE
+
+## State
+  State: + (new entity types for Phase 139 knowledge lifecycle)
+
+Navigation:
+  Parent: @INDEX.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  Generation: @generation.sdd
+  Drift: @drift.sdd
+  LearningLoop: @learning-loop.sdd
+  GCPolicy: @gc-policy.sdd
+  States: @states.sdd
+  QualityDimensions: @quality-dimensions.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Promotion: @../concepts/promotion.sdd
+  Evolution: @../evolution/INDEX.sdd
+  Insights: @../insights/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  GraphHealth: @../graph/health.sdd

@@ -20,4 +20,17 @@ Options:
 Output:
   Markdown table: stage, tokens used, status, next step.
 
+Rules:
+  [STATUS-01] /sdd-status MUST NOT modify any files — read-only operation.
+  [STATUS-02] /sdd-status MUST resolve @references via INDEX.sdd routing.
+  [STATUS-03] /sdd-status MUST display current execution context.
+
+Navigation:
+  ChainGraph: @../chains/graph.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Runtime: @../runtime/state.sdd
+  Agent: @../agent/INDEX.sdd
+
 State: +
+   (enhanced with Navigation section and rules per ECC integration)

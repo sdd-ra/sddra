@@ -1,0 +1,29 @@
+# Evolution: Candidates
+
+Spec: CandidatesIndex
+Purpose:
+  Index of proposed concepts, skills, and decisions awaiting validation.
+  Candidates are sourced from AI discovery, prompt analysis, and skill
+  import pipeline. Each candidate must progress through the evolution
+  pipeline (OBSERVED → CANDIDATE → VALIDATED → ESTABLISHED).
+
+Owns: evolution/candidates/
+
+Structure:
+  Candidates are .sdd files with @candidate.CXXX IDs.
+  Status field: pending-analysis | awaiting-evidence | under-review | rejected
+
+Rules:
+  [CAND-01] Every candidate MUST carry evidence_count and provenance.
+  [CAND-02] Candidates MUST NOT be referenced as canonical knowledge.
+  [CAND-03] Candidates age out after 30 days without promotion.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Discovery: @../discovery.sdd
+  ImportPlan: @../import-plan.sdd
+  Proposals: @../proposals/INDEX.sdd
+  Approved: @../approved/INDEX.sdd
+  EvolutionPolicy: @../../policies/evolution.sdd
+
+State: +

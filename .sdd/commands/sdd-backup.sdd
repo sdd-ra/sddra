@@ -28,4 +28,9 @@ Exit Codes:
   1 - Failed
   2 - No files found
 
+Navigation:
+  INDEX: @INDEX.sdd
+  RestoreCommand: @sdd-restore.sdd
+  Timeline: @../timeline/INDEX.sdd
+
 State: +

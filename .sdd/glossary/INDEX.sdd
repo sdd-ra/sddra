@@ -1,0 +1,167 @@
+# Glossary — Canonical Terminology
+
+Spec: Glossary
+Purpose:
+  Define canonical terminology used across all .sdd files.
+  Each term has a single canonical definition. Aliases map other
+  naming conventions to the canonical term.
+
+  This prevents terminology conflicts where the same concept
+  is called different things in different contexts.
+
+Owns: glossary/
+
+## Canonical Terms
+
+### @term.TASK
+definition:
+    Executable unit of work that can be assigned, tracked, and completed.
+aliases:
+    task, work-item, job
+used_by:
+    @concepts/KNOWLEDGE-MODEL.sdd
+    @tasks/INDEX.sdd
+    @plans/INDEX.sdd
+
+### @term.SKILL
+definition:
+    Reusable method for performing a specific type of work.
+aliases:
+    skill, capability, tool-function
+used_by:
+    @skills/INDEX.sdd
+    @concepts/INDEX.sdd
+
+### @term.CONCEPT
+definition:
+    Domain or engineering knowledge unit with a single canonical definition.
+aliases:
+    concept, domain-concept, knowledge-unit
+used_by:
+    @concepts/INDEX.sdd
+    @skills/INDEX.sdd
+
+### @term.DECISION
+definition:
+    Accepted project-specific choice with rationale and evidence.
+aliases:
+    decision, design-decision, policy
+used_by:
+    @decisions/INDEX.sdd
+    @evolution/INDEX.sdd
+
+### @term.REFERENCE
+definition:
+    External or internal source of information (documentation, links, papers).
+aliases:
+    reference, source, citation
+used_by:
+    @references/INDEX.sdd
+    @skills/INDEX.sdd
+
+### @term.EVIDENCE
+definition:
+    Information supporting a claim or decision.
+aliases:
+    evidence, fact, observation
+used_by:
+    @decisions/INDEX.sdd
+
+### @term.PROOF
+definition:
+    Evidence produced by execution (test results, build output, runtime data).
+aliases:
+    proof, verification-result
+used_by:
+    @concepts/KNOWLEDGE-MODEL.sdd
+    @testing/INDEX.sdd
+
+### @term.ASSUMPTION
+definition:
+    Unverified belief made when planning or executing.
+aliases:
+    assumption, guess, hypothesis
+used_by:
+    @assumptions/INDEX.sdd
+    @plans/INDEX.sdd
+
+### @term.UNKNOWN
+definition:
+    Information that is not known and has not yet been investigated.
+aliases:
+    unknown, gap, blind-spot
+used_by:
+    @tasks/UNKNOWN-MANAGEMENT.sdd
+    @bootstrap/AI_BOOTSTRAP.sdd
+
+### @term.DISCOVERY
+definition:
+    New information found during execution that may require replanning.
+aliases:
+    discovery, finding, insight
+used_by:
+    @timeline/INDEX.sdd
+    @plans/execution-plan.sdd
+
+### @term.PROPOSAL
+definition:
+    Suggested change to the system that has not yet been approved.
+aliases:
+    proposal, suggestion, rf
+used_by:
+    @evolution/proposals/
+
+### @term.REVIEW
+definition:
+    Evaluation activity where evidence is assessed against standards.
+aliases:
+    review, audit, inspection
+used_by:
+    @concepts/review-standards.sdd
+
+### @term.VIOLATION
+definition:
+    Instance where a rule, constraint, or standard is not met.
+aliases:
+    violation, non-compliance
+used_by:
+    @testing/INDEX.sdd
+    @evolution/challenges/
+
+### @term.HANDOFF
+definition:
+    Structured transfer of task state from one agent to another.
+aliases:
+    handoff, handoff-manifest
+used_by:
+    @bootstrap/handoff.sdd
+
+### @term.CONTEXT
+definition:
+    Compiled knowledge package loaded for a specific task or phase.
+aliases:
+    context, context-package
+used_by:
+    @system/context/INDEX.sdd
+    @bootstrap/AI_BOOTSTRAP.sdd
+
+## Loading Priority
+
+  Mandatory terms (loaded at bootstrap):
+    TASK, SKILL, CONCEPT, DECISION, REFERENCE
+
+  Domain terms (loaded on demand):
+    All others, triggered by domain resolution
+
+Rules:
+  [GLO-01] Every .sdd file SHOULD reference canonical terms instead of inventing new names.
+  [GLO-02] When terminology conflict is found, AI MUST consult glossary.
+  [GLO-03] New terms SHOULD be added to glossary with aliases.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Bootstrap: @../bootstrap/INDEX.sdd
+  Concepts: @../concepts/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+
+State: +

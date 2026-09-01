@@ -1,0 +1,164 @@
+# Claim Entity & Lifecycle
+
+Spec: ClaimLifecycle
+Purpose:
+  Define the claim entity system — knowledge assertions that carry
+  evidence, confidence, and a lifecycle. Claims sit between raw
+  observations and validated knowledge, providing an auditable layer
+  where AI states "we believe X" before X becomes project rule.
+
+Owns: lifecycle/claims.sdd
+
+## Claim Lifecycle
+
+  PROPOSED
+    ↓
+  SUPPORTED
+    ↓
+  VALIDATED
+    ↓
+  ACTIVE
+    ↓
+  CHALLENGED
+    ↓
+  INVALIDATED | SUPERSEDED
+
+  PROPOSED:
+    description: Initial claim submitted by AI with supporting evidence
+    confidence_required: LOW
+    action: visible in claim registry, no authoritative weight
+
+  SUPPORTED:
+    description: Claim has supporting evidence from 2+ independent sources
+    confidence_required: MEDIUM
+    action: may be referenced in task context with qualification
+
+  VALIDATED:
+    description: Claim confirmed by passing tests or human review
+    confidence_required: HIGH
+    action: included in standard context compilation
+
+  ACTIVE:
+    description: Claim is in active use across the project
+    confidence_required: HIGH
+    action: default reference target, included in all relevant context
+
+  CHALLENGED:
+    description: A @challenge.* has been filed against this claim
+    confidence: downgraded to MEDIUM
+    action: flagged for review, excluded from new task context
+
+  INVALIDATED:
+    description: Challenge accepted — claim is false or outdated
+    confidence: LOW
+    action: removed from context compilation, retained for history
+
+  SUPERSEDED:
+    description: Replaced by a newer @claim.* entity
+    confidence: depends on new claim
+    action: redirect references to successor claim
+
+## Claim Evidence Types
+
+  code:        observed in source files
+  tests:       covered by passing tests
+  tasks:       applied in a completed task
+  decisions:   referenced by a human-approved decision
+  production:  deployed and running in production
+  external:    cited from external source (paper, repo, doc)
+  human:       explicitly reviewed or approved by a human
+  observation: raw @observation.* entry
+
+## Promotion Rules
+
+  [CLAIM-01] A claim in PROPOSED state MUST NOT be used as authoritative
+             in any task context.
+
+  [CLAIM-02] Promotion from PROPOSED to SUPPORTED requires at least 2
+             independent evidence sources.
+
+  [CLAIM-03] Promotion from SUPPORTED to VALIDATED requires either
+             passing tests OR human review.
+
+  [CLAIM-04] Promotion from VALIDATED to ACTIVE requires usage in at
+             least 1 completed task OR production deployment.
+
+  [CLAIM-05] Claims with trust score < 0.5 MUST include a
+             confidence: LOW qualifier when referenced.
+
+  [CLAIM-06] AI CANNOT promote its own claims to VALIDATED without
+             human approval.
+
+  [CLAIM-07] Claims that are challenged MUST be reviewed within 7 days
+             by a human or automated gate.
+
+  [CLAIM-08] Superseded claims MUST retain their evidence and a
+             superseded_by pointer to the successor claim.
+
+## Claim Format
+
+  @claim.C11
+
+  statement:
+      Payment retries must be idempotent
+
+  confidence:
+    level: HIGH
+    score: 0.91
+
+  supported_by:
+    - @evidence.E31
+    - @decision.D88
+    - @code.payment.retry.go
+
+  challenged_by:
+    []  (empty when not challenged)
+
+  status:
+    VALIDATED
+
+  domain:
+    payment
+
+  scope:
+    global
+
+  origin:
+    @discovery.D44
+
+  provenance:
+      discovered_from: @tmp.payment-service
+    source: payment-service repository
+    extracted_by: AI
+    validated_by: @task.1044
+    validated_at: 2026-08-31
+
+  generation:
+    1
+
+## Confidence Propagation
+
+  When a claim is used to support a skill, concept, or decision, its
+  confidence propagates as a lower bound:
+
+  - HIGH claim → supported knowledge confidence floor: 0.7
+  - MEDIUM claim → supported knowledge confidence floor: 0.4
+  - LOW claim → supported knowledge confidence floor: 0.0 (must qualify)
+
+  [PROP-01] AI MUST state claim confidence when referencing a claim.
+  [PROP-02] Knowledge supported only by LOW-confidence claims MUST
+            carry a "confidence: LOW" qualifier in context.
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  States: @states.sdd
+  QualityDimensions: @quality-dimensions.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Evolution: @../evolution/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  GraphHealth: @../graph/health.sdd
+
+State: +

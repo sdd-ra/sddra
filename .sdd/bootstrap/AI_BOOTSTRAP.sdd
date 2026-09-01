@@ -1,0 +1,239 @@
+# AI Bootstrap Protocol: Machine-Oriented Entry
+
+Spec: AIBootstrap
+Purpose:
+  The machine-oriented bootstrap protocol — the exact sequence AI follows
+  when entering a .sdd project. This is the entry point that ensures
+  deterministic, minimum-sufficient context loading without scanning
+  the entire .sdd/ directory blindly.
+
+  AI does NOT read entire .sdd/. AI resolves context through the
+  Context Compiler using index-first, progressive disclosure.
+
+Owns: bootstrap/AI_BOOTSTRAP.sdd
+
+## Protocol Name
+
+  AI_BOOTSTRAP.v1
+
+## Phase 1: WHO AM I?
+
+  Read: .sdd/bootstrap/identity.sdd
+
+  Purpose: Resolve AI identity — project, environment, role, capabilities.
+  Outcome: AI knows its position within the project.
+
+## Phase 2: AUTHORITY CHECK
+
+  Read: .sdd/bootstrap/authority.sdd
+
+  Purpose: Determine what AI can and cannot do.
+  Authority is a hard gate — actions outside authority are blocked.
+
+  CAN: read-code, modify-code, run-tests, create-tasks, propose-skills
+  CANNOT: change-global-rules, approve-production, modify-security-policy
+
+  Outcome: AI knows its operational boundaries.
+
+## Phase 3: MANDATORY RULES
+
+  Read: .sdd/protocol/ROOT.sdd → .sdd/bootstrap/INDEX.sdd
+
+  Purpose: Understand immutable system rules + rule priority hierarchy.
+
+  Priority: 1. Correctness → 2. Security → 3. Architecture → 4. KISS → 5. DRY → 6. YAGNI
+
+  Outcome: AI knows what it CANNOT do, and what takes priority when rules conflict.
+
+## Phase 4: PROJECT RESOLVE
+
+  Read: .sdd/INDEX.sdd → .sdd/project/INDEX.sdd
+
+  Purpose: Resolve the project identity and scope.
+  Outcome: AI knows what project it is working on.
+
+## Phase 5: INDEX RESOLVE
+
+  Read: .sdd/INDEX.sdd
+
+  Purpose: Understand the universal routing table.
+  INDEX.sdd contains ReadOrder and Navigation for everything.
+  AI MUST NOT skip this step.
+
+  Navigation chain:
+    AI_BOOTSTRAP → ROOT INDEX → PROJECT INDEX → DOMAIN INDEX → TASK INDEX → RELEVANT REFERENCES
+
+  Outcome: AI knows the structure of the entire system.
+
+## Phase 6: ARCHITECTURE LOAD
+
+  Read: .sdd/architecture/INDEX.sdd (current version)
+
+  Purpose: Understand the current system architecture and constraints.
+  Outcome: AI knows the architecture it must work within.
+
+## Phase 7: GLOSSARY RESOLVE
+
+  Read: .sdd/glossary/INDEX.sdd (mandatory terms only)
+
+  Purpose: Load canonical terminology to prevent naming conflicts.
+  Domain-specific terms loaded on demand when domains are resolved.
+
+  Mandatory terms loaded at bootstrap:
+    TASK, SKILL, CONCEPT, DECISION, REFERENCE
+
+  Outcome: AI uses consistent terminology.
+
+## Phase 8: TASK RESOLVE
+
+  Read: .sdd/tasks/INDEX.sdd (current active tasks)
+
+  Purpose: Determine the current active task and its dependencies.
+  Outcome: AI knows what it is supposed to do right now.
+
+## Phase 9: KNOWLEDGE COMPILATION
+
+  Load (in priority order via Context Compiler):
+
+  P0: System rules (immutable protocols)
+  P1: Active task
+  P2: Architecture (current version)
+  P3: Relevant skills (for current task)
+  P4: Active decisions (affecting current task)
+  P5: References (relevant to current task)
+
+  Purpose: Compile the current engineering state.
+  Outcome: AI has minimum sufficient context for execution.
+
+## Phase 10: ASSUMPTION CHECK
+
+  Read: .sdd/assumptions/INDEX.sdd (current task assumptions)
+
+  Purpose: Identify untested assumptions and their risk levels.
+
+  RISK LEVELS:
+    LOW       — minimal impact if wrong
+    MEDIUM    — moderate impact, needs eventual validation
+    HIGH      — significant impact, validation required before critical task
+    CRITICAL  — must be validated before ANY execution
+
+  Outcome: AI knows what it does not know, and whether it can proceed.
+
+## Phase 11: READINESS GATE
+
+  Validate all gates:
+
+  G1: Project resolved          ✓
+  G2: Task resolved             ✓
+  G3: Architecture resolved     ✓
+  G4: Required skills resolved  ✓
+  G5: Critical assumptions      ✓
+  G6: Permissions valid         ✓
+  G7: Capabilities resolved      ✓
+  G8: Resource locks available   ✓
+
+  If any gate fails:
+    STATUS: NOT_READY → AI does NOT execute
+
+  If all gates pass:
+    STATUS: READY → proceed to execution
+
+  Outcome: AI has a binary readiness signal.
+
+## Phase 12: CONTEXT COMPILE
+
+  Read: .sdd/system/context/INDEX.sdd
+
+  Purpose: Context Compiler transforms .sdd files into AI-executable context
+  using progressive disclosure.
+
+  Progressive Disclosure Levels:
+    LEVEL 0: metadata     (always loaded)
+    LEVEL 1: summary       (standard context)
+    LEVEL 2: rules          (task-specific)
+    LEVEL 3: implementation (on-demand)
+    LEVEL 4: evidence       (review/release modes)
+
+  Context Manifest is generated:
+    loaded:    [list of nodes loaded]
+    excluded:  [list of nodes excluded]
+    reason:    [why each excluded node was excluded]
+
+  Outcome: AI receives compiled context, not raw files.
+
+## Phase 13: EXECUTE
+
+  AI begins work following loaded context.
+
+  AI MUST:
+    - Stay within authority boundaries
+    - Follow mandatory rules priority
+    - Record discoveries
+    - Use correct glossary terminology
+    - Create assumptions for unknowns
+
+  Mode-specific behavior:
+    BOOTSTRAP_IMPL      → focuses on P1-P3 context
+    BOOTSTRAP_REVIEW    → focuses on P4-P5 context + rules
+    BOOTSTRAP_RESEARCH  → focuses on P5-P6 context + glossary
+    BOOTSTRAP_RELEASE   → full context + security + approvals
+    BOOTSTRAP_GOVERN    → loads governance/ capabilities + permissions + locks
+
+## Discovery & Handoff
+
+  During execution, AI may discover new information.
+  Discovery is recorded in the execution journal.
+
+  When handing off to another agent:
+    - AI produces a HANDOFF manifest (not conversation history)
+    - Handoff contains: completed work, changed files, discoveries,
+      new unknowns, pending work, proof
+    - Next agent bootstraps from handoff (not from conversation)
+
+  See: @handoff.sdd
+
+## Bootstrap Rules
+
+  [BOOT-01] AI MUST follow this exact sequence — no skipping phases.
+  [BOOT-02] AI MUST NOT read entire .sdd/ — use INDEX.sdd routing only.
+  [BOOT-03] AI MUST resolve references before reading targets.
+  [BOOT-04] AI MUST present compiled state before beginning work.
+  [BOOT-05] AI MUST flag any UNRESOLVED_QUERY rather than guessing.
+  [BOOT-06] AI MUST record bootstrap state for audit purposes.
+  [BOOT-07] AI MUST check authority before any executing action.
+  [BOOT-08] AI MUST validate readiness gates before execution.
+  [BOOT-09] AI MUST use glossary canonical terms for all references.
+  [BOOT-10] AI MUST produce handoff manifests, not conversation history.
+  [BOOT-11] AI MUST resolve capability chain before any tool invocation.
+  [BOOT-12] AI MUST check resource locks before executing.
+
+## Never Assume
+
+  IF information is missing:
+    → do not invent
+  IF architecture is unclear:
+    → inspect architecture index
+  IF requirement is ambiguous:
+    → create assumption
+  IF assumption is high-risk:
+    → research / ask / block
+
+Navigation:
+  Parent: @INDEX.sdd
+  Index: @../INDEX.sdd
+  Authority: @authority.sdd
+  Identity: @identity.sdd
+  Handoff: @handoff.sdd
+  Glossary: @../glossary/INDEX.sdd
+  ContextCompiler: @../system/context/INDEX.sdd
+  Governance: @../governance/INDEX.sdd
+  Capabilities: @../governance/capabilities.sdd
+  Permissions: @../governance/permissions.sdd
+  Locks: @../governance/locks.sdd
+  SecurityEvents: @../governance/security-events.sdd
+  Lifecycle: @../lifecycle/INDEX.sdd
+  Assumptions: @../assumptions/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Project: @../project/INDEX.sdd
+
+State: +

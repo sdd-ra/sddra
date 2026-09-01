@@ -1,0 +1,252 @@
+# Knowledge Quality Dimensions
+
+Spec: QualityDimensions
+Purpose:
+  Define the quality dimensions used by the knowledge garbage collector
+  to identify cleanup candidates. Each dimension has a detection
+  method and remediation action.
+
+Owns: lifecycle/quality-dimensions.sdd
+
+## Dimensions
+
+### @dimension.duplicate
+  description:
+    Knowledge content is identical or near-identical to another node.
+  detection:
+    - content hash comparison
+    - semantic similarity > 0.95
+    - title + purpose match
+  remediation:
+    - MERGE into canonical node
+    - mark non-canonical as @archived
+    - update all @references
+  examples:
+    - Two @decision files with same title and rationale
+    - Two @reference files pointing to same external URL
+
+### @dimension.fragmented
+  description:
+    Related knowledge is split across multiple small nodes
+    that should be combined.
+  detection:
+    - shared @concept tags
+    - shared @domain tags
+    - cross-references between fragments
+    - gap analysis shows missing pieces
+  remediation:
+    - MERGE into single comprehensive node
+    - preserve original nodes as @archived
+    - update references
+  examples:
+    - Three @decision files all about database migrations
+    - Four @knowledge files all about error handling patterns
+
+### @dimension.orphan
+  description:
+    Knowledge node has no incoming @references from other nodes.
+  detection:
+    - @query:orphan-knowledge
+    - 0 incoming edges in knowledge graph
+  remediation:
+    - FLAG for review
+    - if older than 30 days and STALE, propose ARCHIVE
+    - if recent, investigate why no references
+  examples:
+    - A @skill that no @task references
+    - A @reference that no @concept cites
+
+### @dimension.unused
+  description:
+    Knowledge has not been referenced for N+ days (configurable threshold).
+  detection:
+    - last_referenced_date < now - threshold
+    - threshold: 30 days for INTERNAL, 90 for CONFIDENTIAL
+  remediation:
+    - mark STALE
+    - if 180+ days, propose ARCHIVE
+  examples:
+    - @decision.D88 from 6 months ago, never referenced since
+    - @concept from initial project, no longer used
+
+### @dimension.contradicted
+  description:
+    Knowledge conflicts with higher-trust knowledge.
+  detection:
+    - @query:contradicted-knowledge
+    - trust_hierarchy check: lower-level conflicts with higher-level
+    - evidence mismatch detection
+  remediation:
+    - FLAG immediately
+    - BLOCK in context compilation
+    - propose DEPRECATE
+  examples:
+    - EXTERNAL content says use Redis, APPROVED DECISION says use PostgreSQL
+    - AI_INFERENCE conflicts with VALIDATED KNOWLEDGE
+
+### @dimension.terminology-drift
+  description:
+    Codebase uses different terms than the project policy or canonical
+    concepts. This creates ambiguity and search failures.
+  detection:
+    - scan code for class/function/variable names
+    - compare against @concept.* canonical names and aliases
+    - flag mismatches against project terminology policy
+    - generate @observation.terminology-drift
+  remediation:
+    - record observation for review
+    - AI MUST NOT rename code without human approval
+    - link drift to canonical concept via alias registration
+  examples:
+    - Policy says "Handler" but code uses "Manager"
+    - Policy says "Service" but code uses "Processor"
+    - Policy says "Repository" but code uses "Provider"
+
+### @dimension.architecture-drift
+  description:
+    Code violates the declared architecture boundaries (e.g., domain
+    layer directly calls infrastructure, bypassing application layer).
+  detection:
+    - compare @architecture.* declarations against code import paths
+    - check for cross-layer dependency violations
+    - flag untraceable changes (code change without task/decision)
+    - generate @violation.* entities
+  remediation:
+    - flag for @violation.* resolution
+    - propose @exception.* for intentional deviations
+    - propose @task.* for fixing valid drift
+  examples:
+    - Domain layer imports infrastructure package directly
+    - No @decision.* record for cross-boundary access
+    - Missing bounded context boundary enforcement
+
+## Orphan Review Protocol
+
+  When AI is asked to find orphan knowledge:
+
+  find orphan skills
+
+  AI output:
+
+  @skill.X
+    age:
+      180 days
+
+    usage:
+      0
+
+    evidence:
+      1
+
+    status:
+      ACTIVE
+
+    recommendation:
+      review
+
+  Orphan Review Criteria:
+    - Age: >30 days since last reference
+    - Usage: 0 incoming references in last 30 days
+    - Evidence: count of supporting evidence sources
+    - Status: current lifecycle status (ACTIVE, CANDIDATE, STALE)
+
+  Review Actions:
+    - If evidence is strong but unused → mark STALE, keep for history
+    - If evidence is weak and unused → propose ARCHIVE
+    - If recently created → investigate why no references
+
+  [ORPHAN-01] Orphan ≠ Delete. Orphan knowledge is reviewed, not removed.
+  [ORPHAN-02] Orphan review runs monthly as part of sdd-health.
+  [ORPHAN-03] Orphaned candidates with 0 evidence are proposed for archival.
+
+## Unused vs Orphan Distinction
+
+  Unused:
+    description: No references at all
+    metric: referenced_by = 0
+    implication: not actively used, but may still be valid knowledge
+
+  Orphan:
+    description: No MEANINGFUL graph relationships (no concept → skill,
+                 no architecture → skill links)
+    metric: 0 incoming edges from knowledge graph
+    example: A skill that's defined but no concept or decision references
+             it — it exists in isolation
+
+  [DIST-01] An entity can be Unused but not Orphan (if it has knowledge
+            graph edges but no direct references).
+  [DIST-02] An entity can be Orphan but Used (if it's referenced by
+            temporary or low-trust sources only).
+
+## Quality Dimensions Summary
+
+  Active dimensions:
+    @dimension.duplicate      — identical or near-identical to another node
+    @dimension.fragmented     — should be merged with related nodes
+    @dimension.orphan         — no incoming @references from other nodes
+    @dimension.unused         — not referenced for N+ days
+    @dimension.contradicted   — conflicts with higher-trust knowledge
+    @dimension.superseded     — replaced by newer knowledge
+    @dimension.terminology-drift — codebase terms diverge from policy terms
+    @dimension.architecture-drift — code violates declared architecture
+
+## Scoring
+
+  Each node gets a quality score:
+
+  score = (
+    duplicate_penalty * 0.25 +
+    fragmented_penalty * 0.15 +
+    orphan_penalty * 0.15 +
+    unused_penalty * 0.15 +
+    contradicted_penalty * 0.10 +
+    terminology_drift_penalty * 0.10 +
+    architecture_drift_penalty * 0.10
+  )
+
+  Thresholds:
+    score > 0.7: HIGH risk — immediate review
+    score 0.3-0.7: MEDIUM risk — periodic review
+    score < 0.3: LOW risk — monitor
+
+## Cleanup Proposal Format
+
+  @proposal.knowledge-cleanup.P12
+
+  action:
+      ARCHIVE
+
+  target:
+      @concept.old-pattern
+
+  reason:
+      superseded by @concept.new-pattern
+
+  quality_score:
+      0.85
+
+  detection:
+      @dimension.superseded
+
+  approval:
+      PENDING
+
+Navigation:
+  Parent: @INDEX.sdd
+  Lifecycle: @INDEX.sdd
+  States: @states.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  HealthScore: @health-score.sdd
+  GCPolicy: @gc-policy.sdd
+  Compactor: @compactor.sdd
+  Drift: @drift.sdd
+  LearningLoop: @learning-loop.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Generation: @generation.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  QueryOrphan: @../queries/orphan-knowledge.sdd
+  QueryArchitectureDrift: @../queries/architecture-drift.sdd
+
+State: +

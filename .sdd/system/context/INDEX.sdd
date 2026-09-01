@@ -1,0 +1,113 @@
+# Context Compiler
+
+Spec: ContextCompiler
+Purpose:
+  Define the Context Compiler system — how .sdd files are transformed
+  into AI-executable context. The .sdd directory is the source of truth;
+  the compiled context is the runtime representation.
+
+Owns: system/context/
+
+## Overview
+
+AI does NOT receive raw .sdd files.
+AI receives compiled context via progressive disclosure.
+
+```
+.sdd files (source of truth)
+      ↓
+Context Compiler
+      ↓
+AI Context (runtime representation)
+```
+
+## Progressive Disclosure Levels
+
+  LEVEL 0:  metadata
+    id, purpose, type, state
+
+  LEVEL 1:  summary
+    key facts, status, key decisions
+
+  LEVEL 2:  rules
+    constraints, guidelines, validation criteria
+
+  LEVEL 3:  implementation details
+    spec, code references, patterns
+
+  LEVEL 4:  evidence/source
+    proofs, citations, test results
+
+AI loads only the level needed for current work.
+
+## Context Priority (P0-P6)
+
+  P0: system rules (immutable protocols)
+  P1: active task (current task being executed)
+  P2: architecture (current architecture version)
+  P3: relevant skills (skills needed for current task)
+  P4: decisions (active decisions affecting current task)
+  P5: references (external/internal references)
+  P6: historical knowledge (past decisions, superseded architecture)
+
+AI loads P0-P3 by default. P4-P6 loaded as needed.
+
+## Context Manifest
+
+```
+@context.C991
+
+task:
+    @task.T2041
+
+loaded:
+    @architecture.ddd
+    @skill.idempotency
+    @skill.transaction
+    @decision.D88
+
+excluded:
+    @skill.frontend-animation
+    @domain.analytics
+
+reason:
+    outside_task_scope
+```
+
+## Context Diff
+
+When task changes or discoveries are made:
+
+  Context v1 → Discovery → Context v2
+
+AI receives only the diff:
+
+  + @skill.webhook
+  + @concept.async-confirmation
+  - @assumption.provider-sync
+
+This enables token-efficient multi-agent handoffs.
+
+## Context Budget
+
+  max_context: 30k tokens
+
+If context exceeds budget:
+  PRIORITIZE by level (drop LEVEL 4 first, then 3, etc.)
+
+## Compilation Rules
+
+  [CTX-01] AI MUST NOT receive raw .sdd files — only compiled context.
+  [CTX-02] Context MUST include manifest of loaded and excluded nodes.
+  [CTX-03] Exclusion reasons MUST be documented.
+  [CTX-04] Context diff MUST be available for incremental updates.
+  [CTX-05] Context MUST respect authority boundaries.
+
+Navigation:
+  Parent: @../../INDEX.sdd
+  Bootstrap: @../../bootstrap/INDEX.sdd
+  Glossary: @../../glossary/INDEX.sdd
+  Authority: @../../bootstrap/authority.sdd
+  Index: @../../INDEX.sdd
+
+State: +

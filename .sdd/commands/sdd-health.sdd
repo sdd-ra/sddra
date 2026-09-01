@@ -24,6 +24,8 @@ Checks:
   Token budgets valid
   Decision ledger valid
   No corrupted files
+  Chain graph integrity
+  Evolution health (temporal validity, snapshots, migrations)
 
 Output:
   HEALTHY | DEGRADED | UNHEALTHY | FAILED
@@ -35,4 +37,17 @@ Exit Codes:
   2 - Unhealthy
   3 - Failed
 
+Rules:
+  [HEALTH-01] /sdd-health MUST check critical file existence first.
+  [HEALTH-02] /sdd-health MUST verify all @references resolve.
+  [HEALTH-03] /sdd-health MUST validate chain graph cycle detection.
+  [HEALTH-04] /sdd-health MUST check temporal validity of snapshots.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+  References: @../references/INDEX.sdd
+  Timeline: @../timeline/INDEX.sdd
+
 State: +
+   (enhanced with evolution health checks per Phases 130-134)

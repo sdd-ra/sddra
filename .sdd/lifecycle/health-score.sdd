@@ -1,0 +1,191 @@
+# Knowledge Health Score
+
+Spec: KnowledgeHealth
+Purpose:
+  Define per-node knowledge health score (0-100), the signal breakdown
+  that feeds it, the Knowledge Graph Health report, and the Architecture
+  Health report. Health is distinct from lifecycle status: a node can be
+  ACTIVE with low health, signaling it needs review.
+
+Owns: lifecycle/health-score.sdd
+
+## Health Score Formula
+
+  health (0-100) = weighted combination of signals:
+
+  Signals:
+    usage:
+      weight: 0.30
+      metric: number of references in active tasks/decisions in last 30 days
+      +++ : 20+ references (score: 30)
+      ++   : 5-19 references  (score: 20)
+      +    : 1-4 references   (score: 10)
+      0    : no references    (score: 0)
+
+    evidence:
+      weight: 0.25
+      metric: number of independent evidence sources (code, tests, tasks, decisions)
+      +++ : 5+ evidence sources (score: 25)
+      ++   : 2-4 evidence sources (score: 17)
+      +    : 1 evidence source     (score: 9)
+      0    : no evidence          (score: 0)
+
+    failures:
+      weight: -0.15 (negative)
+      metric: number of failed applications or contradicting evidence
+      0 failures     (score: 0, no penalty)
+      1-2 failures   (score: -10)
+      3+ failures    (score: -15, cap)
+
+    age:
+      weight: 0.10
+      metric: time since last review/validation
+      < 30 days     (score: 10)
+      30-180 days   (score: 5)
+      180+ days     (score: 2)
+      [DECAY-01] Age alone does NOT determine poor health.
+
+    conflicts:
+      weight: -0.10 (negative)
+      metric: number of conflicts_with edges
+      0 conflicts  (score: 0)
+      1 conflict   (score: -10)
+      2+ conflicts (score: -10, cap)
+
+  health = usage_score + evidence_score + failures_score + age_score + conflicts_score
+
+  Clamped to [0, 100].
+
+## Health vs Status Distinction
+
+  A knowledge node has BOTH a lifecycle status AND a health score:
+
+  status: ACTIVE, health: 94
+    → healthy, no action needed
+
+  status: ACTIVE, health: 42
+    → active but unhealthy — needs review
+    → AI should propose: re-validate evidence, re-test, or deprecate
+
+  status: STALE, health: 87
+    → stale but well-evidenced — keep in index, monitor
+
+  [HEALTH-01] Health score is recomputed daily by @agent.knowledge-cleaner.
+  [HEALTH-02] Nodes with health < 50 AND status ACTIVE MUST be flagged for review.
+  [HEALTH-03] Nodes with health < 30 AND status STALE are proposed for archival.
+  [HEALTH-04] Health score is separate from trust level and confidence.
+  [HEALTH-05] Human can override health score with explanation.
+
+## Example Health Breakdown
+
+  @skill.idempotency
+    health: 94
+
+    signals:
+      usage:       +++  (referenced in 20+ tasks)
+      evidence:    +++  (5 evidence sources: code, tests, tasks, decisions, production)
+      failures:    -    (0 failures)
+      age:         +    (last reviewed 15 days ago)
+      conflicts:   0    (no conflicts)
+
+  @skill.old-retry-pattern
+    health: 42
+
+    signals:
+      usage:       0    (no references in last 6 months)
+      evidence:    +    (1 evidence source: old code)
+      failures:    -    (2 failed applications)
+      age:         +    (last reviewed 200 days ago)
+      conflicts:   1    (conflicts with @skill.retry-with-backoff)
+
+## Knowledge Graph Health Report
+
+  Periodic self-report produced by @agent.knowledge-cleaner:
+
+  @health.report.GH-2026-09-01
+
+  References:
+    142 total
+    87 established
+    31 validated
+    19 candidate
+    5 deprecated
+    0 conflicts
+
+  Skills:
+    50 total
+    42 active
+    5 stale
+    3 deprecated
+
+  Concepts:
+    183 total
+    161 active
+    12 dormant
+    10 deprecated
+
+  Decisions:
+    34 total
+    30 active
+    4 superseded
+
+  Orphans:
+    12 (no incoming references, >30 days old)
+
+  Stale:
+    7 (not referenced in 30+ days)
+
+  Contradictions:
+    1 (conflicts-with edge detected)
+
+  Overall: HEALTHY
+
+  Thresholds:
+    HEALTHY  — health_score >= 0.7, conflicts = 0
+    WEAK     — 0.4 <= health_score < 0.7, conflicts <= 2
+    CRITICAL — health_score < 0.4, conflicts > 2
+
+    AI behavior:
+      HEALTHY  — proceed, reuse established references
+      WEAK     — propose candidate promotion, flag gaps
+      CRITICAL — pause and escalate to human review
+
+## Architecture Health
+
+  Same mechanism applied to architecture entities:
+
+  @architecture.ddd
+    used:
+      14 domains (referenced across 14 bounded contexts)
+
+    violations:
+      3 (domain → infrastructure boundaries crossed)
+
+    drift:
+      medium
+
+    unused:
+      1 bounded context (no code implements it)
+
+    health:
+      87
+
+  [ARCH-01] Architecture health is recomputed weekly.
+  [ARCH-02] Violations with no accepted exception MUST trigger
+            @exception.* proposal.
+  [ARCH-03] Unused bounded contexts with health < 30 are candidates for
+            archival.
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Confidence: @confidence.sdd
+  Compactor: @compactor.sdd
+  States: @states.sdd
+  QualityDimensions: @quality-dimensions.sdd
+  GraphHealth: @../graph/health.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  SddKnowledge: @../commands/sdd-knowledge.sdd
+  SddHealth: @../commands/sdd-health.sdd
+
+State: +

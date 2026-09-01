@@ -1,0 +1,187 @@
+# Capability Taxonomy
+
+Spec: Capabilities
+Purpose:
+  Define the canonical capability taxonomy — what AI can be authorized
+  to do. Capabilities are abstract; they map to permissions, resources,
+  and tools. Tool names are NOT capabilities.
+
+Owns: governance/capabilities.sdf
+
+## Capability Categories
+
+  CODE
+  DATA
+  TEST
+  GIT
+  DEPLOY
+  NETWORK
+  SECRET
+  SYSTEM
+
+## Capability Definitions
+
+### @capability.code.read
+  category: CODE
+  description: Read source code files
+  permission: @permission.code-read
+  risk: LOW
+  resources: @resource.source-code
+
+### @capability.code.write
+  category: CODE
+  description: Write/modify source code files
+  permission: @permission.code-modify
+  risk: MEDIUM
+  resources: @resource.source-code
+
+### @capability.code.delete
+  category: CODE
+  description: Delete source code files
+  permission: @permission.code-delete
+  risk: HIGH
+  resources: @resource.source-code
+
+### @capability.test.run
+  category: TEST
+  description: Execute test suites
+  permission: @permission.test-execute
+  risk: LOW
+  resources: @resource.test-environment
+
+### @capability.test.inspect
+  category: TEST
+  description: Read test results and reports
+  permission: @permission.test-read
+  risk: LOW
+  resources: @resource.test-reports
+
+### @capability.git.apply
+  category: GIT
+  description: Apply patches/commit changes
+  permission: @permission.git-commit
+  risk: MEDIUM
+  resources: @resource.git-repo
+
+### @capability.git.diff
+  category: GIT
+  description: View git diffs and history
+  permission: @permission.git-read
+  risk: LOW
+  resources: @resource.git-repo
+
+### @capability.deploy.local
+  category: DEPLOY
+  description: Deploy to local environment
+  permission: @permission.deploy-local
+  risk: LOW
+  resources: @resource.local-env
+
+### @capability.deploy.staging
+  category: DEPLOY
+  description: Deploy to staging environment
+  permission: @permission.deploy-staging
+  risk: MEDIUM
+  resources: @resource.staging-env
+
+### @capability.deploy.production
+  category: DEPLOY
+  description: Deploy to production environment
+  permission: @permission.deploy-production
+  risk: CRITICAL
+  resources: @resource.production-env
+
+### @capability.db.read
+  category: DATA
+  description: Read from databases
+  permission: @permission.db-read
+  risk: MEDIUM
+  resources: @resource.database
+
+### @capability.db.write
+  category: DATA
+  description: Write to databases
+  permission: @permission.db-write
+  risk: HIGH
+  resources: @resource.database
+
+### @capability.db.migration
+  category: DATA
+  description: Execute database migrations
+  permission: @permission.db-migration
+  risk: CRITICAL
+  resources: @resource.database
+
+### @capability.network.internal
+  category: NETWORK
+  description: Make internal network calls
+  permission: @permission.network-internal
+  risk: LOW
+  resources: @resource.internal-network
+
+### @capability.network.external
+  category: NETWORK
+  description: Make external network calls
+  permission: @permission.network-external
+  risk: HIGH
+  resources: @resource.external-network
+
+### @capability.secret.access
+  category: SECRET
+  description: Access secrets at runtime (not view secret values)
+  permission: @permission.secret-access
+  risk: CRITICAL
+  resources: @resource.secrets
+
+### @capability.system.modify
+  category: SYSTEM
+  description: Modify system-level files
+  permission: @permission.system-modify
+  risk: HIGH
+  resources: @resource.system-files
+
+### @capability.task.create
+  category: SYSTEM
+  description: Create new tasks
+  permission: @permission.task-create
+  risk: LOW
+  resources: @resource.task-system
+
+### @capability.skill.propose
+  category: SYSTEM
+  description: Propose new skills
+  permission: @permission.skill-propose
+  risk: LOW
+  resources: @resource.skill-system
+
+### @capability.decision.approve
+  category: SYSTEM
+  description: Approve decisions
+  permission: @permission.decision-approve
+  risk: HIGH
+  resources: @resource.decision-system
+
+## Agent Capability Mapping
+
+  @agent.backend:
+    code.read, code.write, test.run, git.diff, git.apply,
+    db.read, db.write, network.internal, secret.access
+
+  @agent.reviewer:
+    code.read, test.inspect, git.diff, network.internal
+
+  @agent.deployer:
+    code.read, deploy.staging, deploy.production (REVIEW),
+    git.apply, network.internal, secret.access
+
+  @agent.devops:
+    deploy.local, deploy.staging, system.modify,
+    db.migration, network.external (REVIEW)
+
+Navigation:
+  Parent: @INDEX.sdd
+  Permissions: @permissions.sdd
+  Resources: @resources.sdd
+  Locks: @locks.sdd
+
+State: +

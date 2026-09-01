@@ -1,0 +1,73 @@
+# Authority Model
+
+@bootstrap.authority
+
+Purpose:
+  Define what the AI can and cannot do within this project.
+  Authority is checked before any executing action.
+
+can:
+    read-code
+    modify-code
+    run-tests
+    create-tasks
+    propose-skills
+    modify: current task scope
+    modify: current domain
+
+cannot:
+    change-global-rules
+    approve-production
+    modify-security-policy
+    modify: other domains
+    modify: external systems
+
+## Check Chain
+
+  TASK
+    ↓ requires
+  CAPABILITY
+    ↓ maps to
+  PERMISSION
+    ↓ authorizes
+  RESOURCE
+    ↓ invokes
+  TOOL
+
+AI MUST resolve this chain before every tool invocation.
+
+## Examples
+
+@example.auth-check
+
+  Task T2041:
+    requires: write:file
+
+  Authority resolution:
+    write:file → @permission.file-write
+    permission.file-write → authorized for current task scope
+    ALLOW
+
+@example.auth-blocked
+
+  Task T9901:
+    requires: production-database
+
+  Authority resolution:
+    production-database → NOT in can list
+    BLOCKED
+
+## Authority Sources
+
+Authority is derived from:
+  1. .sdd/bootstrap/authority.sdd (this file)
+  2. .sdd/project/sdd-rules.sdd (project-specific constraints)
+  3. .sdd/tasks/T2041/INDEX.sdd (task-scoped authority)
+
+Navigation:
+  Parent: @INDEX.sdd
+  Identity: @identity.sdd
+  Index: @../INDEX.sdd
+  ToolGov: @../system/tool-governance.sdd
+
+State: +

@@ -1,0 +1,128 @@
+# Resource Classification
+
+Spec: Resources
+Purpose:
+  Define the resource taxonomy — what capabilities act upon.
+  Resources have data classification levels that affect how
+  context is assembled and presented to AI.
+
+Owns: governance/resources.sdd
+
+## Resource Types
+
+### @resource.source-code
+  type: codebase
+  classification: INTERNAL
+  description: Source code files in the project
+  env_paths:
+    local: ./src/**
+    test: ./src/**
+    staging: ./src/**
+    production: ./src/**
+
+### @resource.test-environment
+  type: runtime
+  classification: INTERNAL
+  description: Test execution environment
+
+### @resource.test-reports
+  type: data
+  classification: INTERNAL
+  description: Test results and reports
+
+### @resource.git-repo
+  type: vcs
+  classification: INTERNAL
+  description: Git repository
+
+### @resource.local-env
+  type: deployment
+  classification: INTERNAL
+  description: Local development environment
+
+### @resource.staging-env
+  type: deployment
+  classification: CONFIDENTIAL
+  description: Staging environment
+
+### @resource.production-env
+  type: deployment
+  classification: CONFIDENTIAL
+  description: Production environment
+
+### @resource.database
+  type: data-store
+  classification: CONFIDENTIAL
+  description: Project databases
+
+### @resource.internal-network
+  type: network
+  classification: INTERNAL
+  description: Internal service-to-service communication
+
+### @resource.external-network
+  type: network
+  classification: CONFIDENTIAL
+  description: External network calls
+
+### @resource.secrets
+  type: credential
+  classification: SECRET
+  description: Secrets, tokens, passwords
+
+### @resource.system-files
+  type: filesystem
+  classification: CONFIDENTIAL
+  description: System-level files
+
+### @resource.task-system
+  type: management
+  classification: INTERNAL
+  description: Task management system
+
+### @resource.skill-system
+  type: management
+  classification: INTERNAL
+  description: Skill management system
+
+### @resource.decision-system
+  type: management
+  classification: INTERNAL
+  description: Decision management system
+
+## Data Classification Levels
+
+  PUBLIC      — no sensitive data, safe for any context
+  INTERNAL    — project-internal, safe for standard context
+  CONFIDENTIAL— sensitive, redacted in review context
+  SECRET      — highly sensitive, never loaded into AI context
+  RESTRICTED  — must never access
+
+## Classification Rules
+
+  [RES-01] SECRET resources MUST NEVER be loaded into AI context as values.
+  [RES-02] CONFIDENTIAL resources MAY be loaded as metadata only (reference paths, not values).
+  [RES-03] AI MUST NOT attempt to read @resource.secrets directly.
+  [RES-04] Runtime secret injection is the ONLY way secrets enter execution.
+
+## Resource Context Loading
+
+  Capability: code.read
+    Resource: source-code
+    Classification: INTERNAL
+    → Full context OK
+
+  Capability: db.read
+    Resource: database (CONFIDENTIAL)
+    → Context: schema, structure, not data values
+
+  Capability: secret.access
+    Resource: secrets (SECRET)
+    → Context: reference exists, value NEVER loaded
+
+Navigation:
+  Parent: @INDEX.sdd
+  Capabilities: @capabilities.sdd
+  Glossary: @../glossary/INDEX.sdd
+
+State: +

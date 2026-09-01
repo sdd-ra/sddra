@@ -1,0 +1,100 @@
+# Lock Protocol
+
+Spec: Locks
+Purpose:
+  Define the resource locking protocol that prevents concurrent
+  modification of shared resources by multiple agents. Locks are
+  acquired before tool execution and released after task completion.
+
+Owns: governance/locks.sdd
+
+## Lock Types
+
+  READ       — Multiple readers allowed, no writers
+  WRITE      — Exclusive write access, blocks all others
+  EXCLUSIVE  — Full exclusive access (read + write + delete)
+  MIGRATION  — Database migration lock (blocks all schema changes)
+  DEPLOYMENT — Deployment lock (blocks all writes to target environment)
+
+## Lock Acquisition Protocol
+
+  1. AI resolves capability → resource
+  2. AI requests lock on resource
+  3. LockManager checks current holders
+  4. If conflict → BLOCK with reason
+  5. If clear → grant lock
+  6. AI performs action
+  7. AI releases lock (or auto-release on task complete)
+
+## Lock Compatibility Matrix
+
+                  READ    WRITE    EXCLUSIVE    MIGRATION    DEPLOYMENT
+  ────────────────────────────────────────────────────────────────
+  READ            ✓       ✗        ✗             ✗             ✗
+  WRITE           ✗       ✗        ✗             ✗             ✗
+  EXCLUSIVE       ✗       ✗        ✗             ✗             ✗
+  MIGRATION       ✗       ✗        ✗             ✗             ✗
+  DEPLOYMENT      ✗       ✗        ✗             ✗             ✗
+
+## Lock Scope
+
+  TASK     — Locked for duration of task (auto-release on task complete)
+  SESSION  — Locked for duration of agent session
+  MANUAL   — Must be explicitly released
+
+## Lock Manager
+
+  @agent.lock-manager
+    ECC equivalent: agent.supervisor
+
+  Responsibilities:
+    - Grant/revoke locks
+    - Detect deadlocks
+    - Enforce lock timeouts
+    - Audit lock events
+
+## Lock Events
+
+  @lock_event.LE1
+
+  action: acquire
+  resource: @resource.source-code
+  agent: @agent.backend
+  task: @task.T2041
+  type: WRITE
+  result: GRANTED
+  timestamp: 2026-09-01T16:30:00Z
+
+  @lock_event.LE2
+
+  action: acquire
+  resource: @resource.source-code
+  agent: @agent.backend
+  task: @task.T2042
+  type: WRITE
+  result: DENIED
+  reason: T2041 holds WRITE lock
+  timestamp: 2026-09-01T16:31:00Z
+
+## Deadlock Prevention
+
+  - Lock timeout: 30 minutes
+  - Circular wait detection via graph analysis
+  - Lock escalation: multiple READ → single WRITE (if owner)
+
+## Scheduler Integration
+
+  Scheduler checks locks before task assignment:
+
+    READY TASKS
+      → resolve required resources
+      → check locks on those resources
+      → only assign to agent if locks can be acquired
+
+Navigation:
+  Parent: @INDEX.sdd
+  Capabilities: @capabilities.sdd
+  Resources: @resources.sdd
+  Authority: @../bootstrap/authority.sdd
+
+State: +

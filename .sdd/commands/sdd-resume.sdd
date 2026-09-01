@@ -35,4 +35,10 @@ Exit Codes:
   2 - No checkpoint found
   3 - Checkpoint corrupted
 
+Navigation:
+  INDEX: @INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+  Checkpoints: @../patterns/checkpoint-restore.sdd
+  BackupCommand: @sdd-backup.sdd
+
 State: +

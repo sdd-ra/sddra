@@ -1,0 +1,69 @@
+# Assumption Registry
+
+Spec: Assumptions
+Purpose:
+  Define the Assumption object — explicit, tracked assumptions that AI
+  makes when planning and executing. Assumptions are NOT decisions; they
+  are unverified beliefs that must be validated. When invalidated, triggers
+  replanning of dependent tasks.
+
+Owns: assumptions/
+
+## Assumption Object Schema
+
+  @assumption.A12
+
+  assumption:
+      provider refund API is synchronous
+
+  confidence:
+      low
+
+  used_by:
+      @task.T102
+
+  status:
+      PROPOSED
+
+  created:
+      2026-09-01
+
+## Assumption Lifecycle
+
+  PROPOSED → VALIDATED → RESOLVED
+  PROPOSED → INVALIDATED → REPLAN_TRIGGERED
+
+## Assumption Risk Levels
+
+  LOW       — minimal impact if wrong
+  MEDIUM    — moderate impact, needs eventual validation
+  HIGH      — significant impact, validation required before critical task
+  CRITICAL  — must be validated before ANY execution
+
+## Rules
+
+  [ASM-01] Assumption ≠ Decision. Assumptions are unverified; decisions are evidence-based.
+  [ASM-02] Every assumption MUST track confidence level (low/medium/high/critical).
+  [ASM-03] Every assumption MUST track which tasks/requirements it affects.
+  [ASM-04] When assumption is invalidated, dependent tasks MUST trigger replan.
+  [ASM-05] AI MUST surface unresolved assumptions before executing HIGH/CRITICAL risk tasks.
+  [ASM-06] Assumptions are NOT silently resolved — status MUST be explicitly updated.
+
+  Example:
+    A12: provider refund API is synchronous
+    confidence: low
+    used_by: T102 (Provider integration)
+
+    → If A12 is invalidated (API is actually async):
+      T102 → BLOCKED
+      T103 → BLOCKED (depends on T102)
+      AI proposes T102b (Webhook handler)
+      Plan replanned with T102a, T102b
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Plans: @../plans/INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+
+State: +

@@ -1,0 +1,131 @@
+# Agent Security Rules
+
+Spec: AgentSecurityRules
+Purpose:
+  Define how ECC AgentShield security patterns map to SDD security
+  control levels (L0-L5). Integration point between ECC's 102 static rules
+  and SDD's security enforcement pipeline.
+
+Owns: agent/security-rules.sdd
+
+AgentShieldMapping:
+  AgentShieldRules: 102
+  AgentShieldTests: 1,282
+  Coverage: 98%
+
+  FiveCategories:
+    1. Secrets Detection:
+       patterns: 14
+       mapped_to: PAT_SECRET_* in @../security/controls.sdd
+       sdd_level: L2
+       examples:
+         - hardcoded API keys
+         - hardcoded database credentials
+         - hardcoded tokens
+       sdd_integration:
+         - PostToolUse[Edit/Write] hook checks
+         - PreCommit check
+         - R1 review gate
+
+    2. Permission Auditing:
+       mapped_to: AG1-AG10 in @INDEX.sdd
+       sdd_level: L3
+       checks:
+         - tool allowlist over-grants
+         - path access too broad
+         - agent config permissions
+       sdd_integration:
+         - Agent capabilities must match role definition (@roles.sdd)
+         - Tool allowlist enforced at @permissions.sdd
+         - Permission changes require @approvals.sdd
+
+    3. Hook Injection Analysis:
+       mapped_to: ADAPTER1-ADAPTER15 in @../runtime/adapter-runtime.sdd
+       sdd_level: L4
+       checks:
+         - hooks can be exploited to run arbitrary commands
+         - hook injection vectors in agent configs
+       sdd_integration:
+         - HookBridge validates all hook inputs
+         - PostToolUse hooks sanitize before processing
+         - ENFORCE mode blocks on L4 patterns
+
+    4. MCP Server Risk Profiling:
+       mapped_to: mcp-integration.sdd MCPBridge
+       sdd_level: L3-L4 (contextual)
+       checks:
+         - what each MCP server can read, write, or call
+         - exposure surface analysis
+         - cross-server chaining risks
+       sdd_integration:
+         - Only allowlisted MCP servers permitted (@mcp-integration.sdd)
+         - Server connections version-pinned (not @latest)
+         - Graceful degradation if server unavailable
+
+    5. Agent Config Review:
+       mapped_to: AG1-AG10 in @agent/INDEX.sdd
+       sdd_level: L2-L5 (contextual)
+       checks:
+         - prompt injection vectors
+         - tool allowlist over-grants
+         - missing constraints
+       sdd_integration:
+         - All agent configs validated against @roles.sdd
+         - Constraints must match role capabilities
+         - Missing constraints flagged as L2 finding
+
+SecurityEnforcement:
+  Modes:
+    OBSERVE:
+      description: warnings logged, tool proceeds, OBS emitted
+      triggers: L1-L3 patterns, non-critical findings
+      output: OBS12 security_gate_warned
+
+    ENFORCE:
+      description: blocks tool call on security violation
+      triggers: L4-L5 patterns, critical findings (grade F)
+      output: exit 2 + OBS13 security_gate_blocked
+
+  LLevelMapping:
+    L0: No security controls — not recommended for any project
+    L1: Basic scanning — secrets detection only (grade C minimum)
+    L2: Standard review — secrets + basic permission audit (grade B minimum)
+    L3: Enhanced review — adds hook injection + MCP risk (grade A minimum)
+    L4: Full audit — all 5 AgentShield categories (grade A+ required)
+    L5: Paranoid mode — adversarial review with -opus flag
+
+  Default:
+    project_level_L1: OBSERVE for secrets only
+    project_level_L2: OBSERVE L1-L2, ENFORCE L3+
+    project_level_L3: OBSERVE L1-L2, ENFORCE L3+
+    project_level_L4: ENFORCE L2+ (critical)
+    project_level_L5: ENFORCE L1+ (paranoid)
+
+Rules:
+  [SEC-01] AgentShield findings MUST be mapped to SDD L-levels before enforcement.
+  [SEC-02] Secrets detection (14 patterns) is mandatory at L1+.
+  [SEC-03] Agent config review MUST validate against @roles.sdd capabilities.
+  [SEC-04] MCP server allowlist MUST be enforced by @../runtime/mcp-integration.sdd.
+  [SEC-05] AgentShield scan MUST be invoked at R1 gate for all code changes.
+  [SEC-06] Critical findings (grade F) MUST exit with code 2.
+  [SEC-07] -fix flag auto-applies only to safe issues (secrets removal, permission tightening).
+  [SEC-08] -opus red-team/blue-team pipeline invoked only for L4+ projects.
+
+ScanInvocation:
+  manual: npx ecc-agentshield scan
+  from_claude: /security-scan
+  auto_trigger:
+    - PostToolUse[Edit/Write] → secrets + injection scan
+    - PreCommit → full AgentShield scan
+    - R1 gate → full AgentShield + hook injection scan
+
+Navigation:
+  AgentIndex: @INDEX.sdd
+  SecurityControls: @../security/controls.sdd
+  SecurityLevels: @../security/levels.sdd
+  AdapterRuntime: @../runtime/adapter-runtime.sdd
+  McpIntegration: @../runtime/mcp-integration.sdd
+  AgentRoles: @roles.sdd
+  AgentPermissions: @permissions.sdd
+
+State: +

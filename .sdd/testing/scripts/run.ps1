@@ -124,6 +124,326 @@ if ($Category -eq "all" -or $Category -eq "unit") {
             }
         }
     }
+
+    Test-Item "New .sdd files have Navigation section" {
+        $newFiles = @(
+            "agent/supervisor.sdd",
+            "agent/security-rules.sdd",
+            "runtime/mcp-integration.sdd",
+            "references/sdd/INDEX.sdd",
+            "references/sdd/ecc-framework-overview.sdd",
+            "references/sdd/living-specs-best-practices.sdd",
+            "evolution/candidates/INDEX.sdd",
+            "evolution/challenges/INDEX.sdd",
+            "evolution/proposals/INDEX.sdd",
+            "evolution/approved/INDEX.sdd",
+            "timeline/changes/INDEX.sdd",
+            "timeline/snapshots/INDEX.sdd",
+            "timeline/migrations/INDEX.sdd",
+            "agent/prompts/INDEX.sdd",
+            "queries/INDEX.sdd",
+            "queries/architecture-drift.sdd",
+            "queries/orphan-knowledge.sdd",
+            "queries/unverified-skills.sdd",
+            "queries/high-risk-tasks.sdd",
+            "queries/payment-impact.sdd",
+            "intents/INDEX.sdd",
+            "plans/INDEX.sdd",
+            "plans/execution-plan.sdd",
+            "assumptions/INDEX.sdd",
+            "bootstrap/INDEX.sdd",
+            "bootstrap/AI_BOOTSTRAP.sdd",
+            "bootstrap/authority.sdd",
+            "bootstrap/identity.sdd",
+            "bootstrap/handoff.sdd",
+            "glossary/INDEX.sdd",
+            "system/context/INDEX.sdd",
+            "system/tool-governance.sdd",
+            "governance/INDEX.sdd",
+            "governance/capabilities.sdd",
+            "governance/permissions.sdd",
+            "governance/resources.sdd",
+            "governance/locks.sdd",
+            "governance/security-events.sdd",
+             "lifecycle/INDEX.sdd",
+             "lifecycle/states.sdd",
+             "lifecycle/quality-dimensions.sdd",
+             "lifecycle/gc-policy.sdd",
+             "lifecycle/compactor.sdd",
+             "lifecycle/claims.sdd",
+             "lifecycle/challenges.sdd",
+             "lifecycle/confidence.sdd",
+             "lifecycle/health-score.sdd",
+             "lifecycle/generation.sdd",
+             "lifecycle/drift.sdd",
+             "lifecycle/learning-loop.sdd",
+             "lifecycle/entity-schemas.sdd"
+        )
+        foreach ($relPath in $newFiles) {
+            $path = Join-Path $sddDir $relPath
+            if (-not (Test-Path $path)) { throw "$relPath not found" }
+            $content = Get-Content $path -Raw -ErrorAction SilentlyContinue
+            if ($content -notmatch 'Navigation:') { throw "$relPath missing Navigation" }
+        }
+    }
+
+    Test-Item "ECC bridge has 8 core + 4 specialty roles" {
+        $content = Get-Content (Join-Path $sddDir "agent/ecc-bridge.sdd") -Raw
+        foreach ($role in @('agent.discovery','agent.architect','agent.implementer','agent.reviewer','agent.tester','agent.documentation','agent.security','agent.supervisor','agent.knowledge','agent.healthcare','agent.ml','agent.devops')) {
+            if ($content -notmatch $role) { throw "$role not found in ecc-bridge.sdd" }
+        }
+    }
+
+    Test-Item "Security rules has 5 AgentShield categories" {
+        $content = Get-Content (Join-Path $sddDir "agent/security-rules.sdd") -Raw
+        foreach ($cat in @('Secrets Detection','Permission Auditing','Hook Injection','MCP Server Risk','Agent Config Review')) {
+            if ($content -notmatch $cat) { throw "$cat not found in security-rules.sdd" }
+        }
+    }
+
+    Test-Item "MCP integration has 3 integration layers" {
+        $content = Get-Content (Join-Path $sddDir "runtime/mcp-integration.sdd") -Raw
+        foreach ($layer in @('GateBridge','MemoryBridge','SecurityBridge')) {
+            if ($content -notmatch $layer) { throw "$layer not found in mcp-integration.sdd" }
+        }
+    }
+
+    Test-Item "Supervisor has 4 ECC orchestration equivalents" {
+        $supervisor = Get-Content (Join-Path $sddDir "agent/supervisor.sdd") -Raw
+        foreach ($equiv in @('loop-operator','harness-optimizer','orchestration-planner','orchestration-deployer')) {
+            if ($supervisor -notmatch $equiv) { throw "$equiv not found in supervisor.sdd" }
+        }
+    }
+
+    Test-Item "References sdd index has methodology content" {
+        $content = Get-Content (Join-Path $sddDir "references/sdd/ecc-framework-overview.sdd") -Raw
+        if ($content -notmatch 'ECC') { throw "ECC framework content not found" }
+    }
+
+    Test-Item "Phases 130-134 overview references all timeline files" {
+        $content = Get-Content (Join-Path $sddDir "references/sdd/phases-130-134-overview.sdd") -Raw
+        foreach ($ref in @('timeline/changes.sdd','timeline/snapshots.sdd','timeline/migrations.sdd','timeline/evolution.sdd')) {
+            if ($content -notmatch $ref) { throw "$ref not found in phases-130-134-overview.sdd" }
+        }
+    }
+
+    Test-Item "Phases 130-134 overview has all phase sections" {
+        $content = Get-Content (Join-Path $sddDir "references/sdd/phases-130-134-overview.sdd") -Raw
+        foreach ($phase in @('Phase 130','Phase 131','Phase 132','Phase 133','Phase 134','Phase 135')) {
+            if ($content -notmatch $phase) { throw "$phase not found in phases-130-134-overview.sdd" }
+        }
+    }
+
+    Test-Item "Query language has core vocabulary" {
+        $content = Get-Content (Join-Path $sddDir "queries/INDEX.sdd") -Raw
+        foreach ($kw in @('SHOW','LIST','FIND','WHY','WHY-NOT','IMPACT','BLAST','TRACE','COMPARE','EXPLAIN','VERIFY','REVIEW','VALIDATE','LEARN','PROMOTE','CHALLENGE','GRAPH','CONTEXT')) {
+            if ($content -notmatch $kw) { throw "$kw not found in queries/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Query language has relationship syntax" {
+        $content = Get-Content (Join-Path $sddDir "queries/INDEX.sdd") -Raw
+        foreach ($syntax in @('->','<-','where','--minimal','--review','--architecture')) {
+            if ($content -notmatch [regex]::Escape($syntax)) { throw "$syntax not found in queries/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Saved queries exist for all example types" {
+        $queries = @('architecture-drift','orphan-knowledge','unverified-skills','high-risk-tasks','payment-impact')
+        foreach ($q in $queries) {
+            $path = Join-Path $sddDir "queries/$q.sdd"
+            if (-not (Test-Path $path)) { throw "queries/$q.sdd not found" }
+            $content = Get-Content $path -Raw -ErrorAction SilentlyContinue
+            if ($content -notmatch 'State: \+') { throw "queries/$q.sdd missing State: +" }
+        }
+    }
+
+    Test-Item "Intent schema has lifecycle states" {
+        $content = Get-Content (Join-Path $sddDir "intents/INDEX.sdd") -Raw
+        foreach ($state in @('DISCOVERING','PLANNED','EXECUTING','COMPLETED','ARCHIVED')) {
+            if ($content -notmatch $state) { throw "$state not found in intents/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Execution plan has execution modes" {
+        $content = Get-Content (Join-Path $sddDir "plans/INDEX.sdd") -Raw
+        foreach ($mode in @('AUTO','ASSISTED','STEP','DRY_RUN','REVIEW')) {
+            if ($content -notmatch $mode) { throw "$mode not found in plans/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Assumptions has risk levels" {
+        $content = Get-Content (Join-Path $sddDir "assumptions/INDEX.sdd") -Raw
+        foreach ($risk in @('LOW','MEDIUM','HIGH','CRITICAL')) {
+            if ($content -notmatch $risk) { throw "$risk not found in assumptions/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "AI_BOOTSTRAP has 13 bootstrap phases" {
+        $content = Get-Content (Join-Path $sddDir "bootstrap/AI_BOOTSTRAP.sdd") -Raw
+        foreach ($phase in @('WHO AM I?','AUTHORITY CHECK','MANDATORY RULES','PROJECT RESOLVE','INDEX RESOLVE','ARCHITECTURE LOAD','GLOSSARY RESOLVE','TASK RESOLVE','KNOWLEDGE COMPILATION','ASSUMPTION CHECK','READINESS GATE','CONTEXT COMPILE','EXECUTE')) {
+            if ($content -notmatch $phase) { throw "$phase not found in AI_BOOTSTRAP.sdd" }
+        }
+    }
+
+    Test-Item "Authority model has can and cannot lists" {
+        $content = Get-Content (Join-Path $sddDir "bootstrap/authority.sdd") -Raw
+        if ($content -notmatch 'can:') { throw "can: not found in authority.sdd" }
+        if ($content -notmatch 'cannot:') { throw "cannot: not found in authority.sdd" }
+    }
+
+    Test-Item "Identity has role and capabilities" {
+        $content = Get-Content (Join-Path $sddDir "bootstrap/identity.sdd") -Raw
+        if ($content -notmatch 'role:') { throw "role: not found in identity.sdd" }
+        if ($content -notmatch 'capabilities:') { throw "capabilities: not found in identity.sdd" }
+    }
+
+    Test-Item "Glossary has canonical terms" {
+        $content = Get-Content (Join-Path $sddDir "glossary/INDEX.sdd") -Raw
+        foreach ($term in @('TASK','SKILL','CONCEPT','DECISION','REFERENCE','EVIDENCE','PROOF','ASSUMPTION','UNKNOWN','DISCOVERY','PROPOSAL','REVIEW','VIOLATION','HANDOFF','CONTEXT')) {
+            if ($content -notmatch $term) { throw "$term not found in glossary/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Context compiler has progressive disclosure levels" {
+        $content = Get-Content (Join-Path $sddDir "system/context/INDEX.sdd") -Raw
+        foreach ($level in @('LEVEL 0','LEVEL 1','LEVEL 2','LEVEL 3','LEVEL 4')) {
+            if ($content -notmatch $level) { throw "$level not found in context/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Context compiler has priority levels" {
+        $content = Get-Content (Join-Path $sddDir "system/context/INDEX.sdd") -Raw
+        foreach ($priority in @('P0','P1','P2','P3','P4','P5','P6')) {
+            if ($content -notmatch $priority) { throw "$priority not found in context/INDEX.sdd" }
+        }
+    }
+
+    Test-Item "Tool governance has capability chain" {
+        $content = Get-Content (Join-Path $sddDir "system/tool-governance.sdd") -Raw
+        if ($content -notmatch 'CAPABILITY') { throw "CAPABILITY not found" }
+        if ($content -notmatch 'PERMISSION') { throw "PERMISSION not found" }
+        if ($content -notmatch 'RESOURCE') { throw "RESOURCE not found" }
+        if ($content -notmatch 'TOOL') { throw "TOOL not found" }
+    }
+
+    Test-Item "Tool governance has source trust hierarchy" {
+        $content = Get-Content (Join-Path $sddDir "system/tool-governance.sdd") -Raw
+        foreach ($level in @('SYSTEM POLICY','PROJECT POLICY','APPROVED DECISION','VALIDATED KNOWLEDGE','REFERENCE','EXTERNAL CONTENT','AI INFERENCE')) {
+            if ($content -notmatch $level) { throw "$level not found in tool-governance.sdd" }
+        }
+    }
+
+    Test-Item "Handoff protocol has structured manifest" {
+        $content = Get-Content (Join-Path $sddDir "bootstrap/handoff.sdd") -Raw
+        foreach ($field in @('completed','changed','discoveries','pending','proof')) {
+            if ($content -notmatch $field) { throw "$field not found in handoff.sdd" }
+        }
+    }
+
+    Test-Item "Governance has capability categories" {
+        $content = Get-Content (Join-Path $sddDir "governance/capabilities.sdd") -Raw
+        foreach ($cat in @('CODE','DATA','TEST','GIT','DEPLOY','NETWORK','SECRET','SYSTEM')) {
+            if ($content -notmatch $cat) { throw "$cat not found in governance/capabilities.sdd" }
+        }
+    }
+
+    Test-Item "Governance has risk levels for capabilities" {
+        $content = Get-Content (Join-Path $sddDir "governance/capabilities.sdd") -Raw
+        foreach ($risk in @('LOW','MEDIUM','HIGH','CRITICAL')) {
+            if ($content -notmatch "risk:\s*$risk") { throw "risk: $risk not found in governance/capabilities.sdd" }
+        }
+    }
+
+    Test-Item "Permissions has environment policy entries" {
+        $content = Get-Content (Join-Path $sddDir "governance/permissions.sdd") -Raw
+        foreach ($env in @('local','staging','production')) {
+            if ($content -notmatch $env) { throw "$env not found in governance/permissions.sdd" }
+        }
+    }
+
+    Test-Item "Permissions has gate responses" {
+        $content = Get-Content (Join-Path $sddDir "governance/permissions.sdd") -Raw
+        foreach ($response in @('ALLOW','REVIEW','DENY','BLOCK','HUMAN_ONLY')) {
+            if ($content -notmatch $response) { throw "$response not found in governance/permissions.sdd" }
+        }
+    }
+
+    Test-Item "Resources has data classification tiers" {
+        $content = Get-Content (Join-Path $sddDir "governance/resources.sdd") -Raw
+        foreach ($tier in @('PUBLIC','INTERNAL','CONFIDENTIAL','SECRET','RESTRICTED')) {
+            if ($content -notmatch $tier) { throw "$tier not found in governance/resources.sdd" }
+        }
+    }
+
+    Test-Item "Locks has lock types and protocol" {
+        $content = Get-Content (Join-Path $sddDir "governance/locks.sdd") -Raw
+        foreach ($lock in @('READ','WRITE','EXCLUSIVE','MIGRATION','DEPLOYMENT')) {
+            if ($content -notmatch $lock) { throw "$lock not found in governance/locks.sdd" }
+        }
+    }
+
+    Test-Item "Security Events has trust hierarchy" {
+        $content = Get-Content (Join-Path $sddDir "governance/security-events.sdd") -Raw
+        foreach ($level in @('SYSTEM POLICY','SECURITY POLICY','PROJECT POLICY','APPROVED DECISION','VALIDATED KNOWLEDGE','EXTERNAL CONTENT','AI INFERENCE')) {
+            if ($content -notmatch $level) { throw "$level not found in governance/security-events.sdd" }
+        }
+    }
+
+    Test-Item "Lifecycle has state machine transitions" {
+         $content = Get-Content (Join-Path $sddDir "lifecycle/states.sdd") -Raw
+         foreach ($state in @('CANDIDATE','ACTIVE','STALE','DEPRECATED','SUPERSEDED','DELETE_BLOCKED','ARCHIVED')) {
+             if ($content -notmatch $state) { throw "$state not found in lifecycle/states.sdd" }
+         }
+     }
+
+    Test-Item "Quality dimensions has all 8 dimensions" {
+         $content = Get-Content (Join-Path $sddDir "lifecycle/quality-dimensions.sdd") -Raw
+         foreach ($dim in @('duplicate','fragmented','orphan','unused','contradicted','superseded','terminology.drift','architecture.drift')) {
+             if ($content -notmatch $dim) { throw "$dim not found in lifecycle/quality-dimensions.sdd" }
+         }
+     }
+
+    Test-Item "Lifecycle has garbage collector protocol" {
+        $content = Get-Content (Join-Path $sddDir "lifecycle/INDEX.sdd") -Raw
+        if ($content -notmatch 'Garbage Collector') { throw "Garbage Collector not found in lifecycle/INDEX.sdd" }
+        if ($content -notmatch 'SCANNING') { throw "SCANNING step not found in lifecycle/INDEX.sdd" }
+    }
+
+    Test-Item "Tool governance has fail closed principle" {
+        $content = Get-Content (Join-Path $sddDir "system/tool-governance.sdd") -Raw
+        if ($content -notmatch 'Fail Close|fail.close|FAIL_CLOSED') { throw "fail closed principle not found in tool-governance.sdd" }
+        if ($content -notmatch 'TVL-06') { throw "TVL-06 fail closed rule not found" }
+    }
+
+    Test-Item "Tool governance has action journal format" {
+        $content = Get-Content (Join-Path $sddDir "system/tool-governance.sdd") -Raw
+        if ($content -notmatch 'Action Journal|@action') { throw "action journal not found in tool-governance.sdd" }
+    }
+
+    Test-Item "Timeline subdirs have INDEX.sdd files" {
+        $timelineDirs = @('changes','snapshots','migrations')
+        foreach ($dir in $timelineDirs) {
+            $idx = Join-Path $sddDir "timeline/$dir/INDEX.sdd"
+            if (-not (Test-Path $idx)) { throw "timeline/$dir/INDEX.sdd not found" }
+        }
+    }
+
+    Test-Item "Evolution subdirs have INDEX.sdd files" {
+        $evoDirs = @('candidates','challenges','proposals','approved')
+        foreach ($dir in $evoDirs) {
+            $idx = Join-Path $sddDir "evolution/$dir/INDEX.sdd"
+            if (-not (Test-Path $idx)) { throw "evolution/$dir/INDEX.sdd not found" }
+        }
+    }
+
+    Test-Item "All tests passed!" {
+        Write-Host "All tests passed!" -ForegroundColor Green
+    }
+
+    if ($Category -eq "all") {
+        Write-Host "--- Phase 130-134 Tests ---" -ForegroundColor Cyan
+    }
     
     # Language tests - disabled due to regex range false positives
     # Test-Item "No Azerbaijani in .sdd files" {
@@ -377,6 +697,246 @@ if ($Category -eq "all" -or $Category -eq "phase124") {
     Test-Item "stages.sdd maps Phase124 states" {
         Assert-ContentContains (Join-Path $sddDir "workflow/stages.sdd") 'Phase124StateMapping'
     }
+}
+
+if ($Category -eq "all" -or $Category -eq "phase139") {
+    Write-Host "--- Phase 139: Knowledge Lifecycle & Garbage Collection Tests ---" -ForegroundColor Cyan
+
+        Test-Item "Entity schemas define all new entity types" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/entity-schemas.sdd") -Raw
+            foreach ($entity in @('observation','discovery','candidate','claim','challenge','generation','violation','exception')) {
+                if ($content -notmatch $entity) { throw "$entity entity not found in entity-schemas.sdd" }
+            }
+        }
+
+        Test-Item "Entity schemas has entity formats" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/entity-schemas.sdd") -Raw
+            foreach ($fmt in @('observed_in','counter_evidence','proposed_resolution','lineage_graph')) {
+                if ($content -notmatch $fmt) { throw "$fmt not found in entity-schemas.sdd" }
+            }
+        }
+
+        Test-Item "Claims has full claim lifecycle" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/claims.sdd") -Raw
+            foreach ($state in @('PROPOSED','SUPPORTED','VALIDATED','ACTIVE','CHALLENGED','INVALIDATED','SUPERSEDED')) {
+                if ($content -notmatch $state) { throw "$state not found in claims.sdd" }
+            }
+        }
+
+        Test-Item "Claims has confidence levels" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/claims.sdd") -Raw
+            foreach ($level in @('LOW','MEDIUM','HIGH')) {
+                if ($content -notmatch $level) { throw "confidence $level not found in claims.sdd" }
+            }
+        }
+
+        Test-Item "Claims has evidence types" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/claims.sdd") -Raw
+            foreach ($ev in @('CODE','TEST','TASK','DECISION','PRODUCTION','EXTERNAL','HUMAN','observation')) {
+                if ($content -notmatch $ev) { throw "$ev evidence type not found in claims.sdd" }
+            }
+        }
+
+        Test-Item "Challenges has challenge resolution protocol" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/challenges.sdd") -Raw
+            foreach ($term in @('CHALLENGED','REVIEWED','ACCEPTED','FALSE_POSITIVE','FIXED','VERIFIED','INVALIDATE','MODIFY','SCOPE_LIMIT')) {
+                if ($content -notmatch $term) { throw "$term not found in challenges.sdd" }
+            }
+        }
+
+        Test-Item "Challenges has claim-challenge relationship" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/challenges.sdd") -Raw
+            if ($content -notmatch 'claim:') { throw "claim: field not found in challenges.sdd" }
+            if ($content -notmatch 'counter_evidence:') { throw "counter_evidence: field not found in challenges.sdd" }
+        }
+
+        Test-Item "Confidence has LOW/MEDIUM/HIGH levels and numeric scores" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/confidence.sdd") -Raw
+            foreach ($term in @('LOW','MEDIUM','HIGH','0.0 - 0.3','0.3 - 0.7','0.7 - 1.0','score')) {
+                if ($content -notmatch $term) { throw "$term not found in confidence.sdd" }
+            }
+        }
+
+        Test-Item "Confidence has decay factors" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/confidence.sdd") -Raw
+            foreach ($factor in @('age','usage_frequency','failure_rate','dependency_changes','technology_changes','contradicting_evidence')) {
+                if ($content -notmatch $factor) { throw "$factor not found in confidence.sdd" }
+            }
+        }
+
+        Test-Item "Confidence has promotion/demotion rules" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/confidence.sdd") -Raw
+            if ($content -notmatch 'promotion') { throw "promotion not found in confidence.sdd" }
+            if ($content -notmatch 'demotion|demotes') { throw "demotion not found in confidence.sdd" }
+        }
+
+        Test-Item "Compactor has core+variant specialization" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/compactor.sdd") -Raw
+            if ($content -notmatch 'core:') { throw "core: not found in compactor.sdd" }
+            if ($content -notmatch 'specialization:') { throw "specialization: not found in compactor.sdd" }
+            if ($content -notmatch 'specializes:') { throw "specializes: not found in compactor.sdd" }
+        }
+
+        Test-Item "Compactor has merge proposal format" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/compactor.sdd") -Raw
+            if ($content -notmatch '@merge\.') { throw "merge proposal format not found in compactor.sdd" }
+            if ($content -notmatch 'confidence:') { throw "confidence in merge proposal not found" }
+        }
+
+        Test-Item "Compactor distinguishes compactor vs GC" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/compactor.sdd") -Raw
+            if ($content -notmatch 'Compactor vs Garbage Collector|GC') { throw "compactor vs GC distinction not found" }
+        }
+
+        Test-Item "Generation has version lineage" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/generation.sdd") -Raw
+            if ($content -notmatch 'generation:') { throw "generation: not found in generation.sdd" }
+            if ($content -notmatch 'lineage_graph:') { throw "lineage_graph: not found in generation.sdd" }
+            if ($content -notmatch 'gen:') { throw "gen: entry not found in generation.sdd" }
+        }
+
+        Test-Item "Generation has knowledge evolution graph" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/generation.sdd") -Raw
+            foreach ($step in @('Observation','Discovery','Candidate','Skill','Challenge','Revised Skill')) {
+                if ($content -notmatch $step) { throw "$step not found in generation.sdd evolution graph" }
+            }
+        }
+
+        Test-Item "Health score has formula with signals" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/health-score.sdd") -Raw
+            foreach ($signal in @('usage','evidence','failures','age','conflicts','health')) {
+                if ($content -notmatch $signal) { throw "$signal not found in health-score.sdd" }
+            }
+        }
+
+        Test-Item "Health score has graph health report" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/health-score.sdd") -Raw
+            foreach ($item in @('References','Skills','Concepts','Decisions','Orphans','Stale','Contradictions','Overall')) {
+                if ($content -notmatch $item) { throw "$item not found in health-score.sdd" }
+            }
+        }
+
+        Test-Item "Health score has architecture health" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/health-score.sdd") -Raw
+            foreach ($item in @('violations','drift','unused')) {
+                if ($content -notmatch $item) { throw "$item not found in architecture health section" }
+            }
+        }
+
+        Test-Item "Drift has terminology drift detection" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/drift.sdd") -Raw
+            if ($content -notmatch 'terminology') { throw "terminology drift not found in drift.sdd" }
+            if ($content -notmatch 'policy_terms') { throw "policy_terms not found in drift.sdd" }
+            if ($content -notmatch 'observed_terms') { throw "observed_terms not found in drift.sdd" }
+        }
+
+        Test-Item "Drift has architecture drift and violation lifecycle" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/drift.sdd") -Raw
+            foreach ($term in @('architecture.drift','DETECTED','REVIEWED','ACCEPTED','FALSE_POSITIVE','FIXED','VERIFIED','@violation','@exception')) {
+                if ($content -notmatch $term) { throw "$term not found in drift.sdd" }
+            }
+        }
+
+        Test-Item "Drift has exception expiry" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/drift.sdd") -Raw
+            if ($content -notmatch 'expires:') { throw "expires: not found in drift.sdd" }
+            if ($content -notmatch 'EXCEPTION_EXPIRED|Expired') { throw "expiry handling not found in drift.sdd" }
+        }
+
+        Test-Item "Learning loop has full pipeline" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/learning-loop.sdd") -Raw
+            foreach ($step in @('OBSERVATION','DISCOVERY','CANDIDATE','EVIDENCE','CLAIM','VALIDATION','KNOWLEDGE')) {
+                if ($content -notmatch $step) { throw "$step not found in learning-loop.sdd" }
+            }
+        }
+
+        Test-Item "Learning loop has L0-L4 promotion levels" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/learning-loop.sdd") -Raw
+            foreach ($level in @('L0','L1','L2','L3','L4')) {
+                if ($content -notmatch $level) { throw "$level not found in learning-loop.sdd" }
+            }
+        }
+
+        Test-Item "Learning loop has learning boundary" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/learning-loop.sdd") -Raw
+            if ($content -notmatch 'boundary') { throw "learning boundary not found in learning-loop.sdd" }
+            if ($content -notmatch 'PROMO-06') { throw "promotion rule not found in learning-loop.sdd" }
+        }
+
+        Test-Item "GC policy has safe GC protocol" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/gc-policy.sdd") -Raw
+            foreach ($phase in @('DISCOVER','REPORT','PROPOSE','APPROVE','APPLY')) {
+                if ($content -notmatch $phase) { throw "$phase not found in gc-policy.sdd" }
+            }
+        }
+
+        Test-Item "GC policy has dependency check and DELETE_BLOCKED" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/gc-policy.sdd") -Raw
+            if ($content -notmatch 'DELETE_BLOCKED') { throw "DELETE_BLOCKED not found in gc-policy.sdd" }
+            if ($content -notmatch 'dependency') { throw "dependency check not found in gc-policy.sdd" }
+        }
+
+        Test-Item "GC policy has trust-aware pruning" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/gc-policy.sdd") -Raw
+            foreach ($tier in @('SECRET','RESTRICTED','CONFIDENTIAL','INTERNAL','PUBLIC')) {
+                if ($content -notmatch $tier) { throw "$tier not found in gc-policy.sdd" }
+            }
+        }
+
+        Test-Item "GC policy has auto/propose/human categories" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/gc-policy.sdd") -Raw
+            foreach ($cat in @('auto:','propose:','human:')) {
+                if ($content -notmatch $cat) { throw "$cat category not found in gc-policy.sdd" }
+            }
+        }
+
+        Test-Item "GC policy has orphan review protocol" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/gc-policy.sdd") -Raw
+            if ($content -notmatch 'orphan') { throw "orphan review not found in gc-policy.sdd" }
+            if ($content -notmatch 'recommendation:') { throw "recommendation not found in gc-policy.sdd" }
+        }
+
+        Test-Item "States has new transition rules" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/states.sdd") -Raw
+            foreach ($rule in @('TR-07','TR-08','TR-09','TR-10')) {
+                if ($content -notmatch $rule) { throw "$rule not found in states.sdd" }
+            }
+        }
+
+        Test-Item "States has CANDIDATE to ACTIVE transition" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/states.sdd") -Raw
+            if ($content -notmatch 'CANDIDATE.*ACTIVE|Candidate.*Active') { throw "CANDIDATE→ACTIVE transition not found in states.sdd" }
+        }
+
+        Test-Item "States has SUPERSEDED state and transitions" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/states.sdd") -Raw
+            if ($content -notmatch 'SUPERSEDED') { throw "SUPERSEDED state not found in states.sdd" }
+            if ($content -notmatch 'SUPERSEDED.*ARCHIVED') { throw "SUPERSEDED→ARCHIVED transition not found in states.sdd" }
+        }
+
+        Test-Item "Quality dimensions has orphan review protocol" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/quality-dimensions.sdd") -Raw
+            if ($content -notmatch 'Orphan Review|orphan_review|Orphan Review Protocol') { throw "orphan review protocol not found in quality-dimensions.sdd" }
+        }
+
+        Test-Item "Quality dimensions has unused vs orphan distinction" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/quality-dimensions.sdd") -Raw
+            if ($content -notmatch 'Unused vs Orphan') { throw "unused vs orphan distinction not found in quality-dimensions.sdd" }
+        }
+
+        Test-Item "Lifecycle INDEX references all new files" {
+            $content = Get-Content (Join-Path $sddDir "lifecycle/INDEX.sdd") -Raw
+            foreach ($file in @('claims.sdd','challenges.sdd','confidence.sdd','health-score.sdd','compactor.sdd','generation.sdd','drift.sdd','learning-loop.sdd','gc-policy.sdd','entity-schemas.sdd')) {
+                if ($content -notmatch $file) { throw "$file not referenced in lifecycle/INDEX.sdd" }
+            }
+        }
+
+        Test-Item "Root INDEX references all new lifecycle files" {
+            $content = Get-Content (Join-Path $sddDir "INDEX.sdd") -Raw
+            foreach ($ref in @('LifecycleGCPolicy','LifecycleCompactor','LifecycleClaims','LifecycleChallenges','LifecycleConfidence','LifecycleHealthScore','LifecycleGeneration','LifecycleDrift','LifecycleLearningLoop','LifecycleEntitySchemas')) {
+                if ($content -notmatch $ref) { throw "$ref not found in INDEX.sdd Navigation" }
+            }
+        }
 }
 
 if ($Category -eq "all" -or $Category -eq "knowledge") {
@@ -667,7 +1227,11 @@ if ($Category -eq "all" -or $Category -eq "crossref") {
         (Join-Path $sddDir "runtime"),
         (Join-Path $sddDir "workflow"),
         (Join-Path $sddDir "tasks"),
-        (Join-Path $sddDir "insights")
+        (Join-Path $sddDir "insights"),
+        (Join-Path $sddDir "bootstrap"),
+        (Join-Path $sddDir "system"),
+        (Join-Path $sddDir "governance"),
+        (Join-Path $sddDir "lifecycle")
     )
     
     Test-Item "All @references resolve to existing files" {

@@ -1,0 +1,34 @@
+# SDD Methodology References
+
+Spec: SddReferencesIndex
+Purpose:
+  Entry point for SDD methodology reference documents synthesized from
+  industry research and the ECC framework integration.
+
+Owns: references/sdd/INDEX.sdd
+
+Contents:
+  best-practices.sdd:   Curated SDD best practices (Three Levels, Core Workflow, EARS)
+  tool-comparison.sdd:  Industry SDD tool landscape (Cosmos, Kiro, Spec Kit, OpenSpec, BMAD, Cursor)
+  ears-notation.sdd:    EARS (Easy Approach to Requirements Syntax) reference
+  ecc-framework-overview.sdd: Everything-Claude-Code framework summary
+  living-specs-best-practices.sdd: Living spec lifecycle, organizational memory, verification
+
+ReadOrder:
+  1  @best-practices.sdd
+  2  @tool-comparison.sdd
+  3  @ears-notation.sdd
+  4  @ecc-framework-overview.sdd
+  5  @living-specs-best-practices.sdd
+
+Navigation:
+  Parent: @../INDEX.sdd
+  BestPractices: @best-practices.sdd
+  ToolComparison: @tool-comparison.sdd
+  EarsNotation: @ears-notation.sdd
+  EccFramework: @ecc-framework-overview.sdd
+  LivingSpecs: @living-specs-best-practices.sdd
+  Concepts: @../../concepts/INDEX.sdd
+  EvolutionPolicy: @../../policies/evolution.sdd
+
+State: +

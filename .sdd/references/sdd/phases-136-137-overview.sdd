@@ -1,0 +1,83 @@
+# Phases 136-137: Intent → Plan → Execution Graph & AI Bootstrap
+
+Spec: Phases136_137
+Purpose:
+  Synthesis of Phase 136 (Intent → Plan → Execution Graph) and
+  Phase 137 (AI Bootstrap Protocol) from prompts/inbox/166-.md (Phase 136
+  content embedded in 165-.md) and the current session message (Phase 136-137).
+
+  These phases establish that .sdd is no longer just a knowledge system —
+  it is an AI Engineering Operating System that takes human intent and
+  produces executable, adaptive, auditable execution graphs.
+
+Owns: references/sdd/phases-136-137-overview.sdd
+
+## Phase 136 — Intent → Plan → Execution Graph
+
+Core Principle: Task list ≠ Execution Plan. Plan ≠ Workflow. Plan ≠ Skill.
+
+Key Stages:
+  1. INTENT: Human provides high-level intent ("Build refund functionality")
+  2. REQUIREMENTS: AI extracts requirements from intent
+  3. KNOWLEDGE: AI queries graph for related concepts and skills
+  4. ARCHITECTURE: Intent scope → architecture constraints
+  5. TASK GENERATION: Requirements + architecture + skills + constraints → task graph
+  6. EXECUTION GRAPH: Tasks with dependencies, parallel capacity, critical path
+  7. EXECUTION: Adaptive planning with checkpoints, journals, replanning
+
+Key Distinctions:
+  - Intent ≠ Task (intent is the goal; task is concrete work)
+  - Plan ≠ Task list (plan is dependency graph)
+  - Plan ≠ Workflow (workflow is standard process; plan is project-specific)
+  - Plan ≠ Skill (skill is how; plan is which tasks and order)
+  - Assumption ≠ Decision (assumption is unverified; decision is evidence-based)
+
+Implementation in .sdd/:
+  - intents/INDEX.sdd: Intent object schema, lifecycle
+  - plans/INDEX.sdd: Execution plan schema, modes, approval gates
+  - plans/execution-plan.sdd: Dependency graph, critical path, risk, journal, crash recovery
+  - assumptions/INDEX.sdd: Assumption registry with risk levels and replan triggers
+
+## Phase 137 — Spec Compiler & AI Bootstrap
+
+Core Problem: When AI enters a .sdd project, what does it read first?
+
+Solution: AI_BOOTSTRAP protocol — deterministic 8-phase entry sequence.
+
+Bootstrap Phases:
+  1. ROUTING: Read INDEX.sdd (universal routing table)
+  2. PROJECT CONTEXT: Read PROJECT.sdd (project metadata)
+  3. PROTOCOL RULES: Read protocol/ROOT.sdd (immutable rules)
+  4. DISCOVERY: Scan prompts/inbox/ for new intents
+  5. KNOWLEDGE COMPILATION: Load active decisions, architecture, skills, tasks
+  6. STATE RESOLUTION: Identify open tasks, blockers, assumptions, risks
+  7. QUERY LOADING: Load saved queries from queries/
+  8. READY: Present compiled state, AI begins work
+
+  Implementation in .sdd/:
+  - bootstrap/INDEX.sdd: Bootstrap protocol overview
+  - bootstrap/AI_BOOTSTRAP.sdd: Machine-oriented 13-phase entry protocol
+  - bootstrap/authority.sdd: Authority model — can/cannot check chain
+  - bootstrap/identity.sdd: AI identity — role, capabilities
+  - bootstrap/handoff.sdd: Agent-to-agent context-compressed handoff
+  - glossary/INDEX.sdd: Canonical terminology with 15 terms + aliases
+  - system/context/INDEX.sdd: Context compiler with progressive disclosure + manifests
+  - system/tool-governance.sdd: Tool governance capability chain + source trust hierarchy
+
+Navigation:
+  Intents: @intents/INDEX.sdd
+  Plans: @plans/INDEX.sdd
+  ExecutionPlan: @plans/execution-plan.sdd
+  Assumptions: @assumptions/INDEX.sdd
+  Bootstrap: @bootstrap/INDEX.sdd
+  AIBootstrap: @bootstrap/AI_BOOTSTRAP.sdd
+  Authority: @bootstrap/authority.sdd
+  Identity: @bootstrap/identity.sdd
+  Handoff: @bootstrap/handoff.sdd
+  Glossary: @glossary/INDEX.sdd
+  SystemContext: @system/context/INDEX.sdd
+  ToolGovernance: @system/tool-governance.sdd
+  Queries: @queries/INDEX.sdd
+  GraphIndex: @graph/INDEX.sdd
+
+State: +

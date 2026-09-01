@@ -1,0 +1,214 @@
+# Phases 130-134: Temporal Knowledge & System Evolution
+
+Spec: Phase13xOverview
+Purpose:
+  Synthesize the core concepts from prompts 165-169 (Phases 130-134) into
+  a reference document. These phases establish temporal awareness, task graph
+  planning, multi-agent coordination, semantic engineering graph, and
+  self-evolving SDD. The .sdd system already implements most of these concepts
+  across timeline/, graph/, evolution/, policies/, and agent/ directories.
+  This file serves as a cross-reference mapping.
+
+Owns: references/sdd/phases-130-134-overview.sdd
+
+## Phase 130 — TIME, VERSION & SYSTEM EVOLUTION
+
+Core Question: "What was true when?" and "Why did it change?"
+
+Key Concepts:
+  1. Temporal Validity: Every time-sensitive knowledge entry carries valid_from/valid_until
+     Example: @architecture.modular-monolith valid: 2026-01-01 → 2027-06-15
+  2. Versioning Policy: Versions increment ONLY on semantic changes (not typos/formatting)
+     Semantic triggers: architecture changed, decision changed, skill behavior changed, policy changed
+  3. Semantic Change Classification: COSMETIC, CONTENT, SEMANTIC, BEHAVIORAL, ARCHITECTURAL, POLICY
+  4. Version Semantics: MAJOR (behavior/contract changed), MINOR (new capability), PATCH (correction)
+  5. Skill Evolution: Skills evolve through versions; tasks pin specific versions (historical reproducibility)
+  6. System Snapshot: Immutable state pointer (not full file copy) referencing versioned components
+  7. Event Timeline: Change events recorded between snapshots (EVT-001, EVT-002, etc.)
+  8. Version Pinning: Task context includes pinned versions of skills, architecture, decisions
+  9. Content Immutability: Versioned knowledge (@skill.ddd@2) never changes; new version = new pointer
+  10. Historical Context: AI distinguishes CURRENT TRUTH from HISTORICAL TRUTH via snapshots
+  11. Architecture Archaeology: Skill to reconstruct why code exists, when introduced, what problem solved
+  12. Evolution Review: Skill to review architecture changes (what changed, why, dependencies, stale items)
+  13. Automatic Impact Graph: Trace decision → architecture → skill → task → code → test → docs
+  14. Change Propagation: Deprecated decision triggers STALE_DEPENDENCY detection
+  15. Evolution Health: Metric (92% current) tracking stale skills, pending migrations, evolution debt
+  16. Snapshot Structure: snapshot-001 references versioned skills/architecture/decisions (state pointer only)
+  17. Evolution Diff: Compare two timestamps showing what changed (architecture, DDD, skills, decisions)
+  18. Why Evolution Happened: Every change records WHY (problem, decision, context)
+  19. Historical Decision Protection: Old decisions preserved as VALID_AT with timestamp
+  20. Compatibility Matrix: Component version compatibility table for compiler skill selection
+  21. Evolution Graph: Version evolution forms graph (linear or branched/merged)
+  22. Forks: Global skills forked per project (@skill.api-design → @skill.api-design/payment)
+  23. Upstream/Downstream: GLOBAL → ORG → PROJECT → MODULE skill inheritance with local overrides
+  24. Inheritance Chain: @skill.api → @skill.rest-api → @skill.payment-api (each layer adds delta rules)
+  25. Context Compiler: Time-aware context compilation (task=TASK-100, snapshot=SNAPSHOT-42)
+
+Implementation Status in .sdd/:
+  - timeline/INDEX.sdd: Central timeline system (changes, snapshots, migrations, evolution)
+  - timeline/changes.sdd: Temporal validity, versioning policy, semantic change classification
+  - timeline/snapshots.sdd: Immutable snapshots, event timeline, reconstruction, evolution diff
+  - timeline/migrations.sdd: Migration records, states, compatibility, evolution graph
+  - timeline/evolution.sdd: Change records, why-changed, architecture archaeology, impact analysis
+  - timeline/changes/INDEX.sdd: Change record subdirectory index
+  - timeline/snapshots/INDEX.sdd: Snapshot subdirectory index
+  - timeline/migrations/INDEX.sdd: Migration record subdirectory index
+
+## Phase 131 — TASK GRAPH & AUTONOMOUS EXECUTION PLANNER
+
+Core Principle: Task list ≠ Task Graph
+
+Key Concepts:
+  1. Task Graph: Tasks with dependencies (T1002, T1003 → T1004), not flat lists
+  2. Task Node: Each task has type, requires, produces, risk, proof, rollback
+  3. Dependency Analysis: Determine task ordering from dependencies, not IDs
+  4. Critical Path: Identify longest dependency chain for scheduling
+  5. Parallel Tasks: Tasks without dependencies can execute in parallel
+  6. Risk Assessment: High-risk tasks need proof + rollback strategy
+  7. Proof Requirements: Each task specifies proof method (integration-test, unit-test, etc.)
+  8. Rollback Strategy: Each task defines rollback procedure
+  9. Big Goal Decomposition: Large goals decompose into 20+ tasks with dependencies
+  10. Task Graph States: Planned, executing, checkpoint, replan, complete
+  11. Autonomous Planner: AI decomposes big goals into task graphs autonomously
+
+Implementation Status in .sdd/:
+  - graph/INDEX.sdd: Engineering Knowledge Graph with cycle detection (GR5)
+  - graph/model.sdd: Node types, ID standards
+  - graph/relationships.sdd: Standard relation types
+  - graph/traversal.sdd: Graph traversal algorithms
+  - tasks/TASK-STATE-MACHINE.sdd: 11 states (DISCOVERING through ESCALATED)
+  - tasks/LOOP-PROTECTION.sdd: loop_score, failure_budget, iteration cap
+  - tasks/SKILL-CHAIN.sdd: Skill execution chain
+  - chains/graph.sdd: Execution trace with dependency analysis
+
+## Phase 132 — MULTI-AGENT COORDINATION & SHARED ENGINEERING STATE
+
+Core Principle: Agent ≠ Owner ≠ Authority
+
+Key Concepts:
+  1. Agent = executor; Owner = accountable; Authority = change permission
+  2. Agent Roles: discovery, architect, implementer, tester, reviewer, documentation, security, supervisor, knowledge
+  3. Specialty Roles: healthcare, ml, devops, business
+  4. Shared State: All agents operate on same Engineering State
+  5. Capabilities & Constraints: Each agent role defines CAN/MUST/CANNOT
+  6. Permissions: Tool allowlists per agent
+  7. Approvals: Human gates for decisions with human authority levels
+  8. Coordination: Agents hand off work, resolve conflicts, share context
+  9. Execution Contract: Defines what agents must do before completing
+  10. Rollback: Checkpoints before risky actions; rollback procedures
+  11. Audit Trail: Every action recorded for traceability
+
+Implementation Status in .sdd/:
+  - agent/INDEX.sdd: Agent registry (8 core + 4 specialty + supervisor roles)
+  - agent/roles.sdd: 14 SDD roles + 23 specialty roles
+  - agent/capabilities.sdd: Agent capabilities and constraints
+  - agent/contract.sdd: CAN/MUST/CANNOT contract
+  - agent/permissions.sdd: Tool allowlists per agent
+  - agent/approvals.sdd: Approval requirements and authority levels
+  - agent/ecc-bridge.sdd: Bridge 67 ECC agents to SDD roles
+  - agent/supervisor.sdd: Supervisor orchestration (loop-operator, harness-optimizer, etc.)
+  - agent/security-rules.sdd: AgentShield 102 rules → SDD L0-L5 mapping
+  - agent/prompts/INDEX.sdd: ECC agent prompt summaries
+  - concepts/INDEX.sdd: Knowledge model with 4 trust tiers
+  - workflow/coordination.sdd: Agent coordination protocols
+
+## Phase 133 — SEMANTIC ENGINEERING GRAPH
+
+Core Question: "How do these elements relate to each other?"
+
+Key Concepts:
+  1. Folder Tree ≠ Knowledge Graph: Files organized by folder, knowledge connected by graph
+  2. Node Types: Skills, Tasks, Decisions, Architecture, Concepts, References, Proofs, Failures, Agents, Documents
+  3. Relationship Types: same-as, alias-of, extends, specializes, implements, depends-on, related-to, conflicts-with, replaces, derived-from, observed-in, validated-by
+  4. Merging Rules: M1-M6 for concept canonicalization
+  5. Canonicalization: Normalize duplicate concepts, resolve synonyms
+  6. Traversal Modes: IMPLEMENT, DEBUG, SECURITY, SUPPORT, AUDIT, ARCHAEOLOGY
+  7. Impact Analysis: Forward + reverse impact from any node
+  8. Blast Radius: Size of impact when a node changes
+  9. Cycle Detection: Detect circular dependencies (TASK-CYCLE)
+  10. Coverage Tracking: BDD, Unit, Integration, Security coverage per node
+  11. Drift Detection: .sdd vs source code drift
+  12. Scale Awareness: L0-L5 project scale with different graph analysis modes
+
+Implementation Status in .sdd/:
+  - graph/INDEX.sdd: Engineering Knowledge Graph with 14 rules (GR1-GR14)
+  - graph/model.sdd: Node types, relationship vocabulary
+  - graph/relationships.sdd: Standard relationship types (USES, REQUIRES, etc.)
+  - graph/traversal.sdd: ARCHAEOLOGY mode for historical reconstruction
+  - concepts/CANONICALIZATION.sdd: M1-M6 merging rules, relationship vocabulary
+  - concepts/KNOWLEDGE-MODEL.sdd: 4-tier trust model (OBSERVED, CANDIDATE, VALIDATED, ESTABLISHED)
+  - concepts/INDEX.sdd: Knowledge model registry
+  - concepts/RELATIONSHIP-VOCABULARY.sdd: Graph edge types
+
+## Phase 134 — SELF-EVOLVING SDD
+
+Core Principle: AI can propose evolution but cannot change rules unilaterally.
+
+Key Concepts:
+  1. Evolution Loop: OBSERVE → DISCOVER → CLASSIFY → COMPARE → GAP? → PROPOSE → VALIDATE → PROMOTE → VERSION → RE-EVALUATE
+  2. AI Discovery: AI analyzes code and finds patterns not in .sdd
+  3. Classification: New knowledge classified by type (concept, skill, decision, etc.)
+  4. Comparison: Compare against existing knowledge base
+  5. Gap Detection: Determine what is missing
+  6. Proposal: AI proposes new .sdd entries in candidate/
+  7. Validation: Proposals must be validated before promotion
+  8. Promotion: Validated items promoted to approved/ at human-determined authority level
+  9. Versioning: Promoted items get versions; existing tasks NOT auto-upgraded
+  10. Learning Gate: After task completion, evaluate learning outcomes
+  11. Consolidation: After 100 execution events + 3 important decisions + 1 new skill → consolidate
+  12. Self-Test: Graph runs consistency and completeness checks
+
+Implementation Status in .sdd/:
+  - evolution/INDEX.sdd: Candidate pool with candidates/challenges/proposals/approved
+  - evolution/discovery.sdd: Discovery mechanisms
+  - evolution/import-plan.sdd: 4-phase ECC skill import plan
+  - evolution/candidates/INDEX.sdd: Proposed concepts/skills/decisions
+  - evolution/challenges/INDEX.sdd: Decision challenges (DEC-88 status: challenged)
+  - evolution/proposals/INDEX.sdd: Architecture/skill proposals
+  - evolution/approved/INDEX.sdd: Validated and approved items
+  - knowledge/KNOWLEDGE-LIFECYCLE.sdd: 6-stage pipeline (TMP → OBSERVATIONS → INSIGHT → CANDIDATE → VALIDATED → LONG_TERM)
+  - workflow/learning-gate.sdd: 6 outcomes, 100 events + 3 decisions + 1 skill thresholds
+  - workflow/intelligent-runtime.sdd: Dynamic adaptation and optimization
+  - concepts/CANONICALIZATION.sdd: M1-M6 merging rules for concept resolution
+
+## Phase 135 — SDD QUERY LANGUAGE
+
+Key Concepts (from prompt context):
+  1. Time-aware queries: Query .sdd knowledge at specific timestamps or snapshots
+  2. Context compilation: context(task=TASK-100, snapshot=SNAPSHOT-42)
+  3. Evolution diff: Compare two points in time
+  4. Impact analysis: Forward and reverse from any node
+  5. Archaeology mode: Reconstruct historical state
+
+Implementation Status in .sdd/:
+  - queries/INDEX.sdd: Query language definitions (if present)
+
+## Mapping: Prompt → .sdd Files
+
+| Prompt | Phase | Key .sdd Files |
+|--------|-------|----------------|
+| 165 | Phase 130 | timeline/changes.sdd, timeline/snapshots.sdd, timeline/migrations.sdd, timeline/evolution.sdd |
+| 166 | Phase 131 | graph/INDEX.sdd, graph/relationships.sdd, tasks/TASK-STATE-MACHINE.sdd, tasks/LOOP-PROTECTION.sdd |
+| 167 | Phase 132 | agent/INDEX.sdd, agent/roles.sdd, agent/contract.sdd, agent/ecc-bridge.sdd, agent/supervisor.sdd, agent/security-rules.sdd |
+| 168 | Phase 133 | graph/INDEX.sdd, concepts/CANONICALIZATION.sdd, concepts/KNOWLEDGE-MODEL.sdd, concepts/RELATIONSHIP-VOCABULARY.sdd |
+| 169 | Phase 134 | evolution/INDEX.sdd, knowledge/KNOWLEDGE-LIFECYCLE.sdd, workflow/learning-gate.sdd |
+
+Navigation:
+  TimelineChanges: @../timeline/changes.sdd
+  TimelineSnapshots: @../timeline/snapshots.sdd
+  TimelineMigrations: @../timeline/migrations.sdd
+  TimelineEvolution: @../timeline/evolution.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  AgentIndex: @../agent/INDEX.sdd
+  AgentEccBridge: @../agent/ecc-bridge.sdd
+  EvolutionIndex: @../evolution/INDEX.sdd
+  KnowledgeLifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+
+State: +
+
+Note:
+  Prompts 165-169 contain Turkish text with encoding artifacts.
+  Key concepts have been extracted and mapped to existing .sdd files.
+  Full prompt text remains in prompts/inbox/ for reference.
+  This synthesis file serves as the cross-reference index for Phases 130-134.

@@ -1,0 +1,91 @@
+# /sdd-skills
+
+Purpose:
+  Discover, map, and recommend skills from the .sdd/skills/ ecosystem.
+  Makes the 80+ skill files queryable and connects them to pending tasks
+  and project context.
+
+Owns: commands/sdd-skills.sdd
+
+Description:
+  Reads .sdd/skills/INDEX.sdd and all subdirectories to produce a
+  skill catalog. Lists skills by category, language, framework,
+  database, and platform. Shows skill coverage for the current project
+  and recommends skills for pending tasks based on task metadata
+  and existing decisions.
+
+Usage:
+  /sdd-skills
+  /sdd-skills --category <category>
+  /sdd-skills --language <language>
+  /sdd-skills --framework <framework>
+  /sdd-skills --recommend
+  /sdd-skills --coverage
+  /sdd-skills --json
+
+Options:
+  --category   Filter by category (languages, frameworks, databases, platforms, cross-cutting)
+  --language   Filter by programming language (go, python, rust, java, etc.)
+  --framework  Filter by framework (react, django, spring-boot, etc.)
+  --recommend  Recommend skills for pending tasks
+  --coverage   Show skill coverage for current project
+  --json       Output machine-readable JSON
+
+Mode: READ_ONLY
+
+SkillCategories:
+  languages:
+    go, rust, java, php, python, csharp, cpp, typescript, javascript, swift, kotlin, ruby
+  frameworks:
+    react, flutter, react-native, swiftui, kotlin-multiplatform, nextjs, nestjs, spring-boot, django, fastapi, express, dotnet, laravel, symfony, svelte
+  databases:
+    postgresql, mongodb, redis, mysql, cassandra, elasticsearch
+  platforms:
+    docker, kubernetes, aws, gcp, azure, terraform
+  cross-cutting:
+    testing, security, architecture, observability
+  meta:
+    sdd, skills, engineering, devops, messaging
+
+Output:
+  SKILL CATALOG
+
+    Total Skills:       <count>
+    Categories:         <count>
+    Languages:          <count>
+    Frameworks:         <count>
+    Databases:          <count>
+    Platforms:          <count>
+    Cross-Cutting:      <count>
+
+  Skills by Category:
+    [languages]
+      go/        L1-L5 skill files
+      python/    L1-L5 skill files
+      ...
+
+  Project Coverage:
+    [covered]   go, python, docker, postgresql
+    [missing]   rust, kafka, aws
+
+  Recommendations:
+    [REC-001] language: go | reason: pending task T204 uses Go
+    [REC-002] framework: django | reason: project uses Python web stack
+
+Rules:
+  [SKL-01] /sdd-skills MUST NOT modify any file.
+  [SKL-02] Skill listing MUST include competency level (L1-L5) when present.
+  [SKL-03] Recommendations MUST be derived from pending tasks and project decisions.
+  [SKL-04] Missing coverage MUST be flagged for human review.
+  [SKL-05] Skill categories MUST match .sdd/skills/ directory structure.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   SkillsIndex: @../skills/INDEX.sdd
+   SkillsRoot: @../skills/
+   CrossCutting: @../skills/cross-cutting/INDEX.sdd
+   Tasks: @../tasks/INDEX.sdd
+   Decisions: @../decisions/INDEX.sdd
+   Projects: @../projects/INDEX.sdd
+
+State: +

@@ -1,0 +1,42 @@
+# Query: Payment Impact Analysis
+
+Spec: QueryPaymentImpact
+Purpose:
+  Reusable query scoped to the Payment domain. Analyzes the impact
+  of changes to the payment system — showing dependencies, affected
+  components, active tasks, and production risk.
+
+Query:
+  impact @payment
+  scope: payment_domain
+
+  trace:
+    decisions -> @decision.* where domain = payment
+    skills -> @skill.* where scope = payment
+    tasks -> @task.* where domain = payment
+    architecture -> @architecture.* where component = payment
+
+  blast:
+    files: count
+    domains: count
+    active_tasks: count
+    production_risk: assessment
+
+  output:
+    payment_impact:
+      affected_skills: list
+      affected_tasks: list
+      affected_decisions: list
+      affected_architecture: list
+      production_risk: HIGH/MEDIUM/LOW
+
+  confidence: HIGH (scoped graph traversal)
+
+SavedAs:
+  @query:payment-impact
+
+Navigation:
+  Parent: @INDEX.sdd
+  GraphIndex: @../graph/INDEX.sdd
+
+State: +

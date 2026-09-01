@@ -1,0 +1,27 @@
+# Agent Prompts: ECC Agent References
+
+Spec: AgentPromptsIndex
+Purpose:
+  Index of summarized ECC agent prompts mapped to SDD roles.
+  Stores human-readable summaries (NOT full MIT-licensed text) with
+  links to the ECC repository for details.
+
+Owns: agent/prompts/INDEX.sdd
+
+Structure:
+  Prompt summaries are .sdd files with @prompt.PXX IDs.
+  Each summary includes: ecc_agent, sdd_role, purpose, capabilities, prompt_path
+
+Rules:
+  [PROMPT-01] Store summaries only — link to ECC repository for full text.
+  [PROMPT-02] Each prompt MUST reference its SDD role.
+  [PROMPT-03] Prompts are versioned to track ECC updates.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Roles: @../roles.sdd
+  EccBridge: @../ecc-bridge.sdd
+  ImportPlan: @../../evolution/import-plan.sdd
+  Capabilities: @../capabilities.sdd
+
+State: +

@@ -101,11 +101,14 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 ### Business Domain: **Agent Contract/Roles**
 | File | Purpose | Method |
 |------|---------|--------|
-| `.sdd/agent/INDEX.sdd` | Agent registry | Role Definition |
-| `.sdd/agent/roles.sdd` | Roles: discovery, architect, implementer, tester, reviewer, documentation, security, supervisor | Agent Roles |
+| `.sdd/agent/INDEX.sdd` | Agent registry (8 core + 4 specialty roles) | Role Definition |
+| `.sdd/agent/roles.sdd` | Roles: discovery, architect, implementer, tester, reviewer, documentation, security, supervisor, knowledge + health/ml/devops/business | Agent Roles |
 | `.sdd/agent/capabilities.sdd` | Agent capabilities and constraints | Capability Modeling |
 | `.sdd/agent/contract.sdd` | Agent contract (CAN/MUST/CANNOT) | Contract Definition |
-| `.sdd/agent/ecc-bridge.sdd` | ECC agent → SDD role bridge | Integration |
+| `.sdd/agent/ecc-bridge.sdd` | ECC agent → SDD role bridge (67 ECC agents) | Integration |
+| `.sdd/agent/supervisor.sdd` | Supervisor orchestration role (4 ECC equivalents) | Orchestration |
+| `.sdd/agent/security-rules.sdd` | AgentShield 102 rules → SDD L0-L5 mapping | Security |
+| `.sdd/agent/prompts/INDEX.sdd` | ECC agent prompt summaries index | Prompt Reference |
 | `.sdd/agent/permissions.sdd` | Permission rules for agents | Security |
 | `.sdd/agent/approvals.sdd` | Approval requirements | Governance |
 
@@ -127,8 +130,10 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 | `.sdd/concepts/CANONICALIZATION.sdd` | Concept normalization rules | Canonicalization |
 | `.sdd/concepts/RELATIONSHIP-VOCABULARY.sdd` | Graph edge types (USES, REQUIRES, etc.) | Semantic Relationships |
 | `.sdd/knowledge/` | Knowledge lifecycle, compression, versioning | Knowledge Lifecycle |
-| `.sdd/evolution/` | Self-evolution pipeline | Evolution System |
+| `.sdd/evolution/` | Self-evolution pipeline + candidates/challenges/proposals/approved | Evolution System |
+| `.sdd/evolution/import-plan.sdd` | ECC skill import plan (281 skills, 4 phases) | Integration |
 | `.sdd/patterns/` | Design patterns (circuit breaker, graceful degradation) | Pattern Library |
+| `.sdd/references/sdd/` | SDD methodology references (ECC, living specs) | Methodology |
 
 ### Business Domain: **Project Management**
 | File | Purpose | Method |
@@ -145,27 +150,104 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 ### Business Domain: **CLI Interface**
 | File | Purpose | Method |
 |------|---------|--------|
-| `.sdd/commands/INDEX.sdd` | All 14+ commands | CLI Interface |
+| `.sdd/commands/INDEX.sdd` | All 17 commands | CLI Interface |
 | `.sdd/commands/sdd-analyze.sdd` | `/sdd-analyse` command spec | Analysis |
 | `.sdd/commands/sdd-next.sdd` | `/sdd-next` command spec | Decision Navigation |
 | `.sdd/commands/sdd-update.sdd` | `/sdd-update` command spec | Sync |
 | `.sdd/commands/sdd-prompts.sdd` | `/sdd-prompts` command spec | Prompt Lifecycle |
 | `.sdd/commands/sdd.sdd` | `/sdd` main entry command | Execution |
+| `.sdd/commands/sdd-plan.sdd` | `/sdd-plan` command spec | Planning |
+| `.sdd/commands/sdd-status.sdd` | `/sdd-status` command spec | Status |
+| `.sdd/commands/sdd-health.sdd` | `/sdd-health` command spec | Health Check |
+| `.sdd/commands/sdd-decisions.sdd` | `/sdd-decisions` command spec | Decision Listing |
+| `.sdd/commands/sdd-compact.sdd` | `/sdd-compact` command spec | Context Compaction |
+| `.sdd/commands/sdd-clear.sdd` | `/sdd-clear` command spec | Context Clearing |
+| `.sdd/commands/sdd-backup.sdd` | `/sdd-backup` command spec | Backup |
+| `.sdd/commands/sdd-restore.sdd` | `/sdd-restore` command spec | Restore |
+| `.sdd/commands/sdd-resume.sdd` | `/sdd-resume` command spec | Resume from Checkpoint |
+| `.sdd/commands/sdd-migrate.sdd` | `/sdd-migrate` command spec | Run Migrations |
+| `.sdd/commands/sdd-knowledge.sdd` | `/sdd-knowledge` command spec | Knowledge Graph Health |
+| `.sdd/commands/sdd-explain.sdd` | `/sdd-explain` command spec | Explain Completed Task |
 
-### Business Domain: **Policy/Ops**
+### Business Domain: **Temporal**
 | File | Purpose | Method |
 |------|---------|--------|
-| `.sdd/policies/INDEX.sdd` | Policy registry | Governance |
-| `.sdd/policies/evolution.sdd` | Evolution promotion levels | Knowledge Governance |
-| `.sdd/policies/authority.sdd` | Authority levels (AUTO/ASSISTED/REVIEW/HUMAN_ONLY) | Authority Management |
+| `.sdd/timeline/INDEX.sdd` | Temporal knowledge, snapshots, evolution | Temporal Management |
+| `.sdd/timeline/changes.sdd` | Change records (CH-XXX) | Change Tracking |
+| `.sdd/timeline/changes/INDEX.sdd` | Change subdirectory index | Index |
+| `.sdd/timeline/snapshots/INDEX.sdd` | Immutable snapshot subdirectory | Snapshots |
+| `.sdd/timeline/migrations/INDEX.sdd` | Migration records (M-XX) | Migrations |
 
-### Business Domain: **Test Suite**
+### Business Domain: **Testing**
 | File | Purpose | Method |
 |------|---------|--------|
 | `.sdd/testing/INDEX.sdd` | Testing framework overview | Test Strategy |
 | `.sdd/testing/levels.sdd` | T-level testing standards | TDD |
-| `.sdd/testing/scripts/run.ps1` | Main test runner (7/7 unit tests) | Test Execution |
+| `.sdd/testing/scripts/run.ps1` | Main test runner (15/15 unit tests pass) | Test Execution |
 | `.sdd/testing/scripts/integration/` | Integration test scripts | Integration Testing |
+
+### Business Domain: **Query Language**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/queries/INDEX.sdd` | SDD Query Language spec (18 keywords, @navigation, saved queries) | Query Definition |
+| `.sdd/queries/architecture-drift.sdd` | Saved query: drift detection | Saved Query |
+| `.sdd/queries/orphan-knowledge.sdd` | Saved query: orphan knowledge detection | Saved Query |
+| `.sdd/queries/unverified-skills.sdd` | Saved query: low-confidence skills | Saved Query |
+| `.sdd/queries/high-risk-tasks.sdd` | Saved query: risk assessment | Saved Query |
+| `.sdd/queries/payment-impact.sdd` | Saved query: domain impact analysis | Saved Query |
+
+### Business Domain: **Intent System**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/intents/INDEX.sdd` | Intent object schema, lifecycle, requirements extraction | Intent Processing |
+
+### Business Domain: **Planning System**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/plans/INDEX.sdd` | Execution plan schema, modes, approval gates, versioning | Plan Management |
+| `.sdd/plans/execution-plan.sdd` | Dependency graph, critical path, risk, journal, crash recovery | Execution Planning |
+
+### Business Domain: **Assumptions**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/assumptions/INDEX.sdd` | Assumption registry with risk levels and replan triggers | Risk Management |
+
+### Business Domain: **Bootstrap**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/bootstrap/INDEX.sdd` | Bootstrap protocol overview with authority, identity, navigation | AI Entry Point |
+| `.sdd/bootstrap/AI_BOOTSTRAP.sdd` | 13-phase machine-oriented entry protocol | AI Bootstrap |
+| `.sdd/bootstrap/authority.sdd` | Authority model — can/cannot lists + check chain | Permission Model |
+| `.sdd/bootstrap/identity.sdd` | AI identity — role, capabilities, environment | Identity Resolution |
+| `.sdd/bootstrap/handoff.sdd` | Agent-to-agent handoff with context compression | State Transfer |
+
+### Business Domain: **Glossary**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/glossary/INDEX.sdd` | Canonical terminology system (15 terms with aliases) | Terminology Management |
+
+### Business Domain: **System**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/system/context/INDEX.sdd` | Context compiler with progressive disclosure + manifests | Context Compilation |
+| `.sdd/system/tool-governance.sdd` | Tool governance capability chain + source trust hierarchy + action journal | Tool Gatekeeping |
+
+### Business Domain: **Governance**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/governance/INDEX.sdd` | Governance system overview and capability chain | Tool Governance |
+| `.sdd/governance/capabilities.sdd` | 20 capabilities across 8 categories (CODE, DATA, TEST, GIT, DEPLOY, NETWORK, SECRET, SYSTEM) | Capability Taxonomy |
+| `.sdd/governance/permissions.sdd` | Permission matrix + environment policies (local/staging/production) | Access Control |
+| `.sdd/governance/resources.sdd` | 15 resources with data classification tiers (PUBLIC to RESTRICTED) | Resource Classification |
+| `.sdd/governance/locks.sdd` | Lock types (READ, WRITE, EXCLUSIVE, MIGRATION, DEPLOYMENT) + compatibility matrix | Concurrency Control |
+| `.sdd/governance/security-events.sdd` | Trust hierarchy (7 levels) + security event format + action journal | Security Logging |
+
+### Business Domain: **Lifecycle**
+| File | Purpose | Method |
+|------|---------|--------|
+| `.sdd/lifecycle/INDEX.sdd` | Knowledge lifecycle system with garbage collector + compactor | Knowledge Maintenance |
+| `.sdd/lifecycle/states.sdd` | State machine: ACTIVE → STALE → DEPRECATED → ARCHIVED + transition rules | Lifecycle Management |
+| `.sdd/lifecycle/quality-dimensions.sdd` | 6 quality dimensions (duplicate, fragmented, orphan, unused, contradicted, superseded) + scoring | Quality Assessment |
 
 ### Business Domain: **Runtime**
 | File | Purpose | Method |
@@ -173,7 +255,8 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 | `.sdd/runtime/INDEX.sdd` | Runtime state overview | Runtime Management |
 | `.sdd/runtime/memory-model.sdd` | 4-tier memory model | Memory Architecture |
 | `.sdd/runtime/context-builder.sdd` | Context compilation | Context Management |
-| `.sdd/runtime/adapter-runtime.sdd` | Adapter runtime engine | Runtime Engine |
+| `.sdd/runtime/adapter-runtime.sdd` | Adapter runtime engine + SecurityScanner/MCPBridge | Runtime Engine |
+| `.sdd/runtime/mcp-integration.sdd` | MCP server integration (35 servers, 3 bridges) | MCP Integration |
 
 ---
 
@@ -222,19 +305,22 @@ graph.sdd
 
 1. **No instantiated project** — `{project_name}` remains a template per [R47] and [R48]. A real project name must be selected by a human.
 
-2. **Pending prompts** — `prompts/inbox/` contains 6 unprocessed user requests (IDs 165-171), including:
-   - PHASE 130: Time, version, and system evolution
-   - PHASE 131: Task graph & autonomous execution planner
-   - PHASE 132: Multi-agent coordination & shared state
-   - PHASE 133: Semantic engineering graph
-   - PHASE 134: Self-evolving SDD
-   - ECC integration reference document
+2. **Pending prompts** — `prompts/inbox/` contains 5 remaining unprocessed user requests (IDs 165-169). Prompts 170-171 have been extracted into `.sdd/references/sdd/ecc-framework-overview.sdd` and `.sdd/references/sdd/living-specs-best-practices.sdd`. Prompts 165-169 (Phases 130-134) have been synthesized into `.sdd/references/sdd/phases-130-134-overview.sdd` with cross-references to existing implementation files:
+   - PHASE 130: Time, version, and system evolution → `timeline/` directory
+   - PHASE 131: Task graph & autonomous execution planner → `graph/`, `tasks/`
+   - PHASE 132: Multi-agent coordination & shared state → `agent/`
+   - PHASE 133: Semantic engineering graph → `graph/`, `concepts/`
+   - PHASE 134: Self-evolving SDD → `evolution/`, `knowledge/`, `workflow/`
 
-3. **Gitignored command files** — `.claude/commands/` is gitignored per `.gitignore`, meaning command files (`sdd-plan.md`, `sdd-analyze.md`, `sdd-next.md`) persist only locally.
+3. **Gitignored command files** — `.claude/commands/` is gitignored per `.gitignore`, meaning command files persist only locally. ECC integration plans to force-add command files (see import-plan.sdd).
 
-4. **No runtime snapshots** — No `SNAPSHOT-*.sdd` files exist yet; the temporal/versioning system is defined in `.sdd/evolution/` but not yet instantiated.
+4. **No runtime snapshots** — `timeline/snapshots/INDEX.sdd` exists as a directory index but no `SNAPSHOT-*.sdd` files have been created yet.
 
 5. **No active tasks** — The `projects/{project_name}/tasks/` directory has an `INDEX.sdd` but no concrete task files.
+
+6. **Pester 3.4.0 limitation** — Test script uses custom PowerShell test framework (no external dependencies), avoiding `BeGreaterOrEqual` operator issue.
+
+7. **Prompt encoding** — Prompts 165-169 contain non-ASCII encoding artifacts (likely Turkish characters in original prompt), requiring careful extraction.
 
 ---
 

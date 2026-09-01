@@ -1,0 +1,41 @@
+# Query: Unverified Skills
+
+Spec: QueryUnverifiedSkills
+Purpose:
+  Reusable query to find skills that lack verification evidence —
+  tests, proofs, or production usage data. These skills have low
+  confidence and should be validated before use in critical tasks.
+
+Query:
+  find unverified skills
+  where
+    tests < 3
+    AND evidence < 1
+    AND tasks = 0
+
+  also:
+    find low_confidence skills
+    where
+      confidence = LOW
+      AND usage > 0
+
+  output:
+    unverified_skills:
+      list: @skill.*
+      reasons:
+        - insufficient_tests
+        - no_evidence
+        - unused
+        - low_confidence
+
+  confidence: HIGH (graph traversal)
+
+SavedAs:
+  @query:unverified-skills
+
+Navigation:
+  Parent: @INDEX.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+
+State: +

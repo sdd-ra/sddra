@@ -70,6 +70,27 @@ Execution Contract:
   - Skill MUST record token usage
   - Skill MUST log execution steps
 
+ECCBestPractices:
+  ConfidenceThreshold:
+    description: Code reviewer agents use confidence thresholds (0.7+) before reporting
+    integration: R1 gate uses confidence-based reporting from ECC code-reviewer agent
+    rule: Skills with confidence < 0.7 are flagged for human review
+
+  DiffAwareScanning:
+    description: Security reviewers scan diffs, not full codebases (PAT_* patterns)
+    integration: Map to @../security/controls.sdd pattern matching
+    rule: Scan is scoped to changed files + affected dependencies
+
+  MultiReviewer:
+    description: ECC has language-specific reviewers (python-reviewer, go-reviewer, etc.)
+    integration: All map to @agent.reviewer with language tags
+    rule: For multi-language changes, invoke language-specific reviewers in sequence
+
+  SessionMemoryPersistence:
+    description: ECC persists session summaries to ~/.claude/sessions/
+    integration: Maps to .sdd/runtime/memory-model.sdd 4-tier memory
+    rule: Task memory persists across chain arms via SessionStart/Stop hooks
+
 ## Autonomy Levels
 
 FULL:

@@ -1,0 +1,126 @@
+# Bootstrap Protocol Overview
+
+Spec: Bootstrap
+Purpose:
+  Define the AI entry point — what AI reads and resolves when entering
+  a .sdd project. The bootstrap protocol ensures deterministic, minimum-
+  sufficient context loading without scanning the entire .sdd/ directory.
+
+  AI does NOT read entire .sdd/. AI resolves context through the
+  Context Compiler using index-first, progressive disclosure.
+
+Owns: bootstrap/
+
+## The Bootstrap Protocol (AI_BOOTSTRAP.v1)
+
+  1.  WHO AM I?           → Read identity.sdd — project, role, capabilities
+  2.  AUTHORITY CHECK     → Read authority.sdd — what AI can/cannot do
+  3.  MANDATORY RULES     → Read protocol/ROOT.sdd — immutable system rules
+  4.  PROJECT RESOLVE     → Resolve project from INDEX.sdd → PROJECT_INDEX
+  5.  INDEX RESOLVE       → Resolve domain/task/plan indexes
+  6.  ARCHITECTURE        → Load current architecture version
+  7.  GLOSSARY RESOLVE    → Load mandatory terms + domain terms on demand
+  8.  TASK RESOLVE        → Resolve current task from task index
+  9.  KNOWLEDGE RESOLVE   → Load active decisions, required skills, references
+  10. ASSUMPTION CHECK   → Inspect unknowns, risk levels, blocking status
+  11. READINESS GATE     → Validate all gates pass before execution
+  12. CONTEXT COMPILE    → Compile minimum sufficient context via Context Compiler
+  13. EXECUTE            → Begin work within authority limits
+
+## Authority Model
+
+  AI MUST check authority before any executing action.
+
+  CAN:
+    read-code, modify-code, run-tests, create-tasks, propose-skills
+
+  CANNOT:
+    change-global-rules, approve-production, modify-security-policy
+
+  Full authority model: @authority.sdd
+
+## Mandatory Rules Priority
+
+  1. Correctness    (never compromise correctness)
+  2. Security       (never bypass security constraints)
+  3. Architecture   (respect architecture constraints)
+  4. KISS           (keep it simple when possible)
+  5. DRY            (avoid duplication when simple)
+  6. YAGNI          (don't add what isn't needed)
+
+## Navigation Protocol
+
+  AI follows index-first resolution:
+
+  AI_BOOTSTRAP
+    → ROOT INDEX
+    → PROJECT INDEX
+    → DOMAIN INDEX
+    → TASK INDEX
+    → RELEVANT REFERENCES
+
+  Never scan a collection when an index can resolve the required context.
+
+## Progressive Disclosure
+
+  Context is loaded in layers (see: @../system/context/INDEX.sdd):
+
+  LEVEL 0:  metadata
+  LEVEL 1:  summary
+  LEVEL 2:  rules
+  LEVEL 3:  implementation details
+  LEVEL 4:  evidence/source
+
+  AI loads only the level needed for current work.
+
+## Readiness Gates
+
+  G1: Project resolved
+  G2: Task resolved
+  G3: Architecture resolved
+  G4: Required skills resolved
+  G5: Critical assumptions resolved
+  G6: Permissions valid
+
+  If any gate fails → STATUS: NOT_READY → AI does NOT execute.
+
+## Bootstrap Modes
+
+  BOOTSTRAP_IMPL      — for implementation tasks
+  BOOTSTRAP_REVIEW    — for code review
+  BOOTSTRAP_RESEARCH — for research/exploration
+  BOOTSTRAP_RELEASE  — for release/deployment
+
+  Each mode loads different context slices.
+
+## Context Compiler
+
+  .sdd files (source of truth)
+        ↓
+  Context Compiler (progressive disclosure, priority filtering)
+        ↓
+  AI Context (runtime representation with manifest + diff)
+
+  See: @../system/context/INDEX.sdd
+
+## Handoff Protocol
+
+  Agent-to-agent communication transfers structured state,
+  not conversation history.
+
+  See: @handoff.sdd
+
+Navigation:
+  Parent: @../INDEX.sdd
+  AIProtocol: @AI_BOOTSTRAP.sdd
+  Authority: @authority.sdd
+  Identity: @identity.sdd
+  Handoff: @handoff.sdd
+  Glossary: @../glossary/INDEX.sdd
+  ContextCompiler: @../system/context/INDEX.sdd
+  Index: @../INDEX.sdd
+  Protocol: @../protocol/ROOT.sdd
+  Queries: @../queries/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+
+State: +

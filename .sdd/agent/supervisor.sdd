@@ -1,0 +1,114 @@
+# Agent Supervisor
+
+Spec: AgentSupervisor
+Purpose:
+  Define the supervisor agent orchestration role. Maps from ECC's
+  loop-operator, harness-optimizer, and orchestration-planner/deployer agents
+  to SDD's @agent.supervisor role.
+
+Owns: agent/supervisor.sdd
+
+SupervisorAgent:
+  @agent.supervisor:
+    ecc_equivalents:
+      - loop-operator
+      - harness-optimizer
+      - orchestration-planner
+      - orchestration-deployer
+    purpose: orchestrate task graph, detect blockers, manage scheduling
+    capabilities: observe_graph, assign_tasks, detect_blockers, schedule_tasks,
+                  load_balance, monitor_progress, escalate_issues
+
+SupervisorResponsibilities:
+  TaskGraphManagement:
+    definition: Monitor and manage the task dependency graph
+    lifecycle:
+      on: task creation or status change
+      action: update graph node status
+      action: recompute dependency order
+      action: detect cycles (TASK-CYCLE)
+      action: recompute critical path
+      output: updated graph state
+
+  DynamicAdaptation:
+    definition: Adapt task plan based on execution feedback
+    examples:
+      - PLAN v1 → v2 when task durations differ from estimates
+      - Re-prioritize tasks when blockers detected
+      - Split large tasks when complexity exceeds confidence
+    lifecycle:
+      on: task status change
+      action: evaluate plan vs actual
+      action: recalculate DAG structure
+      action: propose plan update if needed
+      output: updated execution plan
+
+  Scheduling:
+    definition: Assign tasks to appropriate agents based on skills
+    algorithm:
+      1. Read task requirements (domain, level, skills)
+      2. Match against agent capabilities
+      3. Check agent availability and load
+      4. Assign task with context package
+      5. Track assignment status
+
+  BlockerDetection:
+    definition: Detect and resolve task blockers
+    types:
+      - dependency: task blocked by incomplete prerequisite
+      - resource: required resource unavailable
+      - knowledge: missing knowledge blocks progress
+      - conflict: agent conflict requiring resolution
+    lifecycle:
+      on: task remains in WAITING for > threshold
+      action: analyze blocker type
+      action: propose resolution (reassign, escalate, research)
+      output: blocker report + resolution proposal
+
+  LoadAwareness:
+    definition: Monitor agent workload and redistribute
+    metrics:
+      - tasks_assigned_per_agent
+      - average_completion_time
+      - failure_rate_per_agent
+      - context_window_utilization
+    action: rebalance when load exceeds threshold
+
+  ExecutionMemory:
+    definition: Maintain memory of past executions
+    storage:
+      - task outcomes (success/failure, duration, token usage)
+      - failure pattern library
+      - agent performance profiles
+    usage:
+      - improve future scheduling decisions
+      - detect recurring failure patterns
+      - optimize task decomposition
+
+NegativeKnowledge:
+  definition: Track what does NOT work
+  storage: .sdd/knowledge/negative-knowledge.sdd (or lessons/)
+  categories:
+    - anti-patterns (approaches that failed)
+    - agent limitations (what each agent cannot do)
+    - environmental constraints (infrastructure limitations)
+
+Rules:
+  [SUP-01] Supervisor MUST NOT execute tasks — only orchestrates.
+  [SUP-02] Supervisor MUST create checkpoints before risky assignments.
+  [SUP-03] Supervisor MUST escalate after 3 failed task assignments.
+  [SUP-04] Supervisor MUST detect cycles in the task graph.
+  [SUP-05] Supervisor MUST preserve negative knowledge from failed executions.
+
+Navigation:
+  AgentIndex: @INDEX.sdd
+  Roles: @roles.sdd
+  Coordination: @coordination.sdd
+  Handoff: @handoff.sdd
+  EccBridge: @ecc-bridge.sdd
+  Chains: @../chains/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+  Runtime: @../runtime/INDEX.sdd
+
+State: +
