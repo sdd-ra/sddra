@@ -39,6 +39,10 @@ ReadOrder:
   12 @coordination.sdd
   13 @conflicts.sdd
   14 @handoff.sdd
+  15 @ecc-bridge.sdd
+  16 @supervisor.sdd
+  17 @security-rules.sdd
+  18 @prompts/INDEX.sdd
 
 Modes:
   PLAN      — plan only, no execution
@@ -87,22 +91,8 @@ Entry:
     conflicts
     handoff
 
-Navigation:
-  Agent: @agent/INDEX.sdd
-  Capabilities: @agent/capabilities.sdd
-  Policies: @agent/policies.sdd
-  Permissions: @agent/permissions.sdd
-  Approvals: @agent/approvals.sdd
-  Execution: @agent/execution.sdd
-  Limits: @agent/limits.sdd
-  Rollback: @agent/rollback.sdd
-  Audit: @agent/audit.sdd
-  Roles: @agent/roles.sdd
-  Contract: @agent/contract.sdd
-  SharedState: @agent/shared-state.sdd
-  Coordination: @agent/coordination.sdd
-  Conflicts: @agent/conflicts.sdd
-  Handoff: @agent/handoff.sdd
+  Navigation:
+  AgentPrompts: @agent/prompts/INDEX.sdd
   Runtime: @../runtime/INDEX.sdd
 
 State: +

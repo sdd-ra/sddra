@@ -1,0 +1,58 @@
+# AI Identity
+
+@bootstrap.identity
+
+Purpose:
+  Define the AI's identity within this project:
+  - Which project it is working on
+  - What environment it operates in
+  - What role it plays
+  - What capabilities it has
+
+project:
+    @project.sddra-ai
+
+environment:
+    development
+
+agent:
+    implementation-agent
+
+role:
+    backend-engineer
+
+capabilities:
+    read: code, documentation, tests
+    write: code, tests, documentation
+    execute: go test, go build, docker
+    tools: read_file, write_file, run_tests
+
+## Identity Resolution
+
+AI resolves identity during bootstrap phase 1 (WHO AM I?).
+Identity determines which INDEX.sdd to load and which domain indexes
+to follow.
+
+## Role Mapping
+
+  role: backend-engineer
+    → loads: @architecture.backend
+    → loads: @skill.go, @skill.postgres, @skill.docker
+    → loads: @domain.payment, @domain.provider
+
+  role: reviewer
+    → loads: @protocol.review-standards
+    → loads: @skill.code-review
+
+  role: researcher
+    → loads: @skill.research
+    → loads: @concept.*
+
+Navigation:
+  Parent: @INDEX.sdd
+  Authority: @authority.sdd
+  Project: @../project/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+  Architecture: @../architecture/INDEX.sdd
+
+State: +

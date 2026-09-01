@@ -1,0 +1,240 @@
+# Garbage Collection Policy
+
+Spec: GarbageCollectionPolicy
+Purpose:
+  Define the safe garbage collection protocol that NEVER auto-deletes
+  knowledge, the dependency check that prevents breaking references,
+  the DELETE_BLOCKED state, orphan review protocol, and trust-aware
+  pruning by data classification.
+
+Owns: lifecycle/gc-policy.sdd
+
+## Safe GC Protocol
+
+  DISCOVER → REPORT → PROPOSE → APPROVE → APPLY
+
+  DISCOVER:
+    description: Scan all .sdd nodes against quality dimensions
+    agents: @agent.knowledge-cleaner, @agent.knowledge-compactor
+    output: list of cleanup candidates with quality scores
+
+  REPORT:
+    description: Generate @proposal.knowledge-cleanup for each candidate
+    content: target, action, reason, quality_score, detection dimension
+    output: report to human reviewer and sdd-health command
+
+  PROPOSE:
+    description: Present cleanup proposals with evidence and impact analysis
+    content: what would change, what references would break, trust implications
+    output: @proposal.* entities in evolution/proposals/
+
+  APPROVE:
+    description: Human or automated gate reviews and approves/denies
+    rule: [GC-01] AI CANNOT approve its own cleanup proposals.
+    rule: [GC-02] Validated knowledge, decisions, and proofs require
+          human approval for archival.
+
+  APPLY:
+    description: Execute approved proposals — update node state
+    actions: ARCHIVE, MERGE, deprecate aliases, update references
+    rule: [GC-03] Apply NEVER deletes — only ARCHIVE or DEPRECATE.
+
+## Auto-Fix Rules (No Approval Needed)
+
+  Low-risk metadata operations:
+
+  @policy.knowledge-gc
+
+  auto:
+    - rebuild_indexes
+    - remove_broken_temporary_refs
+    - fix_missing_trust_metadata
+    - normalize_alias_references
+
+  rule: [AUTO-01] Auto-fix only applies to temporary, broken, or metadata-only
+         content. Never auto-fix decisions, skills, or architecture.
+  rule: [AUTO-02] Auto-fix changes MUST be logged in @action.* journal.
+
+## Propose Rules (Require Review)
+
+  medium-risk operations:
+
+  propose:
+    - merge_duplicates
+    - archive_stale
+    - archive_expired_candidates
+    - flag_orphans
+
+  rule: [PROPOSE-01] Merge proposals require confidence >= 0.90 and
+        human review per compactor.sdd merge protocol.
+  rule: [PROPOSE-02] Stale/orphan proposals require human review within 7 days.
+
+## Human-Only Rules (No Automation)
+
+  High-risk operations:
+
+  human:
+    - delete_validated_knowledge
+    - remove_decisions
+    - remove_proofs
+    - archive_architecture_rules
+    - remove_security_policies
+
+  rule: [HUMAN-01] These operations MUST have explicit human approval.
+  rule: [HUMAN-02] Human-only operations MUST reference a @decision.* record.
+
+## Dependency Check & DELETE_BLOCKED
+
+  When AI or human attempts to delete a knowledge entity:
+
+  1. DEPENDENCY SCAN:
+     Count incoming references (@references from other nodes):
+       - @task.* references
+       - @decision.* references
+       - @skill.* references
+       - @concept.* references
+       - @architecture.* references
+
+  2. DEPENDENCY ASSESSMENT:
+     If 0 dependencies:
+       → Mark for archival (not deletion)
+     If >0 active dependencies:
+       → State = DELETE_BLOCKED
+
+  3. DELETE_BLOCKED:
+     @skill.idempotency
+       status: DELETE_BLOCKED
+       blocked_by_count: 5
+       blocked_by:
+         - @task.T2041
+         - @task.T2088
+         - @decision.D88
+         - @skill.payment-idempotency
+         - @concept.retry-safety
+
+  4. RESOLUTION:
+     Options:
+       a. Redirect dependencies to a replacement entity
+       b. Accept dependencies as legacy and proceed with human override
+       c. Cancel deletion, keep entity ACTIVE
+
+  [DEP-01] DELETE_BLOCKED entities MUST NOT be removed until all
+           dependencies are resolved.
+  [DEP-02] Dependency resolution MUST update all referencing entities.
+  [DEP-03] Human override of DELETE_BLOCKED requires a @decision.* record.
+
+## Orphan Review
+
+  Orphan knowledge: no incoming @references from other nodes.
+
+  AI command:
+    find orphan skills
+
+  AI output:
+    @skill.X
+      age: 180 days
+      usage: 0
+      evidence: 1
+      status: ACTIVE
+
+    recommendation: review
+
+  Orphan Review Criteria:
+    - Age: >30 days
+    - Usage: 0 references in last 30 days
+    - Evidence: count of supporting evidence sources
+    - Status: current lifecycle status
+
+  Review Actions:
+    - If evidence is strong but unused → mark STALE, keep for history
+    - If evidence is weak and unused → propose ARCHIVE
+    - If recently created → investigate why no references
+
+  [ORPHAN-01] Orphan ≠ Delete. Orphan knowledge is reviewed, not removed.
+  [ORPHAN-02] Orphan review runs monthly as part of sdd-health.
+  [ORPHAN-03] Orphaned candidates with 0 evidence are proposed for archival.
+
+## Unused vs Orphan Distinction
+
+  Unused:
+    description: No references at all
+    metric: referenced_by = 0
+    implication: not actively used, but may still be valid knowledge
+
+  Orphan:
+    description: No MEANINGFUL graph relationships (no concept → skill,
+                 no architecture → skill links)
+    metric: 0 incoming edges from knowledge graph
+    example: A skill that's defined but no concept or decision references
+             it — it exists in isolation
+
+  [DIST-01] An entity can be Unused but not Orphan (if it has knowledge
+            graph edges but no direct references).
+  [DIST-02] An entity can be Orphan but Used (if it's referenced by
+            temporary or low-trust sources only).
+
+## Trust-Aware Pruning
+
+  Knowledge is pruned based on data classification per
+  governance/security-events.sdd trust hierarchy:
+
+  Classification  →  Retention Policy
+  ──────────────────────────────────────────
+  RESTRICTED      →  Never pruned
+  SECRET          →  Minimal retention, encrypted archive
+  CONFIDENTIAL    →  365-day retention before archive
+  INTERNAL        →  180-day retention, aggressive compaction
+  PUBLIC          →  90-day retention, aggressive compaction
+
+  [TRUST-01] RESTRICTED and SECRET knowledge is NEVER pruned or archived
+             without explicit human decision.
+  [TRUST-02] Pruning respects the GC policy: auto-fix, propose, human-only.
+  [TRUST-03] Encrypted archives for SECRET knowledge MUST use the
+             project encryption key per architecture/observability.sdd.
+
+## GC Policy Entity
+
+  @policy.knowledge-gc
+
+  auto:
+    rebuild_indexes
+    remove_broken_temporary_refs
+    fix_missing_trust_metadata
+
+  propose:
+    merge_duplicates
+    archive_stale
+    archive_expired_candidates
+    flag_orphans
+
+  human:
+    delete_validated_knowledge
+    remove_decisions
+    remove_proofs
+    archive_architecture_rules
+    remove_security_policies
+
+  gc_agents:
+    - @agent.knowledge-cleaner
+    - @agent.knowledge-compactor
+
+  gc_schedule:
+    daily:    auto-fix + orphan detection
+    weekly:   stale review + quality scoring
+    monthly:  full gc cycle (DISCOVER → REPORT → PROPOSE → APPROVE → APPLY)
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Compactor: @compactor.sdd
+  HealthScore: @health-score.sdd
+  States: @states.sdd
+  QualityDimensions: @quality-dimensions.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  SecurityEvents: @../governance/security-events.sdd
+  Resources: @../governance/resources.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  SddKnowledge: @../commands/sdd-knowledge.sdd
+  SddHealth: @../commands/sdd-health.sdd
+
+State: +

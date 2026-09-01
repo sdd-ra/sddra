@@ -1,0 +1,157 @@
+# Execution Plan System
+
+Spec: PlanSystem
+Purpose:
+  Define the Execution Plan object — generated from an Intent after
+  requirement extraction, knowledge resolution, and architecture constraints.
+  A plan is NOT a task list; it is a dependency graph with execution modes,
+  approval gates, risk levels, and adaptive replanning capabilities.
+
+Owns: plans/
+
+## Execution Plan Schema
+
+  @plan.P12
+
+  goal:
+      @intent.I44
+
+  tasks:
+      T100  Domain model
+      T101  Repository
+      T102  Provider integration
+      T103  Refund service
+      T104  API
+      T105  Tests
+      T106  Review
+
+  edges:
+      T100 -> T103
+      T101 -> T103
+      T102 -> T103
+      T103 -> T104
+      T103 -> T105
+      T104 -> T106
+      T105 -> T106
+
+  parallel:
+      T100
+      T101
+      T102
+
+  critical_path:
+      T100 -> T103 -> T104 -> T106
+
+  risk:
+      HIGH
+
+  status:
+      ACTIVE
+
+## Execution Modes
+
+  AUTO      — execute plan autonomously per policy
+  ASSISTED  — execute with human checkpoints
+  STEP      — pause after each task; human says "continue"
+  DRY_RUN   — simulate without any code changes
+  REVIEW    — human reviews plan before execution
+
+## Approval Gates
+
+  Special nodes in the execution graph:
+
+  @approval.architecture  — architectural changes require approval
+  @approval.security      — security-sensitive changes require approval
+  @approval.production     — production changes require approval
+  @approval.migration      — data/schema migrations require approval
+  @approval.release        — releases require approval
+
+  AI prepares evidence (change, why, impact, risk, tests, decision)
+  for human review at each gate.
+
+## Plan Versioning
+
+  Plans are versioned with semantic versioning:
+    @plan.P12 v1
+    @plan.P12 v2
+    @plan.P12 v3
+
+  MAJOR → architecture/constraint change
+  MINOR → added/removed tasks
+  PATCH → correction/improvement
+
+## Plan Revision Reason
+
+  Every revision MUST include:
+    changed:
+        added T102b
+    reason:
+        provider requires webhook confirmation
+    evidence:
+        @reference.R91
+    impact:
+        medium
+
+## Adaptive Planning
+
+  Plans are NOT immutable. When new evidence is discovered:
+
+  1. PAUSE current execution
+  2. REPLAN with new evidence
+  3. VALIDATE new plan (circular deps, missing skills, etc.)
+  4. RESUME from last checkpoint
+
+  All plan changes are observable:
+    PLAN_CHANGED event emitted
+    No silent replanning
+
+## Circular Dependency Detection
+
+  System MUST detect cycles before execution:
+    T100 → T101 → T102 → T100
+    → CYCLE_DETECTED → plan blocked
+
+## Missing Dependency Detection
+
+  If task requires @skill that doesn't exist:
+    → missing skill detected
+    → BLOCKED
+    → AI may insert research task: T110 Research idempotency pattern
+
+## Execution Event Stream
+
+  PLAN_CREATED
+  TASK_READY
+  TASK_CLAIMED
+  TASK_STARTED
+  DISCOVERY_FOUND
+  PLAN_CHANGED
+  TASK_BLOCKED
+  TASK_COMPLETED
+  PROOF_CREATED
+  REVIEW_STARTED
+  REVIEW_FAILED
+  REVIEW_PASSED
+  PLAN_COMPLETED
+
+## Rules
+
+  [PLAN-01] Plan ≠ Task list. Plan is a dependency graph.
+  [PLAN-02] Plan ≠ Workflow. Workflow is the standard process; plan is project-specific execution graph.
+  [PLAN-03] Plan ≠ Skill. Skill is how; plan is which tasks and order.
+  [PLAN-04] Plan MUST be versioned. Every change creates a new revision.
+  [PLAN-05] Plan changes MUST NOT be silent. Emit PLAN_CHANGED event.
+  [PLAN-06] Critical changes MUST require approval gate.
+  [PLAN-07] Circular dependencies MUST be detected before execution.
+  [PLAN-08] Missing skills/dependencies MUST block plan execution.
+  [PLAN-09] Execution MUST emit event stream for knowledge extraction.
+  [PLAN-10] Plan MUST track critical path for bottleneck identification.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Intents: @../intents/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Graph: @../graph/INDEX.sdd
+  Assumptions: @../assumptions/INDEX.sdd
+
+State: +

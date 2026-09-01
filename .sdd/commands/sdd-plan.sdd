@@ -1,0 +1,98 @@
+# /sdd-plan
+
+Purpose:
+  Scan .sdd/ and prompts/ directories to auto-generate an execution plan.
+  Read-only — does not modify any files. Produces a trace-format plan
+  matching the 16-step SDDRA execution trace.
+
+Owns: commands/sdd-plan.sdd
+
+Description:
+  Multi-stage plan generation command. Reads project metadata, chain graph,
+  active decisions, task registry, and pending prompts to produce an
+  actionable execution plan. For each chain arm (P1, D1, S1, C1, R1, DEP1),
+  checks if existing work artifacts exist or if new task specs are needed.
+  Outputs in the standard trace format (#01-#16) with references to existing
+  artifacts or generated task IDs.
+
+Usage:
+  /sdd-plan
+  /sdd-plan --chains
+  /sdd-plan --prompts
+  /sdd-plan --tasks
+  /sdd-plan --full
+
+Options:
+  --chains    Focus on chain arm analysis
+  --prompts   Focus on pending prompt classification
+  --tasks     Focus on task-to-decision mapping
+  --full      Generate complete plan (default)
+
+ScanSteps:
+  1: Read .sdd/PROJECT.sdd → extract project name, domain, stack
+  2: Read .sdd/chains/graph.sdd → extract execution trace and arms
+  3: Read .sdd/decisions/INDEX.sdd → extract active decisions
+  4: Read .sdd/projects/ → extract instantiated projects
+  5: Scan prompts/inbox/ → extract pending user requests
+    - Extract: intent, target arm (P1/D1/S1/C1/R1/DEP1), priority
+    - Tag each prompt with likely chain arm based on keywords:
+      "write/plan/design" → D1 (docs)
+      "implement/code/build" → C1 (code)
+      "review/audit/test" → R1 (review)
+      "deploy/release" → DEP1 (deploy)
+      "analyze/explain" → P1 (prompt)
+      "spec/define" → S1 (.sdd)
+  6: Scan prompts/archive/ → extract completed tasks (if exists)
+  7: Scan .sdd/tasks/ → map task IDs to decisions
+  8: For each chain arm (P1, D1, S1, C1, R1, DEP1):
+     - Check if existing work exists for that arm
+     - If yes → reference existing artifact
+     - If no → generate new task spec reference (tsk-XXX)
+  9: Query git log (read-only) → map commits to completed tasks
+  10: Output plan in trace format #01-#16
+
+Output:
+  ```
+  # Project: <name> | Domain: <domain> | Stack: <stack>
+  # Active Decisions: <count> | Pending Tasks: <count>
+
+  Execution Plan:
+    #01  Discover    -> [EXISTING/.sdd/PROJECT.sdd] - <summary>
+    #02  BuildCtx    -> [AUTO] 4-tier memory (Long-Term, Project, Task, Working)
+    #03  Plan        -> [TASK/tsk-XXX] - <description>
+    #04  PlanCheck   -> [AUTO] validate DAG + dependencies
+    #05  Implement   -> [CODE/.sdd/skills/] - <summary>
+    #06  Test        -> [CODE/.sdd/testing/] - <summary>
+    #07  TestCheck   -> [AUTO] PASS or FAIL branch
+    #08  Classify    -> [AUTO] map failure types
+    #09  Fix         -> [TASK/tsk-XXX] - <description>
+    #10  LoopGuard   -> [AUTO] evaluate loop score + failure budget
+    #11  ReTest      -> [AUTO] re-run affected tests
+    #12  DoneProof   -> [AUTO] verify requirements + tests + arch + review
+    #13  Document    -> [DOCS/.sdd/docs/] - <summary>
+    #14  LearnGate   -> [AUTO] evaluate learning gate outcome
+    #15  Consolidate -> [AUTO] DROP | ARCHIVE | LINK | PROMOTE knowledge
+    #16  Complete    -> [AUTO] mark task COMPLETED
+  ```
+  If no pending work: "All chain arms are up to date."
+
+  After completing Next Action tasks, run /sdd-next to advance
+  to the next decision step or case in the chain graph.
+
+Rules:
+  [PLAN-01] /sdd-plan MUST NOT modify any file — read-only operation.
+  [PLAN-02] /sdd-plan MUST resolve all @references via INDEX.sdd routing.
+  [PLAN-03] /sdd-plan MUST classify prompts to chain arms by keyword matching.
+  [PLAN-04] /sdd-plan MUST reference existing artifacts when available.
+  [PLAN-05] /sdd-plan MUST output in standard trace format #01-#16.
+  [PLAN-06] /sdd-plan MUST include next actionable step in output.
+
+Navigation:
+  ChainGraph: @../chains/graph.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Projects: @../projects/INDEX.sdd
+  Prompts: @../../prompts/inbox/
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+
+State: +

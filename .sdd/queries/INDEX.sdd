@@ -1,64 +1,146 @@
 # SDD Query Language
 
-Spec: QueryLanguage
+Spec: Query
 Purpose:
-  Define the query language for the .sdd system. Enables both
-  human and AI to query the engineering knowledge graph with
-  short, expressive syntax. No SQL or GraphQL required.
+  Define the SDD Query Language — a minimal, deterministic query syntax
+  for the .sdd engineering knowledge graph. Allows humans to query
+  without knowing SQL, GraphQL, or graph DB syntax. AI interprets
+  engineering intent into canonical SDD queries and resolves them
+  through the graph.
 
 Owns: queries/
 
-SyntaxExamples:
-  @payment                          — show all knowledge related to payment
-  @ddd where used=true              — show DDD references that are active
-  show all architecture decisions affecting @payment
-  why @task.T2041 uses @skill.idempotency?
-  what breaks if @concept.transaction changes?
-  find duplicated concepts
-  find skills that have no proof
-  show unknowns blocking @task.T2041
-  show all architecture drift
+## Core Concept: @ Navigation
 
-SimpleSyntax:
-  @<concept>                — resolve concept and show related knowledge
-  @<type>:<state>           — filter by state (e.g., @task:open, @skill:active)
-  @impact:<concept>         — show blast radius of changing a concept
-  @unknown:<scope>          — show unknowns (e.g., @unknown:blocking, @unknown:all)
-  @risk:<level>             — show tasks at risk level (e.g., @risk:high)
-  @domain:<name>            — show all knowledge scoped to a domain
+  @entity
+  @type:id
+  @entity -> relation -> @entity
 
-QueryTypes:
-  ConceptResolution:
-    @payment → architecture + concepts + skills + decisions + tasks + tests
+  @ prefix means: SDD entity/reference
 
-  StateFilter:
-    @task:open         — tasks not yet completed
-    @skill:active      — skills currently in use
-    @decision:approved — approved decisions
-    @proof:pending     — proofs awaiting verification
+## Vocabulary
 
-  ImpactAnalysis:
-    @impact:@concept.idempotency
-    → affected skills, tasks, decisions, docs, tests
+  SHOW       — display entity with all related context
+  LIST       — list entities of a type within scope
+  FIND       — search for patterns (duplicate concepts, orphan skills, broken references)
+  WHY        — trace causal chain: Goal → Decision → Architecture → Skill → Evidence
+  WHY-NOT    — show why a concept was NOT adopted (rejection reasons, decision)
+  IMPACT     — forward impact analysis: what is affected by a concept
+  BLAST      — execution risk analysis: files, domains, active tasks, production risk
+  TRACE      — trace requirement chain forward (Goal → Task → Code → Test → Proof)
+  COMPARE    — compare two entities side by side
+  EXPLAIN    — human-friendly documentation of an entity
+  VERIFY     — verify task completeness (requirements, skills, tests, proof, review)
+  REVIEW     — architectural review checklist (SOLID, DRY, KISS, YAGNI, Security, Tests)
+  VALIDATE   — validate skill quality (usage, evidence, tests, conflicts, confidence)
+  LEARN      — extract knowledge from tmp content (read → extract → compare → propose)
+  PROMOTE    — promote candidate to validated knowledge (may require human review)
+  CHALLENGE  — challenge a decision with new evidence
+  GRAPH      — display semantic graph tree for an entity
+  CONTEXT    — compile minimal context for task execution
 
-  UnknownTracking:
-    @unknown:blocking    — unknowns blocking active tasks
-    @unknown:unresolved  — all unresolved questions
+## Syntax
 
-RiskAware:
-  @risk:high    — high-risk tasks/decisions
-  @risk:medium  — medium-risk items
+  Simple query:
+    @payment
 
-DomainScoped:
-  @domain:payment     — payment domain knowledge
-  @domain:auth        — authentication domain
+  Entity type + id:
+    @task:T2041
+    @skill:idempotency
+    @concept:transaction
+    @decision:D88
+    @architecture:ddd
 
-ReadOrder:
-  1  @syntax.sdd
-  2  @patterns.sdd
+  Status query:
+    @task:open
+    @task:blocked
+    @task:failed
+
+  Scope:
+    @task:open @payment
+
+  Filter:
+    @task where status=open
+    @task where priority=high
+
+  Combination (AND):
+    @task where status=open priority=high
+
+  OR:
+    @task where status=blocked OR status=failed
+
+  Relationship query (forward):
+    @payment -> @decision
+    @task.T2041 -> uses -> @skill
+
+  Reverse query:
+    @skill.idempotency <- used_by
+
+  Commands:
+    why @task:T2041
+    impact @concept:idempotency
+    blast @skill:payment-retry
+    trace @task:T2041
+    context @task:T2041
+    review @task:T2041
+
+  Modes:
+    context --minimal       (minimum context for execution)
+    context --review         (context for review)
+    context --architecture   (architecture-related context only)
+    trace reverse @proof:P991
+
+## Saved Queries
+
+  .sdd/queries/
+  Example: architecture-drift.sdd
+
+  Usage:
+    @query:architecture-drift
+
+## Query Resolution Pipeline
+
+  1. Natural Language → Intent Parser
+  2. Intent → Canonical SDD Query
+  3. SDD Query → Graph Resolver
+  4. Graph Resolver → Evidence + Confidence
+  5. Output (if UNRESOLVED_QUERY → ASK/SEARCH/CREATE_QUERY_CANDIDATE)
+
+## Query Permissions
+
+  read: architect, implementer, reviewer
+  write: security-admin
+  execute: human-only (for destructive queries)
+
+## Query Snapshots
+
+  Queries can be versioned:
+    query: impact @concept:idempotency
+    snapshot: 2026-09-01
+    result: HIGH
+
+## Query as Skill
+
+  @query:architecture-review can become a reusable workflow skill:
+    context architecture
+    → check principles
+    → check drift
+    → check decisions
+    → check proof
+    → generate report
+
+## Rules
+
+  [Q1] Query results MUST include evidence sources, not just statements.
+  [Q2] Query results MUST include confidence level (HIGH/MEDIUM/LOW).
+  [Q3] If query cannot be resolved, AI MUST return UNRESOLVED_QUERY, not guess.
+  [Q4] Saved queries MUST be reusable via @query:name syntax.
+  [Q5] Query results MAY be versioned via snapshot timestamps.
+  [Q6] Destructive queries MUST require human permission.
 
 Navigation:
-  Syntax: @syntax.sdd
-  Patterns: @patterns.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Index: @../INDEX.sdd
 
 State: +

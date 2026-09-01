@@ -1,0 +1,196 @@
+# Learning Loop & Promotion Levels
+
+Spec: LearningLoop
+Purpose:
+  Define the full learning loop pipeline that drives AI knowledge
+  evolution from raw observation to project rule, and the L0-L4
+  promotion levels that gate knowledge advancement. This is the
+  conceptual engine; the execution-level endpoint is
+  workflow/learning-gate.sdd.
+
+Owns: lifecycle/learning-loop.sdd
+
+## Learning Loop Pipeline
+
+  OBSERVATION
+    ↓
+  DISCOVERY
+    ↓
+  CANDIDATE
+    ↓
+  EVIDENCE
+    ↓
+  CLAIM
+    ↓
+  VALIDATION
+    ↓
+  KNOWLEDGE
+
+  OBSERVATION:
+    entity: @observation.*
+    description: AI raw observation — a pattern, smell, gap, or drift detected
+                 during task execution or code analysis
+    trust: low, confidence: low
+    example: "DB transaction + event publishing causes inconsistency in 3 projects"
+
+  DISCOVERY:
+    entity: @discovery.*
+    description: A repeated or strategically important pattern observed across
+                 multiple contexts
+    trigger: 3+ independent observations of the same pattern, OR 1 strategic
+             observation (security-sensitive)
+    trust: low, confidence: low | medium
+
+  CANDIDATE:
+    entity: @candidate.*
+    description: Reusable knowledge candidate that may become a validated skill
+    trigger: discovery promoted with evidence
+    trust: low (default — no validation yet)
+    confidence: low | medium
+    TTL: 30 days (expires if not promoted)
+
+  EVIDENCE:
+    entity: @evidence.* (or inline evidence on claim)
+    description: Collected proof — code references, test results, task outcomes,
+                 decision citations, production data
+    trust: derived from source (see governance/security-events.sdd)
+    confidence: varies by source quality
+
+  CLAIM:
+    entity: @claim.*
+    description: A single assertable statement backed by evidence
+    trust: varies
+    confidence: LOW | MEDIUM | HIGH
+    lifecycle: PROPOSED → SUPPORTED → VALIDATED → ACTIVE → CHALLENGED → INVALIDATED/SUPERSEDED
+
+  VALIDATION:
+    description: Evidence is checked — tests passed, human reviewed,
+                 production confirmed
+    trigger: promotion gate
+    approval: human or automated gate
+
+  KNOWLEDGE:
+    entity: @skill.* / @concept.* / @policy.* / @decision.*
+    description: Validated, reusable knowledge in the project or organization
+    trust: medium | high (never AI-inferred alone)
+    confidence: MEDIUM | HIGH
+
+## Knowledge Promotion Levels (L0-L4)
+
+  L0 — Observation (@observation.*)
+    description: Seen once in a single context
+    example: "Payment retry pattern observed in payment-service"
+    promotion_to: L1 requires pattern repetition or strategic relevance
+    rule: [PROMO-01] L0 → L1 requires 3+ independent observations OR
+          1 strategic observation (security-sensitive).
+
+  L1 — Discovery (@discovery.*)
+    description: Repeated pattern, potentially reusable
+    example: "Payment retry pattern observed across 5 projects"
+    promotion_to: L2 requires evidence gathering
+    rule: [PROMO-02] L1 → L2 requires evidence_count >= 2 from
+          independent sources with at least one test or human review.
+
+  L2 — Candidate (@candidate.*)
+    description: Reusable knowledge that may become a skill
+    example: @candidate.payment-retry
+    promotion_to: L3 requires validation
+    rule: [PROMO-03] L2 → L3 requires VALIDATED claim approval by human.
+    rule: [PROMO-04] Candidates expire 30 days without promotion.
+
+  L3 — Validated Knowledge (@skill.*, @concept.*)
+    description: Confirmed by tests, tasks, or human review
+    example: @skill.idempotent-command
+    promotion_to: L4 requires multi-project success evidence
+    rule: [PROMO-05] L3 → L4 requires evidence from 2+ distinct projects
+          without regression and human approval.
+
+  L4 — Project Rule (@policy.*, @decision.*, @architecture-rule)
+    description: Organization-wide or project-wide norm with full authority
+    example: @decision.D88 "All payment commands must be idempotent"
+    promotion_to: none (highest level)
+    rule: [PROMO-06] Only human-approved decisions can reach L4.
+    rule: [PROMO-07] L4 knowledge can be challenged but NEVER auto-deprecated.
+
+  Promotion Summary:
+    L0 Observation  →  L1 Discovery  →  L2 Candidate  →  L3 Validated Knowledge  →  L4 Project Rule
+    (seen once)        (repeated)        (reusable)      (confirmed by evidence)     (norm with authority)
+
+## Bidirectional Knowledge Evolution
+
+  Knowledge is NOT monotonic — promotions can be reversed:
+
+  L4 Project Rule
+    ↓ challenge
+  L3 Validated Knowledge  (claim invalidated, confidence downgraded)
+
+  L3 Validated Knowledge
+    ↓ contradiction
+  L2 Candidate            (claim invalidated, sent back for re-validation)
+
+  L2 Candidate
+    ↓ evidence invalidated
+  L1 Discovery            (new evidence required)
+
+  [BIO-01] Downgrades MUST preserve original evidence and provenance.
+  [BIO-02] Downgrades require a @challenge.* or @observation.* justifying the change.
+  [BIO-03] The downgrade path is recorded in @generation.* lineage.
+
+## Learning Boundary
+
+  AI capabilities by promotion level:
+
+  CAN DO (without human approval):
+    - Observe patterns (L0)
+    - Cluster observations into discoveries (L1)
+    - Create candidate knowledge (L2)
+    - Form claims with evidence (claim layer)
+    - Propose promotions (L2 → L3, L3 → L4)
+
+  CANNOT DO (require human approval):
+    - Promote L2 → L3 (candidate to validated knowledge)
+    - Promote L3 → L4 (validated knowledge to project rule)
+    - Invalidate L3 or L4 claims
+    - Override a challenge that was accepted by human
+
+  [BOUNDARY-01] AI CAN observe and propose, but CANNOT enforce project rules
+                without human approval.
+  [BOUNDARY-02] "AI thought" is never "project truth" — validation is the gate.
+  [BOUNDARY-03] The learning gate (workflow/learning-gate.sdd) is the execution-
+                level checkpoint for this pipeline.
+
+## Integration with Learning Gate
+
+  The learning gate (workflow/learning-gate.sdd) is the per-task execution
+  checkpoint that feeds the learning loop:
+
+    Learning Gate Outcomes → Learning Loop Stages
+    NO_NEW_KNOWLEDGE       → (loop not triggered)
+    EXISTING_KNOWLEDGE_UPDATED → EVIDENCE (link to existing claim)
+    NEW_CANDIDATE          → CANDIDATE (L2)
+    NEW_VALIDATED_SKILL    → KNOWLEDGE (L3, with human approval)
+    NEW_DECISION           → KNOWLEDGE (L4, with human approval)
+    NEW_LESSON             → EVIDENCE (negative knowledge)
+
+  [INTEGRATE-01] Learning gate outcomes are mapped to learning loop stages
+                 during consolidation at task end.
+  [INTEGRATE-02] NEW_VALIDATED_SKILL from learning gate requires human
+                 approval to reach L3 — AI proposes only.
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  Compactor: @compactor.sdd
+  States: @states.sdd
+  GCPolicy: @gc-policy.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Promotion: @../concepts/promotion.sdd
+  LearningGate: @../workflow/learning-gate.sdd
+  Insights: @../insights/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  Evolution: @../evolution/INDEX.sdd
+
+State: +

@@ -1,0 +1,86 @@
+# /sdd-scan
+
+Purpose:
+  Run security pattern scans against code files using the sdd-adapter
+  hook-bridge runtime. Surfaces CRITICAL/HIGH/MEDIUM/LOW findings
+  with severity, line numbers, and remediation guidance.
+
+Owns: commands/sdd-scan.sdd
+
+Description:
+  Bridges .sdd/security/ controls with the sdd-adapter runtime to
+  scan files against base patterns and language-specific skill patterns.
+  Base RuntimePatternSet always runs; SkillPatternSets activate when
+  file_path extension matches a registered programming language skill.
+  Supports fail-open on spec load failure and fail-closed on CRITICAL/HIGH.
+
+Usage:
+  /sdd-scan
+  /sdd-scan --file <path>
+  /sdd-scan --directory <path>
+  /sdd-scan --severity <level>
+  /sdd-scan --language <language>
+  /sdd-scan --json
+
+Options:
+  --file        Scan a single file
+  --directory   Scan all files in directory recursively
+  --severity    Filter by severity (CRITICAL, HIGH, MEDIUM, LOW)
+  --language    Filter by language skill (go, python, etc.)
+  --json        Output machine-readable JSON
+
+Mode: READ_ONLY
+
+SecurityLevels:
+  L0: informational
+  L1: low
+  L2: medium
+  L3: high
+  L4: critical
+  L5: block
+
+ScanBehavior:
+  base_patterns: always run against all content
+  skill_patterns: activate only when file extension matches registered language skill
+  fail_open: on spec load failure, return PASS with warning
+  fail_closed: on CRITICAL or HIGH findings, exit code 2
+
+Output:
+  SECURITY SCAN
+
+    Files Scanned:    <count>
+    Findings:         <count>
+      CRITICAL:       <count>
+      HIGH:           <count>
+      MEDIUM:         <count>
+      LOW:            <count>
+    Decision:         PASS | WARN | BLOCK
+
+  Findings Detail:
+    [CRITICAL] pattern: hardcoded-secret | file: src/payment.go:42
+      message: Hardcoded API key detected
+      remediation: Move secret to environment variable or vault
+
+    [HIGH] pattern: sql-injection | file: src/api.go:108
+      message: String concatenation in SQL query
+      remediation: Use parameterized queries
+
+Rules:
+  [SCN-01] /sdd-scan MUST NOT modify any scanned files.
+  [SCN-02] Scan results MUST include pattern ID, severity, line number, and message.
+  [SCN-03] CRITICAL and HIGH findings MUST trigger BLOCK decision.
+  [SCN-04] Spec load failures MUST result in PASS with warning, not error.
+  [SCN-05] Skill patterns MUST only activate for matching file extensions.
+  [SCN-06] Scan results MUST be persisted to .sdd/runtime/scan-results/ for audit.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   SecurityControls: @../security/controls.sdd
+   SecurityScanners: @../security/scanners.sdd
+   SecurityThreats: @../security/threats.sdd
+   SecurityLevels: @../security/levels.sdd
+   HookBridge: @../../../sdd-adapter/hook-bridge.ts
+   PatternsRuntime: @../../../sdd-adapter/security/patterns-runtime.ts
+   SpecLoader: @../../../sdd-adapter/spec-loader.ts
+
+State: +

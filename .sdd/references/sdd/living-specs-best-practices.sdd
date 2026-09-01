@@ -1,0 +1,187 @@
+# Living Specs Best Practices
+
+Spec: LivingSpecs
+Purpose:
+  Synthesize best practices for living specification systems from
+  industry research. Extracted from raw HTML resource (prompt 170-.md),
+  the Augment Cosmos / Kiro / Spec Kit / OpenSpec / BMAD / Cursor tool landscape analysis.
+
+Owns: references/sdd/living-specs-best-practices.sdd
+
+Source:
+  Article: https://www.augmentcode.com/tools/best-spec-driven-development-tools
+  Date: 2026-03-07 (updated 2026-06-18)
+  Author: Molisha Shah
+
+KeyFinding:
+  "Most SDD tools generate a spec and hand off to a separate agent.
+   The harder, more useful problem is making the spec govern the code
+   and verifying the result, end to end."
+
+ToolLandscape:
+  AugmentCosmos:
+    type: Living (auto-updating)
+    scope: Organization-wide (Experts)
+    best_for: Multi-service, org-scale SDLC
+    pros:
+      - Living specs prevent drift during implementation
+      - Organization Knowledge compounds across sessions
+      - Reference Experts cover triage through verification
+      - Event-driven triggers from GitHub, Linear, Slack, PagerDuty
+    cons:
+      - Active iteration on a newer platform
+      - Limited independent third-party benchmarks
+    pricing: Business ($100/month flat) for up to 50 seats
+
+  AmazonKiro:
+    type: Static (EARS notation)
+    scope: Single agent + hooks
+    best_for: AWS-native greenfield projects
+    pros:
+      - EARS notation with formal requirements analysis (SMT solvers)
+      - Three-document system: requirements.md, design.md, tasks.md
+      - Agent Hooks automate repetitive tasks
+    cons:
+      - Specs are static, do not update as implementation evolves
+      - Ecosystem lock-in as dedicated IDE
+      - Full spec workflow adds overhead for small changes
+      - Credits do not roll over
+    pricing: Free (50 credits/mo), Pro $20-200/month
+
+  GitHubSpecKit:
+    type: Static (markdown)
+    scope: None (agent-agnostic)
+    best_for: Open-source, cross-agent standardization
+    pros:
+      - Free MIT license, no vendor lock-in
+      - Agent-agnostic (Copilot, Claude Code, Gemini CLI, Cursor, Windsurf)
+      - Constitution concept provides persistent project context
+      - Version-controlled spec artifacts via Git
+    cons:
+      - Specs are static
+      - No multi-agent orchestration
+    pricing: Free (MIT license)
+
+  OpenSpec:
+    type: Semi-living (delta markers)
+    scope: None (agent-agnostic)
+    best_for: Brownfield iterative changes
+    pros:
+      - Brownfield-first with ADDED/MODIFIED/REMOVED delta markers
+      - Given/When/Then scenarios
+      - Strict approval gates
+      - openspec validate --strict
+    cons:
+      - Specs do not update during implementation (static)
+      - No multi-agent orchestration
+      - Manual spec drift management
+    pricing: Free (open-source)
+
+  BMADMethod:
+    type: Static (docs-as-code)
+    scope: 21+ role-based agents
+    best_for: Framework-heavy enterprise planning
+    pros:
+      - 21+ specialized agents for full SDLC
+      - File-based handoffs with traceable chain
+      - Scale-adaptive intelligence
+    cons:
+      - Steep learning curve (2+ months)
+      - High token costs
+      - Static specs with file-based handoffs
+    pricing: Free (MIT license)
+
+  CursorWithRules:
+    type: Pseudo-specs (rules)
+    scope: Single agent
+    best_for: Developers already in Cursor
+    pros:
+      - Plan Mode (read-only planning before implementation)
+      - .mdc rule files with YAML frontmatter
+      - Glob-based rule scoping
+    cons:
+      - Pseudo-specs (no automated validation)
+      - Rule activation can be inconsistent
+      - No living spec capability
+    pricing: $20/mo (Pro)
+
+EvaluationCriteria:
+  SpecificationLifecycle:
+    Living: Augment Cosmos, OpenSpec (semi-living delta markers)
+    Static: Kiro, GitHub Spec Kit, BMAD-METHOD, Cursor, Tessl
+    rule: Living specs prevent drift during implementation
+
+  OrchestrationScope:
+    OrganizationWide: Augment Cosmos
+    MultiAgent: BMAD-METHOD (21+ agents)
+    SingleAgent: Kiro, Cursor
+    None: GitHub Spec Kit, OpenSpec
+
+  OrganizationalMemory:
+    Cosmos: Organization Knowledge layer (cross-session learning)
+    ECC: Session summaries + instincts + log files
+    SDDRA: .sdd/runtime/memory-model.sdd (4-tier memory)
+
+  VerificationArchitecture:
+    Cosmos: Agents reference updated contracts automatically
+    Kiro: Agent Hooks (tests)
+    SDDRA: Quality gates (R1 stage), OBS events
+
+BestPractices:
+  1. Specification lifecycle is the FIRST question before adopting any SDD tool.
+     Static spec tools produce documents that drift from implementation within hours.
+
+  2. Living specs prevent drift during implementation by auto-updating as code changes.
+
+  3. Verification before and after code generation is critical:
+     "The harder, more useful problem is making the spec govern the code
+      and verifying the result, end to end."
+
+  4. Organizational memory as a key differentiator:
+     Knowledge should carry across sessions, not reset each time.
+
+  5. Context isolation via sub-agents produces better output than asking one
+     general agent to plan, code, test, and review in the same context.
+
+  6. Spec detail level must depend on risk level (low criticality = greater acceleration).
+
+  7. Humans review at every phase boundary (spec → plan → tasks → code).
+
+  8. Each spec element should collapse to a single testable claim (EARS notation).
+
+  9. Keep specification and execution plan as separate documents (spec = what, plan = how).
+
+  10. Individual specs should reference shared requirements, not repeat them.
+
+SDDRAAlignment:
+  LivingSpecs:
+    SDDRA supports living specs via .sdd/evolution/ pipeline
+    and temporal knowledge system (.sdd/timeline/)
+
+  OrganizationalMemory:
+    SDDRA maps to this via .sdd/runtime/memory-model.sdd
+    (4-tier: Long-Term, Project, Task, Working memory)
+
+  OrchestrationScope:
+    SDDRA supports organization-wide via chain graph + ECC bridge
+    (67 agents → 14 SDDRA roles + 23 specialty roles)
+
+  Verification:
+    SDDRA supports verification via R1 review gate + sdd-health command
+    and quality gates (.sdd/gates/)
+
+Rules:
+  [LIVING-01] Living specs MUST auto-update when implementation changes.
+  [LIVING-02] Static specs MUST include explicit drift detection mechanisms.
+  [LIVING-03] Spec detail level MUST depend on risk level (risk-adjusted).
+  [LIVING-04] Verification MUST occur before AND after code generation.
+  [LIVING-05] Spec and execution plan MUST be separate documents.
+
+Navigation:
+  References: @INDEX.sdd
+  SddTools: @tool-comparison.sdd
+  EccFramework: @ecc-framework-overview.sdd
+  KnowledgeModel: @../../concepts/KNOWLEDGE-MODEL.sdd
+  EvolutionPolicy: @../../policies/evolution.sdd
+
+State: +

@@ -1,0 +1,26 @@
+# Evolution: Approved
+
+Spec: ApprovedIndex
+Purpose:
+  Registry of approved concepts, skills, and decisions that have passed
+  validation and been promoted to canonical knowledge or active use.
+
+Owns: evolution/approved/
+
+Structure:
+  Approved items are .sdd files with @approved.APPX IDs.
+  Status field: approved | active | deprecated | archived
+
+Rules:
+  [APP-01] Approved items MUST be referenced by canonical @namespace.id.
+  [APP-02] Approved items are immutable — new variants get new versions.
+  [APP-03] Deprecation follows the L0-L5 promotion pipeline.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Proposals: @../proposals/INDEX.sdd
+  Candidates: @../candidates/INDEX.sdd
+  Concepts: @../../concepts/INDEX.sdd
+  Skills: @../../skills/INDEX.sdd
+
+State: +

@@ -1,0 +1,122 @@
+# ECC Framework Overview
+
+Spec: EccFramework
+Purpose:
+  Synthesized summary of the Everything-Claude-Code (ECC) framework.
+  Extracted from raw HTML resource (prompt 171-.md), converted to SDD spec format.
+
+Owns: references/sdd/ecc-framework-overview.sdd
+
+Source:
+  ECC repository: https://github.com/affaan-m/ECC (MIT License)
+  Article: https://www.datacamp.com/tutorial/everything-claude-code
+  Date: 2026-06-29
+
+FrameworkComponents:
+  Claude Code:
+    description: Underlying model interface by Anthropic
+    role: Reads files, writes diffs, runs shell commands, calls tools
+    note: ECC does NOT replace Claude Code — wraps around it
+
+  AgentHarness:
+    description: Specialized sub-agents with tool allowlists and scoped system prompts
+    count: 66 agents (67 including loop-operator)
+    examples:
+      - planner: writes implementation blueprints (D1/D0 arm)
+      - architect: system design, data model decisions (D1 arm)
+      - code-reviewer: audits diffs with confidence threshold (R1 arm)
+      - security-reviewer: OWASP-style pass (R1 arm)
+      - build-error-resolver: fixes build errors (C1 arm)
+      - e2e-runner: Playwright end-to-end tests (R1/DEP1 arm)
+      - doc-updater: maintains codemaps (D1 arm)
+      - loop-operator: orchestration coordination (supervisor role)
+
+  SkillEcosystem:
+    description: Reusable workflow instructions stored as Markdown SKILL.md files
+    count: ~260 skills (ECC article) / 281 skills (ecc-bridge.sdd)
+    location: skills/ directory at repo root, copied to ~/.claude/skills/
+    examples:
+      - tdd-workflow: red-green-refactor cycle
+      - security-review: OWASP Top 10 audit, credential detection
+      - frontend-patterns: React/Next.js conventions
+      - django-patterns, django-tdd, django-security, django-verification
+      - architect: system design reviews
+      - golang-patterns, typescript-patterns, python-patterns
+
+  WorkflowFramework:
+    description: Hooks for tool events, rules that always apply, MCP configs, session memory
+    hooks: 21 hook types (SessionStart, SessionStop, PreToolUse, PostToolUse, etc.)
+    rules: 121 always-apply rules
+
+  CommandsLayer:
+    description: Maintained slash commands for common workflows
+    command_count: 94 commands (per ecc-bridge.sdd)
+    note: Backward-compatible shim folder for older command names
+
+ContextAndMemory:
+  SessionSummaries:
+    trigger: Stop event hook
+    storage: ~/.claude/sessions/
+    content: what was worked on, what got decided, what's still open
+    retention: configurable via ECC_SESSION_RETENTION_DAYS
+
+  Instincts:
+    description: Extracted patterns stored as instincts with confidence scores
+    system: Continuous Learning v2
+    commands: /instinct-status, /evolve
+
+  LogFiles:
+    location: ~/.claude/metrics/, ~/.claude/session-data/
+    content: hook executions, skill runs, MCP calls, costs, errors
+
+MCPSupport:
+  protocol: Model Context Protocol (Anthropic standard)
+  config_file: mcp-configs/mcp-servers.json
+  default_enabled: chrome-devtools (1 server only)
+  opt_in_required: GitHub, Supabase, Vercel, Railway, Linear, and others
+  policy_date: June 2026 (reduced default-enabled servers to 1)
+
+AgentShield:
+  description: Standalone security auditor (npm package: ecc-agentshield)
+  command: npx ecc-agentshield scan
+  scan_categories: 5
+    - Secrets detection: 14 patterns for hardcoded credentials
+    - Permission auditing: tool/path grants, over-broad permissions
+    - Hook injection analysis: exploit risk from hooks
+    - MCP server risk profiling: read/write/call exposure
+    - Agent config review: prompt injection, tool allowlist over-grants
+  static_rules: 102
+  internal_tests: 1,282
+  coverage: 98%
+  grades: A through F (letter grade)
+  critical_exit_code: 2
+  output_formats: terminal (color), JSON (CI), Markdown, HTML
+  flags:
+    -fix: auto-fix safe issues (remove secrets, tighten permissions)
+    -opus: red-team/blue-team/auditor pipeline with Claude Opus 4.x
+    -stream: live streaming analysis
+
+Installation:
+  method_plugin: Recommended for most users
+    steps:
+      - /plugin marketplace add https://github.com/affaan-m/ECC
+      - /plugin install ecc@ecc
+  method_manual:
+    prerequisite: Claude Code v2.1.0+
+    steps:
+      - git clone https://github.com/affaan-m/ECC.git
+      - cp rules/common + language rules to ~/.claude/rules/ecc/
+  caveat: Do NOT stack plugin + manual install (duplicate files)
+
+Rules:
+  [ECC-01] ECC agents have scoped tool allowlists — code-reviewer only reads files.
+  [ECC-02] Context isolation: each sub-agent gets a clean context window.
+  [ECC-03] MCP servers are opt-in by default (June 2026 policy).
+  [ECC-04] AgentShield scans run as separate npm package, invokable via /security-scan.
+  [ECC-05] Skills use confidence thresholds, not just binary pass/fail.
+
+Navigation:
+  References: @INDEX.sdd
+  EccBridge: @../../agent/ecc-bridge.sdd
+
+State: +

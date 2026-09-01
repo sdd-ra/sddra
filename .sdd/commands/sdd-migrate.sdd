@@ -29,4 +29,9 @@ Exit Codes:
   2 - No pending migrations
   3 - Already applied
 
+Navigation:
+  INDEX: @INDEX.sdd
+  Timeline: @../timeline/migrations.sdd
+  Runtime: @../runtime/INDEX.sdd
+
 State: +

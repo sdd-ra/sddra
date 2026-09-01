@@ -1,0 +1,26 @@
+# Timeline: Changes
+
+Spec: ChangesIndex
+Purpose:
+  Entry point for change records (@change.CH-XXX) tracking temporal
+  evolution of architecture, decisions, skills, and policies.
+
+Owns: timeline/changes/
+
+Structure:
+  Change records are .sdd files with @change.CH-XXX IDs.
+  Each record includes: type, from, to, reason, decision, impact.
+
+Rules:
+  [CHANGE-01] Every change record MUST include a "why" attribution.
+  [CHANGE-02] Changes WITHOUT a linked decision are flagged for review.
+  [CHANGE-03] Changes are immutable once created.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  ChangeRecords: @../changes.sdd
+  Snapshots: @../snapshots/INDEX.sdd
+  Migrations: @../migrations.sdd
+  Evolution: @../evolution.sdd
+
+State: +

@@ -1,0 +1,154 @@
+# Confidence & Knowledge Decay
+
+Spec: ConfidenceDecay
+Purpose:
+  Define confidence levels (LOW/MEDIUM/HIGH), numeric scoring (0.0-1.0),
+  how confidence promotes and demotes, knowledge decay factors, and
+  the principle that age is a signal but never a verdict for staleness.
+
+Owns: lifecycle/confidence.sdd
+
+## Confidence Levels
+
+  LOW:
+    range: 0.0 - 0.3
+    meaning: observed but not validated; treat as provisional
+    usage: may inform but cannot drive decisions without qualification
+
+  MEDIUM:
+    range: 0.3 - 0.7
+    meaning: some evidence or usage but not fully validated
+    usage: may be referenced with caution; requires human review for critical paths
+
+  HIGH:
+    range: 0.7 - 1.0
+    meaning: validated by tests, human review, or production evidence
+    usage: authoritative for its scope; safe to reuse
+
+## Confidence and Trust Distinction
+
+  confidence: how sure we are about the claim/fact itself
+  trust:     how reliable the SOURCE of the claim is (per governance/security-events.sdd)
+
+  An externally-sourced claim (LEVEL 6 trust) can have HIGH confidence
+  if well-evidenced, but must never override a lower-trust-level source
+  regardless of confidence score.
+
+## Confidence Promotion
+
+  A knowledge entity gains confidence through:
+
+  + evidence (code, tests, tasks, decisions, production)
+  + independent usage (applied across different contexts)
+  + successful tests (passing test suites)
+  + human validation (explicit human review/approval)
+
+  Example progression:
+    LOW (0.15) — initial observation, no evidence
+      + 2 code references → MEDIUM (0.35)
+      + passing tests → MEDIUM (0.55)
+      + human review → HIGH (0.82)
+      + production deployment → HIGH (0.91)
+
+  [CONF-01] Confidence promotion requires at least 2 independent evidence sources.
+  [CONF-02] Human validation alone can promote MEDIUM to HIGH.
+  [CONF-03] AI CANNOT self-promote LOW to HIGH without human approval.
+
+## Confidence Demotion
+
+  A knowledge entity loses confidence through:
+
+  - failed usage (knowledge did not produce expected results)
+  - contradicting evidence (new counter-evidence found)
+  - architecture change (system structure changed)
+  - provider change (external dependency behavior changed)
+  - security finding (vulnerability discovered)
+  - failed tests (test coverage shows issues)
+
+  [CONF-04] Failed usage of HIGH-confidence knowledge downgrades to MEDIUM.
+  [CONF-05] Contradicting evidence of any kind downgrades by at least one level.
+  [CONF-06] Security findings on HIGH-trust knowledge downgrade to LOW immediately.
+
+## Knowledge Decay Factors
+
+  Decay is multi-factorial — NEVER based on age alone:
+
+  age:
+    description: time since last validation or use
+    impact: signal, not verdict — old knowledge may still be perfectly valid
+    example: "DDD principle is 10 years old but still valid"
+
+  usage_frequency:
+    description: how often the knowledge is referenced in tasks
+    impact: declining usage may indicate reduced relevance
+
+  failure_rate:
+    description: ratio of failed to successful applications
+    impact: high failure rate → rapid confidence decay
+
+  dependency_changes:
+    description: whether referenced dependencies have changed
+    impact: if dependency behavior changes, dependent knowledge may be stale
+
+  technology_changes:
+    description: whether the technology stack has evolved
+    impact: framework-specific knowledge degrades when framework changes
+
+  contradicting_evidence:
+    description: new evidence that contradicts the knowledge
+    impact: immediate confidence downgrade
+
+  [DECAY-01] Age alone MUST NOT trigger deprecation. Age + other signals may.
+  [DECAY-02] Knowledge with 0 usage for 180+ days is flagged for review.
+  [DECAY-03] Security findings trigger immediate confidence downgrade to LOW.
+  [DECAY-04] Production regressions on HIGH-confidence knowledge → MEDIUM downgrade.
+
+## Time Is A Signal, Not A Verdict
+
+  Principle: A knowledge entity's age is one signal among many. The system
+  must not automatically deprecate old knowledge merely because it is old.
+
+  Example:
+    @concept.domain-driven-design
+      age: 10 years
+      usage: moderate (referenced across 15 projects)
+      failures: 0
+      contradicts: none
+      → status: ACTIVE, confidence: HIGH, health: 94
+
+  Counter-example:
+    @skill.react-class-components
+      age: 3 years
+      usage: 0 (last used 8 months ago)
+      contradicts: @skill.react-hooks (active, preferred)
+      → status: STALE, confidence: MEDIUM, health: 42
+
+## Confidence Score Calculation
+
+  confidence_score = f(
+    evidence_count,         # weight: 0.30
+    independent_usage,     # weight: 0.25
+    test_coverage,         # weight: 0.20
+    human_validation,      # weight: 0.15
+    time_decay_factor      # weight: 0.10 (age-based, never dominant)
+  )
+
+  Where:
+    evidence_count = log10(total_evidence + 1) / 4   (caps at 0.3)
+    independent_usage = min(usage_count / 5, 1.0) * 0.25
+    test_coverage = min(test_count / 3, 1.0) * 0.20
+    human_validation = 0.15 if human_verified else 0
+    time_decay_factor = max(0, 1 - (days_since_last_use / 730)) * 0.10
+
+  Final score is clamped to [0.0, 1.0] and mapped to LOW/MEDIUM/HIGH.
+
+Navigation:
+  Parent: @INDEX.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  EntitySchemas: @entity-schemas.sdd
+  States: @states.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+
+State: +

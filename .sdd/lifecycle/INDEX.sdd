@@ -1,0 +1,204 @@
+# Knowledge Lifecycle System
+
+Spec: Lifecycle
+Purpose:
+   Define the knowledge lifecycle system that prevents .sdd from
+   becoming a knowledge dump. Knowledge nodes transition through
+   states (Candidate → Active → Stale → Deprecated → Superseded →
+   Archived) and are periodically evaluated by the garbage collector
+   and compactor. Introduces the claim/challenge system, confidence
+   scoring, health monitoring, compaction, drift detection, and
+   the learning loop pipeline.
+
+Owns: lifecycle/
+
+## Lifecycle States
+
+  CANDIDATE     — identified as potentially reusable but not yet validated
+  ACTIVE        — currently referenced by tasks/decisions (last 7 days)
+  STALE         — not referenced recently but not yet superseded
+  DEPRECATED    — superseded by newer knowledge (@supersedes relationship)
+  SUPERSEDED    — explicitly replaced by newer knowledge
+  DELETE_BLOCKED— deletion blocked by active dependencies
+  ARCHIVED      — preserved for historical reference only
+
+## Quality Dimensions
+
+  DUPLICATE        — identical or near-identical content to another node
+  FRAGMENTED       — should be merged with related nodes
+  ORPHAN           — no incoming @references from other nodes
+  UNUSED           — not referenced for N+ days (configurable)
+  CONTRADICTED     — conflicts with higher-trust knowledge
+  SUPERSEDED       — replaced by newer knowledge
+  TERMINOLOGY_DRIFT — codebase terms diverge from policy terms
+  ARCHITECTURE_DRIFT — code violates declared architecture
+
+## Knowledge Promotion Levels (L0-L4)
+
+  L0 — Observation (@observation.*): seen once in a single context
+  L1 — Discovery (@discovery.*): repeated pattern, potentially reusable
+  L2 — Candidate (@candidate.*): reusable knowledge candidate
+  L3 — Validated Knowledge (@skill.* / @concept.*): confirmed by evidence
+  L4 — Project Rule (@policy.* / @decision.*): project-wide norm with authority
+
+  See: @learning-loop.sdd for full promotion pipeline and rules.
+
+## Claim System
+
+  Claims (@claim.*) are assertable statements backed by evidence.
+  Claim lifecycle: PROPOSED → SUPPORTED → VALIDATED → ACTIVE →
+  CHALLENGED → INVALIDATED / SUPERSEDED.
+
+  Challenges (@challenge.*) contest claims with counter-evidence.
+
+  See: @claims.sdd and @challenges.sdd for full specification.
+
+## Confidence & Decay
+
+  Confidence: LOW | MEDIUM | HIGH with numeric scores (0.0–1.0).
+  Confidence promotes with evidence, tests, usage, and human validation.
+  Confidence demotes with failures, contradictions, and changes.
+
+  Knowledge decay factors: age (signal, not verdict), usage frequency,
+  failure rate, dependency changes, technology changes, contradicting evidence.
+
+  See: @confidence.sdd for full specification.
+
+## Health Score
+
+  Per-node health score (0-100) based on usage, evidence, failures, age,
+  and conflicts. Health is distinct from status — a node can be ACTIVE
+  with low health, signaling it needs review.
+
+  See: @health-score.sdd for formula and graph health reports.
+
+## Safe Garbage Collection Protocol
+
+  DISCOVER → REPORT → PROPOSE → APPROVE → APPLY
+  Never auto-delete — only propose ARCHIVE, MERGE, or DEPRECATE.
+
+  Dependency check: delete attempt on entity with active dependencies
+  → DELETE_BLOCKED state.
+
+  Trust-aware pruning by data classification:
+    SECRET → minimal retention, encrypted archive
+    RESTRICTED → never pruned
+    CONFIDENTIAL → 365-day retention
+    INTERNAL → 180-day retention
+    PUBLIC → 90-day retention
+
+  See: @gc-policy.sdd for full specification.
+
+## Knowledge Compactor
+
+  Compactor combines fragmented knowledge into canonical concepts.
+  Distinct from GC (which removes waste). Compactor protocol:
+  DISCOVERIES → CLUSTER → COMMON PATTERN → CONCEPT → EVIDENCE LINKS.
+
+  Core + Variant specialization: @skill.retry (core) → @skill.payment-retry (variant).
+  Specialization via explicit `specializes:` edge, not deep extends chains.
+
+  See: @compactor.sdd for full specification.
+
+## Generation Tracking
+
+  Each knowledge entity carries a generation number that increments
+  on revision, challenge acceptance, or promotion. Provides full
+  lineage tracing: observation → discovery → candidate → skill.
+
+  See: @generation.sdd for full specification.
+
+## Drift Detection
+
+  Terminology drift: codebase terms diverge from policy/concept terms.
+  Architecture drift: code violates declared architecture boundaries.
+  Violations have lifecycle: DETECTED → REVIEWED → ACCEPTED/FALSE_POSITIVE → FIXED → VERIFIED.
+  Architecture exceptions (@exception.*) are time-limited with expiry dates.
+
+  See: @drift.sdd for full specification.
+
+## Learning Loop
+
+  Full pipeline: OBSERVATION → DISCOVERY → CANDIDATE → EVIDENCE → CLAIM →
+  VALIDATION → KNOWLEDGE. Bidirectional — knowledge can be downgraded
+  via challenge or contradiction.
+
+  Learning boundary: AI can observe/discover/propose but CANNOT promote
+  to L3 or L4 without human approval.
+
+  See: @learning-loop.sdd for full specification.
+
+## Agents
+
+   @agent.knowledge-cleaner — runs garbage collection proposals
+   @agent.knowledge-compactor — runs compaction (merge duplicates)
+
+   Both operate at AUTONOMY L1 (Suggest) — they PROPOSE, human/AI approves.
+
+## Garbage Collector Protocol
+
+  SCANNING: enumerate all .sdd nodes
+  ANALYZING: check each node against quality dimensions
+  SCORING: calculate quality score per node
+  PROPOSING: generate @proposal.knowledge-cleanup for review
+  WAITING: human/AI reviews and approves/denies
+  EXECUTING: approved proposals update node state
+
+  NEVER delete — only propose ARCHIVE or MERGE.
+
+## Compaction Protocol
+
+  1. FIND_DUPLICATES: detect nodes with identical/similar content
+  2. MERGE: combine fragments into canonical version
+  3. UPDATE_REFERENCES: redirect all @references to canonical
+  4. ARCHIVE_ORIGINAL: mark merged nodes as ARCHIVED with @supercedes
+  5. AUDIT: record compaction in execution journal
+
+## Trust-Aware Pruning
+
+  Classification      →  Retention Policy
+  ──────────────────────────────────────────
+  SECRET             →  Minimal retention, encrypted archive
+  RESTRICTED         →  Never pruned
+  CONFIDENTIAL       →  365-day retention before archive
+  INTERNAL           →  180-day retention, aggressive compaction
+  PUBLIC             →  90-day retention, aggressive compaction
+
+## Lifecycle Trigger
+
+  .sdd-bootstrap
+    ↓ 5. Context Compiler loads lifecycle policy
+    ...
+    During execution:
+    ↓
+    After task completion:
+    AI runs @agent.knowledge-cleaner
+    AI runs @agent.knowledge-compactor
+
+Navigation:
+  Parent: @../INDEX.sdd
+  States: @states.sdd
+  Quality: @quality-dimensions.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  HealthScore: @health-score.sdd
+  Compactor: @compactor.sdd
+  Generation: @generation.sdd
+  Drift: @drift.sdd
+  LearningLoop: @learning-loop.sdd
+  GCPolicy: @gc-policy.sdd
+  EntitySchemas: @entity-schemas.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Promotion: @../concepts/promotion.sdd
+  KnowledgeLifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd
+  KnowledgeCompression: @../knowledge/COMPRESSION.sdd
+  KnowledgeVersioning: @../knowledge/VERSIONING.sdd
+  KnowledgeGoldenRules: @../knowledge/GOLDEN-RULES.sdd
+  Glossary: @../glossary/INDEX.sdd
+  GraphHealth: @../graph/health.sdd
+  QueriesOrphan: @../queries/orphan-knowledge.sdd
+  QueriesArchitectureDrift: @../queries/architecture-drift.sdd
+  Evolution: @../evolution/INDEX.sdd
+
+State: +

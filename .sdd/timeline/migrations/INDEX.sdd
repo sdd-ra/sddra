@@ -1,0 +1,26 @@
+# Timeline: Migrations
+
+Spec: MigrationsIndex
+Purpose:
+  Entry point for migration records tracking transitions between
+  architecture versions, decision versions, and skill versions.
+
+Owns: timeline/migrations/
+
+Structure:
+  Migration records are .sdd files with @migration.M-XX IDs.
+  States: PLANNED, IN_PROGRESS, PARTIAL, COMPLETED, FAILED, ROLLED_BACK
+
+Rules:
+  [MIG-01] Migrations MUST define rollback strategy before execution.
+  [MIG-02] Partial migration state is recorded for accuracy.
+  [MIG-03] Migrations are crash-safe — re-running is safe.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  MigrationRecords: @../migrations.sdd
+  Changes: @../changes\INDEX.sdd
+  Snapshots: @../snapshots\INDEX.sdd
+  Evolution: @../evolution.sdd
+
+State: +

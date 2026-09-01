@@ -1,0 +1,40 @@
+# Query: Orphan Knowledge Detection
+
+Spec: QueryOrphanKnowledge
+Purpose:
+  Reusable query to find knowledge entities (skills, concepts, decisions)
+  that are defined but never referenced by any task, decision, or skill.
+  These may represent deprecated or unused knowledge that should be
+  archived or removed.
+
+Query:
+  find orphan concepts
+  where
+    references = 0
+    AND used_by = 0
+    AND created > 90 days ago
+
+  also:
+    find orphan skills
+    where
+      tasks = 0
+      AND decisions = 0
+
+  output:
+    orphan_knowledge:
+      concepts: list of @concept.* with 0 references
+      skills: list of @skill.* with 0 usage
+      decisions: list of @decision.* with 0 dependencies
+
+  confidence: HIGH (graph traversal)
+
+SavedAs:
+  @query:orphan-knowledge
+
+Navigation:
+  Parent: @INDEX.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  Concepts: @../concepts/INDEX.sdd
+  Skills: @../skills/INDEX.sdd
+
+State: +

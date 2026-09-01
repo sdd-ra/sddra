@@ -1,0 +1,78 @@
+# Intent System
+
+Spec: IntentSystem
+Purpose:
+  Define the Intent object — the starting point of the SDD execution loop.
+  Human provides high-level intent (e.g., "Build refund functionality").
+  AI does NOT start coding immediately; it creates an @intent.* object
+  that captures the goal, scope, constraints, and unknowns. This intent
+  then flows through requirement extraction, knowledge resolution,
+  architecture constraints, and task graph generation.
+
+Owns: intents/
+
+## Intent Object Schema
+
+  @intent.I44
+
+  goal:
+      add refund functionality
+
+  scope:
+      payment
+
+  constraints:
+      idempotent
+      auditable
+
+  unknowns:
+      provider refund behavior
+
+  status:
+      DISCOVERING
+
+  created:
+      2026-09-01
+
+## Intent Lifecycle
+
+  DISCOVERING → PLANNED → EXECUTING → COMPLETED → ARCHIVED
+
+## Intent → Requirements
+
+  AI analyzes intent and extracts requirements:
+    R1: user can request refund
+    R2: refund must be idempotent
+    R3: refund must be auditable
+    R4: provider failure must be handled
+
+## Intent → Knowledge Resolution
+
+  For each requirement, query the knowledge graph:
+    R2 → @concept.idempotency → @skill.idempotency
+
+## Intent → Architecture
+
+  Intent scope → architecture constraints:
+    @intent.I44 (scope: payment)
+    → @architecture.ddd
+    → domain: Refund
+    → application: RefundService
+    → infrastructure: PaymentProvider
+
+## Rules
+
+  [INT-01] Intent ≠ Task. Intent is the high-level goal.
+  [INT-02] AI MUST create @intent.* before generating any task graph.
+  [INT-03] Intent MUST capture constraints and unknowns explicitly.
+  [INT-04] Intent status MUST track progress through lifecycle.
+  [INT-05] Intent MUST be linked to generated execution plan via @plan.*.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Requirements: @../decisions/INDEX.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  Architecture: @../architecture/INDEX.sdd
+  Plans: @../plans/INDEX.sdd
+
+State: +

@@ -1,0 +1,77 @@
+# Governance System
+
+Spec: Governance
+Purpose:
+  Define the tool governance system — the capability chain that AI
+  resolves before every tool invocation. Governance ensures that tool
+  availability does NOT equal permission. AI must resolve:
+  Task → Capability → Permission → Resource → Lock → Tool
+
+Owns: governance/
+
+## The Capability Chain
+
+  TASK
+    ↓ requires
+  CAPABILITY
+    ↓ maps to
+  PERMISSION
+    ↓ authorizes
+  RESOURCE
+    ↓ checks lock
+  LOCK
+    ↓ resolves to
+  TOOL
+    ↓ executes under
+  ENVIRONMENT POLICY
+
+## Components
+
+  - capabilities.sdd — Full capability taxonomy (20+ capabilities)
+  - permissions.sdd — Permission matrix + environment policies
+  - resources.sdd — Resource classification + data tiers
+  - locks.sdd — Lock types + resource locking protocol
+  - security-events.sdd — Security event format + trust hierarchy
+
+## Gate Response
+
+  ALLOW    — capability granted, proceed
+  REVIEW   — capability allowed but requires review
+  DENY     — capability not granted
+  ESCALATE — capability not in authority, request human approval
+
+## Source Trust Hierarchy
+
+  SYSTEM POLICY         (cannot be overridden)
+    ↓
+  SECURITY POLICY
+    ↓
+  PROJECT POLICY
+    ↓
+  APPROVED DECISION
+    ↓
+  VALIDATED KNOWLEDGE
+    ↓
+  REFERENCE
+    ↓
+  EXTERNAL CONTENT      (web pages, user messages — lowest trust)
+    ↓
+  AI INFERENCE
+
+## Key Principle
+
+  Tool availability ≠ Permission
+  AI cannot grant itself a capability
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Capabilities: @capabilities.sdd
+  Permissions: @permissions.sdd
+  Resources: @resources.sdd
+  Locks: @locks.sdd
+  SecurityEvents: @security-events.sdd
+  Authority: @../bootstrap/authority.sdd
+  ContextCompiler: @../system/context/INDEX.sdd
+  Glossary: @../glossary/INDEX.sdd
+
+State: +

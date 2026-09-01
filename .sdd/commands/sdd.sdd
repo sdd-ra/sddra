@@ -58,4 +58,12 @@ Rules:
   - Use short IDs: P1, D1, S1, C1, R1, DEP1
   - Compact at end of every task unless user overrides
 
+Navigation:
+  INDEX: @INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+  PlanCommand: @sdd-plan.sdd
+  KnowledgeCommand: @sdd-knowledge.sdd
+  CompactCommand: @sdd-compact.sdd
+
 State: +
+   (enhanced with Navigation section per ECC integration)

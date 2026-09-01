@@ -1,0 +1,27 @@
+# Timeline: Snapshots
+
+Spec: SnapshotsIndex
+Purpose:
+  Entry point for immutable system snapshots (SNAPSHOT-YYYY-MM-DD-NNN).
+  Snapshots are state pointers to versioned system components at a point
+  in time — NOT full file copies.
+
+Owns: timeline/snapshots/
+
+Structure:
+  Snapshots are .sdd files with SNAPSHOT-YYYY-MM-DD-NNN IDs.
+  Each snapshot references: constitution version, skills, architecture, decisions, knowledge.
+
+Rules:
+  [SNAPSHOT-01] Snapshots are immutable once created.
+  [SNAPSHOT-02] New state → new snapshot, never modify existing.
+  [SNAPSHOT-03] Tasks pin to a specific snapshot for reproducibility.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  SnapshotRecords: @../snapshots.sdd
+  Changes: @../changes\INDEX.sdd
+  Migrations: @../migrations\INDEX.sdd
+  Evolution: @../evolution.sdd
+
+State: +

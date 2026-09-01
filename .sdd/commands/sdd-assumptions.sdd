@@ -1,0 +1,59 @@
+# /sdd-assumptions
+
+Purpose:
+  Track, validate, and manage project assumptions. Makes the assumption
+  registry actionable by surfacing stale assumptions, unmapped assumptions,
+  and assumption-to-decision linkages.
+
+Owns: commands/sdd-assumptions.sdd
+
+Description:
+  Reads .sdd/assumptions/INDEX.sdd and linked project assumptions to
+  produce an assumption health report. Identifies assumptions without
+  validation evidence, assumptions not mapped to decisions or tasks,
+  and assumptions older than the project threshold.
+
+Usage:
+  /sdd-assumptions
+  /sdd-assumptions --stale
+  /sdd-assumptions --unmapped
+  /sdd-assumptions --validate
+  /sdd-assumptions --json
+
+Options:
+  --stale      Show only assumptions past validation threshold
+  --unmapped   Show assumptions not linked to decisions or tasks
+  --validate   Run validation checks against current project state
+  --json       Output machine-readable JSON
+
+Mode: READ_ONLY (--validate is SUPERVISED)
+
+Output:
+  ASSUMPTIONS
+
+    Total:        <count>
+    Validated:    <count>
+    Stale:        <count>
+    Unmapped:     <count>
+    At Risk:      <count>
+
+  Assumption List:
+    [ASM-001] status: validated | last_checked: <date> | linked: DEC-102, TASK-204
+    [ASM-002] status: stale | last_checked: <date> | linked: none
+    [ASM-003] status: at_risk | last_checked: <date> | linked: DEC-105
+
+Rules:
+  [ASM-01] /sdd-assumptions MUST NOT modify any file unless --validate is supplied.
+  [ASM-02] Stale assumptions MUST be flagged for human review.
+  [ASM-03] Unmapped assumptions MUST be linked to decisions or tasks or retired.
+  [ASM-04] Assumption status MUST be derived from evidence_count and last_checked date.
+  [ASM-05] --validate mode MUST require human approval before marking assumptions invalid.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   Assumptions: @../assumptions/INDEX.sdd
+   Decisions: @../decisions/INDEX.sdd
+   Tasks: @../tasks/INDEX.sdd
+   Projects: @../projects/INDEX.sdd
+
+State: +

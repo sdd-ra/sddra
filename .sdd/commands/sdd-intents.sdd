@@ -1,0 +1,72 @@
+# /sdd-intents
+
+Purpose:
+  Classify, track, and route user intents through the SDDRA chain graph.
+  Bridges the gap between raw prompts in prompts/inbox/ and executable
+  chain arms (P1, D1, S1, C1, R1, DEP1).
+
+Owns: commands/sdd-intents.sdd
+
+Description:
+  Reads prompts/inbox/, prompts/active/, and .sdd/intents/INDEX.sdd
+  to produce an intent pipeline report. Classifies each pending prompt
+  by likely chain arm based on keyword matching and intent signals.
+  Shows pipeline status, blockers, completion rate, and routing
+  recommendations.
+
+Usage:
+  /sdd-intents
+  /sdd-intents --pipeline
+  /sdd-intents --classify
+  /sdd-intents --blockers
+  /sdd-intents --json
+
+Options:
+  --pipeline   Show full intent pipeline with chain arm assignments
+  --classify   Re-classify all pending prompts
+  --blockers   Show only intents blocked by dependencies or approvals
+  --json       Output machine-readable JSON
+
+Mode: READ_ONLY (--classify is READ_WRITE)
+
+ChainArmMapping:
+  keywords:
+    "write / plan / design / document" -> D1 (Documentation)
+    "implement / code / build / develop" -> C1 (Code Generation)
+    "review / audit / test / verify" -> R1 (Review)
+    "deploy / release / publish" -> DEP1 (Deploy)
+    "analyze / explain / understand" -> P1 (Prompt Analysis)
+    "spec / define / model / schema" -> S1 (SDD Generation)
+
+Output:
+  INTENT PIPELINE
+
+    Pending:       <count>
+    Classified:    <count>
+    Unclassified:  <count>
+    Blocked:       <count>
+    Completion:    <percentage>%
+
+  Intent List:
+    [INT-001] arm: C1 | priority: high | prompt: "Implement refund service"
+    [INT-002] arm: R1 | priority: medium | prompt: "Review payment module"
+    [INT-003] arm: UNKNOWN | priority: low | prompt: "Fix typo in README"
+    [INT-004] arm: C1 | priority: high | blocked: waiting on DEC-102
+
+Rules:
+  [INT-01] /sdd-intents MUST NOT modify any file unless --classify is supplied.
+  [INT-02] Intent classification MUST use keyword matching as primary signal.
+  [INT-03] Unclassified intents MUST be surfaced for human review.
+  [INT-04] Blocked intents MUST identify the blocking dependency or approval.
+  [INT-05] Completion rate MUST be calculated as classified / total pending.
+  [INT-06] --classify mode MUST require human approval before updating intent tags.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   Intents: @../intents/INDEX.sdd
+   ChainGraph: @../chains/graph.sdd
+   PromptsInbox: @../../prompts/inbox/
+   PromptsActive: @../../prompts/active/
+   Projects: @../projects/INDEX.sdd
+
+State: +

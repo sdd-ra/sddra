@@ -1,0 +1,39 @@
+# Query: Architecture Drift Detection
+
+Spec: QueryArchitectureDrift
+Purpose:
+  Reusable query to detect drift between .sdd architecture definitions
+  and actual source code implementation. Checks for untraceable changes,
+  missing decision coverage, and architecture boundary violations.
+
+Query:
+  show @architecture
+  where
+    status = active
+    AND source_code != null
+
+  for each architecture_element:
+    check:
+      - decision_coverage: every element traces to a decision
+      - boundary_violations: no cross-domain imports without permission
+      - skill_alignment: assigned skills match architecture patterns
+      - proof_coverage: tests exist for each boundary
+
+  output:
+    drift_report:
+      untraced_elements: []
+      boundary_violations: []
+      skill_gaps: []
+      proof_gaps: []
+
+  confidence: HIGH (deterministic graph traversal)
+
+SavedAs:
+  @query:architecture-drift
+
+Navigation:
+  Parent: @INDEX.sdd
+  GraphIndex: @../graph/INDEX.sdd
+  Architecture: @../architecture/INDEX.sdd
+
+State: +

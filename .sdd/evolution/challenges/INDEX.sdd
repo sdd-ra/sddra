@@ -1,0 +1,38 @@
+# Evolution: Challenges
+
+Spec: ChallengesIndex
+Purpose:
+  Registry of decision challenges — cases where new evidence conflicts
+  with existing decisions. Each challenge creates a formal review process
+  before any decision is superseded or deprecated.
+
+Owns: evolution/challenges/
+
+Structure:
+  Challenges are .sdd files with @challenge.CXX IDs.
+  Status field: open | review-required | resolved | rejected
+
+ChallengeRecord:
+  @challenge.C91
+  decision: @decision.D88
+  challenge: current evidence conflicts
+  evidence: @reference.R91
+  status: review-required
+
+  ResolutionFlow:
+    CONFLICT → DECISION_REQUIRED → Architect resolves → @decision.D91 created
+    old decision: preserved in history (superseded)
+
+Rules:
+  [CHAL-01] Challenges MUST include conflicting evidence with provenance.
+  [CHAL-02] Old decisions are preserved (superseded), never silently overwritten.
+  [CHAL-03] Resolution requires review by @agent.architect.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Discovery: @../discovery.sdd
+  Proposals: @../proposals/INDEX.sdd
+  Approved: @../approved/INDEX.sdd
+  Decisions: @../../decisions/INDEX.sdd
+
+State: +

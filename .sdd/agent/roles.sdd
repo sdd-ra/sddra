@@ -53,6 +53,33 @@ Roles:
     purpose: extract, classify, and promote knowledge from tmp to canonical
     capabilities: analyze_sources, classify_knowledge, manage_promotion
     cannot: modify code, approve decisions
+    ecc_equivalent: conversation-analyzer, agent-evaluator
+    notes: Conversation-analyzer extracts patterns; agent-evaluator scores quality
+
+  SpecialtyRoles:
+    @agent.healthcare:
+      ecc_equivalent: healthcare-reviewer
+      purpose: healthcare application code review for compliance
+      capabilities: clinical_safety, phi_compliance, cdss_accuracy
+      cannot: approve production changes without human review
+
+    @agent.ml:
+      ecc_equivalent: mle-reviewer, gan-generator, gan-evaluator, gan-planner
+      purpose: ML engineering review and generation
+      capabilities: ml_pipeline_audit, model_evaluation, feature_store_review
+      cannot: approve model deployment to production
+
+    @agent.devops:
+      ecc_equivalent: homelab-architect, mcp-setup
+      purpose: infrastructure and deployment operations
+      capabilities: network_design, mcp_configuration, deployment
+      cannot: modify production without approval
+
+    @agent.business:
+      ecc_equivalent: marketing-agent, chief-of-staff
+      purpose: business operations and communication
+      capabilities: content_creation, communication_triage, campaign_planning
+      cannot: modify source code
 
 RoleVsSkill:
   ROLE:          who does it?

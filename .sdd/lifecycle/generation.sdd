@@ -1,0 +1,166 @@
+# Generation Tracking & Version Lineage
+
+Spec: GenerationTracking
+Purpose:
+  Define generation tracking and knowledge version lineage. Each
+  knowledge entity (skill, concept, claim) carries a generation number
+  that increments when the entity is revised, challenged successfully,
+  or promoted. This enables knowledge ancestry tracing: "where did this
+  knowledge come from?" and "what was replaced?"
+
+Owns: lifecycle/generation.sdd
+
+## Generation Concept
+
+  A generation is a sequential integer marking a revision of a knowledge
+  entity. Unlike semantic versioning (which tracks content changes),
+  generation tracks the KNOWLEDGE LINEAGE — the chain of ancestors that
+  led to the current form.
+
+  @skill.retry
+    generation: 4
+
+  The entity has been revised 3 times from its original form (generations
+  1→2→3→4). Each generation has a cause, a date, and a trigger.
+
+## Generation Entity Format
+
+  @generation.G-skill-retry
+
+  entity:
+    @skill.retry
+
+  generations:
+    - gen: 1
+      at: 2026-08-15
+      by: @discovery.D22
+      reason: Initial discovery from payment-service
+
+    - gen: 2
+      at: 2026-08-22
+      by: @task.T1023
+      reason: Added provider-specific behavior from order-service
+
+    - gen: 3
+      at: 2026-08-28
+      by: @challenge.C44
+      reason: Challenge accepted — new provider guarantees idempotency
+
+    - gen: 4
+      at: 2026-09-01
+      by: @task.T1045
+      reason: Production tuning — backoff parameters adjusted
+
+  lineage_graph:
+    - @observation.O55
+    - @discovery.D22
+    - @candidate.retry-v1
+    - @skill.retry-v1
+    - @skill.retry-v2
+    - @skill.retry-v3
+    - @skill.retry-v4
+
+## Knowledge Evolution Graph
+
+  Observation
+      ↓
+  Discovery
+      ↓
+  Candidate
+      ↓
+  Skill
+      ↓
+  Project Rule
+      ↓
+  Challenge
+      ↓
+  Revised Skill
+      ↓
+  New Rule
+
+  Example:
+    @observation.O55
+      discovered: 2026-08-15
+      source: tmp/payment-service
+
+    @discovery.D22
+      observations: [@observation.O55, @observation.O56, @observation.O57]
+      promoted_to: @candidate.retry-v1
+
+    @candidate.retry-v1
+      promoted_to: @skill.retry-v1
+
+    @skill.retry-v1
+      generation: 1
+
+    @skill.retry-v2
+      generation: 2
+      supersedes: @skill.retry-v1
+
+    @skill.retry-v3
+      generation: 3
+      supersedes: @skill.retry-v2
+      superseded_by: @challenge.C44
+
+    @skill.retry-v4
+      generation: 4
+      supersedes: @skill.retry-v3
+
+## Generation Increment Triggers
+
+  G1 — Initial creation: first time the entity is created
+  G2 — Refinement: new evidence or use context expands the knowledge
+  G3 — Challenge accepted: a @challenge.* was resolved in favor of change
+  G4+ — Further evolution: any combination of the above
+
+  [GEN-01] Every entity MUST start at generation 1.
+  [GEN-02] Generation MUST increment by exactly 1 on each revision.
+  [GEN-03] A generation increment MUST record the trigger entity (@discovery.*,
+           @task.*, @challenge.*, @observation.*).
+  [GEN-04] Generation history MUST be preserved — never overwrite.
+  [GEN-05] Superseded generations MUST be marked DEPRECATED with supersedes pointer.
+  [GEN-06] AI CANNOT create generation increments without evidence.
+
+## Lineage Tracing
+
+  Human: "Where did @skill.retry-v4 come from?"
+
+  AI traces via @generation.* entity:
+    v4 ← v3 ← v2 ← v1 ← candidate.retry-v1 ← discovery.D22 ← observation.O55,O56,O57
+
+  This provides full provenance: the original observations, the clustering
+  into a discovery, the candidate phase, and every subsequent revision.
+
+  [LINEAGE-01] Every @skill.*, @concept.*, and @claim.* MUST have a
+                @generation.* entity tracking its lineage.
+  [LINEAGE-02] Lineage traces MUST include all ancestor entities.
+  [LINEAGE-03] Broken lineage (missing ancestor) MUST generate a drift alert.
+
+## Generation and Claim Lifecycle
+
+  Claims also carry generations:
+
+  @claim.C11
+    generation: 1
+    status: ACTIVE
+
+  When challenged and accepted:
+  @claim.C115
+    generation: 2
+    supersedes: @claim.C11
+    status: PROPOSED → VALIDATED → ACTIVE
+
+  The old claim @claim.C11 is marked SUPERSEDED.
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  Confidence: @confidence.sdd
+  States: @states.sdd
+  Versioning: @../knowledge/VERSIONING.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Compression: @../knowledge/COMPRESSION.sdd
+
+State: +

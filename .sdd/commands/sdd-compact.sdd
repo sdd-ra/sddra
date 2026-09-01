@@ -28,4 +28,10 @@ Output:
   [tokens: before=X, after=Y, saved=Z%]
   [state: compacted]
 
+Navigation:
+  MemoryModel: @../runtime/memory-model.sdd
+  MemoryConsolidation: @../runtime/memory-consolidation.sdd
+  ClearCommand: @sdd-clear.sdd
+
 State: +
+   (enhanced with memory model references)

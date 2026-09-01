@@ -1,0 +1,195 @@
+# Knowledge Compactor
+
+Spec: KnowledgeCompactor
+Purpose:
+  Define the knowledge compactor — a process that combines fragmented
+  knowledge into canonical concepts with evidence links. Distinct from
+  the garbage collector (which removes waste), the compactor combines
+  knowledge that is related but scattered.
+
+Owns: lifecycle/compactor.sdd
+
+## Compactor vs Garbage Collector
+
+  Garbage Collector (gc-policy.sdd):
+    removes waste: broken refs, temp indexes, obsolete metadata
+    scope: cleanup, deletion, archival
+    direction: reduce (fewer items)
+
+  Compactor:
+    combines fragmentation: merges related knowledge into canonical forms
+    scope: synthesis, consolidation, canonicalization
+    direction: compress (same knowledge, fewer representations)
+
+  [COMPACT-01] The compactor NEVER deletes — it merges and redirects.
+  [COMPACT-02] The GC NEVER merges — it only proposes archival/deletion.
+  [COMPACT-03] Both operate at AUTONOMY L1 (Suggest) in the autonomy policy.
+
+## Compaction Protocol
+
+  DISCOVERIES
+    ↓
+  CLUSTER
+    ↓
+  COMMON PATTERN
+    ↓
+  CONCEPT
+    ↓
+  EVIDENCE LINKS
+
+  1. DISCOVERIES: AI finds N independent observations of the same pattern
+     Example: 50 projects show "DB transaction + event publishing" inconsistency
+
+  2. CLUSTER: Group observations by semantic similarity
+     - Same domain + same problem = same cluster
+     - Different domain + different problem = different cluster
+
+  3. COMMON PATTERN: Extract the shared invariant across all observations
+     Example: "Transaction and event must be atomic or retried together"
+
+  4. CONCEPT: Create canonical @concept.* with the common pattern
+     Example: @concept.transaction-event-consistency
+
+  5. EVIDENCE LINKS: Attach all N observations as evidence to the concept
+     Example:
+       evidence:
+         - @observation.O55
+         - @observation.O56
+         ...
+         - @observation.O104
+
+  Before:
+    50 independent observations scattered across tmp/ and insights/
+  After:
+    1 @concept.* + 50 @observation.* evidence links
+
+## Core + Variant Specialization
+
+  Pattern:
+    @skill.retry                    (core — general retry logic)
+          ↑
+    @skill.payment-retry            (specializes @skill.retry)
+    @skill.provider-retry           (specializes @skill.retry)
+
+  specialization fields:
+    core:
+      @skill.retry                  (the abstract parent)
+    specialization:
+      @skill.payment-retry          (the concrete child)
+    relation: specializes           (explicit typed edge, NOT inheritance)
+    variant_of:
+      @claim.C11                    (the claim this variant serves)
+
+  [CORE-01] Core skills define the general pattern; variants add context.
+  [CORE-02] Specialization is via explicit `specializes:` edge, not deep extends chains.
+  [CORE-03] Deep extends chains (A extends B extends C extends D) are prohibited —
+            context resolution becomes intractable beyond 2 levels.
+  [CORE-04] Each variant MUST reference its core via `specializes:` or `extends:`.
+
+## Merge Proposal
+
+  When the compactor detects two or more entities that are near-duplicates
+  (semantic similarity > 90%), it generates a merge proposal:
+
+  @merge.M22
+
+  source:
+    - @skill.payment-retry
+    - @skill.retry-payment
+
+  proposal:
+    merge
+
+  reason:
+    Same scope and same behavior; payment-retry already has more evidence
+
+  confidence:
+    0.96
+
+  requires:
+    review
+
+  Rules:
+    [MERGE-01] AI CANNOT auto-merge — must propose and wait for approval.
+    [MERGE-02] Merge proposals with confidence < 0.90 MUST require human review.
+    [MERGE-03] On merge, the surviving entity absorbs aliases of the deprecated one.
+    [MERGE-04] Deprecated entity is marked DEPRECATED with a supersedes pointer.
+    [MERGE-05] Original entities are NEVER deleted — archived with supersedes link.
+
+## Evidence Compression
+
+  Evidence entities may themselves be duplicate or compressible:
+
+  Before:
+    @evidence.E1 — source: R44, claims: [C1]
+    @evidence.E2 — source: R44, claims: [C2]
+    @evidence.E3 — source: R44, claims: [C3]
+
+  After (compressed):
+    @evidence.source.R44
+      claims:
+        - @claim.C1
+        - @claim.C2
+        - @claim.C3
+
+  [EVID-01] Evidence from the same source MAY be compressed into a single
+            evidence entity with multiple claims.
+  [EVID-02] Compressed evidence retains individual claim pointers.
+
+## Alias Mechanism
+
+  Canonical entity with aliases:
+
+  @term.application-service
+    canonical_name: Application Service
+    aliases:
+      - service
+      - app-service
+      - use-case-service
+      - application layer service
+
+  When AI encounters "service layer" in code, it resolves to
+  @term.application-service via alias matching.
+
+  [ALIAS-01] Aliases MUST map to exactly one canonical entity.
+  [ALIAS-02] Reference resolution MUST try exact match, then alias, then
+             semantic search, then ask human.
+  [ALIAS-03] Terminology normalization creates @observation.terminology-drift
+             when codebase terms drift from policy terms.
+
+## Specialization (Not Inheritance)
+
+  Deep specialization chains are avoided:
+
+  BAD:
+    @skill.retry
+      ↑ extends
+    @skill.payment-retry
+      ↑ extends
+    @skill.stripe-payment-retry
+      ↑ extends
+    @skill.stripe-payment-retry-v2
+
+  GOOD:
+    @skill.retry                        (core)
+      ↑ specializes
+    @skill.payment-retry                (specialization)
+      ↑ specializes
+    @skill.stripe-payment-retry         (specialization)
+
+  Each level is a flat specialization with at most 1 core parent.
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Confidence: @confidence.sdd
+  Generation: @generation.sdd
+  GCPolicy: @gc-policy.sdd
+  States: @states.sdd
+  Canonicalization: @../concepts/CANONICALIZATION.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  Relationships: @../concepts/RELATIONSHIP-VOCABULARY.sdd
+  Knowledge: @../knowledge/INDEX.sdd
+  KnowledgeCompression: @../knowledge/COMPRESSION.sdd
+
+State: +

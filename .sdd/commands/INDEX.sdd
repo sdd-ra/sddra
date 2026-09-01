@@ -27,6 +27,9 @@ Commands:
   /sdd-status: Show execution status
   /sdd-decisions: List decisions
   /sdd-health: Check system integrity
+  /sdd-knowledge: Report knowledge graph health and trust
+  /sdd-explain: Explain completed task on demand
+  /sdd-plan: Auto-generate execution plan from .sdd/ + prompts/
   /sdd-backup: Create backup
   /sdd-restore: Restore from backup
   /sdd-resume: Resume from checkpoint
@@ -34,9 +37,11 @@ Commands:
   /sdd-compact: Compress context after task
   /sdd-clear: Clear context for next task
   /sdd-next: Advance decision chain to next step
-  /sdd-knowledge: Report knowledge graph health and trust
-  /sdd-explain: Explain completed task on demand
-  /sdd-plan: Auto-generate execution plan from .sdd/ + prompts/
+  /sdd-assumptions: Track and validate project assumptions
+  /sdd-intents: Classify and route user intents through chain graph
+  /sdd-skills: Discover and map skill ecosystem
+  /sdd-scan: Run security pattern scans against code files
+  /sdd-dependencies: Analyze and visualize dependency graph
 
 Navigation:
   Chains: @../chains/INDEX.sdd
@@ -47,5 +52,21 @@ Navigation:
   NextCommand: @sdd-next.sdd
   UpdateCommand: @sdd-update.sdd
   PromptsCommand: @sdd-prompts.sdd
+  PlanCommand: @sdd-plan.sdd
+  AnalyzeCommand: @sdd-analyze.sdd
+  StatusCommand: @sdd-status.sdd
+  HealthCommand: @sdd-health.sdd
+  BackupCommand: @sdd-backup.sdd
+  RestoreCommand: @sdd-restore.sdd
+  ResumeCommand: @sdd-resume.sdd
+  MigrateCommand: @sdd-migrate.sdd
+  CompactCommand: @sdd-compact.sdd
+  ClearCommand: @sdd-clear.sdd
+  DecisionsCommand: @sdd-decisions.sdd
+  AssumptionsCommand: @sdd-assumptions.sdd
+  IntentsCommand: @sdd-intents.sdd
+  SkillsCommand: @sdd-skills.sdd
+  ScanCommand: @sdd-scan.sdd
+  DependenciesCommand: @sdd-dependencies.sdd
 
 State: +

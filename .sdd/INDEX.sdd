@@ -133,12 +133,60 @@ ReadOrder:
     72 @runtime/events.sdd (runtime event log)
      68 @standards/INDEX.sdd (standards registry)
      69 @standards/states.sdd (state standards and compact symbols)
-      70 @timeline/INDEX.sdd (temporal knowledge, snapshots, evolution)
-      71   @agent/INDEX.sdd (multi-agent coordination, roles, shared state)
-      72 @policies/INDEX.sdd (evolution policy, authority policy)
-      73 @evolution/INDEX.sdd (candidate pool, discovery, challenges)
+     70 @timeline/INDEX.sdd (temporal knowledge, snapshots, evolution)
+     70a @timeline/changes/INDEX.sdd (change records, @change.CH-XXX)
+     70b @timeline/snapshots/INDEX.sdd (immutable system snapshots)
+     70c @timeline/migrations/INDEX.sdd (migration records, @migration.M-XX)
+     71   @agent/INDEX.sdd (multi-agent coordination, roles, shared state)
+     71a   @agent/ecc-bridge.sdd (ECC agent → SDD role bridge)
+     71b   @agent/prompts/INDEX.sdd (ECC agent prompt summaries)
+     72 @policies/INDEX.sdd (evolution policy, authority policy)
+     73 @evolution/INDEX.sdd (candidate pool, discovery, challenges)
+     73a @evolution/candidates/INDEX.sdd (proposed concepts/skills/decisions)
+     73b @evolution/challenges/INDEX.sdd (decision challenges)
+     73c @evolution/proposals/INDEX.sdd (architecture/skill proposals)
+      73d @evolution/approved/INDEX.sdd (validated and approved items)
       74 @queries/INDEX.sdd (SDD query language)
+      74a @queries/architecture-drift.sdd (drift detection query)
+      74b @queries/orphan-knowledge.sdd (orphan detection query)
+      74c @queries/unverified-skills.sdd (low-confidence skill query)
+      74d @queries/high-risk-tasks.sdd (risk assessment query)
+      74e @queries/payment-impact.sdd (domain impact query)
       75 @references/sdd/ (SDD methodology references)
+      75a @references/sdd/phases-130-134-overview.sdd (Phases 130-134 synthesis)
+      75b @references/sdd/phases-136-137-overview.sdd (Phases 136-137 synthesis)
+      76 @intents/INDEX.sdd (Intent system — entry point for human intent)
+      76a @intents/I44.sdd (example intent reference)
+      77 @plans/INDEX.sdd (Execution plan system — dependency graph, modes, gates)
+      77a @plans/execution-plan.sdd (Detailed execution graph schema)
+      78 @assumptions/INDEX.sdd (Assumption registry — tracked assumptions)
+      79 @bootstrap/INDEX.sdd (AI bootstrap protocol)
+      79a @bootstrap/AI_BOOTSTRAP.sdd (Machine-oriented entry protocol)
+      79b @bootstrap/authority.sdd (Authority model — can/cannot)
+      79c @bootstrap/identity.sdd (AI identity — role, capabilities)
+      79d @bootstrap/handoff.sdd (Agent-to-agent handoff protocol)
+      80 @glossary/INDEX.sdd (Canonical terminology system)
+      81 @system/context/INDEX.sdd (Context compiler with progressive disclosure)
+      82 @system/tool-governance.sdd (Tool governance and capability chain)
+      83 @governance/INDEX.sdd (Governance system — capabilities, permissions, locks, security)
+      83a @governance/capabilities.sdd (20 capabilities across 8 categories)
+      83b @governance/permissions.sdd (Permission matrix + environment policies)
+      83c @governance/resources.sdd (15 resources with data classification tiers)
+      83d @governance/locks.sdd (Lock types, compatibility matrix, lock manager)
+      83e @governance/security-events.sdd (Trust hierarchy + security event format)
+     84 @lifecycle/INDEX.sdd (Knowledge lifecycle — states, quality dimensions, GC)
+     84a @lifecycle/states.sdd (State machine: Candidate→Active→Stale→Deprecated→Superseded→Archived)
+     84b @lifecycle/quality-dimensions.sdd (8 quality dimensions + scoring)
+     84c @lifecycle/gc-policy.sdd (Safe GC protocol, dependency check, trust-aware pruning)
+     84d @lifecycle/compactor.sdd (Knowledge compactor, core+variant, merge protocol)
+     84e @lifecycle/claims.sdd (Claim entity + claim lifecycle)
+     84f @lifecycle/challenges.sdd (Challenge entity for contesting claims)
+     84g @lifecycle/confidence.sdd (Confidence levels, scoring, knowledge decay)
+     84h @lifecycle/health-score.sdd (Per-node health score, graph health report)
+     84i @lifecycle/generation.sdd (Generation tracking, version lineage)
+     84j @lifecycle/drift.sdd (Terminology drift, architecture drift, violations)
+     84k @lifecycle/learning-loop.sdd (Learning loop pipeline, L0-L4 promotion levels)
+     84l @lifecycle/entity-schemas.sdd (Entity schemas: Observation, Discovery, Claim, etc.)
 
 Modes:
   ANALYZE   — project discovery and context building
@@ -227,8 +275,51 @@ Navigation:
    ReferencesPatterns: @references/patterns/INDEX.sdd
    ReferencesDatabase: @references/database/INDEX.sdd
    ReferencesEngineering: @references/engineering/INDEX.sdd
-   ReferencesBestPractices: @references/best-practices/INDEX.sdd
-   Knowledge: @knowledge/INDEX.sdd
+    ReferencesBestPractices: @references/best-practices/INDEX.sdd
+    ReferencesSdd: @references/sdd/INDEX.sdd
+    ReferencesSddBestPractices: @references/sdd/best-practices.sdd
+    ReferencesSddToolComparison: @references/sdd/tool-comparison.sdd
+    ReferencesSddEccFramework: @references/sdd/ecc-framework-overview.sdd
+     ReferencesSddLivingSpecs: @references/sdd/living-specs-best-practices.sdd
+     ReferencesSddPhases130: @references/sdd/phases-130-134-overview.sdd
+    Queries: @queries/INDEX.sdd
+    QueryArchitectureDrift: @queries/architecture-drift.sdd
+    QueryOrphanKnowledge: @queries/orphan-knowledge.sdd
+    QueryUnverifiedSkills: @queries/unverified-skills.sdd
+    QueryHighRiskTasks: @queries/high-risk-tasks.sdd
+    QueryPaymentImpact: @queries/payment-impact.sdd
+    Intents: @intents/INDEX.sdd
+    Plans: @plans/INDEX.sdd
+    ExecutionPlan: @plans/execution-plan.sdd
+    Assumptions: @assumptions/INDEX.sdd
+    Bootstrap: @bootstrap/INDEX.sdd
+    AIBootstrap: @bootstrap/AI_BOOTSTRAP.sdd
+    Authority: @bootstrap/authority.sdd
+    Identity: @bootstrap/identity.sdd
+    Handoff: @bootstrap/handoff.sdd
+    Glossary: @glossary/INDEX.sdd
+    SystemContext: @system/context/INDEX.sdd
+    ToolGovernance: @system/tool-governance.sdd
+    Governance: @governance/INDEX.sdd
+    Capabilities: @governance/capabilities.sdd
+    Permissions: @governance/permissions.sdd
+    Resources: @governance/resources.sdd
+    Locks: @governance/locks.sdd
+    SecurityEvents: @governance/security-events.sdd
+    Lifecycle: @lifecycle/INDEX.sdd
+    LifecycleStates: @lifecycle/states.sdd
+    LifecycleQuality: @lifecycle/quality-dimensions.sdd
+    LifecycleGCPolicy: @lifecycle/gc-policy.sdd
+    LifecycleCompactor: @lifecycle/compactor.sdd
+    LifecycleClaims: @lifecycle/claims.sdd
+    LifecycleChallenges: @lifecycle/challenges.sdd
+    LifecycleConfidence: @lifecycle/confidence.sdd
+    LifecycleHealthScore: @lifecycle/health-score.sdd
+    LifecycleGeneration: @lifecycle/generation.sdd
+    LifecycleDrift: @lifecycle/drift.sdd
+    LifecycleLearningLoop: @lifecycle/learning-loop.sdd
+    LifecycleEntitySchemas: @lifecycle/entity-schemas.sdd
+    Knowledge: @knowledge/INDEX.sdd
    KnowledgeLifecycle: @knowledge/KNOWLEDGE-LIFECYCLE.sdd
    KnowledgeCompression: @knowledge/COMPRESSION.sdd
    KnowledgeVersioning: @knowledge/VERSIONING.sdd
@@ -367,15 +458,24 @@ Navigation:
   ProjectContext: @projects/{project_name}/context/INDEX.sdd
   ProjectContextMap: @projects/{project_name}/context/map.sdd
   ProjectContextActive: @projects/{project_name}/context/active.sdd
-  Agent: @agent/INDEX.sdd
-  AgentCapabilities: @agent/capabilities.sdd
-  AgentPermissions: @agent/permissions.sdd
-  AgentPolicies: @agent/policies.sdd
-  AgentApprovals: @agent/approvals.sdd
-  AgentExecution: @agent/execution.sdd
-  AgentRollback: @agent/rollback.sdd
-  AgentLimits: @agent/limits.sdd
-  AgentAudit: @agent/audit.sdd
+   Agent: @agent/INDEX.sdd
+   AgentCapabilities: @agent/capabilities.sdd
+   AgentPermissions: @agent/permissions.sdd
+   AgentPolicies: @agent/policies.sdd
+   AgentApprovals: @agent/approvals.sdd
+   AgentExecution: @agent/execution.sdd
+   AgentRollback: @agent/rollback.sdd
+   AgentLimits: @agent/limits.sdd
+   AgentAudit: @agent/audit.sdd
+   AgentRoles: @agent/roles.sdd
+   AgentContract: @agent/contract.sdd
+   AgentSharedState: @agent/shared-state.sdd
+   AgentCoordination: @agent/coordination.sdd
+   AgentConflicts: @agent/conflicts.sdd
+   AgentHandoff: @agent/handoff.sdd
+   AgentEccBridge: @agent/ecc-bridge.sdd
+   AgentSupervisor: @agent/supervisor.sdd
+   AgentSecurityRules: @agent/security-rules.sdd
   RuntimeWorkspace: @runtime/INDEX.sdd
   Discovery: @discovery/INDEX.sdd
   DiscoveryScanners: @discovery/scanners.sdd
@@ -539,7 +639,10 @@ Navigation:
       CommandNext: @commands/sdd-next.sdd
      CommandKnowledge: @commands/sdd-knowledge.sdd
      CommandExplain: @commands/sdd-explain.sdd
+     CommandPlan: @commands/sdd-plan.sdd
      CommandDecisions: @commands/sdd-decisions.sdd
+    EccBridge: @agent/ecc-bridge.sdd
+    MCP: @runtime/mcp-integration.sdd
    Plugins: @plugins/INDEX.sdd
    PluginBrainstorming: @plugins/plugin-adapters/brainstorming.sdd
    PluginTDD: @plugins/plugin-adapters/test-driven-development.sdd

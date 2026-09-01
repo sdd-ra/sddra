@@ -1,0 +1,88 @@
+# /sdd-dependencies
+
+Purpose:
+  Analyze and visualize the project dependency graph. Detects cycles,
+  computes topological order, identifies critical path, and surfaces
+  circular or missing dependencies.
+
+Owns: commands/sdd-dependencies.sdd
+
+Description:
+  Reads .sdd/dependencies/graph.sdd to produce a dependency health
+  report. Shows task dependency graph, cycle detection, topological
+  sort, critical path, parallel capacity, and missing dependencies.
+  Supports export to DOT and Mermaid formats for visualization.
+
+Usage:
+  /sdd-dependencies
+  /sdd-dependencies --graph
+  /sdd-dependencies --cycles
+  /sdd-dependencies --critical-path
+  /sdd-dependencies --topological
+  /sdd-dependencies --export <format>
+  /sdd-dependencies --json
+
+Options:
+  --graph          Show full dependency graph
+  --cycles         Show only cyclic dependencies
+  --critical-path  Show critical path and bottleneck tasks
+  --topological    Show topological sort order
+  --export         Export to dot or mermaid format
+  --json           Output machine-readable JSON
+
+Mode: READ_ONLY
+
+DependencyGraph:
+  nodes: tasks (T-XXX)
+  edges: dependency relationships (T-A -> T-B means T-B depends on T-A)
+  rules:
+    - Tasks without incoming edges can run in parallel
+    - Cycles MUST be flagged as errors
+    - Critical path is the longest dependency chain
+
+Output:
+  DEPENDENCY GRAPH
+
+    Total Tasks:         <count>
+    Total Dependencies:  <count>
+    Cycles Detected:     <count>
+    Critical Path:       <length> tasks
+    Parallel Capacity:   <count> tasks
+
+  Graph:
+    T100 (Domain) -----> T103 (Refund Service)
+    T101 (Repository) --> T103
+    T102 (Provider) ---> T103
+    T103 (Refund) -----> T104 (API)
+    T104 (API) --------> T106 (Review)
+
+  Cycles:
+    [CYCLE-001] T201 <-> T202 (mutual dependency)
+
+  Critical Path:
+    T100 -> T103 -> T104 -> T106 (4 tasks, estimated duration: N days)
+
+  Topological Order:
+    1. T100, T101, T102 (parallel)
+    2. T103
+    3. T104, T105 (parallel)
+    4. T106
+
+Rules:
+  [DEP-01] /sdd-dependencies MUST NOT modify any files.
+  [DEP-02] Cycle detection MUST be performed on every invocation.
+  [DEP-03] Critical path MUST account for task duration estimates.
+  [DEP-04] Parallel capacity MUST show tasks with no dependencies between them.
+  [DEP-05] Export formats MUST be valid DOT or Mermaid syntax.
+  [DEP-06] Missing dependencies MUST be flagged as warnings.
+
+Navigation:
+   INDEX: @INDEX.sdd
+   DependenciesIndex: @../dependencies/INDEX.sdd
+   DependenciesGraph: @../dependencies/graph.sdd
+   DependenciesLocking: @../dependencies/locking.sdd
+   Tasks: @../tasks/INDEX.sdd
+   Projects: @../projects/INDEX.sdd
+   ExecutionPlan: @../plans/execution-plan.sdd
+
+State: +

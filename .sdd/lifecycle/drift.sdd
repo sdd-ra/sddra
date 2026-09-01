@@ -1,0 +1,212 @@
+# Drift Detection: Terminology & Architecture
+
+Spec: DriftDetection
+Purpose:
+  Define terminology drift detection (when codebase terms diverge from
+  project policy terms), architecture drift detection (when code violates
+  declared architecture), violation lifecycle, accepted violations,
+  and time-limited architecture exceptions.
+
+Owns: lifecycle/drift.sdd
+
+## Terminology Drift
+
+  When the project policy defines preferred terms but the codebase uses
+  different terms, this is terminology drift.
+
+  Project policy:
+    Use: Handler, Service, Repository
+
+  Codebase:
+    Manager, Processor, Provider
+
+  AI creates:
+    @observation.terminology-drift
+
+  Format:
+    @observation.term-O1
+
+    type: terminology_drift
+    policy_terms:
+      - Handler
+      - Service
+      - Repository
+    observed_terms:
+      - Manager
+      - Processor
+      - Provider
+    mapping:
+      Manager → Handler
+      Processor → Service
+      Provider → Repository
+    confidence: MEDIUM
+    severity: LOW
+
+  Rules:
+    [TERM-01] Terminology drift is an OBSERVATION, not a finding.
+              AI MUST NOT change code to match policy terms without human approval.
+    [TERM-02] AI creates @observation.terminology-drift before any
+              recommendation to rename.
+    [TERM-03] Terminology drift observations are linked to the canonical
+              @concept.* that the policy term maps to.
+
+## Architecture Drift
+
+  When the declared architecture in .sdd/ differs from the actual
+  source code implementation.
+
+  Declared (.sdd):
+    @architecture.ddd
+      Payment → Domain → Application → Infrastructure
+
+  Observed (code):
+    PaymentService → directly calls → PostgreSQL
+
+  AI creates:
+    @violation.V22
+
+  Format:
+    @violation.V22
+
+    principle: @architecture.ddd
+    found_in: payment/service.go
+    reason: PaymentService directly accesses PostgreSQL, bypassing domain layer
+    severity: HIGH
+    status: DETECTED
+    detected_at: 2026-09-01T14:30:00Z
+
+  Drift Classification:
+    VALID_DRIFT:       intentional and documented (has @exception.* or @decision.*)
+    UNEXPLAINED_DRIFT: change without corresponding task/decision
+    UNTRACEABLE_CHANGE: source changed with no task, decision, or workflow
+
+  Rules:
+    [DRIFT-01] Graph MUST detect all drift types (per graph/model.sdd).
+    [DRIFT-02] Drift MUST be classified as VALID or UNEXPLAINED.
+    [DRIFT-03] Untraceable changes MUST be flagged.
+    [DRIFT-04] Drift MUST NOT be silently ignored.
+
+## Violation Lifecycle
+
+  DETECTED
+    ↓
+  REVIEWED
+    ↓
+  ┌──────────────┬──────────────┐
+  ACCEPTED      FALSE_POSITIVE
+    ↓              ↓
+  FIXED          (rejected)
+    ↓
+  VERIFIED
+
+  DETECTED:
+    description: Violation found by drift detection or code analysis
+    action: status set to DETECTED, notify reviewer
+
+  REVIEWED:
+    description: A human or automated gate has examined the violation
+    action: status set to REVIEWED, outcome pending
+
+  ACCEPTED:
+    description: Violation is valid and should be fixed
+    action: generate @task.* to fix, or @exception.* if intentional
+    rule: [VIOL-01] Accepted violations MUST have a planned fix or exception.
+
+  FALSE_POSITIVE:
+    description: Violation is a false alarm
+    action: mark FALSE_POSITIVE, archive
+
+  FIXED:
+    description: Code or architecture has been corrected
+    action: status set to FIXED
+
+  VERIFIED:
+    description: Fix confirmed by re-running drift detection
+    action: status set to VERIFIED, close violation
+
+  Rules:
+    [VIOL-02] Violations MUST be reviewed within 48 hours of detection.
+    [VIOL-03] Unreviewed violations older than 7 days trigger escalation.
+    [VIOL-04] FIXED violations MUST be re-verified by drift detection.
+
+## Accepted Violations
+
+  Sometimes a violation is knowingly accepted (for performance, legacy,
+  or practical reasons).
+
+  @violation.V22
+    severity: HIGH
+    status: ACCEPTED
+    accepted_by: @decision.D91
+    accepted_reason: "PaymentService is performance-critical; domain
+                      layer adds unacceptable latency in benchmark tests"
+
+  Rules:
+    [ACPT-01] Accepted violations MUST reference a @decision.* record.
+    [ACPT-02] AI NEVER flags an accepted violation as an error.
+    [ACPT-03] Accepted violations are re-evaluated annually.
+
+## Architecture Exceptions
+
+  @exception.E22
+
+  rule:
+    @architecture.ddd (domain cannot access infrastructure)
+
+  exception:
+    RefundProviderAdapter
+
+  reason:
+    legacy integration with external provider
+
+  expires:
+    2026-12-01
+
+  approved_by:
+    @human
+
+  status:
+    ACTIVE
+
+  Exception Lifecycle:
+    ACTIVE → EXPIRED (on expiry date) → REVOKED (if revoked)
+
+  Rules:
+    [EXC-01] Every exception MUST have an expiry date (max 1 year).
+    [EXC-02] AI MUST flag EXCEPTION_EXPIRED when expiry date passes.
+    [EXC-03] Expired exceptions revert their violations to DETECTED status.
+    [EXC-04] Exception extensions require a new @decision.* approval.
+
+  Example expiry handling:
+    On 2026-12-02 (day after expiry):
+    @exception.E22  →  status: EXPIRED
+    @violation.V22   →  status: DETECTED (was ACCEPTED via exception)
+    AI alerts: "Architecture exception E22 has expired; violation V22
+                is now active again. Extension requires new approval."
+
+## Drift Integration
+
+  Drift detection runs:
+    - After task completion (per learning-gate.sdd)
+    - Weekly (per health-score.sdd)
+    - On demand (via sdd-health command with --drift flag)
+
+  Detected drift flows:
+    terminology_drift → @observation.terminology-drift → reviewed by compactor
+    architecture_drift → @violation.* → violation lifecycle
+    code_drift → @observation.* → candidate/knowledge pipeline
+
+Navigation:
+  Parent: @INDEX.sdd
+  EntitySchemas: @entity-schemas.sdd
+  HealthScore: @health-score.sdd
+  States: @states.sdd
+  QualityDimensions: @quality-dimensions.sdd
+  Claims: @claims.sdd
+  Challenges: @challenges.sdd
+  GraphHealth: @../graph/health.sdd
+  GraphModel: @../graph/model.sdd
+  Architecture: @../architecture/INDEX.sdd
+  Evolution: @../evolution/INDEX.sdd
+
+State: +

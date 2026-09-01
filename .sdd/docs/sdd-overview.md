@@ -17,31 +17,59 @@ Each arm returns to D0, enabling iterative refinement. The system enforces loop 
 ## Project Structure
 ```
 .sdd/                      Machine Language (immutable specs)
+├── INDEX.sdd              Universal entry point and routing table
 ├── PROJECT.sdd            Project metadata
+├── protocol/              Core protocol and root spec
 ├── chains/                Execution graph and arms
 ├── decisions/             Decision ledger (DEC-XXX)
 ├── skills/                Reusable skill specs
 ├── tasks/                 Task definitions + state machine
-├── agent/                 Agent contract + roles
+├── agent/                 Agent contract, roles, supervisor, security
 ├── gates/                 Quality gate definitions
 ├── concepts/              Knowledge model
-├── commands/              CLI interface
-└── docs/                  Human-readable documentation (this folder)
+├── commands/              CLI interface (17 /sdd commands)
+├── runtime/               Runtime state, MCP integration, memory model
+├── evolution/             Candidate pool, discovery, challenges, proposals
+├── timeline/              Temporal knowledge, snapshots, migrations
+├── references/            Reusable engineering knowledge
+│   ├── sdd/               SDD methodology references (ECC, living specs)
+│   └── ...                (ddd, architecture, patterns, engineering, etc.)
+├── docs/                  Human-readable documentation (this folder)
+└── testing/               Test scripts and validation suite
 ```
+
+## ECC Framework Integration
+
+SDDRA integrates with the ECC (Enterprise Coordination Core) framework:
+- **67 agents** mapped to SDD roles via `agent/ecc-bridge.sdd`
+- **281 skills** with SDD-aligned skill specs
+- **94 commands** bridged to 17 SDD `/sdd-*` commands
+- **35 MCP servers** integrated via `runtime/mcp-integration.sdd`
+- **AgentShield security** (102 static rules) mapped to SDD L0-L5 levels via `agent/security-rules.sdd`
+- **Supervisor agent** orchestrates multi-agent workflows (`agent/supervisor.sdd`)
 
 ## Active Decisions
 - Check `.sdd/decisions/INDEX.sdd` for current architectural and technical decisions
 - Active decisions (status = approved, not superseded) drive implementation
 
 ## Available Commands
-| Command | Purpose |
-|---------|---------|
 | `/sdd-plan` | Auto-generate execution plan from `.sdd/` + `prompts/` |
 | `/sdd-analyse` | Deep business-aware analysis of `.sdd/` system |
 | `/sdd-status` | Show execution status |
 | `/sdd-decisions` | List decisions |
 | `/sdd-next` | Advance decision chain |
+| `/sdd-health` | Check system integrity |
 | `/sdd` | Execute chain graph from prompt |
+| `/sdd-update` | Sync `.sdd/` state from git repository |
+| `/sdd-prompts` | Automate prompt lifecycle |
+| `/sdd-knowledge` | Report knowledge graph health |
+| `/sdd-explain` | Explain completed task |
+| `/sdd-backup` | Create backup |
+| `/sdd-restore` | Restore from backup |
+| `/sdd-resume` | Resume from checkpoint |
+| `/sdd-migrate` | Run migrations |
+| `/sdd-compact` | Compress context after task |
+| `/sdd-clear` | Clear context for next task |
 
 ## Next Steps
 1. Run `/sdd-analyse` for a full system overview

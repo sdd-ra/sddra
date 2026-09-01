@@ -38,6 +38,7 @@ ReadOrder:
   Session: @state.sdd
   Context: @context.sdd
   Adapter: @adapter-runtime.sdd
+  MCP: @mcp-integration.sdd
   IndexIntegrity: @INDEX-INTEGRITY.sdd
   MemoryModel: @memory-model.sdd
   MemoryConsolidation: @memory-consolidation.sdd

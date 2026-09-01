@@ -20,4 +20,9 @@ Output:
   Table: ID, type, status, title, owner.
   Detail: options, rationale, impact, implementation status.
 
+Navigation:
+  INDEX: @INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+
 State: +

@@ -1,0 +1,190 @@
+# Knowledge Lifecycle States
+
+Spec: LifecycleStates
+Purpose:
+  Define the state machine for knowledge lifecycle transitions
+  and the rules governing each transition.
+
+Owns: lifecycle/states.sdd
+
+## States
+
+### CANDIDATE
+  description:
+    Knowledge has been identified as potentially reusable but has not yet
+    been validated by tests, tasks, or human review. Entry point for new
+    knowledge entering the lifecycle.
+  retention:
+    30 days (candidates expire without promotion)
+  actions:
+    - keep in candidate index
+    - exclude from standard context (P6 only)
+    - flag for review by knowledge-cleaner
+    - auto-expire after 30 days without evidence
+
+### ACTIVE
+  description:
+    Knowledge is actively used — referenced by tasks, decisions,
+    or skills in the last 7 days.
+  retention:
+    indefinite (while active)
+  actions:
+    - maintain in primary index
+    - include in compiled context
+
+### STALE
+  description:
+    Knowledge exists but has not been referenced for 7-30 days.
+    Not yet superseded, but not actively used.
+  retention:
+    180 days before archive consideration
+  actions:
+    - keep in index with stale marker
+    - exclude from standard context (P6 only)
+    - flag for review by knowledge-cleaner
+
+### DEPRECATED
+  description:
+    Knowledge has been superseded by newer knowledge via
+    @supersedes relationship, or marked deprecated by decision.
+  retention:
+    90 days before archive
+  actions:
+    - exclude from compiled context
+    - keep in deprecated index
+    - generate @proposal.knowledge-archive
+
+### SUPERSEDED
+  description:
+    Knowledge has been explicitly replaced by a newer entity via
+    an explicit @supersedes relationship. Preserved for history;
+    references should redirect to the successor.
+  retention:
+    90 days before archive
+  actions:
+    - exclude from compiled context
+    - redirect references to successor
+    - keep in superseded index
+    - generate @proposal.knowledge-archive
+
+### DELETE_BLOCKED
+  description:
+    A transient state entered when deletion is attempted on an entity
+    that still has active dependencies. The entity is NOT deleted;
+    deletion is blocked until all dependencies are resolved.
+  retention:
+    Until dependencies resolved (no auto-expiry)
+  actions:
+    - retain in primary index
+    - block all delete operations
+    - list blocking dependencies
+    - notify reviewer of blocking entities
+
+### ARCHIVED
+  description:
+    Knowledge is preserved for historical reference only.
+    Not loaded into AI context unless explicitly requested.
+  retention:
+    - PUBLIC/INTERNAL: 5 years
+    - CONFIDENTIAL: 10 years
+    - SECRET: 15 years (encrypted)
+  actions:
+    - move to archive/
+    - remove from primary index
+    - keep reference in deprecated index
+
+## State Transitions
+
+  ACTIVE → STALE
+    trigger: no references for 7 days
+    rule: [TR-01] Automated, soft transition
+    action: mark stale, notify knowledge-cleaner
+
+  STALE → DEPRECATED
+    trigger: @supersedes from another node
+    OR: @decision marks deprecated
+    action: record deprecation reason, set archive date
+
+  DEPRECATED → ARCHIVED
+    trigger: archive date reached OR @proposal.knowledge-archive approved
+    action: move to archive/, update references
+
+   ACTIVE → DEPRECATED
+     trigger: @supersedes from another node
+     action: immediate deprecation (bypasses stale)
+
+   CANDIDATE → ACTIVE
+     trigger: promotion approved (evidence + human review)
+     rule: [TR-07] Promotion requires evidence_count >= 2 and human approval
+     action: move to primary index, include in context
+
+   ACTIVE → SUPERSEDED
+     trigger: explicit @supersedes from a newer node
+     rule: [TR-08] SUPERSEDED is triggered by explicit @supersedes, not time
+     action: record successor, redirect references, keep for history
+
+   DEPRECATED → SUPERSEDED
+     trigger: explicit @supersedes from a newer node (alternative to ARCHIVED)
+     action: record successor, update deprecation index
+
+   SUPERSEDED → ARCHIVED
+     trigger: archive date reached OR @proposal.knowledge-archive approved
+     action: move to archive/, update references
+
+   ANY → DELETE_BLOCKED
+     trigger: delete attempted while active dependencies exist
+     action: block deletion, list dependencies, notify reviewer
+
+   DELETE_BLOCKED → target_state
+     trigger: all dependencies resolved (redirected or removed)
+     action: proceed with original delete/archival operation
+
+   CANDIDATE → ARCHIVED
+     trigger: candidate expired without promotion (30 days)
+     action: move to archive/, preserve for history
+
+   ARCHIVED → ACTIVE
+     trigger: task explicitly requires archived knowledge
+     action: restore from archive, re-evaluate quality
+
+  ANY → ARCHIVED
+    trigger: @proposal.knowledge-archive approved by human
+    action: immediate archive
+
+  ARCHIVED → ACTIVE
+    trigger: task explicitly requires archived knowledge
+    action: restore from archive, re-evaluate quality
+
+## Transition Rules
+
+  [TR-01] Active → Stale is automated after 7 days of no references.
+  [TR-02] Stale → Deprecated requires human or AI evidence (@supersedes or @decision).
+  [TR-03] Deprecated → Archived requires @proposal.approved.
+  [TR-04] Secret/Confidential knowledge has extended retention times.
+  [TR-05] Archived knowledge can be restored if explicitly referenced.
+   [TR-06] AI CANNOT archive its own recent work (24-hour grace period).
+   [TR-07] CANDIDATE → ACTIVE requires promotion approval per
+            learning-loop.sdd promotion rules (L2 → L3).
+   [TR-08] SUPERSEDED is triggered by explicit @supersedes relation,
+             not by time or staleness.
+   [TR-09] DELETE_BLOCKED prevents deletion until all dependencies are
+           resolved (per gc-policy.sdd dependency check protocol).
+   [TR-10] CANDIDATE without evidence for 7 days is auto-flagged
+           for review by knowledge-cleaner.
+
+Navigation:
+  Parent: @INDEX.sdd
+  Quality: @quality-dimensions.sdd
+  Lifecycle: @INDEX.sdd
+  Claims: @claims.sdd
+  Confidence: @confidence.sdd
+  HealthScore: @health-score.sdd
+  GCPolicy: @gc-policy.sdd
+  Compactor: @compactor.sdd
+  Drift: @drift.sdd
+  LearningLoop: @learning-loop.sdd
+  EntitySchemas: @entity-schemas.sdd
+  Generation: @generation.sdd
+  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+
+State: +

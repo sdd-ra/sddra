@@ -54,4 +54,9 @@ Rules:
   [PR-04] Prompts are NEVER deleted, only archived.
   [PR-05] Duplicate detection runs before structuring.
 
+Navigation:
+  INDEX: @INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+  Tasks: @../tasks/INDEX.sdd
+
 State: +
