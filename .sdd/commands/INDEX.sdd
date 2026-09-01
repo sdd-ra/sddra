@@ -36,6 +36,7 @@ Commands:
   /sdd-next: Advance decision chain to next step
   /sdd-knowledge: Report knowledge graph health and trust
   /sdd-explain: Explain completed task on demand
+  /sdd-plan: Auto-generate execution plan from .sdd/ + prompts/
 
 Navigation:
   Chains: @../chains/INDEX.sdd
