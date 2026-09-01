@@ -44,6 +44,9 @@ Output:
   Next Action: <description of next step>
   ```
   If no pending work: "All chain arms are up to date."
+  
+  After completing Next Action tasks, run /sdd-next to advance
+  to the next decision step or case in the chain graph.
 
 Business Context:
   - Analyzes prompts/inbox/ for user intents
