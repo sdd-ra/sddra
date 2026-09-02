@@ -1,0 +1,32 @@
+# Skill: Web Design Guidelines
+
+Purpose:
+  Web design guidelines skill. Covers UI/UX best practices, accessibility,
+  visual design rules, and responsive design patterns for modern web apps.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+
+Modes:
+  APPLY    — apply design guidelines to current task
+  REVIEW   — review UI/UX against guidelines
+  AUDIT    — audit design compliance
+
+Rules:
+  [WDG1] Guidelines MUST align with WCAG 2.1 AA minimum.
+  [WDG2] Design rules MUST be actionable, not opinion-only.
+  [WDG3] Color and typography MUST have contrast validation.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+Navigation:
+  WebDesignGuidelines: @INDEX.sdd
+  Skill: @SKILL.md
+
+State: +

@@ -16,6 +16,7 @@ ReadOrder:
    6  @accessibility.sdd
    7  @design-system.sdd
    8  @design-review.sdd
+   9  @web-design-guidelines/INDEX.sdd
 
 Modes:
   EVALUATE  — evaluate design quality
@@ -54,6 +55,7 @@ Navigation:
   Accessibility: @design/accessibility.sdd
   DesignSystem: @design/design-system.sdd
   DesignReview: @design/design-review.sdd
+  WebDesignGuidelines: @web-design-guidelines/INDEX.sdd
   MetaDiscovery: @../meta/SKILL-DISCOVERY.sdd
   AutoInvoke: @../agent/skill-auto-invoke.sdd
 

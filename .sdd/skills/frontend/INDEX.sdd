@@ -1,0 +1,38 @@
+# Skills: Frontend
+
+Purpose:
+  Frontend skills for SDDRA system. Covers React, Next.js, performance,
+  accessibility, and modern frontend engineering practices.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @react-best-practices/INDEX.sdd
+
+Modes:
+  APPLY    — apply frontend skill to current task
+  REVIEW   — review frontend implementation
+  UPGRADE  — propose frontend skill upgrade
+  AUDIT    — audit frontend skill health
+
+Rules:
+  [F1] Frontend skills MUST cover performance, accessibility, and bundle size.
+  [F2] React skills MUST follow current stable API surface.
+  [F3] Next.js skills MUST align with App Router conventions.
+  [F4] Frontend changes MUST be verified with browser testing.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    react-best-practices
+
+Navigation:
+  Frontend: @frontend/INDEX.sdd
+  ReactBestPractices: @frontend/react-best-practices/INDEX.sdd
+  Design: @../design/INDEX.sdd
+  MetaDiscovery: @../meta/SKILL-DISCOVERY.sdd
+
+State: +
