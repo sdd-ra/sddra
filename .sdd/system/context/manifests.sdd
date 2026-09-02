@@ -1,0 +1,41 @@
+# Context Manifests
+
+Spec: ContextManifests
+Purpose:
+  Document exactly what was included, excluded, and why.
+
+Schema:
+  @context.C<id>
+    task:          <task id>
+    compiled_at:   <timestamp>
+    layers:        [L0, L1, L2]
+    included:      [<reference ids>]
+    excluded:      [<reference id: reason>]
+    budget:
+      max_refs:   <n>
+      used_refs:  <n>
+      max_tokens: <n>
+      used_tokens: <n>
+    confidence:    HIGH | MEDIUM | LOW
+    freshness:     FRESH | STALE | CORRUPT
+    contradictions: [<conflict descriptions>]
+    version:       v1, v2, ...
+    invalidated_by: [<change ids>]
+
+Versioning:
+  Context packs are versioned. Changes to dependencies or decisions
+  invalidate prior versions.
+
+  C91:v1 → INVALID (D17 changed)
+  C91:v2 → ACTIVE
+
+Rules:
+  [MAN-01] Every context pack MUST have a manifest.
+  [MAN-02] Manifest MUST list exclusions with reasons.
+  [MAN-03] Context version MUST increment on dependency change.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Compiler: @compiler.sdd
+
+State: +

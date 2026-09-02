@@ -64,6 +64,7 @@ Full specifications in `@../governance/INDEX.sdd`:
     @capability.db.migration  (risk: CRITICAL)
     @capability.network.external (risk: HIGH)
     @capability.secret.access  (risk: CRITICAL)
+    @capability.model.modify   (risk: CRITICAL)
     @capability.system.modify (risk: HIGH)
     @capability.task.create   (risk: LOW)
     @capability.skill.propose (risk: LOW)
@@ -128,6 +129,9 @@ Full specifications in `@../governance/INDEX.sdd`:
   [TVL-06] When authorization cannot be resolved, execution MUST fail closed (DENY).
   [TVL-07] AI CANNOT grant itself a capability by modifying governance files.
   [TVL-08] SECRET resources MUST NEVER appear in AI context as values.
+  [TVL-09] External tools are evaluated per-capability, not as monolithic units.
+           Tools whose purpose conflicts with security policy are LOCKED at the tool level.
+           Tools that align with security objectives may be partially authorized.
 
 Navigation:
   Parent: @../INDEX.sdd

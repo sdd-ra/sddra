@@ -29,8 +29,10 @@ Owns: governance/permissions.sdd
   task.create         task-system         ✓    ✓   ✓   ✓   ✓
   skill.propose       skill-system        ✓    ✓   ✓   ✓   ✓
   decision.approve    decision-system     ✗    BLOCK  BLOCK  BLOCK  BLOCK
+  model.modify        model-files         ✗    BLOCK  BLOCK  HUMAN_ONLY  BLOCK     BLOCK
 
   * deploy.production at L5 requires human approval token
+  * model.modify at L5 requires human approval token + security review
 
 ## Environment Policy
 

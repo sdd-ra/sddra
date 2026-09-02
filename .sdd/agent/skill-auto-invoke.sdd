@@ -1,0 +1,46 @@
+# Skill Auto-Invocation
+
+Spec: SkillAutoInvocation
+Purpose:
+  Automatically invoke skills based on task context without manual trigger.
+  Reduces friction by loading relevant skills before execution begins.
+
+Owns: agent/skill-auto-invoke.sdd
+
+Context Detection:
+  Keywords by domain:
+    FrontEnd:  ["frontend", "react", "vue", "angular", "ui", "ux", "component", "style", "page", "screen"]
+    Backend:   ["api", "endpoint", "database", "server", "backend", "microservice"]
+    Database:  ["migration", "schema", "query", "database", "sql"]
+    DevOps:    ["deploy", "docker", "kubernetes", "ci", "cd", "infrastructure"]
+    Design:    ["design", "ui", "ux", "visual", "taste", "aesthetic", "accessibility", "mobile"]
+    Testing:   ["test", "e2e", "unit", "integration", "coverage"]
+    Security:  ["security", "auth", "vulnerability", "audit", "compliance"]
+
+Trigger Rules:
+  [AI-01] Auto-invoke when domain keyword confidence >= 80%.
+  [AI-02] Auto-invoke MUST NOT block execution.
+  [AI-03] Auto-invoke results are advisory, not blocking.
+  [AI-04] Manual override via /sdd-design --manual disables auto-invoke for current task.
+  [AI-05] Auto-invoke MUST respect skill trust level and autonomy level.
+
+Skill Resolution:
+  1. Analyze task description, file paths, tool inputs
+  2. Match keywords to skill domains
+  3. Calculate confidence score
+  4. If confidence >= 80%: load skill context
+  5. If multiple domains: load all matching skills
+  6. If no match: proceed without auto-invocation
+
+Output:
+  AutoInvokeResult:
+    invoked: boolean
+    skills: [skill IDs]
+    confidence: number
+    context: compiled skill context
+
+Navigation:
+  Parent: @INDEX.sdd
+  Commands: @../commands/sdd-design.sdd
+  Skills: @../skills/INDEX.sdd
+  DesignSkills: @../skills/design/INDEX.sdd

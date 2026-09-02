@@ -1,0 +1,77 @@
+# Reasoning Pipeline
+
+Spec: ReasoningPipeline
+Purpose:
+  Mandatory 11-step reasoning flow for every non-trivial engineering
+  decision. Replaces direct Question → Answer instinct.
+
+Pipeline:
+  QUESTION
+    ↓
+  UNDERSTAND
+    ↓
+  RESOLVE CONTEXT
+    ↓
+  COLLECT FACTS
+    ↓
+  SEPARATE ASSUMPTIONS
+    ↓
+  DETECT UNKNOWNS
+    ↓
+  GENERATE OPTIONS
+    ↓
+  EVALUATE TRADE-OFFS
+    ↓
+  DECIDE
+    ↓
+  RECORD EVIDENCE
+    ↓
+  VERIFY
+
+Steps:
+  QUESTION:
+    Exact question. No ambiguity. No embedded assumptions.
+
+  UNDERSTAND:
+    Restate problem in project terms. Confirm with human if ambiguous.
+
+  RESOLVE CONTEXT:
+    Load @context.CTX<id>. Check @constraint.*. Identify affected domains.
+
+  COLLECT FACTS:
+    Gather @fact.*. Verify sources. Reject unverified claims.
+
+  SEPARATE ASSUMPTIONS:
+    List @assumption.*. Mark confidence. Flag CRITICAL assumptions.
+
+  DETECT UNKNOWNS:
+    Create @unknown.U<id> for gaps. Assess risk and blocking impact.
+
+  GENERATE OPTIONS:
+    Minimum 2 options. Prefer 3 for HIGH risk decisions.
+
+  EVALUATE TRADE-OFFS:
+    Create @tradeoff.T<id> per option. Pros, cons, risk, cost.
+
+  DECIDE:
+    Select option. Fill decision canvas. Set reversible flag.
+
+  RECORD EVIDENCE:
+    Link @proof.*, @test.*, @decision.*. Record reasoning summary.
+
+  VERIFY:
+    Run verification plan. Update DECISION status. Close loop.
+
+Rules:
+  [RP-01] Pipeline MUST run for any DECISION with risk = HIGH or CRITICAL.
+  [RP-02] Pipeline MAY run for MEDIUM risk. MUST run for LOW risk if irreversible.
+  [RP-03] AI MUST NOT skip COLLECT FACTS or EVALUATE TRADE-OFFS.
+  [RP-04] AI MUST halt and ask human if UNKNOWN is CRITICAL and blocking.
+  [RP-05] AI MUST produce @reasoning.R<id> for every completed pipeline run.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  ReasoningRecords: @../reasoning/INDEX.sdd
+
+State: +

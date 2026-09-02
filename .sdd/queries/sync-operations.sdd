@@ -1,0 +1,37 @@
+# Query: Sync Operations
+
+Spec: QuerySyncOperations
+Purpose:
+  List and execute recommended sync operations for detected drift.
+
+Query:
+  show @sync
+  where
+    drift.status = DETECTED
+    AND drift.classification != NO_CHANGE
+
+  for each sync:
+    target: <sdd | code | both>
+    action: <update | fix | redesign>
+    artifacts: [<file paths>]
+    dependencies: [<task ids>]
+
+  output:
+    sync_plan:
+      - sync_id: @sync.S<id>
+        drift_id: @drift.D<id>
+        operation: <SYNC_SDD | SYNC_CODE | SYNC_BOTH>
+        target_files: [<paths>]
+        rationale: <reason>
+        requires_approval: <true | false>
+
+SavedAs: @query:sync-operations
+
+Navigation:
+  Parent: @../INDEX.sdd
+  DriftSpec: @../lifecycle/drift.sdd
+  DriftQuery: @drift-detection.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/TASK-STATE-MACHINE.sdd
+
+State: +

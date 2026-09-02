@@ -1,0 +1,59 @@
+# Skill: Accessibility
+
+Purpose:
+  Ensure UI implementations meet WCAG 2.1 AA baseline and project
+  accessibility requirements.
+
+Owns: design/accessibility.sdd
+ID: DESIGN-ACCESSIBILITY
+
+Domain: design
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Accessibility audits
+  - A11y regression testing
+  - Inclusive design validation
+
+Input:
+  - UI implementation
+  - Accessibility requirements
+  - WCAG target level
+
+Output:
+  - Accessibility violation list
+  - Severity and compliance level
+  - Remediation guidance
+
+Baseline (WCAG 2.1 AA):
+  - Perceivable: text alternatives, captions, adaptable content
+  - Operable: keyboard accessible, enough time, seizures safe
+  - Understandable: readable, predictable, input assistance
+  - Robust: compatible with assistive technologies
+
+Execute:
+  1. Semantic HTML audit: headings, landmarks, labels
+  2. Keyboard navigation: tab order, focus indicators, traps
+  3. Screen reader: ARIA labels, live regions, alt text
+  4. Color contrast: text/background >= 4.5:1 (3:1 for large text)
+  5. Motion: respect prefers-reduced-motion
+  6. Forms: labels, error messages, autocomplete
+  7. Touch targets: minimum 44x44px
+
+Severity:
+  BLOCK: keyboard trap, missing alt on informative image, contrast < 3:1
+  WARN: missing label, non-descriptive link text, focus indicator absent
+  PASS: meets baseline
+
+Validation:
+  - No BLOCK violations in production
+  - WARN violations tracked as technical debt
+
+Avoid:
+  - Treating accessibility as afterthought
+  - Relying on color alone to convey information
+
+State: +

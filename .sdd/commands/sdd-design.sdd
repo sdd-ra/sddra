@@ -1,0 +1,67 @@
+# /sdd-design
+
+Purpose:
+  Design analysis and skill invocation. Supports manual trigger and
+  automatic invocation based on task context.
+
+Owns: commands/sdd-design.sdd
+
+Description:
+  Analyzes design quality, invokes design skills, and evaluates
+  implementations against design best practices. Can be triggered
+  manually or automatically when design-related work is detected.
+
+Usage:
+  /sdd-design
+  /sdd-design --evaluate
+  /sdd-design --discover
+  /sdd-design --review <path>
+  /sdd-design --manual
+  /sdd-design --auto
+
+Options:
+  --evaluate  Run design quality evaluation
+  --discover  Discover missing design skills
+  --review    Review design implementation at path
+  --manual    Force manual mode (no auto-invoke)
+  --auto      Force auto-invoke mode
+
+Mode: READ_ONLY (evaluate/discover) | READ_WRITE (review)
+
+Subcommands:
+  evaluate    Analyze design quality against .sdd/skills/design/*
+  discover    Find gaps in design skill coverage
+  review      Review code/design against design principles
+  apply       Apply design skill to current context
+
+Output:
+  DESIGN EVALUATION
+
+    Overall Score: <0-100>
+    Category Scores:
+      Taste:           <0-100>
+      Heuristics:      <0-100>
+      Visual:          <0-100>
+      UX:              <0-100>
+      Accessibility:   <0-100>
+      Design System:   <0-100>
+
+    Decision: <PASS | WARN | BLOCK>
+
+  Issues:
+    [<severity>] <category>: <description>
+      Recommendation: <action>
+
+Rules:
+  [DSN-01] /sdd-design MUST NOT modify code in evaluate mode.
+  [DSN-02] /sdd-design MUST produce @design.* evaluation records.
+  [DSN-03] /sdd-design discover MUST recommend skills with >= 80% relevance.
+  [DSN-04] /sdd-design MUST integrate with skill auto-invocation.
+  [DSN-05] /sdd-design MUST respect DESIGN.md as source of truth.
+  [DSN-06] /sdd-design MUST check WCAG 2.1 AA baseline for accessibility.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  DesignSkills: @../skills/design/INDEX.sdd
+  SkillDiscovery: @../skills/meta/SKILL-DISCOVERY.sdd
+  AutoInvoke: @../agent/skill-auto-invoke.sdd

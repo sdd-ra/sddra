@@ -1,0 +1,44 @@
+# Context Budgets
+
+Spec: ContextBudgets
+Purpose:
+  Limit context size and complexity per task risk level.
+
+Budgets:
+  LOW:
+    max_refs: 20
+    max_tokens: 8000
+    max_layers: L0-L4
+
+  MEDIUM:
+    max_refs: 40
+    max_tokens: 16000
+    max_layers: L0-L6
+
+  HIGH:
+    max_refs: 80
+    max_tokens: 30000
+    max_layers: L0-L8
+
+  CRITICAL:
+    max_refs: 120
+    max_tokens: 50000
+    max_layers: L0-L10
+
+Enforcement:
+  If budget exceeded:
+    1. Drop lowest-scored references first
+    2. Preserve dependencies of kept references
+    3. Document exclusions in manifest
+    4. Set confidence to MEDIUM or LOW
+
+Rules:
+  [BDG-01] Budget MUST be enforced before context is returned.
+  [BDG-02] Dependency references MUST be preserved over scored references.
+  [BDG-03] Budget overrun MUST reduce confidence level.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Compiler: @compiler.sdd
+
+State: +

@@ -163,21 +163,59 @@ Owns: bootstrap/AI_BOOTSTRAP.sdd
 
 ## Phase 13: EXECUTE
 
-  AI begins work following loaded context.
+   AI begins work following loaded context.
 
-  AI MUST:
-    - Stay within authority boundaries
-    - Follow mandatory rules priority
-    - Record discoveries
-    - Use correct glossary terminology
-    - Create assumptions for unknowns
+   AI MUST:
+     - Stay within authority boundaries
+     - Follow mandatory rules priority
+     - Record discoveries
+     - Use correct glossary terminology
+     - Create assumptions for unknowns
 
-  Mode-specific behavior:
-    BOOTSTRAP_IMPL      → focuses on P1-P3 context
-    BOOTSTRAP_REVIEW    → focuses on P4-P5 context + rules
-    BOOTSTRAP_RESEARCH  → focuses on P5-P6 context + glossary
-    BOOTSTRAP_RELEASE   → full context + security + approvals
-    BOOTSTRAP_GOVERN    → loads governance/ capabilities + permissions + locks
+   Mode-specific behavior:
+     BOOTSTRAP_IMPL      → focuses on P1-P3 context
+     BOOTSTRAP_REVIEW    → focuses on P4-P5 context + rules
+     BOOTSTRAP_RESEARCH  → focuses on P5-P6 context + glossary
+     BOOTSTRAP_RELEASE   → full context + security + approvals
+     BOOTSTRAP_GOVERN    → loads governance/ capabilities + permissions + locks
+
+## Phase 145: DESIGN CONTEXT DETECTION & AUTO-INVOCATION
+
+   Purpose:
+     Automatically invoke design skills when design-related work is detected,
+     without requiring manual /sdd-design trigger.
+
+   Context Detection:
+     Analyze task description, file paths, and tool inputs for domain keywords.
+
+     Design keywords:
+       frontend, react, vue, angular, ui, ux, component, style,
+       design, visual, taste, aesthetic, accessibility, mobile, screen
+
+   Auto-Invoke Rules:
+     [BOOT-145-01] Auto-invoke when design keyword confidence >= 80%.
+     [BOOT-145-02] Auto-invoke MUST NOT block execution.
+     [BOOT-145-03] Auto-invoke results are advisory, not blocking.
+     [BOOT-145-04] Manual override via /sdd-design --manual.
+
+   Flow:
+     1. Analyze task context for design keywords
+     2. If match confidence >= 80%:
+        → Load .sdd/skills/design/INDEX.sdd
+        → Run design evaluation
+        → Attach findings to task context
+     3. If no match: proceed without design skill
+     4. Human MAY override with /sdd-design --manual
+
+   Skill Selection:
+     - FrontEnd task → visual-design + design-system + accessibility
+     - Mobile task → visual-design + ux-patterns + accessibility
+     - Design task → taste-evaluation + design-heuristics + design-review
+     - General UI → design-system + accessibility
+
+   Outcome:
+     Design context is compiled before execution when relevant.
+     No manual trigger required for standard design workflows.
 
 ## Discovery & Handoff
 

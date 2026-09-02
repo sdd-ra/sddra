@@ -1,0 +1,30 @@
+# Relevance Engine
+
+Spec: RelevanceEngine
+Purpose:
+  Score and rank references by relevance to current task.
+
+Algorithm:
+  base_score = keyword_match(intent, reference)
+  boost = domain_boost(affected_area, reference.domain)
+  dependency_boost = sum(child_scores for dependencies)
+  final_score = base_score * boost + dependency_boost
+
+Output:
+  [
+    { ref: "@skill.repository", score: 0.96, layer: L4 },
+    { ref: "@decision.D21", score: 0.89, layer: L6 },
+    { ref: "@skill.frontend", score: 0.04, layer: L4, excluded: true }
+  ]
+
+Rules:
+  [REL-01] Relevance MUST consider keyword, domain, and dependency signals.
+  [REL-02] Dependency chain MUST propagate relevance to parents.
+  [REL-03] Score range is 0.0-1.0.
+  [REL-04] References below threshold are excluded with reason.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Compiler: @compiler.sdd
+
+State: +

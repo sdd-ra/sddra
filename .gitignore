@@ -67,8 +67,13 @@ obj/
 target/
 Cargo.lock
 
-# AI coding tool configs
-.claude/
+# AI coding tool configs — ignore everything except sdd/ workflow files
+.claude/*
+!.claude/sdd/
+!.claude/sdd/**
+!.claude/commands/
+!.claude/commands/**
+
 .kilo/
 
 # Prompt inbox (runtime artifacts)

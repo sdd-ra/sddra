@@ -1,0 +1,53 @@
+# Query: Drift Detection
+
+Spec: QueryDriftDetection
+Purpose:
+  Detect all drift types between .sdd declarations and observed reality.
+
+Query:
+  show @drift
+  where
+    scope = <project>
+    AND type = <structural|behavioral|contract|database|security|configuration|documentation|terminology>
+
+  for each drift:
+    classify: DECLARATION_WRONG | CODE_WRONG | BOTH_OUTDATED | UNKNOWN
+    evidence: [<ids>]
+    sync_op: SYNC_SDD | SYNC_CODE | SYNC_BOTH | NO_CHANGE | REVIEW
+
+  output:
+    drift_report:
+      total_drifts: <n>
+      by_type:
+        structural: <n>
+        behavioral: <n>
+        contract: <n>
+        database: <n>
+        security: <n>
+        configuration: <n>
+        documentation: <n>
+        terminology: <n>
+      by_classification:
+        declaration_wrong: <n>
+        code_wrong: <n>
+        both_outdated: <n>
+        unknown: <n>
+      items:
+        - id: @drift.D<id>
+          type: <type>
+          classification: <classification>
+          declared: <sdd excerpt>
+          observed: <code excerpt>
+          evidence: [<ids>]
+          recommendation: <sync_op>
+          confidence: <HIGH|MEDIUM|LOW>
+
+SavedAs: @query:drift-detection
+
+Navigation:
+  Parent: @../INDEX.sdd
+  DriftSpec: @../lifecycle/drift.sdd
+  Architecture: @../architecture/INDEX.sdd
+  Evidence: @../lifecycle/entity-schemas.sdd
+
+State: +

@@ -1,0 +1,47 @@
+# Skill: Visual Design
+
+Purpose:
+  Evaluate visual hierarchy, composition, typography, color, and imagery.
+  Ensure implementations match design intent.
+
+Owns: design/visual-design.sdd
+ID: DESIGN-VISUAL
+
+Domain: design
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - Visual design reviews
+  - Implementation vs design comparison
+  - Responsive visual quality checks
+
+Input:
+  - Design mockup or spec
+  - Implemented UI code
+  - Breakpoint requirements
+
+Output:
+  - Visual fidelity score
+  - Mismatch report
+  - Responsive behavior assessment
+
+Execute:
+  1. Compare layout structure: grid, columns, spacing
+  2. Compare typography: font family, size, weight, line-height
+  3. Compare color: foreground, background, accent, semantic colors
+  4. Compare imagery: assets, icons, illustrations
+  5. Check responsive behavior at 320, 768, 1024, 1440
+  6. Identify visual regressions
+
+Validation:
+  - Critical visual mismatches require fix
+  - Minor mismatches logged as technical debt
+
+Avoid:
+  - Pixel-perfect obsession over functional correctness
+  - Ignoring platform-specific rendering differences
+
+State: +

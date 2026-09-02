@@ -1,0 +1,72 @@
+# /sdd-context
+
+Purpose:
+  Compile, inspect, and validate context packs for tasks.
+
+Owns: commands/sdd-context.sdd
+
+Description:
+  Reads task definition, resolves intent, runs Context Compiler,
+  and produces minimal context pack for AI execution.
+
+Usage:
+  /sdd-context --task T<id>
+  /sdd-context --intent "<text>"
+  /sdd-context --compile
+  /sdd-context --manifest C<id>
+  /sdd-context --validate C<id>
+  /sdd-context --budget <LOW|MEDIUM|HIGH|CRITICAL>
+  /sdd-context --explain C<id>
+
+Options:
+  --task       Compile context for specific task
+  --intent     Compile context from natural language intent
+  --compile    Force recompilation
+  --manifest   Show manifest for existing context pack
+  --validate   Check context health (broken refs, contradictions, staleness)
+  --budget     Override risk-based budget
+  --explain    Show why references were included/excluded
+
+Mode: READ_ONLY
+
+Output:
+  CONTEXT PACK
+
+    Task:           T2041
+    Layers:         L0, L1, L2, L4, L6
+    References:     17
+    Budget:         40 refs / 16k tokens
+    Confidence:     HIGH
+    Freshness:      FRESH
+    Contradictions: 1
+
+    Included:
+      [L1] @task.T2041
+      [L2] @project.P01
+      [L4] @skill.repository
+      [L4] @skill.transaction
+      [L6] @decision.D21
+
+    Excluded:
+      @skill.frontend: outside_task_scope
+      @analytics.*:    outside_task_scope
+
+    Contradictions:
+      D12 (REST) vs D41 (GraphQL for payments)
+
+Rules:
+  [CTX-CMD-01] /sdd-context MUST produce manifest for every compilation.
+  [CTX-CMD-02] /sdd-context MUST flag contradictions.
+  [CTX-CMD-03] /sdd-context MUST respect budget.
+  [CTX-CMD-04] /sdd-context MUST show exclusion reasons.
+
+Navigation:
+  INDEX: @../../INDEX.sdd
+  Compiler: @../system/context/compiler.sdd
+  Router: @../system/context/router.sdd
+  Relevance: @../system/context/relevance.sdd
+  Budgets: @../system/context/budgets.sdd
+  Policies: @../system/context/policies.sdd
+  Manifests: @../system/context/manifests.sdd
+
+State: +

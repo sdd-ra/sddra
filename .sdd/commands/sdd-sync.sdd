@@ -1,0 +1,40 @@
+# /sdd-sync
+
+Purpose:
+  Propose and execute sync operations for detected drift.
+
+Owns: commands/sdd-sync.sdd
+
+Description:
+  Reads drift reports from /sdd-drift, proposes SYNC_CODE / SYNC_SDD /
+  SYNC_BOTH operations, and executes them with human approval at
+  READ_WRITE gates.
+
+Usage:
+  /sdd-sync
+  /sdd-sync --drift <D<id>>
+  /sdd-sync --auto-approve <low-risk-only>
+  /sdd-sync --dry-run
+
+Options:
+  --drift        Sync specific drift record
+  --auto-approve Auto-approve LOW confidence, NO_CHANGE ops
+  --dry-run      Show plan without executing
+
+Mode: READ_WRITE
+
+Rules:
+  [SYN-01] /sdd-sync MUST require human approval for HIGH severity syncs.
+  [SYN-02] /sdd-sync MUST produce @decision.* for every SYNC_SDD operation.
+  [SYN-03] /sdd-sync MUST produce @task.* for every SYNC_CODE operation.
+  [SYN-04] /sdd-sync MUST produce @task.* for every SYNC_BOTH operation.
+  [SYN-05] /sdd-sync MUST NOT execute NO_CHANGE without explicit --force.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  DriftSpec: @../lifecycle/drift.sdd
+  Queries: @../queries/sync-operations.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/TASK-STATE-MACHINE.sdd
+
+State: +

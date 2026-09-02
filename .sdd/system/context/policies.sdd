@@ -1,0 +1,47 @@
+# Context Policies
+
+Spec: ContextPolicies
+Purpose:
+  Govern freshness, authority, security, and pollution rules.
+
+Freshness:
+  FRESH:     updated < 7 days
+  STALE:     updated >= 7 days and < 90 days
+  CORRUPT:   updated >= 90 days or source unavailable
+
+  STALE references MUST be flagged but not excluded.
+
+Authority:
+  Contract reference (OpenAPI) > Architecture reference (SDD)
+  Runtime observation > Declared architecture
+  Migration > SDD for database schema
+  Human approval > AI inference
+
+Security:
+  Context MUST NOT contain:
+    secrets, credentials, PII, production data, raw tokens
+
+  Filter applies after compilation, before delivery.
+
+Pollution Guard:
+  Context MUST NOT include references unrelated to:
+    task intent, affected_area, or dependency chain
+
+  Exclusion reasons:
+    outside_task_scope
+    irrelevant_domain
+    stale
+    authority_conflict
+    security_filter
+
+Rules:
+  [POL-01] Freshness MUST be checked for all P3+ references.
+  [POL-02] Authority conflicts MUST be surfaced, not hidden.
+  [POL-03] Security filter MUST run after compilation.
+  [POL-04] Pollution guard MUST document exclusion reasons.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Compiler: @compiler.sdd
+
+State: +

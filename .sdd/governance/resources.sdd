@@ -90,6 +90,16 @@ Owns: governance/resources.sdd
   classification: INTERNAL
   description: Decision management system
 
+### @resource.model-files
+  type: model
+  classification: CONFIDENTIAL
+  description: AI model weights and configuration files (HuggingFace cache, .safetensors)
+  env_paths:
+    local: ~/.cache/huggingface/**
+    test: (n/a)
+    staging: (n/a)
+    production: (n/a)
+
 ## Data Classification Levels
 
   PUBLIC      — no sensitive data, safe for any context

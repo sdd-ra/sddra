@@ -19,6 +19,7 @@ ReadOrder:
     9 @observability/INDEX.sdd
    10 @networking.sdd
    11 @deployment.sdd
+   12 @candidates.sdd
 
 Rules:
   [AR1] Architecture MUST be defined before implementation.
@@ -37,5 +38,6 @@ Navigation:
   Observability: @observability/INDEX.sdd
   Networking: @networking.sdd
   Deployment: @deployment.sdd
+  Candidates: @candidates.sdd
 
 State: +
