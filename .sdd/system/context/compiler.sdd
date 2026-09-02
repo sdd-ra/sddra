@@ -1,0 +1,52 @@
+# Context Compiler
+
+Spec: ContextCompiler
+Purpose:
+  Core engine that transforms task intent into minimal sufficient context.
+
+Input:
+  task:          @task.T<id>
+  intent:        <human or AI intent>
+  affected_area: <component | domain | layer>
+  risk:          LOW | MEDIUM | HIGH | CRITICAL
+  dependencies:  [@task.T<id>]
+
+Output:
+  @context.C<id>
+    task:        <task id>
+    layers:      [L0..L10]
+    references:  [<scoped list>]
+    excluded:    [<with reasons>]
+    budget_used: <tokens>
+    confidence:  HIGH | MEDIUM | LOW
+    freshness:   FRESH | STALE
+    contradictions: [<conflicts>]
+
+Compilation Steps:
+  1. Resolve task metadata and scope
+  2. Load L0-L2 identity/task/project
+  3. Route to affected components via Context Router
+  4. Score references via Relevance Engine
+  5. Resolve dependency chains
+  6. Check contradictions and authority conflicts
+  7. Enforce context budget
+  8. Apply pollution and security filters
+  9. Generate manifest with exclusions
+  10. Version and cache result
+
+Rules:
+  [CC-01] Compiler MUST NOT load raw .sdd files into AI context.
+  [CC-02] Compiler MUST produce manifest with included and excluded references.
+  [CC-03] Compiler MUST respect context budget before returning.
+  [CC-04] Compiler MUST flag contradictions, not hide them.
+  [CC-05] Compiler MUST apply lazy resolution for references beyond initial pack.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Router: @router.sdd
+  Relevance: @relevance.sdd
+  Budgets: @budgets.sdd
+  Policies: @policies.sdd
+  Manifests: @manifests.sdd
+
+State: +

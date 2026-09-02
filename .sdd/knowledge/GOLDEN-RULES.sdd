@@ -47,9 +47,22 @@ Knowledge Principles:
      Rules that apply only to one project MUST be scoped accordingly.
      Universal rules and project-specific rules live in different layers.
 
-  10. Preserve why a decision was made.
-      Every decision record explains the rationale. Future changes
-      require understanding prior context. "Why" is as important as "what".
+   10. Preserve why a decision was made.
+       Every decision record explains the rationale. Future changes
+       require understanding prior context. "Why" is as important as "what".
+
+   11. Design skills MUST be invoked for any UI/UX/visual work.
+       FrontEnd, Mobile, Design tasks MUST pass through /sdd-design
+       or auto-invoked design skill before implementation. Design quality
+       is not optional — it is part of the acceptance criteria.
+
+   12. Agents are replaceable; state, decisions, evidence, and provenance are not.
+       Agent instance MAY change, but task state, handoff history,
+       decisions, evidence, and provenance MUST persist across replacements.
+
+   13. No agent may act outside its contract.
+       Every agent action MUST be validated against:
+       role, capabilities, authority, ownership, policies, and limits.
 
 Principle Mapping:
 

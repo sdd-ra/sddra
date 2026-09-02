@@ -1,0 +1,71 @@
+# Skill: Taste Evaluation
+
+Purpose:
+  Evaluate design quality and aesthetic coherence. Detect "slop" —
+  generic AI-generated design fingerprints — and enforce project-specific
+  taste boundaries.
+
+Owns: design/taste-evaluation.sdd
+ID: DESIGN-TASTE-EVALUATION
+
+Domain: design
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Design quality audits
+  - Anti-slop enforcement
+  - Aesthetic family validation
+  - Brand consistency checks
+
+Input:
+  - DESIGN.md or design system tokens
+  - UI implementation (code/screenshot)
+  - Aesthetic family definition
+
+Output:
+  - Taste score (0-100)
+  - Slop detection report
+  - Aesthetic consistency metrics
+  - Remediation recommendations
+
+Execute:
+  1. Load project DESIGN.md and aesthetic family
+  2. Extract design tokens: color, typography, spacing, radius, shadow
+  3. Compare implementation against declared tokens
+  4. Run slop detection heuristics:
+     - Overused gradients
+     - Generic Inter/Roboto font stacking
+     - Purple-blue gradient defaults
+     - Card-heavy layout without variation
+     - Emoji in headers/CTAs
+  5. Calculate taste score
+  6. Produce remediation plan
+
+Taste Heuristics:
+  - Typography: <= 2 font families; display + body pairing intentional
+  - Color: palette <= 5 primary colors; contrast ratio >= 4.5:1
+  - Spacing: consistent 8px grid; no magic numbers
+  - Motion: transitions <= 300ms; easing intentional
+  - Imagery: custom or styled; no generic stock photos
+  - Voice: no emoji in titles; no "revolutionary" / "seamless" copy
+
+Anti-Slop Kit:
+  - Avoid: purple gradients, glassmorphism everywhere, rounded-3xl cards
+  - Avoid: Inter as sole typeface, 14px body text everywhere
+  - Avoid: hero section with gradient + 3 cards + testimonial
+  - Prefer: intentional restraint, custom details, brand-specific motifs
+
+Validation:
+  - Score >= 70: PASS
+  - Score 50-69: WARN
+  - Score < 50: BLOCK
+
+Avoid:
+  - Generic AI-generated landing pages
+  - Overused component patterns without customization
+  - Ignoring project brand guidelines
+
+State: +

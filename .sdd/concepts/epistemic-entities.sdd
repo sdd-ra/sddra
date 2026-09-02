@@ -1,0 +1,76 @@
+# Epistemic Entities
+
+Spec: EpistemicEntities
+Purpose:
+  Define what the AI knows and how certain it is. Every piece of
+  knowledge in .sdd MUST carry an epistemic state.
+
+Epistemic Layers:
+  FACT:          Verified truth (measured, checked, immutable for context)
+  ASSUMPTION:    Unverified belief (must be validated before critical use)
+  INFERENCE:     Conclusion drawn from facts + reasoning (not a fact)
+  HYPOTHESIS:    Testable proposal (requires experiment/evidence)
+  DECISION:      Chosen option backed by facts, constraints, trade-offs
+
+Entity Schemas:
+
+  @fact.F<id>
+    statement:   <verifiable claim>
+    source:      <config | migration | test | runtime | human>
+    confidence:  HIGH | MEDIUM | LOW
+    verified_at: <timestamp>
+
+  @assumption.A<id>
+    statement:   <unverified belief>
+    confidence:  LOW | MEDIUM | HIGH | CRITICAL
+    risk:        <impact if wrong>
+    used_by:     [@task.T<id>]
+    status:      PROPOSED | VALIDATED | INVALIDATED
+    blocks:      [@decision.D<id> | @task.T<id>]
+
+  @inference.I<id>
+    statement:   <derived conclusion>
+    based_on:    [@fact.F<id> | @observation.*]
+    reasoning:   <short chain>
+    confidence:  HIGH | MEDIUM | LOW
+    confidence_reason: <why this confidence>
+
+  @hypothesis.H<id>
+    statement:   <testable claim>
+    experiment:  @experiment.E<id>
+    status:      PROPOSED | TESTING | SUPPORTED | REJECTED
+    evidence_for: [<ids>]
+    evidence_against: [<ids>]
+
+  @decision.D<id>
+    question:    <what is being decided>
+    context:     @context.CTX<id>
+    facts:       [@fact.F<id>]
+    assumptions: [@assumption.A<id>]
+    constraints: [@constraint.C<id>]
+    options:     [<option list>]
+    tradeoffs:   [@tradeoff.T<id>]
+    chosen:      <selected option>
+    rejected:    [<rejected options + reasons>]
+    reasoning:   <summary>
+    reversible:  true | false
+    risk:        LOW | MEDIUM | HIGH
+    evidence:    [@proof.P<id> | @test.X<id>]
+    supersedes:  @decision.D<id> (optional)
+    status:      PROPOSED | ANALYZED | APPROVED | ACTIVE | REVIEW | SUPERSEDED
+
+Rules:
+  [EPI-01] AI MUST label every claim with its epistemic layer.
+  [EPI-02] AI MUST NOT promote HYPOTHESIS to DECISION without evidence.
+  [EPI-03] AI MUST NOT treat ASSUMPTION as FACT in architecture rules.
+  [EPI-04] INFERENCE MUST link to base FACTS.
+  [EPI-05] Every DECISION MUST reference at least one FACT and one CONSTRAINT.
+  [EPI-06] DECISION confidence reflects evidence quality, not answer certainty.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Assumptions: @../assumptions/INDEX.sdd
+  Confidence: @../lifecycle/confidence.sdd
+
+State: +

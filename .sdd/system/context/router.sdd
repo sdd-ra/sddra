@@ -1,0 +1,30 @@
+# Context Router
+
+Spec: ContextRouter
+Purpose:
+  Map task intent to affected components and knowledge domains.
+
+Input:
+  intent:        <natural language or structured intent>
+  affected_area: <component path>
+
+Routes:
+  BACKEND     → skills/backend, architecture/backend, DDD/domain-services
+  DATABASE    → skills/databases, architecture/data, migrations
+  API         → skills/api, architecture/networking, contracts/openapi
+  QA          → skills/testing, architecture/observability
+  SECURITY    → skills/security, governance/capabilities
+  DEVOPS      → skills/platforms, architecture/deployment
+  FRONTEND    → skills/frameworks/frontend, architecture/presentation
+
+Rules:
+  [CR-01] Router MUST output component list, not load content.
+  [CR-02] Router MUST include parent domains (e.g., BACKEND → DOMAIN).
+  [CR-03] Router MUST exclude unrelated domains.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Skills: @../../skills/INDEX.sdd
+  Architecture: @../../architecture/INDEX.sdd
+
+State: +

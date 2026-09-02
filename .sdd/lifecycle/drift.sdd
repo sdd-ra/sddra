@@ -184,17 +184,168 @@ Owns: lifecycle/drift.sdd
     AI alerts: "Architecture exception E22 has expired; violation V22
                 is now active again. Extension requires new approval."
 
+## Drift Types (Extended)
+
+  STRUCTURAL
+    Declared directory/module layout diverges from code.
+    Example:
+      .sdd:  internal/payment/domain
+      code:  internal/payment/core
+
+  BEHAVIORAL
+    Declared behavior differs from runtime behavior.
+    Example:
+      .sdd:  refund is idempotent
+      code:  duplicate request → duplicate refund
+
+  CONTRACT
+    API/interface contract diverges from implementation.
+    Example:
+      .sdd:  POST /payments/refund → { "id": "..." }
+      code:  POST /payments/refund → { "refund_id": "..." }
+
+  DATABASE
+    Schema/constraint in .sdd diverges from actual DB/migration.
+    Example:
+      .sdd:  users.email NOT NULL UNIQUE
+      code:  email nullable
+
+  SECURITY
+    Security policy in .sdd diverges from implementation/runtime.
+    Example:
+      .sdd:  secrets must never enter AI context
+      code:  secret injected into prompt at runtime
+
+  CONFIGURATION
+    Declared config requirement diverges from deployed/runtime config.
+    Example:
+      .sdd:  Redis required
+      deploy: REDIS_ENABLED=false
+
+  DOCUMENTATION
+    Code/db/runtime surface diverges from docs.
+    Example:
+      .sdd/docs:  POST /v2/refunds
+      code:        POST /v1/refunds
+
+  TERMINOLOGY
+    Codebase terms diverge from policy terms.
+    (Existing terminology_drift section above)
+
+## Drift Classification
+
+  DECLARATION_WRONG:   .sdd is outdated; code follows newer requirement
+  CODE_WRONG:          .sdd is correct; code violates declared rule
+  BOTH_OUTDATED:       Neither .sdd nor code reflects current requirement; redesign needed
+  UNKNOWN:             Insufficient evidence to classify
+
+## Source-of-Truth Matrix
+
+  @truth.<domain>
+    source: <sdd | code | migrations | openapi | runtime-observation | human>
+    authority: <who/what decides>
+
+  Examples:
+    @truth.api
+      source: openapi
+
+    @truth.database
+      source: migrations
+
+    @truth.runtime
+      source: runtime-observation
+
+    @truth.architecture
+      source: sdd
+
+## Epistemic States
+
+  OBSERVED:    Fact directly seen in code/runtime/DB/infra
+  INFERRED:    Conclusion drawn from observations with reasoning chain
+  DECLARED:    Fact asserted in .sdd (may be outdated)
+  VERIFIED:    Fact confirmed by proof (test, static analysis, runtime check)
+
+## Sync Operations
+
+  SYNC_SDD:    Code is correct, .sdd is outdated → update .sdd
+  SYNC_CODE:   .sdd is correct, code violates → fix code
+  SYNC_BOTH:   New requirement invalidates both → update both
+  NO_CHANGE:   Drift is accepted (has @exception.* or @decision.*)
+  REVIEW:      Insufficient evidence to auto-sync
+
+## Evidence System
+
+  Drift record MUST include:
+    evidence:
+      - @evidence.E<id>
+      - @test.T<id>
+      - @code.C<id>
+      - @decision.D<id>
+
+  Evidence sources:
+    STATIC      — static analysis, AST, grep
+    TEST        — test suite result
+    RUNTIME     — runtime observation, profiler, log
+    HUMAN       — human review, approval
+    EXTERNAL    — third-party tool, API response
+    FORMAL      — formal verification, proof assistant
+
+## Proof & Confidence
+
+  @proof.P<id>
+    rule:        <@architecture.rule.R<id>>
+    type:        <STATIC | TEST | RUNTIME | HUMAN | EXTERNAL | FORMAL>
+    result:      <PASS | FAIL | PARTIAL>
+    confidence:  <HIGH | MEDIUM | LOW>
+    evidence:    [<ids>]
+
+  Confidence matrix:
+    HIGH   — multiple evidence types, verified by tests/runtime
+    MEDIUM — single evidence type, static analysis only
+    LOW    — inference only, no direct evidence
+
+## No Silent Sync
+
+  Any architecture rule change MUST produce:
+    @decision.D<id>
+    from: <old>
+    to:   <new>
+    reason: <why>
+    impact: [<affected domains>]
+    migration: [<task ids>]
+
+    lineage:
+      <old architecture>
+        ↓
+      D<id>
+        ↓
+      <new architecture>
+        ↓
+      T<task>
+        ↓
+      code
+        ↓
+      tests
+        ↓
+      verification
+
 ## Drift Integration
 
   Drift detection runs:
     - After task completion (per learning-gate.sdd)
     - Weekly (per health-score.sdd)
-    - On demand (via sdd-health command with --drift flag)
+    - On demand (via sdd-health command with --drift flag, /sdd-drift command)
 
   Detected drift flows:
     terminology_drift → @observation.terminology-drift → reviewed by compactor
     architecture_drift → @violation.* → violation lifecycle
-    code_drift → @observation.* → candidate/knowledge pipeline
+    structural_drift → @drift.D<id> → sync proposal
+    behavioral_drift → @drift.D<id> → classification → sync task
+    contract_drift → @drift.D<id> → sync proposal
+    database_drift → @drift.D<id> → migration task
+    security_drift → @drift.D<id> → security event
+    configuration_drift → @drift.D<id> → config update
+    documentation_drift → @drift.D<id> → doc sync
 
 Navigation:
   Parent: @INDEX.sdd
@@ -208,5 +359,9 @@ Navigation:
   GraphModel: @../graph/model.sdd
   Architecture: @../architecture/INDEX.sdd
   Evolution: @../evolution/INDEX.sdd
+  Queries: @../queries/INDEX.sdd
+  DriftQuery: @../queries/drift-detection.sdd
+  SyncQuery: @../queries/sync-operations.sdd
+  TraceabilityQuery: @../queries/traceability.sdd
 
 State: +

@@ -1,0 +1,57 @@
+# Skill: Design System
+
+Purpose:
+  Govern design tokens, components, and patterns as a shared system.
+  Ensure consistency across products and teams.
+
+Owns: design/design-system.sdd
+ID: DESIGN-SYSTEM
+
+Domain: design
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - Design system audits
+  - Token governance
+  - Component consistency checks
+  - Design-to-code alignment
+
+Input:
+  - DESIGN.md or design token file
+  - Component implementations
+  - Usage examples
+
+Output:
+  - Token coverage report
+  - Component variance analysis
+  - Consistency score
+
+Design Tokens:
+  - Color: palette, semantic, shades
+  - Typography: font families, scales, line heights
+  - Spacing: base unit, scale, composition
+  - Motion: duration, easing, choreography
+  - Elevation: shadow scale, z-index layers
+  - Radius: rounding scale
+
+Execute:
+  1. Parse DESIGN.md for declared tokens
+  2. Scan codebase for hard-coded values
+  3. Map hard-coded values to closest token
+  4. Flag variance > 10% from token scale
+  5. Check component API consistency: props, variants, slots
+  6. Verify responsive token usage
+
+Validation:
+  - No hard-coded colors outside theme files
+  - Spacing follows 8px grid
+  - Typography uses defined scale
+
+Avoid:
+  - Token sprawl: every shade as separate token
+  - Component drift: same component implemented differently
+
+State: +

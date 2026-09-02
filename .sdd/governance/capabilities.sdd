@@ -161,6 +161,13 @@ Owns: governance/capabilities.sdf
   risk: HIGH
   resources: @resource.decision-system
 
+### @capability.model.modify
+  category: SYSTEM
+  description: Modify AI model weights and behavior (including safety alignment removal)
+  permission: @permission.model-modify
+  risk: CRITICAL
+  resources: @resource.model-files
+
 ## Agent Capability Mapping
 
   @agent.backend:

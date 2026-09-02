@@ -1,0 +1,66 @@
+# Skill: Design Heuristics
+
+Purpose:
+  Apply Nielsen heuristics and domain-specific design rules to evaluate
+  usability and interaction quality.
+
+Owns: design/design-heuristics.sdd
+ID: DESIGN-HEURISTICS
+
+Domain: design
+
+Level: L3
+
+Status: STABLE
+
+Use:
+  - UX audits
+  - Interaction design reviews
+  - Usability evaluation
+  - Flow analysis
+
+Input:
+  - User flows
+  - Interface mockups or code
+  - Task scenarios
+
+Output:
+  - Heuristic violation list
+  - Severity ratings
+  - Fix recommendations
+
+Heuristics:
+  1. Visibility of system status
+  2. Match between system and real world
+  3. User control and freedom
+  4. Consistency and standards
+  5. Error prevention
+  6. Recognition rather than recall
+  7. Flexibility and efficiency of use
+  8. Aesthetic and minimalist design
+  9. Help users recognize, diagnose, recover from errors
+  10. Help and documentation
+
+Severity:
+  0: Not a usability problem
+  1: Cosmetic
+  2: Minor
+  3: Major
+  4: Catastrophic
+
+Execute:
+  1. Map user flows
+  2. For each screen/state, evaluate against 10 heuristics
+  3. Rate severity
+  4. Group violations by flow
+  5. Prioritize fixes (severity 3-4 first)
+
+Validation:
+  - No catastrophic violations without remediation plan
+  - All major violations documented
+
+Avoid:
+  - Subjective aesthetic preferences framed as heuristic violations
+  - Ignoring context-specific trade-offs
+
+State: +

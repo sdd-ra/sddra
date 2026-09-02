@@ -1,0 +1,59 @@
+# Skill: Design Review
+
+Purpose:
+  Holistic design review combining taste, heuristics, visual fidelity,
+  UX patterns, accessibility, and design system compliance.
+
+Owns: design/design-review.sdd
+ID: DESIGN-REVIEW
+
+Domain: design
+
+Level: L4
+
+Status: STABLE
+
+Use:
+  - Pre-merge design review
+  - Design quality gates
+  - Cross-disciplinary feedback
+
+Input:
+  - Implementation or design artifact
+  - DESIGN.md context
+  - Task requirements
+
+Output:
+  - Design review report
+  - Pass/Warn/Block decision
+  - Prioritized action items
+
+Review Checklist:
+  1. Taste: generic patterns? slop detected?
+  2. Heuristics: usability issues?
+  3. Visual: matches design intent?
+  4. UX: standard patterns used?
+  5. Accessibility: WCAG baseline met?
+  6. Design system: tokens and components consistent?
+
+Decision Matrix:
+  - PASS: all categories >= 70, no BLOCK
+  - WARN: one category 50-69, or multiple WARN
+  - BLOCK: any category < 50, or accessibility BLOCK, or slop detected
+
+Execute:
+  1. Run all design skill evaluations
+  2. Aggregate scores
+  3. Apply decision matrix
+  4. Produce prioritized action items
+  5. Link to specific @design.* records
+
+Validation:
+  - BLOCK requires human review before merge
+  - WARN items must be addressed within sprint
+
+Avoid:
+  - Reviewing without context (no DESIGN.md, no requirements)
+  - Subjective preference overriding measurable criteria
+
+State: +

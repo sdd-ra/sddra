@@ -1,0 +1,61 @@
+# Skill: UX Patterns
+
+Purpose:
+  Catalog and evaluate common UX patterns. Ensure implementations use
+  proven interaction patterns rather than inventing new ones.
+
+Owns: design/ux-patterns.sdd
+ID: DESIGN-UX-PATTERNS
+
+Domain: design
+
+Level: L2
+
+Status: STABLE
+
+Use:
+  - UX pattern selection
+  - Interaction design validation
+  - Navigation and flow audits
+
+Input:
+  - Product requirements
+  - User personas
+  - Current implementation
+
+Output:
+  - Recommended patterns
+  - Anti-patterns detected
+  - Flow improvement suggestions
+
+Pattern Catalog:
+  - Navigation: tabs, breadcrumbs, sidebar, bottom nav
+  - Forms: inline validation, progressive disclosure, wizard
+  - Feedback: toast, modal, inline, skeleton
+  - Onboarding: tour, checklist, empty states
+  - Search: autocomplete, filters, saved searches
+  - Authentication: OAuth, SSO, passwordless
+
+Anti-Patterns:
+  - Hamburger menu for < 5 items
+  - Modals for confirmations only
+  - Infinite scroll for task-oriented content
+  - Generic empty states without guidance
+  - Search without filters or suggestions
+
+Execute:
+  1. Map user journeys
+  2. Match each interaction to pattern catalog
+  3. Flag anti-patterns
+  4. Suggest standard alternatives
+  5. Document deviations with rationale
+
+Validation:
+  - Deviations from standard patterns MUST have rationale
+  - Anti-patterns MUST be removed or justified
+
+Avoid:
+  - Reinventing well-solved interaction patterns
+  - Pattern mismatch across similar contexts
+
+State: +

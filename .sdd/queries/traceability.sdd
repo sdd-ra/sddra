@@ -1,0 +1,37 @@
+# Query: Bidirectional Traceability
+
+Spec: QueryTraceability
+Purpose:
+  Trace requirements ↔ decisions ↔ tasks ↔ code ↔ tests ↔ proof.
+
+Query:
+  FORWARD:  requirement → decision → task → code → test → proof
+  REVERSE:  code → task → decision → requirement
+
+  Compact IDs:
+    R<id>  — Requirement
+    D<id>  — Decision
+    T<id>  — Task
+    C<id>  — Code artifact
+    X<id>  — Test
+    P<id>  — Proof
+
+  output:
+    trace_chain:
+      direction: <forward | reverse>
+      start: <@entity>
+      nodes:
+        - id: <R101 | D202 | ...>
+          type: <requirement | decision | task | code | test | proof>
+          artifact: <path or reference>
+          status: <active | deprecated | superseded>
+
+SavedAs: @query:traceability
+
+Navigation:
+  Parent: @../INDEX.sdd
+  DriftSpec: @../lifecycle/drift.sdd
+  EpistemicStates: @../concepts/epistemic-entities.sdd
+  Decisions: @../decisions/INDEX.sdd
+
+State: +

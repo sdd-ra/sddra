@@ -1,0 +1,56 @@
+# /sdd-trace
+
+Purpose:
+  Bidirectional traceability from requirement to proof and back.
+
+Owns: commands/sdd-trace.sdd
+
+Description:
+  Traces forward (requirement → decision → task → code → test → proof)
+  and reverse (code → task → decision → requirement). Uses compact IDs
+  (R, D, T, C, X, P prefixes) for human-readable trace chains.
+
+Usage:
+  /sdd-trace --forward <R<id>|D<id>|T<id>|C<id>|X<id>|P<id>>
+  /sdd-trace --reverse <file-path>
+  /sdd-trace --coverage
+
+Options:
+  --forward  Trace forward from entity ID
+  --reverse  Trace reverse from code file path
+  --coverage Show requirement/test/proof coverage ratios
+
+Mode: READ_ONLY
+
+Output:
+  TRACE CHAIN
+
+    Direction: <forward | reverse>
+    Start:     <R101 | /src/payment/service.ts>
+    Chain:
+      [R101] requirement: payment-refund-idempotency
+        → [D202] decision: use idempotency key
+          → [T303] task: implement refund idempotency
+            → [C404] code: internal/payment/service.go
+              → [X505] test: TestRefundIdempotency
+                → [P606] proof: PASS (test suite)
+
+    Coverage:
+      Requirements: 100
+      Implemented:  96
+      Tested:       91
+      Verified:     87
+      Coverage:     87%
+
+Rules:
+  [TRC-01] /sdd-trace MUST show full chain or report BREAK.
+  [TRC-02] /sdd-trace MUST include confidence for inferred links.
+  [TRC-03] /sdd-trace coverage MUST count verified items only.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  Queries: @../queries/traceability.sdd
+  EpistemicEntities: @../concepts/epistemic-entities.sdd
+  Decisions: @../decisions/INDEX.sdd
+
+State: +

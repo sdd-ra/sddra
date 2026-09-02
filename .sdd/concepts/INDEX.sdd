@@ -37,6 +37,9 @@ Navigation:
   Promotion: @promotion.sdd
   KnowledgeModel: @KNOWLEDGE-MODEL.sdd
   RelationshipVocabulary: @RELATIONSHIP-VOCABULARY.sdd
+  EpistemicEntities: @epistemic-entities.sdd
+  DecisionCanvas: @decision-canvas.sdd
+  ReasoningPipeline: @reasoning-pipeline.sdd
   References: @../references/INDEX.sdd
   Skills: @../skills/INDEX.sdd
   Projects: @../projects/INDEX.sdd

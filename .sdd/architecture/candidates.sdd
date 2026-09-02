@@ -1,0 +1,38 @@
+# Architecture Candidates & Experiments
+
+Spec: ArchitectureCandidates
+Purpose:
+  Manage external/internal architecture proposals before adoption.
+
+Lifecycle:
+  CANDIDATE → EXPERIMENT → EVIDENCE → ADOPT / REJECT / SUPERSEDE
+
+@architecture.candidate.A<id>
+  source:       <external | internal>
+  hypothesis:   <pattern description>
+  project_fit:  <0-100%>
+  risks:        [<risk list>]
+  recommended_scope: <domain or component>
+  status:       <CANDIDATE | EXPERIMENT | EVALUATING | ADOPTED | REJECTED>
+
+@experiment.E<id>
+  candidate:    @architecture.candidate.A<id>
+  hypothesis:   <testable claim>
+  scope:        <sandbox or limited domain>
+  success_criteria:
+    - <metric> <operator> <value>
+  failure_criteria:
+    - <metric> <operator> <value>
+  status:       <RUNNING | COMPLETED | ABANDONED>
+
+Adaptation Decisions:
+  ADOPT:    external pattern fits project as-is
+  ADAPT:    external pattern modified for project constraints
+  REJECT:   external pattern unsuitable
+  SUPERSEDE: existing rule replaced by new pattern
+
+Navigation:
+  Parent: @INDEX.sdd
+  ExternalStudy: @../references/sdd/living-specs-best-practices.sdd
+
+State: +

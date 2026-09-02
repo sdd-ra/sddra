@@ -43,6 +43,11 @@ Commands:
   /sdd-scan: Run security pattern scans against code files
   /sdd-dependencies: Analyze and visualize dependency graph
   /sdd-purge: Audit and clean AI provenance marks from artifacts
+  /sdd-drift: Detect drift between .sdd declarations and observed reality
+  /sdd-sync: Propose and execute sync operations for detected drift
+  /sdd-trace: Bidirectional traceability from requirement to proof and back
+  /sdd-context: Compile minimal context pack for task execution
+  /sdd-design: Design analysis, evaluation, discovery, and auto-invocation
 
 Navigation:
   Chains: @../chains/INDEX.sdd
@@ -70,5 +75,10 @@ Navigation:
   ScanCommand: @sdd-scan.sdd
   DependenciesCommand: @sdd-dependencies.sdd
   PurgeCommand: @sdd-purge.sdd
+  DriftCommand: @sdd-drift.sdd
+  SyncCommand: @sdd-sync.sdd
+  TraceCommand: @sdd-trace.sdd
+  ContextCommand: @sdd-context.sdd
+  DesignCommand: @sdd-design.sdd
 
 State: +

@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["*.ts", "security/*.ts", "__tests__/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["*.ts", "security/*.ts", "drift-detector.ts", "sync-engine.ts", "trace-engine.ts", "evidence-binder.ts"],
+  "exclude": ["node_modules", "dist", "__tests__"]
 }

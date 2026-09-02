@@ -2,6 +2,14 @@ import fs from "fs";
 import path from "path";
 import { HookBridge } from "./hook-bridge";
 import { ProvenanceClient } from "./provenance-client";
+import { DriftDetector } from "./drift-detector";
+import { SyncEngine } from "./sync-engine";
+import { TraceEngine } from "./trace-engine";
+import { ContextCompiler } from "./context-compiler";
+import { ContextManifestStore } from "./context-manifest";
+import { DesignAnalyzer } from "./design-analyzer";
+import { SkillAutoInvoker } from "./skill-auto-invoker";
+import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult } from "./types";
 
 export interface CommandResult {
   command: string;
@@ -34,8 +42,18 @@ export class CommandRunner {
         return this.runAssumptionsCommand(args);
       case "/sdd-intents":
         return this.runIntentsCommand(args);
-      case "/sdd-purge":
+     case "/sdd-purge":
         return this.runPurgeCommand(args);
+      case "/sdd-drift":
+        return this.runDriftCommand(args);
+      case "/sdd-sync":
+        return this.runSyncCommand(args);
+      case "/sdd-trace":
+        return this.runTraceCommand(args);
+      case "/sdd-context":
+        return this.runContextCommand(args);
+      case "/sdd-design":
+        return this.runDesignCommand(args);
       default:
         return {
           command: normalized,
@@ -533,6 +551,437 @@ export class CommandRunner {
       exitCode: inspectOnly ? 0 : 0,
       output: outputLines.join("\n"),
       findings: allFindings,
+    };
+  }
+
+  private async runDriftCommand(args: string[]): Promise<CommandResult> {
+    const detector = new DriftDetector(this.sddRoot, this.projectRoot);
+    const typeFilter = args.find(a => a.startsWith("--type"))?.split("=")[1];
+    const severityFilter = args.find(a => a.startsWith("--severity"))?.split("=")[1];
+    const scopeArg = args.find(a => a.startsWith("--scope"))?.split("=")[1];
+
+    let records: DriftRecord[];
+    let byType: Record<string, number> = {};
+    let byClassification: Record<string, number> = {};
+    let totalDrifts = 0;
+
+    if (typeFilter) {
+      records = await detector.detectByType(typeFilter as any, scopeArg);
+      totalDrifts = records.length;
+      for (const r of records) {
+        byType[r.type] = (byType[r.type] || 0) + 1;
+        byClassification[r.classification] = (byClassification[r.classification] || 0) + 1;
+      }
+    } else {
+      const result = await detector.detectAll(scopeArg);
+      records = result.items;
+      totalDrifts = result.totalDrifts;
+      byType = result.byType;
+      byClassification = result.byClassification;
+    }
+    const allFindings: Array<Record<string, unknown>> = [];
+
+    for (const drift of records) {
+      if (severityFilter && drift.severity !== severityFilter) continue;
+      allFindings.push({
+        id: drift.id,
+        type: drift.type,
+        classification: drift.classification,
+        confidence: drift.confidence,
+        declared: drift.declared,
+        observed: drift.observed,
+        evidence: drift.evidence,
+        syncOp: drift.syncOp,
+        severity: drift.severity,
+      });
+    }
+
+    const decision = (byType["structural"] || 0) > 0 || (byType["security"] || 0) > 0 ? "WARN" : "PASS";
+    const outputLines = [
+      "DRIFT REPORT",
+      "",
+      `Total Drifts:       ${totalDrifts}`,
+      "By Type:",
+      `  Structural:       ${byType["structural"] || 0}`,
+      `  Behavioral:       ${byType["behavioral"] || 0}`,
+      `  Contract:         ${byType["contract"] || 0}`,
+      `  Database:         ${byType["database"] || 0}`,
+      `  Security:         ${byType["security"] || 0}`,
+      `  Configuration:    ${byType["configuration"] || 0}`,
+      `  Documentation:    ${byType["documentation"] || 0}`,
+      `  Terminology:      ${byType["terminology"] || 0}`,
+      "By Classification:",
+      `  Declaration Wrong: ${byClassification["DECLARATION_WRONG"] || 0}`,
+      `  Code Wrong:        ${byClassification["CODE_WRONG"] || 0}`,
+      `  Both Outdated:     ${byClassification["BOTH_OUTDATED"] || 0}`,
+      `  Unknown:           ${byClassification["UNKNOWN"] || 0}`,
+      `Decision:           ${decision}`,
+      "",
+    ];
+
+    if (allFindings.length > 0) {
+      outputLines.push("Drift Items:");
+      for (const f of allFindings.slice(0, 50)) {
+        outputLines.push(`  [${f.severity}] ${f.id} | ${f.type} | ${f.classification}`);
+        outputLines.push(`    Declared: ${f.declared}`);
+        outputLines.push(`    Observed: ${f.observed}`);
+        outputLines.push(`    Sync:     ${f.syncOp}`);
+      }
+    }
+
+    return {
+      command: "/sdd-drift",
+      decision,
+      exitCode: decision === "PASS" ? 0 : 1,
+      output: outputLines.join("\n"),
+      findings: allFindings,
+    };
+  }
+
+  private async runSyncCommand(args: string[]): Promise<CommandResult> {
+    const detector = new DriftDetector(this.sddRoot, this.projectRoot);
+    const syncEngine = new SyncEngine();
+
+    const driftResult = await detector.detectAll();
+    const plans = syncEngine.proposeSync(driftResult.items);
+
+    const outputLines = [
+      "SYNC OPERATIONS",
+      "",
+      `Total Plans:      ${plans.length}`,
+      `Requires Approval: ${plans.filter(p => p.requiresApproval).length}`,
+      "",
+    ];
+
+    for (const plan of plans.slice(0, 20)) {
+      outputLines.push(`[${plan.operation}] ${plan.id} → Drift: ${plan.driftId}`);
+      outputLines.push(`  Targets: ${plan.targetFiles.join(", ")}`);
+      outputLines.push(`  Rationale: ${plan.rationale}`);
+      outputLines.push(`  Approval: ${plan.requiresApproval ? "REQUIRED" : "not required"}`);
+      outputLines.push("");
+
+      if (args.includes("--dry-run")) continue;
+      if (plan.requiresApproval && !args.includes("--auto-approve")) continue;
+
+      if (plan.operation === "SYNC_SDD") {
+        outputLines.push(`  [PROPOSED DECISION] ${syncEngine.generateDecision(plan).split("\n")[0]}`);
+      }
+      if (plan.operation === "SYNC_CODE" || plan.operation === "SYNC_BOTH") {
+        outputLines.push(`  [PROPOSED TASK] ${syncEngine.generateTask(plan).split("\n")[0]}`);
+      }
+    }
+
+    if (args.includes("--dry-run")) {
+      outputLines.unshift("DRY RUN — no changes will be made");
+    }
+
+    const decision = plans.some(p => p.requiresApproval) ? "WARN" : "PASS";
+    return {
+      command: "/sdd-sync",
+      decision,
+      exitCode: 0,
+      output: outputLines.join("\n"),
+    };
+  }
+
+  private async runTraceCommand(args: string[]): Promise<CommandResult> {
+    const tracer = new TraceEngine(this.sddRoot, this.projectRoot);
+    const forwardArg = args.find(a => a.startsWith("--forward"))?.split("=")[1];
+    const reverseArg = args.find(a => a.startsWith("--reverse"))?.split("=")[1];
+    const coverageArg = args.includes("--coverage");
+
+    if (coverageArg) {
+      const coverage = await tracer.computeCoverage();
+      const coveragePct = coverage.requirements > 0
+        ? Math.round((coverage.verified / coverage.requirements) * 100)
+        : 0;
+
+      const outputLines = [
+        "TRACE COVERAGE",
+        "",
+        `Requirements:   ${coverage.requirements}`,
+        `Implemented:    ${coverage.implemented}`,
+        `Tested:         ${coverage.tested}`,
+        `Verified:       ${coverage.verified}`,
+        `Coverage:       ${coveragePct}%`,
+      ];
+
+      return {
+        command: "/sdd-trace",
+        decision: "PASS",
+        exitCode: 0,
+        output: outputLines.join("\n"),
+      };
+    }
+
+    if (!forwardArg && !reverseArg) {
+      return {
+        command: "/sdd-trace",
+        decision: "PASS",
+        exitCode: 0,
+        output: "Usage: /sdd-trace --forward <R<id>|D<id>|T<id>|C<id>|X<id>|P<id>> | --reverse <file-path> | --coverage",
+      };
+    }
+
+    const chain: TraceChain = forwardArg
+      ? await tracer.traceForward(forwardArg)
+      : await tracer.traceReverse(reverseArg!);
+
+    const outputLines = [
+      "TRACE CHAIN",
+      "",
+      `Direction: ${chain.direction}`,
+      `Start:     ${chain.start}`,
+      "",
+      "Chain:",
+    ];
+
+    let indent = "";
+    for (const node of chain.nodes) {
+      outputLines.push(`${indent}[${node.prefix}] ${node.type}: ${node.id} (${node.artifact})`);
+      indent += "  ";
+    }
+
+    if (chain.nodes.length === 0) {
+      outputLines.push("  (no trace links found — BREAK)");
+    }
+
+    return {
+      command: "/sdd-trace",
+      decision: "PASS",
+      exitCode: 0,
+      output: outputLines.join("\n"),
+    };
+  }
+
+  private async runContextCommand(args: string[]): Promise<CommandResult> {
+    const compiler = new ContextCompiler();
+    const manifestStore = new ContextManifestStore();
+    const taskId = args.find(a => a.startsWith("--task"))?.split("=")[1];
+    const intent = args.find(a => a.startsWith("--intent"))?.split("=")[1]?.replace(/^"|"$/g, "");
+    const manifestId = args.find(a => a.startsWith("--manifest"))?.split("=")[1];
+    const validateId = args.find(a => a.startsWith("--validate"))?.split("=")[1];
+    const budgetArg = args.find(a => a.startsWith("--budget"))?.split("=")[1];
+    const explainId = args.find(a => a.startsWith("--explain"))?.split("=")[1];
+
+    if (manifestId) {
+      const manifest = manifestStore.load(manifestId);
+      if (!manifest) {
+        return {
+          command: "/sdd-context",
+          decision: "PASS",
+          exitCode: 0,
+          output: `Manifest not found: ${manifestId}`,
+        };
+      }
+      const lines = [
+        "CONTEXT MANIFEST",
+        "",
+        `Task:           ${manifest.taskId}`,
+        `Compiled At:    ${manifest.compiledAt}`,
+        `Layers:         ${manifest.layers.join(", ")}`,
+        `References:     ${manifest.included.length}`,
+        `Budget:         ${manifest.budget.maxRefs} refs / ${manifest.budget.maxTokens} tokens`,
+        `Confidence:     ${manifest.confidence}`,
+        `Freshness:      ${manifest.freshness}`,
+        `Contradictions: ${manifest.contradictions.length}`,
+        "",
+        "Included:",
+      ];
+      for (const ref of manifest.included.slice(0, 20)) {
+        lines.push(`  [${ref.layer}] ${ref.id} (score: ${ref.score.toFixed(2)})`);
+      }
+      lines.push("");
+      lines.push("Excluded:");
+      for (const ref of manifest.excluded.slice(0, 20)) {
+        lines.push(`  ${ref.id}: ${ref.exclusionReason || "low_score"}`);
+      }
+      if (manifest.contradictions.length > 0) {
+        lines.push("");
+        lines.push("Contradictions:");
+        for (const c of manifest.contradictions) {
+          lines.push(`  ${c}`);
+        }
+      }
+      return {
+        command: "/sdd-context",
+        decision: "PASS",
+        exitCode: 0,
+        output: lines.join("\n"),
+      };
+    }
+
+    if (!intent && !taskId) {
+      return {
+        command: "/sdd-context",
+        decision: "PASS",
+        exitCode: 0,
+        output: "Usage: /sdd-context --intent \"<text>\" or --task T<id>",
+      };
+    }
+
+    const risk: BudgetRisk = budgetArg === "LOW" || budgetArg === "MEDIUM" || budgetArg === "HIGH" || budgetArg === "CRITICAL"
+      ? budgetArg
+      : "MEDIUM";
+
+    const pack = await compiler.compile({
+      taskId,
+      intent: intent || "",
+      risk,
+      dependencies: [],
+    });
+
+    manifestStore.save(pack.manifest);
+
+    const lines = [
+      "CONTEXT PACK",
+      "",
+      `Task:           ${pack.manifest.taskId}`,
+      `Layers:         ${pack.manifest.layers.join(", ")}`,
+      `References:     ${pack.manifest.included.length}`,
+      `Budget:         ${pack.manifest.budget.maxRefs} refs / ${pack.manifest.budget.maxTokens} tokens`,
+      `Used:           ${pack.manifest.budgetUsed.refs} refs / ${pack.manifest.budgetUsed.tokens} tokens`,
+      `Confidence:     ${pack.manifest.confidence}`,
+      `Freshness:      ${pack.manifest.freshness}`,
+      `Contradictions: ${pack.manifest.contradictions.length}`,
+      "",
+      "Included:",
+    ];
+
+    for (const ref of pack.manifest.included.slice(0, 20)) {
+      lines.push(`  [${ref.layer}] ${ref.id} (score: ${ref.score.toFixed(2)})`);
+    }
+
+    if (pack.manifest.excluded.length > 0) {
+      lines.push("");
+      lines.push("Excluded:");
+      for (const ref of pack.manifest.excluded.slice(0, 20)) {
+        lines.push(`  ${ref.id}: ${ref.exclusionReason || "low_score"}`);
+      }
+    }
+
+    if (pack.manifest.contradictions.length > 0) {
+      lines.push("");
+      lines.push("Contradictions:");
+      for (const c of pack.manifest.contradictions) {
+        lines.push(`  ${c}`);
+      }
+    }
+
+    return {
+      command: "/sdd-context",
+      decision: "PASS",
+      exitCode: 0,
+      output: lines.join("\n"),
+    };
+  }
+
+  private async runDesignCommand(args: string[]): Promise<CommandResult> {
+    const analyzer = new DesignAnalyzer();
+    const invoker = new SkillAutoInvoker();
+    const evaluateArg = args.includes("--evaluate");
+    const discoverArg = args.includes("--discover");
+    const reviewArg = args.find(a => a.startsWith("--review"))?.split(" ")[1];
+    const manualArg = args.includes("--manual");
+    const autoArg = args.includes("--auto");
+
+    if (discoverArg) {
+      const discovery = await analyzer.discover();
+      const outputLines = [
+        "DESIGN SKILL DISCOVERY",
+        "",
+        `Missing Skills:     ${discovery.missing.length}`,
+        `Recommendations:    ${discovery.recommendations.length}`,
+        "",
+      ];
+
+      for (const rec of discovery.recommendations) {
+        outputLines.push(`  [${(rec.relevance * 100).toFixed(0)}%] ${rec.skill}`);
+      }
+
+      return {
+        command: "/sdd-design",
+        decision: "PASS",
+        exitCode: 0,
+        output: outputLines.join("\n"),
+      };
+    }
+
+    const targetPath = reviewArg || this.projectRoot;
+    const evaluations = evaluateArg || reviewArg
+      ? await analyzer.evaluate(targetPath)
+      : await analyzer.evaluate(this.projectRoot);
+
+    const categoryScores: Record<string, { total: number; count: number }> = {};
+    const allIssues: Array<Record<string, unknown>> = [];
+
+    for (const ev of evaluations) {
+      if (!categoryScores[ev.category]) {
+        categoryScores[ev.category] = { total: 0, count: 0 };
+      }
+      categoryScores[ev.category].total += ev.score;
+      categoryScores[ev.category].count++;
+
+      for (const issue of ev.issues) {
+        allIssues.push({
+          category: ev.category,
+          severity: issue.severity,
+          description: issue.description,
+          recommendation: issue.recommendation,
+        });
+      }
+    }
+
+    const avgScore = (category: string) =>
+      categoryScores[category]?.count ? Math.round(categoryScores[category].total / categoryScores[category].count) : 0;
+
+    const overallScore = evaluations.length > 0
+      ? Math.round(evaluations.reduce((sum, ev) => sum + ev.score, 0) / evaluations.length)
+      : 0;
+
+    const decision = overallScore >= 70 ? "PASS" : overallScore >= 50 ? "WARN" : "BLOCK";
+
+    const outputLines = [
+      "DESIGN EVALUATION",
+      "",
+      `Overall Score:      ${overallScore}`,
+      `Category Scores:`,
+      `  Taste:            ${avgScore("taste")}`,
+      `  Heuristics:       ${avgScore("heuristics")}`,
+      `  Visual:           ${avgScore("visual")}`,
+      `  UX:               ${avgScore("ux")}`,
+      `  Accessibility:    ${avgScore("accessibility")}`,
+      `  Design System:    ${avgScore("design-system")}`,
+      `Decision:           ${decision}`,
+      "",
+    ];
+
+    if (allIssues.length > 0) {
+      outputLines.push("Issues:");
+      for (const issue of allIssues.slice(0, 30)) {
+        outputLines.push(`  [${issue.severity}] ${issue.category}: ${issue.description}`);
+        outputLines.push(`    Recommendation: ${issue.recommendation}`);
+      }
+    }
+
+    if (autoArg || !manualArg) {
+      const context = invoker.detectContext(args.join(" "));
+      if (invoker.shouldInvokeDesign(args.join(" "))) {
+        const suggested = invoker.getSuggestedSkills(context);
+        outputLines.push("");
+        outputLines.push("Auto-Invoked Skills:");
+        for (const skill of suggested) {
+          outputLines.push(`  ${skill}`);
+        }
+      }
+    }
+
+    return {
+      command: "/sdd-design",
+      decision,
+      exitCode: decision === "BLOCK" ? 2 : 0,
+      output: outputLines.join("\n"),
+      findings: allIssues,
     };
   }
 }

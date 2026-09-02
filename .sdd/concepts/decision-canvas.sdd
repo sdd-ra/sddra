@@ -1,0 +1,66 @@
+# Decision Canvas
+
+Spec: DecisionCanvas
+Purpose:
+  Standard template for every engineering decision. Ensures all
+  required inputs are present before a decision is recorded.
+
+Template:
+  QUESTION:
+    <exact question being answered>
+
+  CONTEXT:
+    @context.CTX<id>
+    <project state, constraints, history>
+
+  FACTS:
+    - @fact.F<id>: <statement>
+    - @fact.F<id>: <statement>
+
+  ASSUMPTIONS:
+    - @assumption.A<id>: <statement> (confidence: <level>)
+
+  CONSTRAINTS:
+    - @constraint.C<id>: <statement>
+    - @constraint.C<id>: <statement>
+
+  OPTIONS:
+    A. <option A>
+    B. <option B>
+    C. <option C> (if applicable)
+
+  TRADE-OFFS:
+    - @tradeoff.T<id>: <pros/cons summary>
+
+  DECISION:
+    <chosen option>
+
+  REASON:
+    <why this option beats others>
+
+  RISK:
+    <what could go wrong>
+
+  REVERSIBLE:
+    true | false
+
+  EVIDENCE:
+    - @proof.P<id>
+    - @test.X<id>
+
+  FOLLOW-UP:
+    - <action>
+    - <verification>
+
+Rules:
+  [DC-01] Decision canvas MUST be complete before DECISION status = APPROVED.
+  [DC-02] Missing FACT or CONSTRAINT blocks approval.
+  [DC-03] TRADE-OFF section MUST list at least one pro and one con per option.
+  [DC-04] REVERSIBLE flag MUST be set for all decisions.
+
+Navigation:
+  Parent: @../INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Reasoning: @reasoning-pipeline.sdd
+
+State: +

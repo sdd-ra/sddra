@@ -1,0 +1,60 @@
+# Skills: Design
+
+Purpose:
+  Design skills for UI/UX, visual design, taste evaluation, heuristics,
+  accessibility, and design system governance. Covers frontend and
+  mobile design tasks.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @taste-evaluation.sdd
+   3  @design-heuristics.sdd
+   4  @visual-design.sdd
+   5  @ux-patterns.sdd
+   6  @accessibility.sdd
+   7  @design-system.sdd
+   8  @design-review.sdd
+
+Modes:
+  EVALUATE  — evaluate design quality
+  REVIEW    — review implementation against design principles
+  DISCOVER  — discover missing design skills
+  APPLY     — apply design skill to current context
+  AUTO      — auto-invoke on design-related tasks
+
+Rules:
+  [D1] Design skills MUST be invoked for any UI/UX/visual work.
+  [D2] Design evaluation MUST produce score and evidence.
+  [D3] Design review MUST check accessibility baseline.
+  [D4] Anti-slop rules: avoid generic AI-generated design fingerprints.
+  [D5] DESIGN.md files are source of truth for design systems.
+  [D6] Design skills MUST NOT block execution; they are advisory.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+  Resolve:
+    taste-evaluation
+    design-heuristics
+    visual-design
+    ux-patterns
+    accessibility
+    design-system
+    design-review
+
+Navigation:
+  Design: @design/INDEX.sdd
+  TasteEvaluation: @design/taste-evaluation.sdd
+  DesignHeuristics: @design/design-heuristics.sdd
+  VisualDesign: @design/visual-design.sdd
+  UXPatterns: @design/ux-patterns.sdd
+  Accessibility: @design/accessibility.sdd
+  DesignSystem: @design/design-system.sdd
+  DesignReview: @design/design-review.sdd
+  MetaDiscovery: @../meta/SKILL-DISCOVERY.sdd
+  AutoInvoke: @../agent/skill-auto-invoke.sdd
+
+State: +

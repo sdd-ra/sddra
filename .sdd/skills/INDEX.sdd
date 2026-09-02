@@ -75,12 +75,20 @@ ReadOrder:
    63 @cross-cutting/security/
    64 @cross-cutting/architecture/
     65  @cross-cutting/observability/
-    66  @sdd/INDEX.sdd
-    67  @sdd/SKILL-INTEGRATION-MODULE.sdd
-    68  @sdd/SKILL-EVENT-PROCESSOR.sdd
-    69  @sdd/SKILL-FIELD-MAPPING.sdd
-    70  @sdd/SKILL-NOTIFICATION.sdd
-    71  @sdd/SKILL-SCHEDULED-SYNC.sdd
+     66  @sdd/INDEX.sdd
+     67  @sdd/SKILL-INTEGRATION-MODULE.sdd
+     68  @sdd/SKILL-EVENT-PROCESSOR.sdd
+     69  @sdd/SKILL-FIELD-MAPPING.sdd
+     70  @sdd/SKILL-NOTIFICATION.sdd
+     71  @sdd/SKILL-SCHEDULED-SYNC.sdd
+     72  @design/INDEX.sdd
+     73  @design/taste-evaluation.sdd
+     74  @design/design-heuristics.sdd
+     75  @design/visual-design.sdd
+     76  @design/ux-patterns.sdd
+     77  @design/accessibility.sdd
+     78  @design/design-system.sdd
+     79  @design/design-review.sdd
 
 Modes:
   APPLY    — apply skill to current task
@@ -135,6 +143,7 @@ Entry:
     platforms
     messaging
     cross-cutting
+    design
 
 Navigation:
   Skills: @skills/INDEX.sdd
@@ -207,6 +216,14 @@ Navigation:
       SDDEventProcessor: @skills/sdd/SKILL-EVENT-PROCESSOR.sdd
       SDDFieldMapping: @skills/sdd/SKILL-FIELD-MAPPING.sdd
       SDDNotification: @skills/sdd/SKILL-NOTIFICATION.sdd
-      SDScheduledSync: @skills/sdd/SKILL-SCHEDULED-SYNC.sdd
+       SDScheduledSync: @skills/sdd/SKILL-SCHEDULED-SYNC.sdd
+       Design: @skills/design/INDEX.sdd
+       TasteEvaluation: @skills/design/taste-evaluation.sdd
+       DesignHeuristics: @skills/design/design-heuristics.sdd
+       VisualDesign: @skills/design/visual-design.sdd
+       UXPatterns: @skills/design/ux-patterns.sdd
+       Accessibility: @skills/design/accessibility.sdd
+       DesignSystem: @skills/design/design-system.sdd
+       DesignReview: @skills/design/design-review.sdd
 
 State: +

@@ -103,6 +103,14 @@ SpecialtyRoles:
     capabilities: content_creation, communication_triage, campaign_planning
     cannot: modify source code
 
+  @agent.design:
+    ecc_equivalent: design-reviewer, a11y-architect
+    purpose: design evaluation, visual quality, accessibility, taste enforcement
+    capabilities: design.evaluate, design.review, design.apply,
+                  design.system.check, accessibility.audit, taste.enforce
+    cannot: modify production code without approval
+    notes: Maps to design-reviewer and a11y-architect from ECC
+
 Integration:
   hook_bridge:
     source: .sdd/runtime/adapter-runtime.sdd

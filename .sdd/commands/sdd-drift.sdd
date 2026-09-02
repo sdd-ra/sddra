@@ -1,0 +1,70 @@
+# /sdd-drift
+
+Purpose:
+  Detect drift between .sdd declarations and observed reality across
+  all drift types.
+
+Owns: commands/sdd-drift.sdd
+
+Description:
+  Compares declared architecture, behavior, contracts, database schema,
+  security policies, configuration, documentation, and terminology
+  against code, tests, DB, API, and infra. Produces drift records with
+  classification and evidence.
+
+Usage:
+  /sdd-drift
+  /sdd-drift --type <structural|behavioral|contract|database|security|configuration|documentation|terminology>
+  /sdd-drift --scope <project|module|file>
+  /sdd-drift --severity <HIGH|MEDIUM|LOW>
+  /sdd-drift --json
+
+Options:
+  --type       Filter by drift type
+  --scope      Analyze specific project, module, or file path
+  --severity   Minimum severity to report
+  --json       Output machine-readable JSON
+
+Mode: READ_ONLY
+
+Output:
+  DRIFT REPORT
+
+    Total Drifts:    <n>
+    By Type:
+      Structural:    <n>
+      Behavioral:    <n>
+      Contract:      <n>
+      Database:      <n>
+      Security:      <n>
+      Configuration: <n>
+      Documentation: <n>
+      Terminology:   <n>
+    By Classification:
+      Declaration Wrong: <n>
+      Code Wrong:        <n>
+      Both Outdated:     <n>
+      Unknown:           <n>
+    Decision:         PASS | BLOCK | WARN
+
+  Items:
+    [D<id>] <type> | <classification> | <confidence>
+      Declared: <sdd excerpt>
+      Observed: <code/runtime excerpt>
+      Evidence: [<ids>]
+      Sync:     <SYNC_SDD | SYNC_CODE | SYNC_BOTH | REVIEW>
+
+Rules:
+  [DRF-01] /sdd-drift MUST classify every drift before reporting.
+  [DRF-02] /sdd-drift MUST include evidence for every finding.
+  [DRF-03] /sdd-drift MUST NOT silently ignore UNKNOWN drifts.
+  [DRF-04] /sdd-drift MUST respect source-of-truth declarations.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  DriftSpec: @../lifecycle/drift.sdd
+  Queries: @../queries/drift-detection.sdd
+  SyncOps: @../queries/sync-operations.sdd
+  Evidence: @../lifecycle/evidence-binder.sdd
+
+State: +

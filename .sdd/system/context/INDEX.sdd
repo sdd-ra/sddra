@@ -103,6 +103,46 @@ If context exceeds budget:
   [CTX-04] Context diff MUST be available for incremental updates.
   [CTX-05] Context MUST respect authority boundaries.
 
+ReadOrder:
+    1 @compiler.sdd (core compilation engine)
+    2 @router.sdd (intent → component mapping)
+    3 @relevance.sdd (reference scoring and ranking)
+    4 @budgets.sdd (risk-based context budgets)
+    5 @policies.sdd (freshness, authority, security, pollution)
+    6 @manifests.sdd (inclusion/exclusion documentation)
+
+Compilation Steps:
+  1. Resolve task metadata and scope
+  2. Load L0-L2 identity/task/project
+  3. Route to affected components via Context Router
+  4. Score references via Relevance Engine
+  5. Resolve dependency chains
+  6. Check contradictions and authority conflicts
+  7. Enforce context budget
+  8. Apply pollution and security filters
+  9. Generate manifest with exclusions
+  10. Version and cache result
+
+Context Layers:
+  L0: metadata
+  L1: summary
+  L2: rules
+  L3: implementation details
+  L4: evidence/source
+  L5-L10: extended layers for high-risk tasks
+
+Escalation Triggers:
+  UNKNOWN, CONFLICT, HIGH_RISK, MISSING_DEPENDENCY, LOW_CONFIDENCE, FAILED_VERIFICATION
+
+Priority Hierarchy:
+  PROJECT_CONSTRAINT > PROJECT_DECISION > DOMAIN_RULE > ORGANIZATION_RULE > GLOBAL_KNOWLEDGE > EXTERNAL_KNOWLEDGE
+
+Source Authority:
+  OpenAPI > SDD for contracts
+  Runtime > SDD for observed behavior
+  Migration > SDD for database schema
+  Human approval > AI inference
+
 Navigation:
   Parent: @../../INDEX.sdd
   Bootstrap: @../../bootstrap/INDEX.sdd

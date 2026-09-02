@@ -187,6 +187,17 @@ ReadOrder:
      84j @lifecycle/drift.sdd (Terminology drift, architecture drift, violations)
      84k @lifecycle/learning-loop.sdd (Learning loop pipeline, L0-L4 promotion levels)
      84l @lifecycle/entity-schemas.sdd (Entity schemas: Observation, Discovery, Claim, etc.)
+      84m @docs/heretic-deep-analysis.sdd (Deep analysis: heretic + watermarks-remover tools vs SDD governance)
+      85 @concepts/epistemic-entities.sdd (Five epistemic layers: FACT, ASSUMPTION, INFERENCE, HYPOTHESIS, DECISION)
+      85a @concepts/decision-canvas.sdd (Standard template for engineering decisions)
+      85b @concepts/reasoning-pipeline.sdd (11-step mandatory reasoning flow)
+      86 @architecture/candidates.sdd (Architecture candidates and experiments management)
+      87 @queries/drift-detection.sdd (Drift detection query spec)
+      87a @queries/sync-operations.sdd (Sync operations query spec)
+      87b @queries/traceability.sdd (Bidirectional traceability query spec)
+      88 @commands/sdd-drift.sdd (Drift detection command)
+      88a @commands/sdd-sync.sdd (Sync operations command)
+      88b @commands/sdd-trace.sdd (Traceability command)
 
 Modes:
   ANALYZE   — project discovery and context building
@@ -268,7 +279,11 @@ Navigation:
    Concepts: @concepts/INDEX.sdd
    ConceptsKnowledgeModel: @concepts/KNOWLEDGE-MODEL.sdd
    ConceptsCanonicalization: @concepts/CANONICALIZATION.sdd
-   ConceptsRelationshipVocabulary: @concepts/RELATIONSHIP-VOCABULARY.sdd
+     ConceptsRelationshipVocabulary: @concepts/RELATIONSHIP-VOCABULARY.sdd
+     ConceptsEpistemicEntities: @concepts/epistemic-entities.sdd
+     ConceptsDecisionCanvas: @concepts/decision-canvas.sdd
+     ConceptsReasoningPipeline: @concepts/reasoning-pipeline.sdd
+     ArchitectureCandidates: @architecture/candidates.sdd
    References: @references/INDEX.sdd
    ReferencesDDD: @references/ddd/INDEX.sdd
    ReferencesArchitecture: @references/architecture/INDEX.sdd
@@ -287,7 +302,10 @@ Navigation:
     QueryOrphanKnowledge: @queries/orphan-knowledge.sdd
     QueryUnverifiedSkills: @queries/unverified-skills.sdd
     QueryHighRiskTasks: @queries/high-risk-tasks.sdd
-    QueryPaymentImpact: @queries/payment-impact.sdd
+     QueryPaymentImpact: @queries/payment-impact.sdd
+     QueryDriftDetection: @queries/drift-detection.sdd
+     QuerySyncOperations: @queries/sync-operations.sdd
+     QueryTraceability: @queries/traceability.sdd
     Intents: @intents/INDEX.sdd
     Plans: @plans/INDEX.sdd
     ExecutionPlan: @plans/execution-plan.sdd
@@ -319,6 +337,7 @@ Navigation:
     LifecycleDrift: @lifecycle/drift.sdd
     LifecycleLearningLoop: @lifecycle/learning-loop.sdd
     LifecycleEntitySchemas: @lifecycle/entity-schemas.sdd
+    DeepAnalysis: @docs/heretic-deep-analysis.sdd
     Knowledge: @knowledge/INDEX.sdd
    KnowledgeLifecycle: @knowledge/KNOWLEDGE-LIFECYCLE.sdd
    KnowledgeCompression: @knowledge/COMPRESSION.sdd
@@ -639,8 +658,11 @@ Navigation:
       CommandNext: @commands/sdd-next.sdd
      CommandKnowledge: @commands/sdd-knowledge.sdd
      CommandExplain: @commands/sdd-explain.sdd
-     CommandPlan: @commands/sdd-plan.sdd
-     CommandDecisions: @commands/sdd-decisions.sdd
+      CommandPlan: @commands/sdd-plan.sdd
+      CommandDecisions: @commands/sdd-decisions.sdd
+      CommandDrift: @commands/sdd-drift.sdd
+      CommandSync: @commands/sdd-sync.sdd
+      CommandTrace: @commands/sdd-trace.sdd
     EccBridge: @agent/ecc-bridge.sdd
     MCP: @runtime/mcp-integration.sdd
    Plugins: @plugins/INDEX.sdd

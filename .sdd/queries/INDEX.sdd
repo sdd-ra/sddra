@@ -141,6 +141,10 @@ Owns: queries/
 Navigation:
   GraphIndex: @../graph/INDEX.sdd
   KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd
+  EpistemicEntities: @../concepts/epistemic-entities.sdd
+  DriftQuery: @drift-detection.sdd
+  SyncQuery: @sync-operations.sdd
+  TraceabilityQuery: @traceability.sdd
   Index: @../INDEX.sdd
 
 State: +
