@@ -1,0 +1,23 @@
+# Dependencies: sddra Project
+
+Purpose:
+  Dependency declarations for sddra.ai.
+
+Runtime Dependencies:
+  - TypeScript 5.x
+  - Node.js 20+
+  - Playwright
+  - PowerShell 5.1
+
+External Dependencies (analyzed):
+  - Python 3.10+ (heretic, watermarks-remover)
+  - PyTorch 2.2+ (heretic)
+  - Optuna (heretic)
+  - uv (Python package manager)
+
+Navigation:
+  Project: @INDEX.sdd
+  Stack: @../stack/INDEX.sdd
+  Gates: @../gates/INDEX.sdd
+
+State: +

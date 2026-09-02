@@ -1,0 +1,41 @@
+# ECC ↔ SDD Skill Crosswalk
+
+Maps ECC's 281 skills to SDD chain arms and skill directories.
+
+| ECC_Skill_Name | ECC_Skill_Category | SDD_Chain_Arm | SDD_Skill_Path | Relevance | Import_Status |
+|----------------|-------------------|---------------|----------------|-----------|---------------|
+| tdd-workflow | testing | C1 (code) | .sdd/skills/testing/ | 95 | HIGH_PRIORITY |
+| security-review | security | R1 (review) | .sdd/skills/security/ | 95 | HIGH_PRIORITY |
+| code-review | review | R1 (review) | .sdd/skills/review/ | 90 | HIGH_PRIORITY |
+| django-patterns | backend | S1 (sdd)/C1 | .sdd/skills/backend/django/ | 85 | MEDIUM |
+| django-tdd | backend | C1 (code) | .sdd/skills/backend/django/ | 90 | HIGH_PRIORITY |
+| django-security | backend | R1 (review) | .sdd/skills/security/ | 80 | HIGH_PRIORITY |
+| django-build-resolver | backend | C1 (code) | .sdd/skills/devops/ | 75 | MEDIUM |
+| architect | planning | D1 (docs) | .sdd/skills/planning/ | 85 | HIGH_PRIORITY |
+| code-architect | planning | D1 (docs) | .sdd/skills/planning/ | 90 | HIGH_PRIORITY |
+| build-error-resolver | devops | DEP1 (deploy) | .sdd/skills/devops/ | 80 | HIGH_PRIORITY |
+| refactor-clean | code-quality | C1 (code) | .sdd/skills/refactoring/ | 85 | HIGH_PRIORITY |
+| golang-patterns | backend | S1/C1 | .sdd/skills/backend/go/ | 80 | MEDIUM |
+| go-tdd | backend | C1 | .sdd/skills/backend/go/ | 85 | HIGH_PRIORITY |
+| go-reviewer | backend | R1 | .sdd/skills/review/ | 80 | MEDIUM |
+| typescript-patterns | frontend | S1/C1 | .sdd/skills/frontend/ | 80 | MEDIUM |
+| react-patterns | frontend | S1/C1 | .sdd/skills/frontend/react/ | 85 | HIGH_PRIORITY |
+| nextjs-patterns | frontend | S1/C1 | .sdd/skills/frontend/nextjs/ | 85 | HIGH_PRIORITY |
+| python-patterns | backend | S1/C1 | .sdd/skills/backend/python/ | 85 | HIGH_PRIORITY |
+| django-tdd | backend | C1 | .sdd/skills/backend/django/ | 90 | HIGH_PRIORITY |
+| ruby-patterns | backend | S1/C1 | .sdd/skills/backend/ruby/ | 70 | LOW |
+| java-patterns | backend | S1/C1 | .sdd/skills/backend/java/ | 75 | LOW |
+| kotlin-patterns | backend | S1/C1 | .sdd/skills/backend/kotlin/ | 75 | LOW |
+| rust-patterns | backend | S1/C1 | .sdd/skills/backend/rust/ | 75 | LOW |
+| csharp-patterns | backend | S1/C1 | .sdd/skills/backend/csharp/ | 70 | LOW |
+| php-patterns | backend | S1/C1 | .sdd/skills/backend/php/ | 70 | LOW |
+| database-reviewer | database | R1 | .sdd/skills/database/ | 85 | HIGH_PRIORITY |
+| mle-reviewer | ml | R1 | .sdd/skills/ml/ | 80 | MEDIUM |
+| healthcare-reviewer | specialty | R1 | .sdd/skills/healthcare/ | 75 | LOW |
+| bdd-verification | testing | C1/R1 | .sdd/skills/testing/ | 90 | HIGH_PRIORITY |
+| security-scan | security | R1 | .sdd/skills/security/ | 85 | HIGH_PRIORITY |
+| e2e-runner | testing | DEP1 | .sdd/skills/testing/ | 80 | MEDIUM |
+| agent-evaluator | quality | R1 | .sdd/skills/review/ | 70 | LOW |
+| prompt-engineering | planning | D1 | .sdd/skills/planning/ | 65 | LOW |
+| code-simplifier | code-quality | C1 | .sdd/skills/refactoring/ | 75 | MEDIUM |
+| build-fix | devops | C1 | .sdd/skills/devops/ | 80 | HIGH_PRIORITY |

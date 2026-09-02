@@ -1,0 +1,157 @@
+# tmp/ Deep Analysis
+
+Purpose:
+  Comprehensive analysis of the tmp/ directory contents.
+  Identifies what exists, what's valuable for the project,
+  and what should be integrated into the .sdd/ system.
+
+Date: 2026-09-02
+Analyst: AI (Kilo)
+
+---
+
+## 1. Directory Inventory
+
+| Directory | Type | Size | Status | Value |
+|-----------|------|------|--------|-------|
+| agent-skills/ | Git repo | ~500KB | Cloned, not analyzed | HIGH — Vercel skills for agent capabilities |
+| awesome-claude-skills/ | Git repo | ~50KB | Cloned, not analyzed | MEDIUM — Reference list of skills |
+| awesome-claude-design/ | Git repo | ~20KB | Cloned, not analyzed | MEDIUM — Design patterns reference |
+| Claude-Image-Production-Plugin/ | Git repo | ~100KB | Cloned, not analyzed | LOW — Image production plugin |
+| heretic/ | Git repo | ~35MB | Analyzed, documented | HIGH — Security analysis complete |
+| html/ | Static files | ~200KB | Partial analysis | MEDIUM — skillsllm-design.html template |
+| OmniRoute/ | Git repo | Empty | Not analyzed | LOW — Empty repo |
+| playwright-cli/ | Git repo | ~5MB | Cloned, not analyzed | MEDIUM — Browser automation CLI |
+| repos/ | Directory | Empty | N/A | N/A |
+| skills/ | Git repo | ~950MB | Cloned, partial analysis | HIGH — Anthropic skills reference |
+| taste-skill/ | Git repo | ~35MB | Cloned, analyzed | HIGH — Vercel design taste skill |
+| watermarks-remover/ | Git repo | ~2MB | Analyzed, documented | HIGH — Provenance tool, integrated |
+
+---
+
+## 2. Analyzed Content
+
+### 2.1 Heretic (p-e-w/heretic)
+**Status:** ANALYZED → Documented in `.sdd/docs/analysis/heretic-analysis.md`
+**Outcome:** Auto-BLOCKED by existing SDD policies
+**Integration:** No code integration needed; governance analysis sufficient
+
+### 2.2 Watermarks-Remover (guillaumemeyer/watermarks-remover)
+**Status:** ANALYZED → Documented in `.sdd/docs/analysis/heretic-analysis.md`
+**Outcome:** Layer A partially allowed, Layer B blocked
+**Integration:** ProvenanceClient implemented in `sdd-adapter/src/provenance-client.ts`
+
+### 2.3 Taste-Skill (vercel/taste-skill)
+**Status:** ANALYZED → Design skills extracted
+**Outcome:** 8 design skills created in `.sdd/skills/design/`
+**Integration:** taste-evaluation.sdd, anti-slop.sdd, and 6 others
+
+---
+
+## 3. Pending Analysis
+
+### 3.1 Agent-Skills (vercel-labs/agent-skills)
+**Contents:**
+- vercel-optimize — Vercel project optimization
+- react-best-practices — React/Next.js performance (40+ rules)
+- web-design-guidelines — UI/UX best practices (100+ rules)
+- writing-guidelines — Documentation standards (80+ rules)
+- react-native-guidelines — Mobile patterns (16 rules)
+- react-view-transitions — Animation patterns
+- composition-patterns — React composition
+- vercel-deploy-claimable — Deployment automation
+
+**Value:** HIGH — Directly applicable to SDDRA design and deployment
+**Action:** Import relevant skills into `.sdd/skills/`
+
+### 3.2 Skills (anthropics/skills)
+**Contents:**
+- Document creation skills (docx, pdf, pptx, xlsx)
+- Creative & design skills
+- Development & technical skills
+- Enterprise & communication skills
+
+**Value:** MEDIUM — Reference for skill format and patterns
+**Action:** Extract skill format spec into `.sdd/skills/`
+
+### 3.3 Playwright-CLI
+**Contents:**
+- Browser automation CLI
+- Skill definitions for web testing
+- Azure Pipelines CI config
+
+**Value:** MEDIUM — Could enhance SDDRA's testing capabilities
+**Action:** Evaluate for integration with .sdd/testing/
+
+### 3.4 Awesome-Claude-Skills
+**Contents:**
+- Curated list of Claude skills
+- Community resources
+- Tool recommendations
+
+**Value:** LOW-MEDIUM — Reference only
+**Action:** Link from .sdd/docs/appendices/glossary.md
+
+### 3.5 Awesome-Claude-Design
+**Contents:**
+- Curated list of design resources
+- Community recommendations
+
+**Value:** LOW-MEDIUM — Reference only
+**Action:** Link from .sdd/docs/appendices/glossary.md
+
+### 3.6 Claude-Image-Production-Plugin
+**Contents:**
+- Image generation plugin
+- Commands and skills for image production
+
+**Value:** LOW — Not core to SDDRA mission
+**Action:** Archive reference only
+
+---
+
+## 4. Integration Recommendations
+
+### High Priority
+1. **Import vercel-optimize skill** → `.sdd/skills/devops/vercel-optimize/`
+2. **Import web-design-guidelines** → `.sdd/skills/design/web-design-guidelines/`
+3. **Import react-best-practices** → `.sdd/skills/frontend/react-best-practices/`
+
+### Medium Priority
+4. **Extract skill format from anthropic/skills** → `.sdd/skills/spec/`
+5. **Evaluate playwright-cli for testing** → `.sdd/testing/scripts/`
+6. **Link awesome lists** → `.sdd/docs/appendices/glossary.md`
+
+### Low Priority
+7. **Archive Claude-Image-Production-Plugin** → `tmp/archive/`
+8. **Document OmniRoute** (empty repo) → Mark as deprecated
+
+---
+
+## 5. System Integration Status
+
+| Component | In .sdd/? | In sdd-adapter/? | In .claude/? | Status |
+|-----------|-----------|------------------|--------------|--------|
+| AUTO workflow engine | ✅ | — | ✅ | COMPLETED |
+| Command runner | ✅ | ✅ | ✅ | COMPLETED |
+| Design analyzer | ✅ | ✅ | — | COMPLETED |
+| Provenance client | — | ✅ | ✅ | COMPLETED |
+| Hook bridge | — | ✅ | — | COMPLETED |
+| heretic analysis | ✅ | — | — | COMPLETED |
+| watermarks-remover analysis | ✅ | — | — | COMPLETED |
+| taste-skill analysis | ✅ | — | — | COMPLETED |
+| agent-skills analysis | ❌ | ❌ | ❌ | PENDING |
+| anthropic/skills analysis | ❌ | ❌ | ❌ | PENDING |
+| playwright-cli analysis | ❌ | ❌ | ❌ | PENDING |
+
+---
+
+## 6. Next Actions
+
+1. Import vercel-optimize, web-design-guidelines, react-best-practices
+2. Extract anthropic skill format spec
+3. Evaluate playwright-cli for testing integration
+4. Link awesome lists in glossary
+5. Archive low-value tmp/ contents
+
+State: +

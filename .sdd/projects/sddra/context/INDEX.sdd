@@ -1,0 +1,17 @@
+# Context: sddra Project
+
+Purpose:
+  Project context management for sddra.ai.
+  Tracks active context, decisions, and work in progress.
+
+Files:
+  - active.sdd — Current active context
+  - map.sdd — Context map with current focus
+  - INDEX.sdd — This file
+
+Navigation:
+  Project: @INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+  Tasks: @../tasks/INDEX.sdd
+
+State: +

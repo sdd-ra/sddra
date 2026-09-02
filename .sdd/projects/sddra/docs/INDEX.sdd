@@ -1,0 +1,36 @@
+# sddra — Project Documentation
+
+Purpose:
+  Project documentation mapping for sddra.ai.
+  Maps human-readable docs to their .sdd counterparts
+  and defines audience, ownership, and freshness rules.
+
+Documents:
+  - ../README.md — Root human-readable entry point (UPDATED 2026-09-02)
+  - ../AGENT_README.md — Agent-specific instructions
+  - ../CLAUDE.md — Claude Code instructions
+  - .claude/docs/README.md — Documentation system overview
+  - .claude/docs/INDEX.md — Human docs master index
+  - .sdd/docs/INDEX.md — Machine docs master index
+  - .sdd/docs/overview/sdd-overview.md — System overview
+  - .sdd/docs/commands/reference.md — Command reference
+  - .sdd/docs/commands/workflow.md — Workflow guidance
+  - .sdd/docs/commands/auto-chain.md — AUTO chain engine docs
+  - .sdd/docs/analysis/system-analysis.md — Deep system analysis
+  - .sdd/docs/analysis/heretic-analysis.md — External tool analysis
+  - .sdd/docs/appendices/glossary.md — Terminology
+
+Audience:
+  HUMAN — Project users, contributors
+  DEVELOPER — Implementation team
+  AI — Autonomous agents working on the project
+
+DocDepth:
+  L0: What is this? (README.md)
+  L1: What, Why, How (docs/)
+  L2: Architecture, Dependencies (STRUCTURE.md, MAP.md)
+  L3: Operations, Monitoring (runtime/, gates/)
+  L4: Scaling, Security (evolution/, agent/)
+  L5: Compliance, Audit (governance/, security-events.sdd)
+
+State: +

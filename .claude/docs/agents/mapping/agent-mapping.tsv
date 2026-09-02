@@ -1,0 +1,55 @@
+# ECC Agent to SDD Role Bridge
+
+Maps ECC's 67 agents to SDD's @agent.* roles.
+
+| ECC_Agent | ECC_Category | SDD_Role | SDD_PATH | Mapping_Type | Notes |
+|-----------|--------------|----------|----------|--------------|-------|
+| code-reviewer | review | @agent.reviewer | .sdd/agent/roles.sdd | direct | Quality, compliance, code review |
+| architect | planning | @agent.architect | .sdd/agent/roles.sdd | direct | System design, architecture decisions |
+| code-architect | planning | @agent.architect | .sdd/agent/roles.sdd | direct | Implementation blueprints |
+| tdd-guide | testing | @agent.implementer | .sdd/agent/roles.sdd | skill_based | Test-first cycle execution |
+| go-build-resolver | devops | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Go build error specialist |
+| build-error-resolver | devops | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Multi-language build resolver |
+| refactor-cleaner | code-quality | @agent.implementer | .sdd/agent/roles.sdd | mapped | Refactoring specialist |
+| security-reviewer | security | @agent.security | .sdd/agent/roles.sdd | direct | OWASP security audit |
+| database-reviewer | database | @agent.reviewer | .sdd/agent/roles.sdd | specialized | Query optimization, schema review |
+| django-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Django-specific review |
+| python-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Python-specific review |
+| go-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Go-specific review |
+| rust-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Rust-specific review |
+| kotlin-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Kotlin/Android review |
+| java-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Java/Spring review |
+| csharp-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | C#/NET review |
+| cpp-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | C++ memory safety |
+| django-build-resolver | backend | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Django build errors |
+| java-build-resolver | backend | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Java build errors |
+| kotlin-build-resolver | backend | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Kotlin build errors |
+| cpp-build-resolver | backend | @agent.implementer | .sdd/agent/roles.sdd | language_specific | C++ build errors |
+| dart-build-resolver | backend | @agent.implementer | .sdd/agent/roles.sdd | language_specific | Dart/Flutter build errors |
+| flutter-reviewer | frontend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | Flutter/Dart review |
+| fastapi-reviewer | backend | @agent.reviewer | .sdd/agent/roles.sdd | language_specific | FastAPI review |
+| e2e-runner | testing | @agent.tester | .sdd/agent/roles.sdd | direct | Playwright end-to-end tests |
+| mle-reviewer | ml | @agent.reviewer | .sdd/agent/roles.sdd | specialized | ML pipeline review |
+| doc-updater | documentation | @agent.documentation | .sdd/agent/roles.sdd | direct | Codemaps, docs maintenance |
+| docs-lookup | documentation | @agent.documentation | .sdd/agent/roles.sdd | direct | Library/framework docs lookup |
+| loop-operator | orchestration | @agent.supervisor | .sdd/agent/roles.sdd | direct | Autonomous loop management |
+| harness-optimizer | orchestration | @agent.supervisor | .sdd/agent/roles.sdd | direct | Harness configuration optimization |
+| a11y-architect | frontend | @agent.reviewer | .sdd/agent/roles.sdd | specialized | Accessibility WCAG 2.2 compliance |
+| healthcare-reviewer | specialty | @agent.reviewer | .sdd/agent/roles.sdd | specialized | Healthcare app review |
+| homelab-architect | operations | @agent.architect | .sdd/agent/roles.sdd | mapped | Home lab network planning |
+| marketing-agent | business | @agent.documentation | .sdd/agent/roles.sdd | create | Marketing content creation |
+| agent-evaluator | quality | @agent.reviewer | .sdd/agent/roles.sdd | direct | Output quality assessment |
+| conversation-analyzer | analysis | @agent.knowledge | .sdd/agent/roles.sdd | mapped | Behavior pattern extraction |
+| code-explorer | analysis | @agent.discovery | .sdd/agent/roles.sdd | direct | Codebase deep analysis |
+| comment-analyzer | analysis | @agent.reviewer | .sdd/agent/roles.sdd | mapped | Comment quality analysis |
+| code-simplifier | code-quality | @agent.implementer | .sdd/agent/roles.sdd | mapped | Code simplification |
+| gan-generator | ml | @agent.implementer | .sdd/agent/roles.sdd | create | GAN implementation agent |
+| gan-evaluator | ml | @agent.tester | .sdd/agent/roles.sdd | create | GAN evaluation agent |
+| gan-planner | ml | @agent.architect | .sdd/agent/roles.sdd | create | GAN planning agent |
+| network-architect | network | @agent.architect | .sdd/agent/roles.sdd | create | Network design specialist |
+| orchestration-planner | orchestration | @agent.supervisor | .sdd/agent/roles.sdd | create | Workflow orchestration |
+| orchestration-deployer | orchestration | @agent.implementer | .sdd/agent/roles.sdd | create | Workflow deployment |
+| chief-of-staff | business | @agent.documentation | .sdd/agent/roles.sdd | create | Communication management |
+| security-scan | security | @agent.security | .sdd/agent/roles.sdd | direct | AgentShield security scan |
+| database-reviewer | database | @agent.reviewer | .sdd/agent/roles.sdd | direct | PostgreSQL specialist |
+| mcp-setup | operations | @agent.implementer | .sdd/agent/roles.sdd | create | MCP server configuration |
