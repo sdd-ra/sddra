@@ -1,0 +1,78 @@
+# Phase 146: External Skill Marketplace
+
+Purpose:
+  Define the external skill marketplace integration for SDDRA.
+  Enables discovery, import, validation, and lifecycle management
+  of skills from external repositories (GitHub, npm, local archives).
+
+Date: 2026-09-03
+Status: DRAFT
+
+---
+
+## 1. Problem
+
+Skills are currently imported manually from tmp/ or external repos.
+There is no standardized protocol for:
+- Discovering external skills
+- Validating skill compatibility with SDDRA
+- Tracking skill versions and updates
+- Promoting external skills to internal standards
+
+## 2. Solution
+
+Introduce a Skill Marketplace layer that:
+1. Registers external skill sources (repositories, archives, registries)
+2. Validates incoming skills against SDDRA skill schema
+3. Translates external skill formats to internal `.sdd/` format
+4. Manages skill lifecycle (EXTERNAL → CANDIDATE → ACTIVE → DEPRECATED)
+
+## 3. Components
+
+### 3.1 Skill Registry
+- `.sdd/marketplace/registry.json` — source catalog
+- Fields: id, url, type (git/archive/npm), format, lastSync, status
+
+### 3.2 Skill Validator
+- Validates skill structure (INDEX.sdd or SKILL.md)
+- Checks metadata completeness
+- Runs policy gates (security, licensing, compatibility)
+
+### 3.3 Skill Importer
+- Clones/fetches external skills
+- Converts formats (vercel-agent-skills → .sdd, anthropic-skill → .sdd)
+- Places imported skills in `.sdd/skills/{domain}/{skill-name}/`
+
+### 3.4 Skill Promoter
+- Promotes skills through lifecycle stages
+- CANDIDATE → ACTIVE requires human review
+- AUTO_ALLOWED requires security clearance
+
+## 4. Commands
+
+- `/sdd-marketplace list` — list registered sources
+- `/sdd-marketplace sync <source>` — fetch and validate skills from source
+- `/sdd-marketplace import <skill>` — import validated skill into .sdd/skills/
+- `/sdd-marketplace audit` — check for outdated external skills
+
+## 5. Integration Points
+
+- `.sdd/skills/INDEX.sdd` — auto-updated on import
+- `.sdd/projects/sddra/tmp-analysis.sdd` — tracks integration status
+- `sdd-adapter/commands.ts` — CommandRunner extension
+- ProvenanceClient — verify skill source integrity
+
+## 6. Risks
+
+- External skill code execution risk
+- License incompatibility
+- Format drift between external and internal schemas
+
+## 7. Next Steps
+
+1. Define registry schema in `.sdd/marketplace/`
+2. Implement validator in `sdd-adapter/skill-validator.ts`
+3. Implement importer in `sdd-adapter/skill-importer.ts`
+4. Add `/sdd-marketplace` commands to `sdd-adapter/commands.ts`
+
+State: DRAFT
