@@ -1,4 +1,4 @@
-# Skills: Testing
+﻿# Skills: Testing
 
 Purpose:
   Test execution and strategy skills for the SDDRA system.
@@ -9,6 +9,7 @@ Owns: ./
 ReadOrder:
    1 @INDEX.sdd
    2 @SKILL-TEST-STRATEGY.sdd
+   PlaywrightCLI: @playwright-cli/INDEX.sdd
 
 Rules:
   [T1] Test execution MUST go through SKILL-TEST-STRATEGY.
@@ -17,5 +18,6 @@ Rules:
 
 Navigation:
   TestStrategy: @SKILL-TEST-STRATEGY.sdd
+   PlaywrightCLI: @playwright-cli/INDEX.sdd
 
 State: +

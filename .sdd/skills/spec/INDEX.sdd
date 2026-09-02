@@ -1,0 +1,32 @@
+# Skill: Anthropic Agent Skills Spec
+
+Purpose:
+  Specification for Anthropic agent skills format. Defines the structure,
+  metadata, and conventions for creating portable, executable skills.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @agent-skills-spec.md
+
+Modes:
+  APPLY    — apply spec to current skill design
+  REVIEW   — review skill against spec
+  CREATE   — create new skill following spec
+
+Rules:
+  [AS1] Skills MUST declare frontmatter: name, description, version.
+  [AS2] Skills MUST be executable contracts with input/output.
+  [AS3] Skills MUST NOT rely on hidden context.
+
+Entry:
+  Read:
+    INDEX.sdd
+    agent-skills-spec.md
+
+Navigation:
+  Spec: @INDEX.sdd
+  AgentSkillsSpec: @agent-skills-spec.md
+
+State: +

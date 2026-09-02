@@ -12,85 +12,88 @@ ReadOrder:
     1 @INDEX.sdd
     2 @protocol/skill-execution.sdd (skill execution protocol)
     3 @languages/INDEX.sdd
-    3 @languages/go/
-    4 @languages/rust/
-    5 @languages/java/
-    6 @languages/php/
-    7 @languages/python/
-    8 @languages/csharp/
-    9 @languages/cpp/
-    10 @languages/typescript/
-    11 @languages/javascript/
-    12 @languages/swift/
-    13 @languages/kotlin/
-    14 @languages/ruby/
-    15 @frameworks/INDEX.sdd
-    16 @frameworks/react/
-    17 @frameworks/flutter/
-    18 @frameworks/react-native/
-    19 @frameworks/swiftui/
-    20 @frameworks/kotlin-multiplatform/
-    21 @frameworks/nextjs/
-    22 @frameworks/nestjs/
-    23 @frameworks/spring-boot/
-    24 @frameworks/django/
-    25 @frameworks/fastapi/
-    26 @frameworks/express/
-    27 @frameworks/dotnet/
-    28 @frameworks/laravel/
-    29 @frameworks/symfony/
+    4 @languages/go/
+    5 @languages/rust/
+    6 @languages/java/
+    7 @languages/php/
+    8 @languages/python/
+    9 @languages/csharp/
+    10 @languages/cpp/
+    11 @languages/typescript/
+    12 @languages/javascript/
+    13 @languages/swift/
+    14 @languages/kotlin/
+    15 @languages/ruby/
+    16 @frameworks/INDEX.sdd
+    17 @frameworks/react/
+    18 @frameworks/flutter/
+    19 @frameworks/react-native/
+    20 @frameworks/swiftui/
+    21 @frameworks/kotlin-multiplatform/
+    22 @frameworks/nextjs/
+    23 @frameworks/nestjs/
+    24 @frameworks/spring-boot/
+    25 @frameworks/django/
+    26 @frameworks/fastapi/
+    27 @frameworks/express/
+    28 @frameworks/dotnet/
+    29 @frameworks/laravel/
+    30 @frameworks/symfony/
     31 @frontend/INDEX.sdd
     32 @frontend/react-best-practices/
     33 @frameworks/svelte/
-    31 @databases/INDEX.sdd
-    32 @databases/postgresql/
-    33 @databases/mongodb/
-    34 @databases/redis/
-    35 @databases/mysql/
-    36 @databases/cassandra/
-    37 @databases/elasticsearch/
-    38 @platforms/INDEX.sdd
-    39 @platforms/docker/
-    40 @platforms/kubernetes/
-    41 @platforms/aws/
-    42 @platforms/gcp/
-    43 @platforms/azure/
-    44 @platforms/terraform/
-    45 @messaging/INDEX.sdd
-    46 @messaging/kafka/
-    47 @messaging/rabbitmq/
-    48 @messaging/nats/
-    49 @devops/INDEX.sdd
-    50 @devops/git/
-    51 @devops/ci-cd/
-    52 @devops/security/
-    53 @devops/testing/
-    54 @testing/INDEX.sdd
-    55 @testing/SKILL-TEST-STRATEGY.sdd
-    56 @meta/INDEX.sdd
-    57 @meta/SKILL-DISCOVERY.sdd
-    58 @meta/SKILL-RECOMMENDATION.sdd
-    59 @meta/SKILL-GAP-ANALYSIS.sdd
-    60 @meta/SKILL-EXTERNAL-REFERENCES.sdd
-    61 @cross-cutting/INDEX.sdd
-    62 @cross-cutting/testing/
-    63 @cross-cutting/security/
-    64 @cross-cutting/architecture/
-    65 @cross-cutting/observability/
-    66 @sdd/INDEX.sdd
-    67 @sdd/SKILL-INTEGRATION-MODULE.sdd
-    68 @sdd/SKILL-EVENT-PROCESSOR.sdd
-    69 @sdd/SKILL-FIELD-MAPPING.sdd
-    70 @sdd/SKILL-NOTIFICATION.sdd
-    71 @sdd/SKILL-SCHEDULED-SYNC.sdd
-    72 @design/INDEX.sdd
-    73 @design/taste-evaluation.sdd
-    74 @design/design-heuristics.sdd
-    75 @design/visual-design.sdd
-    76 @design/ux-patterns.sdd
-    77 @design/accessibility.sdd
-    78 @design/design-system.sdd
-    79 @design/design-review.sdd
+    34 @databases/INDEX.sdd
+    35 @databases/postgresql/
+    36 @databases/mongodb/
+    37 @databases/redis/
+    38 @databases/mysql/
+    39 @databases/cassandra/
+    40 @databases/elasticsearch/
+    41 @platforms/INDEX.sdd
+    42 @platforms/docker/
+    43 @platforms/kubernetes/
+    44 @platforms/aws/
+    45 @platforms/gcp/
+    46 @platforms/azure/
+    47 @platforms/terraform/
+    48 @messaging/INDEX.sdd
+    49 @messaging/kafka/
+    50 @messaging/rabbitmq/
+    51 @messaging/nats/
+    52 @devops/INDEX.sdd
+    53 @devops/git/
+    54 @devops/ci-cd/
+    55 @devops/security/
+    56 @devops/testing/
+    57 @testing/INDEX.sdd
+    58 @testing/SKILL-TEST-STRATEGY.sdd
+     59 @testing/playwright-cli/INDEX.sdd
+    60 @meta/INDEX.sdd
+    61 @meta/SKILL-DISCOVERY.sdd
+    62 @meta/SKILL-RECOMMENDATION.sdd
+    63 @meta/SKILL-GAP-ANALYSIS.sdd
+    64 @meta/SKILL-EXTERNAL-REFERENCES.sdd
+     65 @spec/INDEX.sdd
+     66 @spec/agent-skills-spec.md
+    67 @cross-cutting/INDEX.sdd
+    68 @cross-cutting/testing/
+    69 @cross-cutting/security/
+    70 @cross-cutting/architecture/
+    71 @cross-cutting/observability/
+    72 @sdd/INDEX.sdd
+    73 @sdd/SKILL-INTEGRATION-MODULE.sdd
+    74 @sdd/SKILL-EVENT-PROCESSOR.sdd
+    75 @sdd/SKILL-FIELD-MAPPING.sdd
+    76 @sdd/SKILL-NOTIFICATION.sdd
+    77 @sdd/SKILL-SCHEDULED-SYNC.sdd
+    78 @design/INDEX.sdd
+    79 @design/taste-evaluation.sdd
+    80 @design/design-heuristics.sdd
+    81 @design/visual-design.sdd
+    82 @design/ux-patterns.sdd
+    83 @design/accessibility.sdd
+    84 @design/design-system.sdd
+    85 @design/design-review.sdd
 
 Modes:
   APPLY    — apply skill to current task
@@ -181,6 +184,8 @@ Navigation:
   Svelte: @skills/frameworks/svelte/INDEX.sdd
    Frontend: @skills/frontend/INDEX.sdd
    ReactBestPractices: @skills/frontend/react-best-practices/INDEX.sdd
+   Frontend: @skills/frontend/INDEX.sdd
+   ReactBestPractices: @skills/frontend/react-best-practices/INDEX.sdd
   Databases: @skills/databases/INDEX.sdd
   PostgreSQL: @skills/databases/postgresql/INDEX.sdd
   MongoDB: @skills/databases/mongodb/INDEX.sdd
@@ -210,6 +215,8 @@ Navigation:
    DevOpsSecurity: @skills/devops/security/INDEX.sdd
     DevOpsTesting: @skills/devops/testing/INDEX.sdd
    VercelOptimize: @skills/devops/vercel-optimize/INDEX.sdd
+   PlaywrightCLI: @skills/testing/playwright-cli/INDEX.sdd
+   VercelOptimize: @skills/devops/vercel-optimize/INDEX.sdd
     Meta: @skills/meta/INDEX.sdd
     SkillDiscovery: @skills/meta/SKILL-DISCOVERY.sdd
     SkillRecommendation: @skills/meta/SKILL-RECOMMENDATION.sdd
@@ -230,6 +237,7 @@ Navigation:
        Accessibility: @skills/design/accessibility.sdd
        DesignSystem: @skills/design/design-system.sdd
        DesignReview: @skills/design/design-review.sdd
+   WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
    WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
 
 State: +
