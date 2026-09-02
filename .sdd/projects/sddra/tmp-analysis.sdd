@@ -152,7 +152,7 @@ Analyst: AI (Kilo)
 2. ~~Extract anthropic skill format spec~~ ✅ COMPLETED
 3. ~~Evaluate playwright-cli for testing integration~~ ✅ COMPLETED
 4. ~~Link awesome lists in glossary~~ ✅ COMPLETED
-5. Archive low-value tmp/ contents (Claude-Image-Production-Plugin, OmniRoute)
-6. Consider Phase 146: external skill marketplace integration or distributed agent execution
+5. ~~Archive low-value tmp/ contents~~ ✅ COMPLETED (moved to tmp/archive/)
+6. Phase 146: external skill marketplace integration or distributed agent execution
 
 State: +
