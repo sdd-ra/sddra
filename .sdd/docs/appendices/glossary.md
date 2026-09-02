@@ -44,5 +44,7 @@ Canonical terminology for the SDDRA system.
 | CANDIDATE | Pending Knowledge | Knowledge awaiting human validation before promotion |
 | ACTIVE | Validated Knowledge | Knowledge that has passed validation and is in use |
 | ARCHIVED | Retired Knowledge | Knowledge retained for reference but not executable |
+| Awesome Claude Skills | Community Skills | Curated list of Claude skills: https://github.com/PatrickCodeMe/awesome-claude-skills |
+| Awesome Claude Design | Community Design | Curated list of design resources: https://github.com/PatrickCodeMe/awesome-claude-design |
 
 <!-- [END:APPEND:glossary] -->

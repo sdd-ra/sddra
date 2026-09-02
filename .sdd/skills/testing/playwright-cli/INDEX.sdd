@@ -1,0 +1,46 @@
+# Skill: Playwright CLI
+
+Purpose:
+  Playwright browser automation CLI skill. Provides skills for web testing,
+  element interaction, request mocking, session management, and test generation.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+   3  @references/element-attributes.md
+   4  @references/playwright-tests.md
+
+Modes:
+  APPLY    — apply Playwright patterns to current task
+  REVIEW   — review test suite against best practices
+  GENERATE — generate Playwright tests from spec
+
+Rules:
+  [PC1] Tests MUST be deterministic and isolated.
+  [PC2] Selectors MUST prefer accessibility roles.
+  [PC3] Test data MUST be externalized.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+  Resolve:
+    references/element-attributes.md
+    references/playwright-tests.md
+    references/request-mocking.md
+    references/running-code.md
+    references/session-management.md
+    references/storage-state.md
+    references/test-generation.md
+    references/tracing.md
+    references/video-recording.md
+
+Navigation:
+  PlaywrightCLI: @INDEX.sdd
+  Skill: @SKILL.md
+  References: @references/playwright-tests.md
+
+State: +
