@@ -1,0 +1,17 @@
+# Cases: sddra Project
+
+Purpose:
+  Test cases and usage scenarios for sddra.ai.
+
+Current Cases:
+  - AUTO chain workflow execution
+  - Design analysis with 8 skills
+  - Provenance checking for external content
+  - Documentation generation and append updates
+
+Navigation:
+  Project: @INDEX.sdd
+  Testing: @../testing/INDEX.sdd
+  Gates: @../gates/INDEX.sdd
+
+State: +

@@ -1,0 +1,65 @@
+# sddra — SDDRA Project Instance
+
+Purpose:
+  Real project instance for the SDDRA (Spec-Driven Development & Engineering) project.
+  This is the authoritative source for project-specific decisions, tasks, context,
+  and documentation.
+
+  Unlike the {project_name}/ template, this instance contains REAL data
+  about the sddra.ai project itself.
+
+Owns: ./
+
+ReadOrder:
+   1 @INDEX.sdd
+   2 @MAP.md
+   3 @STRUCTURE.md
+   4 @decisions/INDEX.sdd
+   5 @tasks/INDEX.sdd
+   6 @docs/INDEX.sdd
+   7 @stack/INDEX.sdd
+   8 @context/INDEX.sdd
+   9 @cases/INDEX.sdd
+   10 @bugs/INDEX.sdd
+   11 @dependencies/INDEX.sdd
+   12 @gates/INDEX.sdd
+   13 @observability/INDEX.sdd
+   14 @workflow/INDEX.sdd
+   15 @architecture/INDEX.sdd
+   16 @testing/INDEX.sdd
+   17 @tokens/
+
+Rules:
+  [R1] This is the REAL project instance for sddra.ai.
+  [R2] All project-specific data lives here.
+  [R3] Decisions MUST be tracked in decisions/.
+  [R4] Tasks MUST be tracked in tasks/.
+  [R5] Documentation MUST live in docs/.
+  [R6] Stack declarations MUST live in stack/.
+  [R7] Context MUST be managed in context/.
+  [R8] MAP.md MUST contain real project location and file mappings.
+  [R9] STRUCTURE.md MUST describe the real codebase structure.
+  [R10] Feature decisions MUST use MAP.md and STRUCTURE.md for context.
+
+Navigation:
+  Model: @../project/INDEX.sdd
+  Registry: @../INDEX.sdd
+  Map: @MAP.md
+  Structure: @STRUCTURE.md
+  Decisions: @decisions/INDEX.sdd
+  Tasks: @tasks/INDEX.sdd
+  Docs: @docs/INDEX.sdd
+  Stack: @stack/INDEX.sdd
+  Context: @context/INDEX.sdd
+  Cases: @cases/INDEX.sdd
+  Bugs: @bugs/INDEX.sdd
+  Dependencies: @dependencies/INDEX.sdd
+  Gates: @gates/INDEX.sdd
+  Observability: @observability/INDEX.sdd
+  Workflow: @workflow/INDEX.sdd
+  Architecture: @architecture/INDEX.sdd
+  Testing: @testing/INDEX.sdd
+  Tokens: @tokens/
+  Features: @../../features/INDEX.sdd
+
+State: +

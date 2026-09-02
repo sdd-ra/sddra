@@ -1,0 +1,37 @@
+# Decisions: sddra Project Index
+
+Purpose:
+  Project-specific decision index for the sddra.ai project.
+  Contains all architectural, technical, and operational decisions
+  made during the project's lifecycle.
+
+Types:
+  architectural: Architecture decisions
+  technical: Tech stack choices
+  security: Security decisions
+  operational: Deployment/ops decisions
+  human: Human approvals/rejections
+  ai: AI proposals/decisions
+
+States:
+  proposed: New decisions awaiting review
+  review: Under human review
+  approved: Accepted and ready for implementation
+  rejected: Not accepted
+  superseded: Replaced by a later decision
+
+Recent Decisions:
+  - DEC-2026-0901-001: Documentation reorganization with append protocol (approved)
+  - DEC-2026-0901-002: AUTO chain workflow engine implementation (approved)
+  - DEC-2026-0901-003: ProvenanceClient integration for watermarks-remover (approved)
+  - DEC-2026-0902-001: Design analysis engine with 8 skills (approved)
+  - DEC-2026-0902-002: Skill auto-invocation protocol (approved)
+  - DEC-2026-0902-003: Project instance creation for sddra.ai (approved)
+
+Navigation:
+  Index: @INDEX.sdd
+  Schema: @../../schemas/decision.sdd
+  Workflow: @../../decisions/workflow.sdd
+  Rules: @../../decisions/rules.sdd
+
+State: +

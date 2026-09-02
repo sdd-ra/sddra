@@ -1,0 +1,30 @@
+Stack: sddra Project Selection
+
+Purpose:
+  Technology stack selections for the sddra.ai project.
+
+Layers:
+  runtime:
+    language: TypeScript
+    version: 5.x
+    runtime: Node.js 20+
+    test: Jest + custom test runner
+    linter: ESLint
+    formatter: Prettier
+
+  specifications:
+    language: YAML + Markdown
+    schema: Custom .sdd format
+    validation: Custom parser
+
+  automation:
+    shell: PowerShell 5.1
+    browser: Playwright
+    agent: Claude Code / Kilo
+
+  external-tools:
+    python: 3.10+ (for heretic, watermarks-remover analysis)
+    pytorch: 2.2+ (heretic dependency, analyzed only)
+    uv: Python package manager (for external tools)
+
+State: +

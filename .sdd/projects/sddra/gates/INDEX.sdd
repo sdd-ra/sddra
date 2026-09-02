@@ -1,0 +1,19 @@
+# Gates: sddra Project
+
+Purpose:
+  Quality gates for sddra.ai.
+
+Gates:
+  - BUILD: TypeScript compilation
+  - TEST: Unit tests pass (16/16)
+  - LINT: ESLint checks
+  - TYPECHECK: TypeScript type checking
+  - SECURITY: Security scan passes
+  - DOCS: Documentation validation passes
+
+Navigation:
+  Project: @INDEX.sdd
+  Testing: @../testing/INDEX.sdd
+  Quality: @../../gates/quality.sdd
+
+State: +

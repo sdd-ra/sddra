@@ -1,0 +1,19 @@
+# Tokens: sddra Project
+
+Purpose:
+  Token and credential tracking for sddra.ai.
+
+Status:
+  - No API tokens stored in project
+  - Secrets managed via environment variables
+  - Attestation-bound tokens for external services
+
+Navigation:
+  Project: @INDEX.sdd
+  Security: @../../agent/security-rules.sdd
+
+Note:
+  Per AG8: Agent MUST NOT load secrets into context.
+  Tokens are injected at runtime via attestation.
+
+State: +

@@ -1,0 +1,64 @@
+Index: sddra Project Tasks
+
+Purpose:
+  Task scheduler map for the sddra.ai project.
+  AI MUST load this file before executing any task.
+
+Tasks:
+  2026-0901-001:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: []
+    title: AUTO chain workflow engine implementation
+
+  2026-0901-002:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: []
+    title: Documentation reorganization with append protocol
+
+  2026-0901-003:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0901-002]
+    title: ProvenanceClient integration for watermarks-remover
+
+  2026-0902-001:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: []
+    title: Design analysis engine with 8 skills
+
+  2026-0902-002:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0902-001]
+    title: Skill auto-invocation protocol
+
+  2026-0902-003:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: []
+    title: Project instance creation for sddra.ai
+
+  2026-0902-004:
+    state: IN_PROGRESS
+    priority: P1
+    risk: MEDIUM
+    depends: [2026-0902-003]
+    title: tmp/ deep analysis and system integration
+
+  2026-0902-005:
+    state: PENDING
+    priority: P2
+    risk: LOW
+    depends: [2026-0902-004]
+    title: Root README.md human-readable entry point update
+
+State: +

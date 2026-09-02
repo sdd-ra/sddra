@@ -1,0 +1,29 @@
+# ECC ↔ SDD Component Mapping
+
+Generated from deep analysis of ECC framework (affaan-m/ECC) integration with SDD system.
+
+| ECC Component | ECC_Type | Count | SDD_Equivalent | SDD_Path | Mapping_Status | Notes |
+|---------------|----------|-------|----------------|----------|----------------|-------|
+| Agents | agent | 67 | @agent.* roles | .sdd/agent/ | partial | 67 agents map to 14 SDD roles |
+| Skills | skill | 281 | SDD skills (multiple) | .sdd/skills/ | import_candidates | High-value import targets (tdd-workflow, security-review, django-*) |
+| Commands | command | 94 | .sdd/commands/ | .sdd/commands/ | extend | 14 existing; 80 new commands to map |
+| Rules | rule | 121 | SDD protocol/ROOT.sdd | protocol/ROOT.sdd | merge | Align coding standards |
+| Hooks | hook | 21 | adapter-runtime.sdd | runtime/adapter-runtime.sdd | bridge | Hook bridge enforcement |
+| MCP Servers | mcp | 35 | N/A (new layer) | N/A | new | Need SDD MCP integration spec |
+| Planning | agent | 1 | @agent.architect | .sdd/agent/roles.sdd | direct | Architect = design decisions |
+| Implementation | agent | 8 | @agent.implementer | .sdd/agent/roles.sdd | mapped | Build resolvers, TDD guide |
+| Review | agent | 7 | @agent.reviewer | .sdd/agent/roles.sdd | direct | Code/security/database reviewers |
+| QA | agent | 3 | @agent.tester | .sdd/agent/roles.sdd | direct | E2E runner, test agents |
+| Security | agent | 2 | @agent.security | .sdd/agent/roles.sdd | direct | AgentShield, security-reviewer |
+| Architecture | agent | 2 | @agent.architect | .sdd/agent/roles.sdd | direct | Architect, code-architect |
+| Orchestration | agent | 3 | @agent.supervisor | .sdd/agent/roles.sdd | direct | Loop operator, harness optimizer |
+| Documentation | agent | 1 | @agent.documentation | .sdd/agent/roles.sdd | direct | Doc-updater |
+| Specialty | agent | 23 | @agent.* (new) | .sdd/agent/roles.sdd | create | Health, healthcare, finance, etc. |
+| TDD | skill | 1 | tdd-workflow | .sdd/chains/graph.sdd | direct | C1 chain arm |
+| Security Review | skill | 1 | security-review | .sdd/agent/policies.sdd | direct | R1 chain arm |
+| Framework Patterns | skill | 60+ | .sdd/skills/ | .sdd/skills/ | import | Python, Django, Go, Rust, etc. |
+| Code Review | skill | 1 | code-review | .sdd/agent/roles.sdd | direct | @agent.reviewer |
+| BDD | skill | 1 | bdd-verification | .sdd/tasks/ | import | Match SDD BDD-first enforcement |
+| DevOps | skill | 15 | .sdd/skills/devops/ | .sdd/skills/devops/ | merge | CI/CD, Git workflow, deployment |
+| ML Engineering | skill | 5 | .sdd/skills/specialty/ | .sdd/skills/ | create | ML patterns, eval, serving |
+| Documentation | skill | 3 | @agent.documentation | .sdd/agent/roles.sdd | direct | write_docs, extract_patterns |

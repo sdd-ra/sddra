@@ -1,0 +1,22 @@
+# Workflow: sddra Project
+
+Purpose:
+  Workflow state for sddra.ai.
+
+Current Workflow:
+  - AUTO chain: analyze → plan → decisions → prompts → update → next
+  - Status: Running (idle, awaiting new prompts)
+  - Completed steps: analyze, plan, decisions, prompts, update, next
+
+State Transitions:
+  - idle → running (on /sdd-<command> auto)
+  - running → paused (on NEEDS_INPUT/BLOCKED)
+  - paused → running (on /sdd-resume)
+  - running → done (on workflow completion)
+
+Navigation:
+  Project: @INDEX.sdd
+  Chains: @../../chains/INDEX.sdd
+  Commands: @../../commands/INDEX.sdd
+
+State: +

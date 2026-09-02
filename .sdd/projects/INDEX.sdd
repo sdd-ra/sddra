@@ -7,13 +7,13 @@ Purpose:
   IMPORTANT: .sdd/projects/ is NOT permanently empty.
   It contains:
     - {project_name}/ — example/template project for demonstration
-    - {project_name}/   — real project instances created after human selection
+    - sddra/ — real project instance for sddra.ai
 
 Owns: ./
 
 ReadOrder:
    1 @INDEX.sdd
-   2 @{project_name}/INDEX.sdd
+   2 @sddra/INDEX.sdd
 
 Rules:
   [PRJ1] {project_name}/ is a template, not a real project.
@@ -22,17 +22,19 @@ Rules:
   [PRJ4] Before project selection, only {project_name}/ exists.
   [PRJ5] Migration commands run against real project instances.
   [PRJ6] The project/ folder contains reusable schemas only.
+  [PRJ7] sddra/ is the active project instance for the sddra.ai repository.
 
 Lifecycle:
-  1. Human provides project name (e.g. "my-app")
-  2. AI creates .sdd/projects/my-app/ from {project_name}/ template
-  3. AI populates my-app/ with project-specific data
-  4. All work proceeds in .sdd/projects/my-app/
-  5. {project_name}/ remains as reference/template
+   1. Human provides project name (e.g. "my-app")
+   2. AI creates .sdd/projects/my-app/ from {project_name}/ template
+   3. AI populates my-app/ with project-specific data
+   4. All work proceeds in .sdd/projects/my-app/
+   5. {project_name}/ remains as reference/template
 
 Navigation:
   ProjectModel: @../project/INDEX.sdd
   ExampleProject: @{project_name}/INDEX.sdd
+  ActiveProject: @sddra/INDEX.sdd
   Migration: @../commands/sdd-migrate.sdd
   Features: @../features/INDEX.sdd
 

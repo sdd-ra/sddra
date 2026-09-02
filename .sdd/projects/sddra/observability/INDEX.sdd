@@ -1,0 +1,20 @@
+# Observability: sddra Project
+
+Purpose:
+  Observability data for sddra.ai.
+
+Pillars:
+  - Logs: Command execution logs
+  - Metrics: Test pass rates, build times
+  - Traces: AUTO workflow execution traces
+
+Current Status:
+  - Workflow state: .claude/sdd/state.json
+  - Execution history: .claude/sdd/history.json
+  - Decision log: .claude/sdd/decisions.json
+
+Navigation:
+  Project: @INDEX.sdd
+  Runtime: @../../runtime/INDEX.sdd
+
+State: +

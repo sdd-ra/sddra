@@ -53,7 +53,7 @@ STRUCTURED RESULT (AUTO mode):
   next: plan
   auto_continue: true
   decisions: []  # autonomous decisions made during analysis
-  artifacts: [".sdd/docs/sdd-overview.md", ".sdd/docs/file-catalog.md"]  # if created
+  artifacts: [".sdd/docs/overview/sdd-overview.md", ".sdd/docs/analysis/system-analysis.md"]  # if created
 
 Business Domain Detection:
   /chains/    → Execution/Workflow system
@@ -105,8 +105,8 @@ Section 1 — Terminal Output:
 
 Section 2 — Human-Readable Docs (optional):
   If .sdd/docs/ doesn't exist or is stale, generate:
-  - .sdd/docs/sdd-overview.md — one-paragraph system explanation
-  - .sdd/docs/file-catalog.md — full file catalog with classifications
+   - .sdd/docs/overview/sdd-overview.md — one-paragraph system explanation
+   - .sdd/docs/analysis/system-analysis.md — full file catalog with classifications
 
 Rules:
   - Do NOT modify any .sdd source files

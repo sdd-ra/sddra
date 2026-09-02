@@ -1,0 +1,28 @@
+# sddra — Active Context
+
+Purpose:
+  Current active context for the sddra.ai project.
+  This file is loaded at the start of every session.
+
+CurrentFocus: Documentation reorganization and project instance creation
+ActiveDecisions:
+  - DOC-2026-0902-001: Human docs sequential structure
+  - DOC-2026-0902-002: Project instance at .sdd/projects/sddra/
+  - DOC-2026-0902-003: tmp/ deep analysis
+
+WorkInProgress:
+  - Root README.md as main human entry point
+  - tmp/ analysis and categorization
+  - External content integration into .sdd/
+
+RecentChanges:
+  - Documentation reorganization with append protocol
+  - Design analysis engine with 8 skills
+  - ProvenanceClient integration
+
+NextActions:
+  - Complete tmp/ analysis
+  - Bring valuable content into .sdd/
+  - Finalize root README.md
+
+State: active

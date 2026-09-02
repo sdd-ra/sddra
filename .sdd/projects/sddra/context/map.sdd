@@ -1,0 +1,29 @@
+# sddra — Context Map
+
+Purpose:
+  Active context for the sddra.ai project.
+  Tracks current focus, active decisions, and work in progress.
+
+Current Sprint:
+  Focus: Documentation reorganization, project instance creation
+  Layer: L4 — External Tool Integration
+
+Active Decisions:
+  - DOC-2026-0902-001: Human docs at root with sequential structure
+  - DOC-2026-0902-002: Project instance at .sdd/projects/sddra/
+  - DOC-2026-0902-003: tmp/ deep analysis with system integration
+
+Work In Progress:
+  - Root README.md update as main human entry point
+  - tmp/ analysis and categorization
+  - Bringing valuable external content into .sdd/ system
+
+Blockers:
+  None
+
+Recent Changes:
+  - 2026-09-02: Documentation reorganization completed
+  - 2026-09-02: Project instance created from template
+  - 2026-09-02: Design analysis engine completed
+
+State: active

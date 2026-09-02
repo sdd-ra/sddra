@@ -1,0 +1,22 @@
+# Architecture: sddra Project
+
+Purpose:
+  Architecture decisions and documentation for sddra.ai.
+
+Current Architecture:
+  Type: Modular Monolith
+  Pattern: Specification-Driven Development (SDD)
+  Layers: Specification (.sdd/) + Runtime (sdd-adapter/)
+
+Key Decisions:
+  - .sdd/ is source of truth
+  - Runtime implements specs, never contradicts
+  - Human docs use append protocol for updates
+  - Project instance at .sdd/projects/sddra/
+
+Navigation:
+  Project: @INDEX.sdd
+  Stack: @../stack/INDEX.sdd
+  Decisions: @../decisions/INDEX.sdd
+
+State: +

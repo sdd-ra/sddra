@@ -1,0 +1,26 @@
+# Testing: sddra Project
+
+Purpose:
+  Testing documentation for sddra.ai.
+
+Test Strategy:
+  - Unit tests: Jest for sdd-adapter/src/
+  - Integration tests: PowerShell scripts in .sdd/testing/scripts/
+  - Validation: Custom validation scripts in .kilo/scripts/
+
+Current Status:
+  - Unit tests: 16/16 passing
+  - Integration tests: 15/15 passing
+  - Documentation validation: 0 orphans, 0 marker issues
+
+Test Commands:
+  - npm test — Run unit tests
+  - .sdd/testing/scripts/run.ps1 — Run integration tests
+  - node .kilo/scripts/validate-docs.js — Validate documentation
+
+Navigation:
+  Project: @INDEX.sdd
+  Gates: @../gates/INDEX.sdd
+  Test Suite: @../../testing/INDEX.sdd
+
+State: +
