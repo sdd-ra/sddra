@@ -1,0 +1,119 @@
+version: "1.0"
+name: sdd-cli-workflow
+description: SDD CLI automatic workflow chain for /sdd-<command> auto mode
+
+# Master chain: analyze -> plan -> decisions -> prompts -> update -> next
+# Each step declares its command, prerequisites, and successor.
+# The orchestrator resolves missing prerequisites before executing the requested step.
+
+steps:
+  analyze:
+    command: sdd-analyze
+    requires: []
+    next: plan
+    terminal: false
+    skip_if_complete: true
+
+  plan:
+    command: sdd-plan
+    requires:
+      - analyze
+    next: decisions
+    terminal: false
+    skip_if_complete: true
+
+  decisions:
+    command: sdd-decisions
+    requires:
+      - analyze
+      - plan
+    next: prompts
+    terminal: false
+    skip_if_complete: true
+
+  prompts:
+    command: sdd-prompts
+    requires:
+      - plan
+      - decisions
+    next: update
+    terminal: false
+    skip_if_complete: true
+
+  update:
+    command: sdd-update
+    requires:
+      - prompts
+    next: next
+    terminal: false
+    skip_if_complete: true
+
+  next:
+    command: sdd-next
+    requires:
+      - update
+    next: null
+    terminal: true
+    skip_if_complete: false
+    on_complete: check_for_more_work_or_signal_done
+
+# Control commands — not part of the auto chain, but can inspect/control it
+control:
+  status:
+    command: sdd-status
+    chain: false
+
+  resume:
+    command: sdd-resume
+    chain: false
+    resumes_auto: true
+
+  health:
+    command: sdd-health
+    chain: false
+
+# Infrastructure commands — outside the workflow entirely
+infrastructure:
+  backup:
+    command: sdd-backup
+    chain: false
+
+  restore:
+    command: sdd-restore
+    chain: false
+
+  migrate:
+    command: sdd-migrate
+    chain: false
+
+# Execution policies
+policies:
+  auto_continue_on_complete: true
+  auto_stop_on_blocked: true
+  auto_stop_on_input_required: true
+  auto_stop_on_failed: true
+  auto_stop_on_cancelled: true
+  max_auto_iterations: 50
+  loop_protection_threshold: 10
+  loop_protection_window: 10
+
+# Terminal states that stop AUTO execution
+terminal_states:
+  - DONE
+  - BLOCKED
+  - NEEDS_INPUT
+  - FAILED
+  - CANCELLED
+
+# Escalation criteria — ask human only for these
+escalation_criteria:
+  - irreversible action
+  - destructive operation
+  - security-critical change
+  - production data modification
+  - credential rotation
+  - compliance/legal impact
+  - financial significance
+  - explicitly user-preferred
+  - cannot be inferred safely
+  - multiple materially different outcomes with no reliable basis
