@@ -1,0 +1,45 @@
+# Skill: React Best Practices
+
+Purpose:
+  React and Next.js best practices skill. Contains 40+ rules covering
+  rendering, state management, async patterns, bundle optimization,
+  and server/client boundaries.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+   3  @rules/_sections.md
+
+Modes:
+  APPLY    — apply best practice to current task
+  REVIEW   — review React code against rules
+  SCAN     — scan codebase for violations
+
+Rules:
+  [RBP1] Rules MUST be categorized by domain (rendering, async, bundle, server).
+  [RBP2] Each rule MUST include rationale, anti-pattern, and fix.
+  [RBP3] React API usage MUST target current stable version.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+    rules/_sections.md
+
+  Resolve:
+    rules/rendering
+    rules/rerender
+    rules/async
+    rules/bundle
+    rules/server
+    rules/client
+    rules/js
+
+Navigation:
+  ReactBestPractices: @INDEX.sdd
+  Skill: @SKILL.md
+  Sections: @rules/_sections.md
+
+State: +

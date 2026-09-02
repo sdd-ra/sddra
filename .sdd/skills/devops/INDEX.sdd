@@ -13,6 +13,7 @@ ReadOrder:
    3  @ci-cd/INDEX.sdd
    4  @security/INDEX.sdd
    5  @testing/INDEX.sdd
+   6  @vercel-optimize/INDEX.sdd
 
 Rules:
   [D1] All git operations MUST follow semantic commits.
@@ -36,5 +37,6 @@ Navigation:
   LocalValidation: @ci-cd/local-validation.sdd
   SecurityTesting: @security/scanners.sdd
   TestAutomation: @testing/automation.sdd
+  VercelOptimize: @vercel-optimize/INDEX.sdd
 
 State: +

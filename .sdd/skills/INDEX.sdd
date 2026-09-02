@@ -1,4 +1,4 @@
-Skills: SDD
+ï»¿Skills: SDD
 
 Purpose:
   Skill Intelligence and Self-Evolution Engine. Skills are living
@@ -9,93 +9,95 @@ Purpose:
 Owns: ./
 
 ReadOrder:
-   1  @INDEX.sdd
-   2  @protocol/skill-execution.sdd (skill execution protocol)
-   3  @languages/INDEX.sdd
-   3  @languages/go/
-   4  @languages/rust/
-   5  @languages/java/
-   6  @languages/php/
-   7  @languages/python/
-   8  @languages/csharp/
-   9  @languages/cpp/
-   10 @languages/typescript/
-   11 @languages/javascript/
-   12 @languages/swift/
-   13 @languages/kotlin/
-   14 @languages/ruby/
-   15 @frameworks/INDEX.sdd
-   16 @frameworks/react/
-   17 @frameworks/flutter/
-   18 @frameworks/react-native/
-   19 @frameworks/swiftui/
-   20 @frameworks/kotlin-multiplatform/
-   21 @frameworks/nextjs/
-   22 @frameworks/nestjs/
-   23 @frameworks/spring-boot/
-   24 @frameworks/django/
-   25 @frameworks/fastapi/
-   26 @frameworks/express/
-   27 @frameworks/dotnet/
-   28 @frameworks/laravel/
-   29 @frameworks/symfony/
-   30 @frameworks/svelte/
-   31 @databases/INDEX.sdd
-   32 @databases/postgresql/
-   33 @databases/mongodb/
-   34 @databases/redis/
-   35 @databases/mysql/
-   36 @databases/cassandra/
-   37 @databases/elasticsearch/
-   38 @platforms/INDEX.sdd
-   39 @platforms/docker/
-   40 @platforms/kubernetes/
-   41 @platforms/aws/
-   42 @platforms/gcp/
-   43 @platforms/azure/
-   44 @platforms/terraform/
-   45 @messaging/INDEX.sdd
-   46 @messaging/kafka/
-   47 @messaging/rabbitmq/
-   48 @messaging/nats/
-   49 @devops/INDEX.sdd
-   50 @devops/git/
-   51 @devops/ci-cd/
-   52 @devops/security/
-   53 @devops/testing/
-   54 @testing/INDEX.sdd
-   55 @testing/SKILL-TEST-STRATEGY.sdd
-   56 @meta/INDEX.sdd
-   57 @meta/SKILL-DISCOVERY.sdd
-   58 @meta/SKILL-RECOMMENDATION.sdd
-   59 @meta/SKILL-GAP-ANALYSIS.sdd
-   60 @meta/SKILL-EXTERNAL-REFERENCES.sdd
-   61 @cross-cutting/INDEX.sdd
-   62 @cross-cutting/testing/
-   63 @cross-cutting/security/
-   64 @cross-cutting/architecture/
-    65  @cross-cutting/observability/
-     66  @sdd/INDEX.sdd
-     67  @sdd/SKILL-INTEGRATION-MODULE.sdd
-     68  @sdd/SKILL-EVENT-PROCESSOR.sdd
-     69  @sdd/SKILL-FIELD-MAPPING.sdd
-     70  @sdd/SKILL-NOTIFICATION.sdd
-     71  @sdd/SKILL-SCHEDULED-SYNC.sdd
-     72  @design/INDEX.sdd
-     73  @design/taste-evaluation.sdd
-     74  @design/design-heuristics.sdd
-     75  @design/visual-design.sdd
-     76  @design/ux-patterns.sdd
-     77  @design/accessibility.sdd
-     78  @design/design-system.sdd
-     79  @design/design-review.sdd
+    1 @INDEX.sdd
+    2 @protocol/skill-execution.sdd (skill execution protocol)
+    3 @languages/INDEX.sdd
+    3 @languages/go/
+    4 @languages/rust/
+    5 @languages/java/
+    6 @languages/php/
+    7 @languages/python/
+    8 @languages/csharp/
+    9 @languages/cpp/
+    10 @languages/typescript/
+    11 @languages/javascript/
+    12 @languages/swift/
+    13 @languages/kotlin/
+    14 @languages/ruby/
+    15 @frameworks/INDEX.sdd
+    16 @frameworks/react/
+    17 @frameworks/flutter/
+    18 @frameworks/react-native/
+    19 @frameworks/swiftui/
+    20 @frameworks/kotlin-multiplatform/
+    21 @frameworks/nextjs/
+    22 @frameworks/nestjs/
+    23 @frameworks/spring-boot/
+    24 @frameworks/django/
+    25 @frameworks/fastapi/
+    26 @frameworks/express/
+    27 @frameworks/dotnet/
+    28 @frameworks/laravel/
+    29 @frameworks/symfony/
+    31 @frontend/INDEX.sdd
+    32 @frontend/react-best-practices/
+    33 @frameworks/svelte/
+    31 @databases/INDEX.sdd
+    32 @databases/postgresql/
+    33 @databases/mongodb/
+    34 @databases/redis/
+    35 @databases/mysql/
+    36 @databases/cassandra/
+    37 @databases/elasticsearch/
+    38 @platforms/INDEX.sdd
+    39 @platforms/docker/
+    40 @platforms/kubernetes/
+    41 @platforms/aws/
+    42 @platforms/gcp/
+    43 @platforms/azure/
+    44 @platforms/terraform/
+    45 @messaging/INDEX.sdd
+    46 @messaging/kafka/
+    47 @messaging/rabbitmq/
+    48 @messaging/nats/
+    49 @devops/INDEX.sdd
+    50 @devops/git/
+    51 @devops/ci-cd/
+    52 @devops/security/
+    53 @devops/testing/
+    54 @testing/INDEX.sdd
+    55 @testing/SKILL-TEST-STRATEGY.sdd
+    56 @meta/INDEX.sdd
+    57 @meta/SKILL-DISCOVERY.sdd
+    58 @meta/SKILL-RECOMMENDATION.sdd
+    59 @meta/SKILL-GAP-ANALYSIS.sdd
+    60 @meta/SKILL-EXTERNAL-REFERENCES.sdd
+    61 @cross-cutting/INDEX.sdd
+    62 @cross-cutting/testing/
+    63 @cross-cutting/security/
+    64 @cross-cutting/architecture/
+    65 @cross-cutting/observability/
+    66 @sdd/INDEX.sdd
+    67 @sdd/SKILL-INTEGRATION-MODULE.sdd
+    68 @sdd/SKILL-EVENT-PROCESSOR.sdd
+    69 @sdd/SKILL-FIELD-MAPPING.sdd
+    70 @sdd/SKILL-NOTIFICATION.sdd
+    71 @sdd/SKILL-SCHEDULED-SYNC.sdd
+    72 @design/INDEX.sdd
+    73 @design/taste-evaluation.sdd
+    74 @design/design-heuristics.sdd
+    75 @design/visual-design.sdd
+    76 @design/ux-patterns.sdd
+    77 @design/accessibility.sdd
+    78 @design/design-system.sdd
+    79 @design/design-review.sdd
 
 Modes:
-  APPLY    — apply skill to current task
-  REVIEW   — review skill for updates
-  UPGRADE  — propose skill upgrade
-  COMPARE  — compare approaches
-  AUDIT    — audit skill health
+  APPLY    â€” apply skill to current task
+  REVIEW   â€” review skill for updates
+  UPGRADE  â€” propose skill upgrade
+  COMPARE  â€” compare approaches
+  AUDIT    â€” audit skill health
 
 Rules:
   [SK1]  Skill Core MUST be short and token-efficient.
@@ -103,7 +105,7 @@ Rules:
   [SK3]  Skill MUST have metadata: ID, Domain, Level, Version, Status, Maturity, Risk, ReviewDate, EvidenceLevel.
   [SK4]  Skill status: DRAFT, EXPERIMENTAL, STABLE, DEPRECATED, RETIRED.
   [SK5]  Skill maturity: UNKNOWN, EMERGING, VALIDATED, MATURE, STANDARD.
-  [SK6]  Skill NEVER changes directly — DISCOVER ? ANALYZE ? PROPOSE ? REVIEW ? APPROVE ? UPDATE.
+  [SK6]  Skill NEVER changes directly â€” DISCOVER ? ANALYZE ? PROPOSE ? REVIEW ? APPROVE ? UPDATE.
   [SK7]  Evidence priority: Official standard > Official documentation > Security advisory > Vendor docs > Peer-reviewed research > Reputable source > Community consensus > Blog/opinion.
   [SK8]  Skill MUST have search keys for knowledge discovery.
   [SK9]  Skill MUST track technology lifecycle.
@@ -117,19 +119,19 @@ Rules:
   [SK17] Skill review schedule: Critical 30 days, Normal 90 days, Stable 180 days.
   [SK18] Skill feedback loop: INCIDENT ? SKILL-GAP ? SKILL-UPGRADE-PROPOSAL.
   [SK19] Skill is executable contract, not prompt. Input, output, requires, must, must_not MUST be declared.
-  [SK20] Skill chain defines process boundaries — AI discovers solution within boundaries.
+  [SK20] Skill chain defines process boundaries â€” AI discovers solution within boundaries.
   [SK21] Skill gate MUST evaluate condition before skill execution.
   [SK22] Skill guard MUST enforce preconditions and postconditions.
   [SK23] Skill autonomy level MUST be explicit: 0=human, 1=propose, 2=approved execute, 3=autonomous.
   [SK24] Skill trust level MUST be explicit: READ_ONLY, LOW_RISK, MEDIUM_RISK, HIGH_RISK, CRITICAL.
   [SK25] Skill boundary MUST be enforced: allowed_paths, allowed_tables, allowed_api.
-  [SK26] Skill tool access MUST follow least privilege — whitelist only required tools.
+  [SK26] Skill tool access MUST follow least privilege â€” whitelist only required tools.
   [SK27] Composite skills MUST decompose into reusable atomic skills.
   [SK28] Skill version compatibility MUST be checked before assignment.
   [SK29] Skill failure MUST be typed: INPUT_INVALID, POLICY_DENIED, TOOL_FAILED, TIMEOUT, AGENT_FAILED, OUTPUT_INVALID, POSTCONDITION_FAILED.
   [SK30] Skill execution protocol: Receive Task -> Resolve Skill -> Validate Input -> Resolve Context -> Resolve Policies -> Resolve Tools -> Create Execution -> Run Agent -> Validate Output -> Validate Postconditions -> Emit Events -> Continue Chain.
   [SK31] Agent MUST NOT add signatures or sign-offs to skill outputs.
-  [SK32] Agent MUST NOT use emojis, icons, or decorative symbols in skill output headers or titles — reserved for human use only.
+  [SK32] Agent MUST NOT use emojis, icons, or decorative symbols in skill output headers or titles â€” reserved for human use only.
 
 Entry:
   Read:
@@ -177,6 +179,8 @@ Navigation:
   Laravel: @skills/frameworks/laravel/INDEX.sdd
   Symfony: @skills/frameworks/symfony/INDEX.sdd
   Svelte: @skills/frameworks/svelte/INDEX.sdd
+   Frontend: @skills/frontend/INDEX.sdd
+   ReactBestPractices: @skills/frontend/react-best-practices/INDEX.sdd
   Databases: @skills/databases/INDEX.sdd
   PostgreSQL: @skills/databases/postgresql/INDEX.sdd
   MongoDB: @skills/databases/mongodb/INDEX.sdd
@@ -205,6 +209,7 @@ Navigation:
    DevOpsCiCd: @skills/devops/ci-cd/INDEX.sdd
    DevOpsSecurity: @skills/devops/security/INDEX.sdd
     DevOpsTesting: @skills/devops/testing/INDEX.sdd
+   VercelOptimize: @skills/devops/vercel-optimize/INDEX.sdd
     Meta: @skills/meta/INDEX.sdd
     SkillDiscovery: @skills/meta/SKILL-DISCOVERY.sdd
     SkillRecommendation: @skills/meta/SKILL-RECOMMENDATION.sdd
@@ -225,5 +230,6 @@ Navigation:
        Accessibility: @skills/design/accessibility.sdd
        DesignSystem: @skills/design/design-system.sdd
        DesignReview: @skills/design/design-review.sdd
+   WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
 
 State: +

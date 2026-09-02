@@ -1,0 +1,42 @@
+# Skill: Vercel Optimize
+
+Purpose:
+  Vercel project optimization skill. Provides scanners, gates, and
+  recommendations for improving Vercel deployment performance, cost,
+  and reliability.
+
+Owns: ./
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+   3  @references/recommendations.md
+   4  @references/playbooks/README.md
+
+Modes:
+  APPLY    — apply optimization to current project
+  REVIEW   — review project against optimization rules
+  SCAN     — scan project for optimization opportunities
+
+Rules:
+  [VO1] All recommendations MUST be backed by Vercel documentation.
+  [VO2] Gates MUST be non-blocking unless explicitly configured.
+  [VO3] Scanner findings MUST include severity and effort estimate.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+  Resolve:
+    lib/scanners
+    lib/gates
+    references/playbooks
+
+Navigation:
+  VercelOptimize: @INDEX.sdd
+  Skill: @SKILL.md
+  Recommendations: @references/recommendations.md
+  Playbooks: @references/playbooks/README.md
+
+State: +
