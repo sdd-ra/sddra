@@ -1,0 +1,67 @@
+# /sdd-marketplace
+
+Purpose:
+  External skill marketplace interface (Phase 146): list registered sources,
+  sync source state, import skills with validation + provenance, and audit
+  imported skills for provenance compliance.
+
+Owns: commands/sdd-marketplace.sdd
+
+Description:
+  Runtime-backed command (sdd-adapter/commands.ts runMarketplaceCommand).
+  Sources live in .sdd/marketplace/registry.json. Imports go through
+  SkillValidator (structure/metadata/security gates) and SkillImporter
+  (fetch + provenance INDEX.sdd wrapper). Verdicts: SHIP/FIX/BLOCK.
+
+Usage:
+  /sdd-marketplace list
+  /sdd-marketplace sync <source-id>
+  /sdd-marketplace import <source-id> <skill-name> [domain] [group]
+  /sdd-marketplace audit
+
+Options:
+  list       Show registered sources (active/reference/discovery) + blocked
+  sync       Update lastSync for a source; show license rules
+  import     Fetch SKILL.md from source repo → validate → import as CANDIDATE
+  audit      Validate all imported skills' provenance (SHIP/FIX/BLOCK counts)
+
+Mode: READ_ONLY (list, sync registry timestamps) | READ_WRITE (import, audit writes nothing)
+
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/marketplace/registry.json
+  Validator/importer specs and skill wrappers load on EXPAND only.
+
+Runtime:
+  Implementation: sdd-adapter/commands.ts → /sdd-marketplace
+  Validator: sdd-adapter/skill-validator.ts (structure, license, security gates)
+  Importer: sdd-adapter/skill-importer.ts (fetch, wrapper, placement)
+  Registry: .sdd/marketplace/registry.json
+
+Lifecycle (Phase 146 §2):
+  EXTERNAL → CANDIDATE (import via this command) → ACTIVE (human review [IMP4]) → DEPRECATED
+
+Rules:
+  [MKT-01] Imports MUST pass license gate: MIT/Apache-2.0 only; source-available and unlicensed are BLOCKED [IMP6].
+  [MKT-02] Imports MUST carry provenance: Source/Origin/Imported/Format/License (CLAUDE.md import rules).
+  [MKT-03] Blocked sources (registry.blocked) MUST NOT be importable.
+  [MKT-04] Imported skills are CANDIDATES — human review required for ACTIVE [IMP4].
+  [MKT-05] New imports SHOULD pass skill-evaluate (governance) before CANDIDATE → ACTIVE [IMP7].
+  [MKT-06] Code-bearing imports declare Runtime and run in Docker only [IMP2, R59-R66].
+  [MKT-07] Audit findings use SHIP/FIX/BLOCK semantics mapping to PASS/WARN/BLOCK.
+
+Output:
+  list:    MARKETPLACE REGISTRY — per source: status, URL, license, format, imported count, lastSync
+  sync:    confirmation + license rule echo
+  import:  MARKETPLACE IMPORT — skill, source, destination, score, decision, findings
+  audit:   MARKETPLACE AUDIT — audited/SHIP/FIX/BLOCK counts + per-skill failures
+
+Navigation:
+  INDEX: @INDEX.sdd
+  Registry: @../marketplace/registry.json
+  Phase146: @../projects/sddra/phases/phase-146-skill-marketplace.sdd
+  SkillGovernance: @../skills/meta/imported/skill-governance/INDEX.sdd
+  ImportedSkills: @../skills/meta/imported/INDEX.sdd
+  ExternalReferences: @../skills/meta/SKILL-EXTERNAL-REFERENCES.sdd
+
+State: +

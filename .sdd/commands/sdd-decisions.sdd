@@ -16,6 +16,11 @@ Options:
   --active      Show only active decisions
   --decision    Show specific decision details
 
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/decisions/INDEX.sdd (list first)
+  Full DEC-XXX records load on EXPAND only (per decision, when worked on).
+
 Output:
   Table: ID, type, status, title, owner.
   Detail: options, rationale, impact, implementation status.

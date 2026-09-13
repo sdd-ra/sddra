@@ -1,0 +1,77 @@
+# /sdd-research
+
+Purpose:
+  Deep research command — the RS1 chain arm entry point. Runs the research
+  protocol: scoped brief → parallel searches → citation-verified findings →
+  tmp staging → Pareto decision → integration → staging deletion.
+
+Owns: commands/sdd-research.sdd
+
+Description:
+  Executes a research round per .sdd/chains/arms/research.sdd pipeline.
+  Stages raw findings in tmp/research/{date}-{slug}/ (SOURCES.md index,
+  r*.md streams, DECISIONS.md gate). Every claim URL-cited; proprietary
+  material analysis-only; MIT/Apache importable with provenance. Round ends
+  with integration + FULL staging deletion (tmp hygiene).
+
+Usage:
+  /sdd-research <topic>
+  /sdd-research <topic> --depth <1-3> --breadth <2-5>
+  /sdd-research --continue <slug>   (resume interrupted round from staging state)
+  /sdd-research --status           (list staged rounds)
+
+Options:
+  --depth     Recursion levels (default 1, max 3) — deterministic budget
+  --breadth   Queries per level (default 3, max 5)
+  --continue  Resume from tmp staging audit trail
+  --status    List staged research rounds
+
+Mode: READ_WRITE (tmp staging writes + integration writes to .sdd/)
+
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/workflow/research-protocol.sdd
+  - .sdd/chains/arms/research.sdd
+  Stream findings, sources registry, and marketplace rules load on EXPAND only.
+
+Subcommands:
+  run         (default) execute a research round
+  continue    resume interrupted round from research_state
+  status      report staged rounds and their gate state
+
+Protocol (arm spec): @../chains/arms/research.sdd
+
+Pipeline summary:
+  Scope (brief approval) → Perspective mining (3-5) → Parallel search
+  (cap 3-5, DOM-based, egress-gated) → Learn (audit trail) → Recurse
+  (depth budget) → Verify (anchor + URL existence gates) → Compress →
+  Write (cited report) → Decide (Pareto gate) → Integrate (provenance) →
+  Delete staging
+
+Output:
+  RESEARCH ROUND {slug}
+  Brief:          <one-line>
+  Budget:          depth=N breadth=M cap=3-5 wall-clock=30m
+  Streams:         N streams, X sources, Y claims (all URL-anchored)
+  Verification:    anchors PASS/PASS_WITH_WARNINGS/FAIL; URL check N/N
+  Findings:        INTEGRATE a | SKIP b (Pareto: >= 80% relevance)
+  Integrated:      <artifact list>
+  Staging:         DELETED (logged in history.json)
+
+Rules:
+  [RES-01] /sdd-research MUST produce a DECISIONS.md gate before integration.
+  [RES-02] /sdd-research MUST NOT import non-MIT/Apache content (analysis only).
+  [RES-03] /sdd-research MUST delete staging after integration ([RS1-08]).
+  [RES-04] /sdd-research --continue MUST resume from audit trail, never rescan.
+  [RES-05] Budget (depth/breadth) MUST be fixed at Scope; overruns terminate.
+  [RES-06] Citation gates ([RS1-03], [RS1-04]) MUST pass before Write.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  ResearchArm: @../chains/arms/research.sdd
+  ResearchProtocol: @../workflow/research-protocol.sdd
+  ResearcherRole: @../agent/roles.sdd
+  MarketplaceCommand: @sdd-marketplace.sdd (import path)
+  WeakPointMap: @../agent/weak-point-map.sdd
+
+State: +

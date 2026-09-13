@@ -13,6 +13,7 @@ Description:
 
 Usage:
   /sdd-design
+  /sdd-design --generate
   /sdd-design --evaluate
   /sdd-design --discover
   /sdd-design --review <path>
@@ -20,15 +21,25 @@ Usage:
   /sdd-design --auto
 
 Options:
+  --generate  Run Unified Design Intelligence pipeline (Stages 1-7) —
+              brief → tokens (DESIGN.md) → structure → components →
+              style → verify → review. The ONLY sanctioned UI generation path.
   --evaluate  Run design quality evaluation
   --discover  Discover missing design skills
   --review    Review design implementation at path
   --manual    Force manual mode (no auto-invoke)
   --auto      Force auto-invoke mode
 
-Mode: READ_ONLY (evaluate/discover) | READ_WRITE (review)
+Mode: READ_ONLY (evaluate/discover) | READ_WRITE (review/generate)
+
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/skills/design/intelligence/INDEX.sdd (pipeline + gates)
+  - active DESIGN.md for the target (if exists)
+  Native design skills, sources registry, imported references load on EXPAND only.
 
 Subcommands:
+  generate    Run Unified Design Intelligence pipeline on a design brief
   evaluate    Analyze design quality against .sdd/skills/design/*
   discover    Find gaps in design skill coverage
   review      Review code/design against design principles
@@ -59,9 +70,16 @@ Rules:
   [DSN-04] /sdd-design MUST integrate with skill auto-invocation.
   [DSN-05] /sdd-design MUST respect DESIGN.md as source of truth.
   [DSN-06] /sdd-design MUST check WCAG 2.1 AA baseline for accessibility.
+  [DSN-07] /sdd-design --generate MUST follow the intelligence pipeline
+           (design/intelligence/INDEX.sdd) — SlopGates both at tokens and
+           verify stages; freeform generation is BLOCKED.
+  [DSN-08] /sdd-design --generate MUST run drift enforcement on subsequent
+           related work ([DI9]).
 
 Navigation:
   INDEX: @INDEX.sdd
+  DesignIntelligence: @../skills/design/intelligence/INDEX.sdd
+  DesignSources: @../skills/design/sources.sdd
   DesignSkills: @../skills/design/INDEX.sdd
   SkillDiscovery: @../skills/meta/SKILL-DISCOVERY.sdd
   AutoInvoke: @../agent/skill-auto-invoke.sdd

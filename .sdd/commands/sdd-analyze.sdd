@@ -22,6 +22,12 @@ Usage:
   /sdd-analyze --specdd
   /sdd-analyze --all
 
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - the target area's INDEX only (chains/INDEX.sdd OR decisions/INDEX.sdd
+    OR projects/sddra/INDEX.sdd, per focus flag)
+  Deep specs load on EXPAND only — analysis goes layer by layer, not bulk.
+
 Options:
   --chains     Focus on chain graph
   --decisions  Focus on decision ledger

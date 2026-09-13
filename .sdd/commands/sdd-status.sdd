@@ -17,6 +17,12 @@ Options:
   --tokens     Show detailed token usage per stage
   --decisions  Show decision status
 
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/projects/sddra/context/active.sdd
+  - .sdd/projects/sddra/tasks/INDEX.sdd
+  Per-stage token ledgers and decision records load on EXPAND only.
+
 Output:
   Markdown table: stage, tokens used, status, next step.
 

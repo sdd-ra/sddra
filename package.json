@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sddra/sddra.ai.git"
+    "url": "https://github.com/RasimAghayev/sddra"
   },
   "files": [
     ".sdd/**/*",

@@ -11,14 +11,50 @@ Description:
 
 Usage:
   /sdd-next
+  /sdd-next --step
   /sdd-next --decision DEC-<ID>
   /sdd-next --case CASE-<ID>
   /sdd-next --force
 
 Options:
-  --decision    Advance specific decision
-  --case        Jump to specific case
-  --force       Force advance even if incomplete (requires approval)
+  --step      Delivery-chain step mode (DL1): continue the immutable
+              workflow from the saved state — execute ONE step only
+  --decision  Advance specific decision
+  --case      Jump to specific case
+  --force     Force advance even if incomplete (requires approval)
+
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - saved workflow state (.specdd/delivery/{run_id}/state.sdd; or
+    tasks/INDEX.sdd for decision mode)
+  - .sdd/workflow/step-keys.sdd (dictionary — step mode only)
+  Step specs, stage details, and gates load on EXPAND only.
+
+StepMode (Phase 151 — the stateful /next):
+  Applies to delivery chain DL1 (@../chains/delivery.sdd) with canonical
+  step keys (@../workflow/step-keys.sdd). On every /next:
+    1. READ the saved workflow state (chains/delivery.sdd StepState;
+       .specdd/delivery/{run_id}/state.sdd)
+    2. RE-ANALYZE the relevant project files (state is truth, not chat)
+    3. IDENTIFY the last completed step
+    4. IDENTIFY the first incomplete step
+    5. EXECUTE ONLY that step
+    6. VERIFY its result (DONE criteria: input exists, work completed,
+       output artifact exists, internally consistent, validation passed)
+    7. UPDATE the workflow state
+    8. STOP
+  Rules:
+    - Called 100 times -> continues from the actual last state EVERY time.
+    - NEVER restarts from BC unless the workflow state explicitly requires it.
+    - If a blocking BUG exists (BUG-REGISTRY.sdd), /next returns the
+      blocked step — it MUST NOT advance past it.
+    - Never ask the user what is next — determine from saved state + project.
+  Step-mode output:
+    [step_mode: delivery]
+    [current_step: <key>]  [last_completed: <key>]  [first_incomplete: <key>]
+    [blocking_bugs: <ids|none>]
+    [action: execute_one_step]
+    [result: <step outcome + DONE-evidence>]
 
 Behavior:
   1. Read current decision state from projects/{project_name}/decisions/
@@ -48,10 +84,27 @@ CompletionCheck:
     - review passed
 
 Output:
-  [decision: DEC-XXX]
-  [tasks_complete: true|false]
-  [incomplete_section: decision|task|none]
-  [action: advance|resume|complete]
-  [next: <decision|case|workflow_complete>]
+  Decision/case mode (default):
+    [decision: DEC-XXX]
+    [tasks_complete: true|false]
+    [incomplete_section: decision|task|none]
+    [action: advance|resume|complete]
+    [next: <decision|case|workflow_complete>]
+
+  Step mode (--step):
+    [step_mode: delivery]
+    [current_step: <key>]  [last_completed: <key>]  [first_incomplete: <key>]
+    [blocking_bugs: <ids|none>]
+    [action: execute_one_step]
+    [result: <step outcome + DONE-evidence>]
+
+Navigation:
+  INDEX: @INDEX.sdd
+  DeliveryChain: @../chains/delivery.sdd
+  StepKeys: @../workflow/step-keys.sdd
+  TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+  BugRegistry: @../tasks/BUG-REGISTRY.sdd
+  RuntimeState: @../runtime/state.sdd
 
 State: +
+   (extended with step mode / immutable DL1 continuation per Phase 151)

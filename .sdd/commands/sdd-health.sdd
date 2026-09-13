@@ -17,6 +17,11 @@ Options:
   --verbose  Show detailed validation results
   --fix      Attempt to fix minor issues automatically
 
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/runtime/integration-routing.sdd (probe semantics for channel checks)
+  Check lists, gates, timeline specs load on EXPAND only.
+
 Checks:
   Critical files exist
   References resolve
@@ -26,9 +31,16 @@ Checks:
   No corrupted files
   Chain graph integrity
   Evolution health (temporal validity, snapshots, migrations)
+  Channel health (Phase 150): external integrations probed per
+    runtime/integration-routing.sdd — 4-way probe classification
+    (missing/broken/timeout/error), active_backend resolution,
+    tier-grouped report (0=zero-config, 1=key/login, 2=setup);
+    one failing channel degrades to its own row, NEVER crashes the report
 
 Output:
   HEALTHY | DEGRADED | UNHEALTHY | FAILED
+  Channel section (Phase 150): per-channel status + active backend
+  + broken-install prescription (reinstall hint) per probe semantics.
   With list of warnings or errors.
 
 Exit Codes:
@@ -42,12 +54,22 @@ Rules:
   [HEALTH-02] /sdd-health MUST verify all @references resolve.
   [HEALTH-03] /sdd-health MUST validate chain graph cycle detection.
   [HEALTH-04] /sdd-health MUST check temporal validity of snapshots.
+  [HEALTH-05] /sdd-health MUST probe external channels with real
+              execution (not existence) per [IR-02]; retries only for
+              transient statuses ([IR-05]).
+  [HEALTH-06] A channel probe failure degrades that channel's row —
+              it MUST NOT fail the whole health report ([IR-06]).
+  [HEALTH-07] Channel probe output MUST pass credential scrub before
+              rendering ([IR-07]).
 
 Navigation:
   INDEX: @INDEX.sdd
   ChainGraph: @../chains/graph.sdd
   References: @../references/INDEX.sdd
   Timeline: @../timeline/INDEX.sdd
+  IntegrationRouting: @../runtime/integration-routing.sdd
 
 State: +
    (enhanced with evolution health checks per Phases 130-134)
+   (extended with channel health probing per Phase 150, Agent-Reach
+    probe/doctor patterns — MIT, cited in integration-routing.sdd)

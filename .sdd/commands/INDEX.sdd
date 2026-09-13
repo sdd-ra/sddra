@@ -18,6 +18,16 @@ Rules:
   [CMD3] Commands with side effects MUST require human approval.
   [CMD4] Command output MUST be human-readable by default.
   [CMD5] Commands MUST support --help for usage information.
+  [CMD6] StatefulExecution: EVERY command MUST run under the stateful
+         flow — DISCOVER -> ANALYZE -> LOCATE CURRENT STEP -> EXECUTE ONLY
+         CURRENT STEP -> VERIFY -> SAVE STATE -> STOP. A command that
+         would execute a future step early is a FLOW VIOLATION (BLOCKED
+         with reason). Project files + saved state are the source of
+         truth — conversation history is NOT. (Phase 151)
+  [CMD7] InitialLoad: every command auto-loads ONLY its declared
+         InitialLoad manifest + INDEX routing; deeper content is
+         EXPAND-only (bax ../context/cache.sdd PullBasedLoading).
+         Bulk .sdd/ load is FORBIDDEN. (Phase 151)
 
 Commands:
   /sdd-update: Sync .sdd/ state from git repository
@@ -36,7 +46,7 @@ Commands:
   /sdd-migrate: Run migrations
   /sdd-compact: Compress context after task
   /sdd-clear: Clear context for next task
-  /sdd-next: Advance decision chain to next step
+  /sdd-next: Advance decision chain to next step (--step: DL1 step mode — stateful /next)
   /sdd-assumptions: Track and validate project assumptions
   /sdd-intents: Classify and route user intents through chain graph
   /sdd-skills: Discover and map skill ecosystem
@@ -48,6 +58,8 @@ Commands:
   /sdd-trace: Bidirectional traceability from requirement to proof and back
   /sdd-context: Compile minimal context pack for task execution
   /sdd-design: Design analysis, evaluation, discovery, and auto-invocation
+  /sdd-marketplace: External skill marketplace — list, sync, import, audit
+  /sdd-research: Deep research round — RS1 arm entry (scope → search → verify → Pareto gate → integrate → delete staging)
 
 Navigation:
   Chains: @../chains/INDEX.sdd
@@ -80,5 +92,7 @@ Navigation:
   TraceCommand: @sdd-trace.sdd
   ContextCommand: @sdd-context.sdd
   DesignCommand: @sdd-design.sdd
+  MarketplaceCommand: @sdd-marketplace.sdd
+  ResearchCommand: @sdd-research.sdd
 
 State: +
