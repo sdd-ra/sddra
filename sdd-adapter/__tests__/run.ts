@@ -22,6 +22,11 @@ const tests = [
   { name: "skill-validator", file: "__tests__/skill-validator.test.ts" },
   { name: "skill-importer", file: "__tests__/skill-importer.test.ts" },
   { name: "commands-marketplace", file: "__tests__/commands-marketplace.test.ts" },
+  { name: "checkpoint-engine", file: "__tests__/checkpoint-engine.test.ts" },
+  { name: "mcp-allowlist", file: "__tests__/mcp-allowlist.test.ts" },
+  { name: "context-emitter", file: "__tests__/context-emitter.test.ts" },
+  { name: "integration-routing", file: "__tests__/integration-routing.test.ts" },
+  { name: "delivery-runner", file: "__tests__/delivery-runner.test.ts" },
 ];
 
 let totalPass = 0;

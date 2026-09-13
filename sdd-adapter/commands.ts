@@ -19,6 +19,21 @@ export interface CommandResult {
   exitCode: number;
   output: string;
   findings?: Array<Record<string, unknown>>;
+  /** TypedOutcomeCodes (Phase 149 r3) — machine-readable outcome before escalation. */
+  outcome?:
+    | "SUCCESS"
+    | "PARTIAL"
+    | "BLOCKED"
+    | "NEEDS_CLARIFICATION"
+    | "POLICY_VIOLATION"
+    | "TOOL_ERROR"
+    | "UNSAFE";
+  /** Structural interrupt payload for irreversible actions (Phase 131 L4). */
+  interrupt?: {
+    proposedAction: string;
+    riskScore: number;
+    reasoning: string;
+  };
 }
 
 export class CommandRunner {

@@ -32,7 +32,9 @@ COPY --chown=node:node sdd-adapter/commands.ts sdd-adapter/context-budget.ts sdd
     sdd-adapter/hook-bridge.ts sdd-adapter/memory-bridge.ts sdd-adapter/provenance-client.ts \
     sdd-adapter/relevance-engine.ts sdd-adapter/skill-auto-invoker.ts sdd-adapter/skill-importer.ts \
     sdd-adapter/skill-validator.ts sdd-adapter/spec-loader.ts sdd-adapter/sync-engine.ts \
-    sdd-adapter/trace-engine.ts sdd-adapter/types.ts ./sdd-adapter/
+    sdd-adapter/trace-engine.ts sdd-adapter/types.ts \
+    sdd-adapter/checkpoint-engine.ts sdd-adapter/mcp-allowlist.ts sdd-adapter/context-emitter.ts \
+    sdd-adapter/integration-routing.ts sdd-adapter/delivery-runner.ts ./sdd-adapter/
 COPY --chown=node:node sdd-adapter/security ./sdd-adapter/security
 COPY --chown=node:node sdd-adapter/__tests__ ./sdd-adapter/__tests__
 COPY --chown=node:node .sdd ./.sdd

@@ -12,6 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["*.ts", "security/*.ts", "drift-detector.ts", "sync-engine.ts", "trace-engine.ts", "evidence-binder.ts", "skill-validator.ts", "skill-importer.ts"],
+  "include": ["*.ts", "security/*.ts", "drift-detector.ts", "sync-engine.ts", "trace-engine.ts", "evidence-binder.ts", "skill-validator.ts", "skill-importer.ts", "checkpoint-engine.ts", "mcp-allowlist.ts", "context-emitter.ts", "integration-routing.ts", "delivery-runner.ts"],
   "exclude": ["node_modules", "dist", "__tests__"]
 }
