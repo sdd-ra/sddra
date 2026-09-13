@@ -1,26 +1,60 @@
 # Chain: Refactor
 
-Purpose:
-  Auto-generated purpose for refactor.
-
-Owns: chains\refactor.sdd
 ID: RF1
 Parent: D0
 
+Purpose:
+  The real duplication/debt-to-verified-refactor flow. Duplication surfaced
+  by CR-XX (duplication_findings[], [R100]) and component-registry scans
+  routes into this chain; each refactor is analyzed for impact, applied,
+  tested, and verified. Replaces the auto-generated stub (Phase 152).
+
+Owns: chains/refactor.sdd
+
+Flow:
+  DETECT -> AR -> RF -> TS -> QA -> VR
+
 Stages:
-  AR: Architecture
-  BE: Backend
-  TS: Test
-  QA: QA
-  VR: Verify
+  DETECT: Collect duplication/debt inputs — CR-XX duplication_findings[],
+    component-registry scan (architecture/components.sdd), DRY violations
+    flagged at BD/DS design time [R100].
+  AR:  Analyze impact — which components/consumers are affected, blast
+    radius, reversibility; decide extract-vs-extend per [R81]-[R83]
+    (prefer reuse/specialization over duplication).
+  RF:  Apply the refactor — extract shared component, extend existing
+    concept, or remove the duplicate; update the component registry.
+  TS:  Test the refactored surface — changed files only ([R76]); behavior
+    preserved.
+  QA:  Quality gate — no new CR findings on the refactored code.
+  VR:  Verified — refactor proven complete with tests green.
 
 Dependencies:
-  AR -> []
-  BE -> [AR]
-  TS -> [BE]
-  QA -> [TS]
-  VR -> [QA]
+  AR  -> [DETECT]
+  RF  -> [AR]
+  TS  -> [RF]
+  QA  -> [TS]
+  VR  -> [QA]
 
-Retry: 2
+Inputs (any of):
+  - CR-XX duplication_findings[] (scoped reviews raise them)
+  - BD/DS design-time reuse violations (component registry misses)
+  - Human-raised debt (DEC-gated)
+
+Routing:
+  - DL1's scoped RF-XX steps are the PER-BRANCH instances of this chain
+    (bax delivery.sdd RFScopedSemantics).
+  - Chain-level RF1 handles cross-branch/cross-component duplication that
+    no single branch's RF-XX covers.
+
+Retry: 3
+
+Navigation:
+  Delivery: @delivery.sdd (RF-XX scoped instances)
+  Stages: @../workflow/stages.sdd (CR duplication gate)
+  StepKeys: @../workflow/step-keys.sdd (RF-XX canonical)
+  Rules: @../PROJECT.sdd [R100]
 
 State: +
+  (Phase 152: replaced auto-generated stub with the real detect->verify
+   refactor flow fed by CR-XX duplication_findings[] and the component
+   registry scan.)

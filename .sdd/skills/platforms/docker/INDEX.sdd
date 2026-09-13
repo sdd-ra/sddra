@@ -23,6 +23,13 @@ Rules:
   [D2]  Minimize layers and image size.
   [D3]  Run as non-root user.
   [D4]  Scan images for vulnerabilities.
+  [D5]  Locally build, never pull from a registry as a service image ([R91]) —
+        every compose service uses build: with the project's own Dockerfile;
+        owning the image means tomorrow's problem is found in YOUR image.
+  [D6]  All bind mounts under project var/ only; named volumes forbidden ([R92]).
+  [D7]  Resource limits (cpus/memory/pids) are mandatory in every
+        environment, even when upstream templates define none ([R102]).
+  [D8]  SWAGGER-derived systems expose the swagger UI/spec in test/dev/local ([R93]).
 
 Entry:
   Read:

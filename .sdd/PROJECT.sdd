@@ -268,7 +268,69 @@ Rules:
    [R86] Never silently learn — all knowledge additions require explicit promotion or human approval.
    [R87] Never silently overwrite — existing knowledge entries must be deprecated before replacement.
    [R88] Never silently delete — deprecated knowledge is archived, not removed.
-   [R89] Scope every project-specific rule — project rules do not propagate to global .sdd/.
-   [R90] Preserve why a decision was made — every DEC must include rationale and evidence.
+    [R89] Scope every project-specific rule — project rules do not propagate to global .sdd/.
+    [R90] Preserve why a decision was made — every DEC must include rationale and evidence.
+    [R91] Docker local-build only — docker-compose services MUST NOT reference
+           external/registry images; every service builds from a LOCAL Dockerfile
+           (digest-pinned base, multi-stage, non-root USER, no secrets baked in,
+           HEALTHCHECK, resource limits per R60/R64). Owning your own image means
+           tomorrow's problems are found in YOUR image, not a global one.
+    [R92] var/ mount root — ALL volume bind mounts live under the project-root
+           var/ directory (e.g. ./var/postgres:/var/lib/postgresql/data); named
+           volumes are forbidden (extends R66); var/ is gitignored + dockerignored.
+    [R93] SWAGGER mandatory env wiring — any system built from a SWAGGER/OpenAPI
+           document MUST have the swagger UI/spec configured in test | dev |
+           local environments — mandatory, never optional.
+    [R94] DB column comments — at the DB stage, EVERY column carries a
+           COMMENT ON COLUMN explaining WHY it was created, what it RELATES to
+           (FK/relations), and what DEPENDS on it; migrations include the comments.
+    [R95] Task-end commit — EVERY task completion (trace #16 Complete / DL1 VR)
+           MUST produce a semantic git commit referencing DEC/TASK ids
+           (extends R72). No task is "done" until the commit exists.
+    [R96] tmp/ discipline + prompts root — AI scratch/staging work goes ONLY in
+           the repo tmp/ directory, NEVER in user-profile temp dirs (the user
+           cannot track or delete those); prompts/ is THE prompt root: process
+           in place (inbox -> active -> archive), never create extra/side
+           folders inside or beside it.
+    [R97] AI runtime state never committed — AI-agent runtime state (history,
+           caches, sessions, decisions.json, worktrees, agent-manager state)
+           MUST NEVER enter git; enforced via .gitignore whitelisting.
+    [R98] 3-way command registry — every new command is registered in ALL
+           THREE locations: .sdd/commands/ (spec), .claude/commands/ (Claude
+           Code), .kilo/command/ (Kilo) — see commands/INDEX.sdd [CMD8].
+    [R99] UTF-8 only — all text files are UTF-8 (+LF per .editorconfig);
+           mojibake sequences (UTF-8 read as CP1252: "â€"", "ÅŸ", "É™", "Ä±"...)
+           are CRITICAL defects — fix on detection; write via UTF-8-safe tools
+           only, never shell redirects without explicit UTF-8.
+    [R100] Duplication routes into the RF chain — design stages (BD/DS) check
+           the component registry before creating new components; CR-XX
+           aggressively flags DRY/component duplication in
+           duplication_findings[]; surfaced duplication flows into the RF
+           (refactor) chain instead of accumulating as debt.
+    [R101] Security-first ordering — security/dependabot alerts are fixed
+           FIRST; then product-impact fixes with tests; only then merge to
+           main. This ordering is a pre-merge gate (AN/VR).
+    [R102] No local execution — compile/lint/test/build NEVER run on
+           host-installed toolchains; they run ONLY inside the Docker sandbox
+           with resource limits. When a compose service or environment has no
+           resource limits defined, setting them is MANDATORY (extends
+           R59-R66 to this repo's own tooling; applies to analysis of this
+           project AND to bootstrapping any new project).
+    [R103] AI signature ban in git — commits MUST NOT carry AI-agent signature
+           trailers (Co-Authored-By: <agent>, <Agent>-Session:, Generated-with,
+           robot emoji tags); existing signatures were purged from all
+           branches' history (2026-09-13); authorship belongs to the human.
+    [R104] /sdd* prompt-pair history — EVERY /sdd* command invocation appends
+           a pair record {ts, command, customer_prompt, ai_prompt} to
+           prompts/history/prompt-pairs.jsonl, where customer_prompt is the
+           RAW user text (any language) and ai_prompt is the normalized
+           best-practice English prompt actually executed. Append-only (R57
+           discipline). Ambiguity in the customer prompt escalates via
+           DEC/TASK before execution.
+    [R105] Projects-dir purity — .sdd/projects/ contains ONLY real project
+           instances plus the {project_name}/ template; foreign/non-applicable
+           folders are forbidden; a project instantiated from another system
+           contains only that system's OWN folders; the AI never treats
+           template or foreign folders as real projects.
 
 State: +

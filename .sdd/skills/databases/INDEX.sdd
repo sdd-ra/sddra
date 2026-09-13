@@ -24,6 +24,10 @@ Rules:
   [D3]  Skills MUST cover schema design and optimization.
   [D4]  Skills MUST be loaded on demand.
   [D5]  Database skills MUST NOT contain project-specific content.
+  [D6]  Column comments are mandatory at the DB stage ([R94]): every column
+        carries COMMENT ON COLUMN explaining WHY it was created, what it
+        RELATES to (FK/relations), and what DEPENDS on it — at the DB
+        level, not only in docs; migrations include the comments.
 
 Entry:
   Read:

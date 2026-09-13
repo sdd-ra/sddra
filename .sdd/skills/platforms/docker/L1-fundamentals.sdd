@@ -79,6 +79,21 @@ Rules:
   [D7] Use `EXPOSE` to document ports.
   [D8] Use `CMD` or `ENTRYPOINT` for container startup.
 
+ReferenceImplementation:
+  ProjectRule_R91:
+    rule: compose services never reference external/registry images — every
+      service uses `build:` with the project's own Dockerfile (see repo
+      root Dockerfile + docker-compose.yml: sdd-sandbox builds locally,
+      pinned digest, non-root, healthcheck).
+    why: owning your own image means tomorrow's problem is found in YOUR
+      image, not a global one you cannot debug.
+  ProjectRule_R92:
+    rule: all bind mounts live under project-root var/
+      (./var/sandbox:/var/sandbox) — named volumes forbidden.
+  ProjectRule_R102:
+    rule: resource limits mandatory even when upstream compose defines
+      none (cpus, memory, pids_limit, no-new-privileges, read_only rootfs).
+
 Pros:
   - Consistent environments
   - Isolation

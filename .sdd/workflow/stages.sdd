@@ -52,6 +52,9 @@ Stages:
       Input:   requirement artifact
       Output:   business design artifact (solution shape at business level)
       Activates: after BR, before DS
+      ComponentReuse: consult projects/{name}/architecture/components.sdd
+        BEFORE proposing new components — prefer extending an existing
+        component ([R81]-[R83], [R100]).
     DS:     Decision
       Purpose: Record and finalize important decisions derived from the
                requirements/design. Runtime = decision ledger DEC-XXX
@@ -156,8 +159,17 @@ Stages:
       Purpose:  Peer review of branch implementation before merge.
       Owner:    AR
       Input:    implementation, decision, task context
-      Output:   review report, approval, change requests
+      Output:   review report, approval, change requests,
+                duplication_findings[] ([R100] — DRY/component duplication
+                against the component registry; aggressive flagging)
       Activates: after XX implementation, before RF-XX
+      ReviewPillars (4-pillar checklist, adopted 2026-09-13):
+        - Architecture: does the change fit the decided structure?
+        - Code Quality: DRY, naming, complexity, duplication_findings[]
+        - Test Quality: do tests actually assert behavior?
+        - Performance: N+1 queries, I/O patterns, memory hotspots
+      OpinionatedRecommendations: every finding carries a RECOMMENDED
+        option with rationale — not a neutral option list.
 
     RF:     Refactor (scoped — see RFScopedSemantics)
       Purpose:  Restructure/clean branch implementation per CR findings,
