@@ -1,0 +1,101 @@
+# Tasks: BUG-REGISTRY
+
+Purpose:
+  First-class BUG artifact system for the delivery workflow. A BUG is a
+  persistent, tracked defect record — distinct from runtime failure
+  classification (FAILURE-CLASSIFICATION.sdd maps an error to a type;
+  this registry tracks the defect across steps, occurrences, and fixes).
+  Blocking BUGs stop the flow: no continuation to the next workflow step
+  while the current step has an open blocking BUG.
+
+Owns:
+  BUG artifact format
+  Duplicate-detection protocol
+  Block semantics
+  Resolution protocol
+
+Storage:
+  .sdd/projects/{project}/bugs/BUG-XXX.sdd (one artifact per BUG)
+  Index: .sdd/projects/{project}/bugs/INDEX.sdd (status board)
+
+ArtifactFormat (all fields mandatory):
+  ID:            BUG-<seq>                     (BUG-001, BUG-002, ...)
+  DetectedAt:    <ISO-8601>
+  WorkflowStep:  <short key>                    (e.g. BE, CR-API, DC-TS)
+  Description:   <what is wrong>
+  Expected:      <what should be>
+  Actual:        <what happens>
+  AffectedFiles: [<paths>]
+  RelatedSteps:  [<short keys impacted or implicated>]
+  Occurrences:   <append-only list; each entry: timestamp, step, context>
+  Status:        OPEN -> RESOLVED
+  (on resolution) ResolvedAt, FixVerified: YES|NO, AffectedStepReRun: PASS|FAIL
+
+DuplicateDetectionProtocol:
+  Before creating a BUG:
+    1. Search existing unresolved (Status: OPEN) BUG cases.
+    2. Check whether the same or a related issue already exists
+       (same root cause OR same affected artifact).
+    3. If it EXISTS:
+       - Do NOT create a duplicate.
+       - Append a new Occurrence to the existing BUG: timestamp, current
+         workflow step, affected files.
+    4. If it does NOT exist: create a new BUG artifact + index entry.
+  Rule: one root cause = one BUG; occurrences accumulate, never fork.
+
+CreationTriggers (from any step):
+  broken requirements, contradictions, missing dependencies,
+  implementation failures, inconsistent artifacts, unexpected behavior,
+  failed validation.
+
+BlockSemantics:
+  On BUG creation at step S:
+    1. STOP — do not continue past S.
+    2. Mark S as BLOCKED (TASK-STATE-MACHINE: ANY_STATE -> BLOCKED).
+    3. Record blocking_bugs[] in the delivery run state (chains/delivery.sdd
+       StepState) or task state.
+  While a blocking BUG is open at S:
+    - The next /next MUST return to S's blocked state, NOT advance.
+    - VR is unreachable ([DL1-6]).
+  BUGs in non-blocking branches (parallel branch B has a BUG, other
+  branches proceed) — the FLOW continues in other branches, but AN/VR
+  still wait for the blocked branch to resolve.
+
+ResolutionProtocol:
+  After a BUG fix is applied:
+    1. VERIFY FIX     — the fix itself is validated (tests, evidence).
+    2. RE-RUN AFFECTED STEP — the step where the BUG was detected re-executes.
+    3. VALIDATE RESULT — step output re-checked against its DONE criteria.
+    4. MARK BUG RESOLVED — Status: RESOLVED, FixVerified: YES, timestamp.
+    5. CONTINUE WORKFLOW — state returns to pre-block; /next proceeds.
+  Rule: resolving one BUG does NOT mark unrelated steps as completed —
+        only the affected step's re-run counts ([DL1-4] still applies).
+
+CrossLinks:
+  FAILURE-CLASSIFICATION.sdd — runtime error classification; a classified
+    failure becomes a BUG record when it blocks a step (classification is
+    the trigger's evidence).
+  chains/bugfix.sdd (B1) — the FIX execution chain for the code side.
+  LOOP-PROTECTION.sdd — guards fix->retest loops; BUG Occurrences feed
+    DuplicateActionDetection (same bug re-detected = repeat, blocked).
+  chains/delivery.sdd — StepState.blocking_bugs + [DL1-5].
+
+Rules:
+  [BG1] Every blocking defect MUST become a BUG record — never a chat note.
+  [BG2] Search-before-create is MANDATORY; duplicates are forbidden.
+  [BG3] Occurrences are append-only; existing BUGs are never forked.
+  [BG4] A blocking BUG stops its step and the flow at that step.
+  [BG5] Resolution requires fix verification + affected-step re-run.
+  [BG6] BUG resolution never completes unrelated steps.
+  [BG7] BUG artifacts are project-scoped and git-versioned (audit trail).
+
+Navigation:
+  FailureClassification: @FAILURE-CLASSIFICATION.sdd
+  TaskStateMachine: @TASK-STATE-MACHINE.sdd
+  LoopProtection: @LOOP-PROTECTION.sdd
+  BugfixChain: @../chains/bugfix.sdd
+  DeliveryChain: @../chains/delivery.sdd
+  DoneProof: @DONE-PROOF.sdd
+  TasksIndex: @INDEX.sdd
+
+State: +

@@ -1,0 +1,88 @@
+﻿# Imported Skills â€” External Origin
+
+Purpose:
+  Registry of skills imported from external repositories. Each subdirectory
+  is a skill adapted to .sdd format with mandatory provenance:
+  Source (repo URL), Origin (local path in tmp/), Imported (date),
+  Format, Runtime. Per CLAUDE.md "Xarici skill import qaydalarÄ±":
+  code-bearing skills are analyzed/run via Docker only ([R59]-[R66]).
+
+Owns: ./
+
+Source: https://github.com/anthropics/skills (+ BuilderIO, khasky, artemrudenko â€” round 2)
+Origin: tmp/skills/skills/ (round 1) + web fetch (round 2, 2026-09-06)
+Imported: 2026-09-06 (round 1: anthropics 7; round 2: governance/orchestration/audit 9)
+Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrappers)
+License: MIT and Apache-2.0 (per-skill; see individual wrappers)
+
+Skills:
+  canvas-design:
+    one_line: Interactive HTML canvas art and visual composition
+    runtime: browser (JS)
+    code: N (templates only)
+
+  doc-coauthoring:
+    one_line: Collaborative document drafting and co-authoring workflow
+    runtime: none (docs-only)
+    code: N
+
+  frontend-design:
+    one_line: Frontend UI/UX design heuristics and visual craft
+    runtime: none (docs-only)
+    code: N
+
+  mcp-builder:
+    one_line: Model Context Protocol server scaffolding and tooling
+    runtime: python3 (anthropic + mcp SDKs) â€” Docker-gated
+    code: Y (analysis runs in Docker only)
+
+  skill-creator:
+    one_line: Author, package, and eval agent skills (agent-skills spec)
+    runtime: python3 (eval harness) â€” Docker-gated
+    code: Y (analysis runs in Docker only)
+
+  theme-factory:
+    one_line: Design theme system with 10 curated themes
+    runtime: none (docs-only, 10 theme files)
+    code: N
+
+  webapp-testing:
+    one_line: Playwright-based web app testing patterns and server helpers
+    runtime: python3 + playwright â€” Docker-gated
+    code: Y (analysis runs in Docker only)
+
+Groups (round 2, 2026-09-06 research integration):
+  skill-governance:
+    source: https://github.com/artemrudenko/skill-governance-toolkit (MIT)
+    skills: skill-evaluate (D1-D9 scoring), library-audit, skill-build-portable
+    registry: @skill-governance/INDEX.sdd
+
+  orchestration:
+    source: https://github.com/BuilderIO/skills (MIT, repo-level)
+    skills: agent-watchdog, plan-arbiter, efficient-frontier, quick-recap
+    registry: @orchestration/INDEX.sdd
+
+  audit:
+    source: https://github.com/khasky/awesome-agent-skills (MIT)
+    skills: awesome-design-doc, awesome-architecture-audit
+    registry: @audit/INDEX.sdd
+
+Rules:
+  [IMP1] Every imported skill MUST carry Source + Origin + Imported + Format in its INDEX.sdd.
+  [IMP2] Code-bearing skills MUST declare Runtime and MUST be executed/analyzed inside Docker.
+  [IMP3] Imported skills are candidates (Phase 146 lifecycle: EXTERNAL â†’ CANDIDATE â†’ ACTIVE).
+  [IMP4] Human review required for CANDIDATE â†’ ACTIVE promotion.
+  [IMP5] Original SKILL.md content is preserved verbatim â€” adaptation happens via INDEX.sdd wrapper.
+  [IMP6] License check is mandatory before import: MIT/Apache only; source-available â‰  importable.
+  [IMP7] New imports MUST pass skill-evaluate (governance skill) before CANDIDATE â†’ ACTIVE.
+
+Navigation:
+  SkillsIndex: @../INDEX.sdd
+  SkillSpec: @../../spec/agent-skills-spec.md
+  SkillGovernance: @skill-governance/INDEX.sdd
+  Orchestration: @orchestration/INDEX.sdd
+  Audit: @audit/INDEX.sdd
+  ExternalReferences: @../SKILL-EXTERNAL-REFERENCES.sdd
+  Phase146: @../../../projects/sddra/phases/phase-146-skill-marketplace.sdd
+
+State: +

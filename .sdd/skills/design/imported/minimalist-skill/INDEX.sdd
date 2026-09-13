@@ -1,0 +1,37 @@
+﻿# Skill: Minimalist Skill
+
+Purpose:
+  Minimalist design principles and restraint. Imported design-reference skill from the taste-skill repo.
+
+Owns: ./
+
+Source: https://github.com/Leonxlnx/taste-skill
+Origin: tmp/taste-skill/skills/minimalist-skill/SKILL.md
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrapper)
+License: MIT
+Runtime: none (docs-only)
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+
+Modes:
+  APPLY    — apply design principles to current design task
+  REVIEW   — critique design against these principles
+
+Rules:
+  [1] Reference skill — adapt, never copy blindly.
+  [2] When overlapping with native .sdd design skills, native wins.
+  [3] External origin skill — apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+Navigation:
+  Skill: @SKILL.md
+  ImportedDesignRegistry: @INDEX.sdd
+
+State: +

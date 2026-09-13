@@ -1,0 +1,48 @@
+# Audit Skills (imported)
+
+Purpose:
+  Read-only audit workflows from khasky/awesome-agent-skills — design docs/ADRs
+  and whole-project architecture audits with SHIP/FIX/BLOCK verdicts.
+
+Owns: ./
+
+Source: https://github.com/khasky/awesome-agent-skills
+Origin: fetched from raw.githubusercontent.com (skills/{name}/SKILL.md)
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrapper)
+License: MIT (verified in SKILL.md frontmatter + repo)
+Runtime: none (docs-only workflows)
+
+Skills:
+  awesome-design-doc:
+    one_line: Requirements-first design doc/ADR — real alternatives, non-goals, migration path
+    use: SDDRA phase specs and DEC records
+  awesome-architecture-audit:
+    one_line: Read-only whole-project architecture audit with SHIP/FIX/BLOCK verdict
+    use: SDDRA verification (VR) stage and drift detection
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @awesome-design-doc.md
+   3  @awesome-architecture-audit.md
+
+Modes:
+  APPLY    — produce a design doc / run an audit
+  AUDIT    — audit-only pass
+
+Rules:
+  [AU1] SHIP/FIX/BLOCK verdicts map to SDDRA PASS/WARN/BLOCK semantics.
+  [AU2] awesome-design-doc output feeds decisions/ (DEC records) and phases/ specs.
+  [AU3] External origin — apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+Navigation:
+  Audit: @INDEX.sdd
+  DesignDoc: @awesome-design-doc.md
+  ArchitectureAudit: @awesome-architecture-audit.md
+  ImportedRegistry: @../INDEX.sdd
+
+State: +

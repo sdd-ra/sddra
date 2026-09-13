@@ -1,0 +1,183 @@
+# Patterns.dev Extract — Design/Rendering/Performance Pattern Catalog
+
+Purpose:
+  Machine-usable extract of the patterns.dev free book catalog (design,
+  rendering, performance patterns for vanilla JS + React, incl. AI UI
+  Patterns) for SDDRA design-skill reference and AI-agent frontend work.
+
+Owns: design/imported/patterns-dev-extract.sdd
+ID: DESIGN-PATTERNSDEV
+
+Domain: design
+Level: L2
+Status: EXTRACTED (CANDIDATE — see imported/INDEX.sdd [IMP3])
+
+Extracted: 2026-09-07
+Source: https://www.patterns.dev
+Origin site authors: Lydia Hallie, Addy Osmani (https://www.patterns.dev/about)
+License: CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/) —
+  see Rule [PD2]. Site stance: "design patterns are descriptive, not
+  prescriptive" — a catalog for awareness, not a checklist (https://www.patterns.dev)
+
+# ============================================================
+# Section 1: Catalog Structure (verified from site navigation)
+# Source: https://www.patterns.dev (homepage) + section sidebars at
+#   https://www.patterns.dev/vanilla and https://www.patterns.dev/react
+# ============================================================
+
+Tracks:
+  vanilla_design: Singleton, Proxy, Prototype, Observer, Module, Mixin,
+    Mediator/Middleware, Flyweight, Factory, Command, Provider, Static Import
+  vanilla_rendering: Islands Architecture, Animating View Transitions,
+    Rendering Introduction
+  vanilla_performance: Loading Sequence, Dynamic Import, Import On
+    Visibility, Import On Interaction, Route-Based Splitting (homepage),
+    Bundle Splitting, PRPL, Tree Shaking, Preload, Prefetch, Third-Party
+    Loading, List Virtualization, Compressing JavaScript
+  react_design: HOC, Hooks, Compound, Container/Presentational,
+    Render Props, AI UI Patterns, React Stack Patterns (react-2026)
+  react_rendering: Client-Side Rendering, Server-Side Rendering, Static
+    Rendering, Incremental Static Generation, Progressive Hydration,
+    Streaming SSR, React Server Components, Selective Hydration
+  react_overviews: Overview of React.js, Overview of Next.js,
+    Next.js Core Web Vitals (react/nextjs-vitals), React Stack 2025/2026
+  vue: Introduction, Components, Async Components, Composables,
+    Container/Presentational, Data Provider, Dynamic Components,
+    Provide/Inject, Render Functions, Renderless Components,
+    <script setup>, State Management
+Notes:
+  - "Selective Hydration" appears in React sidebar (/react/react-selective-hydration)
+    but not on homepage cards; homepage additionally lists /react/nextjs-vitals.
+  - Vue section exists on homepage; not requested for detail — names only.
+  - Fetch failures: /ai and /ai-ui-patterns (root) returned 404; the AI UI
+    Patterns chapter lives at /react/ai-ui-patterns. No pattern names invented.
+
+# ============================================================
+# Section 2: Key Patterns (name | intent | when | trade-off)
+# Each line's URL is the pattern's chapter page under https://www.patterns.dev
+# ============================================================
+
+- Singleton | One shared global instance | Single config/cache/cache-point | Hidden global state, test coupling | /vanilla/singleton-pattern
+- Proxy | Intercept/control interactions with target objects | Validation, lazy init, access control | Extra indirection layer | /vanilla/proxy-pattern
+- Observer | Observables notify subscribers on events | Event-driven decoupling | Memory leaks if unsubscribe missed | /vanilla/observer-pattern
+- Module | Split code into smaller reusable pieces | Always (ES modules baseline) | Namespace/encapsulation discipline | /vanilla/module-pattern
+- Mediator/Middleware | Central object handles component communication | Complex many-to-many interactions | God-object risk | /vanilla/mediator-pattern
+- Flyweight | Reuse existing instances for identical objects | Massive counts of similar objects | Cache/lookup overhead | /vanilla/flyweight-pattern
+- Factory | Factory function creates objects | Construction logic varies by input | Extra abstraction layer | /vanilla/factory-pattern
+- Islands Architecture | Ship static HTML, hydrate interactive "islands" | Content-heavy pages w/ sparse interactivity | Two rendering worlds to maintain | /vanilla/islands-architecture
+- Dynamic Import | Import code on demand | Below-the-fold/heavy features | Waterfall delay on first use | /vanilla/dynamic-import
+- Import On Visibility | Load non-critical parts when scrolled into viewport | Long lists, widgets | Needs IntersectionObserver fallbacks | /vanilla/import-on-visibility
+- Import On Interaction | Load when user interacts with triggering UI | Below-the-fold heavy modals/editors | First-use latency hit | /vanilla/import-on-interaction
+- Bundle Splitting | Split code into small reusable chunks | Large apps, better caching | More requests/roundtrips | /vanilla/bundle-splitting
+- PRPL (Push/Render/Pre-cache/Lazy-load) | Optimize initial load end-to-end | Mobile-first perf audits | 2016 framing: server push dead, now preload/Early Hints + LCP/INP (see /vanilla/prpl) | /vanilla/prpl
+- Tree Shaking | Eliminate dead code from bundle | Library consumers, ES-module code | Requires side-effect-free modules | /vanilla/tree-shaking
+- Preload | Tell browser critical resources early | Fonts, above-fold JS/CSS | Over-preload wastes bandwidth | /vanilla/preload
+- Prefetch | Fetch/cache resources likely needed soon | Next-route warmup | Guess wrong = wasted bytes | /vanilla/prefetch
+- List Virtualization | Render only visible list items | Very long chat histories/feeds | Fixed/estimated row heights needed | /vanilla/virtual-lists
+- HOC | Wrap component to inject cross-cutting behavior (auth, analytics) | Legacy/3rd-party composition | Wrapper hell, prop collisions | /react/hoc-pattern
+- Hooks | Compose stateful/side-effect logic into reusable functions | Modern React default | Rules-of-hooks constraints | /react/hooks-pattern
+- Compound Components | Cooperating components share implicit state | <select>-like flexible APIs | Implicit context magic | /react/compound-pattern
+- Container/Presentational | Separate view from application logic | Testable pure UI layer | Boilerplate; hooks blur the line | /react/presentational-container-pattern
+- Render Props | Supply rendering logic from outside via function-prop | Shared behavior, custom render | Nested-callback noise | /react/render-props-pattern
+- Streaming SSR | Stream HTML as server renders | Fast first paint, SEO | Server complexity | /react/streaming-ssr
+- React Server Components | Server-render intermediate output, no JS bundle cost | Data-heavy UIs; >20% bundle cuts reported | Client/server component split discipline | /react/react-server-components
+- Selective Hydration | Hydrate priority parts first, stream others | TTI improvements on slow devices | Reorder/hydration pitfalls | /react/react-selective-hydration
+
+# ============================================================
+# Section 3: AI UI Patterns chapter (detail) — SDDRA priority
+# Source: https://www.patterns.dev/react/ai-ui-patterns
+# Implementations shown: Vite+React (Node/Express backend) and Next.js
+# (App Router route handlers), using Vercel AI SDK + TailwindCSS.
+# ============================================================
+
+ArchEndpoint:
+  - AI calls MUST go through a backend route (/api/chat): Next.js route
+    handler or separate Express server behind Vite proxy — never client-side
+    API keys (https://www.patterns.dev/react/ai-ui-patterns)
+  - Streaming: Next.js native (StreamingTextResponse, Edge runtime) vs
+    manual res.write() in Node — trade-off table in chapter
+PromptManagement:
+  - Conversation = message array [{role: user|assistant|system, content}]
+    sent each request; system message sets behavior/persona; prepend on
+    server or via initialMessages (https://www.patterns.dev/react/ai-ui-patterns)
+  - useChat hook manages messages/input/handleSubmit; useCompletion for
+    single-turn (no history) prompts
+StreamingResponses:
+  - stream:true → chunked delivery; client reads response.body reader,
+    decodes, appends to last message — "AI typing" effect; auto-scroll
+    container on new chunks; show TypingIndicator during stream
+  - UX rationale: long answers must show partial results immediately
+InputDebouncing:
+  - Debounce (setTimeout/clearTimeout, ~500ms) before auto-query calls
+    (autocomplete/AI validation); disable input + Send while isLoading to
+    prevent overlapping requests scrambling message order
+ErrorFallbacks:
+  - try/catch around API calls; client onError callback; render inline
+    error as part of conversation ("Sorry, something went wrong"); retry
+    button resends last prompt; validate client-side (empty/too-long)
+    before calling API; AI Elements has ErrorBoundary/ErrorMessage
+StopButton:
+  - useChat exposes stop() to cancel an in-flight stream when user sends
+    a new query — cancellation is a named pattern in the chapter
+AgenticTraceUI:
+  - Chapter flags: when model emits reasoning traces + tool calls
+    (agentic), chat UI "becomes more complex" — must render intermediate
+    steps, function calls, structured outputs, not just text bubbles
+    (cites https://www.lukew.com/ff/entry.asp?2135 via chapter image)
+  - SDDRA mapping: agent frontends need trace/tool-call timeline views
+    beyond plain chat bubbles (extract's inference from cited section)
+ReusableComponents:
+  - Presentational ChatMessage (role-styled bubbles), InputBox — decoupled
+    from fetching logic; compose in ChatInterface
+  - Vercel AI Elements prebuilt: Conversation (auto-scroll), Prompt,
+    TypingIndicator, ErrorBoundary (https://vercel.com/academy/ai-sdk/ai-elements,
+    cited by chapter)
+StackContext:
+  - React Stack Patterns chapter (https://www.patterns.dev/react/react-2026)
+    covers 2025/2026 stack: Vite default build tool, Next.js default
+    framework, TanStack Router (type-safe) vs React Router, TanStack
+    Query for server state, Zustand/Redux Toolkit for global state,
+    "vibe coding" AI-assisted workflow guidance
+
+# ============================================================
+# Section 4: Rules
+# ============================================================
+
+Rules:
+  [PD1] Attribution REQUIRED: cite patterns.dev chapter URL whenever a
+        pattern from this catalog informs SDDRA design/workflow output.
+  [PD2] Patterns (concepts) are not ownable and may be applied freely;
+        site text/code examples are CC BY-NC 4.0 — LINK, never copy
+        verbatim into SDDRA docs or generated code (non-commercial clause).
+  [PD3] Patterns are descriptive, not prescriptive (site's own stance):
+        match pattern to SDDRA problem; a spec without the problem does
+        not need the pattern. No checklist-driven application.
+  [PD4] Every pattern claim in SDDRA specs MUST carry the source URL
+        from Section 2/3; if a URL dies, mark stale, do not paraphrase
+        from memory as fact.
+  [PD5] AI-UI patterns (Section 3) map directly to SDDRA AI-agent
+        frontend needs (chat, streaming, traces, stop, fallbacks);
+        prefer them over invented interaction models when building
+        agent-facing UI — deviations need rationale (ux-patterns.sdd rule).
+
+# ============================================================
+# Section 5: Sources
+# ============================================================
+
+Sources:
+  - https://www.patterns.dev — homepage, full catalog cards, site stance
+  - https://www.patterns.dev/vanilla — vanilla sidebar (Command, Provider,
+    Islands, rendering intro discovered here)
+  - https://www.patterns.dev/react — React sidebar (Selective Hydration,
+    AI UI Patterns placement) + React overview chapter
+  - https://www.patterns.dev/react/ai-ui-patterns — AI UI chapter (all
+    Section 3 claims unless otherwise URL'd)
+  - https://www.patterns.dev/react/react-2026 — React Stack Patterns
+  - https://www.patterns.dev/vanilla/prpl — PRPL modern implementation
+  - https://www.patterns.dev/about — authors, CC BY-NC 4.0 license
+  - https://www.patterns.dev/book — 435-page "Learning Patterns" eBook
+  - FAILED: https://www.patterns.dev/ai (404), https://www.patterns.dev/ai-ui-patterns (404)
+
+Navigation:
+  Source: @../sources.sdd
+  DesignIndex: @../INDEX.sdd

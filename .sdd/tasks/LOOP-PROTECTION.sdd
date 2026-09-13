@@ -29,6 +29,24 @@ Guards:
      config: max_iterations (per EXECUTION-CONTRACT.sdd)
      action on breach: ESCALATE with reason
 
+  1b. PerArmIterationCaps (Phase 149)
+     definition: tiered caps — chain-level stays the circuit breaker;
+       per-arm/per-agent caps are tighter
+     config:
+       chain_level: 50 (existing — outermost breaker)
+       arm_level: 10 (per arm entry)
+       agent_level: 5-8 (per agent within an arm; framework norms:
+         OpenAI max_turns ~10, CrewAI max_iter 5-8, AG2 max_rounds ~6)
+     rule: ALWAYS_FORWARD — a failed arm must NOT silently re-enter the
+       same step; forced wrap-up at threshold (UMAF pattern)
+     action on breach: wrap up with partial result + typed outcome code
+
+  1c. ErrorSpiralDetector (Phase 149)
+     definition: N consecutive failures on the same arm/stage
+     detection: 3 consecutive typed-failure outcomes on one arm
+     action: force wrap-up or escalate — never a 4th silent retry
+     evidence: retry storms burn 200x tokens (tianpan.co 2026, r3 round 3)
+
   2. FailureBudget
      definition: weighted failure allowance (severity-weighted)
      config: max_failure_budget (per EXECUTION-CONTRACT.sdd)
@@ -131,7 +149,13 @@ Rules:
         blocked.
   [LP9] All loop guard triggers MUST be recorded in the execution trace.
   [LP10] When all strategies are exhausted within the iteration budget,
-         the task MUST be ESCALATED.
+          the task MUST be ESCALATED.
+  [LP11] Per-arm caps (arm_level 10, agent_level 5-8) trigger BEFORE the
+          chain-level 50 — tiered, not blanket (Phase 149, r3 round 3).
+  [LP12] A failed arm MUST NOT re-enter the same step without a strategy
+          change record (ALWAYS-FORWARD rule).
+  [LP13] 3 consecutive typed failures on one arm = error spiral —
+          wrap-up or escalate, never a 4th silent retry.
 
 Navigation:
 

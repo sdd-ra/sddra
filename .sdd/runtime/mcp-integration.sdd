@@ -64,6 +64,21 @@ ServerCategories:
 
 IntegrationLayers:
 
+  SpecVersion (Phase 149 update — target 2026-07-28):
+    rule: target the 2026-07-28 MCP spec from day one (12-month
+      deprecation window for 2025-era handshake implementations)
+    adopted:
+      - stateless core: no initialize handshake, no Mcp-Session-Id;
+        version/client info via _meta; round-robin LB-safe
+      - server/discover RPC for capability discovery
+      - cacheable tools/list (ttlMs/cacheScope)
+      - MRTR: multi-round-trip requests (InputRequiredResult) — maps to
+        Phase 131 human-approval interrupts
+    deprecated_do_not_build:
+      - Roots, Sampling, Logging (12-month offramp)
+      - legacy HTTP+SSE transport
+      - Dynamic Client Registration (OAuth 2.1 + CIMD replaces)
+
   GateBridge:
     definition: Maps MCP tool results to SDD gate conditions
     lifecycle:
@@ -107,8 +122,20 @@ SecurityControls:
 
   AllowList:
     rule: Only allowlisted MCP servers may be activated
-    rule: Allowlist managed via .sdd/runtime/mcp-allowlist.sdd
+    rule: Allowlist managed via .sdd/runtime/mcp-allowlist.sdd (Phase 149:
+      now EXISTS — hash-pinned ActivationRecords, tier structure,
+      activation protocol, session-start re-verification)
     rule: Human approval required for new server activation
+
+  OutputDLP (Phase 149 addition — OWASP MCP Top 10 alignment):
+    rule: Every MCP tool output passes multi-pass scanning BEFORE entering
+      MemoryBridge: normalized text, invisible Unicode, base64/hex
+      payloads (CyberArk "Poison Everywhere" — parameter names,
+      defaults, enums, and error messages are all injection surfaces)
+    rule: mcp-scan static analysis of tool descriptions at activation
+      and version bump (invariant-labs mcp-scan, CI)
+    rule: Cross-server shadowing indicators flagged: one server's
+      description referencing another server's tools => BLOCK
 
   SecretsScrubbing:
     rule: ANTHROPIC_API_KEY, GITHUB_TOKEN, DATABASE_URL scrubbed from all MCP output
@@ -125,10 +152,19 @@ Rules:
   [MCP-08] Each MCP server MUST be tagged with L-level security context.
   [MCP-09] MCP tool output MUST carry provenance metadata (server, version, timestamp).
   [MCP-10] Adapter MUST persist MCP server state in DB, not RAM.
+  [MCP-11] Implementations MUST target the 2026-07-28 spec (stateless core,
+           server/discover, cacheable tools/list); MUST NOT build on
+           deprecated Roots/Sampling/Logging (Phase 149).
+  [MCP-12] MCP-first, NO A2A: internal roles share .sdd state (shared-
+           context case); A2A only if SDDRA ever federates across trust
+           boundaries (Phase 149 principle).
+  [MCP-13] Tool outputs MUST pass multi-pass DLP before storage/injection
+           (Phase 149; see OutputDLP).
 
 Navigation:
   Runtime: @INDEX.sdd
   AdapterRuntime: @adapter-runtime.sdd
+  MCPAllowlist: @mcp-allowlist.sdd
   SecurityControls: @../security/controls.sdd
   SecurityLevels: @../security/levels.sdd
   Events: @events.sdd

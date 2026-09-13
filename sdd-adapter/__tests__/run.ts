@@ -19,6 +19,9 @@ const tests = [
   { name: "design-analyzer", file: "__tests__/design-analyzer.test.ts" },
   { name: "skill-auto-invoker", file: "__tests__/skill-auto-invoker.test.ts" },
   { name: "commands-design", file: "__tests__/commands-design.test.ts" },
+  { name: "skill-validator", file: "__tests__/skill-validator.test.ts" },
+  { name: "skill-importer", file: "__tests__/skill-importer.test.ts" },
+  { name: "commands-marketplace", file: "__tests__/commands-marketplace.test.ts" },
 ];
 
 let totalPass = 0;
@@ -27,11 +30,19 @@ let totalFail = 0;
 function runTest(name: string, file: string): Promise<boolean> {
   return new Promise((resolve) => {
     console.log(`\n>>> Running ${name}...`);
-    const child = spawn("npx", ["ts-node", "--transpile-only", file], {
-      cwd: path.join(__dirname, ".."),
-      stdio: "inherit",
-      shell: true,
-    });
+    // Direct ts-node binary — works offline in the Docker sandbox
+    // (npx would need registry DNS; SANDBOX_RO marks container runs).
+    const tsNodeBin = path.join(__dirname, "..", "node_modules", "ts-node", "dist", "bin.js");
+    const child = process.platform === "win32" && process.env.SANDBOX_RO !== "1"
+      ? spawn("npx", ["ts-node", "--transpile-only", file], {
+          cwd: path.join(__dirname, ".."),
+          stdio: "inherit",
+          shell: true,
+        })
+      : spawn(process.execPath, [tsNodeBin, "--transpile-only", file], {
+          cwd: path.join(__dirname, ".."),
+          stdio: "inherit",
+        });
 
     child.on("close", (code) => {
       const passed = code === 0;
@@ -54,7 +65,11 @@ function runTest(name: string, file: string): Promise<boolean> {
 async function main() {
   console.log("=== SDD Adapter Test Suite ===\n");
 
-  const results = await Promise.all(tests.map(t => runTest(t.name, t.file)));
+  // Sequential — parallel spawns race on shared tmp/ paths
+  // (e.g. design tests writing the same cwd/tmp/design-test dir).
+  for (const t of tests) {
+    await runTest(t.name, t.file);
+  }
 
   console.log("\n=== Test Suite Results ===");
   console.log(`Passed: ${totalPass}, Failed: ${totalFail}`);

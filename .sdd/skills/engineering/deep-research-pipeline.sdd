@@ -1,0 +1,56 @@
+# Skill: Deep Research Pipeline
+
+Purpose:
+  Engineering skill for running disciplined research rounds — the
+  pipeline behind SDDRA's RS1 arm and /sdd-research. Use when planning
+  any web research, literature scan, or technology evaluation.
+
+Owns: engineering/deep-research-pipeline.sdd
+
+Source: research round 3 r2 (2026-09-07) — dzhng/deep-research, LangChain
+  Open Deep Research, GPT Researcher, STORM/Co-STORM, Anthropic
+  orchestrator-worker, Claude Research Citation Agent; sources cited in
+  .sdd/chains/arms/research.sdd.
+
+Patterns:
+  budget_first:
+    - depth (recursion) + breadth (queries/level) fixed BEFORE cost
+    - deterministic termination — no infinite research loops
+  perspective_mining:
+    - 3-5 perspectives from analogous domains BEFORE query generation
+      (STORM) — cheapest bias control
+  parallel_streams:
+    - cap 3-5 subagent researchers (too-many-subagents is documented
+      failure); compressed returns only, never raw dumps
+  citation_gates:
+    - anchor gate: every claim carries a URL (unanchored prose rejected)
+    - URL existence check: 3-13% of DR citations are fabricated
+    - post-hoc verification pass over the written report
+  fetch_economics:
+    - DOM/accessibility-tree over vision (3-5x token savings);
+      egress-gated; fetched content is untrusted input
+  decision_gate:
+    - Pareto (>= 80% relevance) INTEGRATE/SKIP with logged rationale
+    - SKIP-heavy rounds are valid — the DECISIONS log is the evidence
+  staging_discipline:
+    - tmp staging -> integrate with provenance -> delete staging
+
+AntiPatterns:
+  - infinite agentic research loops (budget-less recursion)
+  - citation laundering (claiming a source that doesn't support the claim)
+  - importing proprietary code (analysis-only rule)
+  - benchmark/vendor numbers without independent reproduction
+
+Rules:
+  [DRP1] Apply via .sdd/chains/arms/research.sdd + research-protocol.sdd —
+         the arm spec is authority.
+  [DRP2] Research designs cite their pattern provenance.
+
+Navigation:
+  EngineeringIndex: @INDEX.sdd
+  ResearchArm: @../../chains/arms/research.sdd
+  ResearchProtocol: @../../workflow/research-protocol.sdd
+  ResearchCommand: @../../commands/sdd-research.sdd
+  ResearcherRole: @../../agent/roles.sdd (@agent.researcher)
+
+State: +

@@ -11,15 +11,16 @@ Nodes:
   C1  code
   R1  review
   DEP1 deploy
+  RS1 research (Phase 149 — deep research arm; spec: arms/research.sdd)
 
 Edges:
-  D0->P1, D0->D1, D0->S1, D0->C1, D0->R1, D0->DEP1
-  P1->D0, D1->D0, S1->D0, C1->D0, R1->D0, DEP1->D0
+  D0->P1, D0->D1, D0->S1, D0->C1, D0->R1, D0->DEP1, D0->RS1
+  P1->D0, D1->D0, S1->D0, C1->D0, R1->D0, DEP1->D0, RS1->D0
 
 Properties:
   type: cyclic
   root: D0
-  arms: P1,D1,S1,C1,R1,DEP1
+  arms: P1,D1,S1,C1,R1,DEP1,RS1
   rules: ./rules/chain-rules.sdd
 
 ExecutionTrace:

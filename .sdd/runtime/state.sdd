@@ -23,6 +23,44 @@ Recovery:
     Resume from exact state
     Do NOT restart workflow
 
+Checkpoints (Phase 149, r3 round 3 — LangGraph thread_id model):
+  Definition:
+    A durable snapshot of chain-run state persisted BEFORE each arm
+    transition, keyed by chain-run ID. Upgrades skip_if_complete flags
+    to true resume-from-state.
+  Schema:
+    checkpoint_id: CPR-<run>-<seq>
+    run_id: chain-run identifier (thread key)
+    arm: current arm (P1/D1/S1/C1/R1/DEP1/RS1)
+    step: execution trace step #01-#16
+    state: typed shared-state snapshot (see shared-state.sdd schema)
+    inputs: arm inputs (references, not inline blobs)
+    outputs: arm outputs (compressed)
+    iteration: per-arm iteration counter
+    outcome: TypedOutcomeCodes value (if arm completed)
+    ts: ISO-8601
+  BoundaryDiscipline:
+    rule: checkpoints at ARM BOUNDARIES and before INTERRUPTS only —
+      never per-message (>75% of turns carry no recovery-relevant
+      state; Crab study — blanket checkpointing is waste)
+    rule: completed steps are NEVER re-executed on resume
+  Storage: .specdd/checkpoints/{run_id}/ (runtime-only, git-ignored)
+  Retention: last checkpoint per arm + final; intermediate pruned
+
+CircuitBreakers (Phase 149, r3 round 3 — 3-layer failure stack):
+  Layer1_retry:
+    rule: transient failures retry with exponential backoff + jitter
+    cap: 3 retries (~97.3% of transient failures caught; beyond 5 <0.5%)
+  Layer2_fallback:
+    rule: persistent failure switches provider/model/degraded path
+  Layer3_breaker:
+    definition: per-arm breaker opens above failure threshold within window
+    config: threshold 3 failures / 10 min window per arm
+    states: CLOSED -> OPEN (cooldown, default 15 min) -> HALF_OPEN (probe)
+    rule: OPEN arm receives NO dispatches; hub routes to fallback or
+      returns degraded fragment
+    rule: breaker events are logged + traced (OTel span attributes)
+
 Rules:
   [RT1] Agent state MUST be persisted after each step.
   [RT2] Crash recovery MUST resume from exact state.
@@ -31,5 +69,10 @@ Rules:
   [RT5] Session MUST be persisted on every state change.
   [RT6] Session MUST be resumable after crash.
   [RT7] Session history MUST be retained for audit.
+  [RT8] Checkpoints are written at arm boundaries and pre-interrupt —
+         never per-message (boundary discipline).
+  [RT9] Completed steps are never re-executed on checkpoint resume.
+  [RT10] Per-arm circuit breakers precede chain-level iteration caps.
+  [RT11] Breaker OPEN means no dispatch to that arm until cooldown ends.
 
 State: +

@@ -1,0 +1,152 @@
+# AI Weak-Point Map — Compensating SDDRA Mechanisms
+
+Spec: WeakPointMap
+Purpose:
+  Map every known AI-agent weakness (researched 2026-09-06, r1-r4) to the
+  SDDRA mechanism that compensates it. This is the "merge AI weak points
+  into stronger sections" registry: each row = one weakness → one fix.
+
+Owns: agent/weak-point-map.sdd
+
+Research basis: .sdd/docs/analysis/ai-agents-comparative.md (2026-09-06)
+ + research round 3 (2026-09-07): memory systems, deep research,
+ orchestration frameworks, MCP ecosystem — r1-r4 staged in
+ tmp/research/2026-09-07-new-scope/ (deleted after integration; findings
+ preserved in the artifacts cited above and Phase 149 specs)
+Sources: cited in the comparative analysis file and per-artifact specs
+
+WeakPoints:
+  context_rot:
+    weakness: "70%+ of agent failures come from context design, not model capability; usable context < advertised context (attention degrades before window fills)"
+    evidence: "morphllm.com context-rot; baeseokjae.github.io context engineering"
+    sddra_fix: "INDEX-first routing [I3], 4-tier memory, lazy loading, plan-cache.json (Phase 147) — 100 calls = 1 real run"
+    status: COMPENSATED
+
+  long_horizon_planning:
+    weakness: "SWE-bench ~78-97% vs real-world PR acceptance 35-50%; implicit conventions missed"
+    evidence: "presenc.ai benchmarks 2026; Anthropic agentic coding report"
+    sddra_fix: "Plan-then-execute gate: /sdd-plan (BE stage), decision ledger states, execution-plan.sdd DAG validation [PLAN-07]"
+    status: COMPENSATED
+
+  verification_bottleneck:
+    weakness: "Generation is no longer the bottleneck — verification is; plausible output with subtle logical errors"
+    evidence: "Osmani Code Agent Orchestra 2026; sitepoint 2026"
+    sddra_fix: "run.ps1 deterministic test gates (knowledge/runtime/workflow/tasks/crossref/phase5), agent-watchdog (imported), DONE-PROOF protocol, @agent.reviewer severity-tagged review"
+    status: COMPENSATED
+
+  ui_design_weakness:
+    weakness: "Claude Code rated Weak on UI generation; 'functional, not beautiful'; distributional convergence to Inter+purple-gradient slop"
+    evidence: "presenc.ai (Claude weaker than Cursor on UI); superdesign.dev convergence thesis"
+    sddra_fix: "Unified Design Intelligence module (@../skills/design/intelligence/INDEX.sdd, Phase 148) — tokens-before-screens, curated vocabulary, structure-first passes, anti-slop gates, closed-loop verification"
+    status: COMPENSATED (Phase 148)
+
+  token_economics:
+    weakness: "Claude 3-4x token burn vs Codex; Cursor credits burned in 1-3 days; metering opacity"
+    evidence: "morphllm codex-vs-claude; codemyspec cursor review"
+    sddra_fix: "Token economy phase 147: plan-cache, token minimalism rules (CLAUDE.md), efficient-frontier skill (imported), tiered lazy-loading"
+    status: COMPENSATED
+
+  llm_written_context_files:
+    weakness: "LLM-written AGENTS.md-style files reduce success ~3%, raise cost 20%+; human-curated adds +4%"
+    evidence: "ETH Zurich Gloaguen et al., via Osmani"
+    sddra_fix: ".sdd/ is human-authored source of truth; AI writes only runtime artifacts (.specdd/, plans/cache) — never the constitution [R27, I-rules]"
+    status: COMPENSATED
+
+  same_prompt_variability:
+    weakness: "Same prompt → different output; hallucinated edge cases"
+    evidence: "morphllm; HN reports"
+    sddra_fix: "Idempotency discipline: plan-cache fingerprint, skip_if_complete, deterministic test gates; skill gates [SK21]"
+    status: COMPENSATED
+
+  parallel_file_conflicts:
+    weakness: "Two agents editing same file corrupt work"
+    evidence: "Osmani one-file-one-owner rule"
+    sddra_fix: "One-file-one-owner + git worktree isolation; SDDRA branch hierarchy MODUL→DEC→TASK provides isolation [R73-R75]"
+    status: COMPENSATED
+
+  testing_discipline:
+    weakness: "Compiles-and-passes ≠ maintainable; security weaknesses in generated code (2.74x more vulns across 470 PRs)"
+    evidence: "CodeRabbit report; CHI 2025"
+    sddra_fix: "R1 review arm + security gates (sdd-scan), DONE-PROOF requires tests+arch+review, only-changed-files testing [R76]"
+    status: COMPENSATED
+
+  design_system_drift:
+    weakness: "Generated UI drifts from design system: raw colors, bespoke components"
+    evidence: "Lovable adherence enforcement; smoothui closed loop"
+    sddra_fix: "Design Intelligence module rule #5: drift enforcement flagging raw hex/bespoke components during work"
+    status: COMPENSATED (Phase 148)
+
+  ungrounded_generation:
+    weakness: "AI invents values when grounding is absent (docs, tokens, components)"
+    evidence: "brenthaskins design-system contract; Builder.io reuse scan"
+    sddra_fix: "Read-the-docs discipline (source-driven principle), design/sources.sdd registry, DESIGN.md token normativity, component reuse scan before generation"
+    status: COMPENSATED (Phase 148)
+
+  cost_unpredictability:
+    weakness: "Effort-based pricing spirals; ACU burn on ambiguous tasks"
+    evidence: "Replit/Devin reviews"
+    sddra_fix: "Task decomposition with explicit contracts (EXECUTION-CONTRACT.sdd); ambiguity → NEEDS_INPUT, not silent burn [AG4]"
+    status: COMPENSATED
+
+  memory_staleness:
+    weakness: "High-relevance memories go confidently wrong (implicit conflicts); cross-session identity unresolved at memory layer"
+    evidence: "STALE benchmark; mem0 state-of-memory 2026 (r1 round 3)"
+    sddra_fix: "Bi-temporal supersession (t_valid/t_invalid), implicit-conflict consolidation review, memory-librarian role + staleness probes (Phase 149 memory upgrades)"
+    status: COMPENSATED (Phase 149)
+
+  research_discipline:
+    weakness: "Ad-hoc research: citation fabrication (3-13% URLs), infinite loops, untracked budget"
+    evidence: "arXiv 2604.03173; arXiv 2607.01641 (r2 round 3)"
+    sddra_fix: "RS1 research arm + research-protocol.sdd: anchor/URL/license/Pareto gates, depth/breadth budget, staging deletion (@agent.researcher, Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+  crash_recovery:
+    weakness: "skip-flags are re-scan heuristics, not resume-from-state; process death loses run position"
+    evidence: "Temporal checkpoint-vs-durable argument; LangGraph thread_id (r3 round 3)"
+    sddra_fix: "Arm-boundary checkpoints keyed by run ID + never re-execute completed steps (runtime/state.sdd Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+  runaway_loops:
+    weakness: "Chain-level max 50 iteration is 5-10x looser than framework norms; error spirals burn tokens"
+    evidence: "max_turns 10 / max_iter 5-8 / max_rounds 6 norms; retry storms 200x (r3 round 3)"
+    sddra_fix: "Tiered caps (chain 50 / arm 10 / agent 5-8), error-spiral detector, ALWAYS-FORWARD (LOOP-PROTECTION.sdd Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+  mcp_supply_chain:
+    weakness: "Tool poisoning, rug pulls (CVE-2025-54136), shadowing, squatting; 30-82% of public servers exploitable"
+    evidence: "OWASP MCP Top 10; NSA-CISA advisory 2026-06-02 (r4 round 3)"
+    sddra_fix: "mcp-allowlist.sdd: hash-pinned ActivationRecords, session-start re-verification, mcp-scan CI, output DLP, Docker sandbox (Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+  agent_context_portability:
+    weakness: "Per-agent rules files (CLAUDE.md/.cursor/rules/AGENTS.md) drift apart; knowledge locked in one host"
+    evidence: "AGENTS.md standard convergence 2026 (r1 round 3)"
+    sddra_fix: "context-emission.sdd: derived AGENTS.md+CLAUDE.md pointer from .sdd/INDEX.sdd (single source of truth; Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+  role_gaps_2026:
+    weakness: "No SRE/incident, eval-engineering, memory-curation, skill-curation, data-engineering ownership in agent teams"
+    evidence: "AI SRE 2026; eval-as-infrastructure; memory librarian; context-engineer roles (r4 round 3)"
+    sddra_fix: "6 new roles: researcher, sre, eval_engineer, memory_librarian, skill_curator, data_engineer (roles.sdd Phase 149); product_analyst/design_researcher/meta_orchestrator deferred until MCP integration lands"
+    status: COMPENSATED (Phase 149; 3 deferred)
+
+  untyped_failures:
+    weakness: "Natural-language failure summaries are not retryable signal; orchestrators retry unsafe"
+    evidence: "Typed failures before escalation consensus (r3 round 3)"
+    sddra_fix: "TypedOutcomeCodes enum in agent/contract.sdd + retry-safety rule (Phase 149)"
+    status: COMPENSATED (Phase 149)
+
+Rules:
+  [WP1] Every new researched weakness MUST get a row + fix or explicit UNCOMPENSATED marker.
+  [WP2] UNCOMPENSATED weaknesses generate improvement tasks automatically (Pareto honesty).
+  [WP3] This map feeds /sdd-design, agent role upgrades, and phase planning.
+  [WP4] Evidence MUST link to the comparative analysis file (single citation source).
+
+Navigation:
+  ComparativeAnalysis: @../docs/analysis/ai-agents-comparative.md
+  DesignIntelligence: @../skills/design/intelligence/INDEX.sdd
+  Roles: @roles.sdd
+  ImportedSkills: @../skills/meta/imported/INDEX.sdd
+  Phases: @../projects/sddra/phases/INDEX.sdd
+
+State: +

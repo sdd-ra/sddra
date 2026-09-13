@@ -1,0 +1,78 @@
+# Research Arm (RS1)
+
+Spec: ResearchArm
+Purpose:
+  The deep-research arm of the SDDRA chain graph. Formalizes the discipline
+  already practiced in research rounds 1-3 (2026-09-06/07): web research →
+  citation-mandatory findings → tmp staging → Pareto decision gate →
+  .sdd/ integration → tmp deletion. Built from 2026 deep-research pipeline
+  patterns (research round 3, r2; sources cited in protocol).
+
+Owns: chains/arms/research.sdd
+
+Pipeline (Scope → Research → Compress → Write; per-node roles):
+  1  SCOPE     — clarify question; emit research brief (topics, budget,
+                 perspectives); CALLER APPROVES BRIEF BEFORE COST
+                 (Gemini collaborative-planning pattern)
+  2  PERSPECTIVE — mine 3-5 perspectives from analogous domains BEFORE
+                 query generation (STORM pattern — cheapest bias control)
+  3  SEARCH    — parallel sub-searches, CAP 3-5 (Anthropic orchestrator-
+                 worker; too-many-subagents is a documented failure);
+                 DOM/accessibility-tree fetch over vision (3-5x token
+                 savings); egress-gated (LDR pattern)
+  4  LEARN     — extract learnings + new directions per iteration;
+                 research_state audit trail in tmp (dzhng pattern)
+  5  RECURSE   — depth>0 → new queries from learnings; budget:
+                 depth (recursion levels) + breadth (queries/level) —
+                 DETERMINISTIC TERMINATION (infinite-research-loop guard,
+                 arXiv 2607.01641)
+  6  VERIFY    — citation gates: per-claim anchor (unanchored prose
+                 REJECTED at gate); URL EXISTENCE check (3-13% of DR
+                 citations are fabricated — arXiv 2604.03173); post-hoc
+                 verification pass (Anthropic Citation Agent pattern)
+  7  COMPRESS  — findings compressed per stream; sources preserved
+  8  WRITE     — report: summary table + per-system sections + patterns
+                 + source index; every claim carries URL; LOW_CONFIDENCE
+                 markers where thin
+  9  DECIDE    — DECISIONS.md Pareto gate: every finding INTEGRATE/SKIP
+                 with >= 80% relevance rationale (existing practice)
+  10 INTEGRATE — .sdd/ writes with provenance; then STAGING DELETED
+                 (user rule: tmp must not accumulate)
+
+BudgetContract (maps to L0-L5 scale):
+  depth: 1-3 (recursion levels; default 1)
+  breadth: 2-5 (queries per level; default 3)
+  subagent_cap: 3-5 parallel researchers (never more)
+  wall_clock: explicit per round (default 30 min)
+  termination: deterministic when depth=0 AND no new directions
+
+Rules:
+  [RS1-01] Research runs MUST stage raw findings in tmp/research/{date}-{slug}/.
+  [RS1-02] EVERY factual claim in research output MUST carry a source URL.
+  [RS1-03] Unanchored prose MUST be rejected at the VERIFY gate.
+  [RS1-04] Citation URLs MUST be existence-checked (fetch or equivalent).
+  [RS1-05] Proprietary tools are ANALYSIS-ONLY; only MIT/Apache-2.0 content
+           is importable (per CLAUDE.md import rules).
+  [RS1-06] Research rounds END with the DECISIONS.md Pareto gate.
+  [RS1-07] Integration MUST follow provenance citation rules ([IMP1]-[IMP6]).
+  [RS1-08] Staging is DELETED after integration; deletion logged in
+           .claude/sdd/history.json (tmp hygiene rule).
+  [RS1-09] Fetch tooling MUST be DOM/accessibility-tree based with egress
+           gating (prompt-injection defense); Docker-gated [R59]-[R66].
+  [RS1-10] Research consumes budget even when findings are SKIP — the
+           DECISIONS log IS the evidence of spent budget.
+  [RS1-11] The fetching agent MUST announce "using {channel} via {backend}"
+           before fetching, and research outputs MUST record the serving
+           backend per fetched source (backend provenance; Phase 150 —
+           Agent-Reach standing-rule pattern, MIT, 2026-09-10).
+
+Navigation:
+  ChainGraph: @../graph.sdd
+  Selector: @../selector.sdd
+  ResearchProtocol: @../../workflow/research-protocol.sdd
+  ResearchCommand: @../../commands/sdd-research.sdd
+  ResearcherRole: @../../agent/roles.sdd (@agent.researcher)
+  WeakPointMap: @../../agent/weak-point-map.sdd
+  SkillSources: @../../skills/design/sources.sdd
+
+State: +

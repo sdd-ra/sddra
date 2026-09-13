@@ -70,9 +70,11 @@ Introduce a Skill Marketplace layer that:
 
 ## 7. Next Steps
 
-1. Define registry schema in `.sdd/marketplace/`
-2. Implement validator in `sdd-adapter/skill-validator.ts`
-3. Implement importer in `sdd-adapter/skill-importer.ts`
-4. Add `/sdd-marketplace` commands to `sdd-adapter/commands.ts`
+1. ~~Define registry schema in `.sdd/marketplace/`~~ ✅ registry.json (11 sources + 5 blocked)
+2. ~~Implement validator in `sdd-adapter/skill-validator.ts`~~ ✅ structure/license/security gates
+3. ~~Implement importer in `sdd-adapter/skill-importer.ts`~~ ✅ fetch + provenance wrapper
+4. ~~Add `/sdd-marketplace` commands to `sdd-adapter/commands.ts`~~ ✅ list|sync|import|audit
 
-State: DRAFT
+COMPLETED 2026-09-07. See phases/INDEX.sdd Phase 146 entry for final deliverables.
+
+State: COMPLETED

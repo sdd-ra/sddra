@@ -8,17 +8,46 @@ AUTO MODE DETECTION:
     → Read .claude/sdd/state.json for current state
     → Follow AUTO execution lifecycle below
 
-Scan .sdd/ and prompts/ directories to auto-generate an execution plan.
-Read-only — does not modify any files.
+IDEMPOTENT PLAN GENERATION — CACHE FIRST:
+  This command is IDEMPOTENT. Call it 100 times, it works ONCE.
 
-MANUAL MODE:
+  1. Read .claude/sdd/plan-cache.json → get fingerprint + hit_count
+  2. CHECK FINGERPRINT (cheap — no full scans):
+     - git HEAD commit hash (read-only, `git rev-parse HEAD`)
+     - File state of: .sdd/plans/current-plan.sdd, .sdd/projects/sddra/tasks/INDEX.sdd,
+       .sdd/projects/sddra/phases/INDEX.sdd, .sdd/projects/sddra/context/active.sdd
+     - Existence of any NEW file in prompts/inbox/
+  3. IF fingerprint UNCHANGED (cache HIT):
+     → Increment hit_count in plan-cache.json (only write)
+     → Output plan FROM .sdd/plans/current-plan.sdd — DO NOT rescan .sdd/, decisions, git log
+     → Report: "PLAN [cache HIT #<hit_count>] — served from .sdd/plans/current-plan.sdd (rev <rev>). Inputs unchanged since <generated_at>. Use /sdd-plan --replan to force."
+     → DONE. This is the ONLY work performed on a hit.
+  4. IF fingerprint CHANGED or --replan given (cache MISS):
+     → Execute full scan ONCE (Manual Mode steps below)
+     → Write plan to .sdd/plans/current-plan.sdd
+     → Bump Revision: vN in the plan file
+     → Update plan-cache.json: fingerprint, generated_at, plan_revision, reset hit_count=0
+     → Append execution record to .claude/sdd/history.json
+     → Report: "PLAN [cache MISS → regenerated, rev <N>]"
+
+  Fingerprint inputs (any change = cache invalidation):
+    - git HEAD (new commit)
+    - .sdd/projects/sddra/tasks/INDEX.sdd (task state change)
+    - .sdd/projects/sddra/phases/INDEX.sdd (phase status change)
+    - .sdd/projects/sddra/context/active.sdd (context change)
+    - prompts/inbox/ (new pending prompt)
+
+  Manual override: /sdd-plan --replan forces regeneration regardless of cache.
+
+MANUAL MODE (full scan — runs ONLY on cache MISS):
   Steps:
     1. Read .sdd/PROJECT.sdd → extract project name, domain, stack
-    2. Read .sdd/chains/graph.sdd → extract execution trace and arms
-    3. Read .sdd/decisions/INDEX.sdd → extract active decisions
-    4. Read .sdd/projects/ → extract instantiated projects
-    5. Scan prompts/inbox/ → extract pending user requests
-       - Extract: intent, target arm (P1/D1/S1/C1/R1/DEP1), priority
+    2. Read .sdd/plans/current-plan.sdd → prior plan (for revision diff)
+    3. Read .sdd/projects/sddra/tasks/INDEX.sdd → task states (TODAY filter: tasks dated today or IN_PROGRESS/PENDING)
+    4. Read .sdd/projects/sddra/phases/INDEX.sdd → phase registry → current phase + layer
+    5. Read .sdd/chains/graph.sdd → extract execution trace and arms
+    6. Read .sdd/decisions/INDEX.sdd → extract active decisions
+    7. Scan prompts/inbox/ → extract pending user requests (skip if empty)
        - Tag each prompt with likely chain arm based on keywords:
          "write/plan/design" → D1 (docs)
          "implement/code/build" → C1 (code)
@@ -26,14 +55,25 @@ MANUAL MODE:
          "deploy/release" → DEP1 (deploy)
          "analyze/explain" → P1 (prompt)
          "spec/define" → S1 (.sdd)
-    6. Scan prompts/archive/ → extract completed tasks (if exists)
-    7. Scan .sdd/tasks/ → map task IDs to decisions
-    8. For each chain arm (P1, D1, S1, C1, R1, DEP1):
-       - Check if existing work exists for that arm
-       - If yes → reference existing artifact
-       - If no → generate new task spec (tsk-XXX)
-    9. Query git log (read-only) → map commits to completed tasks
-    10. Output plan in trace format #01-#16
+    8. Read .claude/sdd/history.json → last 3-5 execution records (HISTORY section)
+    9. Query git log --oneline -10 (read-only) → map commits to completed tasks
+   10. BUILD PLAN with these sections (write to .sdd/plans/current-plan.sdd):
+       a. Project Header (name, domain, stack, decision/task counts, current phase)
+       b. Today's Work — what must be done TODAY (from tasks + inbox + phases)
+       c. Execution Trace #01-#16 (standard format)
+       d. Phase / Layer Position — which phase, which layer (L-level), where in the flow (D0->arm->D0)
+       e. History Context — last sessions summary (from history.json)
+       f. Next Action — single next step + /sdd-next guidance
+   11. Compute new fingerprint → save to plan-cache.json
+
+RE-PLAN PROTOCOL (user requests a change):
+  When the user asks for ANY modification to the plan:
+    1. Read .sdd/plans/current-plan.sdd (cache — no rescan)
+    2. Apply the requested change to the plan content
+    3. Bump Revision: vN (MINOR for task changes, MAJOR for goal/scope changes)
+    4. Append to history.json: {command: "/sdd-plan --replan", reason: "<user request>"}
+    5. Output the DIFF summary: what changed, why, new revision
+    6. System NEVER scans from scratch for a user edit — plan edits are plan-local.
 
 AUTO MODE LIFECYCLE:
   1. Parse arguments → detect "auto" flag
@@ -43,9 +83,9 @@ AUTO MODE LIFECYCLE:
   5. RESOLVE PREREQUISITES:
      - plan.requires = [analyze]
      - If analyze NOT in completed_steps → execute sdd-analyze first
-  6. EXECUTE plan (same as manual mode above)
+  6. EXECUTE plan (cache-first logic above; full scan only on MISS)
   7. VALIDATE result:
-     - Plan document produced
+     - Plan document produced (or cache hit served)
      - Task breakdown complete
      - DAG validated
   8. SAVE state:
@@ -62,16 +102,23 @@ STRUCTURED RESULT (AUTO mode):
   next: decisions
   auto_continue: true
   decisions: []
-  artifacts: [".sdd/plans/..."]  # if created
+  cache: HIT|MISS  # new: cache outcome
+  artifacts: [".sdd/plans/current-plan.sdd"]  # only on MISS
 
-Output:
+Output (both cache HIT and MISS — trace format from .sdd/plans/current-plan.sdd):
   ```
   # Project: <name> | Domain: <domain> | Stack: <stack>
-  # Active Decisions: <count> | Pending Tasks: <count>
+  # Active Decisions: <count> | Pending Tasks: <count> | Phase: <phase>
+  # [cache: HIT #<n> | MISS → rev <N>]
+
+  Today's Work:
+    1. [DONE] <item>
+    2. [IN_PROGRESS] <item>
+    ...
 
   Execution Plan:
     #01  Discover    -> [EXISTING/.sdd/PROJECT.sdd] - <summary>
-    #02  BuildCtx    -> [AUTO] 4-tier memory (Long-Term, Project, Task, Working)
+    #02  BuildCtx    -> [AUTO] cache-first: plan-cache.json => no rescan
     #03  Plan        -> [TASK/tsk-XXX] - <description>
     #04  PlanCheck   -> [AUTO] validate DAG + dependencies
     #05  Implement   -> [CODE/.sdd/skills/] - <summary>
@@ -87,9 +134,14 @@ Output:
     #15  Consolidate -> [AUTO] DROP | ARCHIVE | LINK | PROMOTE knowledge
     #16  Complete    -> [AUTO] mark task COMPLETED
 
-  Next Action: <description of next step>
+  Phase/Layer: <phase> | Layer: <layer> | Flow: D0 -> <arm> -> D0
+
+  History (recent):
+    <date>: <one-line summary>
+    ...
+
+  Next Action: <description>
   ```
-  If no pending work: "All chain arms are up to date."
 
   AUTO mode adds:
     SDD AUTO
@@ -104,18 +156,25 @@ Output:
     [AUTO CONTINUE]
 
 Business Context:
-  - Analyzes prompts/inbox/ for user intents
-  - Cross-references decisions → tasks → git commits
-  - Identifies knowledge gaps per SDDRA evolution system
+  - Token economy: 100 calls → 1 real run + 99 cache hits (near-zero tokens)
+  - History gives the user "what did we do today / recently" without re-derivation
+  - Phase registry shows WHERE in the system lifecycle work currently sits
+  - Re-plan is plan-local: user edits never trigger full rescans
 
 Rules:
-  - Do NOT modify any files
+  - CACHE HIT: read ONLY plan-cache.json + current-plan.sdd. NOTHING else. No git log, no .sdd scans.
+  - Do NOT modify any .sdd source files EXCEPT .sdd/plans/current-plan.sdd (the plan itself)
+  - Every regeneration MUST bump Revision and append to .claude/sdd/history.json
   - State: +
   - In AUTO mode, do NOT ask for confirmation
   - In AUTO mode, make autonomous decisions for routine choices
   - Record autonomous decisions in .claude/sdd/decisions.json
 
 Navigation:
+  PlanCache: @.claude/sdd/plan-cache.json
+  CurrentPlan: @.sdd/plans/current-plan.sdd
+  PhaseRegistry: @.sdd/projects/sddra/phases/INDEX.sdd
+  History: @.claude/sdd/history.json
   ChainGraph: @../chains/graph.sdd
   Decisions: @../decisions/INDEX.sdd
   Tasks: @../tasks/

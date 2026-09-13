@@ -66,13 +66,40 @@ AgentShieldMapping:
        mapped_to: AG1-AG10 in @agent/INDEX.sdd
        sdd_level: L2-L5 (contextual)
        checks:
-         - prompt injection vectors
-         - tool allowlist over-grants
-         - missing constraints
+          - prompt injection vectors
+          - tool allowlist over-grants
+          - missing constraints
        sdd_integration:
-         - All agent configs validated against @roles.sdd
-         - Constraints must match role capabilities
-         - Missing constraints flagged as L2 finding
+          - All agent configs validated against @roles.sdd
+          - Constraints must match role capabilities
+          - Missing constraints flagged as L2 finding
+
+    6. External Channel Credential Boundaries (Phase 150):
+       source: Agent-Reach credential discipline (MIT —
+         https://github.com/Panniantong/Agent-Reach; security model +
+         channel boundary rules, 2026-09-10 analysis)
+       mapped_to: integration-routing.sdd + mcp-allowlist.sdd
+       sdd_level: L2-L4 (contextual)
+       checks:
+         - credentials stored LOCAL-ONLY, file permission 600 (owner rw);
+           never uploaded, never transmitted
+         - agent MUST NOT log in on the user's behalf for login-backed
+           platforms — user performs login; agent receives exported
+           credentials only
+         - agent MUST NOT read browser cookie stores; only user-exported
+           cookie values via explicit configure step
+         - credential injection into child processes is ENV-ONLY, values
+           NEVER logged; existing shell vars stay authoritative
+         - account-risk rule: cookie/API-based access should use
+           dedicated low-value accounts (platform ban risk) — never the
+           user's primary account
+         - URL credentials (user:pass@host in probe/fetch output) MUST be
+           scrubbed at the output boundary before rendering or storage —
+           upstream output can echo configured URLs
+       sdd_integration:
+         - health report rendering scrubs all channel messages ([IR-07])
+         - DLP multi-pass includes URL-credential pattern (extends
+           [MCP-13] output DLP to all channel outputs)
 
 SecurityEnforcement:
   Modes:
@@ -110,6 +137,16 @@ Rules:
   [SEC-06] Critical findings (grade F) MUST exit with code 2.
   [SEC-07] -fix flag auto-applies only to safe issues (secrets removal, permission tightening).
   [SEC-08] -opus red-team/blue-team pipeline invoked only for L4+ projects.
+  [SEC-09] External channel credentials are LOCAL-ONLY, permission 600,
+           never uploaded (Phase 150; category 6).
+  [SEC-10] Agent MUST NOT log in for the user or read browser cookie
+           stores; user-exported credentials only.
+  [SEC-11] Credential injection is env-only into child processes; values
+           are NEVER logged; shell vars remain authoritative.
+  [SEC-12] URL credentials are scrubbed from ALL channel output before
+           rendering/storage (extends output DLP [MCP-13]).
+  [SEC-13] Login-backed platforms require dedicated low-value accounts
+           (ban-risk rule); primary accounts are flagged at review.
 
 ScanInvocation:
   manual: npx ecc-agentshield scan
@@ -125,7 +162,10 @@ Navigation:
   SecurityLevels: @../security/levels.sdd
   AdapterRuntime: @../runtime/adapter-runtime.sdd
   McpIntegration: @../runtime/mcp-integration.sdd
+  IntegrationRouting: @../runtime/integration-routing.sdd
   AgentRoles: @roles.sdd
   AgentPermissions: @permissions.sdd
 
 State: +
+   (extended with external-channel credential boundaries per Phase 150 —
+    Agent-Reach security model, MIT, cited in category 6)

@@ -1,0 +1,47 @@
+﻿# Imported Design Skills â€” External Origin
+
+Purpose:
+  Registry of design skills imported from external repositories.
+  Each subdirectory preserves the original SKILL.md verbatim with a
+  provenance INDEX.sdd wrapper per CLAUDE.md import rules.
+
+Owns: ./
+
+Source: https://github.com/Leonxlnx/taste-skill
+Origin: tmp/taste-skill/skills/
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrappers)
+License: MIT
+Note: tmp-analysis.sdd attributes this repo to "vercel/taste-skill"; git remote
+      and plugin.json both say Leonxlnx/taste-skill â€” repo state is authoritative.
+
+Skills:
+  taste-skill:
+    one_line: Core design taste evaluation and aesthetic judgment
+  minimalist-skill:
+    one_line: Minimalist design principles and restraint
+  brutalist-skill:
+    one_line: Brutalist design patterns and bold structure
+  stitch-skill:
+    one_line: Design-to-code stitching workflow (SKILL.md + DESIGN.md)
+  redesign-skill:
+    one_line: Systematic redesign of existing interfaces
+  output-skill:
+    one_line: Design output quality and polish criteria
+  image-to-code-skill:
+    one_line: Converting design images to code
+
+Rules:
+  [IMP1] Every imported skill MUST carry Source + Origin + Imported + Format in its INDEX.sdd.
+  [IMP2] These are design-reference skills â€” adapt, never copy blindly.
+  [IMP3] Imported skills are CANDIDATES (Phase 146 lifecycle: EXTERNAL â†’ CANDIDATE â†’ ACTIVE).
+  [IMP4] Human review required for CANDIDATE â†’ ACTIVE promotion.
+  [IMP5] When overlapping with .sdd/skills/design/*.sdd native skills, native wins.
+
+Navigation:
+  DesignIndex: @../INDEX.sdd
+  NativeDesignSkills: @../INDEX.sdd
+  ImportedMeta: @../../meta/imported/INDEX.sdd
+  Phase146: @../../../../projects/sddra/phases/phase-146-skill-marketplace.sdd
+
+State: +

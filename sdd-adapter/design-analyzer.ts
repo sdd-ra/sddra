@@ -119,7 +119,8 @@ export class DesignAnalyzer {
           description: slop.issue,
           recommendation: `Review ${file} for generic design patterns and replace with project-specific design tokens.`,
         });
-        score -= slop.severity === "HIGH" ? 20 : slop.severity === "MEDIUM" ? 10 : 5;
+        const severityWeight: Record<string, number> = { HIGH: 20, MEDIUM: 10, LOW: 5 };
+        score -= severityWeight[slop.severity] ?? 10;
       }
     }
 

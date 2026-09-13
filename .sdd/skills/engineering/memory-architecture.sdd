@@ -1,0 +1,59 @@
+# Skill: Agent Memory Architecture
+
+Purpose:
+  Engineering skill for designing and operating agent memory systems —
+  the patterns behind SDDRA's 4-tier memory model. Use when reasoning
+  about memory storage, retrieval, consolidation, or governance.
+
+Owns: engineering/memory-architecture.sdd
+
+Source: research round 3 r1 (2026-09-07) — Mem0, Letta, Zep/Graphiti,
+  LangMem, Cognee, MemOS, A-MEM, OpenAI Dreaming, VMG; sources cited in
+  .sdd/runtime/memory-model.sdd Phase 149 additions.
+
+Patterns:
+  tiered_memory:
+    - working (context window) -> episodic (session) -> semantic (facts)
+      -> procedural (skills) — separation by lifetime + write policy
+    - hot/cold split: hot (>=50% recent reference) default-loaded; cold
+      on-demand (90-day gate)
+  write_paths:
+    - hot path: critical + importance-rated (decisions) — explicit,
+      immediate, auditable
+    - background path: everything else — deferred consolidation
+    - rule: decisions, not conversations
+  supersession:
+    - bi-temporal (t_valid/t_invalid/supersedes); invalidate, never delete
+    - implicit conflicts trigger review, not silent coexistence
+  retrieval:
+    - fused additive score: semantic + keyword(BM25) + entity + recency
+      decay + importance (recency ranks, never gates alone)
+    - principal-scoped: no cross-project/agent bleed
+  consolidation:
+    - sleep-time triggers (end_of_task, step-count, compaction, idle);
+      off-latency; may use stronger model
+    - ratio discipline: ~100 events -> ~3 decisions + 1 skill candidate
+  governance_primitives (VMG):
+    - write authorization, provenance visibility, verified forgetting,
+      principal-scoped retrieval, rollbackability (version chains)
+  skill_crystallization:
+    - repeated validated patterns promote to skill tier with provenance
+
+AntiPatterns:
+  - memory-as-RAG only (stateless retrieval misses staleness/identity)
+  - delete on invalidation (destroys audit trail)
+  - public benchmark chasing (LoCoMo audit: 6.4% wrong answer key)
+  - context bloat: injecting full memories (progressive disclosure only)
+
+Rules:
+  [MA1] Apply patterns via .sdd/runtime/memory-model.sdd — this skill is
+        the reasoning layer, the spec is authority.
+  [MA2] Every memory design decision cites its pattern provenance.
+
+Navigation:
+  EngineeringIndex: @INDEX.sdd
+  MemoryModel: @../../runtime/memory-model.sdd
+  MemoryLibrarian: @../../agent/roles.sdd (@agent.memory_librarian)
+  WeakPointMap: @../../agent/weak-point-map.sdd
+
+State: +

@@ -8,6 +8,50 @@ Sen SDDRA sistemində çalışan AI agent-sən.
 ## Əsas prinsip
 `.sdd/` qovluğu sistemin **beyin**dir. Orada yazılanları oxu, başa düş, və həmin qaydalara görə işlə.
 
+## Stateful axın qaydası — hər komandaya şamil olunur
+İstənilən `/sdd*` komandası veriləndə (əvvəlcədən plan, analiz, next, hər hansı — fərqi yoxdur)
+axın ALWAYS belədir — bu sıra pozulmur:
+
+```
+DISCOVER → ANALYZE → LOCATE CURRENT STEP → EXECUTE ONLY CURRENT STEP
+→ VERIFY → SAVE STATE → STOP
+```
+
+- **Həqiqət mənbəyi**: layihə faylları + yadda saxlanmış workflow state-dır.
+  Söhbət tarixçəsi həqiqət mənbəyi DEYİL.
+- **Yalnız cari addım icra olunur**: gələcək addımı əvvəlcədən icra etmək,
+  addım atlamaq, sıranı dəyişmək QADAĞDIR (delivery chain [DL1-1]).
+- **Addım DONE yalnız 5 şərt keçəndə**: input mövcuddur; iş bitib;
+  output/artifact mövcuddur; daxili tutarlıdır; validasiya keçib.
+  Fərziyyə ilə DONE yazmaq yoxdur.
+- **/next = state-dən davam**: saved state oxunur → son tamamlanmış addım
+  tapılır → ilk tamamlanmamış addım tapılır → YALNIZ o icra olunur →
+  verify → state yenilənir → dayan. 100 dəfə çağırılsan da hər dəfə
+  gerçek sondakı state-dən davam edir. "Növbətində nə edim?" soruşmaq yoxdur —
+  state-dən təyin et.
+- **BUG dayandırır**: cari addımda bloklayan BUG varsa axın dayanır
+  (BUG-REGISTRY.sdd); BUG həll olmayınca növbəti addıma keçid yoxdur.
+- Addım-short-key-lər kanonik lüğətdədir: `.sdd/workflow/step-keys.sdd`.
+
+## Shell arxa plan qaydası
+Tool shell komandası icra edərkən arxa plan (background shell) **PowerShell-in öz
+`powershell.exe`-si yox, `bash.exe`** olmalıdır. `arxasin.exe` / `arxasin` kimi özəl
+exe-lər shell arxa planı kimi qoyula bilməz:
+- Shell komandaları yalnız standart shell (`powershell.exe`, `bash.exe`) ilə icra olunur
+- Sandbox/analiz üçün özəl binary lazımdırsa, o, əmrin DAXİLİNDƏ çağırılır
+  (məs. `some-tool --analyze file`), shell-in özünü əvəz etmir
+- Bu qayda pozulsa komanda icra olunmur — istifadəçiyə bildirilir
+
+## Xarici skill import qaydaları
+1. **Mənbə sitatı məcburidir**: Yeni skill hardansa (tmp/, GitHub, marketplace) gəlirsə, skill faylının özündə mənbə sitatı olmalıdır:
+   - `Source: <repo-url>` (məs. `Source: https://github.com/anthropics/skills`)
+   - `Imported: <tarix>` və `Format: anthropic-skill | vercel-agent-skill | native`
+   - SKILL.md məzmunu daxil edilərsə, orijinal fayl yolu da göstərilir (`Origin: tmp/skills/skills/xlsx/SKILL.md`)
+2. **Kod daşıyan skillər Docker üzərindən analiz olunur**: Skill scripts/, kod, icra oluna bilən fayl daşıyırsa:
+   - Kod lokal run olunmur — plan Docker konteynerində (`.sdd` qaydası [R59]-[R66]) icra/analiz üçün yazılır
+   - Runtime dependensiyları (python, node, pip paketləri) skill metadata-da qeyd olunur (`Runtime: python3 | docker`)
+   - Skillin SKILL.md-i oxunarkən "code yazılıb" → analiz planı Docker üçün hazırlanır, host-da install yox
+
 ## Qeydiyyat nöqtəsi
 Hər işdən əvvəl bu sıra ilə başla:
 
@@ -37,6 +81,22 @@ Hər arm mütləq D0-a qayıdır. Qırılmaz.
 - `INDEX.sdd` istifadə et, directory scan etmə
 - Lazy loading: yalnız lazım olanı yüklə
 - Bütün `.sdd/` strukturu bir anda yükləmə
+
+## EXPAND protokolu — bulk-load QADAĞDIR
+`.sdd/` qovluğu heç vaxt bütövlükdə qarşı tərəfə (model kontekstinə) göndərilmir.
+
+1. **InitialLoad-manifest**: hər sessiya yalnız İNDEKS + cari komandanın
+   `InitialLoad:` manifesti ilə başlayır (hər komanda spec-ində
+   `.sdd/commands/*.sdd` → `InitialLoad:` bölməsi var — yalnız o 2-3 fayl
+   avtomatik yüklənir). Hədəf: ilkin yüklənmə <1% (əvvəl ~9% idi).
+2. **EXPAND sorğusu**: AI dərin məzmun lazım olanda AÇIQ şəkildə istəyir:
+   `EXPAND <path-ya-bölmə>` — yalnız həmin bölmə verilir. Heç kim
+   istəmədən ağır fayl göndərmir.
+3. **Push yasağı**: istənilən ağır fayllar (bütün skill ağacları, bütün
+   phase spec-ləri, böyük analiz faylları) istər istenilən, istər
+   istənməyən — PROACTİV göndərilmir. Yalnız sorğu üzerine.
+4. **Progressive disclosure = pull-based**: context LEVEL 0 (INDEX +
+   manifest) yeganə avtomatik yükləmədir; LEVEL 1-2 yalnız EXPAND ilə.
 
 ## İki dil modeli
 - `docs/` — insan dili, sadə Azərbaycanlı

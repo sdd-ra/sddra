@@ -16,8 +16,37 @@ CacheStructure:
     last-used: <timestamp>
     dependencies: <list of dependent contexts>
 
+PullBasedLoading (Phase 151 — EXPAND protocol):
+  InitialLoad:
+    definition: every session/command auto-loads ONLY (a) the relevant
+      INDEX.sdd routing table + (b) the command's InitialLoad manifest
+      (2-3 files declared in its command spec).
+    budget: initial load target < 1% of .sdd/ total content (previous
+      behavior ~9% bulk load — now forbidden).
+  EXPAND:
+    definition: explicit request format for deeper content —
+      `EXPAND <path-or-section>` — the AI asks, the section is provided.
+    rule: only the requested section is returned; no adjacent pushes.
+  PushBan:
+    rule: heavy files (full skill trees, all phase specs, large analysis
+      files) are NEVER proactively sent — wanted or unwanted, push is
+      forbidden; everything beyond InitialLoad is EXPAND-only.
+  Levels:
+    LEVEL 0 (INDEX + manifest) — the ONLY auto-load tier.
+    LEVEL 1-2 (details, references) — EXPAND-only (progressive disclosure
+    is pull-based now).
+  Caching:
+    rule: InitialLoad manifests are cacheable — same manifest fingerprint
+    => skip reload ([CC2] applies to manifest content too).
+
 Optimization:
   Target: Relevant Context / Total Context > 80%
   Rule: Safety-critical tasks MUST NOT sacrifice relevance for efficiency.
 
+Navigation:
+  CommandsIndex: @../commands/INDEX.sdd (InitialLoad declarations)
+  ContextBuilder: @../runtime/context-builder.sdd
+  PlanCache: @../../.claude/sdd/plan-cache.json
+
 State: +
+   (extended with PullBasedLoading / EXPAND protocol per Phase 151)

@@ -11,18 +11,21 @@ ReadOrder:
    2 @tasks.sdd (task lifecycle rules and contracts)
 
 Rules:
-  [T1] Every task MUST have a unique ID.
-  [T2] Tasks MUST be assigned to specific stages.
-  [T3] Task status MUST be tracked: pending -> active -> done.
-  [T4] Task dependencies MUST be resolved before execution.
+   [T1] Every task MUST have a unique ID.
+   [T2] Tasks MUST be assigned to specific stages.
+   [T3] Task status MUST be tracked: pending -> active -> done.
+   [T4] Task dependencies MUST be resolved before execution.
+   [T5] A blocking defect at a step MUST be recorded as a BUG
+        (BUG-REGISTRY.sdd) — the flow does not continue past it.
 
 Navigation:
-   Tasks: @tasks.sdd
-   ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
-   TaskStateMachine: @TASK-STATE-MACHINE.sdd
-   LoopProtection: @LOOP-PROTECTION.sdd
-   FailureClassification: @FAILURE-CLASSIFICATION.sdd
-   ExecutionContract: @EXECUTION-CONTRACT.sdd
+    Tasks: @tasks.sdd
+    ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
+    TaskStateMachine: @TASK-STATE-MACHINE.sdd
+    LoopProtection: @LOOP-PROTECTION.sdd
+    FailureClassification: @FAILURE-CLASSIFICATION.sdd
+    BugRegistry: @BUG-REGISTRY.sdd
+    ExecutionContract: @EXECUTION-CONTRACT.sdd
    AutonomyPolicy: @AUTONOMY-POLICY.sdd
    DoneProof: @DONE-PROOF.sdd
    PartialDone: @PARTIAL-DONE.sdd

@@ -1,0 +1,138 @@
+# sddra — Phase Registry
+
+Purpose:
+  Registry of ALL phases for the sddra.ai project. Single source of truth
+  for phase tracking: which layer, which status, where the spec lives,
+  where the implementation lives. Loaded by /sdd-plan and /sdd-next.
+
+Owns: ./
+
+Phases:
+  Phase 144:
+    title: Multi-agent coordination framework
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: .sdd/agent/INDEX.sdd (implemented directly, no standalone spec)
+    implemented: .sdd/agent/ (19 files)
+    date: 2026-09-02
+
+  Phase 145:
+    title: Design skills + auto-invocation
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: .sdd/bootstrap/AI_BOOTSTRAP.sdd (section "Phase 145")
+    implemented: .sdd/agent/skill-auto-invoke.sdd, .sdd/workflow/impl-skill-auto-integration.sdd
+    date: 2026-09-02
+
+  Phase 146:
+    title: External skill marketplace
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: @phase-146-skill-marketplace.sdd
+    implemented: marketplace/registry.json (11 sources + 5 blocked);
+      sdd-adapter/skill-validator.ts (structure/license/security gates, SHIP/FIX/BLOCK);
+      sdd-adapter/skill-importer.ts (fetch + provenance wrapper + placement);
+      /sdd-marketplace list|sync|import|audit in commands.ts (runtime);
+      .sdd/commands/sdd-marketplace.sdd spec; 59 new test asserts (19/19 suite)
+    date: 2026-09-03 (completed 2026-09-07)
+
+  Phase 147:
+    title: Token economy — plan idempotency + execution history
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: (this registry + .sdd/plans/current-plan.sdd + .claude/sdd/plan-cache.json)
+    implemented: plan-cache.json, current-plan.sdd, phases/INDEX.sdd, history.json protocol
+    date: 2026-09-06
+
+  Phase 148:
+    title: AI agent research + Unified Design Intelligence
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: .kilo/plans/1788725641607-ai-agent-design-research.md (executed 2026-09-06)
+    implemented: 4-stream web research (r1-r4, tmp-staged then deleted per protocol);
+      9 skills imported (skill-governance/orchestration/audit, MIT, provenance);
+      agent/weak-point-map.sdd (12 compensated weaknesses); @agent.design upgraded
+      (generation capabilities); docs/analysis/ai-agents-comparative.md;
+      design/sources.sdd (19-source registry); design/intelligence/ module
+      (7-stage pipeline + SlopGates + three-jobs rule); self-test 92% pros;
+      docs/analysis/design-system-proscons-report.md
+    date: 2026-09-06
+
+  Phase 149:
+    title: New scope integration — memory, research arm, orchestration
+           hardening, MCP runtime, 6 agent roles, engineering skills
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: research round 3 DECISIONS.md (tmp-staged then deleted; plan below)
+    implemented: memory-model.sdd upgrades (bi-temporal supersession, dual
+      write paths, fused scoring, VMG primitives, consolidation triggers,
+      skill crystallization [RT-MM-15..18]); RS1 research arm (graph/selector/
+      INDEX + arms/research.sdd + workflow/research-protocol.sdd +
+      /sdd-research command + @agent.researcher); orchestration hardening
+      (checkpoint schema + circuit breakers in state.sdd [RT8-RT11], typed
+      outcomes + interrupt primitive in contract.sdd, tiered caps +
+      error-spiral in LOOP-PROTECTION.sdd [LP11-13]); MCP runtime
+      (mcp-allowlist.sdd NEW + mcp-integration.sdd 2026-07-28 + DLP
+      [MCP-11..13]); 6 new roles (researcher, sre, eval_engineer,
+      memory_librarian, skill_curator, data_engineer); context-emission.sdd
+      (AGENTS.md/CLAUDE.md derived surface); skills/engineering/ filled
+      (4 pattern skills w/ provenance); weak-point-map +8 compensated rows
+    date: 2026-09-07
+
+  Phase 150:
+    title: Agent-Reach integration — ordered backend routing, channel
+           health probing, credential boundaries
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: tmp/agent-reach-decisions.md gate (staging deleted; plan below)
+    implemented: runtime/integration-routing.sdd NEW (ordered backends,
+      active_backend, user-override safety, probe semantics, doctor
+      discipline, tier alignment [IR-01..10]); /sdd-health channel
+      probing extension [HEALTH-05..07]; security-rules.sdd category 6
+      external-channel credential boundaries [SEC-09..13]; research arm
+      backend provenance + announce-before-fetch [RS1-11];
+      skills/engineering/integration-routing.sdd (pattern skill,
+      provenance cited); SKILL-EXTERNAL-REFERENCES [SR11];
+      marketplace registry reference entry
+    source: https://github.com/Panniantong/Agent-Reach (MIT, analyzed
+      2026-09-10 — patterns only, code NOT imported, Docker-gated [R59-R66])
+    date: 2026-09-10
+
+  Phase 151:
+    title: Stateful workflow agent rules + EXPAND token protocol
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: WORKFLOW AGENT core rules (user-provided) deep-analyzed vs .sdd;
+      gaps integrated, kinships cross-linked
+    implemented: workflow/step-keys.sdd NEW (24-key canonical dictionary
+      + mapping + CR-scoped semantics [SK1-5]); stages.sdd +5 stages
+      (BC/BR/BD/DS/TK business group + DC/DC-TS) + CRScopedSemantics;
+      transitions.sdd business edges + 6 scoped branch sub-paths;
+      chains/delivery.sdd NEW (DL1: BC->BR->BD->DS->TK->BDD->6 parallel
+      branches w/ scoped CR + tests->AN->VR; immutable [DL1-1..6];
+      StepState persistence) + chains INDEX/selector registration;
+      tasks/BUG-REGISTRY.sdd NEW (artifact format, duplicate detection,
+      block semantics, resolution protocol [BG1-7]) + tasks INDEX [T5];
+      CLAUDE.md stateful flow rule (DISCOVER->...->STOP for EVERY
+      command; DONE=5 criteria; /next from state; BUG stops) + EXPAND
+      protocol (InitialLoad manifests, push ban, <1% target); context/
+      cache.sdd PullBasedLoading; commands INDEX [CMD6 StatefulExecution,
+      CMD7 InitialLoad]; InitialLoad sections in 9 command specs;
+      sdd-next.sdd --step mode (step-mode output + 8-step /next protocol)
+    date: 2026-09-11
+
+Rules:
+  [PH1] Every phase MUST be registered here — no unregistered phase work.
+  [PH2] Phase specs live in phases/phase-NNN-*.sdd or referenced external files.
+  [PH3] Status transitions: PROPOSED -> IN_PROGRESS -> COMPLETED (or ABANDONED).
+  [PH4] /sdd-plan MUST read this registry to report current phase position.
+  [PH5] /sdd-next MUST advance phase status when its tasks complete.
+  [PH6] New phases are appended — never modify historical entries except status.
+
+Navigation:
+  Phase146: @phase-146-skill-marketplace.sdd
+  Tasks: @../tasks/INDEX.sdd
+  Plans: @../../plans/current-plan.sdd
+  Context: @../context/active.sdd
+
+State: +

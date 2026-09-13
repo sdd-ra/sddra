@@ -6,7 +6,7 @@ Purpose:
 
 Graph:
   root: D0
-  arms: P1,D1,S1,C1,R1,DEP1
+  arms: P1,D1,S1,C1,R1,DEP1,RS1
   selector: @selector.sdd
   rules: @rules/chain-rules.sdd
 
@@ -21,6 +21,7 @@ Files:
   maintenance: @maintenance.sdd
   migration: @migration.sdd
   incident: @incident.sdd
+  delivery: @delivery.sdd
 
 Arms:
   prompt: @arms/prompt.sdd
@@ -29,6 +30,7 @@ Arms:
   code: @arms/code.sdd
   review: @arms/review.sdd
   deploy: @arms/deploy.sdd
+  research: @arms/research.sdd
 
 Rules:
   chain: @rules/chain-rules.sdd

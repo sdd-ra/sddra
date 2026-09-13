@@ -1,0 +1,143 @@
+# Chain: Delivery
+
+ID: DL1
+Parent: D0
+
+Purpose:
+  The full business-to-verified delivery flow — the stateful, immutable
+  workflow that every delivery request follows. Business case is
+  understood, requirements defined, business design shaped, decisions
+  recorded, tasks broken down, behavior specified; then implementation
+  branches execute in parallel, each through the same scoped
+  review -> refactor -> test -> security pipeline; finally the whole
+  flow is analyzed and verified. Step keys are canonical
+  (bax ../workflow/step-keys.sdd).
+
+Owns: chains/delivery.sdd
+
+Flow:
+  BC -> BR -> BD -> DS -> TK -> BDD
+                             |
+      +-------+-------+-------+-------+-------+
+      |       |       |       |       |       |
+      BE      DB      API     FE      MD      DC      (parallel branches)
+      |       |       |       |       |       |
+    CR-BE   CR-DB   CR-API  CR-FE   CR-MD   CR-DC     (scoped reviews)
+      |       |       |       |       |       |
+    RF-BE   RF-DB   RF-API  RF-FE   RF-MD   RF-DC     (scoped refactor,
+      |       |       |       |       |       |        conditional — see
+    BE-TS   DB-TS   API-TS  FE-TS   MD-TS   DC-TS       ImmutabilityRules
+      |       |       |       |       |       |        note below)
+    SC-BE   SC-DB   SC-API  SC-FE   SC-MD   SC-DC     (scoped security)
+      |       |       |       |       |       |
+      +-------+-------+-------+-------+-------+
+                      |
+                     AN -> VR
+
+FlowNotation:
+  short:  BC -> BR -> BD -> DS -> TK -> BDD -> [
+    BE->CR-BE->RF-BE->BE-TS->SC-BE,
+    DB->CR-DB->RF-DB->DB-TS->SC-DB,
+    API->CR-API->RF-API->API-TS->SC-API,
+    FE->CR-FE->RF-FE->FE-TS->SC-FE,
+    MD->CR-MD->RF-MD->MD-TS->SC-MD,
+    DC->CR-DC->RF-DC->DC-TS->SC-DC
+    ] -> AN -> VR
+  canonical_keys: 24 base + RF-XX/SC-XX scoped aliases (bax
+    ../workflow/step-keys.sdd — never redefined; count updates once
+    RF-XX and SC-XX are added to the dictionary)
+
+Dependencies:
+  BR  -> [BC]
+  BD  -> [BR]
+  DS  -> [BD]
+  TK  -> [DS]
+  BDD -> [TK]
+  BE  -> [BDD]
+  DB  -> [BDD]
+  API -> [BDD]
+  FE  -> [BDD]
+  MD  -> [BDD]
+  DC  -> [BDD]
+  CR-BE   -> [BE]
+  CR-DB   -> [DB]
+  CR-API  -> [API]
+  CR-FE   -> [FE]
+  CR-MD   -> [MD]
+  CR-DC   -> [DC]
+  RF-BE   -> [CR-BE]   (conditional — only if CR-BE raises change requests;
+                        skipped if CR-BE passes clean)
+  RF-DB   -> [CR-DB]   (conditional, same rule)
+  RF-API  -> [CR-API]  (conditional, same rule)
+  RF-FE   -> [CR-FE]   (conditional, same rule)
+  RF-MD   -> [CR-MD]   (conditional, same rule)
+  RF-DC   -> [CR-DC]   (conditional, same rule)
+  BE-TS   -> [RF-BE]   (or [CR-BE] directly if RF-BE was skipped)
+  DB-TS   -> [RF-DB]   (or [CR-DB] directly if RF-DB was skipped)
+  API-TS  -> [RF-API]  (or [CR-API] directly if RF-API was skipped)
+  FE-TS   -> [RF-FE]   (or [CR-FE] directly if RF-FE was skipped)
+  MD-TS   -> [RF-MD]   (or [CR-MD] directly if RF-MD was skipped)
+  DC-TS   -> [RF-DC]   (or [CR-DC] directly if RF-DC was skipped)
+  SC-BE   -> [BE-TS]
+  SC-DB   -> [DB-TS]
+  SC-API  -> [API-TS]
+  SC-FE   -> [FE-TS]
+  SC-MD   -> [MD-TS]
+  SC-DC   -> [DC-TS]
+  AN  -> [SC-BE, SC-DB, SC-API, SC-FE, SC-MD, SC-DC]
+  VR  -> [AN]
+
+Parallelism:
+  The six branches (BE, DB, API, FE, MD, DC) execute in parallel after
+  BDD; each branch follows the identical scoped sub-path
+  CR-XX -> RF-XX -> XX-TS -> SC-XX; AN waits for ALL branches' SC-XX to
+  complete. RF-XX is conditional: it only runs when CR-XX raises change
+  requests, and is skipped when CR-XX passes clean (bax
+  ../workflow/stages.sdd RFScopedSemantics). Branches not in a task's
+  ImpactMatrix are skipped explicitly (never silently — bax
+  transitions.sdd StageSkip).
+
+ImmutabilityRules (flow protection):
+  [DL1-1] The flow is IMMUTABLE: no skipping steps, no reordering, no
+          executing future steps early. RF-XX's conditional skip is the
+          one explicit exception — a clean CR-XX is a defined exit, not
+          an omission.
+  [DL1-2] Every /next continues from the SAVED STATE — the last completed
+          step and the first incomplete step — never from conversation
+          memory (bax ../runtime/state.sdd checkpoints).
+  [DL1-3] Called 100 times, /next continues from the actual last state
+          every time; restart from BC only when state explicitly requires.
+  [DL1-4] A step is DONE only when: input exists, work completed, output
+          artifact exists, internally consistent, validation passed —
+          never on assumption (bax ../tasks/DONE-PROOF.sdd).
+  [DL1-5] A blocking BUG stops the current step and the flow — no
+          continuation until resolved (bax ../tasks/BUG-REGISTRY.sdd).
+  [DL1-6] VR = VERIFIED is reachable only when all required steps are
+          complete (including each branch's SC-XX) AND no blocking BUG
+          remains.
+
+StepState (persisted per delivery run):
+  storage: .specdd/delivery/{run_id}/state.sdd (runtime-only)
+  fields: run_id, current_step, completed_steps[], first_incomplete,
+    branch_states{key -> state}, rf_skipped{key -> bool}, blocking_bugs[],
+    last_checkpoint
+  resume: /next reads this state FIRST; completed steps are never
+    re-executed ([RT8-RT9] checkpoint discipline).
+
+Retry: 3
+
+Navigation:
+  StepKeys: @../workflow/step-keys.sdd
+  Stages: @../workflow/stages.sdd
+  Transitions: @../workflow/transitions.sdd
+  TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+  BugRegistry: @../tasks/BUG-REGISTRY.sdd
+  NextCommand: @../commands/sdd-next.sdd
+  Checkpoints: @../runtime/state.sdd
+
+State: +
+  (Phase 151: unified all six branches to the same
+   CR-XX -> RF-XX -> XX-TS -> SC-XX sub-path; added missing BE-TS, DB-TS,
+   FE-TS, MD-TS to Flow/Dependencies; added RF-XX (conditional) and
+   SC-XX; AN now depends uniformly on all six SC-XX; added rf_skipped
+   tracking to StepState)

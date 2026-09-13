@@ -9,16 +9,19 @@ Owns: ./
 
 ReadOrder:
    1  @INDEX.sdd
-   2  @taste-evaluation.sdd
-   3  @design-heuristics.sdd
-   4  @visual-design.sdd
-   5  @ux-patterns.sdd
-   6  @accessibility.sdd
-   7  @design-system.sdd
-   8  @design-review.sdd
-   9  @web-design-guidelines/INDEX.sdd
+   2  @intelligence/INDEX.sdd
+   3  @sources.sdd
+   4  @taste-evaluation.sdd
+   5  @design-heuristics.sdd
+   6  @visual-design.sdd
+   7  @ux-patterns.sdd
+   8  @accessibility.sdd
+   9  @design-system.sdd
+   10 @design-review.sdd
+   11 @web-design-guidelines/INDEX.sdd
 
 Modes:
+  GENERATE — run Unified Design Intelligence pipeline (Stages 1-7)
   EVALUATE  — evaluate design quality
   REVIEW    — review implementation against design principles
   DISCOVER  — discover missing design skills
@@ -32,12 +35,17 @@ Rules:
   [D4] Anti-slop rules: avoid generic AI-generated design fingerprints.
   [D5] DESIGN.md files are source of truth for design systems.
   [D6] Design skills MUST NOT block execution; they are advisory.
+  [D7] UI GENERATION MUST go through the Unified Design Intelligence
+       pipeline (intelligence/INDEX.sdd) — freeform generation is BLOCKED.
+  [D8] Pattern sources are LEARNED-from, never copied (sources.sdd [DSRC1]).
 
 Entry:
   Read:
     INDEX.sdd
 
   Resolve:
+    intelligence
+    sources
     taste-evaluation
     design-heuristics
     visual-design
@@ -48,6 +56,8 @@ Entry:
 
 Navigation:
   Design: @design/INDEX.sdd
+  DesignIntelligence: @design/intelligence/INDEX.sdd
+  DesignSources: @design/sources.sdd
   TasteEvaluation: @design/taste-evaluation.sdd
   DesignHeuristics: @design/design-heuristics.sdd
   VisualDesign: @design/visual-design.sdd
@@ -56,6 +66,7 @@ Navigation:
   DesignSystem: @design/design-system.sdd
   DesignReview: @design/design-review.sdd
   WebDesignGuidelines: @web-design-guidelines/INDEX.sdd
+  ImportedDesign: @imported/INDEX.sdd
   MetaDiscovery: @../meta/SKILL-DISCOVERY.sdd
   AutoInvoke: @../agent/skill-auto-invoke.sdd
 

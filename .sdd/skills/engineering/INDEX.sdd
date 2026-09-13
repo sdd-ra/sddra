@@ -1,0 +1,56 @@
+# Engineering Skills
+
+Purpose:
+  Systems-engineering knowledge distilled from 2026 landscape research
+  (rounds 2-3): memory architecture, deep research, orchestration
+  hardening, MCP runtime. Each skill carries its research provenance.
+
+Owns: ./
+
+Skills:
+  memory-architecture.sdd:
+    one_line: Agent memory architecture patterns — tiering, write paths,
+      supersession, fused retrieval, governance primitives
+    provenance: research round 3 r1 (2026-09-07; Mem0/Letta/Zep/Graphiti/
+      MemOS/VMG patterns, sources in memory upgrades)
+
+  deep-research-pipeline.sdd:
+    one_line: Deep research pipeline — scope/perspective/search/learn/
+      recurse/verify/compress/write with citation gates
+    provenance: research round 3 r2 (2026-09-07; dzhng/LangChain/Anthropic/
+      STORM patterns, sources in arms/research.sdd)
+
+  orchestration-hardening.sdd:
+    one_line: Multi-agent orchestration reliability — checkpoints,
+      interrupts, tiered loop caps, circuit breakers, typed outcomes
+    provenance: research round 3 r3 (2026-09-07; LangGraph/Temporal/UMAF/
+      Cognition patterns, sources in state.sdd + contract.sdd additions)
+
+  mcp-runtime-ops.sdd:
+    one_line: MCP server operations — allowlist activation, hash
+      pinning, DLP scanning, sandbox profiles
+    provenance: research round 3 r4 (2026-09-07; OWASP MCP Top 10/
+      NSA-CISA/mcp-scan patterns, sources in mcp-allowlist.sdd)
+
+  integration-routing.sdd:
+    one_line: Ordered backend routing + real health probing + credential
+      boundaries for external integrations
+    provenance: Agent-Reach analysis (2026-09-10; MIT —
+      https://github.com/Panniantong/Agent-Reach; probe/doctor/routing
+      patterns, cited in runtime/integration-routing.sdd)
+
+Rules:
+  [ENG1] These skills operationalize runtime specs — when skill and spec
+         diverge, the spec (.sdd/runtime/, .sdd/chains/) wins.
+  [ENG2] Every pattern carries its research-round provenance citation.
+  [ENG3] New engineering skills require a weak-point-map justification.
+
+Navigation:
+  SkillsIndex: @../INDEX.sdd
+  MemoryModel: @../../runtime/memory-model.sdd
+  ResearchArm: @../../chains/arms/research.sdd
+  RuntimeState: @../../runtime/state.sdd
+  MCPAllowlist: @../../runtime/mcp-allowlist.sdd
+  WeakPointMap: @../../agent/weak-point-map.sdd
+
+State: +

@@ -23,6 +23,8 @@ Navigation:
   Coordination: @coordination.sdd
   Conflicts: @conflicts.sdd
   Handoff: @handoff.sdd
+  WeakPointMap: @weak-point-map.sdd
+  ContextEmission: @context-emission.sdd
 
 ReadOrder:
   1  @capabilities.sdd
@@ -42,7 +44,9 @@ ReadOrder:
   15 @ecc-bridge.sdd
   16 @supervisor.sdd
   17 @security-rules.sdd
-  18 @prompts/INDEX.sdd
+  18 @weak-point-map.sdd
+  19 @context-emission.sdd
+  20 @prompts/INDEX.sdd
 
 Modes:
   PLAN      — plan only, no execution

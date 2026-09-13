@@ -48,4 +48,35 @@ AgentSeparation:
   rationale: verification must be independent, not self-evaluated
   connection: links to Independent Verification system
 
+TypedOutcomeCodes (Phase 149, r3 round 3):
+  definition: every arm/agent execution returns a machine-readable
+    outcome BEFORE any escalation — natural-language apologies are not
+    retryable signal
+  enum:
+    SUCCESS:            completed fully
+    PARTIAL:            completed with degraded scope (degradation noted)
+    BLOCKED:            external blocker — cannot proceed (blocker id)
+    NEEDS_CLARIFICATION: ambiguous input — caller must clarify
+    POLICY_VIOLATION:   action denied by policy/rule
+    TOOL_ERROR:         tool failure (transient vs permanent classified)
+    UNSAFE:             safety/authority gate rejection
+  rule: orchestrator retries ONLY when outcome type + failure class make
+    retry safe (typed failures before escalation)
+  rule: outcome codes feed LOOP-PROTECTION guards 1b/1c (caps, spiral)
+
+InterruptPrimitive (Phase 149, r3 round 3):
+  definition: structural interrupt before irreversible actions —
+    Phase 131 L4 authority enforced by the chain graph, not by prompt
+  mechanics:
+    fire: hard interrupt before the irreversible node (LLM cannot bypass)
+    persist: state checkpointed before interrupt (resume never re-executes)
+    surface: payload = proposed action, risk score, reasoning
+    resume: decision object {approved | rejected | edited} + reviewer id
+    timeout: approval timeout (default 30 min) → auto-REJECT for
+      irreversible actions
+  rule: instructive approvals are WEAK — a prompt-injected agent can talk
+    past a system prompt; it cannot bypass a structural interrupt
+  rule: interrupts fire unconditionally — never conditionally skipped
+    (resume-index mismatch hazard)
+
 State: +

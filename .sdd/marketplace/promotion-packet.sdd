@@ -1,0 +1,76 @@
+# Skill Promotion Packet — CANDIDATE → ACTIVE (human gate)
+
+Purpose:
+  Evidence packet for the human review gate ([IMP4]): all imported skills
+  are CANDIDATES pending promotion to ACTIVE. This file lists what was
+  imported, its validation status, and the promotion recommendation.
+  A human reviews and approves; promotion is NOT automatic.
+
+Date: 2026-09-07
+Evidence: /sdd-marketplace audit — 21/21 SHIP (provenance + license valid)
+
+---
+
+## Recommendation Summary
+
+ALL 25 imported skills recommend promotion to ACTIVE:
+- 21 wrappers audited SHIP (all imported groups + registries)
+- 4 round-2 group registries (skill-governance, orchestration, audit + patterns-dev extract)
+- Licenses: MIT (round-2, taste-skill, watermarks) + Apache-2.0 (anthropics examples)
+- Zero BLOCK findings, zero FIX findings
+
+## Candidate List (by group)
+
+### meta/imported/ — anthropics/skills (Apache-2.0, examples)
+  canvas-design, doc-coauthoring, frontend-design, mcp-builder,
+  skill-creator, theme-factory, webapp-testing
+  Recommendation: ACTIVE — docs-only reference skills; code-bearing
+  (mcp-builder, skill-creator, webapp-testing) stay Docker-gated [IMP2].
+
+### meta/imported/skill-governance/ — artemrudenko (MIT)
+  skill-evaluate, library-audit, skill-build-portable
+  Recommendation: ACTIVE — governance layer operational (used by
+  /sdd-marketplace import path; audit verified).
+
+### meta/imported/orchestration/ — BuilderIO/skills (MIT)
+  agent-watchdog, plan-arbiter, efficient-frontier, quick-recap
+  Recommendation: ACTIVE — maps to VR stage, decision ledger, token
+  economy (Phase 147), session handoff.
+
+### meta/imported/audit/ — khasky/awesome-agent-skills (MIT)
+  awesome-design-doc, awesome-architecture-audit
+  Recommendation: ACTIVE — SHIP/FIX/BLOCK verdict audits for VR stage.
+
+### design/imported/ — Leonxlnx/taste-skill (MIT)
+  taste-skill, minimalist-skill, brutalist-skill, stitch-skill,
+  redesign-skill, output-skill, image-to-code-skill
+  Recommendation: ACTIVE — design direction references; subordinate to
+  native design skills [IMP5] and Design Intelligence pipeline [D7].
+
+### design/imported/ — patterns.dev extract
+  patterns-dev-extract.sdd (25 patterns + AI UI chapter)
+  Recommendation: ACTIVE — implementation layer; feeds ux-patterns and
+  AI-UI frontend work. CC BY-NC 4.0 code — link, don't copy [PD2].
+
+### writing/ — guillaumemeyer/watermarks-remover (MIT)
+  clean-user-facing-text, remove-ai-marks
+  Recommendation: ACTIVE — thin-client + Docker-gated scripts; service
+  already integrated via /sdd-purge.
+
+## Human Review Checklist
+
+  [ ] License acceptability confirmed (MIT/Apache-2.0 only — no source-available)
+  [ ] Provenance citations complete (Source/Origin/Imported/Format/License)
+  [ ] Docker gating acceptable for code-bearing skills
+  [ ] Approve promotion → mark each group ACTIVE in its INDEX.sdd
+      (change "Status: CANDIDATE" or registry "status" to ACTIVE)
+  [ ] OR reject with reason → task created for removal/rework
+
+## After Approval
+
+  1. Update each group INDEX.sdd: Status: ACTIVE
+  2. registry.json: source.status active (already) — no change needed
+  3. Log decision in history.json (exec entry: promotion approved by human)
+  4. Close task 2026-0906-005
+
+State: PENDING-HUMAN-REVIEW

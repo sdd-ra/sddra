@@ -1,0 +1,39 @@
+﻿# Skill: Frontend Design
+
+Purpose:
+  Frontend UI/UX design heuristics and visual craft. Guides building
+  polished, distinctive web interfaces with strong visual hierarchy.
+
+Owns: ./
+
+Source: https://github.com/anthropics/skills
+Origin: tmp/skills/skills/frontend-design/SKILL.md
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
+License: Apache-2.0 (examples)
+Runtime: none (docs-only)
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+
+Modes:
+  APPLY    â€” apply design heuristics to frontend work
+  REVIEW   â€” review UI against design craft rules
+
+Rules:
+  [FD1] Design output MUST follow .sdd/skills/design/ guidelines when overlapping.
+  [FD2] External origin skill â€” apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+Navigation:
+  FrontendDesign: @INDEX.sdd
+  Skill: @SKILL.md
+  DesignSkills: @../../../design/INDEX.sdd
+  ImportedRegistry: @INDEX.sdd
+
+State: +

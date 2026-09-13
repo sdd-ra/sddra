@@ -46,6 +46,14 @@ Transitions:
 
   Default transitions (always allowed when source stage is complete):
 
+    BC     -> BR        (delivery chain: case understood -> requirements)
+    BR     -> BD        (requirements -> business design)
+    BD     -> DS        (design -> decision ledger records)
+    DS     -> TK        (approved decisions -> task breakdown)
+    TK     -> BDD       (tasks -> acceptance scenarios before implementation)
+    BDD    -> BE
+    BDD    -> DB        (schema-first when data model drives the work)
+    BDD    -> API       (contract-first when API drives the work)
     AN     -> AR
     AR     -> BDD
     AR     -> DB
@@ -105,8 +113,20 @@ Transitions:
     MANUAL -> BE         (when manual check fails and BE fix needed)
     MANUAL -> FE         (when manual check fails and FE fix needed)
     MANUAL -> MD         (when manual check fails and MD fix needed)
+    DC     -> CR{scope=DC}   (documentation produced -> scoped review)
+    CR{scope=DC} -> DC-TS    (doc review passed -> validation against code)
+    DC-TS  -> AN         (docs validated -> final analysis)
     ANY    -> BLOCKED    (when dependency is unresolved or blocker exists)
     BLOCKED -> ANY       (when blocker is resolved, return to previous stage)
+
+  Scoped review edges (delivery chain DL1 branches — CR instances, Phase 151):
+    BE   -> CR{scope=BE} -> AN   (backend branch)
+    DB   -> CR{scope=DB} -> AN   (database branch)
+    API  -> CR{scope=API} -> BE_TS{scope=API} -> AN   (API branch: review
+                                                       then contract tests)
+    FE   -> CR{scope=FE} -> FE_TS -> AN   (frontend branch)
+    MD   -> CR{scope=MD} -> MD_TS -> AN   (mobile branch)
+    DC   -> CR{scope=DC} -> DC-TS -> AN   (documentation branch)
 
 
 TransitionConditions:

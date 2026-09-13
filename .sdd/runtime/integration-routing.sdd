@@ -1,0 +1,88 @@
+# Integration Routing
+
+Spec: IntegrationRouting
+Purpose:
+  Ordered backend routing for ALL external integrations (channels, tools,
+  MCP servers, providers). Adopted from Agent-Reach's channel model
+  (research 2026-09-10; source: https://github.com/Panniantong/Agent-Reach
+  — MIT — channels/base.py, doctor.py, probe.py).
+
+Owns: runtime/integration-routing.sdd
+
+CoreModel (per integration = "channel"):
+  backends:
+    definition: ORDERED candidate list — backends[0] is preferred, the
+      rest are fallbacks
+    rule: switching a backend = REORDERING the list (or a user override),
+      NEVER rewriting integration code
+  active_backend:
+    definition: the backend actually serving the channel RIGHT NOW
+    rule: set only by real probing (see ProbeSemantics) — command
+      existence alone is NOT proof of health
+    rule: null means "deliberately not probed" or "unavailable" — the
+      health report MUST distinguish the two
+  tier:
+    values: 0 (zero-config) | 1 (free key/login) | 2 (complex setup)
+    rule: health reports group by tier; tier drives activation gating
+    alignment: MCP allowlist tiers ([MAL-09]) are the server instance of
+      this pattern — one vocabulary across channels and servers
+
+UserOverride:
+  mechanism: config key `<channel>_backend` (env `<CHANNEL>_BACKEND`)
+  rule: override MOVES the named backend to the front of the list
+  rule: UNKNOWN override values are IGNORED — a stale override must
+        never hide working backends (Agent-Reach lesson)
+  rule: overrides are recorded in the decision trail (which channel,
+        which backend, when)
+
+SwitchingProtocol:
+  trigger: active backend probe fails persistently OR upstream deprecation
+  action: reorder candidates → re-probe in order → first healthy wins
+  evidence: the 2026-06 yt-dlp→bili-cli switch (platform blocked a backend;
+    users felt nothing) — routing changes are operational, not code changes
+  rule: every switch is logged (channel, from-backend, to-backend, reason)
+
+ProbeSemantics (from Agent-Reach probe.py — 4-way classification):
+  statuses:
+    missing:  command not on PATH
+    broken:   exists but cannot execute — stale venv shim (FileNotFoundError
+              on exec, or shell exit 126/127); prescription = reinstall hint
+    timeout:  runs but misbehaves within the probe window
+    error:    runs, returns non-zero
+  rule: probes are SIDE-EFFECT-FREE only (version/status commands)
+  rule: retries apply ONLY to transient statuses (timeout/error) —
+        missing/broken never heal between retries
+  rule: probe results are the ONLY source of active_backend truth
+
+HealthReportDiscipline (from Agent-Reach doctor.py):
+  rule: one misbehaving channel degrades to its own error row — NEVER
+        takes the whole report down
+  rule: registry singletons must not leak stale active_backend from a
+        previous check into an errored result
+  rule: output boundary scrubs credentials (see security DLP) — upstream
+        probe output can echo configured URLs
+
+Rules:
+  [IR-01] Every external integration declares an ORDERED backends list.
+  [IR-02] active_backend is set ONLY by real probing, never by existence.
+  [IR-03] Backend switches are reorders, logged with reason.
+  [IR-04] Unknown user overrides are ignored, never fatal.
+  [IR-05] Probes are side-effect-free; retries only for transient statuses.
+  [IR-06] Health reports degrade per-channel; never crash whole-report.
+  [IR-07] Probe output passes credential scrub before rendering/storage.
+  [IR-08] Channel tiers (0/1/2) gate activation and group health reports.
+  [IR-09] A channel read failure routes to the NEXT backend (this is
+          Layer2_fallback in state.sdd — integration-level instance).
+  [IR-10] The integration layer SELECTS and ROUTES; reading is done by the
+          agent calling the upstream tool directly — no wrapper layer
+          (capability-layer philosophy, shared with Agent-Reach).
+
+Navigation:
+  RuntimeState: @state.sdd (Layer2_fallback / Layer3_breaker alignment)
+  MCPAllowlist: @mcp-allowlist.sdd (server-tier instance)
+  HealthCommand: @../commands/sdd-health.sdd (channel probing extension)
+  SecurityRules: @../agent/security-rules.sdd (credential boundaries)
+  ResearchArm: @../chains/arms/research.sdd (announce-before-fetch)
+  IntegrationRoutingSkill: @../skills/engineering/integration-routing.sdd
+
+State: +

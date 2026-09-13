@@ -1,0 +1,38 @@
+﻿# Skill: Doc Co-authoring
+
+Purpose:
+  Collaborative document drafting and co-authoring workflow. Guides
+  multi-pass document development: outline, draft, review, revise.
+
+Owns: ./
+
+Source: https://github.com/anthropics/skills
+Origin: tmp/skills/skills/doc-coauthoring/SKILL.md
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
+License: Apache-2.0 (examples)
+Runtime: none (docs-only)
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+
+Modes:
+  APPLY    â€” co-author a document with the user
+  REVIEW   â€” review a draft for structure and clarity
+
+Rules:
+  [DC1] Authorship and user voice MUST be preserved.
+  [DC2] External origin skill â€” apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+Navigation:
+  DocCoauthoring: @INDEX.sdd
+  Skill: @SKILL.md
+  ImportedRegistry: @INDEX.sdd
+
+State: +

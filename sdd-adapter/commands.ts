@@ -9,6 +9,8 @@ import { ContextCompiler } from "./context-compiler";
 import { ContextManifestStore } from "./context-manifest";
 import { DesignAnalyzer } from "./design-analyzer";
 import { SkillAutoInvoker } from "./skill-auto-invoker";
+import { SkillValidator } from "./skill-validator";
+import { SkillImporter } from "./skill-importer";
 import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult } from "./types";
 
 export interface CommandResult {
@@ -54,6 +56,8 @@ export class CommandRunner {
         return this.runContextCommand(args);
       case "/sdd-design":
         return this.runDesignCommand(args);
+      case "/sdd-marketplace":
+        return this.runMarketplaceCommand(args);
       default:
         return {
           command: normalized,
@@ -982,6 +986,242 @@ export class CommandRunner {
       exitCode: decision === "BLOCK" ? 2 : 0,
       output: outputLines.join("\n"),
       findings: allIssues,
+    };
+  }
+
+  private async runMarketplaceCommand(args: string[]): Promise<CommandResult> {
+    const subcommand = args[0] || "list";
+    const registryPath = path.join(this.projectRoot, this.sddRoot, "marketplace", "registry.json");
+
+    if (!fs.existsSync(registryPath)) {
+      return {
+        command: "/sdd-marketplace",
+        decision: "PASS",
+        exitCode: 0,
+        output: "Marketplace registry not found at .sdd/marketplace/registry.json",
+      };
+    }
+
+    const registry = JSON.parse(fs.readFileSync(registryPath, "utf-8"));
+
+    if (subcommand === "list") {
+      const lines: string[] = [
+        "MARKETPLACE REGISTRY",
+        "",
+        `Sources:    ${registry.sources.length}`,
+        `Blocked:    ${registry.blocked.length}`,
+        "",
+      ];
+      for (const source of registry.sources) {
+        const importedCount = source.imported?.length || 0;
+        lines.push(`[${source.status.toUpperCase()}] ${source.id}`);
+        lines.push(`  URL:       ${source.url}`);
+        lines.push(`  License:   ${source.license}`);
+        lines.push(`  Format:    ${source.format}`);
+        lines.push(`  Imported:  ${importedCount} skill(s)${importedCount > 0 ? ` (${source.imported.join(", ")})` : ""}`);
+        lines.push(`  LastSync:  ${source.lastSync || "never"}`);
+        if (source.notes) lines.push(`  Notes:     ${source.notes}`);
+        lines.push("");
+      }
+      if (registry.blocked.length > 0) {
+        lines.push("BLOCKED SOURCES (non-importable):");
+        for (const b of registry.blocked) {
+          lines.push(`  ${b.id} — ${b.reason}`);
+        }
+      }
+      return { command: "/sdd-marketplace", decision: "PASS", exitCode: 0, output: lines.join("\n") };
+    }
+
+    if (subcommand === "sync") {
+      const sourceId = args[1];
+      if (!sourceId) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "PASS",
+          exitCode: 0,
+          output: "Usage: /sdd-marketplace sync <source-id> — updates lastSync timestamp for a registered source",
+        };
+      }
+      const source = registry.sources.find((s: { id: string }) => s.id === sourceId);
+      if (!source) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "BLOCK",
+          exitCode: 2,
+          output: `Unknown source: ${sourceId}. Run /sdd-marketplace list for registered sources.`,
+        };
+      }
+      source.lastSync = new Date().toISOString().slice(0, 10);
+      registry.updated_at = new Date().toISOString();
+      fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2) + "\n", "utf-8");
+      return {
+        command: "/sdd-marketplace",
+        decision: "PASS",
+        exitCode: 0,
+        output: `Synced ${sourceId}: lastSync=${source.lastSync}. Imported skills: ${(source.imported || []).length}. License rule: ${registry.rules.license}`,
+      };
+    }
+
+    if (subcommand === "import") {
+      const sourceId = args[1];
+      const skillName = args[2];
+      const domain = args[3] || "meta";
+      const group = args[4] || sourceId || "imported";
+      if (!sourceId || !skillName) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "PASS",
+          exitCode: 0,
+          output: "Usage: /sdd-marketplace import <source-id> <skill-name> [domain] [group] — fetches SKILL.md, validates, imports with provenance",
+        };
+      }
+      if (registry.blocked.some((b: { id: string }) => b.id === sourceId)) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "BLOCK",
+          exitCode: 2,
+          output: `Source ${sourceId} is in the blocked list — non-importable [IMP6].`,
+        };
+      }
+      const source = registry.sources.find((s: { id: string }) => s.id === sourceId);
+      if (!source) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "BLOCK",
+          exitCode: 2,
+          output: `Unknown source: ${sourceId}. Run /sdd-marketplace list.`,
+        };
+      }
+
+      const importer = new SkillImporter({ sddRoot: this.sddRoot, projectRoot: this.projectRoot });
+      try {
+        const result = await importer.importSkill({
+          name: skillName,
+          repoUrl: source.url,
+          skillPath: `skills/${skillName}/SKILL.md`,
+          domain,
+          group,
+          license: source.license,
+        });
+        if (result.imported) {
+          if (!source.imported) source.imported = [];
+          if (!source.imported.includes(skillName)) source.imported.push(skillName);
+          source.lastSync = new Date().toISOString().slice(0, 10);
+          registry.updated_at = new Date().toISOString();
+          fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2) + "\n", "utf-8");
+        }
+        const lines = [
+          "MARKETPLACE IMPORT",
+          "",
+          `Skill:        ${result.skill}`,
+          `Source:       ${result.source}`,
+          `Destination:  ${result.destination}`,
+          `Score:        ${result.validation.score}/100`,
+          `Decision:     ${result.validation.decision}`,
+          `Status:       ${result.imported ? "IMPORTED (CANDIDATE)" : "REJECTED"}`,
+          "",
+          result.message,
+        ];
+        if (result.validation.findings.length > 0) {
+          lines.push("", "Findings:");
+          for (const f of result.validation.findings) {
+            lines.push(`  [${f.severity}] ${f.gate}: ${f.message}`);
+          }
+        }
+        return {
+          command: "/sdd-marketplace",
+          decision: result.imported ? "PASS" : "BLOCK",
+          exitCode: result.imported ? 0 : 2,
+          output: lines.join("\n"),
+        };
+      } catch (error) {
+        return {
+          command: "/sdd-marketplace",
+          decision: "BLOCK",
+          exitCode: 2,
+          output: `Import failed: ${(error as Error).message}`,
+        };
+      }
+    }
+
+    if (subcommand === "audit") {
+      const validator = new SkillValidator();
+      const lines: string[] = ["MARKETPLACE AUDIT", ""];
+      let audited = 0;
+      let blockers = 0;
+      let warns = 0;
+      let passed = 0;
+
+      const importedRoot = path.join(this.projectRoot, this.sddRoot, "skills");
+      const categories = fs.existsSync(importedRoot)
+        ? fs.readdirSync(importedRoot).filter(f => fs.statSync(path.join(importedRoot, f)).isDirectory())
+        : [];
+
+      // Collect every INDEX.sdd under {category}/imported/ (any depth) plus
+      // writing/{skill}/INDEX.sdd (imported skills without an imported/ level).
+      // Provenance marker: "Source: https://" — identifies imported wrappers.
+      const wrapperPaths: Array<{ label: string; file: string }> = [];
+      const collectWrappers = (dir: string, label: string, depth: number) => {
+        if (depth > 4) return;
+        for (const entry of fs.readdirSync(dir)) {
+          const entryPath = path.join(dir, entry);
+          if (fs.statSync(entryPath).isDirectory()) {
+            collectWrappers(entryPath, `${label}/${entry}`, depth + 1);
+          } else if (entry === "INDEX.sdd") {
+            const content = fs.readFileSync(entryPath, "utf-8");
+            if (/^Source:\s*https:\/\//m.test(content)) {
+              wrapperPaths.push({ label, file: entryPath });
+            }
+          }
+        }
+      };
+
+      for (const category of categories) {
+        const importedDir = path.join(importedRoot, category, "imported");
+        if (fs.existsSync(importedDir)) {
+          collectWrappers(importedDir, `${category}/imported`, 0);
+        }
+        if (category === "writing") {
+          collectWrappers(path.join(importedRoot, category), `writing`, 0);
+        }
+      }
+
+      for (const { label, file } of wrapperPaths) {
+        audited++;
+        const result = validator.validateFile(file);
+        if (result.decision === "BLOCK") {
+          blockers++;
+          lines.push(`  [BLOCK] ${label}: ${result.findings.filter(f => f.severity === "BLOCK").map(f => f.message).join("; ")}`);
+        } else if (result.decision === "FIX") {
+          warns++;
+          lines.push(`  [FIX]   ${label}: ${result.findings.filter(f => f.severity === "WARN").map(f => f.message).join("; ")}`);
+        } else {
+          passed++;
+        }
+      }
+
+      lines.unshift(
+        `Skills Audited:  ${audited}`,
+        `  SHIP (PASS):   ${passed}`,
+        `  FIX (WARN):    ${warns}`,
+        `  BLOCK:         ${blockers}`,
+        `Decision:         ${blockers > 0 ? "BLOCK" : warns > 0 ? "FIX" : "SHIP"}`,
+        ""
+      );
+      if (audited === passed + warns + blockers && lines[lines.length - 1] === "") lines.push("All imported skills carry valid provenance.");
+      return {
+        command: "/sdd-marketplace",
+        decision: blockers > 0 ? "BLOCK" : warns > 0 ? "WARN" : "PASS",
+        exitCode: blockers > 0 ? 2 : 0,
+        output: lines.join("\n"),
+      };
+    }
+
+    return {
+      command: "/sdd-marketplace",
+      decision: "PASS",
+      exitCode: 0,
+      output: `Unknown subcommand: ${subcommand}. Usage: /sdd-marketplace list|sync|import|audit`,
     };
   }
 }

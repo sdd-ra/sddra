@@ -1,0 +1,32 @@
+# Writing Skills
+
+Purpose:
+  Text production and hygiene skills: user-facing text cleanup,
+  provenance-mark handling, and document co-authoring patterns.
+
+Owns: ./
+
+Skills:
+  clean-user-facing-text:
+    source: https://github.com/guillaumemeyer/watermarks-remover
+    imported: 2026-09-06
+    purpose: Clean owned prose while preserving facts, meaning, voice
+    runtime: python3 (Docker-gated)
+  remove-ai-marks:
+    source: https://github.com/guillaumemeyer/watermarks-remover
+    imported: 2026-09-06
+    purpose: Multi-vendor AI provenance-mark removal (thin client, Docker service)
+    runtime: docker (HTTP service via curl)
+
+Rules:
+  [W1] Writing skills MUST preserve facts, claims, numbers, citations.
+  [W2] Cleaning scripts MUST run inside Docker ([R59]-[R66]).
+  [W3] Use only for text/files the user owns or is authorized to process.
+
+Navigation:
+  SkillsIndex: @../INDEX.sdd
+  CleanUserFacingText: @clean-user-facing-text/INDEX.sdd
+  RemoveAIMarks: @remove-ai-marks/INDEX.sdd
+  PurgeCommand: @../../../commands/sdd-purge.sdd
+
+State: +

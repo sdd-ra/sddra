@@ -1,0 +1,72 @@
+# Research Protocol
+
+Spec: ResearchProtocol
+Purpose:
+  The standing protocol for ALL research rounds in SDDRA — the rules the
+  RS1 arm and /sdd-research execute. Distilled from rounds 1-3 practice
+  and 2026 deep-research landscape patterns (r2, round 3; all pipeline
+  pattern sources cited in arms/research.sdd).
+
+Owns: workflow/research-protocol.sdd
+
+Lifecycle:
+  STAGED -> IN_PROGRESS -> GATED (DECISIONS.md final) -> INTEGRATED -> DELETED
+  (audit trail preserved in history.json + integrated artifacts carry citations)
+
+RoundContract:
+  Every research round produces, in tmp/research/{date}-{slug}/:
+    SOURCES.md      — index + protocol reminder + internal baseline notes
+    r{N}-{topic}.md — per-stream findings, every claim URL-cited
+    DECISIONS.md    — per-finding INTEGRATE/SKIP + Pareto rationale + plan
+  Integration writes ONLY to .sdd/ with provenance; then the folder is deleted.
+
+VerificationGates:
+  anchor_gate:      every claim has an inline source URL; unanchored prose
+                    rejected (scholar-deep-research pattern)
+  url_gate:         cited URLs existence-checked (3-13% DR citation
+                    hallucination — arXiv 2604.03173)
+  confidence_gate:  thin/contradictory claims marked LOW_CONFIDENCE, never
+                    presented as established
+  license_gate:     importable content MIT/Apache-2.0 ONLY; source-available
+                    and unlicensed = blocked ([IMP6])
+  pareto_gate:      integrate only >= 80% relevance; SKIP logged with reason
+
+ParallelismRules:
+  subagent_cap: 3-5 (Anthropic too-many-subagents failure documented)
+  streams: 2-5 background research streams per round
+  compressed_returns: streams return summaries + sources, never raw dumps
+  single_threaded_writes: integration is done by ONE writer (D0 discipline)
+
+BudgetRules:
+  depth/breadth fixed at Scope approval; deterministic termination
+  wall-clock cap per round (default 30 min)
+  SKIP-heavy rounds are valid outcomes — the DECISIONS log is the evidence
+
+FetchRules:
+  DOM/accessibility-tree first (Playwright-class tooling); vision fallback
+    only for JS-heavy/canvas pages (3-5x token economics)
+  egress-gated fetches (LDR pattern) — fetched content is untrusted input
+  Docker-gated execution for any code-bearing analysis [R59]-[R66]
+
+HistoryIntegration:
+  Every round appends an execution record to .claude/sdd/history.json:
+    topic, streams, findings counts, integrated artifacts, staging deletion.
+  Rounds are numbered in tmp-analysis.sdd logs for the sddra project.
+
+Rules:
+  [RP-01] No research round without a DECISIONS gate — findings never
+          integrate directly from streams.
+  [RP-02] No integration without provenance citations ([IMP1]).
+  [RP-03] No staging survives integration — tmp ends empty ([RS1-08]).
+  [RP-04] No benchmark/vendor number is decision-grade without independent
+          reproduction (LoCoMo audit lesson — 6.4% wrong answer key).
+  [RP-05] Background streams never write to .sdd/ — only the integrator.
+
+Navigation:
+  ResearchArm: @../chains/arms/research.sdd
+  ResearchCommand: @../commands/sdd-research.sdd
+  MemoryModel: @../runtime/memory-model.sdd
+  WeakPointMap: @../agent/weak-point-map.sdd
+  Marketplace: @../marketplace/registry.json
+
+State: +

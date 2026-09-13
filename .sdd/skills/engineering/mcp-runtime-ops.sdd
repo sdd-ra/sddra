@@ -1,0 +1,56 @@
+# Skill: MCP Runtime Operations
+
+Purpose:
+  Engineering skill for operating MCP (Model Context Protocol) integrations
+  safely — activation, hash pinning, output DLP, sandboxing. Use when
+  connecting external tool servers to the SDDRA runtime.
+
+Owns: engineering/mcp-runtime-ops.sdd
+
+Source: research round 3 r4 (2026-09-07) — OWASP MCP Top 10, NSA-CISA MCP
+  Security Design Considerations, invariant-labs mcp-scan, Docker MCP
+  Catalog; sources cited in .sdd/runtime/mcp-allowlist.sdd.
+
+Patterns:
+  allowlist_governance:
+    - only allowlisted servers connect; activation is human-gated,
+      append-only record
+  hash_pinning:
+    - SHA-256 tool schemas captured at activation; re-verified every
+      session start; changed definition => BLOCK until re-approval
+      (rug-pull defense, CVE-2025-54136)
+  tier_discipline:
+    - 6-server core (github, filesystem, git, context7, playwright +
+      chrome-devtools default), "six not fifty"; tool-count degradation
+  output_dlp:
+    - multi-pass scan (normalized text, invisible Unicode, base64/hex)
+      on every tool output before memory entry — parameter names,
+      defaults, enums, error messages are all injection surfaces
+  sandboxing:
+    - Docker-only, non-root, read-only root fs, bind-mounted dirs,
+      DNS egress allowlists (DuneSlide-class escape defense)
+  spec_targeting:
+    - 2026-07-28 spec: stateless core, server/discover, cacheable
+      tools/list, OAuth 2.1 + CIMD; never build on deprecated
+      Roots/Sampling/Logging
+  threat_model:
+    - tool poisoning (desc injection), line jumping (handshake
+      poisoning), rug pull (post-approval change), cross-server
+      shadowing, squatting, sandbox escape, zero-click config hijack
+
+AntiPatterns:
+  - @latest versions; unknown-publisher servers; vision-class browsing
+    where DOM works; trusting archived reference servers
+
+Rules:
+  [MRO1] Apply via .sdd/runtime/mcp-allowlist.sdd + mcp-integration.sdd —
+         specs are authority.
+  [MRO2] MCP operations cite pattern provenance.
+
+Navigation:
+  EngineeringIndex: @INDEX.sdd
+  MCPAllowlist: @../../runtime/mcp-allowlist.sdd
+  MCPIntegration: @../../runtime/mcp-integration.sdd
+  SkillCurator: @../../agent/roles.sdd (@agent.skill_curator)
+
+State: +

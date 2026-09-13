@@ -48,7 +48,7 @@ Tasks:
     title: Project instance creation for sddra.ai
 
   2026-0902-004:
-    state: IN_PROGRESS
+    state: DONE
     priority: P1
     risk: MEDIUM
     depends: [2026-0902-003]
@@ -60,5 +60,68 @@ Tasks:
     risk: LOW
     depends: [2026-0902-004]
     title: Root README.md human-readable entry point update
+
+  2026-0906-001:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0902-004]
+    title: Token economy — /sdd-plan idempotency, history, phase registry, skill import rules, 16 tmp/ skill imports
+
+  2026-0906-002:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0906-001]
+    title: Phase 146 marketplace tooling — registry.json, skill-validator.ts, skill-importer.ts, /sdd-marketplace command
+
+  2026-0906-003:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0902-004]
+    title: AI agent web research (r1-r4) + Pareto integration — 9 skills, weak-point map, comparative analysis, sources registry
+
+  2026-0906-004:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0906-003]
+    title: Unified Design Intelligence module + self-test (92% pros) + Pros/Cons report
+
+  2026-0906-005:
+    state: IN_REVIEW
+    priority: P2
+    risk: LOW
+    depends: [2026-0906-004]
+    title: Design follow-ups — patterns.dev extracted, figma license workflow defined, promotion packet ready (human gate: .sdd/marketplace/promotion-packet.sdd)
+
+  2026-0907-001:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0906-003]
+    title: Research round 3 (new scope) — memory/deep-research/orchestration/MCP/roles 4-stream research + Pareto integration (Phase 149)
+
+  2026-0907-002:
+    state: PENDING
+    priority: P1
+    risk: LOW
+    depends: [2026-0907-001]
+    title: Runtime implementation of Phase 149 specs — checkpoints engine, typed outcomes in commands.ts, mcp-allowlist activation tooling, context-emission generator
+
+  2026-0910-001:
+    state: DONE
+    priority: P0
+    risk: LOW
+    depends: [2026-0907-001]
+    title: Agent-Reach analysis + Phase 150 integration — integration-routing spec, health probing, credential boundaries, backend provenance (MIT verified, patterns only)
+
+  2026-0911-001:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0910-001]
+    title: Stateful workflow agent rules (Phase 151) — step-keys dictionary, delivery chain DL1, BUG registry, EXPAND token protocol, [CMD6/CMD7]
 
 State: +

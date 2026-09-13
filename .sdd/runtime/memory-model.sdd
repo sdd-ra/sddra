@@ -133,7 +133,7 @@ MemoryTiers:
     TrustMarkers:
       definition: Provenance classification for all imported/external content
       best_practices_ref: tmp/web-research/best-practices-findings.md#key-finding-7
-      source: MemTrust + Memory Seam models
+      source: MemTrust + Memory Seam models; Phase 149 upgrade (2026-09-07)
       markers:
         trustLevel:
           values: "external-import" | "internal-verified" | "runtime-generated"
@@ -150,6 +150,19 @@ MemoryTiers:
           rule: Provider results marked degraded if schema validation passes but
             freshness is uncertain
           rule: Fail-safe on unavailable provider: mark unknown, emit OBS17
+        temporal_validity:
+          definition: Bi-temporal supersession per knowledge unit (Graphiti pattern,
+            Phase 149; source: r1-memory research round 3, 2026-09-07)
+          fields:
+            t_valid: "when the fact became true (event time)"
+            t_invalid: "when superseded/invalidated (null = still valid)"
+            supersedes: "reference-id of the invalidated knowledge unit"
+          rule: New validated facts INVALIDATE (set t_invalid), never delete —
+            .sdd/ immutability preserves supersession history
+          rule: Contradiction detected → old unit t_invalid = new unit t_valid
+          rule: Implicit conflicts (later observation invalidates without
+            explicit negation — STALE benchmark pattern) MUST trigger
+            consolidation review, not silent coexistence
 
     CryptoErasure:
       definition: Cryptographic erasure (crypto-shredding) for GDPR/right-to-be-forgotten
@@ -190,6 +203,39 @@ MemoryTiers:
       sanitization: L0 sanitize step before injection (prompt-injection prevention)
       hot_cold: hot (referenced ≥50% recent) loaded by default, cold (not
         referenced 90 days) loaded on demand only
+      fused_scoring:
+        definition: Additive fused retrieval score replacing pure cascade
+          (Phase 149; Mem0 v3 + Generative Agents pattern, r1 round 3)
+        formula: score = w_sem * semantic_sim + w_kw * FTS5/BM25_match +
+          w_ent * entity_match + w_rec * recency_decay + w_imp * importance
+        defaults: w_sem 0.35, w_kw 0.20, w_ent 0.15, w_rec 0.15, w_imp 0.15
+        rule: recency_decay applies INSIDE the 90-day gate (exponential,
+          half-life 30 days) — recency ranks, never gates alone
+        rule: t_invalid (superseded) units are excluded from recall
+      principal_scoping:
+        definition: Principal-Scoped Retrieval (VMG primitive 3, Phase 149)
+        rule: Every recall is scoped by project/agent principal — no cross-
+          principal bleed (Claude Projects isolation pattern)
+        rule: Recall requests carry requesting principal id; store filters
+
+    WritePaths:
+      definition: Dual write-path policy (LangMem pattern, Phase 149)
+      hot_path:
+        use: critical + importance-rated knowledge (decisions, security)
+        behavior: explicit, immediate, auditable write with full provenance
+        rule: RT-MM-05 decisions are ALWAYS hot-path
+      background_path:
+        use: observations, insights, everything else
+        behavior: deferred consolidation (see Consolidation triggers)
+        rule: tool outputs and raw transcripts NEVER enter hot path
+
+    Rollbackability:
+      definition: VMG primitive 5 — version chains on knowledge units
+        (MemCube pattern, Phase 149)
+      mechanism: every .sdd knowledge edit is git-versioned (chain = git
+        history of the unit); supersession adds t_valid/t_invalid links
+      rule: any knowledge unit's full evolution is reconstructable from
+        git log + supersedes chain — no destructive edits exist
 
     Consolidation:
       ratio: 100 runtime events -> ~3 decisions + 1 new skill
@@ -197,6 +243,17 @@ MemoryTiers:
       hot_classification: referenced in ≥50% of recent tasks in last 14 days
       cold_classification: not referenced in 90 days
       storage: consolidated output stored to ProjectMemory / LongTermKnowledge
+      triggers:
+        definition: Sleep-time consolidation triggers (Letta/OpenAI pattern,
+          Phase 149, r1 round 3)
+        events:
+          - end_of_task (existing RT-MM-12 baseline)
+          - step_count_threshold (N steps since last consolidation, default 25)
+          - context_compaction (compaction event fires consolidation)
+          - session_idle (idle gap detected)
+        rule: consolidation runs OFF the user's latency clock (background pass)
+        rule: background pass MAY use a stronger model than the live agent
+          (latency-unconstrained — Letta sleep-time guidance)
 
 MemoryPromotionPipeline:
   stages:
@@ -224,6 +281,13 @@ MemoryPromotionPipeline:
     LONG_TERM_KNOWLEDGE:
       description: permanent engineering truth
       persistence: permanent
+      skill_crystallization:
+        definition: procedural memory (skills) as first-class promotion target
+          (Phase 149; Letta Skill Learning / MemOS crystallized skills pattern)
+        rule: repeated task patterns in VALIDATED_KNOWLEDGE route to a skills
+          tier with evidence-driven promotion (TASK/DECISION/PRODUCTION)
+        rule: crystallized skills land in .sdd/skills/{domain}/ with full
+          provenance per import rules
 
   promotion_rules:
     - promotion requires evidence: CODE, TEST, TASK, DECISION, PROJECT, PRODUCTION, EXTERNAL, HUMAN
@@ -289,5 +353,13 @@ Rules:
   [RT-MM-12] Memory consolidation occurs at end of each task execution.
   [RT-MM-13] Agent MUST NOT add signatures or sign-offs to memory outputs.
   [RT-MM-14] Agent MUST NOT use emojis, icons, or decorative symbols in memory output headers or titles.
+  [RT-MM-15] Superseded knowledge units (t_invalid set) MUST be excluded from
+    recall and NEVER deleted — supersession is invalidation, not removal.
+  [RT-MM-16] Hot-path writes are reserved for decisions and critical/importance-
+    rated knowledge; all else takes the background consolidation path.
+  [RT-MM-17] Recall requests MUST carry a principal (project/agent) scope;
+    cross-principal retrieval is a security violation.
+  [RT-MM-18] Consolidation background passes MAY use a stronger model than
+    the live agent; live-path latency MUST NOT pay for memory housekeeping.
 
 State: +

@@ -1,0 +1,60 @@
+# Agent Orchestration (imported)
+
+Purpose:
+  Orchestration + token-economy skills from BuilderIO/skills. Watchdog audits
+  agent work, plan-arbiter compares competing plans, efficient-frontier routes
+  model tiers, quick-recap forces end-of-work status signals.
+
+Owns: ./
+
+Source: https://github.com/BuilderIO/skills
+Origin: fetched from raw.githubusercontent.com (skills/{name}/SKILL.md)
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrapper)
+License: MIT (repo-level, verified via GitHub API 2026-09-07)
+Runtime: none (docs-only workflows)
+
+Skills:
+  agent-watchdog:
+    one_line: Audit another agent's work from a thread/PR/commit/CI link
+    use: SDDRA multi-agent chain QA — independent auditor
+  plan-arbiter:
+    one_line: Compare competing plans and choose a direction with rationale
+    use: decision-ledger support for proposed → review → approved
+  efficient-frontier:
+    one_line: Reserve high-cost models for judgment; route cheap helpers for bulk work
+    use: SDDRA token economy (Phase 147) — model-tier routing policy
+  quick-recap:
+    one_line: End every unit of work with a red/yellow/green status block
+    use: session handoff + history.json discipline
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @agent-watchdog.md
+   3  @plan-arbiter.md
+   4  @efficient-frontier.md
+   5  @quick-recap.md
+
+Modes:
+  APPLY    — run orchestration workflow on current chain
+  AUDIT    — watchdog audit-only pass
+
+Rules:
+  [OR1] agent-watchdog output feeds the VR (verification) stage gate.
+  [OR2] plan-arbiter decisions MUST be recorded in decision ledger.
+  [OR3] efficient-frontier aligns with SDDRA token economy; do not burn frontier tokens on bulk tasks.
+  [OR4] External origin — apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+Navigation:
+  Orchestration: @INDEX.sdd
+  AgentWatchdog: @agent-watchdog.md
+  PlanArbiter: @plan-arbiter.md
+  EfficientFrontier: @efficient-frontier.md
+  QuickRecap: @quick-recap.md
+  ImportedRegistry: @../INDEX.sdd
+
+State: +

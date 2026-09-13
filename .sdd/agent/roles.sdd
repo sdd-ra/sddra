@@ -56,6 +56,73 @@ Roles:
     ecc_equivalent: conversation-analyzer, agent-evaluator
     notes: Conversation-analyzer extracts patterns; agent-evaluator scores quality
 
+  @agent.researcher:
+    purpose: run research rounds per RS1 arm — scoped brief, parallel
+      searches, citation-verified findings, tmp staging discipline
+    capabilities: research.scope, research.search (DOM-class fetch,
+      egress-gated), research.verify (anchor + URL existence gates),
+      research.compress, research.stage (tmp/research/), research.decide
+      (Pareto gate contribution)
+    cannot: write to .sdd/ before DECISIONS gate FINAL ([RP-05]), import
+      non-permissive content, exceed depth/breadth budget
+    notes: Phase 149 — RS1 arm role; orchestrator-worker pattern with 3-5
+      stream cap (Anthropic multi-agent research lessons)
+
+  @agent.sre:
+    purpose: incident response — observability triage, hypothesis testing,
+      gated remediation with simulate-first, auto-verify, auto-revert
+    capabilities: observability.triage (logs/metrics/traces), service_map,
+      hypothesis.test (parallel), remediation.gate (restart/rollback/scale),
+      postmortem.draft
+    cannot: execute remediation above task L-level without Phase 131
+      authority check; skip auto-verify
+    notes: Phase 149 — AI SRE 2026 pattern; blast-radius gating maps to
+      risk engine (reversibility/environment criticality)
+
+  @agent.eval_engineer:
+    purpose: own evaluation infrastructure — golden datasets, trace-based
+      trajectory evals, LLM-judge rubrics, CI regression gates
+    capabilities: eval.dataset_build, eval.trajectory (tool-choice +
+      outcome), eval.rubric, eval.ci_gate (block merges on eval fail),
+      memory.eval (write precision, staleness probes, synthesis accuracy)
+    cannot: own feature development alongside eval ownership (structural
+      separation), weaken gates without human approval
+    notes: Phase 149 — eval as infrastructure; owns SDDRA's internal memory
+      eval (R1-8; public benchmarks not decision-grade)
+
+  @agent.memory_librarian:
+    purpose: curate runtime memory stores — tier routing, fused-retrieval
+      quality, staleness decay, supersession review, identity scoping
+    capabilities: memory.tier_route, memory.recall_tune (fused score
+      weights), memory.staleness_detect (incl. implicit-conflict probes),
+      memory.supersession_review, memory.principal_scope, consolidation.run
+      (background passes)
+    cannot: delete superseded units (invalidation only [RT-MM-15]), bypass
+      trust markers, write .sdd/ knowledge directly
+    notes: Phase 149 — implements MemoryBridge duties; VMG 5-primitive
+      operator; sleep-time consolidation may use stronger model [RT-MM-18]
+
+  @agent.skill_curator:
+    purpose: own the skill registry lifecycle — candidate vetting,
+      provenance enforcement, versioning, deprecation, promotion governance
+    capabilities: skill.vet (skill-evaluate D1-D9 gate), skill.version,
+      skill.deprecate, skill.promote_gate (CANDIDATE→ACTIVE human-review
+      packets), registry.sync, provenance.audit
+    cannot: promote to ACTIVE without human review ([IMP4]), waive
+      license gate ([IMP6])
+    notes: Phase 149 — context-engineer role pattern; owns marketplace
+      [MKT-05/06] rules and promotion-packet flow
+
+  @agent.data_engineer:
+    purpose: data pipeline specialization — schema changes, migrations,
+      data transforms, drift detection, read-only DB operations
+    capabilities: pipeline.build, migration.plan, schema.drift_detect,
+      transform.run (Docker-gated), seed.migrate_gate, db.readonly_ops
+    cannot: run write-mode DB operations without L3+ authority, skip
+      migration gates
+    notes: Phase 149 — extends implementer; DB MCP ops read-only-first
+      (Postgres MCP Pro pattern)
+
   SpecialtyRoles:
     @agent.healthcare:
       ecc_equivalent: healthcare-reviewer
@@ -86,5 +153,12 @@ RoleVsSkill:
   SKILL:         how is it done?
   Example:
     @agent.implementer + @skill.go-clean-code + @skill.ddd + @skill.repository
+
+Phase149Note:
+  Six roles added from 2026 landscape research (round 3, r4): researcher
+  (RS1 arm), sre, eval_engineer, memory_librarian, skill_curator,
+  data_engineer. Deferred (MCP integration first): product_analyst,
+  design_researcher, meta_orchestrator. See weak-point-map.sdd for the
+  weaknesses these compensate.
 
 State: +

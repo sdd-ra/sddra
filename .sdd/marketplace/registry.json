@@ -1,0 +1,153 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-09-07T02:10:37Z",
+  "description": "SDDRA external skill marketplace registry — sources for discovery, validation, import, and lifecycle management (Phase 146). Licenses verified 2026-09-07 via GitHub API unless noted.",
+  "sources": [
+    {
+      "id": "anthropics-skills",
+      "url": "https://github.com/anthropics/skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "mixed: examples Apache-2.0; docx/pdf/pptx/xlsx source-available (NON-IMPORTABLE)",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["canvas-design", "doc-coauthoring", "frontend-design", "mcp-builder", "skill-creator", "theme-factory", "webapp-testing"],
+      "notes": "Round-1 imports; office skills deliberately not imported (source-available rule [IMP6])"
+    },
+    {
+      "id": "artemrudenko-skill-governance-toolkit",
+      "url": "https://github.com/artemrudenko/skill-governance-toolkit",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["skill-evaluate", "library-audit", "skill-build-portable"],
+      "notes": "Governance layer — gates external imports [IMP7]"
+    },
+    {
+      "id": "builderio-skills",
+      "url": "https://github.com/BuilderIO/skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT (repo-level, verified via GitHub API)",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["agent-watchdog", "plan-arbiter", "efficient-frontier", "quick-recap"],
+      "notes": "Orchestration + token economy"
+    },
+    {
+      "id": "khasky-awesome-agent-skills",
+      "url": "https://github.com/khasky/awesome-agent-skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["awesome-design-doc", "awesome-architecture-audit"],
+      "notes": "SHIP/FIX/BLOCK verdict audits"
+    },
+    {
+      "id": "vercel-labs-skills",
+      "url": "https://github.com/vercel-labs/skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": null,
+      "status": "reference",
+      "imported": [],
+      "notes": "Ecosystem CLI (npx skills) — conventions adopted, find-skills not imported (SKILL-DISCOVERY native [IMP5])"
+    },
+    {
+      "id": "addyosmani-agent-skills",
+      "url": "https://github.com/addyosmani/agent-skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": null,
+      "status": "reference",
+      "imported": [],
+      "notes": "source-driven-development / doubt-driven-development principles already native — reference only"
+    },
+    {
+      "id": "voltagent-awesome-agent-skills",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "type": "git",
+      "format": "catalog",
+      "license": "MIT",
+      "lastSync": null,
+      "status": "discovery",
+      "imported": [],
+      "notes": "Meta-catalog of 1000+ skills from 60+ vendor repos — discovery layer, per-vendor license check required before import"
+    },
+    {
+      "id": "coleam00-skills",
+      "url": "https://github.com/coleam00/skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": null,
+      "status": "reference",
+      "imported": [],
+      "notes": "PIV loop overlaps SDDRA chain graph — not imported [IMP5]"
+    },
+    {
+      "id": "microsoft-agent-skills",
+      "url": "https://github.com/microsoft/agent-skills",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": null,
+      "status": "reference",
+      "imported": [],
+      "notes": "Azure/Foundry-specific; test-scenarios-per-skill discipline studied"
+    },
+    {
+      "id": "leonxlnx-taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["taste-skill", "minimalist-skill", "brutalist-skill", "stitch-skill", "redesign-skill", "output-skill", "image-to-code-skill"],
+      "notes": "Design direction references (.sdd/skills/design/imported/)"
+    },
+    {
+      "id": "guillaumemeyer-watermarks-remover",
+      "url": "https://github.com/guillaumemeyer/watermarks-remover",
+      "type": "git",
+      "format": "anthropic-skill",
+      "license": "MIT",
+      "lastSync": "2026-09-06",
+      "status": "active",
+      "imported": ["clean-user-facing-text", "remove-ai-marks"],
+      "notes": "Writing skills; service integration via sdd-purge"
+    },
+    {
+      "id": "panniantong-agent-reach",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "type": "git",
+      "format": "capability-layer (CLI + SKILL.md, Python 3.10+)",
+      "license": "MIT",
+      "lastSync": "2026-09-10",
+      "status": "reference",
+      "imported": [],
+      "notes": "Internet capability layer (15 platforms, ordered backend routing, doctor probing, credential-local discipline). Patterns integrated 2026-09-10 (Phase 150): runtime/integration-routing.sdd, /sdd-health channel probing [HEALTH-05..07], security credential boundaries [SEC-09..13], research arm backend provenance [RS1-11], skills/engineering/integration-routing.sdd. Code NOT imported — spec-first; CLI install/runtime use is Docker-gated [R59-R66]. Registry: SKILL-EXTERNAL-REFERENCES [SR11]."
+    }
+  ],
+  "blocked": [
+    { "id": "nvidia-skills", "url": "https://github.com/nvidia/skills", "reason": "License: Other (NVIDIA-specific) — non-importable [IMP6]" },
+    { "id": "tianjianjiang-smith", "url": "https://github.com/tianjianjiang/smith", "reason": "No license detected — non-importable" },
+    { "id": "mouadja02-skills", "url": "https://github.com/mouadja02/skills", "reason": "No repo license; per-skill licenses unverified — discovery index only" },
+    { "id": "kunanonj-claude-skills-hub", "url": "https://github.com/KunanonJ/claude-skills-hub", "reason": "License unverified; aggregated dump — pipeline pattern studied only" },
+    { "id": "anthropics-office-docx-pdf-pptx-xlsx", "url": "https://github.com/anthropics/skills", "reason": "source-available ≠ open source — reference only" }
+  ],
+  "rules": {
+    "license": "MIT or Apache-2.0 only; source-available and unlicensed repos are blocked",
+    "provenance": "Every import carries Source/Origin/Imported/Format in INDEX.sdd (CLAUDE.md import rules)",
+    "governance": "New imports MUST pass skill-evaluate before CANDIDATE → ACTIVE [IMP7]",
+    "promotion": "CANDIDATE → ACTIVE requires human review [IMP4]",
+    "docker": "Code-bearing skills run/analyze in Docker only [R59-R66]"
+  }
+}

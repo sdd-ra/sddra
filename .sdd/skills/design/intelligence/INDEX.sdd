@@ -1,0 +1,156 @@
+# Unified Design Intelligence
+
+Spec: DesignIntelligence
+Purpose:
+  The unified design module fixing the "AI cannot design UI" weakness
+  (@agent.design weak point). Merges the researched mechanisms of Google
+  Stitch (DESIGN.md tokens), v0 (tokens-first, closed-loop verification),
+  Galileo (4-stage pipeline), Relume (structure-first), Figma FirstDraft
+  (curated vocabulary), Lovable (drift enforcement), and taste-skill
+  (aesthetic judgment) into ONE structured pipeline that replaces
+  freeform generation.
+
+Owns: design/intelligence/
+
+Provenance:
+  Source mechanisms: .sdd/docs/analysis/ai-agents-comparative.md (sections 2-3)
+  Design sources: @../sources.sdd
+  Native skills merged: taste-evaluation, design-heuristics, visual-design,
+    ux-patterns, accessibility, design-system, design-review (these remain
+    the evaluation layer; this module is the GENERATION layer)
+
+## The Pipeline (7 stages — structure first, style second, verify always)
+
+  Stage 1  BRIEF       — design direction commitment
+    - Extract: purpose, audience, platform, content domains
+    - Commit an aesthetic direction in words ("clean and modern" is NOT
+      a direction — pick: editorial, brutalist, minimal, warm-humanist,
+      technical-density, ...) — direction comes from style galleries
+      in sources.sdd layer 4, chosen by brief fit
+    - Reference grounding: query real-product patterns (refero workflow)
+      for each major screen type BEFORE inventing layout
+
+  Stage 2  TOKENS      — DESIGN.md before screens (rule #1)
+    - Emit a DESIGN.md file (google-labs-code/design.md open spec):
+      YAML frontmatter tokens (colors, typography with full properties,
+      radius scale, spacing scale, component tokens) + prose rationale
+      + Do's and Don'ts
+    - Every later screen references tokens — NEVER raw values
+    - Deny-list enforced HERE (see SlopGates below): font/gradient
+      choices rejected before any layout exists
+
+  Stage 3  STRUCTURE   — IA then wireframe (rule #3)
+    - Information architecture first: page/section inventory by purpose
+      (Relume sitemap model)
+    - Unstyled wireframe structure with REALISTIC content — never lorem
+      ipsum (Galileo content-population stage)
+    - Lo-fi mode deliberate: no colors, no fonts — boxes, hierarchy, flow
+
+  Stage 4  COMPONENTS — curated vocabulary only (rule #2)
+    - Assemble from the curated component/section vocabulary: native
+      .sdd design skills + imported skills + platform system (M3/Carbon/
+      Polaris/HIG per sources.sdd)
+    - REUSE SCAN: if a component exists in the target repo, reuse it —
+      never recreate (Builder.io rule)
+    - If a screen archetype is outside vocabulary coverage: SAY SO,
+      do not improvise (Figma FirstDraft honesty)
+
+  Stage 5  STYLE      — token-driven styling pass
+    - Apply DESIGN.md tokens to structure; one major change per
+      iteration turn (Stitch discipline — never mix layout + component
+      changes in one instruction)
+    - Dark mode as separate constraint set (dark_mode_design rules:
+      surface elevation, one accent, contrast >= 4.5:1)
+
+  Stage 6  VERIFY     — closed loop (rule #5)
+    - Self-critique against evaluation rubric: Awwwards criteria
+      (Design 40/Usability 30/Creativity 20/Content 10) + taste
+      heuristics + slop gates
+    - Fix highest-impact issue → re-evaluate until pass or budget hit
+    - Visual self-verification when runtime allows: render/screenshot/
+      click-through (Docker/Playwright-gated [R59])
+    - Emit specific checkable claims ("sorting puts X first"), not
+      vague "looks good"
+
+  Stage 7  REVIEW     — /sdd-design --evaluate gate
+    - Native design-review.sdd aggregation (Taste/Heuristics/Visual/
+      UX/A11y/DesignSystem scores) → PASS/WARN/BLOCK
+    - Drift enforcement during ANY later work: flag raw hex, bespoke
+      component overrides, token drift (Lovable adherence model)
+
+## SlopGates (evaluated at Stage 2 and Stage 6 — generation-time deny-list)
+
+  Deny (reject before emit):
+    - Inter / Roboto / Arial / system-font defaults as sole typeface
+    - Purple-indigo-violet gradient heroes (#6366F1 / #8B5CF6 / #A855F7 on white)
+    - Uniform 3-icon-card rows as default content pattern
+    - Unrequested glassmorphism, neon, bounce-on-hover
+    - Rounded-3xl cards everywhere; 0.1-opacity shadow defaults
+    - Lorem ipsum anywhere
+  Require (block until present):
+    - Committed aesthetic direction (Stage 1 output)
+    - Font pairing intentionality (<= 2 families, display+body)
+    - Palette <= 5 primary colors, contrast >= 4.5:1 (WCAG 2.1 AA)
+    - 8px spacing grid, no magic numbers
+    - Transitions <= 300ms with intentional easing
+  Sources: Hallmark 57-gates model (MIT), Anthropic frontend-design skill
+    deny-list, superdesign.dev slop catalog, native taste-evaluation.sdd [D4]
+
+## Three-Jobs Separation (process rule)
+
+  Taste direction / divergent exploration / implementation spec are THREE
+  SEPARATE passes, never one fused prompt (fused prompts converge to the
+  statistical average by construction — superdesign.dev thesis):
+    - Direction: brief + references + committed theme (Stage 1-2)
+    - Exploration: 3-5 DISTINCT variants, then curate — do not nudge one
+      direction iteratively (Galileo multi-variant rule)
+    - Implementation: the winning variant spec'd, then built (Stage 3-5)
+
+## Integration
+
+  /sdd-design:
+    - --evaluate → runs Stage 6-7 (critique + gate) on existing work
+    - --generate (new) → runs full pipeline Stages 1-7
+    - --review <path> → Stage 7 + drift enforcement
+  skill-auto-invoke:
+    - design keyword confidence >= 80% → load this module FIRST
+      (before individual design skills — it orchestrates them)
+  @agent.design:
+    - design.pipeline.run capability = Stages 1-5
+    - design.slop.gate = SlopGates
+    - design.verify.loop = Stage 6-7
+  Weak point fixed: @agent/weak-point-map.sdd → ui_design_weakness,
+    design_system_drift, ungrounded_generation
+
+## Evaluation Rubric (Stage 6 self-critique — weights)
+
+  taste 25 | usability 30 | creativity 20 | content 10 | a11y 15
+  (Awwwards jury weighting, accessibility elevated per CHI 2025 findings)
+  Originality bonuses: asymmetric layouts +, custom typography +,
+    brand-specific motifs +; slop-fingerprint violations −
+
+Rules:
+  [DI1] Tokens before screens — ALWAYS. No screen without DESIGN.md.
+  [DI2] Structure before style — wireframe pass is mandatory.
+  [DI3] Curated vocabulary only — freeform pixel invention is BLOCKED.
+  [DI4] SlopGates evaluated at Stage 2 AND Stage 6 — both must pass.
+  [DI5] Verification is closed-loop: critique → fix → re-evaluate.
+  [DI6] One change per iteration turn — never mixed-scope instructions.
+  [DI7] Realistic content always — lorem ipsum is a BLOCK-level slop.
+  [DI8] Reuse scan before any component creation.
+  [DI9] Drift enforcement is continuous after Stage 7 — not one-time.
+  [DI10] Visual self-verification runs in Docker only ([R59]-[R66]).
+
+Navigation:
+  DesignIndex: @../INDEX.sdd
+  Sources: @../sources.sdd
+  TasteEvaluation: @../taste-evaluation.sdd
+  DesignReview: @../design-review.sdd
+  DesignSystem: @../design-system.sdd
+  WeakPointMap: @../../../agent/weak-point-map.sdd
+  ComparativeAnalysis: @../../../docs/analysis/ai-agents-comparative.md
+  AutoInvoke: @../../../agent/skill-auto-invoke.sdd
+  DesignCommand: @../../../commands/sdd-design.sdd
+  DESIGN-MD-SPEC: https://github.com/google-labs-code/design.md
+
+State: +

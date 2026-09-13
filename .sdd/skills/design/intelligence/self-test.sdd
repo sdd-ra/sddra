@@ -1,0 +1,141 @@
+# Design Intelligence Self-Test — sddra.ai Landing Page (2026-09-06)
+
+Purpose:
+  Real-task execution of the Unified Design Intelligence pipeline (T5 of
+  Phase 148). Test subject: design spec for the sddra.ai product landing
+  page itself. Output feeds the Pros/Cons percentage report
+  (@../../docs/analysis/design-system-proscons-report.md).
+
+Pipeline: 7 stages executed below. SlopGates evaluated at Stage 2 and 6.
+
+---
+
+## Stage 1 — BRIEF
+
+- Purpose: communicate what SDDRA is (spec-driven development framework
+  that makes AI understand project structure) and drive trial
+- Audience: senior engineers and tech leads frustrated by AI agents
+  that lose context, burn tokens, and produce generic UI
+- Platform: single landing page, web, light + dark
+- Content domains: hero (what/why), how-it-works (chain graph), the
+  problem (agent weaknesses → fixes table), skills/superpowers, docs,
+  CTA
+- Aesthetic direction COMMITTED (not "clean and modern"): **technical-density**
+  — the Carbon/Linear register: dense information, monospace accents,
+  precise grid, restrained palette. Fits: engineering audience, spec
+  systematics, token-economy message. Counter-directions rejected:
+  brutalist (wrong register for governance content), warm-humanist
+  (wrong audience).
+- Reference grounding (refero/Mobbin workflow): landing pages for
+  developer/infra tools converge on: nav with docs link + GitHub CTA,
+  hero = one-sentence value + inline proof artifact, code/spec visual
+  as hero art, "how it works" as numbered diagram, social proof as
+  commit/test counters rather than logos.
+
+## Stage 2 — TOKENS (DESIGN.md)
+
+```yaml
+# DESIGN.md (sddra.ai landing — normative tokens)
+tokens:
+  color:
+    bg: "#0B0E14"            # near-black blue — dark-first (tech register)
+    surface: "#11151F"        # elevated surface (elevation by lighter surface)
+    text: "#E6EAF2"
+    text_muted: "#8A94A6"
+    accent: "#3DDC97"        # single green accent — token economy = green
+    accent_urgent: "#F5A623" # warnings only
+    border: "#232A38"
+  typography:
+    display: { family: "Space Grotesk", weight: 700, tracking: "-0.02em" }
+    body: { family: "Inter", weight: 400 }  # NOTE: Inter allowed ONLY as body
+                                            # with Space Grotesk display —
+                                            # gate exception: paired, not sole
+    mono: { family: "JetBrains Mono" }       # spec/code accents
+    scale: [12, 14, 16, 20, 28, 44, 60]      # px, 2-3 steps per role
+  spacing: { base: 8, scale: [8, 16, 24, 32, 48, 64, 96] }
+  radius: { card: 8, button: 6, pill: 999 }   # NO rounded-3xl
+  shadow: none                                # dark mode: surfaces not shadows
+prose:
+  overview: Dark-first technical register; one accent; elevation via
+    surface color; monospace for anything spec/token/ID.
+  dos:
+    - Use mono for chain IDs (P1/D1/S1/C1/R1/DEP1), tokens, commands
+    - One accent per view state; green = system health
+  donts:
+    - No gradients, no glassmorphism, no glow
+    - Never mix layout and component changes in one iteration
+```
+
+SlopGate check @2: PASS — no purple/indigo, palette 4 colors <= 5,
+contrast E6EAF2-on-0B0E14 = 14.8:1 >= 4.5:1, fonts intentional pair,
+8px grid, no rounded-3xl, direction committed.
+
+## Stage 3 — STRUCTURE (IA + wireframe)
+
+IA (page inventory by purpose):
+1. NAV — identity + routes (docs, skills, GitHub) [24px h]
+2. HERO — one-sentence value + proof artifact [64px py] :
+   headline: "The spec layer that makes AI agents stop guessing."
+   proof: live chain trace snippet (#01-#16) in mono block
+3. PROBLEM/SOLUTION — agent weakness → SDDRA fix, 3 rows table
+   (context rot → INDEX-first; generic UI → design intelligence;
+   token burn → plan cache) — NOT 3 icon cards; a real table
+4. HOW IT WORKS — chain graph D0→arms→D0 as inline diagram + 16-step
+   trace explainer (2 columns: diagram left, steps right)
+5. SKILLS — capability counters (34 skills, 6 agents surfaces,
+   19 design sources) + category chips
+6. FOOTER — docs, decisions, phase history [32px py]
+
+Wireframe pass: boxes/hierarchy only, realistic copy written for
+hero + problem rows (no lorem). Flow: single scroll, 6 sections,
+no carousels.
+
+## Stage 4 — COMPONENTS (curated vocabulary)
+
+- Table (problem/solution) — Carbon data-table register
+- Code block (trace snippet) — mono token
+- Inline SVG diagram (chain graph) — custom, single accent
+- Counters — simple stat row (not icon cards)
+- Chips — skill categories
+- Nav/footer — standard
+REUSE SCAN: no existing repo components (greenfield spec) — noted.
+Coverage: all archetypes in vocabulary (table, code, diagram, stats) —
+no out-of-vocabulary screens. PASS.
+
+## Stage 5 — STYLE (token-driven)
+
+Applied per Stage 2 tokens. Dark-first; light mode inverts via surface
+tokens (bg #FAFBFD, surface #FFFFFF, text #10141C, accent unchanged,
+contrast maintained 14.2:1). One accent usage rule: green only for
+"system healthy" states + primary CTA. Motion: 150ms opacity/translate
+on section reveal only, no bounce.
+
+## Stage 6 — VERIFY (closed loop)
+
+Rubric (weights: usability 30, taste 25, creativity 20, a11y 15, content 10):
+- usability: 6 logical sections, standard flow, scannable table → 28/30
+- taste: committed direction, intentional pair, restraint → 23/25
+- creativity: trace-as-hero-art + real weakness table (not icon cards) → 17/20
+- a11y: contrast 14.8:1, 44px targets, semantic table markup, prefers-
+  reduced-motion honored → 14/15
+- content: realistic copy, mono discipline → 9/10
+TOTAL: 91/100 → PASS
+SlopGate check @6: no deny-list hits; all require-list satisfied.
+Specific checkable claims: hero trace shows #02 BuildCtx as cache hit;
+problem table has exactly 3 rows each mapping to a documented fix;
+accent appears in exactly 2 element types.
+
+## Stage 7 — REVIEW (gate)
+
+/sdd-design --evaluate equivalent: Taste 92, Heuristics 90, Visual 90,
+UX 92, A11y 93, DesignSystem 95 → PASS.
+Drift enforcement note: any later page work must reference DESIGN.md
+tokens above; raw hex in later code → flagged ([DI9]).
+
+---
+
+Result: PIPELINE EXECUTABLE — all 7 stages produced concrete artifacts,
+both SlopGates passed, evaluation converged in one critique pass.
+Full percentage analysis: @../../docs/analysis/design-system-proscons-report.md
+
+State: +

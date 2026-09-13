@@ -1,0 +1,189 @@
+# Step-Keys: Delivery Workflow Dictionary
+
+Spec: StepKeys
+Purpose:
+  Canonical dictionary of the 24 short keys used by the delivery workflow
+  (chain DL1). Keys are CANONICAL — they are never redefined during
+  execution. Every key maps to an SDD stage (workflow/stages.sdd) or a
+  scoped instance of one.
+
+Owns: workflow/step-keys.sdd
+
+Source: user-provided WORKFLOW AGENT core rules, integrated Phase 151
+(2026-09-11) after gap analysis vs existing stage registry.
+
+Dictionary:
+  BC    Business Case
+        Purpose: Understand the business problem, goal, scope and context.
+        Stage: BC (business stages group)
+  BR    Business Requirement
+        Purpose: Define what the business requires from the system.
+        Stage: BR
+  BD    Business Design
+        Purpose: Define the business-level solution/design.
+        Stage: BD
+  DS    Decision
+        Purpose: Record and finalize important decisions derived from
+                 requirements/design.
+        Stage: DS (decision-ledger write step)
+  TK    Task
+        Purpose: Break the approved work into actionable technical tasks.
+        Stage: TK (task engine step)
+  BDD   Behavior-Driven Development
+        Purpose: Define expected behavior/scenarios before implementation.
+        Stage: BDD
+  BE    Backend
+        Purpose: Implement backend/business logic.
+        Stage: BE
+  CR-BE Code Review — Backend
+        Purpose: Review backend implementation against requirements,
+                 design and BDD.
+        Stage: CR instance scoped to BE (see CRScopedSemantics)
+  RF-BE Refactor — Backend
+        Purpose: Address CR-BE findings; restructure/clean backend code
+                 before final testing.
+        Stage: RF instance scoped to BE
+  BE-TS Backend Tests
+        Purpose: Test and validate Backend behavior.
+        Stage: BE_TS
+  DB    Database
+        Purpose: Design/implement database structure, schema, migrations.
+        Stage: DB
+  CR-DB Code Review — Database
+        Purpose: Review database changes and consistency.
+        Stage: CR instance scoped to DB
+  RF-DB Refactor — Database
+        Purpose: Address CR-DB findings; restructure/clean database 
+                 schema/migrations before final testing.
+        Stage: RF instance scoped to DB
+  DB-TS Database Tests
+        Purpose: Test and validate Database behavior.
+        Stage: DB_TS
+  API   API Development
+        Purpose: Implement API endpoints/contracts/integration.
+        Stage: API
+  CR-API Code Review — API
+        Purpose: Review API implementation and contracts.
+        Stage: CR instance scoped to API
+  RF-API Refactor — API
+        Purpose: Address CR-API findings; restructure/clean API
+                 implementation and contracts before final testing.
+        Stage: RF instance scoped to API
+  API-TS API Tests
+        Purpose: Test and validate API behavior and contracts.
+        Stage: BE_TS scoped to API contracts
+  FE    Frontend
+        Purpose: Implement web/frontend functionality.
+        Stage: FE
+  CR-FE Code Review — Frontend
+        Purpose: Review frontend implementation.
+        Stage: CR instance scoped to FE
+  RF-FE Refactor — Frontend
+        Purpose: Address CR-FE findings; restructure/clean frontend
+                 implementation before final testing.
+        Stage: RF instance scoped to FE
+  FE-TS Frontend Tests
+        Purpose: Test and validate frontend behavior.
+        Stage: FE_TS
+  MD    Mobile Development
+        Purpose: Implement mobile application functionality.
+        Stage: MD
+  CR-MD Code Review — Mobile
+        Purpose: Review mobile implementation.
+        Stage: CR instance scoped to MD
+  RF-MD Refactor — Mobile
+        Purpose: Address CR-MD findings; restructure/clean mobile
+                 implementation before final testing.
+        Stage: RF instance scoped to MD
+  MD-TS Mobile Development Tests
+        Purpose: Test and validate mobile functionality.
+        Stage: MD_TS
+  DC    Documentation
+        Purpose: Create/update technical and project documentation.
+        Stage: DC
+  CR-DC Code Review — Documentation
+        Purpose: Review documentation for correctness and consistency.
+        Stage: CR instance scoped to DC
+  RF-DC Refactor — Documentation
+        Purpose: Address CR-DC findings; restructure/clean documentation
+                 for correctness and consistency before final validation.
+        Stage: RF instance scoped to DC
+  DC-TS Documentation Tests / Validation
+        Purpose: Validate documentation against the actual implementation.
+        Stage: DC-TS
+  AN    Analysis
+        Purpose: Analyze the complete workflow state and cross-check all
+                 outputs.
+        Stage: AN
+  VR    Verification
+        Purpose: Final verification of the complete workflow.
+        Stage: VR
+
+Mapping (key -> existing SDD stage):
+  BC -> BC (new stage, stages.sdd business group)
+  BR -> BR (new stage)
+  BD -> BD (new stage)
+  DS -> DS (new stage; runtime = decision ledger DEC-XXX records)
+  TK -> TK (new stage; runtime = tasks/INDEX.sdd entries)
+  BDD -> BDD (existing)
+  BE -> BE (existing)
+  CR-BE -> CR { scope: BE }
+  RF-BE -> RF { scope: BE }
+  BE-TS -> BE_TS (existing)
+  DB -> DB (existing)
+  CR-DB -> CR { scope: DB }
+  RF-DB -> RF { scope: DB }
+  DB-TS -> DB_TS (existing)
+  API -> API (existing)
+  CR-API -> CR { scope: API }
+  RF-API -> RF { scope: API }
+  API-TS -> BE_TS { scope: API contracts }
+  FE -> FE (existing)
+  CR-FE -> CR { scope: FE }
+  RF-FE -> RF { scope: FE }
+  FE-TS -> FE_TS (existing)
+  MD -> MD (existing)
+  CR-MD -> CR { scope: MD }
+  RF-MD -> RF { scope: MD }
+  MD-TS -> MD_TS (existing)
+  DC -> DC (new stage)
+  CR-DC -> CR { scope: DC }
+  RF-DC -> RF { scope: DC }
+  DC-TS -> DC_TS (new stage)
+  AN -> AN (existing)
+  VR -> VR (existing)
+
+CRScopedSemantics:
+  definition: CR is ONE stage (peer review before merge). CR-XX keys are
+    the SAME stage executed with a `scope:` parameter naming the branch
+    artifact under review (BE, DB, API, FE, MD, DC).
+  rule: scoped instances are NOT new stages — no stage explosion; each
+    CR-XX execution reviews that branch's output against its requirements,
+    design and BDD.
+  rule: a branch is complete only when its CR-XX has passed.
+
+RFScopedSemantics:
+  definition: RF is ONE stage (post-review refactor) executed with a
+    `scope:` parameter naming the branch artifact (BE, DB, API, FE, MD, DC).
+  rule: RF-XX keys are NOT new stages — same RF stage, scoped instance.
+  rule: RF-XX runs only after its CR-XX has passed with change requests,
+        or is skipped if CR-XX passes clean.
+  rule: XX-TS validates the branch only after RF-XX (if triggered) is done.
+  
+Rules:
+  [SK1] Short keys are CANONICAL — never redefined during execution.
+  [SK2] Every key resolves through this dictionary — no improvised meanings.
+  [SK3] CR-XX keys are scoped CR instances (scope parameter), not stages.
+  [SK4] API-TS maps to BE_TS scoped to API contracts (API testing lives in
+        the backend test suite discipline).
+  [SK5] The dictionary is the ONLY place keys are defined; execution
+        references keys, never invents new ones.
+
+Navigation:
+  Stages: @stages.sdd
+  Transitions: @transitions.sdd
+  DeliveryChain: @../chains/delivery.sdd
+  WorkflowIndex: @INDEX.sdd
+  TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+
+State: +

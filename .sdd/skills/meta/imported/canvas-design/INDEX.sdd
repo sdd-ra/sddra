@@ -1,0 +1,38 @@
+﻿# Skill: Canvas Design
+
+Purpose:
+  Interactive HTML canvas art and visual composition skill. Guides creation
+  of generative art, animations, and visual experiments using Canvas API.
+
+Owns: ./
+
+Source: https://github.com/anthropics/skills
+Origin: tmp/skills/skills/canvas-design/SKILL.md
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
+License: Apache-2.0 (examples)
+Runtime: browser (JavaScript, Canvas API)
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @SKILL.md
+
+Modes:
+  APPLY    â€” create canvas-based visual output
+  REVIEW   â€” critique visual composition
+
+Rules:
+  [CD1] Canvas output MUST be self-contained HTML (no build step).
+  [CD2] Apply per CLAUDE.md import rules â€” this skill is external origin.
+
+Entry:
+  Read:
+    INDEX.sdd
+    SKILL.md
+
+Navigation:
+  CanvasDesign: @INDEX.sdd
+  Skill: @SKILL.md
+  ImportedRegistry: @INDEX.sdd
+
+State: +

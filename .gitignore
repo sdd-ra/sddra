@@ -67,16 +67,32 @@ obj/
 target/
 Cargo.lock
 
-# AI coding tool configs — ignore everything except sdd/ workflow files
+# AI coding tool configs — keep product files, drop AI runtime state [R97][R103]
 .claude/*
 !.claude/sdd/
-!.claude/sdd/**
+.claude/sdd/*
+!.claude/sdd/workflow.yaml
+!.claude/sdd/orchestrator.md
 !.claude/commands/
 !.claude/commands/**
 !.claude/docs/
 !.claude/docs/**
 
-.kilo/
+# .kilo — track commands/skills/config (product), ignore runtime state [R98]
+.kilo/*
+!.kilo/command/
+!.kilo/command/**
+!.kilo/skills/
+!.kilo/skills/**
+!.kilo/scripts/
+!.kilo/scripts/**
+!.kilo/setup-script.ps1
+!.kilo/run-script.ps1
+!.kilo/kilo.jsonc
+!.kilo/.gitignore
+
+# Docker bind-mount root [R92]
+var/
 
 # Prompt inbox (runtime artifacts)
 prompts/inbox/

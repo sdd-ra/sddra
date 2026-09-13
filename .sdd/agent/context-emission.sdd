@@ -1,0 +1,69 @@
+# Context Emission
+
+Spec: ContextEmission
+Purpose:
+  Emit coding-agent-native context surfaces (AGENTS.md standard + CLAUDE.md
+  pointer) DERIVED from .sdd/INDEX.sdd so external agents (Claude Code,
+  Codex CLI, Cursor, Gemini CLI, OpenCode, Aider...) consume SDDRA's
+  curated knowledge natively instead of maintaining parallel rules files.
+  .sdd/ stays the single source of truth; emitted files are derived
+  artifacts (research round 3, r1 — coding-agent memory convergence).
+
+Owns: agent/context-emission.sdd
+
+EmissionModel:
+  source_of_truth: .sdd/INDEX.sdd (routing table) — emission never edits .sdd/
+  derived_artifacts:
+    AGENTS.md:
+      standard: plain markdown, no frontmatter; 60,000+ repos; read
+        natively by Codex CLI, Cursor, Copilot, Gemini CLI, Aider,
+        Windsurf, Zed, OpenCode, Jules, 20+ others
+      size: 500-2,000 tokens (Codex enforces 32 KiB limit)
+      content:
+        - project identity (from PROJECT.sdd: purpose, stack, architecture)
+        - core rules digest (top rules from .sdd/: Docker-only [R59-R66],
+          INDEX-first routing, immutability, provenance import rules,
+          research protocol, gate semantics)
+        - command map (/sdd-* commands with one-line purposes)
+        - key paths (.sdd/ structure pointers — INDEX routing, not dumps)
+      regeneration: on .sdd/INDEX.sdd change (fingerprint-guarded; emitted
+        file header carries "DERIVED — DO NOT EDIT; regenerate via
+        /sdd-sync" marker)
+    CLAUDE.md:
+      role: pointer file — "@AGENTS.md" import + Claude-specific additions
+        only (CLAUDE.local.md stays gitignored per Claude Code convention)
+  git_tracking: emitted files ARE committed (they are the portable surface);
+    .sdd/ remains authoritative; conflicts resolved by regeneration
+
+ScopeDiscipline:
+  rule: emit ONLY always-loaded context (identity, rules digest, command
+    map) — workflows live in skills/hooks/commands, NOT in AGENTS.md
+    (the converged 2026 lesson: config files are for always-loaded
+    context)
+  rule: emission size budget 500-2,000 tokens; overflow => trim to
+    top-rules digest, point to .sdd/INDEX.sdd for the rest
+  rule: nesting is scoping — emit root-level only; per-directory
+    guidance stays in .sdd/ (lazy-loadable)
+
+Validation:
+  rule: emitted AGENTS.md MUST NOT contradict any .sdd/ rule —
+    regeneration on any .sdd/ change to the digest inputs
+  rule: drift check in /sdd-drift: emitted file hash vs expected digest
+
+Rules:
+  [CE-01] Emission is DERIVED — .sdd/ is never edited by emission.
+  [CE-02] AGENTS.md stays within 500-2,000 tokens (hard cap 32 KiB).
+  [CE-03] Regeneration is triggered by .sdd/INDEX.sdd digest change.
+  [CE-04] Emitted files carry a DERIVED marker; manual edits are
+          overwritten on regeneration.
+  [CE-05] Content is always-loaded context only — no workflows.
+  [CE-06] /sdd-drift includes emitted-file drift detection.
+
+Navigation:
+  AgentIndex: @INDEX.sdd
+  MainIndex: @../INDEX.sdd
+  DriftCommand: @../commands/sdd-drift.sdd
+  SyncCommand: @../commands/sdd-sync.sdd
+  MemoryModel: @../runtime/memory-model.sdd
+
+State: +

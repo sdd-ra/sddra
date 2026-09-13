@@ -1,0 +1,54 @@
+# SDDRA sandbox compose — reference implementation of [R59]-[R66], [R91], [R92], [R102].
+# Hard rules encoded here:
+#   [R91]  NO external/registry service images — every service builds from the LOCAL Dockerfile.
+#   [R92]  ALL bind mounts live under project-root var/ — named volumes FORBIDDEN.
+#   [R102] Resource limits are MANDATORY even when upstream defines none.
+services:
+  sdd-sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sddra-sandbox:local   # locally built, never pulled from a registry
+    init: true
+    read_only: true
+    user: "1000:1000"
+    working_dir: /workspace
+    environment:
+      - SANDBOX_RO=1
+    command: ["node", "-e", "console.log('SDDRA sandbox ready'); setInterval(()=>{},60000)"]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=256m,mode=1777
+      - /home/sdd:size=64m,mode=1777
+    # [R102] mandatory resource limits (cpu, memory, pids — extends R60/R64)
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2g
+          pids: 512
+    # compose (non-swarm) equivalents of the same limits
+    mem_limit: 2g
+    memswap_limit: 2g
+    cpus: 2.0
+    pids_limit: 512
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 2048
+    # [R92] bind mounts ONLY under ./var/
+    volumes:
+      - ./var/sandbox:/var/sandbox
+      - ./var/sandbox/.claude-sdd:/workspace/.claude/sdd
+      - ./var/sandbox/tmp:/workspace/tmp
+    # [R65] network egress restricted: internal network only.
+    # Egress allowlist (DNS allowlist) is enforced at the Docker daemon /
+    # gateway level for authorized hosts only (npm registry during
+    # dependency refresh; everything else blocked). Documented per R65.
+    networks:
+      - sdd-internal
+
+networks:
+  sdd-internal:
+    internal: true

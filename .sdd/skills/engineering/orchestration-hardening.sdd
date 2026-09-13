@@ -1,0 +1,60 @@
+# Skill: Orchestration Hardening
+
+Purpose:
+  Engineering skill for making multi-agent orchestration reliable — the
+  patterns behind SDDRA's chain graph, checkpoints, interrupts, and loop
+  protection. Use when designing agent teams, failure handling, or
+  resume-from-crash behavior.
+
+Owns: engineering/orchestration-hardening.sdd
+
+Source: research round 3 r3 (2026-09-07) — LangGraph, Temporal, UMAF,
+  Cognition map-reduce-and-manage, Microsoft Agent Framework; sources
+  cited in .sdd/runtime/state.sdd + contract.sdd Phase 149 additions.
+
+Patterns:
+  topology_selection:
+    - "can one coordinator hold the full plan?" -> supervisor (SDDRA
+      hub-and-spoke IS this — validated)
+    - map-reduce-and-manage: manager splits, children read-only, manager
+      synthesizes (single-threaded writes — Cognition)
+    - unstructured swarms: anti-pattern (quadratic chatter, loops)
+  durable_checkpoints:
+    - per-arm-boundary snapshots keyed by run ID; resume never re-executes
+    - boundary discipline only (>75% of turns have no recovery state)
+  structural_interrupts:
+    - hard interrupt before irreversible actions (LLM cannot bypass)
+    - state persisted pre-interrupt; resume with decision object
+    - approval timeout -> auto-reject for irreversible
+  tiered_loop_caps:
+    - chain 50 / arm 10 / agent 5-8; error-spiral detector (3
+      consecutive failures -> wrap-up); ALWAYS-FORWARD
+  failure_stack:
+    - retry+backoff(3) -> fallback chain -> circuit breaker per arm
+      (3 failures/10 min -> OPEN 15 min -> HALF_OPEN probe)
+  typed_outcomes:
+    - SUCCESS/PARTIAL/BLOCKED/NEEDS_CLARIFICATION/POLICY_VIOLATION/
+      TOOL_ERROR/UNSAFE before escalation — NL apologies are not signal
+  observability:
+    - OTel: 1 trace per run, 1 span per arm; GenAI semantic conventions
+  deterministic_routing:
+    - LLM proposes, code disposes (governance kernel) — SDDRA
+      workflow.yaml rules already are this
+
+AntiPatterns:
+  - peer-to-peer swarms between arms; 3+ supervisor levels; blanket
+    per-message checkpointing; blanket max_iter=50 everywhere
+
+Rules:
+  [OH1] Apply via .sdd/runtime/state.sdd + contract.sdd +
+       LOOP-PROTECTION.sdd — specs are authority.
+  [OH2] Orchestration designs cite pattern provenance.
+
+Navigation:
+  EngineeringIndex: @INDEX.sdd
+  RuntimeState: @../../runtime/state.sdd
+  AgentContract: @../../agent/contract.sdd
+  LoopProtection: @../../tasks/LOOP-PROTECTION.sdd
+  ChainGraph: @../../chains/graph.sdd
+
+State: +

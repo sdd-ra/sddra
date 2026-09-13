@@ -8,11 +8,12 @@ Purpose:
 Owns: ./
 
 ReadOrder:
-   1 @INDEX.sdd
-   2 @stages.sdd (formal stage registry)
-   3 @transitions.sdd (default and conditional transitions)
-   4 @../gates/INDEX.sdd (gate criteria for each stage)
-     5 @state.sdd (task state machine — canonical definitions)
+    1 @INDEX.sdd
+    2 @stages.sdd (formal stage registry)
+    3 @transitions.sdd (default and conditional transitions)
+    4 @step-keys.sdd (delivery workflow short-key dictionary — Phase 151)
+    5 @../gates/INDEX.sdd (gate criteria for each stage)
+      6 @state.sdd (task state machine — canonical definitions)
    6 @lifecycle.sdd (workflow lifecycle)
    7 @policies.sdd (workflow policies)
    8 @../testing/INDEX.sdd (test levels T0-T7, test pyramid)
@@ -36,6 +37,7 @@ Navigation:
   Engine:
     Stages: @stages.sdd
     Transitions: @transitions.sdd
+    StepKeys: @step-keys.sdd
     Gates: @../gates/INDEX.sdd
     State: @state.sdd
     StateSymbols: @../standards/states.sdd

@@ -105,11 +105,18 @@ SpecialtyRoles:
 
   @agent.design:
     ecc_equivalent: design-reviewer, a11y-architect
-    purpose: design evaluation, visual quality, accessibility, taste enforcement
+    purpose: design generation AND evaluation — runs the Unified Design
+             Intelligence pipeline (brief → tokens → structure → style →
+             verify), not just critique
     capabilities: design.evaluate, design.review, design.apply,
-                  design.system.check, accessibility.audit, taste.enforce
+                  design.system.check, accessibility.audit, taste.enforce,
+                  design.pipeline.run (tokens-before-screens, structure-first),
+                  design.slop.gate (anti-slop deny-list),
+                  design.verify.loop (self-critique + drift enforcement)
     cannot: modify production code without approval
-    notes: Maps to design-reviewer and a11y-architect from ECC
+    notes: Maps to design-reviewer and a11y-architect from ECC;
+           upgraded Phase 148 with generation capabilities — see
+           @weak-point-map.sdd (ui_design_weakness fix)
 
 Integration:
   hook_bridge:

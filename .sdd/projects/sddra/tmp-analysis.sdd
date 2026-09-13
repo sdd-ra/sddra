@@ -41,10 +41,10 @@ Analyst: AI (Kilo)
 **Outcome:** Layer A partially allowed, Layer B blocked
 **Integration:** ProvenanceClient implemented in `sdd-adapter/src/provenance-client.ts`
 
-### 2.3 Taste-Skill (vercel/taste-skill)
+### 2.3 Taste-Skill (Leonxlnx/taste-skill)
 **Status:** ANALYZED → Design skills extracted
-**Outcome:** 8 design skills created in `.sdd/skills/design/`
-**Integration:** taste-evaluation.sdd, anti-slop.sdd, and 6 others
+**Outcome:** 8 design skills created in `.sdd/skills/design/` (native) + 7 imported 2026-09-06 in `.sdd/skills/design/imported/`
+**Integration:** taste-evaluation.sdd, anti-slop.sdd, and 6 others; imported/ registry with provenance
 
 ---
 
@@ -140,19 +140,119 @@ Analyst: AI (Kilo)
 | heretic analysis | ✅ | — | — | COMPLETED |
 | watermarks-remover analysis | ✅ | — | — | COMPLETED |
 | taste-skill analysis | ✅ | — | — | COMPLETED |
-| agent-skills analysis | ❌ | ❌ | ❌ | PENDING |
-| anthropic/skills analysis | ❌ | ❌ | ❌ | PENDING |
-| playwright-cli analysis | ❌ | ❌ | ❌ | PENDING |
+| agent-skills analysis | ✅ | — | — | COMPLETED |
+| anthropic/skills analysis | ✅ | — | — | COMPLETED |
+| playwright-cli analysis | ✅ | — | — | COMPLETED |
 
 ---
 
-## 6. Next Actions
+## 6. Skill Import Log (2026-09-06)
+
+Per CLAUDE.md "Xarici skill import qaydaları" — provenance citations mandatory.
+
+| Skill | Source repo | Destination | Format |
+|-------|-------------|-------------|--------|
+| clean-user-facing-text | guillaumemeyer/watermarks-remover | .sdd/skills/writing/clean-user-facing-text/ | anthropic-skill |
+| remove-ai-marks | guillaumemeyer/watermarks-remover | .sdd/skills/writing/remove-ai-marks/ | anthropic-skill |
+| canvas-design, doc-coauthoring, frontend-design, mcp-builder, skill-creator, theme-factory, webapp-testing | anthropics/skills | .sdd/skills/meta/imported/ (7 skills) | anthropic-skill |
+| taste-skill, minimalist-skill, brutalist-skill, stitch-skill, redesign-skill, output-skill, image-to-code-skill | Leonxlnx/taste-skill | .sdd/skills/design/imported/ (7 skills) | anthropic-skill |
+
+Total: 16 skills imported with Source + Origin + Imported + Format provenance.
+Code-bearing skills (mcp-builder, skill-creator, webapp-testing) are Docker-gated —
+scripts NOT imported to host; analysis must run in Docker ([R59]-[R66]).
+
+Not imported (deliberate, per Phase 146 candidate policy):
+- anthropics/skills office suite (docx, pdf, pptx, xlsx, slack-gif-creator,
+  algorithmic-art, web-artifacts-builder) — heavy runtimes, low SDDRA relevance;
+  available in tmp/ for Docker-based analysis when needed.
+- taste-skill remaining variants (brandkit, gpt-tasteskill, imagegen-frontend-*,
+  soft-skill, taste-skill-v1) — overlap with imported 7 or low value.
+
+## 7. Next Actions
 
 1. ~~Import vercel-optimize, web-design-guidelines, react-best-practices~~ ✅ COMPLETED
 2. ~~Extract anthropic skill format spec~~ ✅ COMPLETED
 3. ~~Evaluate playwright-cli for testing integration~~ ✅ COMPLETED
 4. ~~Link awesome lists in glossary~~ ✅ COMPLETED
 5. ~~Archive low-value tmp/ contents~~ ✅ COMPLETED (moved to tmp/archive/)
-6. Phase 146: external skill marketplace integration or distributed agent execution
+6. ~~Phase 146: import skills from tmp/ with provenance (16 skills)~~ ✅ COMPLETED 2026-09-06
+7. Phase 146 remaining: marketplace registry.json + skill-validator + skill-importer in sdd-adapter
+8. Promote imported skills CANDIDATE → ACTIVE after human review
+
+## 8. Research Round 2 (2026-09-06) — AI Agents + Design Intelligence
+
+Protocol: research → tmp staging → decide (Pareto) → integrate → DELETE tmp.
+Staging dir: tmp/research/2026-09-06-ai-agents/ (deleted after integration;
+findings preserved in .sdd/ artifacts below).
+
+| Artifact | Content | Source |
+|----------|---------|--------|
+| .sdd/skills/meta/imported/skill-governance/ | skill-evaluate, library-audit, skill-build-portable | artemrudenko/skill-governance-toolkit (MIT) |
+| .sdd/skills/meta/imported/orchestration/ | agent-watchdog, plan-arbiter, efficient-frontier, quick-recap | BuilderIO/skills (MIT) |
+| .sdd/skills/meta/imported/audit/ | awesome-design-doc, awesome-architecture-audit | khasky/awesome-agent-skills (MIT) |
+| .sdd/agent/weak-point-map.sdd | 12 AI weaknesses → SDDRA compensations | r1+r2 research (cited) |
+| .sdd/docs/analysis/ai-agents-comparative.md | 10 agents + 8 design tools matrix + SDDRA position | r1+r2 (URL-cited) |
+| .sdd/skills/design/sources.sdd | 19 design sources registry, extraction status | r4 (cited) |
+| .sdd/skills/design/intelligence/ | Unified Design Intelligence module (Stitch+v0+taste merge) | r2 mechanisms (cited) |
+| .sdd/skills/design/intelligence/self-test.sdd | Real-task pipeline execution (landing spec) | — |
+| .sdd/docs/analysis/design-system-proscons-report.md | Pros 92% / Cons 8% Pareto report | T5 self-test |
+
+NOT imported (deliberate, per DECISIONS.md gate): source-driven-development,
+doubt-driven-development (principles already native — [IMP5] native wins),
+PIV-loop skills (chain graph covers), find-skills (SKILL-DISCOVERY exists),
+any non-MIT/source-available/unlicensed repo (NVIDIA, tianjianjiang, mouadja02,
+anthropic office skills).
+
+## 9. Research Round 3 (2026-09-07) — New Scope: Memory, Research, Orchestration, MCP, Roles
+
+Protocol: same as rounds 1-2 (research → tmp staging → Pareto decide →
+integrate → DELETE). Staging: tmp/research/2026-09-07-new-scope/ (deleted;
+findings preserved in Phase 149 artifacts).
+
+| Artifact | Content | Source |
+|----------|---------|--------|
+| runtime/memory-model.sdd | bi-temporal supersession, dual write paths, fused scoring, VMG primitives, consolidation triggers, skill crystallization [RT-MM-15..18] | r1 (Mem0/Letta/Zep/VMG patterns) |
+| chains/arms/research.sdd + workflow/research-protocol.sdd + /sdd-research + RS1 node | research arm: budget-first, perspective mining, citation gates, Pareto gate, staging discipline | r2 (dzhng/LangChain/STORM/Anthropic) |
+| runtime/state.sdd | arm-boundary checkpoints, never-re-execute, circuit breakers [RT8-RT11] | r3 (LangGraph/Temporal/UMAF) |
+| agent/contract.sdd | TypedOutcomeCodes + interrupt primitive (L4 structural) | r3 |
+| tasks/LOOP-PROTECTION.sdd | tiered caps (chain 50/arm 10/agent 5-8), error spiral, ALWAYS-FORWARD [LP11-13] | r3 |
+| runtime/mcp-allowlist.sdd (NEW) | hash-pinned ActivationRecords, tier structure, activation protocol, session-start verification | r4 (OWASP/NSA-CISA/mcp-scan) |
+| runtime/mcp-integration.sdd | 2026-07-28 spec targeting, output DLP, MCP-first-no-A2A [MCP-11..13] | r4 |
+| agent/roles.sdd | 6 new roles: researcher, sre, eval_engineer, memory_librarian, skill_curator, data_engineer | r4 |
+| agent/context-emission.sdd (NEW) | AGENTS.md/CLAUDE.md derived surface (single source .sdd/INDEX.sdd) | r1 |
+| skills/engineering/ (filled) | 4 pattern skills: memory-architecture, deep-research-pipeline, orchestration-hardening, mcp-runtime-ops | r1-r4 |
+| agent/weak-point-map.sdd | +8 compensated rows (memory staleness, research discipline, crash recovery, runaway loops, MCP supply chain, context portability, role gaps, untyped failures) | r1-r4 |
+
+NOT imported (deliberate): memory/research/framework CODE dependencies
+(patterns adopted at spec level only); A2A adoption (MCP-first); benchmark
+leaderboard chasing; 3 roles deferred (product_analyst, design_researcher,
+meta_orchestrator — wait for MCP runtime implementation, task 2026-0907-002).
+
+## 10. Agent-Reach Round (2026-09-10) — Phase 150
+
+Protocol: user-directed repo analysis → gap comparison vs .sdd/ → Pareto
+decide → integrate patterns → delete clone. Clone: tmp/agent-reach/ (deleted;
+decisions preserved below + in artifact citations).
+
+Repo: https://github.com/Panniantong/Agent-Reach (MIT, v1.5.0, Python 3.10+)
+What it is: capability LAYER (not a tool) — internet reading for agents;
+15 platforms; ordered backend routing; doctor health-check with real
+probing; credential-local discipline; SKILL.md agent interface.
+
+Gap findings (4 adopted groups out of 12 analyzed — see DECISIONS):
+| # | Agent-Reach pro | .sdd-də çatışmazlıq | İnteqrasiya |
+|---|----------------|---------------------|-------------|
+| G1 | Ordered backend routing (primary→fallback list; switch=reorder; user override; stale-override ignored) | fallback anlayışı var, ordered list + override safety yoxdur | runtime/integration-routing.sdd [IR-01..04] |
+| G2-G4 | Doctor + real probe (missing/broken/timeout/error 4-way; venv-shim detection; transient-only retries; per-channel degrade) | /sdd-health yalnız daxili integrity yoxlayırdı | sdd-health [HEALTH-05..07] + [IR-05..08] |
+| G6-G7 | Credential boundaries (local-only 600, no-login-for-user, no cookie reads, env-only injection, URL-cred scrub) | xarici kanal credential qaydaları yox idi | security-rules.sdd cat.6 [SEC-09..13] |
+| G8 | Announce-before-use + active backend transparency | xarici fetch üçün yox idi | research arm [RS1-11] |
+
+Kinship (validated, no change needed): capability-layer philosophy —
+"select/install/health-check/route, no wrapper" = SDDRA spec-first [IR-10].
+
+NOT imported (deliberate): Python channel code (spec-first — patterns
+only), 15 channels as .sdd components (user-machine capability, out of
+SDDRA core scope), SKILL.md verbatim (referenced [SR11] + marketplace
+entry instead). Any future CLI use is Docker-gated [R59-R66].
 
 State: +

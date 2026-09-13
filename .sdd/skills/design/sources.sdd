@@ -1,0 +1,192 @@
+# Design Sources Registry
+
+Spec: DesignSources
+Purpose:
+  Registry of design inspiration/pattern sources with extraction status.
+  Makes the system AWARE which sources' design skills are obtained vs not,
+  per user requirement ("AI bilsin hansı saytların design skilləri hələ
+  alınmayıb"). Legality: LEARN patterns/principles — NEVER copy assets.
+
+Owns: design/sources.sdd
+
+Research basis: r4-design-sources (2026-09-06) — citations in
+  @../../docs/analysis/ai-agents-comparative.md section 5
+
+Sources:
+  # === Layer 1: machine-readable design systems (foundation) ===
+  material_design_3:
+    url: https://m3.material.io
+    type: full design system
+    machine_readable: YES (Design System Package DSP + Figma kit)
+    extractable: token architecture (reference/secondary/component tiers),
+      HCT dynamic color, tonal elevation, shape/motion scales, component specs
+    status: EXTRACTED (default vocabulary for design/intelligence/ module)
+    license: openly documented; attribute Material Design
+  carbon:
+    url: https://carbondesignsystem.com
+    type: full design system (enterprise)
+    machine_readable: YES (TS token objects, stylelint plugin, Figma v11)
+    extractable: data tables, filters, complex forms, ~200 tokens/theme,
+      Carbon Charts dataviz, 2x-grid, accessibility rigor
+    status: EXTRACTED (enterprise/UI-density reference)
+    license: Apache-2.0 code; attribute Carbon
+  polaris:
+    url: https://polaris.shopify.com
+    type: full design system (commerce/admin)
+    machine_readable: YES (polaris-tokens npm, MIT: JS/JSON/CSS/SCSS)
+    extractable: content+pattern pairing (UX writing as first-class),
+      semantic color naming grammar, merchant task flows
+    status: EXTRACTED (UX-writing + commerce patterns)
+    license: MIT tokens; attribute Polaris
+  fluent_2:
+    url: https://fluent2.microsoft.design
+    type: full design system (cross-platform)
+    machine_readable: YES (DesignToken TS API → CSS custom properties)
+    extractable: density-aware adaptive tokens (compact/comfortable),
+      cross-platform portability
+    status: EXTRACTED (density adaptation pattern)
+    license: MIT code; attribute Fluent
+  apple_hig:
+    url: https://developer.apple.com/design/human-interface-guidelines/
+    type: platform guidelines
+    machine_readable: PARTIAL (community mirrors: apple-hig GitHub catalog)
+    extractable: platform conventions, materials, Dynamic Type, SF Symbols,
+      hit targets >= 44pt, clarity/deference philosophy
+    status: EXTRACTED (platform constraint loading)
+    license: guidelines open; assets license-restricted
+  # === Layer 2: agent-native / flow libraries ===
+  refero:
+    url: https://refero.design
+    type: real-product research library + MCP server
+    machine_readable: YES (MCP, search-by-image, DESIGN.md exports)
+    extractable: real web/iOS screens by page type/flow/pattern;
+      agent-native reference lookup
+    status: EXTRACTED (priority — only gallery with MCP; pattern-lookup stage)
+    license: DESIGN.md exports agent-consumable; do not scrape screens
+  mobbin:
+    url: https://mobbin.com
+    type: real-app screenshot library (1,400+ apps, 620k+ screens, 320k+ flows)
+    machine_readable: PARTIAL (search index, Figma plugin, OCR)
+    extractable: shipped-product flows (onboarding, paywall, checkout, empty
+      states), UI element conventions
+    status: EXTRACTED (workflow: study 5-10 real flows → abstract textual
+      pattern cards — store descriptions, not images)
+    license: subscription access; LEARN flows; never republish
+  # === Layer 3: judgment / rubrics ===
+  awwwards:
+    url: https://www.awwwards.com
+    type: juried gallery
+    machine_readable: NO
+    extractable: explicit jury rubric — Design 40 / Usability 30 /
+      Creativity 20 / Content 10; avant-garde layouts; motion
+    status: EXTRACTED (rubric internalized as evaluation checklist)
+    license: criteria are facts, freely referenceable; do not clone sites
+  anti_slop_canon:
+    url: github.com/Nutlope/hallmark + smoothui.dev + docs.bswen.com
+    type: 2026 anti-slop literature
+    machine_readable: N/A (methodology)
+    extractable: 57 slop-test gates; closed-loop build→critique→fix;
+      grading framework (originality 40%)
+    status: EXTRACTED (encoded in design/intelligence/ rules)
+    license: Hallmark MIT
+  # === Layer 4: style-direction galleries (reference layer) ===
+  dribbble:
+    url: https://dribbble.com
+    type: designer showcase (concept shots)
+    extractable: trend vocabulary (textual summaries only)
+    status: REFERENCE (style-trend analysis; images never stored)
+  godly_website:
+    url: https://godly.website
+    type: curated top-1% landing gallery
+    extractable: current landing aesthetics direction cards
+    status: REFERENCE
+  land_book:
+    url: https://land-book.com
+    type: gallery with style/industry taxonomy
+    extractable: landing archetypes per industry
+    status: REFERENCE
+  lapa_ninja:
+    url: https://www.lapa.ninja
+    type: landing-page gallery (7,300+)
+    extractable: section anatomy recipes (structural, not visual)
+    status: REFERENCE
+  siteinspire:
+    url: https://www.siteinspire.com
+    type: fine/editorial gallery
+    extractable: layout grammar (typographic, grid, unusual)
+    status: REFERENCE
+  httpster:
+    url: https://httpster.net
+    type: type-led/brutalist gallery
+    extractable: anti-generic counter-aesthetic directions
+    status: REFERENCE (anti-slop escape hatch)
+  dark_mode_design:
+    url: https://www.darkmodedesign.com
+    type: dark-mode gallery
+    extractable: dark-surface hierarchy constraint set
+    status: REFERENCE
+  figma_community:
+    url: https://www.figma.com/community
+    type: public UI kits + variables
+    machine_readable: YES (DTCG JSON export via plugins)
+    extractable: component architecture, token naming conventions
+    status: EXTRACTED (license-check workflow defined — see below)
+    license_check_workflow:
+      - Every Community file carries its own license (many CC BY; Apple/Google
+        kits free but under their terms)
+      - BEFORE extracting a kit: open file page, read license field, record
+        license in the extract's INDEX.sdd provenance
+      - CC BY / CC0 kits: token structure and naming extractable WITH attribution
+      - Vendor kits (Apple/Google/IBM): structure learning only — tokens
+        reference the vendor system, never re-published as SDDRA's own
+      - Unlicensed/ambiguous: SKIP, mark REFERENCE
+  behance:
+    url: https://www.behance.net
+    type: portfolio case studies
+    extractable: case-study structure, design rationale
+    status: REFERENCE
+  patterns_dev:
+    url: https://www.patterns.dev
+    type: implementation pattern catalog (free book)
+    machine_readable: YES (code examples)
+    extractable: React/UI patterns, AI UI patterns (streaming, traces)
+    status: EXTRACTED 2026-09-07 (25 patterns + AI UI chapter detail)
+    extract: @imported/patterns-dev-extract.sdd
+  design_notes:
+    url: https://design-notes.show
+    type: design philosophy podcast
+    extractable: principles behind design systems (transcripts)
+    status: PLANNED (deferred — principle distillation lower priority than
+      implementation layer; revisit when design intelligence needs
+      philosophy-layer grounding)
+
+ExtractionRoadmap (priority order):
+  1. material_design_3 — vocabulary (DONE: module default tokens)
+  2. refero — agent-native lookup (DONE: pattern-lookup stage)
+  3. awwwards + anti_slop_canon — judgment (DONE: rubric + gates)
+  4. mobbin — real-flow patterns (DONE: textual pattern-card workflow)
+  5. carbon — enterprise density (DONE: reference)
+  6. polaris — UX writing (DONE: reference)
+  7. figma_community + patterns_dev — implementation layer (DONE 2026-09-07:
+     patterns_dev extracted via imported/patterns-dev-extract.sdd; figma
+     license-check workflow defined)
+  8. style galleries — direction layer (as-needed per project brief)
+  9. design_notes — philosophy layer (DEFERRED)
+
+Rules:
+  [DSRC1] LEARN patterns/principles/tokens — NEVER copy assets, logos,
+          copyrighted visuals. Gallery screenshots are never stored in .sdd/.
+  [DSRC2] Machine-readable tokens (M3/Polaris/Carbon/Fluent) referenced WITH
+          attribution; never presented as SDDRA's own.
+  [DSRC3] Status transitions: REFERENCE → PLANNED → EXTRACTED (append-only
+          history; never downgrade silently).
+  [DSRC4] New sources require a weak-point-map or module justification.
+  [DSRC5] Refero MCP usage requires user credentials — never scraped.
+
+Navigation:
+  DesignIndex: @INDEX.sdd
+  DesignIntelligence: @intelligence/INDEX.sdd
+  ComparativeAnalysis: @../../docs/analysis/ai-agents-comparative.md
+  WeakPointMap: @../../agent/weak-point-map.sdd
+
+State: +

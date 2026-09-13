@@ -40,6 +40,13 @@ External Skill Repositories:
   [SR8] https://github.com/Graphify-Labs/graphify
   [SR9] https://github.com/trailofbits/skills
   [SR10] https://github.com/vercel-labs/skills
+  [SR11] https://github.com/Panniantong/Agent-Reach
+         (MIT; capability layer — internet reading for agents, 15 platforms,
+         ordered backend routing + doctor health probing + credential-local
+         discipline; analyzed 2026-09-10; patterns integrated to
+         runtime/integration-routing.sdd, /sdd-health probing [HEALTH-05..07],
+         security credential boundaries [SEC-09..13]; install/runtime use
+         is Docker-gated per [R59]-[R66])
 
 SDD Research References:
   [RR1] https://planu.dev/en/blog/

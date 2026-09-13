@@ -1,0 +1,53 @@
+# Skill Governance (imported)
+
+Purpose:
+  Skill-library governance meta-skills from artemrudenko/skill-governance-toolkit.
+  Evaluate, audit, and port skills — the vetting layer SDDRA skills-meta lacked.
+
+Owns: ./
+
+Source: https://github.com/artemrudenko/skill-governance-toolkit
+Origin: fetched from raw.githubusercontent.com (skills/{name}/SKILL.md)
+Imported: 2026-09-06
+Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrapper)
+License: MIT (verified in SKILL.md frontmatter + repo)
+Runtime: none (docs-only workflows)
+
+Skills:
+  skill-evaluate:
+    one_line: Score any SKILL.md across 9 dimensions D1-D9 incl. safety/risk (D9)
+    use: vetting external skills before import (Phase 146 candidate gate)
+  library-audit:
+    one_line: Audit a skill library — handoff contracts, token budget, naming, security baseline
+    use: periodic health audit of SDDRA's own skill library
+  skill-build-portable:
+    one_line: Make a skill spec-compliant/agent-neutral — strip forbidden frontmatter, generalize paths
+    use: normalizing imported skills to agent-skills spec before promotion
+
+ReadOrder:
+   1  @INDEX.sdd
+   2  @skill-evaluate.md
+   3  @library-audit.md
+   4  @skill-build-portable.md
+
+Modes:
+  APPLY    — run a governance workflow on a skill/library
+  AUDIT    — audit-only pass with verdicts
+
+Rules:
+  [SG1] These skills gate external imports — run skill-evaluate BEFORE .sdd adoption.
+  [SG2] Verdicts follow SDDRA gate semantics (PASS/WARN/BLOCK).
+  [SG3] External origin — apply import rules from CLAUDE.md.
+
+Entry:
+  Read:
+    INDEX.sdd
+
+Navigation:
+  SkillGovernance: @INDEX.sdd
+  SkillEvaluate: @skill-evaluate.md
+  LibraryAudit: @library-audit.md
+  SkillBuildPortable: @skill-build-portable.md
+  ImportedRegistry: @../INDEX.sdd
+
+State: +

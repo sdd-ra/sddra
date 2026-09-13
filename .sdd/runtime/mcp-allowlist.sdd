@@ -1,0 +1,85 @@
+# MCP Allowlist
+
+Spec: MCPAllowlist
+Purpose:
+  The verified, hash-pinned registry of MCP servers permitted to connect to
+  the SDDRA runtime. Implements [MCP-03] from mcp-integration.sdd. Defense
+  against rug pulls (CVE-2025-54136), tool poisoning, and squatting per the
+  OWASP MCP Top 10 / NSA-CISA MCP guidance (research round 3, r4).
+
+Owns: runtime/mcp-allowlist.sdd
+
+ActivationRecord (per server):
+  server_id: reverse-DNS namespace (official-registry verified)
+  publisher: identity + verification method (registry/DNS challenge)
+  version: EXACT pinned version (@latest forbidden — [MCP-05])
+  tool_schema_hashes:
+    definition: SHA-256 of every tool schema captured at activation
+    reverify: EVERY session start; changed definition => BLOCK until
+      human re-approval (rug-pull alarm)
+  security_scan:
+    mcp_scan: invariant-labs mcp-scan static pass (poisoning/Unicode/
+      hidden-instruction patterns) — in CI on activation + version bump
+    dlp: multi-pass scan of tool OUTPUTS (normalized text, invisible
+      Unicode, base64/hex) before MemoryBridge entry
+  l_level: security context tag ([MCP-08])
+  sandbox: Docker-only execution — non-root, read-only root fs, bind-
+    mounted project dirs only, DNS egress allowlist ([R59]-[R66])
+
+TierStructure (six, not fifty — 2026 consensus; tool-count discipline):
+  tier0_default:
+    - chrome-devtools (default enabled, per mcp-integration.sdd)
+  tier1_core_optin:
+    - github (vendor)         — repos/PRs/issues/code search
+    - filesystem (reference)  — scoped read/write within allowed dirs
+    - git (reference)         — local repo operations
+    - context7 (Upstash)      — current version-specific library docs
+    - playwright (Microsoft)  — accessibility-tree browser automation
+  tier2_readonly_data:
+    - postgres-mcp-pro class servers — READ-ONLY credentials mandatory
+  tier3_team_optin:
+    - sentry, linear, notion, slack — per workflow demand
+  blocked:
+    - archived reference servers (servers-archived — no security guarantees)
+    - unlicensed/unknown-publisher servers
+    - any server failing mcp-scan or hash re-verification
+
+ActivationProtocol:
+  1. Human requests activation (server + tier + use case)
+  2. skill_curator/security verifies: publisher identity via official
+     registry namespace; pinned version exists; license permissive
+  3. mcp-scan static pass on tool descriptions
+  4. Capture SHA-256 tool schema hashes into ActivationRecord
+  5. Docker sandbox profile attached (egress allowlist, mounts)
+  6. Human approval (Phase 131 L4 for write-capable servers)
+  7. Record written to this allowlist; runtime enforces
+
+SessionStartVerification:
+  every session:
+    - re-fetch tools/list; compare schema hashes vs ActivationRecord
+    - mismatch => server BLOCKED, human notified (rug-pull defense)
+    - version drift => require re-activation
+  every tool output:
+    - L0 sanitize + multi-pass DLP before any storage/injection
+      ([MCP-04]; CyberArk "Poison Everywhere" — no output is safe)
+
+Rules:
+  [MAL-01] Only servers in this allowlist may connect ([MCP-03]).
+  [MAL-02] Activation requires human approval; records are append-only.
+  [MAL-03] Tool schema hashes are re-verified every session start.
+  [MAL-04] Changed definitions BLOCK the server until human re-approval.
+  [MAL-05] Versions are pinned exactly; @latest is forbidden ([MCP-05]).
+  [MAL-06] mcp-scan runs at activation and on every version bump.
+  [MAL-07] Code-bearing servers run in Docker sandbox only ([R59]-[R66]).
+  [MAL-08] Tool outputs pass L0 sanitize + DLP before MemoryBridge.
+  [MAL-09] Tier discipline: 6-server core; additions need justification.
+  [MAL-10] Read-only credentials for all tier2 data servers.
+
+Navigation:
+  MCPIntegration: @mcp-integration.sdd
+  SecurityControls: @../security/controls.sdd
+  SecurityLevels: @../security/levels.sdd
+  SkillCurator: @../agent/roles.sdd (@agent.skill_curator)
+  DockerRules: PROJECT.sdd [R59]-[R66]
+
+State: +

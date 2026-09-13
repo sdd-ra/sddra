@@ -31,6 +31,11 @@ Skill Resolution:
   4. If confidence >= 80%: load skill context
   5. If multiple domains: load all matching skills
   6. If no match: proceed without auto-invocation
+  7. DESIGN DOMAIN SPECIAL RULE: if Design domain matches, load the
+     Unified Design Intelligence module FIRST
+     (@../skills/design/intelligence/INDEX.sdd) — it orchestrates the
+     individual design skills; individual skills load through it.
+     UI generation without the pipeline is BLOCKED ([D7]).
 
 Output:
   AutoInvokeResult:
@@ -44,3 +49,4 @@ Navigation:
   Commands: @../commands/sdd-design.sdd
   Skills: @../skills/INDEX.sdd
   DesignSkills: @../skills/design/INDEX.sdd
+  DesignIntelligence: @../skills/design/intelligence/INDEX.sdd

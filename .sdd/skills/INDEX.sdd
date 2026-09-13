@@ -73,9 +73,11 @@ ReadOrder:
     62 @meta/SKILL-RECOMMENDATION.sdd
     63 @meta/SKILL-GAP-ANALYSIS.sdd
     64 @meta/SKILL-EXTERNAL-REFERENCES.sdd
-     65 @spec/INDEX.sdd
-     66 @spec/agent-skills-spec.md
-    67 @cross-cutting/INDEX.sdd
+     77 @spec/INDEX.sdd
+      66 @spec/agent-skills-spec.md
+     78 @cross-cutting/INDEX.sdd
+     79 @writing/INDEX.sdd
+     80 @engineering/INDEX.sdd
     68 @cross-cutting/testing/
     69 @cross-cutting/security/
     70 @cross-cutting/architecture/
@@ -237,7 +239,17 @@ Navigation:
        Accessibility: @skills/design/accessibility.sdd
        DesignSystem: @skills/design/design-system.sdd
        DesignReview: @skills/design/design-review.sdd
-   WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
-   WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
+    WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
+    WebDesignGuidelines: @skills/design/web-design-guidelines/INDEX.sdd
+    ImportedDesign: @skills/design/imported/INDEX.sdd
+    ImportedMeta: @skills/meta/imported/INDEX.sdd
+     WritingCleanUserFacingText: @skills/writing/clean-user-facing-text/INDEX.sdd
+     WritingRemoveAIMarks: @skills/writing/remove-ai-marks/INDEX.sdd
+     Engineering: @skills/engineering/INDEX.sdd
+     EngineeringMemory: @skills/engineering/memory-architecture.sdd
+     EngineeringResearch: @skills/engineering/deep-research-pipeline.sdd
+     EngineeringOrchestration: @skills/engineering/orchestration-hardening.sdd
+     EngineeringMCP: @skills/engineering/mcp-runtime-ops.sdd
+     EngineeringIntegration: @skills/engineering/integration-routing.sdd
 
 State: +

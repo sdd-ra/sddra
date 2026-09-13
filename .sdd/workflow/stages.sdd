@@ -6,7 +6,7 @@ Purpose:
   outputs, and gate criteria. Stages are the building blocks of chains
   (bax chains/chains.sdd -> Stages, DefaultFlow).
 
-  This file is the authoritative stage list � chains/chains.sdd ->
+  This file is the authoritative stage list — chains/chains.sdd ->
   Stages is a summary copy for chain context, not the registry itself.
 
 
@@ -31,7 +31,45 @@ DoesNotOwn:
 
 Stages:
 
-  Orchestration stages � analysis/decision points that begin or redirect
+  Business delivery stages — the business-to-engineering bridge of the
+  delivery chain DL1 (Phase 151):
+
+    BC:     Business Case
+      Purpose: Understand the business problem, goal, scope and context.
+      Owner:    HUMAN (business) + AR support
+      Input:    user prompt/project brief, context
+      Output:   business case artifact (problem, goal, scope, context)
+      Activates: at the start of every delivery chain — the first step
+    BR:     Business Requirement
+      Purpose: Define what the business requires from the system.
+      Owner:    HUMAN (business) + AR support
+      Input:    business case artifact
+      Output:   requirement artifact (business requirements list)
+      Activates: after BC, before BD
+    BD:     Business Design
+      Purpose: Define the business-level solution/design.
+      Owner:    AR
+      Input:   requirement artifact
+      Output:   business design artifact (solution shape at business level)
+      Activates: after BR, before DS
+    DS:     Decision
+      Purpose: Record and finalize important decisions derived from the
+               requirements/design. Runtime = decision ledger DEC-XXX
+               records (proposed -> review -> approved).
+      Owner:    HUMAN gate + ORCHESTRATOR
+      Input:    business design artifact, requirements
+      Output:   decision ledger entries (DEC-XXX.sdd)
+      Activates: after BD, before TK
+    TK:     Task
+      Purpose: Break the approved work into actionable technical tasks.
+               Runtime = task engine (tasks/INDEX.sdd entries with
+               depends/state/priority).
+      Owner:    ORCHESTRATOR
+      Input:    approved decisions
+      Output:   task breakdown (tasks/INDEX.sdd entries)
+      Activates: after DS, before BDD
+
+  Orchestration stages — analysis/decision points that begin or redirect
   a chain:
 
     AN:     Analysis
@@ -57,8 +95,11 @@ Stages:
       Output:   impact scope, affected stages
       Activates: when existing work is modified (bugfix, change, hotfix)
 
-  Engineering discipline stages � one responsibility each, reusable
-  across every project:
+  Engineering discipline stages — reusable branch stages. Every
+  implementation branch follows the same unified pipeline:
+
+      XX -> CR-XX -> RF-XX -> XX-TS -> SC-XX
+      (XX = DB, BE, API, FE, MD, DC)
 
     BDD:    Behavior-Driven Development
       Purpose:  Define acceptance criteria in Given/When/Then format.
@@ -67,14 +108,6 @@ Stages:
       Input:    requirements, analysis
       Output:   BDD scenarios, acceptance criteria
       Activates: when requirements need formal acceptance criteria
-
-    ARCH:   Architecture Verification
-      Purpose:  Verify that implementation conforms to architecture
-                decisions and principles.
-      Owner:    AR
-      Input:    implementation, architecture decision
-      Output:   architecture review, compliance report
-      Activates: after BE/API/FE/MD implementation, before QA
 
     DB:     Database
       Purpose:  Schema, data, and migration changes.
@@ -111,50 +144,116 @@ Stages:
       Output:   mobile code, platform-specific components
       Activates: when mobile changes are required
 
-    QA:     Quality Assurance
-      Purpose:  Testing and quality validation.
-      Owner:    QA
-      Input:    implementation, BDD scenarios
-      Output:   test results, quality report
-      Activates: after implementation, before SC
+    DC:     Documentation
+      Purpose: Create/update technical and project documentation (formal
+               stage; the D1 chain arm remains the runtime execution arm).
+      Owner:    D1/DOCS
+      Input:    implementation, decisions, task context
+      Output:   documentation artifacts (docs/, technical docs)
+      Activates: during the delivery branches, after implementations
 
-    SC:     Security
-      Purpose:  Security validation (cross-cutting gate, not just
-                another implementation stage).
+    CR:     Code Review (scoped — see CRScopedSemantics)
+      Purpose:  Peer review of branch implementation before merge.
+      Owner:    AR
+      Input:    implementation, decision, task context
+      Output:   review report, approval, change requests
+      Activates: after XX implementation, before RF-XX
+
+    RF:     Refactor (scoped — see RFScopedSemantics)
+      Purpose:  Restructure/clean branch implementation per CR findings,
+                prior to final test validation.
+      Owner:    relevant discipline owner (BE/DB/API/FE/MD/DC)
+      Input:    review report, change requests (from CR-XX)
+      Output:   refactored implementation
+      Activates: after CR-XX raises change requests (skipped if CR-XX
+                 passes clean), before XX-TS
+
+    ARCH:   Architecture Verification
+      Purpose:  Verify that implementation conforms to architecture
+                decisions and principles.
+      Owner:    AR
+      Input:    implementation, architecture decision
+      Output:   architecture review, compliance report
+      Activates: after BE/API/FE/MD implementation, before QA
+
+    DB_TS:  Database Test Suite
+      Purpose:  Database migration, integrity, and data tests.
+      Owner:    QA
+      Input:    database implementation
+      Output:   test report, coverage metrics
+      Activates: after RF-DB (or CR-DB if clean), before SC-DB
+
+    BE_TS:  Backend Test Suite
+      Purpose:  Backend unit, integration, and contract tests.
+      Owner:    QA
+      Input:    backend implementation
+      Output:   test report, coverage metrics
+      Activates: after RF-BE (or CR-BE if clean), before SC-BE
+
+    FE_TS:  Frontend Test Suite
+      Purpose:  Frontend component, integration, and E2E tests.
+      Owner:    QA
+      Input:    frontend implementation
+      Output:   test report, coverage metrics
+      Activates: after RF-FE (or CR-FE if clean), before SC-FE
+
+    MD_TS:  Mobile Test Suite
+      Purpose: Mobile platform, integration, and offline tests.
+      Owner: QA
+      Input: mobile implementation
+      Output: test report, coverage metrics
+      Activates: after RF-MD (or CR-MD if clean), before SC-MD
+
+    DC_TS:  Documentation Tests / Validation
+      Purpose: Validate documentation against the actual implementation
+                (docs match code reality — no drift).
+      Owner:    QA
+      Input:    documentation artifacts, implementation
+      Output:   documentation validation report
+      Activates: after RF-DC (or CR-DC if clean), before SC-DC
+
+      (API-TS has no dedicated stage — it maps to BE_TS scoped to API
+      contracts; see step-keys.sdd [SK4].)
+
+    SC:     Security (scoped — see SCScopedSemantics)
+      Purpose:  Security validation of a single branch's output, run
+                immediately after that branch's own tests pass — not a
+                whole-system gate.
       Owner:    SC
-      Input:    implementation, threat model
+      Input:    branch implementation, XX-TS results, threat model
       Output:   security findings, remediation tasks
-      Activates: after QA, before DO � and continuously during
-                 implementation for security-impacting work
+      Activates: after XX-TS passes, before that branch is marked
+                 complete
+
+    QA:     Quality Assurance
+      Purpose:  Aggregate testing and quality validation across all
+                branches once each branch's own XX-TS/SC-XX has passed.
+      Owner:    QA
+      Input:    all branch XX-TS/SC-XX results
+      Output:   test results, quality report
+      Activates: after all required branches' XX-TS/SC-XX pass, before DO
 
     DO:     DevOps
       Purpose:  Build, deployment, infrastructure validation.
       Owner:    DO
       Input:    implementation, QA results
       Output:   deployment, infrastructure config
-      Activates: after QA/SC pass, before VR
+      Activates: after QA passes, before VR
 
     VR:     Verification
       Purpose:  Final system verification and acceptance.
       Owner:    VR
       Input:    all stage outputs, test results
       Output:   verification report, acceptance decision
-      Activates: after all required stages complete � VR is the final
+      Activates: after all required stages complete — VR is the final
                  stage of any chain (bax chains/chains.sdd -> Important)
-
-    CR:     Code Review
-      Purpose:  Peer review of implementation before merge.
-      Owner:    AR
-      Input:    implementation, decision, task context
-      Output:   review report, approval, change requests
-      Activates: after BE/API/FE/MD implementation and tests pass
 
     BRU:    Business Requirement Unit
       Purpose:  Validate implementation against business requirements.
       Owner:    HUMAN
       Input:    implementation, business requirements
       Output:   business acceptance decision
-      Activates: after CR passes, before manual check
+      Activates: after all branch CR-XX pass, before manual check
 
     CRU:    Code Requirement Unit
       Purpose:  Validate implementation against code requirements and standards.
@@ -163,26 +262,47 @@ Stages:
       Output:   code quality report, compliance decision
       Activates: after BRU passes, before manual check
 
-    BE_TS:  Backend Test Suite
-      Purpose:  Backend unit, integration, and contract tests.
-      Owner:    QA
-      Input:    backend implementation
-      Output:   test report, coverage metrics
-      Activates: after BE implementation, before CR
 
-    FE_TS:  Frontend Test Suite
-      Purpose:  Frontend component, integration, and E2E tests.
-      Owner:    QA
-      Input:    frontend implementation
-      Output:   test report, coverage metrics
-      Activates: after FE implementation, before CR
+  CRScopedSemantics (Phase 151):
+    definition: CR is ONE stage. CR-DB, CR-BE, CR-API, CR-FE, CR-MD,
+      CR-DC are the SAME stage executed with a `scope:` parameter naming
+      the branch artifact under review.
+    rule: scoped CR instances are NOT separate stages — no stage
+      explosion; each instance reviews its branch output against that
+      branch's requirements, design and BDD.
+    rule: a delivery branch is complete only when its scoped CR has
+      passed (see step-keys.sdd [SK3]).
+    notation: in chains and traces, write CR{scope=BE} etc.; the short
+      key form CR-BE is the dictionary alias (bax workflow/step-keys.sdd).
 
-    MD_TS:  Mobile Test Suite
-      Purpose:  Mobile platform, integration, and offline tests.
-      Owner:    QA
-      Input:    mobile implementation
-      Output:   test report, coverage metrics
-      Activates: after MD implementation, before CR
+  RFScopedSemantics (Phase 151):
+    definition: RF is ONE stage. RF-DB, RF-BE, RF-API, RF-FE, RF-MD,
+      RF-DC are the SAME stage executed with a `scope:` parameter naming
+      the branch artifact under refactor.
+    rule: scoped RF instances are NOT separate stages — no stage
+      explosion.
+    rule: RF-XX runs after its CR-XX raises change requests; if CR-XX
+      passes clean, RF-XX is skipped and the branch proceeds directly to
+      XX-TS.
+    rule: a branch's XX-TS validates only the post-RF (or post-CR, if RF
+      skipped) implementation.
+    notation: in chains and traces, write RF{scope=BE} etc.; the short
+      key form RF-BE is the dictionary alias (bax workflow/step-keys.sdd).
+
+  SCScopedSemantics (Phase 151):
+    definition: SC is ONE stage. SC-DB, SC-BE, SC-API, SC-FE, SC-MD,
+      SC-DC are the SAME stage executed with a `scope:` parameter naming
+      the branch artifact under security validation.
+    rule: scoped SC instances are NOT separate stages — no stage
+      explosion; each instance runs immediately after that branch's own
+      XX-TS passes, checking only that branch's surface.
+    rule: a delivery branch is not complete until its scoped SC-XX has
+      passed, in addition to CR-XX (see step-keys.sdd).
+    rule: this scoped, per-branch SC is distinct from the aggregate QA
+      gate, which runs after all branches' XX-TS/SC-XX are done.
+    notation: in chains and traces, write SC{scope=BE} etc.; the short
+      key form SC-BE would need to be added as a dictionary alias
+      (bax workflow/step-keys.sdd) — currently not listed there.
 
 
 Phase124StateMapping:
@@ -194,9 +314,9 @@ Phase124StateMapping:
   StateToStageMap:
     DISCOVERING    -> AN          (Analyze: scope, requirements, constraints)
     PLANNING       -> AR, BDD     (Architect: design, boundaries; BDD: acceptance criteria)
-    IMPLEMENTING   -> DB, BE, API, FE, MD  (Engineering: database, backend, API, frontend, mobile)
-    TESTING        -> BE_TS, FE_TS, MD_TS, QA  (Testing: per-layer test suites + quality assurance)
-    FIXING         -> (returns to TESTING)  (Failure classification -> targeted fix -> retest)
+    IMPLEMENTING   -> DB, BE, API, FE, MD, DC  (Engineering: database, backend, API, frontend, mobile, docs)
+    TESTING        -> DB_TS, BE_TS, FE_TS, MD_TS, DC_TS, SC (scoped), QA  (per-layer test suites + scoped security + aggregate QA)
+    FIXING         -> RF (scoped, post-CR change requests), or returns to TESTING (post-failure)  (Failure classification -> targeted fix/refactor -> retest)
     REVIEWING      -> ARCH, CR, BRU, CRU  (Architecture review, code review, business/quality gates)
     DOCUMENTING    -> D1          (Docs arm: human-readable documentation)
     LEARNING       -> Knowledge Gate  (Evaluate learning gate: NEW_KNOWLEDGE | EXISTING_UPDATED | ...)
@@ -207,6 +327,7 @@ Phase124StateMapping:
   SubStateTransitions:
     TESTING -> FAILED -> FIXING -> TESTING  (bounded by failure_budget and loop_score)
     IMPLEMENTING -> TESTING -> REVIEWING -> COMPLETED
+    REVIEWING(CR change requests) -> FIXING(RF, scoped) -> TESTING(XX-TS, scoped) -> SC(scoped) -> REVIEWING/COMPLETED
     All states can -> BLOCKED (on dependency/decision stall)
     All states can -> ESCALATED (on autonomy ceiling breach)
 
@@ -216,7 +337,7 @@ Phase124StateMapping:
     #03  IMPLEMENTING   -> Write code (project/ scaffold, stage outputs)
     #04  TESTING        -> Run tests (TEST-DISCOVERY-GATE, CHANGE-FILES-ONLY rule)
     #05  REVIEWING      -> Human gates (BRU, CRU, MANUAL-QA-GATE)
-    #06  FIXING         -> Failure -> Classify -> Fix -> Re-test (LOOP-PROTECTION)
+    #06  FIXING         -> Failure -> Classify -> Fix/Refactor (RF, scoped) -> Re-test (LOOP-PROTECTION)
     #07  DOCUMENTING    -> Generate docs/ (HUMAN-DOCS-GATE)
     #08  LEARNING       -> Knowledge gate (LEARNING-GATE, memory-consolidation.sdd)
     #09  COMPLETED      -> Done proof (DONE-PROOF.sdd, VR)
@@ -236,4 +357,8 @@ Phase124StateMapping:
 State: +
    (extended with PHASE 124 10-state task lifecycle mapping to SDLC/STLC stages)
    (added sub-state transitions, task lifecycle trace, and cross-references)
-  
+   (Phase 151: unified branch pipeline XX -> CR-XX -> RF-XX -> XX-TS -> SC-XX;
+    added RF stage + RFScopedSemantics, scoped SC + SCScopedSemantics;
+    added missing DB_TS stage; fixed DC-TS -> DC_TS naming; filled
+    StateToStageMap gaps (DC in IMPLEMENTING; DB_TS, DC_TS, SC in TESTING;
+    RF in FIXING))

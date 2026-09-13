@@ -1,0 +1,66 @@
+# Skill: Integration Routing
+
+Purpose:
+  Engineering skill for wiring external integrations (tools, channels,
+  MCP servers, providers) with ordered backend routing, real health
+  probing, and credential boundaries. Use when adding or operating any
+  external capability.
+
+Owns: engineering/integration-routing.sdd
+
+Source: https://github.com/Panniantong/Agent-Reach (MIT — LICENSE,
+  pyproject.toml; analyzed 2026-09-10; patterns from channels/base.py,
+  doctor.py, probe.py, skill/SKILL_en.md)
+
+Patterns:
+  ordered_backends:
+    - per-channel ordered candidate list; backends[0] preferred, rest
+      fallbacks; switching = REORDER, never rewrite ([IR-01..03])
+  user_override_safety:
+    - `<channel>_backend` override moves a backend to front; UNKNOWN
+      override values are IGNORED — stale overrides never hide working
+      backends
+  real_probing:
+    - 4-way probe classification: missing / broken (stale venv shim,
+      exit 126/127, FileNotFoundError → reinstall prescription) /
+      timeout / error; existence is NOT health ([IR-02])
+    - probes side-effect-free; retries only transient statuses ([IR-05])
+  doctor_discipline:
+    - per-channel self-check; one failing channel degrades to its own
+      row, never crashes the report ([IR-06])
+    - tier-grouped report: 0 zero-config / 1 free-key / 2 setup
+    - stale active_backend must not leak from a previous check
+  credential_boundaries:
+    - local-only storage (600 perms); no agent-login-for-user; no
+      browser-cookie reads; env-only injection, values never logged;
+      dedicated low-value accounts for ban-risk platforms ([SEC-09..13])
+  output_scrubbing:
+    - URL credentials scrubbed at output boundary — upstream output can
+      echo configured URLs ([SEC-12])
+  capability_layer_philosophy:
+    - the layer SELECTS, installs, health-checks, routes; reading is
+      done by the agent calling upstream tools directly — no wrapper
+      ([IR-10]; matches SDDRA spec-first no-bloat philosophy)
+  backend_provenance:
+    - announce "using X via Y" before use; record serving backend in
+      outputs ([RS1-11])
+
+AntiPatterns:
+  - wrapper layers around upstream tools (capability layer ≠ proxy)
+  - which()-style existence checks reported as health
+  - blanket retries on missing/broken probes
+  - credentials in logs or rendered health output
+  - agent automating user login or reading cookie stores
+
+Rules:
+  [INTG1] Apply via .sdd/runtime/integration-routing.sdd — spec is authority.
+  [INTG2] Integration designs cite their pattern provenance.
+
+Navigation:
+  EngineeringIndex: @INDEX.sdd
+  IntegrationRoutingSpec: @../../runtime/integration-routing.sdd
+  HealthCommand: @../../commands/sdd-health.sdd
+  SecurityRules: @../../agent/security-rules.sdd
+  MCPAllowlist: @../../runtime/mcp-allowlist.sdd
+
+State: +

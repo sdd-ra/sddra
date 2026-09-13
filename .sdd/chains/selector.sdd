@@ -11,7 +11,9 @@ Map:
   code: C1
   review: R1
   deploy: DEP1
+  research: RS1
   feature: F1
+  delivery: DL1
   bugfix: B1
   hotfix: H1
   refactor: RF1
