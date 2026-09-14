@@ -33,6 +33,11 @@ Down_Flow:
     parent: TASK/<task>
     purpose: Smallest unit of change
     example: SUBTASK-PAYMENT-003-01
+    schema: @../schemas/subtask.sdd (mini execution contract per unit)
+    lifecycle: @../tasks/SUBTASK-STATE-MACHINE.sdd
+      (TODO -> IN_PROGRESS -> IMPLEMENTED -> CR_REVIEW -> REFACTORED ->
+       SECURITY_REVIEW -> TESTING -> PASSED -> DONE; rework loops and
+       BLOCKED semantics defined there)
 
   Rule: Work always begins at the MODUL level and descends.
   Rule: Each level owns its child — changes do not cross sibling boundaries.
@@ -43,9 +48,9 @@ Up_Flow:
     SUBTASK → TASK → CASE → MODUL
 
   Subtask_Verify:
-    - All tests pass
-    - Code quality gate passed
-    - Done proof complete
+    - Unit lifecycle reached PASSED (all unit gates green — bax
+      ../tasks/SUBTASK-STATE-MACHINE.sdd)
+    - Done proof complete (bax ../tasks/DONE-PROOF.sdd)
 
   Task_Verify:
     - All subtasks verified
@@ -104,5 +109,10 @@ Navigation:
   STLC: @stlc.sdd
   SDLC_STLC: @INDEX.sdd
   Tasks: @../tasks/INDEX.sdd
+  SubtaskStateMachine: @../tasks/SUBTASK-STATE-MACHINE.sdd
+  SubtaskSchema: @../schemas/subtask.sdd
 
 State: +
+  (Phase 155: SUBTASK level now carries its own lifecycle
+   (SUBTASK-STATE-MACHINE.sdd) and schema (schemas/subtask.sdd);
+   Subtask_Verify aligned to unit-level PASSED + done-proof)

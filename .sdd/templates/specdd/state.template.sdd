@@ -1,0 +1,64 @@
+# STATE: Current Execution Pointer (template)
+
+Spec: StateFile
+
+Purpose:
+  Compact current-state pointer for the /sdd-next resolver. This is
+  the FIRST file /sdd-next reads — the AI never re-analyzes the full
+  SDD tree to discover what is next (token economy [I3], chat §13).
+
+Owns: templates/specdd/state.template.sdd
+
+Location (instance):
+  projects/{project_name}/.specdd/state/current.sdd
+
+Rules:
+  [SF1] /sdd-next reads STATE FIRST; falls back to scanning
+        decisions/tasks ONLY when STATE is missing or stale.
+  [SF2] The resolver updates STATE after every completed unit.
+  [SF3] STATE is DERIVED data — never a second source of truth.
+        On conflict, project files (decisions/, tasks/) WIN and
+        STATE is rebuilt from them.
+
+Fields:
+
+  current_decision: DEC-<ID>
+      The decision currently being delivered.
+
+  current_task: TASK-<ID>
+      The task currently executing under the current decision.
+
+  current_subtask: SUBTASK-<ID>
+      The unit currently resolved (or next TODO unit).
+
+  status: <SUBTASK-STATE-MACHINE state>
+      Lifecycle state of current_subtask.
+
+  last_completed:
+    - SUBTASK-<ID>
+      Recently closed units (most recent first; older entries pruned
+      by /sdd-compact).
+
+  updated: <timestamp>
+      Last resolver update — staleness signal for [SF1] fallback.
+
+Template body (copy into the instance):
+
+  current_decision: DEC-000
+  current_task: TASK-000
+  current_subtask: SUBTASK-TASK-000-00
+  status: TODO
+  last_completed: []
+  updated: <iso-8601>
+
+Navigation:
+  NextCommand: @../../commands/sdd-next.sdd
+  SubtaskStateMachine: @../../tasks/SUBTASK-STATE-MACHINE.sdd
+  SubtaskSchema: @../../schemas/subtask.sdd
+  DeliveryState: @../../chains/delivery.sdd (StepState — separate,
+    per-run delivery step state; STATE points at units, StepState
+    at delivery steps; they never duplicate each other)
+
+State: +
+  (Phase 155: created as the read-first token-economy pointer for
+   /sdd-next --subtask resolution)

@@ -1,0 +1,78 @@
+Spec: Schema
+
+ID:
+  @subtask
+
+Purpose:
+  Schema for SUBTASK — the smallest execution unit (MODUL -> CASE ->
+  TASK -> SUBTASK). A subtask record is a mini execution contract:
+  one goal, bounded scope, explicit forbidden list, dependency edges,
+  its own lifecycle state, and a done-proof.
+
+Owns: schemas/subtask.sdd
+
+Schema:
+
+  id: SUBTASK-<TASK-ID>-<NN>
+      example: SUBTASK-TASK-001-03 (third unit of TASK-001)
+
+  parent: TASK-<id>
+      The owning task (bax ../tasks/TASK-STATE-MACHINE.sdd). A
+      subtask NEVER exists without a parent task.
+
+  goal: <one line>
+      Single primary objective. If the goal needs "and", it is
+      likely two subtasks.
+
+  scope:
+    allowed:
+      - <paths or scopes the unit may touch>
+    allowed_actions:
+      - code | tests | docs | config | refactor | research
+    forbidden:
+      - <explicit prohibitions beyond allowed>
+
+  depends_on:
+    - SUBTASK-<id>
+      Units of the SAME task that must be DONE before this one.
+      Cross-task dependencies live on the task, not the subtask.
+
+  state: <SUBTASK-STATE-MACHINE state>
+      bax ../tasks/SUBTASK-STATE-MACHINE.sdd (TODO -> ... -> DONE).
+
+  done_proof:
+    artifact: <file(s) or record(s) produced>
+    validation: <how correctness was proven — test run, review id,
+                 scan id; NEVER "looks correct">
+
+Rules:
+
+  [SB1] id MUST be unique and stable across the task lifetime.
+  [SB2] goal MUST be a single objective — split otherwise.
+  [SB3] forbidden list MUST be explicit — empty forbidden requires
+        an explicit "forbidden: none (scoped to allowed only)" entry.
+  [SB4] state transitions MUST follow SUBTASK-STATE-MACHINE — no
+        direct TODO -> DONE.
+  [SB5] done_proof MUST exist BEFORE state moves to DONE (bax
+        ../tasks/DONE-PROOF.sdd).
+  [SB6] A parent task is complete ONLY when ALL its subtasks are
+        DONE (feeds task_complete check in commands/sdd-next.sdd).
+  [SB7] New dependencies introduced by a unit MUST pass
+        ../../gates/dependency-gate.sdd BEFORE implementation —
+        never added mid-unit without APPROVE.
+
+Templates:
+  Instance files live in projects/{project_name}/tasks/ alongside
+  their parent task records; creation uses this schema directly.
+
+Navigation:
+  SubtaskStateMachine: @../tasks/SUBTASK-STATE-MACHINE.sdd
+  ExecutionContract: @../tasks/EXECUTION-CONTRACT.sdd
+  TaskSchema: @task.sdd
+  DependencyGate: @../gates/dependency-gate.sdd
+  DownUpTransition: @../branches/DOWN-UP-TRANSITION.sdd
+
+State: +
+  (Phase 155: created as the unit-level contract for /sdd-next
+   --subtask resolution; a trimmed per-unit instance of the
+   EXECUTION-CONTRACT discipline)

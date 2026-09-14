@@ -22,6 +22,7 @@ Navigation:
     Tasks: @tasks.sdd
     ProjectTasks: @../projects/{project_name}/tasks/INDEX.sdd
     TaskStateMachine: @TASK-STATE-MACHINE.sdd
+    SubtaskStateMachine: @SUBTASK-STATE-MACHINE.sdd
     LoopProtection: @LOOP-PROTECTION.sdd
     FailureClassification: @FAILURE-CLASSIFICATION.sdd
     BugRegistry: @BUG-REGISTRY.sdd

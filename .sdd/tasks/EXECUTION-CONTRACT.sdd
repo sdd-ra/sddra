@@ -122,6 +122,40 @@ ExecutionSummary:
           decisions + new skills + failed approaches.
     [ES3] Summary is human-readable and machine-parseable.
 
+SubtaskGuards:
+
+  Hard prohibitions at unit level (SUBTASK — smallest execution
+  unit, bax SUBTASK-STATE-MACHINE.sdd, ../schemas/subtask.sdd).
+  Violations feed LOOP-PROTECTION violation cycles:
+
+  [SG1] AI MUST NOT skip a subtask — units execute in dependency
+        order via /sdd-next --subtask resolution.
+  [SG2] AI MUST NOT skip a unit's security review (SECURITY_REVIEW),
+        code review (CR_REVIEW), or dependency validation
+        (@../gates/dependency-gate.sdd APPROVE before any new
+        dependency).
+  [SG3] AI MUST NOT mark unfinished work DONE — DONE-PROOF applies
+        PER SUBTASK, and DONE is reachable only via PASSED ([ST1]).
+  [SG4] AI MUST NOT modify files outside the unit's `allowed` scope
+        or create unrequested architecture.
+  [SG5] AI MUST NOT introduce undeclared dependencies — every new
+        dependency passes DEPENDENCY_GATE first ([SB7]).
+  [SG6] AI MUST NOT advance to another subtask while the current
+        unit is not PASSED/DONE.
+
+CoreInvariants:
+
+  The execution engine's mandatory-transition backbone (every
+  invariant maps 1:1 to a SUBTASK-STATE-MACHINE transition):
+
+    No Decision    -> No Task.        (tasks exist only under DEC)
+    No Task        -> No Subtask.     ([SB2] parent requirement)
+    No Subtask     -> No Implementation. (units before code)
+    No Code Review -> No Security Review. ([ST3] CR first)
+    No Security Pass -> No Test Completion. ([ST3] SC before TS, v2)
+    No Test Pass   -> No DONE.        ([ST1] PASSED precedes DONE)
+    No DONE        -> No Next Unit.   ([ST2] unit serialization)
+
 Rules:
 
   [EC1] AI MUST establish the execution contract before starting a task.
@@ -143,11 +177,17 @@ Rules:
 Navigation:
 
   StateMachine: @TASK-STATE-MACHINE.sdd
+  SubtaskStateMachine: @SUBTASK-STATE-MACHINE.sdd
+  SubtaskSchema: @../schemas/subtask.sdd
   LoopProtection: @LOOP-PROTECTION.sdd
   FailureClassification: @FAILURE-CLASSIFICATION.sdd
   AutonomyPolicy: @AUTONOMY-POLICY.sdd
   DoneProof: @DONE-PROOF.sdd
   PartialDone: @PARTIAL-DONE.sdd
+  DependencyGate: @../gates/dependency-gate.sdd
   TasksIndex: @INDEX.sdd
 
 State: +
+  (Phase 155: added SubtaskGuards [SG1..SG6] and CoreInvariants —
+   security modeled as mandatory state-machine transitions, not a
+   checklist; invariants map 1:1 to SUBTASK-STATE-MACHINE)

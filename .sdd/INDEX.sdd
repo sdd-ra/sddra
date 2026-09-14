@@ -357,7 +357,8 @@ Navigation:
    SpecDDFlowIndex: @projects/{project_name}/.specdd/flow-index.md
    SpecDDFixIndex: @projects/{project_name}/.specdd/fix-index.sdd
    SpecDDDependencyLedger: @projects/{project_name}/.specdd/dependency-ledger.md
-   SpecDDTaskContext: @projects/{project_name}/.specdd/task-context/
+    SpecDDTaskContext: @projects/{project_name}/.specdd/task-context/
+    SpecDDState: @projects/{project_name}/.specdd/state/current.sdd (current-unit pointer; template @templates/specdd/state.template.sdd)
   History: @projects/{project_name}/history/INDEX.sdd
   HistoryInputs: @projects/{project_name}/history/inputs/
   HistoryActions: @projects/{project_name}/history/actions/
@@ -415,8 +416,9 @@ Navigation:
   DecisionInstances: @projects/{project_name}/decisions/
   DomainDecisions: @projects/{project_name}/decisions/INDEX.sdd
    DecisionHumanDocs: @projects/{project_name}/docs/decisions/INDEX.md
-   TaskEngine: @projects/{project_name}/tasks/tasks.sdd
-   TaskStateMachine: @tasks/TASK-STATE-MACHINE.sdd
+    TaskEngine: @projects/{project_name}/tasks/tasks.sdd
+    TaskStateMachine: @tasks/TASK-STATE-MACHINE.sdd
+    SubtaskStateMachine: @tasks/SUBTASK-STATE-MACHINE.sdd
    LoopProtection: @tasks/LOOP-PROTECTION.sdd
    FailureClassification: @tasks/FAILURE-CLASSIFICATION.sdd
    ExecutionContract: @tasks/EXECUTION-CONTRACT.sdd
@@ -503,9 +505,11 @@ Navigation:
   ProjectMode: @project/mode.sdd
   Graph: @graph/INDEX.sdd
   GraphModel: @graph/model.sdd
-  Gates: @gates/INDEX.sdd
-  GatesPolicy: @gates/policy.sdd
-  GatesLevels: @gates/levels.sdd
+   Gates: @gates/INDEX.sdd
+   GatesPolicy: @gates/policy.sdd
+   DependencyGate: @gates/dependency-gate.sdd
+   CicdPipeline: @gates/cicd-pipeline.sdd
+   GatesLevels: @gates/levels.sdd
   GatesQuality: @gates/quality.sdd
   GatesTesting: @gates/testing.sdd
   GatesSecurity: @gates/security.sdd
@@ -619,8 +623,9 @@ Navigation:
   StandardsRelations: @standards/relations.sdd
   StandardsConventions: @standards/conventions.sdd
   Schemas: @schemas/INDEX.sdd
-  SchemaTask: @schemas/task.sdd
-  SchemaDecision: @schemas/decision.sdd
+   SchemaTask: @schemas/task.sdd
+   SchemaSubtask: @schemas/subtask.sdd
+   SchemaDecision: @schemas/decision.sdd
   SchemaWorkflow: @schemas/workflow.sdd
   SchemaSkill: @schemas/skill.sdd
   SchemaGate: @schemas/gate.sdd

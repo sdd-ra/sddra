@@ -51,7 +51,7 @@ Commands:
   /sdd-migrate: Run migrations
   /sdd-compact: Compress context after task
   /sdd-clean: Clear context for next task
-  /sdd-next: Advance decision chain to next step (--step: DL1 step mode — stateful /next)
+  /sdd-next: Advance decision chain to next step (--step: DL1 step mode — stateful /next; --subtask: unit mode — resolve next SUBTASK)
   /sdd-assumptions: Track and validate project assumptions
   /sdd-intents: Classify and route user intents through chain graph
   /sdd-skills: Discover and map skill ecosystem

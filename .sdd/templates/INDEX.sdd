@@ -28,6 +28,7 @@ ReadOrder:
    17 @specdd/fix-index.template.sdd
    18 @specdd/doc-template.sdd
    19 @specdd/preflight-template.sdd
+   20 @specdd/state.template.sdd
 
 Rules:
   [T1] Templates are READ-ONLY — they MUST NOT be modified per project.
@@ -50,10 +51,11 @@ Navigation:
    DiagramTemplate: @_sdd/architecture/DIAGRAM-TEMPLATE.sdd
    CaseTemplate: @_sdd/project/case.template.sdd
    CaseIndexTemplate: @_sdd/project/case-index.template.sdd
-   SpecDDFlowIndexTemplate: @specdd/flow-index.template.sdd
-   SpecDDFixIndexTemplate: @specdd/fix-index.template.sdd
-   SpecDDDocTemplate: @specdd/doc-template.sdd
-   SpecDDPreflightTemplate: @specdd/preflight-template.sdd
+    SpecDDFlowIndexTemplate: @specdd/flow-index.template.sdd
+    SpecDDFixIndexTemplate: @specdd/fix-index.template.sdd
+    SpecDDDocTemplate: @specdd/doc-template.sdd
+    SpecDDPreflightTemplate: @specdd/preflight-template.sdd
+    SpecDDStateTemplate: @specdd/state.template.sdd
 
 Note:
   This directory is the single source of truth for all reusable project

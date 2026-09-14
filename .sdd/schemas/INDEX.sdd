@@ -23,6 +23,7 @@ Rules:
 
 Navigation:
   Task: @task.sdd
+  Subtask: @subtask.sdd
   Decision: @decision.sdd
   Workflow: @workflow.sdd
   Skill: @skill.sdd
@@ -30,3 +31,5 @@ Navigation:
   Module: @module.sdd
 
 State: +
+  (Phase 155: added @subtask.sdd — smallest execution unit schema
+   backing /sdd-next --subtask)

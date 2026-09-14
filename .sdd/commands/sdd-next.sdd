@@ -12,6 +12,7 @@ Description:
 Usage:
   /sdd-next
   /sdd-next --step
+  /sdd-next --subtask
   /sdd-next --decision DEC-<ID>
   /sdd-next --case CASE-<ID>
   /sdd-next --force
@@ -19,6 +20,9 @@ Usage:
 Options:
   --step      Delivery-chain step mode (DL1): continue the immutable
               workflow from the saved state — execute ONE step only
+  --subtask   Unit mode: resolve the NEXT executable SUBTASK from
+              the current DEC -> TASK -> SUBTASK state and execute
+              ONLY that unit through its lifecycle (see SubtaskMode)
   --decision  Advance specific decision
   --case      Jump to specific case
   --force     Force advance even if incomplete (requires approval)
@@ -28,6 +32,8 @@ InitialLoad (Phase 151 — EXPAND protocol):
   - saved workflow state (.specdd/delivery/{run_id}/state.sdd; or
     tasks/INDEX.sdd for decision mode)
   - .sdd/workflow/step-keys.sdd (dictionary — step mode only)
+  - .specdd/state/current.sdd (STATE pointer — subtask mode reads
+    it FIRST, [SF1]; missing/stale => scan fallback)
   Step specs, stage details, and gates load on EXPAND only.
 
 StepMode (Phase 151 — the stateful /next):
@@ -55,6 +61,34 @@ StepMode (Phase 151 — the stateful /next):
     [blocking_bugs: <ids|none>]
     [action: execute_one_step]
     [result: <step outcome + DONE-evidence>]
+
+SubtaskMode (Phase 155 — the unit-level /next):
+  Resolves the next executable SUBTASK (smallest execution unit,
+  bax ../tasks/SUBTASK-STATE-MACHINE.sdd, ../schemas/subtask.sdd).
+  Algorithm:
+    1. READ STATE first (.specdd/state/current.sdd, [SF1]); if
+       missing or stale, scan decisions/ and tasks/ to rebuild it
+       ([SF3] — project files win)
+    2. FIND the first task (dependency order — readiness semantics
+       of dependencies/graph.sdd) that has a TODO subtask; if the
+       STATE's current subtask is mid-lifecycle (not DONE), resume
+       THAT unit — never jump units
+    3. A BLOCKED subtask is reported with its blocker — /next does
+       NOT advance past it (mirrors step-mode BUG blocking)
+    4. RESOLVE and output the unit with its parent context
+    5. EXECUTE only that unit through its lifecycle gates (CR ->
+       RF -> SC -> TS, v2 ordering); unit DONE requires done-proof
+    6. UPDATE STATE ([SF2]); the next /sdd-next --subtask call
+       resolves the next unit
+  Task completion rule: a task is complete ONLY when ALL its
+  subtasks are DONE (extends existing task_complete check).
+  Subtask-mode output:
+    [subtask_mode: unit]
+    [decision: DEC-XXX]  [task: TASK-XXX]  [subtask: SUBTASK-XXX]
+    [state: <lifecycle state>]  [blocked: <reason|none>]
+    [context: parent DEC + TASK references]
+    [action: execute_one_unit]
+    [result: <unit outcome + done-proof evidence on DONE>]
 
 Behavior:
   1. Read current decision state from projects/{project_name}/decisions/
@@ -98,13 +132,27 @@ Output:
     [action: execute_one_step]
     [result: <step outcome + DONE-evidence>]
 
+  Subtask mode (--subtask):
+    [subtask_mode: unit]
+    [decision: DEC-XXX]  [task: TASK-XXX]  [subtask: SUBTASK-XXX]
+    [state: <lifecycle state>]  [blocked: <reason|none>]
+    [context: parent DEC + TASK references]
+    [action: execute_one_unit]
+    [result: <unit outcome + done-proof evidence on DONE>]
+
 Navigation:
   INDEX: @INDEX.sdd
   DeliveryChain: @../chains/delivery.sdd
   StepKeys: @../workflow/step-keys.sdd
   TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
+  SubtaskStateMachine: @../tasks/SUBTASK-STATE-MACHINE.sdd
+  SubtaskSchema: @../schemas/subtask.sdd
+  StateTemplate: @../templates/specdd/state.template.sdd
   BugRegistry: @../tasks/BUG-REGISTRY.sdd
   RuntimeState: @../runtime/state.sdd
 
 State: +
    (extended with step mode / immutable DL1 continuation per Phase 151)
+   (Phase 155: added --subtask unit mode with STATE read-first
+    pointer; subtask blocking mirrors BUG blocking; task completion
+    now requires ALL subtasks DONE)

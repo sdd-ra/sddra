@@ -1,0 +1,111 @@
+# Tasks: SUBTASK-STATE-MACHINE
+
+Spec: SubtaskStateMachine
+
+Purpose:
+  Define the unit-level execution lifecycle for SUBTASK — the
+  smallest execution unit in the MODUL -> CASE -> TASK -> SUBTASK
+  hierarchy (bax ../branches/DOWN-UP-TRANSITION.sdd). A subtask is
+  executed by exactly one /sdd-next --subtask resolution; every gate
+  transition below is MANDATORY — security is a state-machine
+  transition, not a checklist.
+
+Owns:
+  Subtask lifecycle states
+  Subtask state transitions
+  Subtask failure/rework loops
+  Unit-level progress recording
+
+States:
+
+  TODO            — Unit defined, not yet started
+  IN_PROGRESS     — Implementation in progress (single unit scope)
+  IMPLEMENTED     — Code/artifact produced, ready for review
+  CR_REVIEW       — Code review of the unit in progress
+  REFACTORED      — CR findings addressed (or CR passed clean)
+  SECURITY_REVIEW — Scoped security validation of the unit
+  TESTING         — Unit-level validation running
+  PASSED          — All unit gates green
+  DONE            — Unit closed with done-proof recorded
+  REWORK          — Remediation in progress after a failed gate
+  BLOCKED         — Cannot proceed: explicit blocker declared
+
+MainFlow:
+
+  TODO -> IN_PROGRESS -> IMPLEMENTED -> CR_REVIEW -> REFACTORED ->
+  SECURITY_REVIEW -> TESTING -> PASSED -> DONE
+
+ReworkLoops:
+
+  CR review failure:
+    CR_REVIEW -> REWORK -> CR_REVIEW
+    (re-implement within unit scope, then re-review)
+
+  Security failure:
+    SECURITY_REVIEW -> REWORK -> SECURITY_REVIEW
+    (security findings fixed within unit scope, re-validated)
+
+  Test failure:
+    TESTING -> REWORK -> TESTING
+    (defect fixed within unit scope, re-tested)
+
+  Blocked:
+    ANY_STATE -> BLOCKED  (requires explicit blocker declaration)
+    BLOCKED -> previous_state  (when blocker resolved)
+
+TransitionRules:
+
+  [ST1] DONE is reachable ONLY via PASSED — never a direct
+        TODO -> DONE transition, and never from a gate state that
+        has not reported green.
+  [ST2] The next subtask is resolvable only when the current unit is
+        DONE (No DONE -> No Next Unit — bax EXECUTION-CONTRACT.sdd
+        CoreInvariants).
+  [ST3] Gate order is fixed: no SECURITY_REVIEW before CR_REVIEW has
+        passed on the same unit revision; no TESTING before
+        SECURITY_REVIEW passed (security precedes test, v2 ordering
+        — mirrors chains/delivery.sdd branch sub-path).
+  [ST4] Every rework loop iteration MUST record progress
+        (BEFORE/CHANGE/AFTER/RESULT) and is capped by LOOP-PROTECTION
+        guards — repetition without progress escalates to BLOCKED.
+  [ST5] REWORK stays INSIDE unit scope: allowed paths/actions come
+        from the subtask schema; anything beyond scope is a new
+        subtask or a task-level change, never a silent expansion.
+  [ST6] BLOCKED and DONE are the only terminal exits; BLOCKED
+        resolution returns to the state that declared it.
+
+ProgressRule:
+
+  Each gate transition and each rework iteration MUST record:
+    BEFORE:    measurable state before the action
+    CHANGE:    what was changed
+    AFTER:     measurable state after the action
+    RESULT:    outcome (pass/fail/blocked)
+
+Mapping (unit lifecycle -> delivery chain):
+
+  CR_REVIEW        -> CR (scoped instance)
+  REFACTORED       -> RF (scoped instance, conditional)
+  SECURITY_REVIEW  -> SC (scoped instance)
+  TESTING          -> XX-TS (scoped instance)
+  PASSED           -> all scoped gates green for the unit
+
+  Subtasks that span multiple layers inherit the DL1 v2 branch
+  sub-path ordering per layer (CR -> RF -> SC -> TS, bax
+  ../chains/delivery.sdd).
+
+Navigation:
+  TaskStateMachine: @TASK-STATE-MACHINE.sdd
+  SubtaskSchema: @../schemas/subtask.sdd
+  ExecutionContract: @EXECUTION-CONTRACT.sdd
+  LoopProtection: @LOOP-PROTECTION.sdd
+  DoneProof: @DONE-PROOF.sdd
+  DownUpTransition: @../branches/DOWN-UP-TRANSITION.sdd
+  DeliveryChain: @../chains/delivery.sdd
+  NextCommand: @../commands/sdd-next.sdd
+
+State: +
+  (Phase 155: created as the unit-level lifecycle backing
+   /sdd-next --subtask resolution; states mirror TASK-STATE-MACHINE
+   discipline at unit granularity; [ST3] encodes the v2
+   security-before-test ordering)
