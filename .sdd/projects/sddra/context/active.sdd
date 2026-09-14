@@ -4,7 +4,7 @@ Purpose:
   Current active context for the sddra.ai project.
   This file is loaded at the start of every session.
 
-CurrentFocus: Phase 151 COMPLETE — stateful workflow rules + EXPAND token protocol live
+CurrentFocus: Phase 152 COMPLETE — housekeeping & alignment (R91-R106, docker reference, RF flow, 3-way sync 30/30/30, mojibake purge, gstack alignment, .kilo skills, open-source EN docs)
 ActiveDecisions:
   - DOC-2026-0902-001: Human docs sequential structure
   - DOC-2026-0902-002: Project instance at .sdd/projects/sddra/
@@ -20,26 +20,32 @@ ActiveDecisions:
   - DOC-2026-0910-001: Ordered backend routing [IR]; patterns-only imports; Docker-gated code
   - DOC-2026-0911-001: Stateful flow rule — EVERY /sdd* command runs DISCOVER→LOCATE→EXECUTE-ONE→VERIFY→SAVE→STOP; step DONE = 5 criteria; blocking BUG stops flow [CMD6, DL1-1..6]
   - DOC-2026-0911-002: EXPAND protocol — bulk .sdd/ load FORBIDDEN; InitialLoad manifests only (<1% vs 9%); heavy files never pushed [CMD7, CC PullBasedLoading]
+  - DEC-2026-0913-001: Security-first ordering + AI-signature history purge (closed)
+  - DEC-2026-0913-002: Docker reference + rules R91-R105 (closed)
+  - DEC-2026-0913-003: 3-way command sync + Kilo skills + prompt-pairs (closed)
+  - DEC-2026-0913-004: Mojibake purge + scanner self-trip prevention (closed)
+  - DEC-2026-0913-005: gstack/Garry Tan/Rentier alignment adoptions (closed)
+  - DEC-2026-0913-006: Rename + projects purity + open-source EN docs (closed)
 
 WorkInProgress:
-  - Runtime implementation of Phase 149/150/151 specs (task 2026-0907-002): checkpoints engine, typed outcomes, mcp-allowlist tooling, context-emission generator, integration-routing runtime, delivery-chain StepState runner
   - Human gate: CANDIDATE→ACTIVE promotion review (.sdd/marketplace/promotion-packet.sdd)
-  - Root README.md update (task 2026-0902-005)
+  - Repo cleanup: user review of .sdd/docs/analysis/repo-cleanup-analysis.md (deletions/moves pending approval)
+  - Remote: force-push consent for history purge propagation; repo rename verification
 
 RecentChanges:
-  - Phase 151 DONE: user's 12-rule WORKFLOW AGENT prompt → binding SDD rules
-  - step-keys.sdd: 24 canonical keys + mapping; CR-XX = scoped CR instances (no stage explosion)
-  - stages.sdd: business group (BC/BR/BD/DS/TK) + DC/DC-TS; transitions: business edges + 6 branch sub-paths
-  - delivery.sdd (DL1): immutable chain BC→…→VR, 6 parallel branches, StepState persistence
-  - BUG-REGISTRY.sdd: first-class BUG artifact, duplicate detection, block/resolution protocols
-  - CLAUDE.md: stateful flow rule + EXPAND protocol; [CMD6]/[CMD7]; InitialLoad in 9 command specs
-  - /sdd-next --step: stateful /next from saved state (100 calls = 100 correct continuations)
+  - Phase 152 DONE: rules R91-R106 (sandbox refs, commit discipline, UTF-8, purity, skills surface)
+  - 3-way command sync: 30 specs = 30 .claude = 30 .kilo, /sdd-health 0 drift
+  - Mojibake purge: 13 files repaired; scanner signatures in code only; HEALTHY
+  - gstack alignment: 4-pillar CR, OpinionatedOutput, BIG/SMALL ChangeMode; analysis doc
+  - .kilo/skills: 5 routing wrappers (sddra, -engineering, -design, -writing, -languages)
+  - docs/ EN suite: install 3-paths, architecture diagrams, how-it-works, contributing, philosophy; README EN-first hub; MIT LICENSE
+  - prompt-pairs history live ([R104]); 9 command stub descriptions fixed
 
 NextActions:
-  - Phase 149/150/151 runtime implementation (task 2026-0907-002)
   - Human review: promotion packet (task 2026-0906-005 close)
-  - Root README.md update (task 2026-0902-005)
+  - Human review: cleanup analysis (approve deletions/moves or reject)
+  - Force-push consent decision (remote history purge propagation)
 
-Fingerprint: CTX-2026-0911
+Fingerprint: CTX-2026-0914
 
 State: active

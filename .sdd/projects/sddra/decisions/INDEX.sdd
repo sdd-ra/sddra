@@ -27,6 +27,20 @@ Recent Decisions:
   - DEC-2026-0902-001: Design analysis engine with 8 skills (approved)
   - DEC-2026-0902-002: Skill auto-invocation protocol (approved)
   - DEC-2026-0902-003: Project instance creation for sddra.ai (approved)
+  - DEC-2026-0913-001: Security-first ordering + AI-signature history purge (closed)
+  - DEC-2026-0913-002: Docker reference + rules R91-R105 (closed)
+  - DEC-2026-0913-003: 3-way command sync + Kilo skills + prompt-pairs (closed)
+  - DEC-2026-0913-004: Mojibake purge + scanner self-trip prevention (closed)
+  - DEC-2026-0913-005: gstack/Garry Tan/Rentier alignment adoptions (closed)
+  - DEC-2026-0913-006: Rename + projects purity + open-source EN docs (closed)
+
+Navigation:
+  DEC20260913001: @2026-0913-001-security-first-signature-purge.md
+  DEC20260913002: @2026-0913-002-docker-reference-rules.md
+  DEC20260913003: @2026-0913-003-command-sync-kilo-skills.md
+  DEC20260913004: @2026-0913-004-mojibake-purge.md
+  DEC20260913005: @2026-0913-005-gstack-alignment.md
+  DEC20260913006: @2026-0913-006-rename-purity-oss-docs.md
 
 Navigation:
   Index: @INDEX.sdd

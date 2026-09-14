@@ -124,4 +124,53 @@ Tasks:
     depends: [2026-0910-001]
     title: Stateful workflow agent rules (Phase 151) — step-keys dictionary, delivery chain DL1, BUG registry, EXPAND token protocol, [CMD6/CMD7]
 
+  2026-0913-001:
+    state: DONE
+    priority: P0
+    risk: HIGH
+    depends: []
+    title: Security-first ordering + AI-signature history purge + rename sddra — [R101]/[R103] encoded, signatures purged from all branches
+
+  2026-0913-002:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0913-001]
+    title: Rules R91-R105 + Docker reference implementation — compose hardening [R59-R66]/[R91]/[R92]/[R102], RF scoped-refactor flow, CR ReviewPillars
+
+  2026-0913-003:
+    state: DONE
+    priority: P0
+    risk: LOW
+    depends: [2026-0913-002]
+    title: 3-way command sync (30/30/30) + .kilo skills surface (5 wrappers, R106) + prompt-pairs history (R104)
+
+  2026-0913-004:
+    state: DONE
+    priority: P0
+    risk: LOW
+    depends: [2026-0913-002]
+    title: Mojibake purge — 13 files repaired, scanner signatures moved to code, /sdd-health 0 hits CRITICAL→clean
+
+  2026-0913-005:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0913-002]
+    title: gstack/Garry Tan/Rentier alignment — analysis doc + adoptions (4-pillar CR, OpinionatedOutput, BIG/SMALL ChangeMode)
+
+  2026-0913-006:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0911-001]
+    title: Runtime implementation 2026-0907-002 close-out — checkpoints/typed-outcomes verified green in sandbox (25/25)
+
+  2026-0913-007:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0913-003]
+    title: Repo cleanup analysis (report only) + EN open-source docs suite — install 3-paths, diagrams, contributing, README rewrite, MIT LICENSE
+
 State: +

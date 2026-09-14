@@ -121,6 +121,37 @@ Phases:
       sdd-next.sdd --step mode (step-mode output + 8-step /next protocol)
     date: 2026-09-11
 
+  Phase 152:
+    title: Housekeeping & alignment — R91-R106 rules, Docker reference,
+      RF flow, 3-way command sync, mojibake purge, gstack alignment,
+      .kilo skills surface, open-source docs
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: completion-rules sync plan (user review requests) — rules
+      R91-R105 + R106 added to PROJECT.sdd; security-first ordering
+    implemented: PROJECT.sdd rules R91-R105 (locally-built images [R91],
+      var-only mounts [R92], commit discipline [R95], tmp/ + prompts
+      root [R96], runtime-state ban [R97], 3-way command registry [R98],
+      UTF-8/mojibake CRITICAL [R99], duplication→RF [R100],
+      security-first [R101], no-local-execution [R102], AI-signature
+      git ban [R103], prompt-pair history [R104], projects purity [R105],
+      skills 3-way surface [R106]); docker-compose.yml hardened reference
+      ([R59-R66]/[R91]/[R92]/[R102] encoded); workflow/stages.sdd RF
+      scoped-refactor stage + CR ReviewPillars + OpinionatedRecommendations;
+      3-way command sync 30/30/30 with /sdd-health drift gate; mojibake
+      purge 13 files + scanner signature list moved to code (self-trip
+      prevention); commands.ts mojibakePatterns unicode-escaped; gstack
+      alignment analysis (.sdd/docs/analysis/garry-tan-gstack-alignment.md)
+      + OpinionatedOutput (agent/contract.sdd) + ChangeMode BIG/SMALL
+      (sdd-plan.sdd); .kilo/skills 5 routing wrappers (sddra,
+      sddra-engineering, sddra-design, sddra-writing, sddra-languages);
+      repo-cleanup-analysis.md (analysis only); 9 command stub
+      descriptions fixed; docs/ EN suite (install 3-paths, architecture
+      diagrams, how-it-works, contributing + philosophy, README
+      EN-first rewrite, MIT LICENSE); prompts/history/prompt-pairs.jsonl
+      ([R104])
+    date: 2026-09-14
+
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
   [PH2] Phase specs live in phases/phase-NNN-*.sdd or referenced external files.
