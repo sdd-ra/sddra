@@ -38,6 +38,8 @@ COPY --chown=node:node sdd-adapter/commands.ts sdd-adapter/context-budget.ts sdd
 COPY --chown=node:node sdd-adapter/security ./sdd-adapter/security
 COPY --chown=node:node sdd-adapter/__tests__ ./sdd-adapter/__tests__
 COPY --chown=node:node .sdd ./.sdd
+COPY --chown=node:node .claude/commands ./.claude/commands
+COPY --chown=node:node .kilo/command ./.kilo/command
 
 USER node
 ENV NODE_ENV=sandbox

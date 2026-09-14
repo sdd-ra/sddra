@@ -36,6 +36,15 @@ Checks:
     (missing/broken/timeout/error), active_backend resolution,
     tier-grouped report (0=zero-config, 1=key/login, 2=setup);
     one failing channel degrades to its own row, NEVER crashes the report
+  3-way command sync (Phase 152): every .sdd/commands/*.sdd spec has
+    its .claude/commands/<name>.md and .kilo/command/<name>.md wrappers
+    ([CMD8]/[R98]) — any missing pair is a WARN drift finding
+  Mojibake scan (Phase 152): repo text files scanned for UTF-8-as-CP1252
+    sequences ("â€"", "ÅŸ", "É™", "Ä±", "Ã¼", "Ã¶", "Ã§") — hits are
+    CRITICAL findings ([R99])
+  Projects purity (Phase 152): .sdd/projects/ holds ONLY real instances
+    + the {project_name}/ template; foreign folders are WARN findings
+    ([R105])
 
 Output:
   HEALTHY | DEGRADED | UNHEALTHY | FAILED
@@ -61,6 +70,12 @@ Rules:
               it MUST NOT fail the whole health report ([IR-06]).
   [HEALTH-07] Channel probe output MUST pass credential scrub before
               rendering ([IR-07]).
+  [HEALTH-08] 3-way registry sync: spec/wrapper count mismatches and
+              missing .claude/.kilo wrappers are WARN findings ([CMD8]).
+  [HEALTH-09] Mojibake hits are CRITICAL findings; the report is UNHEALTHY
+              until fixed ([R99]).
+  [HEALTH-10] Foreign folders under .sdd/projects/ are WARN findings
+              ([R105]); the {project_name}/ template dir is expected.
 
 Navigation:
   INDEX: @INDEX.sdd

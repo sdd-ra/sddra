@@ -1,0 +1,46 @@
+# /sdd-clean
+
+Purpose:
+  Clear all SDD working context and start fresh for the next task —
+  delegating the final context wipe to the AI agent's NATIVE /clear (or
+  equivalent) so the agent's own memory management is never fought or
+  corrupted (Phase 152 rename: was sdd-clear / auto-generated stub).
+
+Owns: commands/sdd-clean.sdd
+
+Description:
+  Clear all context and start fresh for next task. Use when transitioning
+  between distinct tasks to prevent context pollution. Delegates to the
+  host agent's native clear command.
+
+Usage:
+  /sdd-clean
+  /sdd-clean --save-state
+  /sdd-clean --archive
+
+Options:
+  --save-state   Save current state before clearing
+  --archive      Archive current context to history
+
+Behavior:
+  1. If --save-state: persist current task state (checkpoints [RT8])
+  2. If --archive: move context to history log ([R57] append-only)
+  3. Append the /sdd* prompt pair to prompts/history/prompt-pairs.jsonl ([R104])
+  4. DELEGATE: instruct the agent to run its NATIVE /clear (Claude Code,
+     Kilo /clear) — never reimplement or shadow native context commands
+  5. Reset SDD working memory to minimal context (INDEX.sdd only)
+
+Output:
+  [tokens: cleared]
+  [state: fresh]
+  [history: archived|discarded]
+  [native: /clear delegated]
+
+Navigation:
+  INDEX: @INDEX.sdd
+  CompactCommand: @sdd-compact.sdd
+  MemoryModel: @../runtime/memory-model.sdd
+
+State: +
+   (Phase 152: renamed sdd-clear -> sdd-clean per user naming; behavior
+   now delegates the wipe to the host agent's native /clear)

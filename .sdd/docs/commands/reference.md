@@ -144,7 +144,7 @@ Performs a deep, business-aware analysis of the `.sdd/` system. Classifies every
 | `/sdd-resume` | Resume from checkpoint |
 | `/sdd-migrate` | Run migrations |
 | `/sdd-compact` | Compress context after task |
-| `/sdd-clear` | Clear context for next task |
+| `/sdd-clean` | Clear context for next task |
 
 ---
 

@@ -112,7 +112,7 @@ ReadOrder:
     55 @commands/INDEX.sdd (CLI commands for SDDRA)
     56 @commands/ (command definitions, when present)
     57 @commands/sdd-compact.sdd (context compaction)
-    58 @commands/sdd-clear.sdd (context clearing)
+    58 @commands/sdd-clean.sdd (context clearing)
     57 @plugins/INDEX.sdd (plugin adapters)
     58 @plugins/ (plugin adapter definitions, when present)
     59 @projects/{project_name}/tasks/tasks.sdd         (task lifecycle engine — HOW tasks work)
@@ -654,7 +654,7 @@ Navigation:
     CommandResume: @commands/sdd-resume.sdd
     CommandMigrate: @commands/sdd-migrate.sdd
      CommandCompact: @commands/sdd-compact.sdd
-     CommandClear: @commands/sdd-clear.sdd
+     CommandClear: @commands/sdd-clean.sdd
       CommandNext: @commands/sdd-next.sdd
      CommandKnowledge: @commands/sdd-knowledge.sdd
      CommandExplain: @commands/sdd-explain.sdd

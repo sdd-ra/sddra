@@ -73,6 +73,8 @@ export class CommandRunner {
         return this.runDesignCommand(args);
       case "/sdd-marketplace":
         return this.runMarketplaceCommand(args);
+      case "/sdd-health":
+        return this.runHealthCommand(args);
       default:
         return {
           command: normalized,
@@ -455,6 +457,126 @@ export class CommandRunner {
       decision: "PASS",
       exitCode: 0,
       output: outputLines.join("\n"),
+    };
+  }
+
+  /**
+   * /sdd-health runtime — critical checks + Phase 152 additions:
+   * 3-way command sync drift ([CMD8]), mojibake scan ([R99]),
+   * projects-dir purity ([R105]). See .sdd/commands/sdd-health.sdd
+   * [HEALTH-01..10].
+   */
+  private runHealthCommand(_args: string[]): CommandResult {
+    const findings: Array<Record<string, unknown>> = [];
+    const lines: string[] = ["HEALTH CHECK", ""];
+    let status = "HEALTHY";
+    const downgrade = (to: string): void => {
+      const order = ["HEALTHY", "DEGRADED", "UNHEALTHY", "FAILED"];
+      if (order.indexOf(to) > order.indexOf(status)) status = to;
+    };
+
+    // [HEALTH-01] critical files
+    const critical = ["INDEX.sdd", "PROJECT.sdd", "commands/INDEX.sdd", "chains/INDEX.sdd"];
+    for (const f of critical) {
+      const p = path.join(this.projectRoot, this.sddRoot, f);
+      if (!fs.existsSync(p)) {
+        downgrade("UNHEALTHY");
+        findings.push({ check: "critical-file", severity: "CRITICAL", path: f });
+        lines.push(`  CRITICAL: missing ${f}`);
+      }
+    }
+    lines.push("  Critical files: OK");
+
+    // [HEALTH-08] 3-way registry sync ([CMD8]/[R98])
+    const specDir = path.join(this.projectRoot, this.sddRoot, "commands");
+    const claudeDir = path.join(this.projectRoot, ".claude", "commands");
+    const kiloDir = path.join(this.projectRoot, ".kilo", "command");
+    const specs = fs.existsSync(specDir)
+      ? fs.readdirSync(specDir).filter(f => f.endsWith(".sdd") && f !== "INDEX.sdd").map(f => f.replace(/\.sdd$/, ""))
+      : [];
+    const claudeCmds = fs.existsSync(claudeDir)
+      ? new Set(fs.readdirSync(claudeDir).filter(f => f.endsWith(".md")).map(f => f.replace(/\.md$/, "")))
+      : new Set<string>();
+    const kiloCmds = fs.existsSync(kiloDir)
+      ? new Set(fs.readdirSync(kiloDir).filter(f => f.endsWith(".md")).map(f => f.replace(/\.md$/, "")))
+      : new Set<string>();
+    let syncDrift = 0;
+    for (const spec of specs) {
+      const missingClaude = !claudeCmds.has(spec);
+      const missingKilo = !kiloCmds.has(spec);
+      if (missingClaude || missingKilo) {
+        syncDrift++;
+        downgrade("DEGRADED");
+        findings.push({
+          check: "3-way-sync",
+          severity: "WARN",
+          command: spec,
+          missing_claude: missingClaude,
+          missing_kilo: missingKilo,
+        });
+        lines.push(`  WARN: ${spec} missing ${missingClaude && missingKilo ? ".claude + .kilo" : missingClaude ? ".claude" : ".kilo"} wrapper`);
+      }
+    }
+    lines.push(`  Command sync: ${specs.length} specs, ${syncDrift} drift`);
+
+    // [HEALTH-09] mojibake scan ([R99]) — UTF-8 read as CP1252 signatures
+    const mojibakePatterns = ["â€", "ÅŸ", "É™", "Ä±", "Ä°", "Ã¼", "Ã¶", "Ã§", "Ã¢"];
+    let mojibakeHits = 0;
+    const scanDirs = [this.sddRoot, ".claude/docs"];
+    for (const dir of scanDirs) {
+      const absDir = path.join(this.projectRoot, dir);
+      if (!fs.existsSync(absDir)) continue;
+      const walk = (d: string): void => {
+        for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+          if (entry.name === "node_modules" || entry.name.startsWith(".")) continue;
+          const full = path.join(d, entry.name);
+          if (entry.isDirectory()) { walk(full); continue; }
+          if (!/\.(sdd|md|ts|json|jsonc|yaml|yml|ps1)$/i.test(entry.name)) continue;
+          const content = fs.readFileSync(full, "utf-8");
+          for (const sig of mojibakePatterns) {
+            if (content.includes(sig)) {
+              mojibakeHits++;
+              findings.push({ check: "mojibake", severity: "CRITICAL", path: path.relative(this.projectRoot, full), signature: sig });
+              lines.push(`  CRITICAL: mojibake "${sig}" in ${path.relative(this.projectRoot, full)}`);
+              break;
+            }
+          }
+        }
+      };
+      walk(absDir);
+    }
+    if (mojibakeHits > 0) downgrade("UNHEALTHY");
+    lines.push(`  Mojibake scan: ${mojibakeHits} hits`);
+
+    // [HEALTH-10] projects purity ([R105])
+    const projectsDir = path.join(this.projectRoot, this.sddRoot, "projects");
+    if (fs.existsSync(projectsDir)) {
+      const allowed = new Set(["{project_name}", "INDEX.sdd"]);
+      for (const entry of fs.readdirSync(projectsDir)) {
+        const full = path.join(projectsDir, entry);
+        if (!fs.statSync(full).isDirectory()) continue;
+        if (!allowed.has(entry)) {
+          // real instances must carry their own INDEX + context
+          const isInstance = fs.existsSync(path.join(full, "context")) || fs.existsSync(path.join(full, "INDEX.sdd"));
+          if (!isInstance) {
+            downgrade("DEGRADED");
+            findings.push({ check: "projects-purity", severity: "WARN", path: entry });
+            lines.push(`  WARN: foreign folder in .sdd/projects/: ${entry}`);
+          }
+        }
+      }
+    }
+    lines.push("  Projects purity: checked");
+
+    lines.unshift(`Status: ${status}`);
+    const exitCode = status === "HEALTHY" ? 0 : status === "DEGRADED" ? 1 : status === "UNHEALTHY" ? 2 : 3;
+    return {
+      command: "/sdd-health",
+      decision: status === "HEALTHY" ? "PASS" : status === "DEGRADED" ? "WARN" : "BLOCK",
+      exitCode,
+      output: lines.join("\n"),
+      findings,
+      outcome: status === "HEALTHY" ? "SUCCESS" : mojibakeHits > 0 ? "BLOCKED" : "PARTIAL",
     };
   }
 

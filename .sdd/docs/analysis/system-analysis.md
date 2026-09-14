@@ -253,7 +253,7 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 | `.sdd/commands/sdd-health.sdd` | `/sdd-health` command spec | Health Check |
 | `.sdd/commands/sdd-decisions.sdd` | `/sdd-decisions` command spec | Decision Listing |
 | `.sdd/commands/sdd-compact.sdd` | `/sdd-compact` command spec | Context Compaction |
-| `.sdd/commands/sdd-clear.sdd` | `/sdd-clear` command spec | Context Clearing |
+| `.sdd/commands/sdd-clean.sdd` | `/sdd-clean` command spec | Context Clearing |
 | `.sdd/commands/sdd-backup.sdd` | `/sdd-backup` command spec | Backup |
 | `.sdd/commands/sdd-restore.sdd` | `/sdd-restore` command spec | Restore |
 | `.sdd/commands/sdd-resume.sdd` | `/sdd-resume` command spec | Resume from Checkpoint |

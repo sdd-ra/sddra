@@ -1,37 +1,46 @@
-# /compact
+# /sdd-compact
 
 Purpose:
-  Auto-generated purpose for sdd-compact.
+  Compress the SDD working context to essential tokens — persisting SDD
+  state first, then delegating the actual context compaction to the AI
+  agent's NATIVE /compact so the agent's own summarization is used
+  instead of being fought or reimplemented (Phase 152).
 
-Owns: commands\sdd-compact.sdd
+Owns: commands/sdd-compact.sdd
+
 Description:
   Compress current context to essential tokens only. Use after completing
-  a task to minimize token usage before next operation.
+  a task to minimize token usage before next operation. Delegates the
+  compaction itself to the host agent's native /compact.
 
 Usage:
-  /compact
-  /compact --keep-decisions
-  /compact --keep-references
+  /sdd-compact
+  /sdd-compact --keep-decisions
+  /sdd-compact --keep-references
 
 Options:
   --keep-decisions    Preserve decision records
   --keep-references   Preserve reference index
 
 Behavior:
-  1. Summarize current task output to essential facts
-  2. Remove verbose explanations and examples
-  3. Keep decisions, references, and next actions
-  4. Update token count
-  5. Persist compressed state
+  1. Persist current task state (checkpoints [RT8]; token count)
+  2. Summarize current task output to essential facts
+  3. Keep decisions, references, and next actions per options
+  4. Append the /sdd* prompt pair to prompts/history/prompt-pairs.jsonl ([R104])
+  5. DELEGATE: instruct the agent to run its NATIVE /compact (Claude Code,
+     Kilo /compact) — never reimplement or shadow native context commands
+  6. Persist compressed state; report token savings
 
 Output:
   [tokens: before=X, after=Y, saved=Z%]
   [state: compacted]
+  [native: /compact delegated]
 
 Navigation:
   MemoryModel: @../runtime/memory-model.sdd
   MemoryConsolidation: @../runtime/memory-consolidation.sdd
-  ClearCommand: @sdd-clear.sdd
+  CleanCommand: @sdd-clean.sdd
 
 State: +
-   (enhanced with memory model references)
+   (Phase 152: header fixed to /sdd-compact; behavior now persists SDD
+   state then delegates compaction to the host agent's native /compact)
