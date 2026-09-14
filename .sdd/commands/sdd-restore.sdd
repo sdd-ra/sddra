@@ -1,7 +1,7 @@
 # /sdd-restore
 
 Purpose:
-  Auto-generated purpose for sdd-restore.
+  Restore .sdd/ files from a previous backup (requires approval).
 
 Owns: commands\sdd-restore.sdd
 Description:

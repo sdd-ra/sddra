@@ -1,7 +1,7 @@
 # /sdd
 
 Purpose:
-  Auto-generated purpose for sdd.
+  Execute the SDDRA chain from a prompt through docs, sdd, code, review, and deploy arms with human approval at each gate.
 
 Owns: commands\sdd.sdd
 Description:
@@ -25,7 +25,7 @@ Behavior:
   5. Wait for approval
   6. Implement code (C1)
   7. Review (R1)
-  8. Deploy (DEP1) — requires explicit approval
+  8. Deploy (DEP1) ï¿½ requires explicit approval
   9. AutoCompact at end (see AutoCompact rules)
 
 AutoCompact:

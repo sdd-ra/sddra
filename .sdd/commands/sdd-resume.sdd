@@ -1,7 +1,7 @@
 # /sdd-resume
 
 Purpose:
-  Auto-generated purpose for sdd-resume.
+  Resume a failed or interrupted chain execution from the last checkpoint, skipping completed stages.
 
 Owns: commands\sdd-resume.sdd
 Description:

@@ -1,7 +1,7 @@
 # /sdd-backup
 
 Purpose:
-  Auto-generated purpose for sdd-backup.
+  Create timestamped backups of critical .sdd/ files with automatic rotation of old backups.
 
 Owns: commands\sdd-backup.sdd
 Description:

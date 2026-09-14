@@ -1,7 +1,7 @@
 # /sdd-decisions
 
 Purpose:
-  Auto-generated purpose for sdd-decisions.
+  List and explain decisions in the decision ledger (all or active).
 
 Owns: commands\sdd-decisions.sdd
 Description:

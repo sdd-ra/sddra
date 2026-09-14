@@ -1,7 +1,7 @@
 # /sdd-status
 
 Purpose:
-  Auto-generated purpose for sdd-status.
+  Show current execution status: token usage, decisions, tasks, pending approvals.
 
 Owns: commands\sdd-status.sdd
 Description:

@@ -1,7 +1,7 @@
 # /sdd-health
 
 Purpose:
-  Auto-generated purpose for sdd-health.
+  Validate .sdd/ system integrity: critical files, references, command sync, mojibake, projects purity.
 
 Owns: commands\sdd-health.sdd
 Description:

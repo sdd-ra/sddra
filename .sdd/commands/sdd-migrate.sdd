@@ -1,7 +1,7 @@
 # /sdd-migrate
 
 Purpose:
-  Auto-generated purpose for sdd-migrate.
+  Run pending migrations after .sdd/ schema or file-location updates.
 
 Owns: commands\sdd-migrate.sdd
 Description:
