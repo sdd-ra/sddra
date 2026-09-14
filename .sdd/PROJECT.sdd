@@ -278,6 +278,9 @@ Rules:
     [R92] var/ mount root — ALL volume bind mounts live under the project-root
            var/ directory (e.g. ./var/postgres:/var/lib/postgresql/data); named
            volumes are forbidden (extends R66); var/ is gitignored + dockerignored.
+           Sole exception: ./prompts (tracked audit surface incl. the [R104]
+           prompt-pairs ledger) mounts read-write into the sandbox because the
+           adapter appends the ledger during command execution.
     [R93] SWAGGER mandatory env wiring — any system built from a SWAGGER/OpenAPI
            document MUST have the swagger UI/spec configured in test | dev |
            local environments — mandatory, never optional.
@@ -326,9 +329,11 @@ Rules:
            a pair record {ts, command, customer_prompt, ai_prompt} to
            prompts/history/prompt-pairs.jsonl, where customer_prompt is the
            RAW user text (any language) and ai_prompt is the normalized
-           best-practice English prompt actually executed. Append-only (R57
-           discipline). Ambiguity in the customer prompt escalates via
-           DEC/TASK before execution.
+           best-practice English prompt actually executed — the agent's
+           protocol translation of the intent (chain steps, DEC/TASK
+           actions, provenance, language context), never a mechanical echo
+           of the command. Append-only (R57 discipline). Ambiguity in the
+           customer prompt escalates via DEC/TASK before execution.
     [R105] Projects-dir purity — .sdd/projects/ contains ONLY real project
            instances plus the {project_name}/ template; foreign/non-applicable
            folders are forbidden; a project instantiated from another system

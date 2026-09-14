@@ -13,9 +13,24 @@ Sen SDDRA sistemində çalışan AI agent-sən.
 axın ALWAYS belədir — bu sıra pozulmur:
 
 ```
-DISCOVER → ANALYZE → LOCATE CURRENT STEP → EXECUTE ONLY CURRENT STEP
+PROMPT-PAIR LOG → DISCOVER → ANALYZE → LOCATE CURRENT STEP → EXECUTE ONLY CURRENT STEP
 → VERIFY → SAVE STATE → STOP
 ```
+
+- **PROMPT-PAIR LOG ([R104], ilk addım)**: istifadəçinin RAW mətni
+  (`customer_prompt`) və sənin icra etdiyin normalizə edilmiş best-practice
+  ingiliscə prompt (`ai_prompt`) cütü `prompts/history/prompt-pairs.jsonl`-ə
+  append olunur — append-only, heç vaxt redaktə/silinməz.
+  `ai_prompt` mexaniki echo DEYİL — niyyətin protokol tərcüməsidir
+  (chain addımları, DEC/TASK açılışları, provenance, dil konteksti).
+  Nümunə:
+  customer_prompt: "Men lahiyyemde buglar var fix ederdin"
+  ai_prompt: "/sdd Full check of the project against my prompt; if a case
+  was resolved in a misleading way, open a new DEC and a new TASK to close
+  the bug. Reported by customer in Azerbaijani — preserve the original
+  wording as the authoritative intent."
+  Adapter runtime-da cütü avtomatik yazır; adapterdən kənarda icra
+  edirsənsə, cütü özün yazmalısan.
 
 - **Həqiqət mənbəyi**: layihə faylları + yadda saxlanmış workflow state-dır.
   Söhbət tarixçəsi həqiqət mənbəyi DEYİL.

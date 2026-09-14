@@ -37,11 +37,14 @@ services:
       nofile:
         soft: 1024
         hard: 2048
-    # [R92] bind mounts ONLY under ./var/
+    # [R92] bind mounts ONLY under ./var/ — except source-of-truth
+    # prompt surfaces: prompts/ holds tracked audit artifacts (inbox,
+    # [R104] prompt-pairs ledger), not runtime state.
     volumes:
       - ./var/sandbox:/var/sandbox
       - ./var/sandbox/.claude-sdd:/workspace/.claude/sdd
       - ./var/sandbox/tmp:/workspace/tmp
+      - ./prompts:/workspace/prompts
     # [R65] network egress restricted: internal network only.
     # Egress allowlist (DNS allowlist) is enforced at the Docker daemon /
     # gateway level for authorized hosts only (npm registry during

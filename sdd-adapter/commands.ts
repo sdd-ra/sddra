@@ -45,9 +45,18 @@ export class CommandRunner {
     this.projectRoot = projectRoot;
   }
 
-  async run(commandName: string, args: string[] = []): Promise<CommandResult> {
+  async run(commandName: string, args: string[] = [], customerPrompt?: string, aiPrompt?: string): Promise<CommandResult> {
     const normalized = commandName.startsWith("/") ? commandName : `/${commandName}`;
 
+    // [R104] Every /sdd* invocation appends a prompt-pair record:
+    // customer_prompt = RAW user text (any language, verbatim),
+    // ai_prompt = the normalized best-practice English prompt actually
+    // executed — the agent's protocol translation of the intent (chain
+    // steps, DEC/TASK actions, provenance, language context). When the
+    // agent supplies no aiPrompt, the mechanical command form is the
+    // fallback. Recorded BEFORE execution so even failing/escaping runs
+    // leave their trail (append-only, R57 discipline).
+    this.appendPromptPair(normalized, customerPrompt, args, aiPrompt);
     switch (normalized) {
       case "/sdd-skills":
         return this.runSkillsCommand(args);
@@ -82,6 +91,39 @@ export class CommandRunner {
           exitCode: 0,
           output: `Command ${normalized} is not implemented in runtime.`,
         };
+    }
+  }
+
+  /**
+    * [R104] Append a {ts, command, customer_prompt, ai_prompt} pair to
+    * prompts/history/prompt-pairs.jsonl. customer_prompt is the raw user
+    * text verbatim; ai_prompt is the normalized best-practice English
+    * prompt the agent actually executed — a full protocol translation
+    * of the intent (chain steps, DEC/TASK actions, provenance, language
+    * context), NOT a mechanical echo of the command. Fallbacks: absent
+    * aiPrompt → command + args form; absent customerPrompt → args joined.
+    * Never throws: history recording must not break command execution.
+    */
+  private appendPromptPair(
+    command: string,
+    customerPrompt: string | undefined,
+    args: string[],
+    aiPrompt: string | undefined
+  ): void {
+    try {
+      const dir = path.join(this.projectRoot, "prompts", "history");
+      fs.mkdirSync(dir, { recursive: true });
+      const file = path.join(dir, "prompt-pairs.jsonl");
+      const record = {
+        ts: new Date().toISOString(),
+        command,
+        customer_prompt: customerPrompt ?? args.join(" "),
+        ai_prompt: aiPrompt ?? (args.length > 0 ? `${command} ${args.join(" ")}` : command),
+      };
+      fs.appendFileSync(file, JSON.stringify(record) + "\n", "utf8");
+    } catch {
+      // History write failures are swallowed deliberately: the command
+      // itself must proceed; /sdd-health surfaces the ledger state.
     }
   }
 
