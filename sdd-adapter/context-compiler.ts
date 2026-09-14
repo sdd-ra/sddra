@@ -39,11 +39,9 @@ export class ContextCompiler {
     const traversed = new Set<string>(seedIds);
     while (traversalQueue.length > 0) {
       const current = traversalQueue.shift()!;
-      const node = allRefs.get(current);
-      if (!node) continue;
-      const declared = [...(node.dependsOn || []), ...(node.requiredBy || [])].filter((d) => typeof d === "string");
+      const declared = allRefs.get(current) || [];
       for (const next of declared) {
-        if (allRefs.has(next) && !traversed.has(next)) {
+        if (typeof next === "string" && allRefs.has(next) && !traversed.has(next)) {
           traversed.add(next);
           traversalQueue.push(next);
         }

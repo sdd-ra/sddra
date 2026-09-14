@@ -4,12 +4,20 @@ import path from "path";
 /**
  * Delivery Runner — implements .sdd/chains/delivery.sdd (DL1) StepState
  * semantics with persisted step states, conditional RF-XX skips, and
- * blocking-BUG stops ([DL1-1..6]).
+ * blocking-BUG stops ([DL1-1..8]).
+ *
+ * FLOW VERSION 2 (Phase 155): within each branch, scoped security
+ * (SC-XX) PRECEDES branch tests (XX-TS) — security-defective code is
+ * never tested first. FTS (Final Test Suite: cross-layer E2E,
+ * integration, regression) runs after all active branches' XX-TS and
+ * before AN.
  *
  * The flow is IMMUTABLE ([DL1-1]); /next continues from SAVED STATE
  * ([DL1-2][DL1-3]); a step is DONE only with proof ([DL1-4]); a blocking
  * BUG stops the flow ([DL1-5]); VR requires all required steps complete
- * AND no blocking BUG ([DL1-6]).
+ * AND no blocking BUG ([DL1-6]). v1 runs (state files without
+ * flow_version) are DEPRECATED — re-initialized, never resumed under
+ * the v2 ordering ([DL1-7]); FTS is mandatory ([DL1-8]).
  */
 
 export type DeliveryStep =
@@ -17,9 +25,12 @@ export type DeliveryStep =
   | "BE" | "DB" | "API" | "FE" | "MD" | "DC"
   | "CR-BE" | "CR-DB" | "CR-API" | "CR-FE" | "CR-MD" | "CR-DC"
   | "RF-BE" | "RF-DB" | "RF-API" | "RF-FE" | "RF-MD" | "RF-DC"
-  | "BE-TS" | "DB-TS" | "API-TS" | "FE-TS" | "MD-TS" | "DC-TS"
   | "SC-BE" | "SC-DB" | "SC-API" | "SC-FE" | "SC-MD" | "SC-DC"
+  | "BE-TS" | "DB-TS" | "API-TS" | "FE-TS" | "MD-TS" | "DC-TS"
+  | "FTS"
   | "AN" | "VR";
+
+export const FLOW_VERSION = 2;
 
 export interface DeliveryState {
   run_id: string;
@@ -30,9 +41,13 @@ export interface DeliveryState {
   rf_skipped: Record<string, boolean>;
   blocking_bugs: string[];
   last_checkpoint: string | null;
+  /** 2 = current ordering; absent = v1 deprecated run ([DL1-7]). */
+  flow_version: number;
+  /** Set when a v1 run is re-initialized (original run_id recorded). */
+  deprecated_from?: string;
 }
 
-/** Canonical DL1 flow order (fixed; immutable [DL1-1]). */
+/** Canonical DL1 v2 flow order (fixed; immutable [DL1-1]). */
 const FLOW: DeliveryStep[][] = [
   ["BC"], ["BR"], ["BD"], ["DS"], ["TK"], ["BDD"],
   // Parallel implementation branches (each entry independent).
@@ -40,8 +55,11 @@ const FLOW: DeliveryStep[][] = [
   ["CR-BE", "CR-DB", "CR-API", "CR-FE", "CR-MD", "CR-DC"],
   // RF-XX is conditional per-branch (skipped when CR-XX passed clean).
   ["RF-BE", "RF-DB", "RF-API", "RF-FE", "RF-MD", "RF-DC"],
-  ["BE-TS", "DB-TS", "API-TS", "FE-TS", "MD-TS", "DC-TS"],
+  // v2: scoped security runs BEFORE branch tests.
   ["SC-BE", "SC-DB", "SC-API", "SC-FE", "SC-MD", "SC-DC"],
+  ["BE-TS", "DB-TS", "API-TS", "FE-TS", "MD-TS", "DC-TS"],
+  // FTS: cross-layer E2E/integration/regression after branch tests.
+  ["FTS"],
   ["AN"], ["VR"],
 ];
 
@@ -64,9 +82,24 @@ export class DeliveryRunner {
   load(run_id: string): DeliveryState {
     const file = this.statePath(run_id);
     if (fs.existsSync(file)) {
-      return JSON.parse(fs.readFileSync(file, "utf-8"));
+      const loaded = JSON.parse(fs.readFileSync(file, "utf-8"));
+      // [DL1-7] v1 runs (no flow_version) are DEPRECATED: re-initialize,
+      // never silently resume under the v2 ordering.
+      if (loaded.flow_version !== FLOW_VERSION) {
+        const fresh = this.freshState(run_id);
+        fresh.deprecated_from = loaded.run_id ?? run_id;
+        this.save(fresh);
+        return fresh;
+      }
+      return loaded as DeliveryState;
     }
-    const fresh: DeliveryState = {
+    const fresh = this.freshState(run_id);
+    this.save(fresh);
+    return fresh;
+  }
+
+  private freshState(run_id: string): DeliveryState {
+    return {
       run_id,
       current_step: "BC",
       completed_steps: [],
@@ -77,9 +110,8 @@ export class DeliveryRunner {
       rf_skipped: {},
       blocking_bugs: [],
       last_checkpoint: null,
+      flow_version: FLOW_VERSION,
     };
-    this.save(fresh);
-    return fresh;
   }
 
   /** Persist state after every change ([RT5] discipline). */
