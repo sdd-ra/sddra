@@ -129,7 +129,7 @@ Tasks:
     priority: P0
     risk: HIGH
     depends: []
-    title: Security-first ordering + AI-signature history purge + rename sddra — [R101]/[R103] encoded, signatures purged from all branches
+    title: Security-first ordering + AI-signature history purge + rename the intermediate repo name — [R101]/[R103] encoded, signatures purged from all branches
 
   2026-0913-002:
     state: DONE

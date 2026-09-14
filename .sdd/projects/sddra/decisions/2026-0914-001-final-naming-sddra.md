@@ -3,21 +3,23 @@
 id: DEC-2026-0914-001
 type: operational
 status: closed
-title: Settle final naming — expansion "SDD & Reasoning Architecture", repo renamed sddra → sddra
-context: DEC-2026-0913-006 renamed the repo to sddra as an
-  intermediate step; user settled the final identity: the expansion
-  is "SDD & Reasoning Architecture" and the repo name is sddra
-  (short, discoverable, matches package name sddra).
+title: Settle final naming — expansion "SDD & Reasoning Architecture", repo renamed to sddra
+context: DEC-2026-0913-006 performed an intermediate repo rename; the
+  user settled the final identity: the expansion is "SDD & Reasoning
+  Architecture" and the repo name is sddra (short, discoverable,
+  matches package name sddra). Earlier repository names are retired
+  and MUST NOT appear anywhere in the repo, its history, or its PRs.
 problem: One name everywhere — README/docs/plugin manifests/package
-  metadata/remote URL must not diverge.
+  metadata/remote URL must not diverge; retired names are treated as
+  provenance pollution (same standing as [R103] AI signatures).
 options:
   - option: rename to sddra + expansion SDD & Reasoning Architecture
     pros: [matches package.json name, short/discoverable, one identity]
     cons: [URL churn once more]
     cost: LOW
-  - option: keep sddra, expansion stays Spec-Driven
+  - option: keep the intermediate name, expansion stays Spec-Driven
     pros: [no churn]
-    cons: [longer name, diverges from package name, "Spec-Driven
+    cons: [longer name, diverges from package name, the "Spec-Driven
       Development & Engineering" expansion was never the user's
       chosen identity]
     cost: LOW
@@ -35,6 +37,6 @@ approved_at: 2026-09-14
 implementation:
   - README/docs/package/plugin manifests updated to sddra URLs
   - expansion "SDD & Reasoning Architecture" in all title surfaces
-  - GitHub repo renamed sddra → sddra (redirect preserved)
+  - GitHub repo renamed to sddra (redirect preserved)
   - local remote URL updated to RasimAghayev/sddra.git
 State: closed

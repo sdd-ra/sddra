@@ -622,6 +622,43 @@ export class CommandRunner {
     }
     lines.push("  Projects purity: checked");
 
+    // [HEALTH-11] retired-name scan ([R108]) — retired repository names
+    // are provenance pollution: CRITICAL in tree text files. The exact
+    // retired names live only here (unicode-escaped), never in specs.
+    const retiredNames = ["sddra", "sddra"];
+    let retiredHits = 0;
+    const retiredDirs = [this.sddRoot, "docs", ".claude/docs", ".kilo/skills", "prompts"];
+    for (const dir of retiredDirs) {
+      const absDir = path.join(this.projectRoot, dir);
+      if (!fs.existsSync(absDir)) continue;
+      const walkNames = (d: string): void => {
+        for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+          if (entry.name === "node_modules" || entry.name.startsWith(".")) continue;
+          const full = path.join(d, entry.name);
+          if (entry.isDirectory()) {
+            // template/concept folders like templates/specdd are
+            // naming concepts, not repo identity — skip them
+            if (full.includes(path.join(this.sddRoot, "templates"))) continue;
+            walkNames(full);
+            continue;
+          }
+          if (!/\.(sdd|md|ts|json|jsonc|yaml|yml|js)$/i.test(entry.name)) continue;
+          const content = fs.readFileSync(full, "utf-8");
+          for (const name of retiredNames) {
+            if (content.includes(name)) {
+              retiredHits++;
+              findings.push({ check: "retired-name", severity: "CRITICAL", path: path.relative(this.projectRoot, full), name });
+              lines.push(`  CRITICAL: retired repo name in ${path.relative(this.projectRoot, full)}`);
+              break;
+            }
+          }
+        }
+      };
+      walkNames(absDir);
+    }
+    if (retiredHits > 0) downgrade("UNHEALTHY");
+    lines.push(`  Retired-name scan: ${retiredHits} hits`);
+
     lines.unshift(`Status: ${status}`);
     const exitCode = status === "HEALTHY" ? 0 : status === "DEGRADED" ? 1 : status === "UNHEALTHY" ? 2 : 3;
     return {

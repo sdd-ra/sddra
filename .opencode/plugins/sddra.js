@@ -1,6 +1,6 @@
 export default {
   name: 'sddra',
-  description: 'SDDRA: Spec-Driven Development & Engineering Operating System',
+  description: 'SDDRA: SDD & Reasoning Architecture — spec-first operating system for AI-assisted engineering',
   version: '0.1.0',
   author: {
     name: 'SDDRA',
