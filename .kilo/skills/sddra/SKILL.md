@@ -1,6 +1,6 @@
 ---
 name: sddra
-description: SDDRA (sddra) — Spec-Driven Development & Reasoning Architecture. Read-order, chain graph, command map, and core rules for working inside this repo.
+description: SDDRA (sddra.git) — SDD & Reasoning Architecture. Read-order, chain graph, command map, and core rules for working inside this repo.
 ---
 
 # SDDRA — SDD & Reasoning Architecture

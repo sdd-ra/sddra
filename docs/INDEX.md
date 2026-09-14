@@ -1,7 +1,6 @@
 # SDDRA Documentation
 
-English documentation for SDDRA — Spec-Driven Development &
-Reasoning Architecture. Source of truth: the `.sdd/` spec tree.
+English documentation for SDDRA — SDD & Reasoning Architecture. Source of truth: the `.sdd/` spec tree.
 
 | Doc | What it covers |
 |-----|----------------|

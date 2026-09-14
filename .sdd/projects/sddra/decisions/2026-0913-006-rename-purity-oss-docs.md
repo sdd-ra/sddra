@@ -1,5 +1,10 @@
 # DEC-2026-0913-006 — Rename sddra + projects-dir purity + open-source docs
 
+> Partially superseded 2026-09-14 by DEC-2026-0914-001: final naming
+> settled as SDDRA = "SDD & Reasoning Architecture" with repo name
+> **sddra** (sddra was an intermediate step). Purity ([R105])
+> and docs decisions below remain in force.
+
 id: DEC-2026-0913-006
 type: operational
 status: closed

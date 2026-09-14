@@ -1,4 +1,4 @@
-# SDDRA — Spec-Driven Development & Reasoning Architecture
+# SDDRA — SDD & Reasoning Architecture
 
 **A specification-first operating system for AI-assisted software
 engineering.** The `.sdd/` directory is the single source of truth:
@@ -26,7 +26,7 @@ before code exists, so whole defect classes never happen.
 ## Quick start
 
 ```bash
-git clone https://github.com/<you>/sddra.git sddra && cd sddra
+git clone https://github.com/<you>/sddra.git && cd sddra
 docker compose build sdd-sandbox
 # then pick an install path — see docs/getting-started/install.md
 ```

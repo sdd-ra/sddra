@@ -1,7 +1,7 @@
 {
   "name": "sddra",
   "version": "0.1.0",
-  "description": "SDDRA: Spec-Driven Development & Engineering Operating System",
+  "description": "SDDRA: SDD & Reasoning Architecture — spec-first operating system for AI-assisted engineering",
   "main": ".sdd/INDEX.sdd",
   "engines": {
     "claude-code": ">=1.0.0",

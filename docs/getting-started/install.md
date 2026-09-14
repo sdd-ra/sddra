@@ -17,7 +17,7 @@ sandbox is built from the local Dockerfile (never pulled from a
 registry, [R91]); all bind mounts live under `./var/` ([R92]).
 
 ```bash
-git clone https://github.com/<you>/sddra.git sddra
+git clone https://github.com/<you>/sddra.git
 cd sddra
 docker compose build sdd-sandbox        # builds sddra-sandbox:local
 docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \

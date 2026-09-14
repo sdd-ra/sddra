@@ -1,9 +1,9 @@
 # SDDRA Architecture Overview
 
-SDDRA (Spec-Driven Development & Reasoning Architecture) is a
-specification-first operating system for AI-assisted software
-engineering. The `.sdd/` directory is the single source of truth;
-code, commands, and docs are derived surfaces.
+SDDRA (SDD & Reasoning Architecture) is a specification-first operating
+system for AI-assisted software engineering. The `.sdd/` directory is
+the single source of truth; code, commands, and docs are derived
+surfaces.
 
 ## Three-language model
 

@@ -33,6 +33,7 @@ Recent Decisions:
   - DEC-2026-0913-004: Mojibake purge + scanner self-trip prevention (closed)
   - DEC-2026-0913-005: gstack/Garry Tan/Rentier alignment adoptions (closed)
   - DEC-2026-0913-006: Rename + projects purity + open-source EN docs (closed)
+  - DEC-2026-0914-001: Final naming — SDD & Reasoning Architecture, repo sddra (closed)
 
 Navigation:
   DEC20260913001: @2026-0913-001-security-first-signature-purge.md
@@ -41,6 +42,7 @@ Navigation:
   DEC20260913004: @2026-0913-004-mojibake-purge.md
   DEC20260913005: @2026-0913-005-gstack-alignment.md
   DEC20260913006: @2026-0913-006-rename-purity-oss-docs.md
+  DEC20260914001: @2026-0914-001-final-naming-sddra.md
 
 Navigation:
   Index: @INDEX.sdd
