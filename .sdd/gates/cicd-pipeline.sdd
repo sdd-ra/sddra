@@ -1,0 +1,101 @@
+Gates: CI/CD Pipeline Mapping
+
+Spec: CicdPipeline
+
+Purpose:
+  Canonical mapping of the security-first CI/CD PR pipeline to SDD
+  gates, stages, and the scanner catalog. Target projects'
+  pipeline configs (GitHub Actions, GitLab CI, Jenkins...) MUST
+  instantiate this ORDER — SDDRA defines WHAT and in WHICH ORDER;
+  the pipeline config defines HOW (tooling syntax).
+
+Owns: gates/cicd-pipeline.sdd
+
+Scope:
+  Spec-level mapping only — NO pipeline implementation lives here
+  (out of scope: YAML/Workflow files; each target project owns its
+  config, instantiated from this mapping).
+
+Pipeline (canonical order — security before completion, mirroring
+DL1 v2 ordering):
+
+  PR received
+    |
+  1  Dependency Check .... DEPENDENCY_GATE
+    |                        @dependency-gate.sdd (intake decision)
+  2  SAST / SCA .......... SEC.SAST + SEC.DEP
+    |                        @../security/scanners.sdd
+  3  Secret Detection .... SEC.SECRET
+    |                        @../security/scanners.sdd
+  4  Lint ............... CODE-QUALITY-GATE
+    |                        @../testing/CODE-QUALITY-GATE.sdd
+  5  Unit Test ........... testing gates (unit level)
+    |                        @../testing/gates.sdd, levels.sdd
+  6  Integration Test .... testing gates (integration level)
+    |                        @../testing/gates.sdd
+  7  Security Scan ...... SC stage (scoped instances)
+    |                        @../stages/SC.sdd, stage/gates.sdd
+  8  Container Scan ..... SEC.CONTAINER
+    |                        @../security/scanners.sdd
+  9  Infrastructure Scan . SEC.IAC
+    |                        @../security/scanners.sdd (Terraform/
+    |                        Kubernetes security)
+ 10  Code Review Gate ... CR stage (peer review)
+    |                        @../workflow/step-keys.sdd
+    |                        (CRScopedSemantics)
+ 11  BUILD .............. build gates
+    |                        @infrastructure.sdd
+ 12  DEPLOY ............. release gates + DO stage
+                             @release.sdd, ../stages/DO.sdd
+
+MappingRationale:
+
+  - Steps 1-3 run BEFORE code-quality steps: a dependency or secret
+    failure is the cheapest possible failure — it never reaches
+    test compute ([R101] security-first work ordering).
+  - Step 7 (Security Scan) mirrors DL1 v2: scoped security precedes
+    test COMPLETION (unit/integration may run in parallel, but the
+    PR cannot complete without SC pass — No Security Pass -> No
+    Test Completion).
+  - Steps 8-9 protect the artifacts and infrastructure the build
+    will produce.
+  - Step 10 (Code Review Gate) is the human/peer gate before build
+    resources are spent ([G11] AI cannot waive).
+  - DAST (SEC.DAST) runs POST-DEPLOY on staging — not a PR gate; it
+    feeds the incident/observability loop
+    (@../observability/INDEX.sdd).
+
+Rules:
+
+  [CC1] This mapping is CANONICAL — CI configurations in target
+        projects MUST instantiate this order; reordering security
+        checks after completion checks is a drift violation
+        (@../queries/drift-detection.sdd).
+  [CC2] Every pipeline stage in a target project MUST cite its SDD
+        gate/scanner source — uncited stages are orphan pipeline
+        steps (drift).
+  [CC3] Pipeline ordering is security-first, mirroring DL1 v2 —
+        security precedes test completion in every layer of the
+        system (delivery chain AND CI/CD).
+  [CC4] Gate failures block subsequent stages ([GT4]) — a failing
+        Dependency Check never proceeds to SAST compute.
+  [CC5] Waivers follow gate policy (@policy.sdd [GT9]-[GT10]) —
+        with Reason, Owner, Expiration; AI cannot waive ([G11]).
+
+Navigation:
+  GatesIndex: @INDEX.sdd
+  DependencyGate: @dependency-gate.sdd
+  Scanners: @../security/scanners.sdd
+  TestingGates: @../testing/gates.sdd
+  CodeQualityGate: @../testing/CODE-QUALITY-GATE.sdd
+  SecurityStage: @../stages/SC.sdd
+  StepKeys: @../workflow/step-keys.sdd
+  DeliveryChain: @../chains/delivery.sdd (v2 ordering)
+  ReleaseGates: @release.sdd
+  DriftDetection: @../queries/drift-detection.sdd
+
+State: +
+  (Phase 155: created as the spec-level CI/CD mapping from the
+   security-first pipeline proposal; scanner catalog extended with
+   SEC.IAC (checkov, tfsec, kube-linter); pipeline implementation
+   itself remains per-project config)

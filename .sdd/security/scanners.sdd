@@ -63,6 +63,17 @@ Scanners:
       command: cosign verify
       on_failure: block
 
+  SEC.IAC:
+    checkov:
+      command: checkov -d .
+      on_failure: block
+    tfsec:
+      command: tfsec .
+      on_failure: block
+    kubernetes:
+      command: kube-linter lint .
+      on_failure: block
+
 ScannerExecution:
   Scanners run at defined points in the pipeline:
     pre-commit: SEC.SECRET (local)
