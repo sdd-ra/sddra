@@ -35,20 +35,29 @@ WorkInProgress:
   - Agent-Reach R2 adoptions A1-A3 pending application (install.md one-liner + auth ladder; /sdd-health prescriptions)
 
 RecentChanges:
-  - Phase 153 DONE: final identity sddra everywhere; retired names purged
-    from tree, history (filter-repo, 191 commits preserved), and PR
-    surface (5 renovate bodies edited); fresh-clone verify 0/0
-  - [R107] no AI traces in PR/issue surface; [R108] single identity,
-    retired names = provenance pollution, [HEALTH-11] CRITICAL scan
-  - Agent-Reach Round 2 analysis (agent-reach-round2.md): adoptions A1-A3
-  - DEC-2026-0914-001/002 recorded; analysis INDEX gap fixed (5 docs)
+  - Phase 154 DONE: RIE (.sdd/references/ — engine, contract, matrix,
+    fit, evidence, freshness; REF/DR templates) + Skill Evolution
+    Engine (/sdd-evolve 31st command 3-way; lifecycle, source hierarchy
+    L0-L5, SKILL_EVOLUTION records, dedup, promotion, Update
+    Manifests, TRUST_0..5 delivery; research records; NO_VALUE->DISCARD)
+  - [R110] reference never authority; [R111] no-copy ingestion,
+    provenance survives; [R109] routing files human-authored
+  - External research round: RA-1 dependsOn traversal + RA-2 staleness
+    fallback in /sdd-context ([CTX-CMD-05/06]); RA-4 evidence
+    citations in cache.sdd; kinship confirmed vs 2026 field practice
+  - Phase 153 DONE: identity purge (history filter-repo, PR bodies,
+    R107/R108, HEALTH-11 scanner, TS7 test flow — 26/26 green)
 
 NextActions:
   - Human review: promotion packet (task 2026-0906-005 close)
   - Human review: cleanup analysis (approve deletions/moves or reject)
-  - gstack + dsh-plugin analysis rounds (RS1 protocol)
-  - Apply Agent-Reach A1-A3 adoptions
+  - gstack + dsh-plugin analysis rounds (RS1 protocol; gstack clone in tmp/)
+  - Apply Agent-Reach A1-A3 adoptions (install one-liner, auth ladder,
+    doctor prescriptions)
+  - Phase 137 candidate: Skill Testing & Knowledge Verification
+    (user-flagged next layer — skill dogruluk/aktual/duplicate/tetbiq
+    avtomatik yoxlamasi)
 
-Fingerprint: CTX-2026-0914-B
+Fingerprint: CTX-2026-0914-C
 
 State: active

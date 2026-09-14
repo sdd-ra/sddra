@@ -1,0 +1,108 @@
+# /sdd-evolve
+
+Purpose:
+  Evolve the SDD knowledge/skill ecosystem: research current practices,
+  compare against existing skills, validate, deduplicate, and deliver
+  changes safely. (Git-state sync stays /sdd-update; UPDATE != GIT PULL.)
+
+Owns: commands/sdd-evolve.sdd
+
+Description:
+  Runs the Skill Evolution & Update Engine (skills/evolution.sdd):
+  loads skill index + metadata (last_verified/review_after), discovers
+  new knowledge from official sources (source hierarchy L0-L5) and RIE
+  references, compares current vs new, validates against project fit,
+  deduplicates (canonical/alias), and produces an Update Manifest with
+  safe delivery (direct commit or branch+PR per trust mode).
+
+Usage:
+  /sdd-evolve
+  /sdd-evolve --deep
+  /sdd-evolve @<domain>
+  /sdd-evolve --report
+  /sdd-evolve --promote
+
+Options:
+  --deep     Re-research all critical skills regardless of review_after
+  @<domain>  Scope evolution to one domain (e.g. @go, @architecture)
+  --report   Show last Update Manifest + evolution status only
+  --promote  Evaluate promotion candidates (@project -> @shared)
+
+InitialLoad:
+  - skills/evolution.sdd (engine)
+  - skills/INDEX.sdd (skill registry routing)
+  - .sdd/updates/INDEX.sdd (manifest registry)
+
+Behavior:
+  1. LOAD: skill index + per-skill metadata (version, status,
+     last_verified, review_after, confidence, depends_on)
+  2. DUE: select skills where review_after <= today (or all critical
+     with --deep; or @domain scope)
+  3. DISCOVER: main repo upstream changes + web research via source
+     hierarchy (L0 official first; RIE reference intake if linked)
+  4. COMPARE: current guidance vs found practices (SKILL_EVOLUTION
+     records with evidence + source level)
+  5. VALIDATE: evidence strength, project fit (L0-L5 recommended_for),
+     confidence
+  6. DEDUP: near-duplicates -> canonical + alias/deprecated
+  7. EVOLVE: incremental update (v -> v+1), new child/parent placement,
+     promotion candidates, deprecations — SKILL_EVOLUTION record first,
+     never direct replacement
+  8. VERIFY: SDD consistency check (/sdd-health) + skill tests
+     (.sdd/testing run.ps1 knowledge category)
+  9. MANIFEST: write .sdd/updates/UPD-<n> (trigger, counts, changes,
+     sources, validation result, delivery mode)
+  10. DELIVER: own repo -> commit/push; non-collaborator ->
+      branch sdd/update/<area>/<slug> + commit sdd(skill): ... + PR
+      (PR body: Why/Changes/Sources/Validation/Risk; every change
+      carries SOURCE+EVIDENCE+REASON+CHANGE)
+  11. REPORT: final counts summary; append prompt-pair ([R104])
+
+AutoMode:
+  trigger: none (explicit human command only — evolution research is
+  deliberate, not background)
+  fail: open (manifest records failure; skills unchanged)
+
+Output:
+  SDD EVOLVE COMPLETE
+    Sources checked: N (official: X, community: Y)
+    Skills checked: N
+    Skills unchanged: N
+    Skills updated: N
+    New skills: N (child: N, standalone: N)
+    Deprecated: N
+    Deduplicated: N (canonical: <list>)
+    References added: N
+    Architecture rules changed: N
+    Validation: PASSED | FAILED
+    Delivery: direct commit <hash> | PR #<n>
+
+Rules:
+  [EVO-01] /sdd-evolve NEVER replaces a skill directly — every change
+           starts as a SKILL_EVOLUTION record (evidence-backed).
+  [EVO-02] Source hierarchy L0>L1>L2>L3>L4>L5 governs confidence;
+           L5-only (AI inference) changes are proposals, never updates.
+  [EVO-03] Skills past review_after are re-researched; fresh skills
+           are skipped (unless --deep).
+  [EVO-04] Deduplication runs before creation: canonical is chosen,
+           duplicates become aliases/references/deprecated — [SK13]
+           granularity, [R81] link over copy.
+  [EVO-05] Delivery respects trust mode: TRUST_0..TRUST_5 map to
+           Phase 131 authority levels; direct push requires L4-style
+           human approval for irreversible registry changes.
+  [EVO-06] Update Manifest (UPD-<n>) is mandatory for every run —
+           machine-readable audit trail ([R95] references it).
+  [EVO-07] NO_VALUE research outcome -> DISCARD (research does not
+           obligate skill creation) — recorded in research record.
+  [EVO-08] Routing files touched by evolution stay human-authored
+           ([R109]); evolution PROPOSES routing edits, never rewrites.
+
+Mode: SUPERVISED
+
+Navigation:
+  INDEX: @../../INDEX.sdd
+  Engine: @../skills/evolution.sdd
+  Updates: @../updates/INDEX.sdd
+  RIE: @../references/engine.sdd
+
+State: +

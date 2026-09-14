@@ -1,0 +1,12 @@
+# Updates Index — Skill Evolution Update Manifests
+
+Registry of /sdd-evolve Update Manifests (machine-readable audit
+trail, skills/evolution.sdd). Entry: UPD-<date>-<n> @updates/<file>.
+
+Rules:
+  [UPDX-01] Every /sdd-evolve run produces exactly one manifest.
+  [UPDX-02] Manifest records trigger, counts, changes, sources,
+            validation, and delivery — [EVO-06].
+  [UPDX-03] Manifests are append-only history ([R57]).
+
+State: +

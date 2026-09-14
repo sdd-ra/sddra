@@ -1,0 +1,14 @@
+# Reference-Driven Design Decisions
+
+DEC-style records for decisions made through reference comparison
+(RIE engine, references/engine.sdd). Conflicts between references
+route here with the Reference Matrix attached.
+
+Entry format:
+  <decision>
+    decision: TAKE | ADAPT | REJECT | IGNORE
+    pattern: @pattern.<name>
+    reason: evidence bullets
+    source: REF-<n>
+
+State: +

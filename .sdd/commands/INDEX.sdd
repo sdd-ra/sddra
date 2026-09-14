@@ -65,6 +65,7 @@ Commands:
   /sdd-design: Design analysis, evaluation, discovery, and auto-invocation
   /sdd-marketplace: External skill marketplace — list, sync, import, audit
   /sdd-research: Deep research round — RS1 arm entry (scope → search → verify → Pareto gate → integrate → delete staging)
+  /sdd-evolve: Evolve the knowledge ecosystem — research, compare, validate, dedup, deliver (skills/evolution.sdd engine; UPDATE is not GIT PULL)
 
 Navigation:
   Chains: @../chains/INDEX.sdd
@@ -99,5 +100,6 @@ Navigation:
   DesignCommand: @sdd-design.sdd
   MarketplaceCommand: @sdd-marketplace.sdd
   ResearchCommand: @sdd-research.sdd
+  EvolveCommand: @sdd-evolve.sdd
 
 State: +

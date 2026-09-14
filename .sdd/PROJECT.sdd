@@ -369,5 +369,18 @@ Rules:
            repo context files reduced agent success ~3% and raised
            inference cost 20%+, while human-written improved ~4%);
            generated output may PROPOSE edits, never replace the file.
+    [R110] Reference is never authority — external references (URLs,
+           docs, repos ingested via the Reference Intelligence Engine,
+           references/engine.sdd) feed PROPOSALS, not rules: every
+           adoption passes validation against project constraints
+           (Project Fit); a reference can never auto-override project
+           architecture/policy; source changes produce REF DELTA
+           reports, never silent rule changes.
+    [R111] No-copy ingestion, provenance survives — reference
+           analysis works on tmp/ snapshots that are DELETED after
+           knowledge extraction ([R96]); raw assets/code/markup never
+           enter .sdd/ or product code; every derived pattern carries
+           a provenance record (source, captured date, evidence,
+           derived links) that survives snapshot deletion.
  
 State: +

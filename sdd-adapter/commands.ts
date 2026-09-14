@@ -82,6 +82,8 @@ export class CommandRunner {
         return this.runDesignCommand(args);
       case "/sdd-marketplace":
         return this.runMarketplaceCommand(args);
+      case "/sdd-evolve":
+        return this.runEvolveCommand(args);
       case "/sdd-health":
         return this.runHealthCommand(args);
       default:
@@ -499,6 +501,78 @@ export class CommandRunner {
       decision: "PASS",
       exitCode: 0,
       output: outputLines.join("\n"),
+    };
+  }
+
+  /**
+   * /sdd-evolve runtime — Skill Evolution & Update Engine status surface
+   * (skills/evolution.sdd). READ-ONLY here: scans skill metadata
+   * (last_verified/review_after), reports DUE skills, lists recent
+   * Update Manifests. Actual EVOLVE research/delivery runs via the
+   * SUPERVISED spec flow with human gates — never silently here
+   * ([EVO-01], Phase 131 authority).
+   */
+  private runEvolveCommand(args: string[]): CommandResult {
+    const reportOnly = args.includes("--report");
+    const lines: string[] = ["SKILL EVOLUTION STATUS", ""];
+    const skillsDir = path.join(this.sddRoot, "skills");
+
+    // Scan domain INDEX files for skill metadata markers
+    let totalSkills = 0;
+    const due: string[] = [];
+    const today = new Date();
+    const domains = fs.existsSync(skillsDir)
+      ? fs.readdirSync(skillsDir, { withFileTypes: true })
+          .filter((e) => e.isDirectory() && !e.name.startsWith("."))
+          .map((e) => e.name)
+      : [];
+    for (const domain of domains) {
+      const domainIndex = path.join(skillsDir, domain, "INDEX.sdd");
+      if (!fs.existsSync(domainIndex)) continue;
+      const content = fs.readFileSync(domainIndex, "utf-8");
+      const matches = content.match(/^\s+\/?\S+\/(\S+):/gm) || [];
+      totalSkills += matches.length;
+      // review_after lines
+      const reviewMatches = content.matchAll(/review_after:\s*(\d{4}-\d{2}-\d{2})/g);
+      for (const rm of reviewMatches) {
+        const reviewDate = new Date(rm[1]);
+        if (reviewDate <= today) due.push(`${domain}/${rm[1]}`);
+      }
+    }
+    // Per-skill metadata lives in skill INDEX files; count declared skills
+    // via the skills INDEX registry instead of domain folder guesses.
+    const skillsIndex = path.join(skillsDir, "INDEX.sdd");
+    if (fs.existsSync(skillsIndex)) {
+      const si = fs.readFileSync(skillsIndex, "utf-8");
+      totalSkills = (si.match(/^\s+\S+\/\S+:/gm) || []).length || totalSkills;
+    }
+
+    // Update Manifests
+    const updatesDir = path.join(this.sddRoot, "updates");
+    const manifests = fs.existsSync(updatesDir)
+      ? fs.readdirSync(updatesDir).filter((f) => f.startsWith("UPD-")).sort().reverse()
+      : [];
+
+    lines.push(`Skills registered: ${totalSkills}`);
+    lines.push(`Domains: ${domains.length}`);
+    lines.push(`Review due (review_after <= today): ${due.length}`);
+    if (due.length > 0 && !reportOnly) {
+      lines.push("", "Due for re-research (run /sdd-evolve):");
+      for (const d of due.slice(0, 20)) lines.push(`  ${d}`);
+    }
+    lines.push(`Update Manifests: ${manifests.length}`);
+    if (manifests.length > 0) {
+      lines.push("", "Recent manifests:");
+      for (const m of manifests.slice(0, 5)) lines.push(`  ${m}`);
+    }
+    lines.push("", "Engine: skills/evolution.sdd (Phase 136 spec; UPDATE is not GIT PULL)");
+    if (reportOnly) lines.push("Mode: report only (no research performed)");
+
+    return {
+      command: "/sdd-evolve",
+      decision: "PASS",
+      exitCode: 0,
+      output: lines.join("\n"),
     };
   }
 

@@ -1,0 +1,134 @@
+# Reference Intelligence Engine (RIE)
+
+Phase: 154 (adopted 2026-09-14)
+Owns: references/engine.sdd
+Principle: AI kopyalamır — reference-dən QƏRAR çıxarır.
+(No cloning: extract decisions, never assets/code/markup.)
+
+## Pipeline
+
+```
+INPUT (URLs / Docs / Images / Repos)
+  -> CRAWL (fetch, render, relevant pages)
+  -> EXTRACT (visual/structural/pattern elements)
+  -> ANALYZE (understand + classify)
+  -> COMPARE (multi-reference: COMMON/UNIQUE/STRONG/WEAK/CONFLICT)
+  -> DISTILL (design language, not code: density/tone/spacing/
+     typography/navigation/interaction)
+  -> ADAPT (Project Fit: constraints vs reference -> FIT ANALYSIS)
+  -> VALIDATE (evidence levels: OBSERVED -> INFERRED -> VALIDATED
+     -> ADOPTED -> STANDARD)
+  -> ADOPT (TAKE / ADAPT / REJECT / IGNORE per pattern, with reason)
+  -> LINK INTO SDD (patterns.sdd, decisions.sdd, skill updates)
+```
+
+## Reference Contract (.reference object)
+
+```
+id: REF-<n>
+source: {type: web|doc|image|repo, url}
+intent: INSPIRE | CLONE-forbidden-but-study | COMPARE | STUDY |
+  DOCUMENT | IMPLEMENT | RESEARCH | COMPETITOR |
+  API_REFERENCE | ARCHITECTURE_REFERENCE
+scope: [visual, ux, interaction, architecture, api, security,
+  performance, devops, business-flow]
+forbid: [direct-copy, source-assets, code-transfer]
+target: @project.<area>
+```
+
+Intent default: INSPIRE when user gives bare URLs + a goal.
+
+## Scope prioritization
+
+User emphasis decides depth: "dashboard dizaynını bəyənirəm"
+-> homepage/dashboard/navigation/cards/tables/forms/responsive = high;
+blog/legal/footer/irrelevant = low. Crawl relevant pages only.
+
+## Multi-Reference Matrix
+
+| Area | Ref A | Ref B | Ref C | Decision |
+|------|-------|-------|-------|----------|
+| Navigation | rating | rating | rating | winner + why |
+
+Ratings derive from extracted evidence, not taste. Conflicts
+(STRONG vs STRONG) route to DEC with the matrix attached.
+
+## Project Fit Analysis
+
+Reference pattern vs project constraints (type: enterprise/banking/
+small VPS; scale L0-L5; audience) -> FIT | ADAPT | REJECT with
+reason. Example: huge hero + B2B admin panel = REJECT (page intent
+mismatch). Excessive animation + enterprise banking = REDUCE.
+
+## Decision record (per pattern)
+
+```
+pattern: <name>
+decision: TAKE | ADAPT | REJECT | IGNORE
+reason: [evidence bullets]
+source: REF-<n>
+```
+
+## Skill linkage
+
+3 references + same interaction pattern + project need
+-> check existing skill FIRST ([SK13]):
+- exists -> add REF-<n> as evidence to @skill.<name> (link, no copy)
+- new domain -> SKILL_EVOLUTION record (child of parent skill where
+  applicable; see skills/evolution.sdd Phase 136)
+- never create duplicate skills — deduplication runs before creation
+
+## Evidence levels
+
+OBSERVED -> INFERRED -> VALIDATED -> ADOPTED -> STANDARD
+(evidence: N references; confidence: high/medium/low; validated:
+yes/no; adopted: project-only | shared)
+
+## Ingestion & provenance ([R110] [R111])
+
+URL -> tmp/ RAW SNAPSHOT (html/css/screenshots, ephemeral)
+-> ANALYSIS -> EXTRACT KNOWLEDGE -> PROVENANCE RECORD
+-> DELETE TMP ([R96] tmp rule).
+
+Provenance survives deletion:
+```
+source: <url>
+captured: <date>
+evidence: design observation | architecture analysis | ...
+derived: @pattern.<name>
+```
+
+## Reference storage
+
+.sdd/references/
+  INDEX.sdd            routing
+  web/REF-<n>.sdd      one per analyzed reference (contract + observed
+                       + extracted + adopted + rejected + confidence)
+  design/patterns.sdd  distilled patterns
+  design/decisions.sdd reference-driven design decisions
+Project research cases: .sdd/projects/<name>/research/DR-<n>.sdd
+  (goal, references, findings w/ source, decision; re-runnable —
+  @research DR-<n> reuses results; REFRESH_STATUS fresh|stale|
+  changed|unavailable triggers re-analysis on demand)
+
+## Reference Delta & Freshness
+
+REF-<n>.last_checked + source_changed detection:
+- source changed -> REF DELTA reported; adopted patterns keep
+  (SOURCE_CHANGED, PROJECT_RULE_UNCHANGED) — reference is never
+  automatic authority over project rules ([R110]).
+- unavailable -> mark stale, keep provenance.
+
+## Vocabulary
+
+@ref (the reference object) | @inspiration (intent) |
+@pattern (distilled pattern) | @design (design language) |
+@research (DR case) | @benchmark (comparison set)
+
+## Applicability
+
+Same engine, all domains: DESIGN, UX, ARCHITECTURE, API, SECURITY,
+PERFORMANCE, DEVOPS, CODE PATTERN, BUSINESS FLOW. Flow is identical;
+scope/intent/forbid differ.
+
+State: +

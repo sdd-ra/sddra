@@ -1,133 +1,16 @@
-@references
+# References Index — RIE (Reference Intelligence Engine)
 
-Purpose:
-  Reusable engineering knowledge. AI loads these once and references
-  them across projects instead of re-deriving concepts.
+Engine: @engine.sdd (pipeline, contract, matrix, fit, evidence,
+freshness — read first)
+Web references: @web/ (one REF-<n>.sdd per analyzed reference)
+Design: @design/patterns.sdd (distilled patterns), @design/decisions.sdd
 
-Use this index before introducing any conceptual approach.
-
-Owns: references\index.sdd
-
-Registry:
-  Each reference is a trust-weighted knowledge entry. Every entry MUST
-  carry the following metadata fields:
-
-  Fields:
-    id:               @<namespace>.<name>
-    purpose:          one-line description of the rule/practice
-    status:           observed | candidate | validated | established | deprecated | unknown
-    trust:            low | medium | high | established
-    confidence:       low | medium | high
-    evidence_count:   integer (total evidence sources)
-    by_type:
-      code:          integer
-      tests:         integer
-      tasks:         integer
-      decisions:     integer
-      projects:      integer
-      production:    integer
-      external:      integer
-      human:         integer
-    provenance:       discovered_from / source / extracted_by / validated_by / validated_at
-    overrides:        optional list of @reference.id this supersedes in a project
-    override_reason:  optional justification for the override
-
-  Example:
-    @skill.idempotent-command
-      purpose: Prevent duplicate command execution.
-      status: validated
-      trust: medium
-      confidence: high
-      evidence_count: 4
-      by_type:
-        code: 0
-        tests: 1
-        tasks: 2
-        decisions: 0
-        projects: 1
-        production: 0
-        external: 0
-        human: 0
-      provenance:
-        discovered_from: @tmp.payment-service
-        source: payment-service repository
-        extracted_by: AI
-        validated_by: @task.1044
-        validated_at: 2026-08-31
-
-Navigation:
-  DDD: @ddd
-  Architecture: @architecture
-  Patterns: @patterns
-  Database: @database
-  Engineering: @engineering
-  BestPractices: @sdd/best-practices.sdd
-  SDDTools: @sdd/tool-comparison.sdd
-  EARSNotation: @sdd/ears-notation.sdd
-
-DecisionGuide:
-  Need domain modeling?
-    → @ddd
-
-  Need system structure?
-    → @architecture
-
-  Need reusable solution?
-    → @patterns
-
-  Need data management?
-    → @database
-
-  Need engineering principles?
-    → @engineering
-
-  Need default heuristics?
-    → @best-practices
-
-  Need to resolve a conflict?
-    Apply the priority hierarchy below, then fall back to a
-    project-specific decision.
-
-PriorityHierarchy:
-  1. Explicit project constraint       (highest — always wins)
-  2. Approved project decision
-  3. Validated project skill
-  4. Established organization knowledge
-  5. General best practice
-  6. AI suggestion                     (lowest)
-
-  Rule: Generic best practice MUST NOT override a project-specific
-  decision. Project-local context always wins over global defaults.
-
-Applicability:
-  CoreBanking:
-    ddd: STRONG
-    architecture: STRONG
-    patterns: MEDIUM
-    database: STRONG
-
-  Payment:
-    ddd: STRONG
-    architecture: STRONG
-    patterns: STRONG
-    database: STRONG
-
-  OrderManagement:
-    ddd: STRONG
-    architecture: MEDIUM
-    patterns: MEDIUM
-    database: MEDIUM
-
-  SimpleCRUD:
-    ddd: LOW
-    architecture: LOW
-    patterns: LOW
-    database: LOW
-
-  LandingPage:
-    ddd: NONE
-    architecture: NONE
-    patterns: NONE
-    database: NONE
+Rules:
+  [REF-01] References feed decisions; never clone assets/code/markup.
+  [REF-02] Intent must be recorded before analysis (default INSPIRE).
+  [REF-03] Every adopted pattern carries source REF + reason.
+  [REF-04] Reference never overrides project rules ([R110]).
+  [REF-05] Research cases are re-runnable (DR-<n> reuse; staleness
+           triggers re-analysis on demand).
 
 State: +

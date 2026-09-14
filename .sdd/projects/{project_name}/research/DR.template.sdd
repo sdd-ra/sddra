@@ -1,0 +1,24 @@
+# Research Case DR-<n>
+
+goal: <what this research case decides>
+
+references:
+  - REF-<n>
+  - REF-<n>
+
+status: fresh | stale | changed | unavailable
+last_checked: <date>
+
+findings:
+  <area>:
+    source: REF-<n>
+    finding: <what was learned>
+
+decision:
+  <result — link @design/@pattern/@skill/@architecture target>
+
+Reuse: @research DR-<n> reuses this case without re-crawling;
+staleness (source_changed/unavailable) triggers re-analysis on
+demand (references/engine.sdd Reference Delta).
+
+State: +

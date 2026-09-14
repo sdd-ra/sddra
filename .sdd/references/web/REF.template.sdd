@@ -1,0 +1,28 @@
+id: REF-<n>
+
+source:
+  type: web
+  url: <url>
+  captured: <date>
+
+intent: INSPIRE
+
+scope: [visual, ux, responsive, interaction]
+
+observed:
+  - <raw observations: sticky sidebar, dense tables, subtle shadows>
+
+extracted:
+  @pattern.<name>
+  @pattern.<name>
+
+adopted:
+  @project.<area>.<name>
+
+rejected:
+  <pattern>: <reason — page intent mismatch, density, ...>
+
+confidence: high | medium | low
+last_checked: <date>
+
+State: +

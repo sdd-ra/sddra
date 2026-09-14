@@ -1,0 +1,123 @@
+# Skill Evolution & Update Engine
+
+Phase: 136 (spec adopted 2026-09-14; runtime in sdd-adapter)
+Owns: skills/evolution.sdd
+Command: /sdd-evolve (knowledge evolution; /sdd-update stays git-sync)
+
+Principle: .sdd is not a self-refreshing knowledge repo; it is an
+EVOLUTION SYSTEM — it researches, compares, validates, improves, and
+SAFELY DELIVERS its knowledge (DISCOVER / EVOLVE / DELIVER separated).
+
+## Pipeline (/sdd-evolve)
+
+```
+LOAD SDD + SKILL INDEX (+version/timestamps)
+  -> CHECK MAIN REPO (upstream .sdd changes)
+  -> DISCOVER NEW KNOWLEDGE (web/official docs, RIE references/)
+  -> COMPARE current vs new (per skill due for review)
+  -> VALIDATE (source hierarchy, evidence, project fit)
+  -> DEDUPLICATE (canonical selection, aliases)
+  -> EVOLVE: PROMOTE | UPDATE (incremental v->v+1) | DEPRECATE | ADD
+  -> SDD CONSISTENCY CHECK + SKILL TESTS
+  -> GENERATE CHANGESET (Update Manifest UPD-<n>)
+  -> DELIVER: own repo -> commit/push | other user -> branch+PR
+```
+
+## UPDATE != GIT PULL
+
+/sdd-update = git state sync (UPD-01..05 rules, unchanged).
+/sdd-evolve = knowledge evolution (this spec). Never conflated.
+
+## Source hierarchy (confidence)
+
+L0 official spec/docs > L1 official repo > L2 maintainer docs >
+L3 high-quality engineering sources > L4 community > L5 AI inference.
+Every skill change records source level; L5-only changes are
+proposals, never direct updates.
+
+## SKILL_EVOLUTION record
+
+```
+skill: @<domain>/<name>
+status: update_required | new_concept | promotion_candidate |
+  dedup_candidate | deprecated
+reason: <e.g. current guidance is outdated>
+evidence: [L0 doc link, project examples, RIE REF-<n>]
+change: <incremental delta description>
+confidence: high | medium | low
+```
+
+## Skill lifecycle
+
+DISCOVERED -> DRAFT -> VALIDATED -> ACTIVE -> OUTDATED -> EVOLVING
+-> ACTIVE; branch: OUTDATED -> DEPRECATED -> REMOVED.
+(Removal follows [SK6] marketplace lifecycle; supersession over
+deletion — record what replaced it.)
+
+## Skill metadata (mandatory)
+
+```
+version: <n>
+status: active | draft | outdated | evolving | deprecated
+sources: [<provenance>]
+last_verified: <date>
+review_after: <date>
+confidence: high | medium | low
+depends_on: [@skill.x, @skill.y]
+recommended_for: L0..L5 (project scale — best practice is
+  context-dependent: enterprise K8s pattern ≠ small-VPS answer)
+```
+
+last_verified + review_after throttle research: only due skills are
+re-researched on /sdd-evolve. --deep forces all critical skills;
+/sdd-evolve @<domain> scopes to one domain.
+
+## New concept placement
+
+NEW_CONCEPT -> existing parent? -> child skill (parent: @go/concurrency
+-> @go/structured-concurrency, status: candidate -> ACTIVE on
+validation). Fully new domain -> new skill. Dedup FIRST: near-duplicate
+(@ddd/aggregate ~ @domain/aggregate) -> canonical chosen (@ddd/
+aggregate-boundary), others become alias/reference/deprecated.
+
+## Knowledge promotion
+
+@project/<pattern> used across 5 projects -> PROMOTION_CANDIDATE ->
+@shared/<pattern> proposal. Mirrors marketplace CANDIDATE->ACTIVE
+packet flow (promotion-packet.sdd).
+
+## Delivery
+
+Update Manifest: .sdd/updates/UPD-<n> (machine-readable: trigger,
+counts, changed skills, sources, validation, delivery mode).
+Modes: direct (own repo: update->test->commit->push) |
+pull_request (non-collaborator: branch sdd/update/<area>/<slug> ->
+commit sdd(skill): update <area> <slug> -> PR). TRUST_0..TRUST_5 gates
+map to authority levels L0-L4 + Phase 131 interrupt model (research
+only / proposals / local modify / branch+commit / PR / direct push).
+
+PR standard:
+```
+sdd(skill): update Go concurrency guidance
+
+## Why / ## Changes / ## Sources / ## Validation / ## Risk
+```
+Every knowledge change carries SOURCE, EVIDENCE, REASON, CHANGE —
+"AI bunu haradan uydurdu?" is always answerable.
+
+## Final report
+
+```
+SDD EVOLVE COMPLETE
+Sources checked / Skills checked / unchanged / updated / new /
+deprecated / references added / architecture rules changed / PR link
+```
+
+## Research records
+
+.sdd/research/<year>/<topic>.sdd — question, sources, findings,
+decision ONLY (no raw web data; RIE tmp snapshots stay tmp, [R96]).
+NO_VALUE outcome -> DISCARD is a first-class path (research does not
+obligate skill creation).
+
+State: +

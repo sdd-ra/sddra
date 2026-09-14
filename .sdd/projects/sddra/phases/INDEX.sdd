@@ -173,6 +173,35 @@ Phases:
       tmp/pre-rewrite-backup.bundle
     date: 2026-09-14
 
+  Phase 154:
+    title: Knowledge ecosystem — Reference Intelligence Engine (RIE)
+      + Skill Evolution & Update Engine (/sdd-evolve)
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: user design (Phase 135 RIE draft + Phase 136 evolution draft)
+      — reference-dən QƏRAR çıxarma (kopya yox); UPDATE is not GIT PULL
+    implemented: .sdd/references/ (engine.sdd pipeline REFERENCE->
+      DESIGN INTENT->PROJECT ADAPTATION; INDEX; web/REF template;
+      design/patterns+decisions); /sdd-evolve 3-way command (31st;
+      spec + wrappers + INDEX registration) — skill lifecycle
+      DISCOVERED->DRAFT->VALIDATED->ACTIVE->OUTDATED->EVOLVING;
+      mandatory skill metadata (version, last_verified, review_after,
+      confidence, sources, recommended_for L0-L5); SKILL_EVOLUTION
+      records before any change; source hierarchy L0-L5 (official
+      spec > ... > AI inference — L5-only changes are proposals);
+      dedup canonical/alias; knowledge promotion @project->@shared;
+      Update Manifest registry (.sdd/updates/); delivery direct vs
+      branch+PR per TRUST_0..5; research records (.sdd/research/;
+      NO_VALUE->DISCARD first-class); runtime runEvolveCommand
+      (status/due/manifests; --report read-only) + test; R110
+      (Reference is never authority) + R111 (no-copy ingestion,
+      provenance survives) in PROJECT.sdd; {project_name}/research/
+      DR template; external research round RA-1..RA-4 adopted
+      (dependsOn traversal [CTX-CMD-05], staleness fallback
+      [CTX-CMD-06], R109 human-authored routing, evidence citations
+      in cache.sdd)
+    date: 2026-09-14
+
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
   [PH2] Phase specs live in phases/phase-NNN-*.sdd or referenced external files.

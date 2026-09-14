@@ -187,4 +187,11 @@ Tasks:
     depends: [2026-0914-001]
     title: Agent-Reach Round 2 analysis + adoptions (agent-mediated install, auth ladder, doctor prescriptions) + analysis INDEX gap fix
 
+  2026-0914-003:
+    state: DONE
+    priority: P0
+    risk: MEDIUM
+    depends: [2026-0914-002]
+    title: Knowledge ecosystem — RIE (references/engine) + Skill Evolution Engine (/sdd-evolve, 31st command) + R110/R111 + RA-1..RA-4 research adoptions
+
 State: +

@@ -36,6 +36,7 @@ Recent Decisions:
   - DEC-2026-0914-001: Final naming — SDD & Reasoning Architecture, repo sddra (closed)
   - DEC-2026-0914-002: Identity purge — retired names out of history + PRs, R107/R108 (closed)
   - DEC-2026-0914-003: External research adoptions — RA-1..RA-4, R109, CTX-CMD-05/06 (closed)
+  - DEC-2026-0914-004: RIE + Skill Evolution Engine — /sdd-evolve, R110/R111 (closed)
 
 Navigation:
   DEC20260913001: @2026-0913-001-security-first-signature-purge.md
@@ -47,6 +48,7 @@ Navigation:
   DEC20260914001: @2026-0914-001-final-naming-sddra.md
   DEC20260914002: @2026-0914-002-identity-purge.md
   DEC20260914003: @2026-0914-003-research-adoptions.md
+  DEC20260914004: @2026-0914-004-rie-evolution-engines.md
 
 Navigation:
   Index: @INDEX.sdd

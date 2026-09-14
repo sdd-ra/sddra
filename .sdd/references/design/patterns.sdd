@@ -1,0 +1,14 @@
+# Distilled Design Patterns
+
+Patterns distilled from references (RIE engine, references/engine.sdd).
+Each pattern carries evidence level + source REF records.
+
+Entry format:
+  @pattern.<name>
+    level: OBSERVED | INFERRED | VALIDATED | ADOPTED | STANDARD
+    evidence: [REF-<n>, ...]
+    confidence: high | medium | low
+    project_fit: FIT | ADAPT | REJECT + reason
+    recommended_for: L0..L5 (project scale)
+
+State: +

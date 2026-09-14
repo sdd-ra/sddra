@@ -28,6 +28,7 @@ const tests = [
   { name: "context-emitter", file: "__tests__/context-emitter.test.ts" },
   { name: "integration-routing", file: "__tests__/integration-routing.test.ts" },
   { name: "delivery-runner", file: "__tests__/delivery-runner.test.ts" },
+  { name: "commands-evolve", file: "__tests__/commands-evolve.test.ts" },
 ];
 
 let totalPass = 0;
