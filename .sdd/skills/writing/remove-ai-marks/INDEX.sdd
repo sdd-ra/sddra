@@ -1,9 +1,9 @@
-﻿# Skill: Remove AI Marks
+# Skill: Remove AI Marks
 
 Purpose:
   Multi-vendor AI provenance-mark removal skill: invisible Unicode (Layer A),
   statistical text watermarks via rewrite (Layer B), C2PA/EXIF/XMP/container
-  metadata on PNG/JPEG/WebP/SVG/PDF/DOCX/ODT/HTML/MD. Thin-client skill â€”
+  metadata on PNG/JPEG/WebP/SVG/PDF/DOCX/ODT/HTML/MD. Thin-client skill —
   all deterministic cleaning runs in a separate Docker HTTP service.
 
 Owns: ./
@@ -13,7 +13,7 @@ Origin: tmp/watermarks-remover/skills/remove-ai-marks/
 Imported: 2026-09-06
 Format: anthropic-skill (adapted to .sdd)
 License: MIT
-Runtime: docker (HTTP service via curl at 127.0.0.1:8765 â€” wr-core)
+Runtime: docker (HTTP service via curl at 127.0.0.1:8765 — wr-core)
 Provenance: this repo is already service-integrated via @sdd-purge.sdd (Layer A/B bridging)
 
 ReadOrder:
@@ -24,12 +24,12 @@ ReadOrder:
    5  @references/ethics.md
 
 Modes:
-  APPLY    â€” remove marks from owned files (via service)
-  AUDIT    â€” detect marks without modification
-  REVIEW   â€” inspect a file's provenance surface
+  APPLY    — remove marks from owned files (via service)
+  AUDIT    — detect marks without modification
+  REVIEW   — inspect a file's provenance surface
 
 Rules:
-  [RAM1] This skill is a THIN CLIENT â€” cleaning machinery runs in the Docker HTTP service.
+  [RAM1] This skill is a THIN CLIENT — cleaning machinery runs in the Docker HTTP service.
   [RAM2] Never run cleaning scripts directly on the host ([R59]-[R66]).
   [RAM3] Layer A (metadata/Unicode) allowed for owned files; Layer B (statistical rewrite) gated.
   [RAM4] Always offer Layer B, but apply only with explicit user intent.

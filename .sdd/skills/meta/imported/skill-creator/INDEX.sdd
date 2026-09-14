@@ -1,4 +1,4 @@
-﻿# Skill: Skill Creator
+# Skill: Skill Creator
 
 Purpose:
   Author, package, and evaluate agent skills per the agent-skills spec.
@@ -12,8 +12,8 @@ Origin: tmp/skills/skills/skill-creator/SKILL.md
 Imported: 2026-09-06
 Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
 License: Apache-2.0 (examples)
-Runtime: python3 (eval harness: run_eval, run_loop, package_skill) â€” Docker-gated ([R59]-[R66])
-Code: Y â€” scripts exist; execution/analysis MUST run in Docker container
+Runtime: python3 (eval harness: run_eval, run_loop, package_skill) — Docker-gated ([R59]-[R66])
+Code: Y — scripts exist; execution/analysis MUST run in Docker container
 
 ReadOrder:
    1  @INDEX.sdd
@@ -21,14 +21,14 @@ ReadOrder:
    3  @references/schemas.md
 
 Modes:
-  APPLY    â€” create or package a skill
-  EVAL     â€” run skill evals (Docker-gated)
-  REVIEW   â€” audit skill structure against spec
+  APPLY    — create or package a skill
+  EVAL     — run skill evals (Docker-gated)
+  REVIEW   — audit skill structure against spec
 
 Rules:
   [SC1] New skills MUST follow .sdd/skills/spec/agent-skills-spec.md.
-  [SC2] Eval harness runs in Docker only â€” no host installs.
-  [SC3] External origin skill â€” apply import rules from CLAUDE.md.
+  [SC2] Eval harness runs in Docker only — no host installs.
+  [SC3] External origin skill — apply import rules from CLAUDE.md.
 
 Entry:
   Read:

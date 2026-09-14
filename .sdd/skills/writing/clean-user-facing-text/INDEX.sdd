@@ -1,4 +1,4 @@
-﻿# Skill: Clean User-Facing Text
+# Skill: Clean User-Facing Text
 
 Purpose:
   Text hygiene skill: audit suspicious invisible Unicode and clean
@@ -13,7 +13,7 @@ Origin: tmp/watermarks-remover/skills/clean-user-facing-text/
 Imported: 2026-09-06
 Format: anthropic-skill (adapted to .sdd)
 License: MIT
-Runtime: python3 (scripts run in Docker only â€” .sdd rule [R59])
+Runtime: python3 (scripts run in Docker only — .sdd rule [R59])
 Provenance: Layer A allowed, Layer B gated (see watermark-notes.md)
 
 ReadOrder:
@@ -23,15 +23,15 @@ ReadOrder:
    4  @references/writing-in-your-voice.md
 
 Modes:
-  APPLY    â€” clean and finalize owned user-facing text
-  AUDIT    â€” detect-only pass (lists flagged spans, no rewrite)
-  REVIEW   â€” audit a document's text hygiene without changing it
+  APPLY    — clean and finalize owned user-facing text
+  AUDIT    — detect-only pass (lists flagged spans, no rewrite)
+  REVIEW   — audit a document's text hygiene without changing it
 
 Rules:
   [CUFT1] Unicode cleanup is deterministic; statistical watermark reduction is best-effort.
-  [CUFT2] Claims, facts, numbers, names, citations MUST be preserved â€” never invented.
+  [CUFT2] Claims, facts, numbers, names, citations MUST be preserved — never invented.
   [CUFT3] Code, commands, identifiers, paths, APIs, formulas, citations MUST be unchanged.
-  [CUFT4] Scripts MUST run inside Docker â€” no host-level Python execution ([R59]-[R66]).
+  [CUFT4] Scripts MUST run inside Docker — no host-level Python execution ([R59]-[R66]).
   [CUFT5] Use only for text the user owns or is authorized to process.
 
 Entry:

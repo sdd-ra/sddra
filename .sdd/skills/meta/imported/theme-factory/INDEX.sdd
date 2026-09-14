@@ -1,4 +1,4 @@
-﻿# Skill: Theme Factory
+# Skill: Theme Factory
 
 Purpose:
   Design theme system with 10 curated themes (arctic-frost, botanical-garden,
@@ -21,12 +21,12 @@ ReadOrder:
    3  @themes/ (10 theme definitions)
 
 Modes:
-  APPLY    â€” apply a theme to a project's visual design
-  REVIEW   â€” audit a project's theme consistency
+  APPLY    — apply a theme to a project's visual design
+  REVIEW   — audit a project's theme consistency
 
 Rules:
-  [TF1] Themes are design references â€” MUST be adapted, not copied blindly.
-  [TF2] External origin skill â€” apply import rules from CLAUDE.md.
+  [TF1] Themes are design references — MUST be adapted, not copied blindly.
+  [TF2] External origin skill — apply import rules from CLAUDE.md.
 
 Entry:
   Read:

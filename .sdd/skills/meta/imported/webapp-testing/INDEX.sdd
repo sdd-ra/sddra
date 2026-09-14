@@ -1,4 +1,4 @@
-﻿# Skill: Webapp Testing
+# Skill: Webapp Testing
 
 Purpose:
   Playwright-based web app testing patterns: element discovery, console
@@ -11,8 +11,8 @@ Origin: tmp/skills/skills/webapp-testing/SKILL.md
 Imported: 2026-09-06
 Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
 License: Apache-2.0 (examples)
-Runtime: python3 + playwright (with_server.py) â€” Docker-gated ([R59]-[R66])
-Code: Y â€” examples exist; execution/analysis MUST run in Docker container
+Runtime: python3 + playwright (with_server.py) — Docker-gated ([R59]-[R66])
+Code: Y — examples exist; execution/analysis MUST run in Docker container
 
 ReadOrder:
    1  @INDEX.sdd
@@ -20,14 +20,14 @@ ReadOrder:
    3  @examples/
 
 Modes:
-  APPLY    â€” apply Playwright testing patterns
-  GENERATE â€” generate webapp tests from spec
-  REVIEW   â€” review test suite against patterns
+  APPLY    — apply Playwright testing patterns
+  GENERATE — generate webapp tests from spec
+  REVIEW   — review test suite against patterns
 
 Rules:
-  [WT1] Playwright MUST run inside Docker â€” no host browser installs.
+  [WT1] Playwright MUST run inside Docker — no host browser installs.
   [WT2] Tests MUST be deterministic and isolated (per playwright-cli skill [PC1]).
-  [WT3] External origin skill â€” apply import rules from CLAUDE.md.
+  [WT3] External origin skill — apply import rules from CLAUDE.md.
 
 Entry:
   Read:

@@ -520,7 +520,19 @@ export class CommandRunner {
     lines.push(`  Command sync: ${specs.length} specs, ${syncDrift} drift`);
 
     // [HEALTH-09] mojibake scan ([R99]) — UTF-8 read as CP1252 signatures
-    const mojibakePatterns = ["â€", "ÅŸ", "É™", "Ä±", "Ä°", "Ã¼", "Ã¶", "Ã§", "Ã¢"];
+    const mojibakePatterns = [
+      "\u00E2\u20AC\u201D", // em-dash double-encoded (â€")
+      "\u00E2\u20AC\u201C", // variant closing
+      "\u00C4\u00B1",       // ı double-encoded (Ä±)
+      "\u00C4\u00B0",       // İ double-encoded (Ä°)
+      "\u00C5\u009E",       // Ş double-encoded
+      "\u00C5\u009F",       // ş double-encoded
+      "\u00C9\u2122",       // ə double-encoded (É™)
+      "\u00C3\u00BC",       // ü double-encoded
+      "\u00C3\u00B6",       // ö double-encoded
+      "\u00C3\u00A7",       // ç double-encoded
+      "\u00C3\u00A2",       // â double-encoded
+    ];
     let mojibakeHits = 0;
     const scanDirs = [this.sddRoot, ".claude/docs"];
     for (const dir of scanDirs) {

@@ -1,4 +1,4 @@
-﻿# Skill: Doc Co-authoring
+# Skill: Doc Co-authoring
 
 Purpose:
   Collaborative document drafting and co-authoring workflow. Guides
@@ -18,12 +18,12 @@ ReadOrder:
    2  @SKILL.md
 
 Modes:
-  APPLY    â€” co-author a document with the user
-  REVIEW   â€” review a draft for structure and clarity
+  APPLY    — co-author a document with the user
+  REVIEW   — review a draft for structure and clarity
 
 Rules:
   [DC1] Authorship and user voice MUST be preserved.
-  [DC2] External origin skill â€” apply import rules from CLAUDE.md.
+  [DC2] External origin skill — apply import rules from CLAUDE.md.
 
 Entry:
   Read:

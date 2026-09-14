@@ -1,15 +1,15 @@
-﻿# Imported Skills â€” External Origin
+# Imported Skills — External Origin
 
 Purpose:
   Registry of skills imported from external repositories. Each subdirectory
   is a skill adapted to .sdd format with mandatory provenance:
   Source (repo URL), Origin (local path in tmp/), Imported (date),
-  Format, Runtime. Per CLAUDE.md "Xarici skill import qaydalarÄ±":
+  Format, Runtime. Per CLAUDE.md "Xarici skill import qaydaları":
   code-bearing skills are analyzed/run via Docker only ([R59]-[R66]).
 
 Owns: ./
 
-Source: https://github.com/anthropics/skills (+ BuilderIO, khasky, artemrudenko â€” round 2)
+Source: https://github.com/anthropics/skills (+ BuilderIO, khasky, artemrudenko — round 2)
 Origin: tmp/skills/skills/ (round 1) + web fetch (round 2, 2026-09-06)
 Imported: 2026-09-06 (round 1: anthropics 7; round 2: governance/orchestration/audit 9)
 Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrappers)
@@ -33,12 +33,12 @@ Skills:
 
   mcp-builder:
     one_line: Model Context Protocol server scaffolding and tooling
-    runtime: python3 (anthropic + mcp SDKs) â€” Docker-gated
+    runtime: python3 (anthropic + mcp SDKs) — Docker-gated
     code: Y (analysis runs in Docker only)
 
   skill-creator:
     one_line: Author, package, and eval agent skills (agent-skills spec)
-    runtime: python3 (eval harness) â€” Docker-gated
+    runtime: python3 (eval harness) — Docker-gated
     code: Y (analysis runs in Docker only)
 
   theme-factory:
@@ -48,7 +48,7 @@ Skills:
 
   webapp-testing:
     one_line: Playwright-based web app testing patterns and server helpers
-    runtime: python3 + playwright â€” Docker-gated
+    runtime: python3 + playwright — Docker-gated
     code: Y (analysis runs in Docker only)
 
 Groups (round 2, 2026-09-06 research integration):
@@ -72,7 +72,7 @@ Rules:
   [IMP2] Code-bearing skills MUST declare Runtime and MUST be executed/analyzed inside Docker.
   [IMP3] Imported skills are candidates (Phase 146 lifecycle: EXTERNAL â†’ CANDIDATE â†’ ACTIVE).
   [IMP4] Human review required for CANDIDATE â†’ ACTIVE promotion.
-  [IMP5] Original SKILL.md content is preserved verbatim â€” adaptation happens via INDEX.sdd wrapper.
+  [IMP5] Original SKILL.md content is preserved verbatim — adaptation happens via INDEX.sdd wrapper.
   [IMP6] License check is mandatory before import: MIT/Apache only; source-available â‰  importable.
   [IMP7] New imports MUST pass skill-evaluate (governance skill) before CANDIDATE â†’ ACTIVE.
 

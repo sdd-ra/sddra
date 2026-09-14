@@ -1,4 +1,4 @@
-﻿# Skill: MCP Builder
+# Skill: MCP Builder
 
 Purpose:
   Model Context Protocol (MCP) server scaffolding and tooling. Guides
@@ -11,21 +11,21 @@ Origin: tmp/skills/skills/mcp-builder/SKILL.md
 Imported: 2026-09-06
 Format: anthropic-skill (SKILL.md, adapted via INDEX.sdd wrapper)
 License: Apache-2.0 (examples)
-Runtime: python3 (anthropic>=0.39.0, mcp>=1.1.0) â€” Docker-gated ([R59]-[R66])
-Code: Y â€” scripts exist; execution/analysis MUST run in Docker container
+Runtime: python3 (anthropic>=0.39.0, mcp>=1.1.0) — Docker-gated ([R59]-[R66])
+Code: Y — scripts exist; execution/analysis MUST run in Docker container
 
 ReadOrder:
    1  @INDEX.sdd
    2  @SKILL.md
 
 Modes:
-  APPLY    â€” scaffold or extend an MCP server
-  REVIEW   â€” review MCP server design
+  APPLY    — scaffold or extend an MCP server
+  REVIEW   — review MCP server design
 
 Rules:
-  [MB1] MCP SDK dependencies MUST NOT be installed on host â€” Docker only.
+  [MB1] MCP SDK dependencies MUST NOT be installed on host — Docker only.
   [MB2] Follow .sdd runtime rules for all script execution.
-  [MB3] External origin skill â€” apply import rules from CLAUDE.md.
+  [MB3] External origin skill — apply import rules from CLAUDE.md.
 
 Entry:
   Read:

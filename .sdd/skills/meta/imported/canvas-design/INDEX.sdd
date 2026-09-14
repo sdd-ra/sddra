@@ -1,4 +1,4 @@
-﻿# Skill: Canvas Design
+# Skill: Canvas Design
 
 Purpose:
   Interactive HTML canvas art and visual composition skill. Guides creation
@@ -18,12 +18,12 @@ ReadOrder:
    2  @SKILL.md
 
 Modes:
-  APPLY    â€” create canvas-based visual output
-  REVIEW   â€” critique visual composition
+  APPLY    — create canvas-based visual output
+  REVIEW   — critique visual composition
 
 Rules:
   [CD1] Canvas output MUST be self-contained HTML (no build step).
-  [CD2] Apply per CLAUDE.md import rules â€” this skill is external origin.
+  [CD2] Apply per CLAUDE.md import rules — this skill is external origin.
 
 Entry:
   Read:

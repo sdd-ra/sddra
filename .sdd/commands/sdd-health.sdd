@@ -40,8 +40,9 @@ Checks:
     its .claude/commands/<name>.md and .kilo/command/<name>.md wrappers
     ([CMD8]/[R98]) — any missing pair is a WARN drift finding
   Mojibake scan (Phase 152): repo text files scanned for UTF-8-as-CP1252
-    sequences ("â€"", "ÅŸ", "É™", "Ä±", "Ã¼", "Ã¶", "Ã§") — hits are
-    CRITICAL findings ([R99])
+    sequences (the canonical double-encoded em-dash triplet and CP1252
+    vowel signatures — signature list lives in the scanner code, not here,
+    so this spec never trips itself) — hits are CRITICAL findings ([R99])
   Projects purity (Phase 152): .sdd/projects/ holds ONLY real instances
     + the {project_name}/ template; foreign folders are WARN findings
     ([R105])

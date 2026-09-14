@@ -1,4 +1,4 @@
-﻿# Imported Design Skills â€” External Origin
+# Imported Design Skills — External Origin
 
 Purpose:
   Registry of design skills imported from external repositories.
@@ -13,7 +13,7 @@ Imported: 2026-09-06
 Format: anthropic-skill (SKILL.md docs-only, adapted via INDEX.sdd wrappers)
 License: MIT
 Note: tmp-analysis.sdd attributes this repo to "vercel/taste-skill"; git remote
-      and plugin.json both say Leonxlnx/taste-skill â€” repo state is authoritative.
+      and plugin.json both say Leonxlnx/taste-skill — repo state is authoritative.
 
 Skills:
   taste-skill:
@@ -33,7 +33,7 @@ Skills:
 
 Rules:
   [IMP1] Every imported skill MUST carry Source + Origin + Imported + Format in its INDEX.sdd.
-  [IMP2] These are design-reference skills â€” adapt, never copy blindly.
+  [IMP2] These are design-reference skills — adapt, never copy blindly.
   [IMP3] Imported skills are CANDIDATES (Phase 146 lifecycle: EXTERNAL â†’ CANDIDATE â†’ ACTIVE).
   [IMP4] Human review required for CANDIDATE â†’ ACTIVE promotion.
   [IMP5] When overlapping with .sdd/skills/design/*.sdd native skills, native wins.
