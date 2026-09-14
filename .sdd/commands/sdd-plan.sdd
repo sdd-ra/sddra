@@ -93,6 +93,16 @@ RePlanProtocol:
     - Output diff summary: what changed, why, new revision
   rule: user edits are plan-local — never trigger full rescans
 
+ChangeMode (adopted 2026-09-13, Phase 152/F):
+  BIG: multi-chain/architecture-touching changes — full 16-trace
+    plan + phase registry review + DEC record before execution
+  SMALL: single-component/single-rule changes — fast-path planning
+    per chains/fast-path.sdd (reduced trace, same gates for
+    irreversible actions)
+  classification: the plan states its mode explicitly; mode drives
+    plan depth, never gate strength (L4 irreversible gates always fire)
+  source: .sdd/docs/analysis/garry-tan-gstack-alignment.md
+
 Output:
   ```
   # Project: <name> | Domain: <domain> | Stack: <stack>

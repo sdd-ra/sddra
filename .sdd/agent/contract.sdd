@@ -79,4 +79,15 @@ InterruptPrimitive (Phase 149, r3 round 3):
   rule: interrupts fire unconditionally — never conditionally skipped
     (resume-index mismatch hazard)
 
+OpinionatedOutput (adopted 2026-09-13, Phase 152/F):
+  definition: every review finding and every decision-relevant answer
+    carries ONE recommended option with rationale — never a neutral
+    list of equally-weighted options
+  applies_to: CR-XX findings (ReviewPillars), DEC proposals, /sdd-plan
+    outputs, escalations to human gates
+  rationale: neutral option lists delegate the hardest part (judgment)
+    back to the human; an agent that reviewed the evidence must state
+    its recommendation and accept being overruled
+  source: .sdd/docs/analysis/garry-tan-gstack-alignment.md
+
 State: +
