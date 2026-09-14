@@ -25,7 +25,7 @@ RUN apt-get update \
 
 WORKDIR /workspace
 COPY --from=deps --chown=node:node /workspace/node_modules ./sdd-adapter/node_modules
-COPY --chown=node:node sdd-adapter/package.json sdd-adapter/tsconfig.json ./sdd-adapter/
+COPY --chown=node:node sdd-adapter/package.json sdd-adapter/tsconfig.json sdd-adapter/tsconfig.tests.json ./sdd-adapter/
 COPY --chown=node:node sdd-adapter/commands.ts sdd-adapter/context-budget.ts sdd-adapter/context-compiler.ts \
     sdd-adapter/context-manifest.ts sdd-adapter/context-router.ts sdd-adapter/dependency-resolver.ts \
     sdd-adapter/design-analyzer.ts sdd-adapter/drift-detector.ts sdd-adapter/evidence-binder.ts \

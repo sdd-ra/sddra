@@ -1,7 +1,9 @@
 import path from "path";
 import { CommandRunner } from "../commands";
 
-const projectRoot = path.resolve(__dirname, "..", "..");
+const projectRoot = process.env.SDD_TEST_PROJECT_ROOT
+  ? path.resolve(process.env.SDD_TEST_PROJECT_ROOT)
+  : path.resolve(__dirname, "..", "..");
 const runner = new CommandRunner(".sdd", projectRoot);
 
 let passCount = 0;

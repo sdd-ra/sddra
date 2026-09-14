@@ -18,7 +18,7 @@ function assert(condition: boolean, message: string): void {
 function run() {
   console.log("\n=== DependencyResolver Tests ===");
 
-  const testRoot = path.resolve(__dirname, "..", "..", ".sdd");
+  const testRoot = path.resolve(process.env.SDD_TEST_PROJECT_ROOT || path.resolve(__dirname, "..", ".."), ".sdd");
   const graph = DependencyResolver.buildDependencyGraph(testRoot);
   assert(graph.size > 0, "buildDependencyGraph parses .sdd files");
 

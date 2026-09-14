@@ -152,6 +152,27 @@ Phases:
       ([R104])
     date: 2026-09-14
 
+  Phase 153:
+    title: Final identity — rename to sddra; retired names purged from
+      tree, history, and PRs; R107/R108 enforcement
+    layer: S1 (.sdd system)
+    status: COMPLETED
+    spec: user hard rule — old name variants must never appear; AI
+      traces must never appear in the PR/issue surface
+    implemented: DEC-2026-0914-001 (final naming: SDDRA = SDD &
+      Reasoning Architecture, repo sddra; GitHub rename + local remote
+      update); DEC-2026-0914-002 (identity purge: tree rewrite 9 files,
+      git-filter-repo replace-text/replace-message all branches — 191
+      commits preserved, fresh-clone 0/0; force-push master;
+      PR #1-#5 bodies edited — retired URLs rewritten, renovate
+      generated-by credit removed); PROJECT.sdd [R107] PR/issue AI-trace
+      ban + [R108] single-identity rule; /sdd-health [HEALTH-11]
+      retired-name CRITICAL scan; docs/analysis INDEX gap fix (5 new
+      analysis docs registered); Agent-Reach Round 2 analysis +
+      adoptions (agent-reach-round2.md); backup bundle
+      tmp/pre-rewrite-backup.bundle
+    date: 2026-09-14
+
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
   [PH2] Phase specs live in phases/phase-NNN-*.sdd or referenced external files.

@@ -1,7 +1,7 @@
 import path from "path";
 import { TraceEngine } from "../trace-engine";
 
-const projectRoot = path.resolve(__dirname, "..", "..");
+const projectRoot = path.resolve(process.env.SDD_TEST_PROJECT_ROOT || path.resolve(__dirname, "..", ".."));
 const tracer = new TraceEngine(".sdd", projectRoot);
 
 let passCount = 0;

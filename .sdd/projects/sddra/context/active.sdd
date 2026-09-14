@@ -30,22 +30,25 @@ ActiveDecisions:
 WorkInProgress:
   - Human gate: CANDIDATE→ACTIVE promotion review (.sdd/marketplace/promotion-packet.sdd)
   - Repo cleanup: user review of .sdd/docs/analysis/repo-cleanup-analysis.md (deletions/moves pending approval)
-  - Remote: force-push consent for history purge propagation; repo rename verification
+  - gstack deep analysis vs .sdd (clone in tmp/gstack — analyze, adopt pros, delete per RS1)
+  - dsh-plugin topic loop: enumerate repos, analyze each, adopt pros
+  - Agent-Reach R2 adoptions A1-A3 pending application (install.md one-liner + auth ladder; /sdd-health prescriptions)
 
 RecentChanges:
-  - Phase 152 DONE: rules R91-R106 (sandbox refs, commit discipline, UTF-8, purity, skills surface)
-  - 3-way command sync: 30 specs = 30 .claude = 30 .kilo, /sdd-health 0 drift
-  - Mojibake purge: 13 files repaired; scanner signatures in code only; HEALTHY
-  - gstack alignment: 4-pillar CR, OpinionatedOutput, BIG/SMALL ChangeMode; analysis doc
-  - .kilo/skills: 5 routing wrappers (sddra, -engineering, -design, -writing, -languages)
-  - docs/ EN suite: install 3-paths, architecture diagrams, how-it-works, contributing, philosophy; README EN-first hub; MIT LICENSE
-  - prompt-pairs history live ([R104]); 9 command stub descriptions fixed
+  - Phase 153 DONE: final identity sddra everywhere; retired names purged
+    from tree, history (filter-repo, 191 commits preserved), and PR
+    surface (5 renovate bodies edited); fresh-clone verify 0/0
+  - [R107] no AI traces in PR/issue surface; [R108] single identity,
+    retired names = provenance pollution, [HEALTH-11] CRITICAL scan
+  - Agent-Reach Round 2 analysis (agent-reach-round2.md): adoptions A1-A3
+  - DEC-2026-0914-001/002 recorded; analysis INDEX gap fixed (5 docs)
 
 NextActions:
   - Human review: promotion packet (task 2026-0906-005 close)
   - Human review: cleanup analysis (approve deletions/moves or reject)
-  - Force-push consent decision (remote history purge propagation)
+  - gstack + dsh-plugin analysis rounds (RS1 protocol)
+  - Apply Agent-Reach A1-A3 adoptions
 
-Fingerprint: CTX-2026-0914
+Fingerprint: CTX-2026-0914-B
 
 State: active

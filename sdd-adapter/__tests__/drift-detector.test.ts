@@ -2,7 +2,7 @@ import path from "path";
 import { DriftDetector } from "../drift-detector";
 import { DriftType, DriftClassification } from "../types";
 
-const projectRoot = path.resolve(__dirname, "..", "..");
+const projectRoot = path.resolve(process.env.SDD_TEST_PROJECT_ROOT || path.resolve(__dirname, "..", ".."));
 const detector = new DriftDetector(".sdd", projectRoot);
 
 let passCount = 0;

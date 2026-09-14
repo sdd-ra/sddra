@@ -278,7 +278,9 @@ export function loadSecuritySpecs(sddRoot?: string): {
     return { patterns: cachedPatterns, levels: cachedLevels, decisions: cachedDecisions, skillPatternSets: cachedSkillPatternSets };
   }
 
-  const root = sddRoot || path.join(__dirname, "..", ".sdd");
+  const root = sddRoot
+    || process.env.SDD_ROOT
+    || path.join(__dirname, "..", ".sdd");
 
   const controlsPath = path.join(root, "security", "controls.sdd");
   const levelsPath = path.join(root, "security", "levels.sdd");

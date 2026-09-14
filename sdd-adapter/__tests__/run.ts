@@ -36,14 +36,24 @@ let totalFail = 0;
 function runTest(name: string, file: string): Promise<boolean> {
   return new Promise((resolve) => {
     console.log(`\n>>> Running ${name}...`);
-    // Direct ts-node binary — works offline in the Docker sandbox
-    // (npx would need registry DNS; SANDBOX_RO marks container runs).
+    // TS7 + ts-node are incompatible (ts-node 10.x reads ts.* APIs that
+    // TypeScript 7 removed) — tests run via tsc compile + plain node,
+    // fully offline in the Docker sandbox (registry DNS is blocked).
+    // The runner rewrites .ts test paths to their compiled .js when the
+    // __TESTS_COMPILED__ marker env is set by the compile-first flow.
     const tsNodeBin = path.join(__dirname, "..", "node_modules", "ts-node", "dist", "bin.js");
-    const child = process.platform === "win32" && process.env.SANDBOX_RO !== "1"
+    const compiledFile = file.replace(/\.ts$/, ".js");
+    const useCompiled = process.env.__TESTS_COMPILED__ === "1";
+    const child = process.platform === "win32" && process.env.SANDBOX_RO !== "1" && !useCompiled
       ? spawn("npx", ["ts-node", "--transpile-only", file], {
           cwd: path.join(__dirname, ".."),
           stdio: "inherit",
           shell: true,
+        })
+      : useCompiled
+      ? spawn(process.execPath, [path.join("/var/sandbox/dist-tests", compiledFile)], {
+          cwd: path.join(__dirname, ".."),
+          stdio: "inherit",
         })
       : spawn(process.execPath, [tsNodeBin, "--transpile-only", file], {
           cwd: path.join(__dirname, ".."),

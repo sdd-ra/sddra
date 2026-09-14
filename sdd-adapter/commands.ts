@@ -623,9 +623,14 @@ export class CommandRunner {
     lines.push("  Projects purity: checked");
 
     // [HEALTH-11] retired-name scan ([R108]) — retired repository names
-    // are provenance pollution: CRITICAL in tree text files. The exact
-    // retired names live only here (unicode-escaped), never in specs.
-    const retiredNames = ["sddra", "sddra"];
+    // are provenance pollution: CRITICAL in tree text files. Names are
+    // assembled at runtime (never stored as contiguous literals) so
+    // history-rewrite replace passes cannot degenerate the list into
+    // the live name (self-trip prevention, same doctrine as [R99]).
+    const retiredNames = [
+      ["Spec", "RR", "-", "RA", "-", "AI"].join(""),
+      ["Spec", "DD", "-", "RA", "-", "AI"].join(""),
+    ];
     let retiredHits = 0;
     const retiredDirs = [this.sddRoot, "docs", ".claude/docs", ".kilo/skills", "prompts"];
     for (const dir of retiredDirs) {

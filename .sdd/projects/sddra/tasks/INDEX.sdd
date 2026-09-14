@@ -173,4 +173,18 @@ Tasks:
     depends: [2026-0913-003]
     title: Repo cleanup analysis (report only) + EN open-source docs suite — install 3-paths, diagrams, contributing, README rewrite, MIT LICENSE
 
+  2026-0914-001:
+    state: DONE
+    priority: P0
+    risk: HIGH
+    depends: [2026-0913-007]
+    title: Final identity — rename to sddra; purge retired names from tree, all-branch git history, and PR surface; R107/R108 encoded; [HEALTH-11] scanner
+
+  2026-0914-002:
+    state: DONE
+    priority: P1
+    risk: LOW
+    depends: [2026-0914-001]
+    title: Agent-Reach Round 2 analysis + adoptions (agent-mediated install, auth ladder, doctor prescriptions) + analysis INDEX gap fix
+
 State: +

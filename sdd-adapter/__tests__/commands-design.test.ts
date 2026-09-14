@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { CommandRunner } from "../commands";
 
-const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
+const PROJECT_ROOT = path.resolve(process.env.SDD_TEST_PROJECT_ROOT || path.resolve(__dirname, "..", ".."));
 const runner = new CommandRunner(".sdd", PROJECT_ROOT);
 
 function assert(condition: boolean, message: string): void {

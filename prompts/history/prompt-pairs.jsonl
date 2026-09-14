@@ -51,3 +51,56 @@
 {"ts":"2026-09-14T06:25:10.236Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
 {"ts":"2026-09-14T06:25:36.033Z","command":"/sdd","customer_prompt":"Men lahiyyemde buglar var fix ederdin","ai_prompt":"/sdd Full check of the project against my prompt; if a case was resolved in a misleading way, open a new DEC and a new TASK to close the bug. Reported by customer in Azerbaijani - preserve original wording as authoritative intent."}
 {"ts":"2026-09-14T06:25:55.936Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T11:31:16.242Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-14T11:31:16.256Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-14T11:31:16.264Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-14T11:31:16.269Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-14T11:31:16.274Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-14T11:31:16.281Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts":"2026-09-14T11:31:16.429Z","command":"/sdd-purge","customer_prompt":"","ai_prompt":"/sdd-purge"}
+{"ts":"2026-09-14T11:31:16.435Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__"}
+{"ts":"2026-09-14T11:31:16.507Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --inspect","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --inspect"}
+{"ts":"2026-09-14T11:31:16.540Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer a","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer a"}
+{"ts":"2026-09-14T11:31:16.573Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer files","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer files"}
+{"ts":"2026-09-14T11:31:16.630Z","command":"/sdd-scan","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --provenance","ai_prompt":"/sdd-scan --directory /workspace/sdd-adapter/__tests__ --provenance"}
+{"ts":"2026-09-14T11:31:17.994Z","command":"/sdd-design","customer_prompt":"--discover","ai_prompt":"/sdd-design --discover"}
+{"ts":"2026-09-14T11:31:18.003Z","command":"/sdd-design","customer_prompt":"--evaluate --directory /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --evaluate --directory /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T11:31:18.164Z","command":"/sdd-design","customer_prompt":"--review /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --review /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T11:31:18.272Z","command":"/sdd-design","customer_prompt":"--auto","ai_prompt":"/sdd-design --auto"}
+{"ts":"2026-09-14T11:31:18.366Z","command":"/sdd-design","customer_prompt":"","ai_prompt":"/sdd-design"}
+{"ts":"2026-09-14T11:31:18.831Z","command":"/sdd-marketplace","customer_prompt":"list","ai_prompt":"/sdd-marketplace list"}
+{"ts":"2026-09-14T11:31:18.838Z","command":"/sdd-marketplace","customer_prompt":"sync does-not-exist","ai_prompt":"/sdd-marketplace sync does-not-exist"}
+{"ts":"2026-09-14T11:31:18.845Z","command":"/sdd-marketplace","customer_prompt":"import","ai_prompt":"/sdd-marketplace import"}
+{"ts":"2026-09-14T11:31:18.851Z","command":"/sdd-marketplace","customer_prompt":"import nope some-skill","ai_prompt":"/sdd-marketplace import nope some-skill"}
+{"ts":"2026-09-14T11:31:18.856Z","command":"/sdd-marketplace","customer_prompt":"import nvidia-skills some-skill","ai_prompt":"/sdd-marketplace import nvidia-skills some-skill"}
+{"ts":"2026-09-14T11:31:18.861Z","command":"/sdd-marketplace","customer_prompt":"audit","ai_prompt":"/sdd-marketplace audit"}
+{"ts":"2026-09-14T11:31:18.877Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
+{"ts":"2026-09-14T11:35:41.258Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T11:54:52.146Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T11:57:36.813Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T12:01:42.695Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T12:07:05.046Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
+{"ts":"2026-09-14T12:07:59.719Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-14T12:07:59.743Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-14T12:07:59.751Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-14T12:07:59.756Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-14T12:07:59.761Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-14T12:07:59.768Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts":"2026-09-14T12:07:59.919Z","command":"/sdd-purge","customer_prompt":"","ai_prompt":"/sdd-purge"}
+{"ts":"2026-09-14T12:07:59.924Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__"}
+{"ts":"2026-09-14T12:07:59.998Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --inspect","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --inspect"}
+{"ts":"2026-09-14T12:08:00.033Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer a","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer a"}
+{"ts":"2026-09-14T12:08:00.070Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer files","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer files"}
+{"ts":"2026-09-14T12:08:00.105Z","command":"/sdd-scan","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --provenance","ai_prompt":"/sdd-scan --directory /workspace/sdd-adapter/__tests__ --provenance"}
+{"ts":"2026-09-14T12:08:01.400Z","command":"/sdd-design","customer_prompt":"--discover","ai_prompt":"/sdd-design --discover"}
+{"ts":"2026-09-14T12:08:01.406Z","command":"/sdd-design","customer_prompt":"--evaluate --directory /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --evaluate --directory /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T12:08:01.525Z","command":"/sdd-design","customer_prompt":"--review /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --review /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T12:08:01.593Z","command":"/sdd-design","customer_prompt":"--auto","ai_prompt":"/sdd-design --auto"}
+{"ts":"2026-09-14T12:08:01.658Z","command":"/sdd-design","customer_prompt":"","ai_prompt":"/sdd-design"}
+{"ts":"2026-09-14T12:08:02.051Z","command":"/sdd-marketplace","customer_prompt":"list","ai_prompt":"/sdd-marketplace list"}
+{"ts":"2026-09-14T12:08:02.056Z","command":"/sdd-marketplace","customer_prompt":"sync does-not-exist","ai_prompt":"/sdd-marketplace sync does-not-exist"}
+{"ts":"2026-09-14T12:08:02.061Z","command":"/sdd-marketplace","customer_prompt":"import","ai_prompt":"/sdd-marketplace import"}
+{"ts":"2026-09-14T12:08:02.064Z","command":"/sdd-marketplace","customer_prompt":"import nope some-skill","ai_prompt":"/sdd-marketplace import nope some-skill"}
+{"ts":"2026-09-14T12:08:02.068Z","command":"/sdd-marketplace","customer_prompt":"import nvidia-skills some-skill","ai_prompt":"/sdd-marketplace import nvidia-skills some-skill"}
+{"ts":"2026-09-14T12:08:02.071Z","command":"/sdd-marketplace","customer_prompt":"audit","ai_prompt":"/sdd-marketplace audit"}
+{"ts":"2026-09-14T12:08:02.080Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}

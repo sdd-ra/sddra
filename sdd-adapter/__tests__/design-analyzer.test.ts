@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { DesignAnalyzer } from "../design-analyzer";
 
-const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
+const PROJECT_ROOT = path.resolve(process.env.SDD_TEST_PROJECT_ROOT || path.resolve(__dirname, "..", ".."));
 const analyzer = new DesignAnalyzer();
 
 function assert(condition: boolean, message: string): void {
