@@ -1,0 +1,111 @@
+Gates: DEPENDENCY_GATE
+
+Spec: DependencyGate
+
+Purpose:
+  The intake APPROVE/REJECT decision gate for every NEW dependency
+  (library, package, module, service client). A dependency is added
+  to the project ONLY after this gate passes. Scanners
+  (security/scanners.sdd SEC.DEP) detect known risk; THIS gate
+  decides BEFORE the dependency enters the codebase.
+
+Owns: gates/dependency-gate.sdd
+
+Scope:
+  New direct dependencies proposed during any stage (TK task
+  breakdown, unit implementation, RF refactor). Version bumps of
+  already-approved dependencies are out of scope unless the major
+  version changes (then re-gate).
+
+GateFlow (each check MUST be answered before the next):
+
+  request            New dependency proposed (name, version, reason)
+     |
+  necessity          WHY — capability cannot be met by existing code?
+     |
+  existing           Does an already-approved dependency provide it?
+     |
+  stdlib             Is the standard library sufficient?
+     |
+  maintenance        Actively maintained? release cadence, bus factor,
+                     security history (past advisories, response time)
+     |
+  cve                Known advisories for this version? (scanner-
+                     backed: snyk / npm-audit / grype — SEC.DEP)
+     |
+  transitive        What else does it pull? blast radius = dependency
+                     tree size + surface of each transitive hop
+     |
+  license            Compatible with the project license?
+     |
+  security_impact    Attack surface: network, auth, secret handling,
+                     eval/dynamic code, native bindings
+     |
+  APPROVE | REJECT   Reason recorded in the task's decision trail
+
+Decision:
+  APPROVE — all checks green; entry recorded with evidence.
+  REJECT  — any HARD-FAIL check (below) fails; proposal recorded
+            with the failing check and reason.
+  DEFER   — evidence unavailable (offline sandbox): proposal
+            parked as an ASSUMPTION (assumptions/ registry) and
+            the dependency is NOT added until evidence exists.
+
+HardFail (any of these => REJECT, no override):
+  - CVE CRITICAL or HIGH open for the proposed version
+  - License incompatible or copyleft-obligation without human
+    approval (GPL-family) [DG5]
+  - Unmaintained: no release or security response for 12+ months
+  - Unaudited provenance (no source repo, no checksum) [DG5]
+
+Rules:
+
+  [DG1] No APPROVE => the dependency MUST NOT be added: AI MUST NOT
+        install, import, or vendor it.
+  [DG2] APPROVE/REJECT reasons are recorded in the task's decision
+        trail (DEC record or task record) — traceable audit [GT8].
+  [DG3] The gate result carries Condition + Evidence + Threshold +
+        Owner + Decision [GT3].
+  [DG4] Scanner evidence (SEC.DEP) attaches to the CVE and
+        transitive checks; findings CRITICAL/HIGH force REJECT.
+  [DG5] Human approval is REQUIRED for: GPL-family/obligation
+        licenses, unaudited provenance, and any native-code
+        dependency. AI cannot waive ([G11] applies).
+  [DG6] DEPENDENCY_GATE runs BEFORE implementation of the unit that
+        needs it ([SB7]) — never retroactively after `install`.
+  [DG7] The declared dependency list lives in the task record;
+        CR-XX diffs against it — an undeclared new dependency fails
+        the review (bax ../workflow/step-keys.sdd CRScopedSemantics).
+
+EvidenceFormat:
+
+  DEPENDENCY_GATE
+  dependency: <name>@<version>
+  requested_by: SUBTASK-<id> | TASK-<id>
+  checks:
+    necessity: PASS|FAIL — <reason>
+    existing:  PASS|FAIL — <reason>
+    stdlib:    PASS|FAIL — <reason>
+    maintenance: PASS|FAIL — <reason>
+    cve:       PASS|FAIL — <scanner evidence id>
+    transitive: PASS|FAIL — <tree size, notable hops>
+    license:   PASS|FAIL|HUMAN — <license id>
+    security_impact: PASS|FAIL — <surface notes>
+  decision: APPROVE | REJECT | DEFER
+  owner: <stage/role>
+  recorded: <timestamp> + decision trail reference
+
+Navigation:
+  GatesIndex: @INDEX.sdd
+  Scanners: @../security/scanners.sdd (SEC.DEP)
+  StageGates: @stage/gates.sdd (SC gate cites this gate)
+  Stages: @../workflow/stages.sdd (TK exit criterion)
+  StepKeys: @../workflow/step-keys.sdd (CR-XX dependency diff)
+  SubtaskSchema: @../schemas/subtask.sdd ([SB7])
+  Assumptions: @../assumptions/INDEX.sdd (DEFER path)
+
+State: +
+  (Phase 155: created as the missing intake gate between the
+   scanner catalog (detection) and the dependency graph engine
+   (representation); enforces security-first ordering [R101] —
+   dependencies are decided, never spontaneously added)
