@@ -299,7 +299,9 @@ Rules:
            THREE locations: .sdd/commands/ (spec), .claude/commands/ (Claude
            Code), .kilo/command/ (Kilo) — see commands/INDEX.sdd [CMD8].
     [R99] UTF-8 only — all text files are UTF-8 (+LF per .editorconfig);
-           mojibake sequences (UTF-8 read as CP1252: "â€"", "ÅŸ", "É™", "Ä±"...)
+           mojibake sequences (UTF-8 read as CP1252 — canonical double-
+           encoded vowel/dash signatures; exact list lives in the health
+           scanner code, never quoted in specs to avoid self-trips)
            are CRITICAL defects — fix on detection; write via UTF-8-safe tools
            only, never shell redirects without explicit UTF-8.
     [R100] Duplication routes into the RF chain — design stages (BD/DS) check
@@ -332,5 +334,12 @@ Rules:
            folders are forbidden; a project instantiated from another system
            contains only that system's OWN folders; the AI never treats
            template or foreign folders as real projects.
-
+    [R106] Skills 3-way surface — every SDDRA skill family ships as a
+           .kilo skill wrapper (thin router: name, description, pointer
+           to the .sdd spec source of truth, when-to-use) in addition to
+           the .sdd spec itself; wrappers NEVER duplicate spec content
+           ([SK1] token efficiency, [R81] link over copy). Registered
+           families: sddra (meta/routing), sddra-engineering,
+           sddra-design, sddra-writing, sddra-languages.
+ 
 State: +
