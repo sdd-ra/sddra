@@ -132,13 +132,16 @@ Gates:
       - No CRITICAL or HIGH findings open
       - MEDIUM/LOW findings are tracked or accepted
       - Threat model validated (if applicable)
-      - Dependency scan clean
+      - Dependency scan clean (bax ../../gates/dependency-gate.sdd)
       - Secrets not exposed
       - AuthZ/authN validated
     Fail:
       - CRITICAL/HIGH finding open
       - Security baseline violation
       - Routing: responsible stage (BE/FE/MD/DB/API/AR) for fix, or HUMAN (security exception)
+    Ordering:
+      In DL1 v2 (Phase 155) scoped SC-XX precedes the branch's XX-TS;
+      criteria above are order-independent pass/fail conditions.
 
   DO — DevOps Gate:
     Pass:

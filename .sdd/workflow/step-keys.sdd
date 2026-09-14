@@ -41,10 +41,15 @@ Dictionary:
         Stage: CR instance scoped to BE (see CRScopedSemantics)
   RF-BE Refactor — Backend
         Purpose: Address CR-BE findings; restructure/clean backend code
-                 before final testing.
+                 before security validation.
         Stage: RF instance scoped to BE
+  SC-BE Security — Backend
+        Purpose: Scoped security validation BEFORE branch tests
+                 (v2 ordering, Phase 155).
+        Stage: SC instance scoped to BE
   BE-TS Backend Tests
-        Purpose: Test and validate Backend behavior.
+        Purpose: Test and validate Backend behavior AFTER the scoped
+                 security pass (SC-BE).
         Stage: BE_TS
   DB    Database
         Purpose: Design/implement database structure, schema, migrations.
@@ -54,10 +59,15 @@ Dictionary:
         Stage: CR instance scoped to DB
   RF-DB Refactor — Database
         Purpose: Address CR-DB findings; restructure/clean database 
-                 schema/migrations before final testing.
+                 schema/migrations before security validation.
         Stage: RF instance scoped to DB
+  SC-DB Security — Database
+        Purpose: Scoped security validation BEFORE branch tests
+                 (v2 ordering, Phase 155).
+        Stage: SC instance scoped to DB
   DB-TS Database Tests
-        Purpose: Test and validate Database behavior.
+        Purpose: Test and validate Database behavior AFTER the scoped
+                 security pass (SC-DB).
         Stage: DB_TS
   API   API Development
         Purpose: Implement API endpoints/contracts/integration.
@@ -67,10 +77,15 @@ Dictionary:
         Stage: CR instance scoped to API
   RF-API Refactor — API
         Purpose: Address CR-API findings; restructure/clean API
-                 implementation and contracts before final testing.
+                 implementation and contracts before security validation.
         Stage: RF instance scoped to API
+  SC-API Security — API
+        Purpose: Scoped security validation BEFORE branch tests
+                 (v2 ordering, Phase 155).
+        Stage: SC instance scoped to API
   API-TS API Tests
-        Purpose: Test and validate API behavior and contracts.
+        Purpose: Test and validate API behavior and contracts AFTER
+                 the scoped security pass (SC-API).
         Stage: BE_TS scoped to API contracts
   FE    Frontend
         Purpose: Implement web/frontend functionality.
@@ -80,10 +95,15 @@ Dictionary:
         Stage: CR instance scoped to FE
   RF-FE Refactor — Frontend
         Purpose: Address CR-FE findings; restructure/clean frontend
-                 implementation before final testing.
+                 implementation before security validation.
         Stage: RF instance scoped to FE
+  SC-FE Security — Frontend
+        Purpose: Scoped security validation BEFORE branch tests
+                 (v2 ordering, Phase 155).
+        Stage: SC instance scoped to FE
   FE-TS Frontend Tests
-        Purpose: Test and validate frontend behavior.
+        Purpose: Test and validate frontend behavior AFTER the scoped
+                 security pass (SC-FE).
         Stage: FE_TS
   MD    Mobile Development
         Purpose: Implement mobile application functionality.
@@ -93,10 +113,15 @@ Dictionary:
         Stage: CR instance scoped to MD
   RF-MD Refactor — Mobile
         Purpose: Address CR-MD findings; restructure/clean mobile
-                 implementation before final testing.
+                 implementation before security validation.
         Stage: RF instance scoped to MD
+  SC-MD Security — Mobile
+        Purpose: Scoped security validation BEFORE branch tests
+                 (v2 ordering, Phase 155).
+        Stage: SC instance scoped to MD
   MD-TS Mobile Development Tests
-        Purpose: Test and validate mobile functionality.
+        Purpose: Test and validate mobile functionality AFTER the
+                 scoped security pass (SC-MD).
         Stage: MD_TS
   DC    Documentation
         Purpose: Create/update technical and project documentation.
@@ -106,11 +131,22 @@ Dictionary:
         Stage: CR instance scoped to DC
   RF-DC Refactor — Documentation
         Purpose: Address CR-DC findings; restructure/clean documentation
-                 for correctness and consistency before final validation.
+                 for correctness and consistency before security validation.
         Stage: RF instance scoped to DC
+  SC-DC Security — Documentation
+        Purpose: Scoped security validation BEFORE branch validation
+                 (v2 ordering, Phase 155) — no secrets/credentials in
+                 docs, no sensitive data exposure.
+        Stage: SC instance scoped to DC
   DC-TS Documentation Tests / Validation
-        Purpose: Validate documentation against the actual implementation.
+        Purpose: Validate documentation against the actual
+                 implementation AFTER the scoped security pass (SC-DC).
         Stage: DC-TS
+  FTS   Final Test Suite
+        Purpose: Cross-layer E2E, integration, and regression over all
+                 ACTIVE branches after their XX-TS complete; closes the
+                 layer loop before AN ([DL1-8]).
+        Stage: TS scoped to cross-layer (see FTSScopedSemantics)
   AN    Analysis
         Purpose: Analyze the complete workflow state and cross-check all
                  outputs.
@@ -129,27 +165,34 @@ Mapping (key -> existing SDD stage):
   BE -> BE (existing)
   CR-BE -> CR { scope: BE }
   RF-BE -> RF { scope: BE }
+  SC-BE -> SC { scope: BE }
   BE-TS -> BE_TS (existing)
   DB -> DB (existing)
   CR-DB -> CR { scope: DB }
   RF-DB -> RF { scope: DB }
+  SC-DB -> SC { scope: DB }
   DB-TS -> DB_TS (existing)
   API -> API (existing)
   CR-API -> CR { scope: API }
   RF-API -> RF { scope: API }
+  SC-API -> SC { scope: API }
   API-TS -> BE_TS { scope: API contracts }
   FE -> FE (existing)
   CR-FE -> CR { scope: FE }
   RF-FE -> RF { scope: FE }
+  SC-FE -> SC { scope: FE }
   FE-TS -> FE_TS (existing)
   MD -> MD (existing)
   CR-MD -> CR { scope: MD }
   RF-MD -> RF { scope: MD }
+  SC-MD -> SC { scope: MD }
   MD-TS -> MD_TS (existing)
   DC -> DC (new stage)
   CR-DC -> CR { scope: DC }
   RF-DC -> RF { scope: DC }
+  SC-DC -> SC { scope: DC }
   DC-TS -> DC_TS (new stage)
+  FTS -> TS { scope: cross-layer }
   AN -> AN (existing)
   VR -> VR (existing)
 
@@ -161,6 +204,9 @@ CRScopedSemantics:
     CR-XX execution reviews that branch's output against its requirements,
     design and BDD.
   rule: a branch is complete only when its CR-XX has passed.
+  rule: CR-XX includes the dependency diff check — any undeclared new
+    dependency found in the diff fails the review (bax
+    ../gates/dependency-gate.sdd).
 
 RFScopedSemantics:
   definition: RF is ONE stage (post-review refactor) executed with a
@@ -168,8 +214,41 @@ RFScopedSemantics:
   rule: RF-XX keys are NOT new stages — same RF stage, scoped instance.
   rule: RF-XX runs only after its CR-XX has passed with change requests,
         or is skipped if CR-XX passes clean.
-  rule: XX-TS validates the branch only after RF-XX (if triggered) is done.
-  
+  rule: XX-TS validates the branch only after RF-XX (if triggered) is
+        done AND after its SC-XX has passed (v2 ordering).
+
+SCScopedSemantics:
+  definition: SC is ONE stage (security validation). SC-XX keys are the
+    SAME stage executed with a `scope:` parameter naming the branch
+    artifact (BE, DB, API, FE, MD, DC).
+  rule: SC-XX keys are NOT new stages — same SC stage, scoped instance.
+  rule: SC-XX runs after RF-XX (or CR-XX directly when RF-XX was
+        skipped) and BEFORE XX-TS (v2 ordering, Phase 155).
+  rule: a branch's XX-TS is reachable only after its SC-XX passed —
+        security-defective code is never tested first.
+
+FTSScopedSemantics:
+  definition: FTS is a TS stage instance scoped to cross-layer: E2E,
+    integration, and regression across all ACTIVE branches.
+  rule: FTS depends on every active branch's XX-TS; skipped branches
+        (outside ImpactMatrix) are excluded from FTS scope.
+  rule: FTS is mandatory per [DL1-8]; explicit StageSkip with recorded
+        reason is the only skip path.
+
+Concepts:
+  Layer:   A branch DOMAIN of the delivery chain — BE, DB, API, FE,
+           MD, DC (bax ../chains/delivery.sdd). Layers are where
+           implementation happens.
+  Gate:    A mandatory quality TRANSITION — CR (peer review), RF
+           (post-review refactor), SC (security validation), TS
+           (tests/validation). Gates are scoped per layer (CR-XX) but
+           are never layers themselves.
+  Stage:   A named engineering responsibility with inputs/outputs/gate
+           criteria (bax ../workflow/stages.sdd) — Layers and Gates
+           both resolve to stage instances.
+  Ordering: v2 (Phase 155) — within each branch: XX -> CR-XX -> RF-XX ->
+           SC-XX -> XX-TS; FTS after all branches; keys unchanged [SK1].
+
 Rules:
   [SK1] Short keys are CANONICAL — never redefined during execution.
   [SK2] Every key resolves through this dictionary — no improvised meanings.
@@ -178,6 +257,8 @@ Rules:
         the backend test suite discipline).
   [SK5] The dictionary is the ONLY place keys are defined; execution
         references keys, never invents new ones.
+  [SK6] Within-branch ordering is v2: SC-XX precedes XX-TS — a branch's
+        tests never run before its security pass (Phase 155).
 
 Navigation:
   Stages: @stages.sdd
@@ -187,3 +268,7 @@ Navigation:
   TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd
 
 State: +
+  (Phase 155 v2: reordered per-branch dictionary to XX, CR-XX, RF-XX,
+   SC-XX, XX-TS — scoped security now precedes branch tests; added
+   SCScopedSemantics, FTSScopedSemantics, Concepts (Layer/Gate/Stage)
+   and FTS key; added [SK6]; CR-XX gained dependency diff check)

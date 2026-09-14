@@ -9,43 +9,47 @@ Purpose:
   understood, requirements defined, business design shaped, decisions
   recorded, tasks broken down, behavior specified; then implementation
   branches execute in parallel, each through the same scoped
-  review -> refactor -> test -> security pipeline; finally the whole
-  flow is analyzed and verified. Step keys are canonical
+  review -> refactor -> security -> test pipeline (security pass
+  PRECEDES per-branch tests — v2 ordering, Phase 155); the Final Test
+  Suite closes the cross-layer loop; finally the whole flow is
+  analyzed and verified. Step keys are canonical
   (bax ../workflow/step-keys.sdd).
 
 Owns: chains/delivery.sdd
 
 Flow:
   BC -> BR -> BD -> DS -> TK -> BDD
-                             |
-      +-------+-------+-------+-------+-------+
-      |       |       |       |       |       |
-      BE      DB      API     FE      MD      DC      (parallel branches)
-      |       |       |       |       |       |
-    CR-BE   CR-DB   CR-API  CR-FE   CR-MD   CR-DC     (scoped reviews)
-      |       |       |       |       |       |
-    RF-BE   RF-DB   RF-API  RF-FE   RF-MD   RF-DC     (scoped refactor,
-      |       |       |       |       |       |        conditional — see
-    BE-TS   DB-TS   API-TS  FE-TS   MD-TS   DC-TS       ImmutabilityRules
-      |       |       |       |       |       |        note below)
-    SC-BE   SC-DB   SC-API  SC-FE   SC-MD   SC-DC     (scoped security)
-      |       |       |       |       |       |
-      +-------+-------+-------+-------+-------+
-                      |
-                     AN -> VR
+                              |
+       +-------+-------+-------+-------+-------+
+       |       |       |       |       |       |
+       BE      DB      API     FE      MD      DC      (parallel branches)
+       |       |       |       |       |       |
+     CR-BE   CR-DB   CR-API  CR-FE   CR-MD   CR-DC     (scoped reviews)
+       |       |       |       |       |       |
+     RF-BE   RF-DB   RF-API  RF-FE   RF-MD   RF-DC     (scoped refactor,
+       |       |       |       |       |       |        conditional — see
+     SC-BE   SC-DB   SC-API  SC-FE   SC-MD   SC-DC     ImmutabilityRules
+       |       |       |       |       |       |        note below)
+     BE-TS   DB-TS   API-TS  FE-TS   MD-TS   DC-TS     (scoped security
+       |       |       |       |       |       |        BEFORE branch
+       +-------+-------+-------+-------+-------+        tests — v2)
+                       |
+                      FTS                                  (final test
+                       |                                    suite: cross-
+                       |                                    layer E2E)
+                      AN -> VR
 
 FlowNotation:
   short:  BC -> BR -> BD -> DS -> TK -> BDD -> [
-    BE->CR-BE->RF-BE->BE-TS->SC-BE,
-    DB->CR-DB->RF-DB->DB-TS->SC-DB,
-    API->CR-API->RF-API->API-TS->SC-API,
-    FE->CR-FE->RF-FE->FE-TS->SC-FE,
-    MD->CR-MD->RF-MD->MD-TS->SC-MD,
-    DC->CR-DC->RF-DC->DC-TS->SC-DC
-    ] -> AN -> VR
-  canonical_keys: 24 base + RF-XX/SC-XX scoped aliases (bax
-    ../workflow/step-keys.sdd — never redefined; count updates once
-    RF-XX and SC-XX are added to the dictionary)
+    BE->CR-BE->RF-BE->SC-BE->BE-TS,
+    DB->CR-DB->RF-DB->SC-DB->DB-TS,
+    API->CR-API->RF-API->SC-API->API-TS,
+    FE->CR-FE->RF-FE->SC-FE->FE-TS,
+    MD->CR-MD->RF-MD->SC-MD->MD-TS,
+    DC->CR-DC->RF-DC->SC-DC->DC-TS
+    ] -> FTS -> AN -> VR
+  canonical_keys: 24 base + RF-XX/SC-XX scoped aliases + FTS (bax
+    ../workflow/step-keys.sdd — never redefined)
 
 Dependencies:
   BR  -> [BC]
@@ -72,27 +76,32 @@ Dependencies:
   RF-FE   -> [CR-FE]   (conditional, same rule)
   RF-MD   -> [CR-MD]   (conditional, same rule)
   RF-DC   -> [CR-DC]   (conditional, same rule)
-  BE-TS   -> [RF-BE]   (or [CR-BE] directly if RF-BE was skipped)
-  DB-TS   -> [RF-DB]   (or [CR-DB] directly if RF-DB was skipped)
-  API-TS  -> [RF-API]  (or [CR-API] directly if RF-API was skipped)
-  FE-TS   -> [RF-FE]   (or [CR-FE] directly if RF-FE was skipped)
-  MD-TS   -> [RF-MD]   (or [CR-MD] directly if RF-MD was skipped)
-  DC-TS   -> [RF-DC]   (or [CR-DC] directly if RF-DC was skipped)
-  SC-BE   -> [BE-TS]
-  SC-DB   -> [DB-TS]
-  SC-API  -> [API-TS]
-  SC-FE   -> [FE-TS]
-  SC-MD   -> [MD-TS]
-  SC-DC   -> [DC-TS]
-  AN  -> [SC-BE, SC-DB, SC-API, SC-FE, SC-MD, SC-DC]
+  SC-BE   -> [RF-BE]   (or [CR-BE] directly if RF-BE was skipped)
+  SC-DB   -> [RF-DB]   (or [CR-DB] directly if RF-DB was skipped)
+  SC-API  -> [RF-API]  (or [CR-API] directly if RF-API was skipped)
+  SC-FE   -> [RF-FE]   (or [CR-FE] directly if RF-FE was skipped)
+  SC-MD   -> [RF-MD]   (or [CR-MD] directly if RF-MD was skipped)
+  SC-DC   -> [RF-DC]   (or [CR-DC] directly if RF-DC was skipped)
+  BE-TS   -> [SC-BE]   (v2: branch tests only after scoped security pass)
+  DB-TS   -> [SC-DB]   (v2, same rule)
+  API-TS  -> [SC-API]  (v2, same rule)
+  FE-TS   -> [SC-FE]   (v2, same rule)
+  MD-TS   -> [SC-MD]   (v2, same rule)
+  DC-TS   -> [SC-DC]   (v2, same rule)
+  FTS     -> [BE-TS, DB-TS, API-TS, FE-TS, MD-TS, DC-TS]  (every ACTIVE
+             branch's XX-TS — skipped branches excluded via StageSkip)
+  AN  -> [FTS]
   VR  -> [AN]
 
 Parallelism:
   The six branches (BE, DB, API, FE, MD, DC) execute in parallel after
   BDD; each branch follows the identical scoped sub-path
-  CR-XX -> RF-XX -> XX-TS -> SC-XX; AN waits for ALL branches' SC-XX to
-  complete. RF-XX is conditional: it only runs when CR-XX raises change
-  requests, and is skipped when CR-XX passes clean (bax
+  CR-XX -> RF-XX -> SC-XX -> XX-TS — security validation precedes the
+  branch's tests (v2, Phase 155): a security finding blocks the branch
+  before any test effort is spent on defective code. AN waits for FTS
+  (the Final Test Suite over all active branches' XX-TS). RF-XX is
+  conditional: it only runs when CR-XX raises change requests, and is
+  skipped when CR-XX passes clean (bax
   ../workflow/stages.sdd RFScopedSemantics). Branches not in a task's
   ImpactMatrix are skipped explicitly (never silently — bax
   transitions.sdd StageSkip).
@@ -113,14 +122,24 @@ ImmutabilityRules (flow protection):
   [DL1-5] A blocking BUG stops the current step and the flow — no
           continuation until resolved (bax ../tasks/BUG-REGISTRY.sdd).
   [DL1-6] VR = VERIFIED is reachable only when all required steps are
-          complete (including each branch's SC-XX) AND no blocking BUG
-          remains.
+          complete (including each branch's SC-XX and XX-TS, plus FTS)
+          AND no blocking BUG remains.
+  [DL1-7] FLOW VERSIONING (v2, Phase 155): persisted runs whose state
+          carries no flow_version are v1 runs under the OLD
+          XX-TS -> SC-XX ordering. They are DEPRECATED — /next MUST
+          re-initialize the run, never resume a v1 run under the v2
+          ordering (delivery-runner enforces via flow_version field).
+  [DL1-8] FTS (Final Test Suite) is MANDATORY for every delivery run:
+          cross-layer E2E, integration, and regression over all ACTIVE
+          branches. Skipping FTS is possible only through an explicit
+          StageSkip with recorded reason — never silently.
 
 StepState (persisted per delivery run):
   storage: .specdd/delivery/{run_id}/state.sdd (runtime-only)
   fields: run_id, current_step, completed_steps[], first_incomplete,
     branch_states{key -> state}, rf_skipped{key -> bool}, blocking_bugs[],
-    last_checkpoint
+    last_checkpoint, flow_version (2; absent => v1 deprecated run, bax
+    [DL1-7]), deprecated_from (set when a v1 run is re-initialized)
   resume: /next reads this state FIRST; completed steps are never
     re-executed ([RT8-RT9] checkpoint discipline).
 
@@ -141,3 +160,9 @@ State: +
    FE-TS, MD-TS to Flow/Dependencies; added RF-XX (conditional) and
    SC-XX; AN now depends uniformly on all six SC-XX; added rf_skipped
    tracking to StepState)
+  (Phase 155 v2: reordered sub-path to CR-XX -> RF-XX -> SC-XX -> XX-TS
+   — scoped security now PRECEDES branch tests (security-first,
+   fail-fast); added FTS (Final Test Suite) between the branch join and
+   AN; AN now depends on FTS; added flow_version to StepState and
+   [DL1-7]/[DL1-8]; v1 persisted runs deprecated, re-initialized not
+   resumed)

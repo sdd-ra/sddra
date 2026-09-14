@@ -69,8 +69,13 @@ Stages:
                depends/state/priority).
       Owner:    ORCHESTRATOR
       Input:    approved decisions
-      Output:   task breakdown (tasks/INDEX.sdd entries)
+      Output:   task breakdown (tasks/INDEX.sdd entries) + declared
+                new-dependency list (every proposed dependency)
       Activates: after DS, before BDD
+      DependencyGate: each declared new dependency MUST pass
+        @../gates/dependency-gate.sdd BEFORE the task list is
+        accepted — TK exit criterion ([DG6]); undeclared
+        dependencies surface later as CR-XX failures
 
   Orchestration stages — analysis/decision points that begin or redirect
   a chain:
@@ -99,10 +104,12 @@ Stages:
       Activates: when existing work is modified (bugfix, change, hotfix)
 
   Engineering discipline stages — reusable branch stages. Every
-  implementation branch follows the same unified pipeline:
+  implementation branch follows the same unified pipeline (v2
+  ordering, Phase 155 — security precedes branch tests):
 
-      XX -> CR-XX -> RF-XX -> XX-TS -> SC-XX
-      (XX = DB, BE, API, FE, MD, DC)
+      XX -> CR-XX -> RF-XX -> SC-XX -> XX-TS
+      (XX = DB, BE, API, FE, MD, DC; then FTS cross-layer, bax
+       ../chains/delivery.sdd)
 
     BDD:    Behavior-Driven Development
       Purpose:  Define acceptance criteria in Given/When/Then format.
@@ -374,3 +381,8 @@ State: +
     added missing DB_TS stage; fixed DC-TS -> DC_TS naming; filled
     StateToStageMap gaps (DC in IMPLEMENTING; DB_TS, DC_TS, SC in TESTING;
     RF in FIXING))
+   (Phase 155 v2: branch pipeline reordered to XX -> CR-XX -> RF-XX ->
+    SC-XX -> XX-TS — scoped security precedes branch tests; TK exit
+    criterion now requires DEPENDENCY_GATE approval of declared
+    dependencies; the Phase 151 line above is kept as HISTORY —
+    chains/delivery.sdd is the current ordering authority)

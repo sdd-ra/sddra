@@ -8,9 +8,15 @@ Purpose:
 
 Owns: stages\SC.sdd
 Entry:
-  QA passed
+  RF-XX passed (scoped instance) or CR-XX passed clean
   security requirements known
   applicable skills loaded
+
+Note:
+  In the DL1 delivery chain (v2 ordering, Phase 155) scoped SC-XX
+  instances run BEFORE the branch's XX-TS — security-defective code
+  is never tested first. This generic SC spec governs the unscoped
+  stage; scoped instances follow chains/delivery.sdd ordering.
 
 Must:
   run security tests
