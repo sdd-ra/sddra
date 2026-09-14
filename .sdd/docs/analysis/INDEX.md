@@ -13,6 +13,7 @@ Deep system analysis and external tool evaluations.
 | [design-system-proscons-report.md](design-system-proscons-report.md) | Design system adoption trade-off report |
 | [garry-tan-gstack-alignment.md](garry-tan-gstack-alignment.md) | Garry Tan prompt / Rentier critique / gstack alignment — Layer-3 positioning, adoptions and rejections |
 | [agent-reach-round2.md](agent-reach-round2.md) | Agent-Reach Round 2 — ops-UX adoptions (agent-mediated install, auth ladder, doctor prescriptions) |
+| [external-research-2026-09.md](external-research-2026-09.md) | External research round — SpecD/context engineering/LangGraph gap map; RA-1..RA-4 adoptions (dependsOn traversal, staleness fallback, human-authored routing rule, evidence citations) |
 | [repo-cleanup-analysis.md](repo-cleanup-analysis.md) | Repo cleanup inventory — stale-file keep/move/delete recommendations (analysis only) |
 
 ## Related Documentation

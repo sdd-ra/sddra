@@ -362,5 +362,12 @@ Rules:
            [R99] signature list — never quoted in specs to avoid
            self-trips; the templates/specdd concept folder is a naming
            concept, not a repo identity, and is exempt).
+    [R109] Routing files are human-authored — INDEX.sdd, InitialLoad
+           manifests, and any routing/read-order file is a hand-written
+           governance artifact; AUTO-GENERATING them is a CRITICAL
+           drift finding (evidence: arXiv 2602.11988 — auto-generated
+           repo context files reduced agent success ~3% and raised
+           inference cost 20%+, while human-written improved ~4%);
+           generated output may PROPOSE edits, never replace the file.
  
 State: +

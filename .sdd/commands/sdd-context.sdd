@@ -54,11 +54,31 @@ Output:
     Contradictions:
       D12 (REST) vs D41 (GraphQL for payments)
 
+ContextCompilation (adopted 2026-09-14, external research RA-1/RA-2;
+source: .sdd/docs/analysis/external-research-2026-09.md):
+  dependsOnTraversal: when compiling a pack for a task/change, the
+    compiler walks the .sdd dependencies graph TRANSITIVELY from
+    every spec the change touches — what the spec graph itself
+    declares relevant is included, not only what the task names.
+  stalenessFallback: each included item carries freshness metadata
+    (git last-commit vs declared); a STALE item is injected with its
+    RAW content plus a staleness notice — never silently trusted
+    stale structured metadata.
+  rationale: compiled context vs agent-discovered context measured
+    5-6x token reduction (Moderne 2026-04); structural retrieval
+    precision@5 0.140 -> 0.478 (Sourcegraph); SpecD resolves context
+    for the agent — same doctrine as EXPAND ([CMD7]).
+
 Rules:
   [CTX-CMD-01] /sdd-context MUST produce manifest for every compilation.
   [CTX-CMD-02] /sdd-context MUST flag contradictions.
   [CTX-CMD-03] /sdd-context MUST respect budget.
   [CTX-CMD-04] /sdd-context MUST show exclusion reasons.
+  [CTX-CMD-05] Compilation MUST traverse declared spec dependencies
+                transitively from touched specs (dependsOnTraversal).
+  [CTX-CMD-06] Stale items MUST fall back to raw content + staleness
+                notice; stale structured metadata is never injected
+                silently (stalenessFallback).
 
 Navigation:
   INDEX: @../../INDEX.sdd

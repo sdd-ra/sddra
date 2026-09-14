@@ -42,6 +42,13 @@ PullBasedLoading (Phase 151 — EXPAND protocol):
 Optimization:
   Target: Relevant Context / Total Context > 80%
   Rule: Safety-critical tasks MUST NOT sacrifice relevance for efficiency.
+  Evidence (external research 2026-09, RA-4): compiled/pulled context
+    beats agent-discovered context by measured 5-6x token reduction
+    (Moderne live demo 2026-04); structural retrieval lifted precision@5
+    0.140 -> 0.478 vs grep baseline (Sourcegraph); auto-generated
+    context files REDUCE agent success (arXiv 2602.11988) —
+    human-authored routing + pull-based depth is the evidence-backed
+    doctrine; full citations: .sdd/docs/analysis/external-research-2026-09.md
 
 Navigation:
   CommandsIndex: @../commands/INDEX.sdd (InitialLoad declarations)

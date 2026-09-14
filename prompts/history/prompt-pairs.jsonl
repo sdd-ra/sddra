@@ -104,3 +104,28 @@
 {"ts":"2026-09-14T12:08:02.068Z","command":"/sdd-marketplace","customer_prompt":"import nvidia-skills some-skill","ai_prompt":"/sdd-marketplace import nvidia-skills some-skill"}
 {"ts":"2026-09-14T12:08:02.071Z","command":"/sdd-marketplace","customer_prompt":"audit","ai_prompt":"/sdd-marketplace audit"}
 {"ts":"2026-09-14T12:08:02.080Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
+{"ts":"2026-09-14T12:27:19.625Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-14T12:27:19.645Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-14T12:27:19.652Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-14T12:27:19.657Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-14T12:27:19.662Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-14T12:27:19.669Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts":"2026-09-14T12:27:19.800Z","command":"/sdd-purge","customer_prompt":"","ai_prompt":"/sdd-purge"}
+{"ts":"2026-09-14T12:27:19.805Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__"}
+{"ts":"2026-09-14T12:27:19.887Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --inspect","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --inspect"}
+{"ts":"2026-09-14T12:27:19.917Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer a","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer a"}
+{"ts":"2026-09-14T12:27:19.945Z","command":"/sdd-purge","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --layer files","ai_prompt":"/sdd-purge --directory /workspace/sdd-adapter/__tests__ --layer files"}
+{"ts":"2026-09-14T12:27:19.968Z","command":"/sdd-scan","customer_prompt":"--directory /workspace/sdd-adapter/__tests__ --provenance","ai_prompt":"/sdd-scan --directory /workspace/sdd-adapter/__tests__ --provenance"}
+{"ts":"2026-09-14T12:27:21.004Z","command":"/sdd-design","customer_prompt":"--discover","ai_prompt":"/sdd-design --discover"}
+{"ts":"2026-09-14T12:27:21.013Z","command":"/sdd-design","customer_prompt":"--evaluate --directory /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --evaluate --directory /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T12:27:21.104Z","command":"/sdd-design","customer_prompt":"--review /workspace/tmp/design-cmd-test","ai_prompt":"/sdd-design --review /workspace/tmp/design-cmd-test"}
+{"ts":"2026-09-14T12:27:21.168Z","command":"/sdd-design","customer_prompt":"--auto","ai_prompt":"/sdd-design --auto"}
+{"ts":"2026-09-14T12:27:21.229Z","command":"/sdd-design","customer_prompt":"","ai_prompt":"/sdd-design"}
+{"ts":"2026-09-14T12:27:21.606Z","command":"/sdd-marketplace","customer_prompt":"list","ai_prompt":"/sdd-marketplace list"}
+{"ts":"2026-09-14T12:27:21.613Z","command":"/sdd-marketplace","customer_prompt":"sync does-not-exist","ai_prompt":"/sdd-marketplace sync does-not-exist"}
+{"ts":"2026-09-14T12:27:21.619Z","command":"/sdd-marketplace","customer_prompt":"import","ai_prompt":"/sdd-marketplace import"}
+{"ts":"2026-09-14T12:27:21.624Z","command":"/sdd-marketplace","customer_prompt":"import nope some-skill","ai_prompt":"/sdd-marketplace import nope some-skill"}
+{"ts":"2026-09-14T12:27:21.629Z","command":"/sdd-marketplace","customer_prompt":"import nvidia-skills some-skill","ai_prompt":"/sdd-marketplace import nvidia-skills some-skill"}
+{"ts":"2026-09-14T12:27:21.634Z","command":"/sdd-marketplace","customer_prompt":"audit","ai_prompt":"/sdd-marketplace audit"}
+{"ts":"2026-09-14T12:27:21.645Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
+{"ts":"2026-09-14T12:27:42.425Z","command":"/sdd-health","customer_prompt":"","ai_prompt":"/sdd-health"}
