@@ -5,11 +5,9 @@ engineering.** The `.sdd/` directory is the single source of truth:
 rules, chains, gates, and registries that an AI agent operates
 inside — with human approval reserved for irreversible decisions.
 
-> Azərbaycan dilli qısa icmal aşağıdadır (§ AZ icmal).
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Sandboxed](https://img.shields.io/badge/execution-Docker--only-2496ed.svg)](docker-compose.yml)
-[![Specs](https://img.shields.io/badge/specs-.sdd%2F-106%20rules-green.svg)](.sdd/PROJECT.sdd)
+[![Specs](https://img.shields.io/badge/specs-.sdd%2F-111%20rules-green.svg)](.sdd/PROJECT.sdd)
 
 ## Why
 
@@ -22,6 +20,17 @@ before code exists, so whole defect classes never happen.
 - **Human gates, minimal** — approve the irreversible, automate the rest
 - **State over memory** — registries, not chat threads; resume is reading
 - **Sandboxed by default** — every build/test runs in a locked container
+- **Security-first ordering** — the security pass precedes branch tests ([R101])
+
+### The problem, and what you get instead
+
+| Without SDDRA | With SDDRA |
+|---------------|------------|
+| Intent lives in chat threads and dies with the session | Intent is captured as machine-checkable `.sdd/` contracts |
+| Agents write code before requirements exist | Spec → Docs → Code is the only legal change order |
+| Humans review endless diffs as robot QA | Human gates fire only on irreversible decisions |
+| Context resets every session | Saved state + registries; resume is a file read |
+| Unverified AI claims accumulate silently | Decision ledger, DONE-PROOF, and traceability queries |
 
 ## Quick start
 
@@ -47,7 +56,7 @@ pros and cons: **[docs/getting-started/install.md](docs/getting-started/install.
 Legacy deep docs (analysis, overviews, appendices) live in
 `.sdd/docs/` — routed by `.sdd/INDEX.sdd`.
 
-## The 30 commands
+## The 31 commands
 
 | Command | What it does |
 |---------|--------------|
@@ -71,6 +80,7 @@ Legacy deep docs (analysis, overviews, appendices) live in
 | `/sdd-compact` | Compress context after a task |
 | `/sdd-clean` | Clear context for the next task |
 | `/sdd-skills` | Discover and map the skill ecosystem |
+| `/sdd-evolve` | Skill Evolution Engine: propose and validate skill changes |
 | `/sdd-design` | Design analysis, evaluation, discovery |
 | `/sdd-scan` | Security pattern scans against code files |
 | `/sdd-dependencies` | Analyze and visualize the dependency graph |
@@ -104,10 +114,45 @@ flowchart LR
 Full delivery chain (BC→…→VR), decision lifecycle, and enforcement
 layers: [docs/architecture/overview.md](docs/architecture/overview.md)
 
+## How work flows — the delivery chain (DL1)
+
+Every delivery request follows one immutable, stateful pipeline.
+Once the business case is understood, requirements defined, design
+shaped, and behavior specified (BC → BR → BD → DS → TK → BDD), six
+engineering branches execute in parallel — each through the same
+scoped pipeline — and converge on verification:
+
+```mermaid
+flowchart LR
+    BDD["BDD Scenarios"] --> PAR{"Parallel branches"}
+    PAR --> BE["BE Backend"]
+    PAR --> DB["DB Database"]
+    PAR --> API["API"]
+    PAR --> FE["FE Frontend"]
+    PAR --> MD["MD"]
+    PAR --> DC["DC"]
+    BE --> CR["CR-XX Scoped review"]
+    DB --> CR
+    API --> CR
+    FE --> CR
+    MD --> CR
+    DC --> CR
+    CR --> SC["SC-XX Security check"]
+    SC --> TS["XX-TS Branch tests"]
+    TS --> FTS["FTS Final Test Suite (cross-layer E2E)"]
+    FTS --> AN["AN Analysis"]
+    AN --> VR["VR Verification & Release"]
+```
+
+Per-branch pipeline (v2 ordering, Phase 155): **implement → scoped
+review → conditional refactor (RF-XX, only on findings) → security
+check → branch tests**. Security precedes tests — fail fast, fix
+cheap ([R101]).
+
 ## Repository map
 
 ```
-.sdd/            specs — rules R1-R106, chains, gates, registries (source of truth)
+.sdd/            specs — rules R1-R111, chains, gates, registries (source of truth)
 sdd-adapter/     TypeScript runtime executing the specs
 .claude/commands/ + .kilo/command/    /sdd* command wrappers
 .kilo/skills/    Kilo skill routing wrappers (R106)
@@ -135,15 +180,3 @@ Philosophy: **[docs/contributing/philosophy.md](docs/contributing/philosophy.md)
 ## License
 
 [MIT](LICENSE)
-
----
-
-## AZ icmal
-
-SDDRA — AI dəstəkli proqram təminatı üçün spesifikasiya-first əməliyyat
-sistemi. `.sdd/` faylları (qaydalar R1-R106, chain graph, qapılar,
-registrlər) sistemin beynidir; AI onların içində işləyir. İnsan qapıları
-yalnız geri döndərilə bilməyən qərarlardadır. Bütün icra Docker
-sandbox-dadır; commit-lərdə AI imzası yoxdur. 30 /sdd* əmri üç
-səthdə qeydiyyatlıdır. Ətraflı: `docs/` (EN), `.sdd/docs/` (dərin
-sənədlər). Yeni başlayanlar üçün: `docs/getting-started/install.md`.
