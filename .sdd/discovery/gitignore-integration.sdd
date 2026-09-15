@@ -1,0 +1,75 @@
+# Discovery: Gitignore Integration
+
+Spec: GitignoreIntegration
+
+Purpose:
+  Define how discovery, analysis, and /sdd case execution honor the
+  repository's ignore surfaces (.gitignore, .dockerignore). Ignored
+  files are NOT part of the project model: no tasks are generated
+  against them, no skill analysis runs over them, no case execution
+  modifies them — with explicit, recorded exceptions.
+
+Owns: discovery/gitignore-integration.sdd
+
+Sources:
+  Phase 156 (2026-09-14): user directive "after .sdd analysis, case
+  execution must account for .gitignore/.dockerignore and similar".
+
+Surfaces:
+
+  gitignore:
+    authority: REPO MODEL — authoritative for what belongs to the
+      project model. Ignored paths are outside the model.
+    examples: tmp/, var/, node_modules/, prompts/inbox/ (runtime
+      prompt artifacts), .env* (secrets — never read, never logged).
+
+  dockerignore:
+    authority: SANDBOX CONTEXT — advisory for image minimalism and
+      secret-free builds ([R59]-[R66]); it constrains WHAT the
+      sandbox sees, not what the repo model contains.
+    rule: a file can be tracked in git yet excluded from the image
+      (docs/, prompts/ are tracked AND dockerignored — correct:
+      the sandbox does not need them; the repo does).
+
+Rules:
+
+  [GI1] Case execution MUST NOT modify, generate tasks against, or
+        "fix" any gitignored path. Ignored paths are user-owned
+        runtime surfaces (tmp/, var/, inbox/).
+  [GI2] Discovery reports ignored paths as UNMANAGED SURFACE only
+        (existence, size class) — it does not parse their content
+        into the project model.
+  [GI3] A file that is BOTH tracked and gitignored (drift — e.g.
+        prompts/inbox/165-.md while .gitignore declares
+        prompts/inbox/) is a DRIFT FINDING: recommend
+        `git rm --cached <file>` so tracking matches the declared
+        model. Disk copies are preserved.
+  [GI4] .gitignore is authoritative for the repo model;
+        .dockerignore is advisory for the sandbox image ([R59]
+        sandbox minimality). A conflict between them is resolved
+        in favor of .gitignore for model questions, .dockerignore
+        for image questions.
+  [GI5] Exceptions to any [GI] rule require a DEC record
+        (reason, owner, scope) — e.g. prompts/history/ is ignored-
+        adjacent but deliberately TRACKED because it is the
+        append-only prompt-pair ledger ([R104]).
+  [GI6] Scanners (mojibake, AZ-language, retired-name) honor the
+        ignore surfaces: they scan TRACKED files plus explicitly
+        allowed audit surfaces (prompts/history/), never ignored
+        runtime directories.
+
+AllowedAuditSurfaces:
+  - prompts/history/ (tracked ledger — [R104] append-only audit)
+  - .claude/sdd/workflow.yaml + orchestrator.md (stateful flow
+    config — deliberately un-ignored in .gitignore)
+
+Navigation:
+  DiscoveryIndex: @INDEX.sdd
+  Scanners: @scanners.sdd
+  DriftDetection: @../queries/drift-detection.sdd
+  SandboxRules: [R59]-[R66] in PROJECT.sdd rules registry
+
+State: +
+  (Phase 156: created — ignore-aware analysis/case-execution rules
+   [GI1..GI6]; discovered tracked-but-ignored inbox drift and
+   resolved via untrack, per [GI3])
