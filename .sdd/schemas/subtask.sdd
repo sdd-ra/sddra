@@ -37,6 +37,20 @@ Schema:
       Units of the SAME task that must be DONE before this one.
       Cross-task dependencies live on the task, not the subtask.
 
+  impact:                      # Phase 157-159 extensions (DEC 2026-0915-001)
+    blast_radius: LOW | MEDIUM | HIGH | CRITICAL
+        # scope of potential breakage if this unit is wrong:
+        # LOW = isolated file/module, MEDIUM = module + direct callers,
+        # HIGH = cross-layer (auth, payment, shared contracts),
+        # CRITICAL = data schema, migration, security model.
+        # Sourced from Phase 131 risk engine blast-radius dimensions.
+    affected:                  # pre-unit impact analysis (CHANGE IMPACT)
+      - <layers/modules touched: DB, BE, API, FE, MD, tests, events>
+    review_route: <derived>
+        # LOW -> normal flow; MEDIUM -> additional tests;
+        # HIGH/CRITICAL -> architecture review + human gate
+        # (maps to Phase 131 authority levels; CRITICAL never auto-merges)
+
   state: <SUBTASK-STATE-MACHINE state>
       bax ../tasks/SUBTASK-STATE-MACHINE.sdd (TODO -> ... -> DONE).
 
@@ -60,6 +74,11 @@ Rules:
   [SB7] New dependencies introduced by a unit MUST pass
         ../../gates/dependency-gate.sdd BEFORE implementation —
         never added mid-unit without APPROVE.
+  [SB8] impact.blast_radius MUST be set before state leaves TODO;
+        CRITICAL blast_radius additionally requires SECURITY_IMPACT
+        (decision-canvas [DC-06]) and blocks auto-merge.
+  [SB9] impact.affected MUST list every layer the unit touches;
+        the pipeline auto-expands to those layers (DB->BE->API->FE->MD->TS).
 
 Templates:
   Instance files live in projects/{project_name}/tasks/ alongside

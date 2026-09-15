@@ -67,3 +67,12 @@ unified architecture model).
 
 [gate: human_required] — approve scope/verdicts to advance to S1
 (spec drafting), or amend.
+
+## Approval
+
+- **APPROVED** — 2026-09-15T04:58:41Z, human (session). Scope:
+  Phase 157 (QUESTION registry), Phase 158 (Architecture Linter),
+  Phase 159 (Migration Readiness), plus bundled extensions
+  (#4 canvas fields, #6 CASE blast radius, #10 fitness DSL, #12
+  module compatibility manifest, #16 pre-CASE impact step).
+  Status: proposed -> approved -> implemented (S1 in same session).

@@ -41,8 +41,14 @@ Template:
   RISK:
     <what could go wrong>
 
+  SECURITY_IMPACT:
+    <auth/authz/data-classification/attack-surface consequences;
+    "none" only when provably out of scope>
+
   REVERSIBLE:
     true | false
+    score: HIGH | MEDIUM | LOW
+    (<why: e.g. additive change vs schema/data split>)
 
   EVIDENCE:
     - @proof.P<id>
@@ -57,6 +63,11 @@ Rules:
   [DC-02] Missing FACT or CONSTRAINT blocks approval.
   [DC-03] TRADE-OFF section MUST list at least one pro and one con per option.
   [DC-04] REVERSIBLE flag MUST be set for all decisions.
+  [DC-05] REVERSIBILITY score LOW routes to stronger review: security
+          review + architecture review before implementation (maps to
+          Phase 131 risk engine; LOW = multi-gate, HIGH = normal flow).
+  [DC-06] SECURITY_IMPACT MUST be filled for security-relevant DECs
+          (SEC.* gate categories); a blank field blocks approval.
 
 Navigation:
   Parent: @../INDEX.sdd

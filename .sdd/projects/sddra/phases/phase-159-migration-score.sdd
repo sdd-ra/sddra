@@ -1,0 +1,82 @@
+# Phase 159: Architecture Migration Readiness Score
+
+Date: 2026-09-15
+Status: DRAFT
+Parent DEC: 2026-0915-001 (points #12/#13 — Mono/Micro Gate + Score)
+
+---
+
+## 1. Problem
+
+The monolith → microservice strategy has no measurable readiness
+signal. Which module can be split next is a guess; per-module
+deployment-mode constraints (shared DB forbidden, owned data
+required) are not declared anywhere machine-readable.
+
+## 2. Solution
+
+Two coupled constructs:
+
+1. **Module Compatibility Manifest** — per-module declaration of
+   supported deployment/communication/database modes
+2. **Migration Readiness Score** — quantitative per-module score
+   (0-100) from coupling, cohesion, DB isolation, API isolation,
+   dependency weight
+
+## 3. Compatibility Manifest Schema
+
+```
+MODULE <name>
+deployment_modes:
+  monolith: supported | forbidden
+  standalone: supported | forbidden
+communication:
+  local: supported
+  grpc: supported | unsupported
+  event: supported | unsupported
+database:
+  shared: forbidden (required: owned)
+constraints: [@decision.DEC-<id>]
+```
+
+## 4. Score Model
+
+```
+Microservice Readiness = weighted:
+
+  Coupling (inbound+outbound imports, lower better)   30%
+  Cohesion (internal vs external calls, higher better) 25%
+  DB isolation (owned schema ratio)                   20%
+  API isolation (public surface stability)            15%
+  Dependency weight (transitive count)                10%
+```
+
+Bands: READY (>=80), PREPARABLE (60-79), COUPLED (40-59),
+ROOT-BOUND (<40). Score is advisory (L2 enforcement), never
+auto-migrates anything — migration itself is always DEC-gated.
+
+## 5. Rules
+
+- [MR1] Manifest lives in
+  `.sdd/projects/<name>/architecture/migration.sdd` (instance);
+  scaffolding in `templates/_sdd/architecture/`.
+- [MR2] Scores MUST be computed from the dependency graph engine
+  (@dependencies/graph.sdd) — never hand-entered.
+- [MR3] `database: shared` triggers a WARN finding in /sdd-drift
+  and blocks the module from standalone deployment mode.
+- [MR4] Score changes >10 points between rounds require a
+  rationale entry in the module's phase history.
+- [MR5] Scores surface in /sdd-status per module; readiness
+  ranking informs /sdd-plan task ordering.
+
+## 6. Location
+
+- Spec + manifest: `.sdd/projects/<name>/architecture/migration.sdd`
+- Computation: `sdd-adapter/migration-score.ts` (C1 scope — after
+  S1 approval; Docker-only [R102])
+
+## 7. Integration
+
+- /sdd-dependencies: emits readiness scores alongside the graph
+- /sdd-plan: ranks split-candidate tasks by readiness
+- architecture/patterns.sdd: references bands for pattern choice

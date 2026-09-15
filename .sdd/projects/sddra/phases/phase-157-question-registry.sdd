@@ -1,0 +1,68 @@
+# Phase 157: QUESTION Registry (Q → DEC Ledger)
+
+Date: 2026-09-15
+Status: DRAFT
+Parent DEC: 2026-0915-001 (point #3 — QUESTION→DECISION)
+
+---
+
+## 1. Problem
+
+AI repeats questions across sessions because open questions live
+only in conversation memory. DEC-014-style answers exist, but the
+question that produced them is not persisted, so the same decision
+path gets re-derived or re-asked.
+
+## 2. Solution
+
+A QUESTION entity registry that persists every engineering
+question, links it to its resolving DEC, and blocks re-asking
+answered questions.
+
+## 3. Entity Schema
+
+```
+Q-<nnn>
+Question:    <exact question text>
+Context:      @context.CTX<id> | <one-line state>
+Raised_by:    AI | HUMAN
+Raised_at:    <ISO-8601>
+Status:       OPEN | ANSWERED | SUPERSEDED
+Answer:       DEC-<id>       (when ANSWERED)
+Priority:     LOW | HIGH | BLOCKING
+```
+
+- BLOCKING question halts the dependent TASK/CASE until answered
+  (maps to STOP conditions, /sdd stateful flow).
+- SUPERSEDED requires reference to the replacing Q-<id>.
+
+## 4. Flow
+
+```
+QUESTION (OPEN)
+    ↓ answer recorded
+DECISION (DEC-xxx)
+    ↓
+TASK → CASE → EVIDENCE
+```
+
+## 5. Rules
+
+- [Q1] Every non-trivial question asked during D1/S1 MUST be
+  registered as Q-<nnn> before a DEC answers it.
+- [Q2] A DEC that answers a question MUST reference its Q-<id>.
+- [Q3] Re-asking an ANSWERED question is a finding: the AI MUST
+  first check the registry (/sdd-decisions surface).
+- [Q4] BLOCKING questions MUST surface in /sdd-status.
+- [Q5] The registry is append-only; corrections create new entries.
+
+## 6. Location
+
+- `.sdd/projects/<name>/questions/INDEX.sdd` (per-project instance)
+- Template: `templates/_sdd/questions/` (scaffolding)
+
+## 7. Integration
+
+- /sdd-decisions: lists OPEN questions alongside decisions
+- /sdd-status: surfaces BLOCKING questions
+- Decision canvas QUESTION section links @question.Q<id>

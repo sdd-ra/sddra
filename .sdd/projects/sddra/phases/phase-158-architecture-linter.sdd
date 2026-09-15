@@ -1,0 +1,88 @@
+# Phase 158: Architecture Linter (Import-Graph Rules)
+
+Date: 2026-09-15
+Status: DRAFT
+Parent DEC: 2026-0915-001 (points #10/#11 — Fitness Rules + Linter)
+
+---
+
+## 1. Problem
+
+Architecture drift queries (/sdd-drift) compare declared vs
+observed reality, but nothing enforces structural rules BEFORE
+merge: banned imports (domain → infrastructure), layer shortcuts
+(API → database), and coupling rules pass silently until a manual
+drift round catches them.
+
+## 2. Solution
+
+A spec-level Architecture Linter: declarative fitness rules over
+the import/dependency graph, checked in CI as a gate, failing the
+pipeline on violation — AI mistakes are caught mechanically, not
+by trust.
+
+## 3. Rule Schema
+
+```
+RULE AL-<nn>
+Scope:   <module/glob path>
+MUST NOT import:  <path patterns>
+MUST import:      <path patterns>   (optional)
+Rationale: @decision.<DEC-id>
+Severity: ERROR | WARN
+```
+
+Example seed rules (from proposal #10):
+
+```
+RULE AL-001
+Scope: backend/*/domain
+MUST NOT import: backend/*/infrastructure, backend/*/api
+Rationale: dependency inversion — domain is innermost
+Severity: ERROR
+
+RULE AL-002
+Scope: frontend
+MUST NOT import: backend/*, */database
+Severity: ERROR
+
+RULE AL-003
+Scope: */application
+MUST import: allowed via domain only; NOT infrastructure directly
+Severity: ERROR
+```
+
+## 4. Flow
+
+```
+AI → code with bad dependency
+        ↓
+CI: architecture lint (import graph vs rules)
+        ↓
+FAIL → blocked merge; finding routed to RF (refactor loop)
+```
+
+## 5. Rules
+
+- [AL1] Rules live in `.sdd/projects/<name>/architecture/fitness.sdd`
+  — human-authored surface ([R109] routing analogy).
+- [AL2] Every rule MUST carry a rationale referencing a DEC.
+- [AL3] ERROR severity blocks merge (CODE-QUALITY-GATE extension);
+  WARN surfaces in /sdd-drift reports.
+- [AL4] The linter is adapter code (sdd-adapter) reading the spec;
+  spec is source of truth, never the reverse.
+- [AL5] Violations found in existing code enter the drift backlog
+  (near-duplicate: architecture-drift query), not auto-fix.
+
+## 6. Location
+
+- Spec: `.sdd/projects/<name>/architecture/fitness.sdd` (instance)
+- Scaffolding: `templates/_sdd/architecture/fitness.sdd`
+- Runtime: `sdd-adapter/architecture-linter.ts` (C1 scope — after
+  S1 approval; runs in Docker [R102])
+
+## 7. Integration
+
+- cicd-pipeline.sdd: new gate step ARCH LINT after SEC steps
+- /sdd-drift: WARN-severity findings appear in reports
+- CODE-QUALITY-GATE: ERROR-severity failures block

@@ -202,6 +202,37 @@ Phases:
       in cache.sdd)
     date: 2026-09-14
 
+  Phase 157:
+    title: QUESTION registry (Q -> DEC ledger)
+    layer: S1 (.sdd system)
+    status: IN_PROGRESS
+    spec: @phase-157-question-registry.sdd
+    implemented: questions entity schema ([Q1]-[Q5] rules),
+      OPEN/ANSWERED/SUPERSEDED lifecycle, BLOCKING question surface
+      in /sdd-status, /sdd-decisions Q listing
+    date: 2026-09-15
+
+  Phase 158:
+    title: Architecture Linter (import-graph fitness rules)
+    layer: S1 (.sdd system)
+    status: IN_PROGRESS
+    spec: @phase-158-architecture-linter.sdd
+    implemented: AL-<nn> rule schema (scope/MUST NOT import/
+      rationale/severity), fitness.sdd instance surface, CI gate
+      mapping (ERROR blocks, WARN -> drift), adapter deferred to C1
+    date: 2026-09-15
+
+  Phase 159:
+    title: Architecture Migration Readiness Score
+    layer: S1 (.sdd system)
+    status: IN_PROGRESS
+    spec: @phase-159-migration-score.sdd
+    implemented: module compatibility manifest (deployment/
+      communication/database modes), weighted 5-factor score model
+      (READY/PREPARABLE/COUPLED/ROOT-BOUND bands), [MR1]-[MR5]
+      rules, computation from dependency graph engine
+    date: 2026-09-15
+
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
   [PH2] Phase specs live in phases/phase-NNN-*.sdd or referenced external files.
@@ -212,6 +243,9 @@ Rules:
 
 Navigation:
   Phase146: @phase-146-skill-marketplace.sdd
+  Phase157: @phase-157-question-registry.sdd
+  Phase158: @phase-158-architecture-linter.sdd
+  Phase159: @phase-159-migration-score.sdd
   Tasks: @../tasks/INDEX.sdd
   Plans: @../../plans/current-plan.sdd
   Context: @../context/active.sdd
