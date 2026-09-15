@@ -4,8 +4,10 @@ Spec: DesignSources
 Purpose:
   Registry of design inspiration/pattern sources with extraction status.
   Makes the system AWARE which sources' design skills are obtained vs not,
-  per user requirement ("AI bilsin hansı saytların design skilləri hələ
-  alınmayıb"). Legality: LEARN patterns/principles — NEVER copy assets.
+  per user requirement (translated from the Azerbaijani directive:
+  "the AI must know which sites' design skills are not yet obtained";
+  raw wording preserved in the prompt-pair ledger [R104]).
+  Legality: LEARN patterns/principles — NEVER copy assets.
 
 Owns: design/sources.sdd
 

@@ -179,7 +179,7 @@ Phases:
     layer: S1 (.sdd system)
     status: COMPLETED
     spec: user design (Phase 135 RIE draft + Phase 136 evolution draft)
-      — reference-dən QƏRAR çıxarma (kopya yox); UPDATE is not GIT PULL
+      — extract DECISIONS from references (never copy); UPDATE is not GIT PULL
     implemented: .sdd/references/ (engine.sdd pipeline REFERENCE->
       DESIGN INTENT->PROJECT ADAPTATION; INDEX; web/REF template;
       design/patterns+decisions); /sdd-evolve 3-way command (31st;

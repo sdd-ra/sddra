@@ -148,7 +148,7 @@ Analyst: AI (Kilo)
 
 ## 6. Skill Import Log (2026-09-06)
 
-Per CLAUDE.md "Xarici skill import qaydaları" — provenance citations mandatory.
+Per CLAUDE.md "External skill import rules" — provenance citations mandatory.
 
 | Skill | Source repo | Destination | Format |
 |-------|-------------|-------------|--------|
@@ -240,12 +240,12 @@ What it is: capability LAYER (not a tool) — internet reading for agents;
 probing; credential-local discipline; SKILL.md agent interface.
 
 Gap findings (4 adopted groups out of 12 analyzed — see DECISIONS):
-| # | Agent-Reach pro | .sdd-də çatışmazlıq | İnteqrasiya |
+| # | Agent-Reach pro | .sdd gap | Integration |
 |---|----------------|---------------------|-------------|
-| G1 | Ordered backend routing (primary→fallback list; switch=reorder; user override; stale-override ignored) | fallback anlayışı var, ordered list + override safety yoxdur | runtime/integration-routing.sdd [IR-01..04] |
-| G2-G4 | Doctor + real probe (missing/broken/timeout/error 4-way; venv-shim detection; transient-only retries; per-channel degrade) | /sdd-health yalnız daxili integrity yoxlayırdı | sdd-health [HEALTH-05..07] + [IR-05..08] |
-| G6-G7 | Credential boundaries (local-only 600, no-login-for-user, no cookie reads, env-only injection, URL-cred scrub) | xarici kanal credential qaydaları yox idi | security-rules.sdd cat.6 [SEC-09..13] |
-| G8 | Announce-before-use + active backend transparency | xarici fetch üçün yox idi | research arm [RS1-11] |
+| G1 | Ordered backend routing (primary→fallback list; switch=reorder; user override; stale-override ignored) | fallback concept existed, ordered list + override safety did not | runtime/integration-routing.sdd [IR-01..04] |
+| G2-G4 | Doctor + real probe (missing/broken/timeout/error 4-way; venv-shim detection; transient-only retries; per-channel degrade) | /sdd-health checked only internal integrity | sdd-health [HEALTH-05..07] + [IR-05..08] |
+| G6-G7 | Credential boundaries (local-only 600, no-login-for-user, no cookie reads, env-only injection, URL-cred scrub) | external channel credential rules were missing | security-rules.sdd cat.6 [SEC-09..13] |
+| G8 | Announce-before-use + active backend transparency | missing for external fetch | research arm [RS1-11] |
 
 Kinship (validated, no change needed): capability-layer philosophy —
 "select/install/health-check/route, no wrapper" = SDDRA spec-first [IR-10].

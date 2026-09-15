@@ -63,9 +63,9 @@ Canonicalization:
   mechanism: aliases field on canonical concept
 
 ConceptVsSkillVsDecision:
-  Concept:  nədir? (what is it?)
-  Skill:    necə istifadə et? (how to use it?)
-  Decision: bu project-də niyə belə istifadə edirik? (why here?)
+  Concept:  what is it?
+  Skill:    how to use it?
+  Decision: why do we use it this way in this project?
 
   Example:
     @concept.idempotency     — definition

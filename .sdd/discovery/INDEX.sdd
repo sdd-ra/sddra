@@ -75,12 +75,14 @@ ReadOrder:
    1  @scanners.sdd
    2  @detectors.sdd
    3  @conflicts.sdd
+   4  @gitignore-integration.sdd
 
 Navigation:
   Discovery: @discovery/INDEX.sdd
   Scanners: @discovery/scanners.sdd
   Detectors: @discovery/detectors.sdd
   Conflicts: @discovery/conflicts.sdd
+  GitignoreIntegration: @discovery/gitignore-integration.sdd
   ProjectMode: @project/mode.sdd
 
 State: +

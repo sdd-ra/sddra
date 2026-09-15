@@ -3,8 +3,8 @@ Branches: Down-Up Transition
 Purpose:
   Defines the bidirectional transition protocol for task execution.
   DOWN (top-down) for execution; UP (bottom-up) for verification.
-  TİKİNTİ (work) descends from MODUL → CASE → TASK → SUBTASK;
-  TƏSDİQ (verification) ascends SUBTASK → TASK → CASE → MODUL.
+  WORK descends from MODUL → CASE → TASK → SUBTASK; VERIFICATION
+  ascends SUBTASK → TASK → CASE → MODUL.
   Every level must close before the level above it can advance.
 
 Owns: branches/DOWN-UP-TRANSITION.sdd
@@ -73,7 +73,7 @@ Relationship:
     Work flows DOWN (execution).
     Verification flows UP (closing).
 
-  Qısaca: TİKİNTİ yuxarıdan-aşağı gedir, TƏSDİQ aşağıdan-yuxarı qayıdır.
+  In short: WORK flows top-down, VERIFICATION returns bottom-up.
 
   Example:
     1. MODUL/payment branch created

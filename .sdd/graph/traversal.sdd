@@ -56,8 +56,8 @@ WhyNotChain:
       └── REJECTED → alternative
         reason: "insufficient domain complexity"
 
-  principle: Növbəti səviyyədə AI həm "nə etdik"ı deyil,
-  "nəyi niyə etmədik"ı da bilir.
+  principle: at the next level the AI knows not only "what we
+  did", but also "what we did not do, and why".
 
 ImpactAnalysis:
   question: "What breaks if @concept.transaction changes?"

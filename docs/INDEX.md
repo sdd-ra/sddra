@@ -15,6 +15,7 @@ English documentation for SDDRA — SDD & Reasoning Architecture. Source of trut
 - `.sdd/docs/` — organized deep docs (analysis, overviews, appendices)
 - `.claude/docs/` — human-facing docs (agents, API, data)
 - `.sdd/INDEX.sdd` — the machine routing table for the whole spec tree
-- Azerbaijani README sections — the project's origin language; legacy
-  AZ docs are preserved under `.sdd/` (translation backlog tracked in
-  the cleanup analysis)
+
+All repo documentation is English. Historical Azerbaijani input
+prompts are preserved verbatim only in the append-only prompt-pair
+ledger (`prompts/history/prompt-pairs.jsonl`, [R104]).

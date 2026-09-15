@@ -4,7 +4,7 @@ Purpose:
   Registry of skills imported from external repositories. Each subdirectory
   is a skill adapted to .sdd format with mandatory provenance:
   Source (repo URL), Origin (local path in tmp/), Imported (date),
-  Format, Runtime. Per CLAUDE.md "Xarici skill import qaydaları":
+  Format, Runtime. Per CLAUDE.md "External skill import rules":
   code-bearing skills are analyzed/run via Docker only ([R59]-[R66]).
 
 Owns: ./

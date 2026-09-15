@@ -4,9 +4,11 @@ id: DEC-2026-0913-005
 type: architectural
 status: closed
 title: Adopt 4-pillar CR review, opinionated output, BIG/SMALL change mode; reject role inflation and review treadmills
-context: User directive "analiz et, öz skillərinlə uzlaşdır" — analyze
-  Garry Tan's review prompt, the Rentier 3-layer critique, and
-  garrytan/gstack; align SDDRA skills with them.
+context: User directive (translated from Azerbaijani; raw wording
+  preserved in the prompt-pair ledger [R104]): "analyze and align
+  with your own skills" — analyze Garry Tan's review prompt, the
+  Rentier 3-layer critique, and garrytan/gstack; align SDDRA
+  skills with them.
 problem: Determine what an L3 contract system should legitimately
   absorb from L1/L2-flavored systems without degrading its gates.
 options:

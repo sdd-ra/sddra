@@ -2,8 +2,8 @@
 
 Phase: 154 (adopted 2026-09-14)
 Owns: references/engine.sdd
-Principle: AI kopyalamır — reference-dən QƏRAR çıxarır.
-(No cloning: extract decisions, never assets/code/markup.)
+Principle: the AI does not copy — it extracts DECISIONS from
+references. (No cloning: extract decisions, never assets/code/markup.)
 
 ## Pipeline
 
@@ -40,7 +40,9 @@ Intent default: INSPIRE when user gives bare URLs + a goal.
 
 ## Scope prioritization
 
-User emphasis decides depth: "dashboard dizaynını bəyənirəm"
+User emphasis decides depth: "I like this dashboard design"
+(translated from the customer's Azerbaijani prompt — the raw
+wording is preserved in the prompt-pair ledger [R104])
 -> homepage/dashboard/navigation/cards/tables/forms/responsive = high;
 blog/legal/footer/irrelevant = low. Crawl relevant pages only.
 
