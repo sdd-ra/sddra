@@ -30,7 +30,7 @@ ActiveDecisions:
   - DEC-2026-0915-001: AI Engineering OS 20-point gap analysis — Phases 157-159 + extensions (approved/implemented)
 
 WorkInProgress:
-  - Human gate: CANDIDATE→ACTIVE promotion review (.sdd/marketplace/promotion-packet.sdd)
+  - PROMOTION DECISION NEEDED: CANDIDATE→ACTIVE review (.sdd/marketplace/promotion-packet.sdd) — all artifacts ready, awaiting human gate [IMP4]
   - Repo cleanup: user review of .sdd/docs/analysis/repo-cleanup-analysis.md (deletions/moves pending approval)
   - gstack deep analysis vs .sdd (clone in tmp/gstack — analyze, adopt pros, delete per RS1)
   - dsh-plugin topic loop: enumerate repos, analyze each, adopt pros
