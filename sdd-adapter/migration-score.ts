@@ -137,31 +137,39 @@ export class MigrationScorer {
     const nameMatch = content.match(/MODULE\s+(\S+)/);
     if (!nameMatch) return null;
     const dbMatch = content.match(/database:\s*(\w+)/);
+    const parseDeployment = (key: "monolith" | "standalone"): "supported" | "forbidden" => {
+      const v = this.parseMode(content, "deployment_modes", key);
+      return v === "forbidden" ? "forbidden" : "supported";
+    };
+    const parseComm = (key: "grpc" | "event"): "supported" | "unsupported" => {
+      const v = this.parseMode(content, "communication", key);
+      return v === "supported" ? "supported" : "unsupported";
+    };
     return {
       name: nameMatch[1],
       deploymentModes: {
-        monolith: this.parseMode(content, "deployment_modes", "monolith"),
-        standalone: this.parseMode(content, "deployment_modes", "standalone"),
+        monolith: parseDeployment("monolith"),
+        standalone: parseDeployment("standalone"),
       },
       communication: {
         local: "supported",
-        grpc: this.parseMode(content, "communication", "grpc"),
-        event: this.parseMode(content, "communication", "event"),
+        grpc: parseComm("grpc"),
+        event: parseComm("event"),
       },
       database: (dbMatch ? dbMatch[1] as DatabaseMode : "shared") as DatabaseMode,
       constraints: [],
     };
   }
 
-  private parseManifests(content: string): ModuleManifest[] {
-    const blocks = content.split(/MODULE\s+/).filter(Boolean);
-    return blocks.map((b) => this.parseManifest("MODULE " + b)).filter(Boolean) as ModuleManifest[];
-  }
-
-  private parseMode(content: string, section: string, key: string): "supported" | "forbidden" | "unsupported" {
+  private parseMode(content: string, section: string, key: string): string {
     const re = new RegExp(`${key}:\\s*(\\w+)`, "i");
     const match = content.match(re);
     if (!match) return "unsupported";
-    return match[1].toLowerCase() as "supported" | "forbidden" | "unsupported";
+    return match[1].toLowerCase();
+  }
+
+  private parseManifests(content: string): ModuleManifest[] {
+    const blocks = content.split(/MODULE\s+/).filter(Boolean);
+    return blocks.map((b) => this.parseManifest("MODULE " + b)).filter(Boolean) as ModuleManifest[];
   }
 }

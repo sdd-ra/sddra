@@ -299,3 +299,12 @@ export interface ContextPack {
   manifest: ContextManifest;
   references: Map<string, string>;
 }
+
+export type TypedOutcomeCodes =
+  | "SUCCESS"
+  | "PARTIAL"
+  | "BLOCKED"
+  | "NEEDS_CLARIFICATION"
+  | "POLICY_VIOLATION"
+  | "TOOL_ERROR"
+  | "UNSAFE";

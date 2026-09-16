@@ -104,7 +104,7 @@ Tasks:
     title: Research round 3 (new scope) — memory/deep-research/orchestration/MCP/roles 4-stream research + Pareto integration (Phase 149)
 
   2026-0907-002:
-    state: PENDING
+    state: DONE
     priority: P1
     risk: LOW
     depends: [2026-0907-001]

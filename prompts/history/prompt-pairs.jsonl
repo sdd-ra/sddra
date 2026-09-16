@@ -341,3 +341,36 @@
 {"ts":"2026-09-15T06:25:40.940Z","command":"/sdd-evolve","customer_prompt":"https://github.com/HKUDS/CLI-Anything.git","ai_prompt":"/sdd-evolve reference intake: HKUDS/CLI-Anything — RIE pipeline REFERENCE -> DESIGN INTENT -> PROJECT ADAPTATION. Clone to tmp/ [R96] for analysis only (no code execution, [R59-R66] Docker-only for anything runtime), extract DECISIONS never assets [R110][R111], compare against existing skills, dedup [EVO-04], SKILL_EVOLUTION record first [EVO-01], manifest UPD-<n>, routing edits PROPOSED only [EVO-08][R109]."}
 {"ts":"2026-09-15T06:25:40.945Z","command":"/sdd-evolve","customer_prompt":"davam et (continue the CLI-Anything reference intake)","ai_prompt":"/sdd-evolve continue: complete DISCOVER->COMPARE->VALIDATE->DEDUP->EVOLVE->VERIFY->MANIFEST->DELIVER for HKUDS/CLI-Anything reference."}
 {"ts":"2026-09-16T13:19:22Z","command":"/sdd-next","customer_prompt":"/sdd-next","ai_prompt":"/sdd-next — advance from S1 specs to C1 adapter code for Phases 157-159: create sdd-adapter/architecture-linter.ts (AL rule parser, scan(), pattern matching, ALResult), sdd-adapter/migration-score.ts (ModuleManifest parser, score() 5-factor, MigrationResult), .sdd/projects/sddra/questions/INDEX.sdd (QUESTION registry instance [Q1]-[Q5]); update phases/INDEX.sdd C1 entries; update DEC 2026-0915-001 status; verify; commit [DEC-2026-0915-001]; push."}
+{"ts":"2026-09-16T16:08:48.575Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-16T16:08:48.598Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-16T16:08:48.605Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-16T16:08:48.607Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-16T16:08:48.608Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-16T16:08:48.615Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts":"2026-09-16T16:10:38.875Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-16T16:10:38.888Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-16T16:10:38.892Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-16T16:10:38.893Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-16T16:10:38.894Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-16T16:10:38.895Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts":"2026-09-16T16:10:40.874Z","command":"/sdd-purge","customer_prompt":"","ai_prompt":"/sdd-purge"}
+{"ts":"2026-09-16T16:10:40.875Z","command":"/sdd-purge","customer_prompt":"--directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__","ai_prompt":"/sdd-purge --directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__"}
+{"ts":"2026-09-16T16:10:40.960Z","command":"/sdd-purge","customer_prompt":"--directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --inspect","ai_prompt":"/sdd-purge --directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --inspect"}
+{"ts":"2026-09-16T16:10:40.999Z","command":"/sdd-purge","customer_prompt":"--directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --layer a","ai_prompt":"/sdd-purge --directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --layer a"}
+{"ts":"2026-09-16T16:10:41.035Z","command":"/sdd-purge","customer_prompt":"--directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --layer files","ai_prompt":"/sdd-purge --directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --layer files"}
+{"ts":"2026-09-16T16:10:41.073Z","command":"/sdd-scan","customer_prompt":"--directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --provenance","ai_prompt":"/sdd-scan --directory D:\\Tasks\\ai_code\\sddra.ai\\sdd-adapter\\__tests__ --provenance"}
+{"ts":"2026-09-16T16:10:57.105Z","command":"/sdd-design","customer_prompt":"--discover","ai_prompt":"/sdd-design --discover"}
+{"ts":"2026-09-16T16:10:57.107Z","command":"/sdd-design","customer_prompt":"--evaluate --directory D:\\Tasks\\ai_code\\sddra.ai\\tmp\\design-cmd-test","ai_prompt":"/sdd-design --evaluate --directory D:\\Tasks\\ai_code\\sddra.ai\\tmp\\design-cmd-test"}
+{"ts":"2026-09-16T16:10:58.004Z","command":"/sdd-design","customer_prompt":"--review D:\\Tasks\\ai_code\\sddra.ai\\tmp\\design-cmd-test","ai_prompt":"/sdd-design --review D:\\Tasks\\ai_code\\sddra.ai\\tmp\\design-cmd-test"}
+{"ts":"2026-09-16T16:10:58.540Z","command":"/sdd-design","customer_prompt":"--auto","ai_prompt":"/sdd-design --auto"}
+{"ts":"2026-09-16T16:10:58.930Z","command":"/sdd-design","customer_prompt":"","ai_prompt":"/sdd-design"}
+{"ts":"2026-09-16T16:11:05.381Z","command":"/sdd-marketplace","customer_prompt":"list","ai_prompt":"/sdd-marketplace list"}
+{"ts":"2026-09-16T16:11:05.384Z","command":"/sdd-marketplace","customer_prompt":"sync does-not-exist","ai_prompt":"/sdd-marketplace sync does-not-exist"}
+{"ts":"2026-09-16T16:11:05.386Z","command":"/sdd-marketplace","customer_prompt":"sync vercel-labs-skills","ai_prompt":"/sdd-marketplace sync vercel-labs-skills"}
+{"ts":"2026-09-16T16:11:05.389Z","command":"/sdd-marketplace","customer_prompt":"import","ai_prompt":"/sdd-marketplace import"}
+{"ts":"2026-09-16T16:11:05.390Z","command":"/sdd-marketplace","customer_prompt":"import nope some-skill","ai_prompt":"/sdd-marketplace import nope some-skill"}
+{"ts":"2026-09-16T16:11:05.390Z","command":"/sdd-marketplace","customer_prompt":"import nvidia-skills some-skill","ai_prompt":"/sdd-marketplace import nvidia-skills some-skill"}
+{"ts":"2026-09-16T16:11:05.391Z","command":"/sdd-marketplace","customer_prompt":"audit","ai_prompt":"/sdd-marketplace audit"}
+{"ts":"2026-09-16T16:11:05.408Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
+{"ts":"2026-09-16T16:11:19.299Z","command":"/sdd-evolve","customer_prompt":"evolve status goster","ai_prompt":"/sdd-evolve"}
+{"ts":"2026-09-16T16:11:19.301Z","command":"/sdd-evolve","customer_prompt":"report only","ai_prompt":"/sdd-evolve --report"}

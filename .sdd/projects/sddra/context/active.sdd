@@ -4,7 +4,8 @@ Purpose:
   Current active context for the sddra.ai project.
   This file is loaded at the start of every session.
 
-CurrentFocus: Phase 152 COMPLETE — housekeeping & alignment (R91-R106, docker reference, RF flow, 3-way sync 30/30/30, mojibake purge, gstack alignment, .kilo skills, open-source EN docs)
+CurrentFocus: Phase 155 COMPLETE — Phase 149 runtime implementation (checkpoint engine + typed outcomes + MCP allowlist + context emission, 57/57 tests green, TS clean)
+
 ActiveDecisions:
   - DOC-2026-0902-001: Human docs sequential structure
   - DOC-2026-0902-002: Project instance at .sdd/projects/sddra/
@@ -26,6 +27,7 @@ ActiveDecisions:
   - DEC-2026-0913-004: Mojibake purge + scanner self-trip prevention (closed)
   - DEC-2026-0913-005: gstack/Garry Tan/Rentier alignment adoptions (closed)
   - DEC-2026-0913-006: Rename + projects purity + open-source EN docs (closed)
+  - DEC-2026-0915-001: AI Engineering OS 20-point gap analysis — Phases 157-159 + extensions (approved/implemented)
 
 WorkInProgress:
   - Human gate: CANDIDATE→ACTIVE promotion review (.sdd/marketplace/promotion-packet.sdd)
@@ -40,6 +42,14 @@ RecentChanges:
     Engine (/sdd-evolve 31st command 3-way; lifecycle, source hierarchy
     L0-L5, SKILL_EVOLUTION records, dedup, promotion, Update
     Manifests, TRUST_0..5 delivery; research records; NO_VALUE->DISCARD)
+  - Phase 155 DONE: Phase 149 runtime implementation in sdd-adapter —
+    checkpoint-engine.ts (arm-boundary checkpoints, RT9 no re-execute,
+    RT10/RT11 circuit breakers, retry cap=3, 10min window), mcp-allowlist.ts
+    (MAL-01..10, hash-pinned ActivationRecords, session-start verification),
+    context-emitter.ts (CE-01..06, AGENTS.md/CLAUDE.md derivation, 32KiB cap),
+    commands.ts (TypedOutcomeCodes outcome field, /sdd-sync emission
+    regeneration); TypedOutcomeCodes exported from types.ts; migration-score
+    types fixed; 26/26 test suites green, 288+ tests passed, TS clean
   - [R110] reference never authority; [R111] no-copy ingestion,
     provenance survives; [R109] routing files human-authored
   - External research round: RA-1 dependsOn traversal + RA-2 staleness
@@ -52,12 +62,11 @@ NextActions:
   - Human review: promotion packet (task 2026-0906-005 close)
   - Human review: cleanup analysis (approve deletions/moves or reject)
   - gstack + dsh-plugin analysis rounds (RS1 protocol; gstack clone in tmp/)
-  - Apply Agent-Reach A1-A3 adoptions (install one-liner, auth ladder,
-    doctor prescriptions)
+  - Apply Agent-Reach A1-A3 adoptions (install one-liner, auth ladder, doctor prescriptions)
   - Phase 137 candidate: Skill Testing & Knowledge Verification
     (user-flagged next layer — skill dogruluk/aktual/duplicate/tetbiq
     avtomatik yoxlamasi)
 
-Fingerprint: CTX-2026-0914-C
+Fingerprint: CTX-2026-0916-A
 
 State: active

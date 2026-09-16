@@ -11,7 +11,8 @@ import { DesignAnalyzer } from "./design-analyzer";
 import { SkillAutoInvoker } from "./skill-auto-invoker";
 import { SkillValidator } from "./skill-validator";
 import { SkillImporter } from "./skill-importer";
-import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult } from "./types";
+import { emitAgentsMd, emitClaudeMdPointer } from "./context-emitter";
+import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult, TypedOutcomeCodes } from "./types";
 
 export interface CommandResult {
   command: string;
@@ -20,14 +21,7 @@ export interface CommandResult {
   output: string;
   findings?: Array<Record<string, unknown>>;
   /** TypedOutcomeCodes (Phase 149 r3) — machine-readable outcome before escalation. */
-  outcome?:
-    | "SUCCESS"
-    | "PARTIAL"
-    | "BLOCKED"
-    | "NEEDS_CLARIFICATION"
-    | "POLICY_VIOLATION"
-    | "TOOL_ERROR"
-    | "UNSAFE";
+  outcome?: TypedOutcomeCodes;
   /** Structural interrupt payload for irreversible actions (Phase 131 L4). */
   interrupt?: {
     proposedAction: string;
@@ -984,6 +978,40 @@ export class CommandRunner {
 
     if (args.includes("--dry-run")) {
       outputLines.unshift("DRY RUN — no changes will be made");
+    }
+
+    // Phase 149 r1 — Context Emission regeneration [CE-01][CE-04]:
+    // AGENTS.md/CLAUDE.md are DERIVED from .sdd/INDEX.sdd;
+    // /sdd-sync is the designated regeneration trigger.
+    try {
+      const indexFile = path.join(this.projectRoot, this.sddRoot, "INDEX.sdd");
+      if (fs.existsSync(indexFile)) {
+        const indexContent = fs.readFileSync(indexFile, "utf-8");
+        const projectFile = path.join(this.projectRoot, this.sddRoot, "PROJECT.sdd");
+        const projectContent = fs.existsSync(projectFile) ? fs.readFileSync(projectFile, "utf-8") : "";
+        const nameMatch = projectContent.match(/name[:\s]+(.+)/i);
+        const purposeMatch = projectContent.match(/purpose[:\s]+(.+)/i);
+        const projectName = nameMatch ? nameMatch[1].trim() : "Project";
+        const projectPurpose = purposeMatch ? purposeMatch[1].trim() : "";
+        const emission = emitAgentsMd({
+          projectName,
+          projectPurpose,
+          stack: "",
+          topRules: ["Route through .sdd/INDEX.sdd first."],
+          commands: [],
+          keyPaths: [".sdd/INDEX.sdd"],
+        });
+        if (emission.bytes <= 32 * 1024) {
+          const agentsPath = path.join(this.projectRoot, "AGENTS.md");
+          const claudePath = path.join(this.projectRoot, "CLAUDE.md");
+          fs.writeFileSync(agentsPath, emission.agentsMd, "utf-8");
+          fs.writeFileSync(claudePath, emitClaudeMdPointer(projectName), "utf-8");
+          outputLines.push("");
+          outputLines.push("Emission regenerated: AGENTS.md, CLAUDE.md (via /sdd-sync [CE-01])");
+        }
+      }
+    } catch {
+      // Emission failure does not block sync; surfaced separately.
     }
 
     const decision = plans.some(p => p.requiresApproval) ? "WARN" : "PASS";
