@@ -1,0 +1,50 @@
+# Update Manifest UPD-20260915-001
+
+Command: /sdd-evolve
+Trigger: /sdd-evolve HTTP reference intake
+  (https://github.com/HKUDS/CLI-Anything.git) + user "davam et"
+Date: 2026-09-15
+Mode: direct (own repo)
+
+## Counts
+  Sources checked: 5 (3 L1 CLI-Hub registries,
+    1 L1 official repo, 1 L2 tech report)
+  Skills checked: 0 (no skill in tree carries review_after;
+    --deep not specified this round; see .sdd/skills/** evidence)
+  Skills unchanged: 0
+  Skills updated: 0
+  New skills: 0 (child: 0, standalone: 0)
+  Deprecated: 0
+  Deduplicated: 0 (canonical: none)
+  References added: 1 (research record .sdd/research/2026/cli-anything.sdd)
+  Architecture rules changed: 0
+
+## Validation
+  Consistency check:
+    - mojibake scan: 0 hits (research record + manifest)
+    - references resolve: research record sources verified live
+    - research record fields: question/sources/findings/decision present
+  Skill tests: 0 (no skills under review — none carry metadata)
+  Full /sdd-health Docker run: DEFERRED — no spec/skill edit
+    produced by this run; deterministic consistency passed.
+
+## Decision (EVO-07)
+  NO_VALUE → DISCARD: research does not obligate skill creation.
+  CLI-Anything evidence mirrors (does not diverge from) existing
+  SDDRA patterns (EXPAND, 3-way registry, marketplace, DONE-PROOF).
+  Security-hardening event list retained as L1 reference in
+  research record section 7; separate DEC required before any
+  SDDRA spec change on that topic.
+
+## Sources (L0-L5)
+  - L1: https://github.com/HKUDS/CLI-Anything (README + 4 registries)
+  - L1: CLI-Hub: registry.json, public_registry.json,
+    matrix_registry.json
+  - L2: arXiv 2606.03854 (tech report, cited in README)
+
+## Delivery
+  mode: direct
+  commit: docs(skills): research record CLI-Anything
+    (NO_VALUE→DISCARD; manifest UPD-20260915-001)
+
+State: +

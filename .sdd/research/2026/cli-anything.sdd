@@ -1,0 +1,89 @@
+# Research Record: CLI-Anything Reference Intake
+
+Year: 2026
+Topic: cli-anything-reference
+
+Question:
+  Does the external reference HKUDS/CLI-Anything
+  (https://github.com/HKUDS/CLI-Anything) contain evidence that
+  would require an SDDRA knowledge/skill update?
+
+Sources:
+  - https://github.com/HKUDS/CLI-Anything — official repo README
+    (L1 official repo, 49.4k stars, Apache-2.0, 885 commits,
+    v0.2.0)
+  - CLI-Hub registry: registry.json / public_registry.json /
+    matrix_registry.json (L1 official repo)
+  - arXiv 2606.03854 tech report (L2 maintainer docs)
+  (no RIE tmp snapshot used; no code cloned, no web data cached
+  beyond the fetched README — [R96] compliant)
+
+Findings (evidence-backed, no raw content copied):
+
+  1. PRIMITIVE MATCH — On-demand loading: CLI-Anything v0.2.0
+     HARNESS.md progressive disclosure: detailed guides extracted
+     into guides/ for on-demand loading (2026-03-30). Mirrors
+     SDDRA EXPAND protocol (InitialLoad manifest, context/cache
+     pull-based loading) — different mechanism, same principle.
+     Evidence: README news entry, 2026-03-30.
+
+  2. PRIMITIVE MATCH — Auto-generated skill definition: Phase 6.5
+     SKILL.md generation via skill_generator.py (extracts
+     metadata from Click decorators, setup.py, README), writes
+     canonical repo-root skill file. Mirrors SDDRA 3-way command
+     registry (R98) + skill ecosystem (/sdd-skills).
+     Evidence: README 2026-03-16, line 1600.
+
+  3. PRIMITIVE MATCH — Autonomous discovery: CLI-Hub meta-skill
+     (2026-03-23) lets agents discover+install CLIs autonomously;
+     distributed on ClawHub, SkillHub, SkillHub.cn via
+     `npx skills add HKUDS/CLI-Anything --skill cli-hub-meta-skill`.
+     Mirrors SDDRA /sdd-marketplace + .agents/plugins/marketplace.json.
+     Evidence: README 2026-03-23, lines 853-855.
+
+  4. PRIMITIVE MATCH — Evidence model: per-CLI test baselines
+     (unit + E2E; real-software invocation verification; TEST.md
+     with plans+results) — 2,461 tests total (1,732 unit + 579 E2E
+     + 19 Node, 100% pass) across 20+ harnesses. Mirrors
+     DONE-PROOF (5-dimension proof) + E2E BDD tests.
+     Evidence: README badges + tests tree (gimp 107, blender 208,
+     libreoffice 158, joplin 134, calibre 58, openscreen 101...).
+
+  5. PRIMITIVE MATCH — Registry integrity: copy-before-`_source`-tagging
+     hardening (2026-05-17 #281) prevents mutation of cached/mocked
+     registry data. Mirrors SDDRA 3-way registry sync ([R98]) +
+     INDEX routing immutability.
+     Evidence: README 2026-05-17.
+
+  6. CROSS-REF — Multi-platform distribution: CLI-Anything supports
+     12 named platforms (Pi, OpenClaw, Nanobot, Cursor, Claude Code,
+     OpenCode, Codex, Hermes, Reasonix, Antigravity, Qodercli,
+     GitHub Copilot CLI) with per-platform install (plugin dirs).
+     SDDRA has 8 plugin surfaces (.claude, .codex, .cursor, .hermes,
+     .kimi, .pi, .opencode, .agents). Minor coverage gap; no spec
+     change — knowledge only.
+     Evidence: README platforms list (line 870).
+
+  7. REFERENCE — Security hardening events (CLI-native): defusedxml
+     for untrusted XML/SVG/ODF/MLT/CSL parse (#296, 2026-05-19);
+     path-traversal+symlink escape hardening (Sketch #304,
+     2026-05-21); URL validation+DOM sanitization (DomShell #156,
+     2026-04-07); GIMP Script-Fu path injection fix (2026-03-14);
+     guarded SQLCipher write paths + backup-required forced writes
+     (Rekordbox #252, 2026-05-20); Zoom token permissions hardening.
+     Adopted as L1 reference material for future CLI-runtime
+     security spec — not imported as SDDRA spec change.
+     Evidence: README news entries.
+
+Decision: NO_VALUE — research does not obligate skill creation
+([EVO-07]). CLI-Anything consistently MIRrors (not diverges from)
+existing SDDRA patterns (EXPAND, 3-way registry, marketplace,
+DONE-PROOF). No update, new skill, deprecation, or canonical
+selection is required.
+
+References retained:
+  - security-hardening-events.md (this record, section 7) — L1
+    reference for future generated-runtime security spec; requires
+    separate DEC before any SDDRA spec change.
+
+State: +
