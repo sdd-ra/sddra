@@ -204,19 +204,20 @@ Phases:
 
   Phase 157:
     title: QUESTION registry (Q -> DEC ledger)
-    layer: S1 (.sdd system)
-    status: IN_PROGRESS
+    layer: S1+C1 (.sdd system + project instance)
+    status: COMPLETED
     spec: @phase-157-question-registry.sdd
     implemented: questions entity schema ([Q1]-[Q5] rules),
       OPEN/ANSWERED/SUPERSEDED lifecycle, BLOCKING question surface
       in /sdd-status, /sdd-decisions Q listing; C1 instance:
       .sdd/projects/sddra/questions/INDEX.sdd
     date: 2026-09-15
+    completed: 2026-09-16
 
   Phase 158:
     title: Architecture Linter (import-graph fitness rules)
     layer: S1+C1 (.sdd system + sdd-adapter)
-    status: IN_PROGRESS
+    status: COMPLETED
     spec: @phase-158-architecture-linter.sdd
     implemented: AL-<nn> rule schema (scope/MUST NOT import/
       rationale/severity), fitness.sdd instance surface, CI gate
@@ -225,11 +226,12 @@ Phases:
       scan(), matchesPattern(), ALResult output; runs in
       Docker [R102])
     date: 2026-09-15
+    completed: 2026-09-16
 
   Phase 159:
     title: Architecture Migration Readiness Score
     layer: S1+C1 (.sdd system + sdd-adapter)
-    status: IN_PROGRESS
+    status: COMPLETED
     spec: @phase-159-migration-score.sdd
     implemented: module compatibility manifest (deployment/
       communication/database modes), weighted 5-factor score model
@@ -239,6 +241,7 @@ Phases:
       scoreFromManifest() with dependency graph integration,
       MigrationResult output; runs in Docker [R102])
     date: 2026-09-15
+    completed: 2026-09-16
 
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
