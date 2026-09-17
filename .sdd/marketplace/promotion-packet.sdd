@@ -1,76 +1,91 @@
 # Skill Promotion Packet — CANDIDATE → ACTIVE (human gate)
 
 Purpose:
-  Evidence packet for the human review gate ([IMP4]): all imported skills
-  are CANDIDATES pending promotion to ACTIVE. This file lists what was
-  imported, its validation status, and the promotion recommendation.
-  A human reviews and approves; promotion is NOT automatic.
+  Evidence packet for the human review gate ([IMP4]): skills
+  pending promotion to ACTIVE. A human reviews and approves;
+  promotion is NOT automatic.
 
-Date: 2026-09-07
-Evidence: /sdd-marketplace audit — 21/21 SHIP (provenance + license valid)
+Date: 2026-09-17
+Evidence: System analysis 2026-09-17 — 14 skills HELD BACK (see appendix);
+          12 skills recommended for CONDITIONAL promotion.
 
 ---
 
-## Recommendation Summary
+## Decision Summary
 
-ALL 25 imported skills recommend promotion to ACTIVE:
-- 21 wrappers audited SHIP (all imported groups + registries)
-- 4 round-2 group registries (skill-governance, orchestration, audit + patterns-dev extract)
-- Licenses: MIT (round-2, taste-skill, watermarks) + Apache-2.0 (anthropics examples)
-- Zero BLOCK findings, zero FIX findings
+DO NOT approve blanket promotion. 14 of 26 candidates HELD BACK:
+- 9 skills lack individual INDEX.sdd wrappers (provenance gap [IMP1])
+- 4 code-bearing skills reference missing files/directories
+- 1 license violation (CC BY-NC 4.0)
+- Zero BLOCK/FIX findings claim is UNSUBSTANTIATED — no audit evidence exists
 
-## Candidate List (by group)
+PROMOTED (12, conditional): see candidate list below.
+HELD BACK (14): see appendix at end of this file.
 
-### meta/imported/ — anthropics/skills (Apache-2.0, examples)
-  canvas-design, doc-coauthoring, frontend-design, mcp-builder,
-  skill-creator, theme-factory, webapp-testing
-  Recommendation: ACTIVE — docs-only reference skills; code-bearing
-  (mcp-builder, skill-creator, webapp-testing) stay Docker-gated [IMP2].
+---
 
-### meta/imported/skill-governance/ — artemrudenko (MIT)
-  skill-evaluate, library-audit, skill-build-portable
-  Recommendation: ACTIVE — governance layer operational (used by
-  /sdd-marketplace import path; audit verified).
-
-### meta/imported/orchestration/ — BuilderIO/skills (MIT)
-  agent-watchdog, plan-arbiter, efficient-frontier, quick-recap
-  Recommendation: ACTIVE — maps to VR stage, decision ledger, token
-  economy (Phase 147), session handoff.
-
-### meta/imported/audit/ — khasky/awesome-agent-skills (MIT)
-  awesome-design-doc, awesome-architecture-audit
-  Recommendation: ACTIVE — SHIP/FIX/BLOCK verdict audits for VR stage.
+## Candidate List — READY FOR PROMOTION (conditional)
 
 ### design/imported/ — Leonxlnx/taste-skill (MIT)
   taste-skill, minimalist-skill, brutalist-skill, stitch-skill,
   redesign-skill, output-skill, image-to-code-skill
-  Recommendation: ACTIVE — design direction references; subordinate to
-  native design skills [IMP5] and Design Intelligence pipeline [D7].
+  Recommendation: CONDITIONAL ACTIVE — complete files; name mismatches need fix;
+          taste-skill (1,206 lines) and image-to-code-skill (1,228 lines) exceed
+          skill-evaluate body_critical threshold (600 lines) — truncate before ACTIVE
 
-### design/imported/ — patterns.dev extract
-  patterns-dev-extract.sdd (25 patterns + AI UI chapter)
-  Recommendation: ACTIVE — implementation layer; feeds ux-patterns and
-  AI-UI frontend work. CC BY-NC 4.0 code — link, don't copy [PD2].
+### meta/imported/ — anthropics/skills (Apache-2.0 examples)
+  canvas-design, doc-coauthoring, frontend-design
+  Recommendation: ACTIVE — provenance complete; minor LICENSE.txt absent (Apache-2.0 documented in INDEX)
+
+## Candidate List — HELD BACK (14)
+
+### meta/imported/ — anthropics/skills (code-bearing)
+  mcp-builder — reference/ directory missing; Docker-gated
+  skill-creator — reference/ directory missing; Docker-gated
+  theme-factory — theme-showcase.pdf missing
+  webapp-testing — examples/ and scripts/with_server.py missing; Docker-gated
+
+### meta/imported/skill-governance/ — artemrudenko (MIT)
+  skill-evaluate — no individual INDEX.sdd; references/ missing
+  library-audit — no individual INDEX.sdd; references/ missing
+  skill-build-portable — no individual INDEX.sdd; references/ missing
+
+### meta/imported/orchestration/ — BuilderIO/skills (MIT)
+  agent-watchdog — no individual INDEX.sdd
+  plan-arbiter — no individual INDEX.sdd
+  efficient-frontier — no individual INDEX.sdd
+  quick-recap — no individual INDEX.sdd
+
+### meta/imported/audit/ — khasky/awesome-agent-skills (MIT)
+  awesome-design-doc — no individual INDEX.sdd
+  awesome-architecture-audit — no individual INDEX.sdd
 
 ### writing/ — guillaumemeyer/watermarks-remover (MIT)
-  clean-user-facing-text, remove-ai-marks
-  Recommendation: ACTIVE — thin-client + Docker-gated scripts; service
-  already integrated via /sdd-purge.
+  clean-user-facing-text — scripts/ directory missing; broken @../../commands/sdd-purge.sdd path
+  remove-ai-marks — service/ directory missing; broken @../../commands/sdd-purge.sdd path; sdd-purge integration claim unverified
+
+### design/imported/ — patterns.dev extract
+  patterns-dev-extract.sdd — CC BY-NC 4.0 violates registry.json rule "MIT/Apache-2.0 only"
+
+---
 
 ## Human Review Checklist
 
   [ ] License acceptability confirmed (MIT/Apache-2.0 only — no source-available)
-  [ ] Provenance citations complete (Source/Origin/Imported/Format/License)
-  [ ] Docker gating acceptable for code-bearing skills
+  [ ] Provenance citations complete (Source + Origin + Imported + Format) for each
+  [ ] [NEW] 9 skills with missing INDEX.sdd wrappers — add before promotion
+  [ ] [NEW] 4 code-bearing skills — restore referenced files/directories before promotion
+  [ ] [NEW] patterns-dev-extract.sdd — resolve CC BY-NC 4.0 license before any decision
+  [ ] [NEW] Run skill-evaluate on all candidates before promotion (never done)
   [ ] Approve promotion → mark each group ACTIVE in its INDEX.sdd
       (change "Status: CANDIDATE" or registry "status" to ACTIVE)
   [ ] OR reject with reason → task created for removal/rework
 
 ## After Approval
 
-  1. Update each group INDEX.sdd: Status: ACTIVE
+  1. Update each group INDEX.sdd: Status: ACTIVE (for promoted only)
   2. registry.json: source.status active (already) — no change needed
   3. Log decision in history.json (exec entry: promotion approved by human)
-  4. Close task 2026-0906-005
+  4. Close task 2026-0906-005 (if approved) or create follow-up task (if rejected)
 
 State: PENDING-HUMAN-REVIEW

@@ -94,7 +94,7 @@ Tasks:
     priority: P2
     risk: LOW
     depends: [2026-0906-004]
-    title: Design follow-ups — patterns.dev extracted, figma license workflow defined, promotion packet ready (human gate: .sdd/marketplace/promotion-packet.sdd)
+    title: Design follow-ups — promotion analysis 2026-09-17: 12/26 CONDITIONAL PROMOTE, 14 HELD BACK; packet revised; human gate pending
 
   2026-0907-001:
     state: DONE

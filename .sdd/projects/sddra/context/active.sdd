@@ -29,8 +29,8 @@ ActiveDecisions:
   - DEC-2026-0913-006: Rename + projects purity + open-source EN docs (closed)
   - DEC-2026-0915-001: AI Engineering OS 20-point gap analysis — Phases 157-159 + extensions (approved/implemented)
 
-WorkInProgress:
-  - PROMOTION DECISION NEEDED: CANDIDATE→ACTIVE review (.sdd/marketplace/promotion-packet.sdd) — all artifacts ready, awaiting human gate [IMP4]
+  WorkInProgress:
+  - PROMOTION DECISION — 2026-09-17 analysis: 12/26 skills CONDITIONAL PROMOTE; 14 HELD BACK (9 missing INDEX.sdd, 4 code-bearing with missing refs, 1 license violation). Packet revised; human decision pending [IMP4]
   - Repo cleanup: user review of .sdd/docs/analysis/repo-cleanup-analysis.md (deletions/moves pending approval)
   - gstack deep analysis vs .sdd (clone in tmp/gstack — analyze, adopt pros, delete per RS1)
   - dsh-plugin topic loop: enumerate repos, analyze each, adopt pros
