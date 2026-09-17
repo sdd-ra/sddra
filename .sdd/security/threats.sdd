@@ -92,6 +92,13 @@ ThreatCategories:
       mitigation: Adopt honest trust caveat; fork-PR gating required
       status: documented in .sdd/gates/security.sdd SemanticReview
 
+    - SDDRA-specific injection vectors (documented in .sdd/security/prompt-injection.sdd):
+      PI-001 through PI-010 covering instruction override, role reassignment,
+      permission escalation, output forcing, chain injection, encoding bypass,
+      semantic context hijacking, tool permission grant, whitespace/Unicode obfuscation
+      mitigation: PromptGuard runtime layer (sdd-adapter/security/prompt-guard.ts)
+      status: implemented via /sdd-scan --inject and CommandRunner guard
+
   SupplyChainRisks:
     - Unpinned npm install -g @anthropic-ai/claude-code in CI
       source: claude-code-security-review action.yml:171
@@ -108,7 +115,30 @@ ThreatCategories:
       mitigation: run_every_commit=true; sha comparison
       status: addressed in .sdd/gates/security.sdd SemanticReview
 
-ThreatModel:
+  PromptInjectionDefense:
+    runtime_layer: PromptGuard (sdd-adapter/security/prompt-guard.ts)
+    integration_points:
+      - CommandRunner.run(): guard customerPrompt before dispatch
+      - HookBridge.processHook(): guard UserPromptSubmit events
+    pattern_catalog: PI-001 through PI-010 (.sdd/security/prompt-injection.sdd)
+    response_modes:
+      BLOCK: halt execution, exit 2, audit payload SHA-256
+      WARN: proceed with warning, emit OBS15
+      LOG: log finding, proceed normally
+    evasion_defenses:
+      - NFKC normalization rescan (PI-010)
+      - Hex/base64 decode and rescan (PI-006)
+      - Case-insensitive matching
+      - Whitespace-tolerant matching
+    whitelist: project-scoped, time-bounded entries in .sdd/security/whitelist.sdd
+    rules:
+      - [PI-01] ALL user prompts scanned before dispatch
+      - [PI-02] Internal agent-to-agent messages NOT scanned
+      - [PI-03] BLOCK halts all processing immediately
+      - [PI-04] All attempts audited via SHA-256 hash
+      - [PI-12] Pattern registry loaded from .sdd/specs, not hard-coded
+
+  ThreatModel:
   A threat model MUST document:
     Assets
     Trust boundaries

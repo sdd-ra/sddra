@@ -1,0 +1,116 @@
+# Decision Point Framework
+
+Spec: DecisionPoint
+
+Purpose:
+  Defines the structure and behavior of post-execution decision
+  points. After every major task or /sdd* command completion,
+  a structured summary is emitted containing recommended next
+  steps, risk assessment, and workflow control options.
+
+Owns: workflow\decision-point.sdd
+
+Why:
+  Without structured decision points, users face unbounded
+  next-step choices and no clear mechanism to pause for review.
+  Decision points make the workflow controlled, informative,
+  and auditable.
+
+DecisionPointSchema:
+  id: DP-{timestamp}-{random}
+  type: CONTINUE | GATE | DECISION | ERROR | REVIEW
+  triggeredBy: command or task that produced this
+  stage: current chain stage (BE, FE, MD, VR, etc.)
+  result: outcome summary (PASS, BLOCK, WARN, COMPLETE, etc.)
+  recommendedNextSteps:
+    - id: step identifier
+      label: short action label
+      command: command to execute
+      description: what this entails
+      risk: LOW | MEDIUM | HIGH | CRITICAL
+  reviewOptions:
+    approveAndProceed: command to auto-advance
+    reviewAndModify: command to enter review mode
+  metadata:
+    timestamp: ISO-8601
+    sessionId: session correlation ID
+    taskId: linked TASK ID (optional)
+    decisionId: linked DEC ID (optional)
+    evidence: supporting references (optional)
+
+DecisionTypeSemantics:
+  CONTINUE:
+    description: Proceed to next recommended step (default)
+    auto_approve: safe for non-gate results
+  GATE:
+    description: Human gate requires approval before proceeding
+    auto_approve: requires --approve flag or human confirmation
+  DECISION:
+    description: Fork — user must choose between paths
+    auto_approve: never auto-advances; requires explicit choice
+  ERROR:
+    description: Blocked by error; fix required before proceeding
+    auto_approve: never auto-advances; requires fix
+  REVIEW:
+    description: Needs review/modification before proceeding
+    auto_approve: requires --review flag to enter review mode
+
+EmissionTriggers:
+  after_command:
+    event: Every /sdd* command completion
+    location: CommandRunner.run() before return
+    fields: command result mapped to DecisionPoint
+  after_gate:
+    event: Gate decision (security, human, verification)
+    location: Gate runtime, HookBridge
+    fields: gate result + available next steps
+  after_stage:
+    event: Chain stage transition (BE→FE→MD→VR)
+    location: execution-runner.ts
+    fields: stage result + parallel branch status
+  after_task:
+    event: Task completion (DONE proof)
+    location: execution-loop.sdd Step 15
+    fields: task result + knowledge gate status
+
+EmissionProtocol:
+  step_1: Determine decision type from result
+  step_2: Build recommendedNextSteps (1-5 steps, ranked by priority)
+  step_3: Define reviewOptions based on decision type
+  step_4: Persist JSON to .sdd/runtime/decisions/{id}.json
+  step_5: Emit OBS event (OBS17 for CONTINUE, OBS18 for GATE, OBS19 for REVIEW, OBS20 for ERROR)
+  step_6: Output human-readable summary to command output
+
+Persistence:
+  location: .sdd/runtime/decisions/{DP-id}.json
+  format: JSON (DecisionPoint schema)
+  retention: permanent (audit trail)
+  index: .sdd/runtime/decisions/INDEX.sdd (append-only)
+
+Rules:
+  [DP-01] Every /sdd* command MUST emit a Decision Point after execution.
+  [DP-02] Decision Points MUST NOT block command execution — they are emitted after the fact.
+  [DP-03] recommendedNextSteps MUST be actionable (valid command strings).
+  [DP-04] GATE and DECISION types MUST NOT auto-approve without explicit flag.
+  [DP-05] Every Decision Point MUST be persisted as JSON for audit.
+  [DP-06] OBS events (OBS17-OBS20) MUST include DecisionPoint id.
+  [DP-07] Decision Points MUST include risk level for every recommended step.
+  [DP-08] reviewAndModify MUST accept the user back into the workflow at current stage.
+  [DP-09] Empty next steps (no valid continuation) → type ERROR.
+  [DP-10] --approve flag on /sdd-next auto-advances from CONTINUE/REVIEW types.
+
+OBS Mapping:
+  OBS17: decision_point_emitted — CONTINUE type
+  OBS18: decision_point_gate — GATE type
+  OBS19: decision_point_review — REVIEW type
+  OBS20: decision_point_error — ERROR type
+
+WorkflowControl:
+  approve_and_proceed:
+    command: /sdd-next --approve
+    behavior: Auto-advances from CONTINUE or REVIEW types; pauses at GATE/DECISION/ERROR
+  review_and_modify:
+    command: /sdd-next --review
+    behavior: Re-opens current stage for modification; all context preserved
+
+State: +

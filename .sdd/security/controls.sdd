@@ -383,6 +383,27 @@ Enforcement:
         rule: Warn + ticket on reachable-but-not-exploitable findings
         rule: Log-only for unreachable findings (no merge block)
 
+SEC.PINJECT:
+  detect prompt injection in user-supplied prompts
+  scan: PromptGuard (sdd-adapter/security/prompt-guard.ts)
+  scope: all user input before command dispatch and hook processing
+  patterns: PI-001 through PI-010 (see security/prompt-injection.sdd)
+  response_modes:
+    BLOCK: exit 2, halt execution, audit payload hash
+    WARN: exit 0, proceed with warning, emit OBS15
+    LOG: exit 0, log finding, proceed normally
+  severity_decision:
+    any_CRITICAL: BLOCK
+    2+ HIGH: BLOCK
+    1 HIGH: WARN
+    MEDIUM/LOW only: LOG
+    none: PASS
+  integration:
+    hook-bridge: guard on UserPromptSubmit (OBS14 on BLOCK)
+    commands: guard customerPrompt before dispatch (OBS14 on BLOCK)
+  whitelist: project-scoped, time-bounded (expires required)
+  best_practices_ref: .sdd/security/prompt-injection.sdd
+
 ControlSelection:
   Controls are selected based on:
     SecurityLevel (L0-L5)
@@ -395,6 +416,7 @@ ControlSelection:
     SEC.SECRET
     SEC.DEP
     SEC.SAST
+    SEC.PINJECT
 
   Conditional controls (based on risk/level):
     R2+ ? SEC.SAST, SEC.DEP, SEC.AUTH

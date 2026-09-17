@@ -375,4 +375,9 @@
 {"ts":"2026-09-16T16:11:19.299Z","command":"/sdd-evolve","customer_prompt":"evolve status goster","ai_prompt":"/sdd-evolve"}
 {"ts":"2026-09-16T16:11:19.301Z","command":"/sdd-evolve","customer_prompt":"report only","ai_prompt":"/sdd-evolve --report"}
 { " t s " : " 2 0 2 6 - 0 9 - 1 6 T 1 6 : 4 8 : 3 0 Z " , " c o m m a n d " : " / s d d - r e s e a r c h " , " c u s t o m e r _ p r o m p t " : " a t   s d d - r e s e a r c h " , " a i _ p r o m p t " : " / s d d - r e s e a r c h   t o p i c :   g s t a c k   d e e p   a n a l y s i s   o r   d s h - p l u g i n   t o p i c   l o o p " }  
- 
+ {"ts":"2026-09-17T18:05:57.203Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts":"2026-09-17T18:05:57.229Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
+{"ts":"2026-09-17T18:05:57.238Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-09-17T18:05:57.241Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
+{"ts":"2026-09-17T18:05:57.243Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
+{"ts":"2026-09-17T18:05:57.245Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}

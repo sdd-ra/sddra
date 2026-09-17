@@ -16,6 +16,9 @@ Usage:
   /sdd-next --decision DEC-<ID>
   /sdd-next --case CASE-<ID>
   /sdd-next --force
+  /sdd-next --approve [--id DP-<ID>]
+  /sdd-next --review [--id DP-<ID>]
+  /sdd-next --status
 
 Options:
   --step      Delivery-chain step mode (DL1): continue the immutable
@@ -26,6 +29,11 @@ Options:
   --decision  Advance specific decision
   --case      Jump to specific case
   --force     Force advance even if incomplete (requires approval)
+  --approve   Auto-approve and proceed from Decision Point (CONTINUE/REVIEW types; pauses at GATE/DECISION/ERROR).
+              Optionally targets a specific Decision Point: --approve --id DP-<ID>
+  --review    Enter review mode at current Decision Point for modification.
+              Optionally targets a specific Decision Point: --review --id DP-<ID>
+  --status    List all Decision Points and their current state
 
 InitialLoad (Phase 151 — EXPAND protocol):
   - .sdd/INDEX.sdd (routing only)
@@ -139,6 +147,17 @@ Output:
     [context: parent DEC + TASK references]
     [action: execute_one_unit]
     [result: <unit outcome + done-proof evidence on DONE>]
+
+Rules:
+  [NEXT-01] /sdd-next advances from saved state, never from memory.
+  [NEXT-02] --approve auto-advances CONTINUE and REVIEW types; pauses at GATE, DECISION, ERROR.
+  [NEXT-03] --review re-opens current stage; all context preserved.
+  [NEXT-04] --status lists all Decision Points: id, type, stage, result, timestamp.
+  [NEXT-05] Every Decision Point emitted by execution-runner.ts is visible via --status.
+  [NEXT-06] --approve --id DP-<ID> targets a specific Decision Point for approval.
+  [NEXT-07] --review --id DP-<ID> targets a specific Decision Point for review.
+  [NEXT-08] GATE type requires human confirmation even with --approve.
+  [NEXT-09] --approve at a GATE emits OBS18 with auto_approve:true.
 
 Navigation:
   INDEX: @INDEX.sdd

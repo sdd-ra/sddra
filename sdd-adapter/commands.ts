@@ -12,7 +12,8 @@ import { SkillAutoInvoker } from "./skill-auto-invoker";
 import { SkillValidator } from "./skill-validator";
 import { SkillImporter } from "./skill-importer";
 import { emitAgentsMd, emitClaudeMdPointer } from "./context-emitter";
-import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult, TypedOutcomeCodes } from "./types";
+import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult, TypedOutcomeCodes, PromptInjectionDecision } from "./types";
+import { PromptGuard } from "./security/prompt-guard";
 
 export interface CommandResult {
   command: string;
@@ -28,19 +29,40 @@ export interface CommandResult {
     riskScore: number;
     reasoning: string;
   };
+  /** Prompt injection result (Phase 158 — prompt security). */
+  injectionResult?: PromptInjectionDecision;
 }
 
 export class CommandRunner {
   private sddRoot: string;
   private projectRoot: string;
+  private promptGuard: PromptGuard;
+  private lastInjectionResult: PromptInjectionDecision;
 
   constructor(sddRoot = ".sdd", projectRoot = ".") {
     this.sddRoot = sddRoot;
     this.projectRoot = projectRoot;
+    this.promptGuard = new PromptGuard();
+    this.lastInjectionResult = { decision: "PASS", matchedPatterns: [], severity: "NONE", exitCode: 0, message: "No prompt to scan" };
   }
 
   async run(commandName: string, args: string[] = [], customerPrompt?: string, aiPrompt?: string): Promise<CommandResult> {
     const normalized = commandName.startsWith("/") ? commandName : `/${commandName}`;
+
+    const injectionResult: PromptInjectionDecision = customerPrompt
+      ? this.promptGuard.guard(customerPrompt)
+      : { decision: "PASS", matchedPatterns: [], severity: "NONE", exitCode: 0, message: "No prompt to scan" };
+    this.lastInjectionResult = injectionResult;
+
+    if (injectionResult.decision === "BLOCK") {
+      return {
+        command: normalized,
+        decision: "BLOCKED",
+        exitCode: 2,
+        output: `BLOCKED: Prompt injection detected — ${injectionResult.message}. Execution halted.`,
+        injectionResult,
+      };
+    }
 
     // [R104] Every /sdd* invocation appends a prompt-pair record:
     // customer_prompt = RAW user text (any language, verbatim),
@@ -82,11 +104,12 @@ export class CommandRunner {
         return this.runHealthCommand(args);
       default:
         return {
-          command: normalized,
-          decision: "PASS",
-          exitCode: 0,
-          output: `Command ${normalized} is not implemented in runtime.`,
-        };
+        command: normalized,
+        decision: "PASS",
+        exitCode: 0,
+        output: `Command ${normalized} is not implemented in runtime.`,
+        injectionResult,
+      };
     }
   }
 
@@ -286,6 +309,7 @@ export class CommandRunner {
       exitCode,
       output: outputLines.join("\n"),
       findings: allFindings,
+      injectionResult: this.lastInjectionResult,
     };
   }
 
@@ -1090,6 +1114,7 @@ export class CommandRunner {
       decision: "PASS",
       exitCode: 0,
       output: outputLines.join("\n"),
+      injectionResult: this.lastInjectionResult,
     };
   }
 
@@ -1212,6 +1237,7 @@ export class CommandRunner {
       decision: "PASS",
       exitCode: 0,
       output: lines.join("\n"),
+      injectionResult: this.lastInjectionResult,
     };
   }
 

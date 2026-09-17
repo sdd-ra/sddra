@@ -1,0 +1,6 @@
+# Docker Compose Template
+
+SDDRA-compliant docker-compose.yml template.
+All services build from local Dockerfiles ([R91]).
+All volumes under ./var/ ([R92]).
+All services have resource limits ([R102]).

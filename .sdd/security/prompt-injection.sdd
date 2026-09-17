@@ -1,0 +1,198 @@
+# Prompt Injection Detection & Mitigation
+
+Spec: PromptInjection
+
+Purpose:
+  Dedicated runtime layer that detects and blocks prompt injection
+  attempts in user-supplied prompts BEFORE they reach any processing
+  logic. Protects against instruction override, role reassignment,
+  permission escalation, output forcing, chain injection, encoding
+  bypass, and semantic context hijacking.
+
+Owns: security\prompt-injection.sdd
+
+ThreatModel:
+  Attackers inject malicious instructions into user prompts to:
+  - Override system instructions (ignore previous, discard rules)
+  - Reassign the AI's role (act as admin, pretend to be)
+  - Escalate permissions (bypass restrictions, full access)
+  - Force output format (output JSON, repeat prompt)
+  - Jump execution chains (run /sdd, next step)
+  - Bypass detection via encoding (hex, base64, unicode normalization)
+  - Hijack context (modify .sdd/ rules, change configuration)
+
+PatternCatalog:
+
+  PI-001 — Instruction Override
+    match: regex (case-insensitive, whitespace-tolerant)
+    patterns:
+      - "ignore\s+(previous|all|the|your)\s+(instructions|rules|orders)"
+      - "discard\s+(all|your)\s+(instructions|rules)"
+      - "forget\s+(everything|all)\s+(you|your)\s+(knowledge|instructions)"
+      - "you\s+are\s+(now|no longer)\s+(the|a)"
+      - "reset\s+(your|all)\s+(instructions|rules|context)"
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+
+  PI-002 — Role Reassignment
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+    patterns:
+      - "act\s+as\s+(?:a\s+)?(?:admin|superuser|root|operator|manager)"
+      - "pretend\s+to\s+be"
+      - "you\s+are\s+playing\s+a\s+role"
+      - "impersonate"
+      - "ignore\s+your\s+(system|original|core)\s+identity"
+
+  PI-003 — Permission Escalation
+    severity: HIGH
+    L_level: L4
+    response: BLOCK
+    patterns:
+      - "you\s+have\s+(full|complete)\s+access"
+      - "bypass\s+(all\s+)?(restrictions|limitations|safeguards|security)"
+      - "remove\s+(all\s+)?(restrictions|limitations|safeguards)"
+      - "disable\s+(all\s+)?(safety|security|guardrails)"
+      - "you\s+are\s+unrestricted"
+
+  PI-004 — Output Forcing
+    severity: HIGH
+    L_level: L4
+    response: WARN
+    patterns:
+      - "output\s+(only|just)\s+(JSON|XML|YAML|code|text)"
+      - "repeat\s+(the\s+)?(prompt|message|instructions)"
+      - "echo\s+(this|it|yourself)"
+      - "give\s+me\s+(raw|bare|plain)\s+(output|data|text)"
+      - "respond\s+with\s+(only|just)\s+(the|nothing\s+but)"
+
+  PI-005 — Chain Injection
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+    patterns:
+      - "run\s+/sdd"
+      - "execute\s+(?:the\s+)?command"
+      - "use\s+(?:the\s+)?next\s+step"
+      - "continue\s+with\s+(?:the\s+)?next"
+      - "proceed\s+to\s+(?:the\s+)?next"
+      - "now\s+do\s+(?:the\s+)?next"
+      - "skip\s+(?:to\s+)?the\s+next"
+
+  PI-006 — Encoding Bypass
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+    patterns:
+      - "[\\x][0-9a-fA-F]{2}"
+      - "[\\u][0-9a-fA-F]{4}"
+      - "base64"
+      - "0x[0-9a-fA-F]{2,}"
+      - "HTML.*entity|&#\\d+;"
+    note: Decoded content from these patterns triggers secondary PI scan
+
+  PI-007 — Semantic Context Hijacking
+    severity: HIGH
+    L_level: L4
+    response: WARN
+    patterns:
+      - "change\s+(?:the\s+)?(rules|config|system|specification)"
+      - "modify\s+(?:your\s+)?(instructions|behavior|persona)"
+      - "update\s+(?:the\s+)?(system|configuration|settings)"
+      - "you\s+must\s+(?:now|always)\s+(be|follow|adopt)"
+      - "new\s+rules?\s+are"
+
+  PI-008 — Tool Permission Grant
+    severity: HIGH
+    L_level: L4
+    response: BLOCK
+    patterns:
+      - "grant\s+(?:all\s+)?(permissions|access|tools|tools)"
+      - "enable\s+(all\s+)?(tools|features|capabilities)"
+      - "remove\s+(your\s+)?(sandbox|restrictions|limitations)"
+      - "i\s+grant\s+you\s+(full|complete)\s+(access|permission)"
+
+  PI-009 — Whitespace Obfuscation
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+    patterns:
+      - "ignor\\s+e\\s+v\\s+e\\s+r\\s+"
+      - "sys\\s+t\\s+e\\s+m"
+    detection: Check decoded content for PI-001 through PI-005 matches
+
+  PI-010 — Unicode Normalization Bypass
+    severity: CRITICAL
+    L_level: L5
+    response: BLOCK
+    patterns:
+      - NFKC/NFKD normalized versions of PI-001 through PI-005
+    detection: Apply String.prototype.normalize("NFKC") and rescan
+
+DetectionPipeline:
+  step_1: Raw input → PI-001 through PI-010 regex scan (primary)
+  step_2: If PI-006 match → decode payload → rescan for PI-001 through PI-005
+  step_3: Apply NFKC normalization → rescan for PI-001 through PI-005 (PI-010)
+  step_4: Check semantic patterns (PI-007, PI-008) with context awareness
+  step_5: Aggregate findings → determine response (BLOCK/WARN/LOG)
+
+ResponseProtocol:
+  BLOCK:
+    action: Halt execution immediately
+    exit_code: 2
+    emit: OBS14 prompt_injection_blocked
+    message: "Prompt injection detected and blocked: <matched pattern IDs>"
+    audit: Log full payload hash (SHA-256), matched patterns, decision
+
+  WARN:
+    action: Proceed with warning, log finding
+    exit_code: 0
+    emit: OBS15 prompt_injection_warned
+    message: "Warning: prompt injection pattern detected: <matched pattern IDs>"
+    audit: Log matched patterns and payload excerpt (truncated to 200 chars)
+
+  LOG:
+    action: Log finding, proceed normally
+    exit_code: 0
+    emit: OBS16 prompt_injection_logged
+    audit: Log finding for trend analysis
+
+SeverityDecision:
+  any_CRITICAL: BLOCK
+  all_HIGH_above_threshold: BLOCK (threshold = 2)
+  any_HIGH_below_threshold: WARN
+  only_MEDIUM_or_LOW: LOG
+  none: PASS
+
+Rules:
+  [PI-01] PromptGuard MUST scan ALL user-supplied prompts before dispatch.
+  [PI-02] PromptGuard MUST NOT scan internal system messages (agent-to-agent).
+  [PI-03] BLOCK must halt execution — no partial processing of injected prompts.
+  [PI-04] All injection attempts MUST be audited (SHA-256 hash of payload).
+  [PI-05] Pattern matching MUST be case-insensitive and whitespace-tolerant.
+  [PI-06] Encoding bypass (PI-006) MUST decode and rescan, not just flag the encoding itself.
+  [PI-07] Unicode normalization bypass (PI-010) MUST normalize before rescan.
+  [PI-08] Whitelisted prompts (by hash) MUST skip scanning for a time-bounded period.
+  [PI-09] PromptGuard MUST NOT modify the original prompt text.
+  [PI-10] Every BLOCK/WARN/LOG decision MUST emit an OBS event.
+  [PI-11] Pattern registry MUST be loaded from .sdd/security/prompt-injection.sdd at init, not hard-coded.
+  [PI-12] PromptGuard MUST be callable standalone (for testing) and from HookBridge and CommandRunner.
+
+IntegrationPoints:
+  hook-bridge.ts:
+    event: UserPromptSubmit
+    action: Guard input before processing
+    on_block: Reject tool call, emit OBS14
+
+  commands.ts:
+    event: Every /sdd* command
+    action: Guard customerPrompt before appendPromptPair and dispatch
+    on_block: Return BLOCKED CommandResult (exit 2), do NOT append prompt pair
+
+  whitelist.sdd:
+    field: Prompt injection whitelist
+    format: { hash: string, expires: ISO-date, owner: string, reason: string }
+
+State: +

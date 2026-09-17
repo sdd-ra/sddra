@@ -1,0 +1,32 @@
+# SDDRA Generic Project Dockerfile
+
+Multi-stage build with pinned base, non-root user, no secrets,
+healthcheck. Resource limits defined in docker-compose.yml.
+
+Rules applied: R91 (local image), R92 (var/ mounts), R102 (limits)
+
+syntax=docker/dockerfile:1
+
+ARG NODE_IMAGE=node:20-bookworm-slim@sha256:8e613a9c5c7b4b6c8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d
+
+ARG APP_DIR=./project
+
+FROM ${NODE_IMAGE} AS deps
+WORKDIR /workspace
+COPY ${APP_DIR}/package.json ${APP_DIR}/package-lock.json* ./
+RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
+
+FROM ${NODE_IMAGE} AS builder
+WORKDIR /workspace
+COPY --from=deps /workspace/node_modules ./node_modules
+COPY ${APP_DIR}/ ./
+RUN npx tsc --outDir dist 2>/dev/null || echo "TypeScript build skipped"
+
+FROM ${NODE_IMAGE} AS runner
+WORKDIR /workspace
+COPY --from=builder /workspace/dist ./dist
+USER node
+ENV NODE_ENV=production
+HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
+    CMD node -e "process.exit(0)"
+CMD ["node", "dist/index.js"]

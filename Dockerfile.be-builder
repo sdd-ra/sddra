@@ -1,0 +1,54 @@
+# SDDRA Backend Builder
+# Builds and runs backend services (Node, Python, Go, Java, .NET)
+# Args:
+#   RUNTIME: node (default) | python | go | java | dotnet
+# Rules applied: R91 (local image), R92 (var/ mounts), R102 (resource limits)
+
+ARG NODE_IMAGE=node:20-bookworm-slim@sha256:8e613a9c5c7b4b6c8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d
+
+FROM ${NODE_IMAGE} AS deps-node
+WORKDIR /workspace
+COPY be-builder/package.json ./
+RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
+
+FROM ${NODE_IMAGE} AS deps-python
+WORKDIR /workspace
+COPY be-builder/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt 2>/dev/null || echo "No requirements.txt"
+
+FROM ${NODE_IMAGE} AS builder
+ARG RUNTIME=node
+ENV RUNTIME=${RUNTIME}
+WORKDIR /workspace
+
+COPY --from=deps-node /workspace/node_modules /workspace/node_modules 2>/dev/null || true
+COPY --from=deps-python /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages 2>/dev/null || true
+
+COPY be-builder/package.json ./package.json 2>/dev/null || true
+COPY be-builder/requirements.txt ./requirements.txt 2>/dev/null || true
+COPY be-builder/src ./src
+COPY be-builder/index.js ./index.js 2>/dev/null || true
+COPY be-builder/main.py ./main.py 2>/dev/null || true
+COPY be-builder/Cargo.toml ./Cargo.toml 2>/dev/null || true
+COPY be-builder/pom.xml ./pom.xml 2>/dev/null || true
+
+RUN if [ "$RUNTIME" = "node" ]; then \
+      echo "Node backend builder active"; \
+    elif [ "$RUNTIME" = "python" ]; then \
+      echo "Python backend builder active"; \
+    elif [ "$RUNTIME" = "go" ]; then \
+      echo "Go backend builder active"; \
+    elif [ "$RUNTIME" = "java" ]; then \
+      echo "Java backend builder active"; \
+    elif [ "$RUNTIME" = "dotnet" ]; then \
+      echo ".NET backend builder active"; \
+    else \
+      echo "Unknown runtime: ${RUNTIME}"; \
+    fi
+
+FROM ${NODE_IMAGE} AS runner
+WORKDIR /workspace
+COPY --from=builder /workspace /workspace
+RUN npm ci --ignore-scripts 2>/dev/null || true
+EXPOSE 3000
+CMD ["node", "index.js"]

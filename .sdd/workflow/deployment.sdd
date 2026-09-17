@@ -1,0 +1,106 @@
+# Workflow: Deployment
+
+Spec: Deployment
+
+Purpose:
+  Defines the deployment workflow for frontend and backend
+  services within SDDRA's containerized environment.
+  Covers build → test → stage → deploy → verify pipeline
+  for each service type.
+
+Owns: workflow\deployment.sdd
+
+DeploymentPipeline:
+  stages:
+    - BUILD
+    - TEST
+    - STAGE
+    - DEPLOY
+    - VERIFY
+
+  BUILD:
+    BE:
+      action: docker compose build be-builder
+      artifacts: be-builder image (sddra-be-builder:local)
+      runtime: RUNTIME build arg (node|python|go|java|dotnet)
+      mount: ./var/be:/workspace
+    FE:
+      action: docker compose build fe-builder
+      artifacts: nginx image with built SPA (sddra-fe-builder:local)
+      framework: FRAMEWORK build arg (react|vue|angular|svelte|nextjs)
+      mount: ./var/fe:/workspace
+    MD:
+      action: docker compose build mobile-builder
+      artifacts: mobile-builder image (sddra-mobile-builder:local)
+      note: Simulation only — mock APK/IPA generation
+
+  TEST:
+    BE:
+      action: docker compose run --rm be-builder npm test
+      mount: ./var/be:/workspace
+      gate: exit 0 = PASS, exit 1 = BLOCK
+    FE:
+      action: docker compose run --rm fe-builder npm test
+      mount: ./var/fe:/workspace
+      gate: exit 0 = PASS, exit 1 = BLOCK
+    MD:
+      action: docker compose run --rm mobile-builder --verify
+      mount: ./var/mobile-build:/workspace/output
+      gate: build-report.json exists with status=COMPLETED
+
+  STAGE:
+    BE:
+      action: docker tag sddra-be-builder:local sddra-be-builder:stage-${TIMESTAMP}
+      mount: ./var/be:/workspace
+    FE:
+      action: docker tag sddra-fe-builder:local sddra-fe-builder:stage-${TIMESTAMP}
+      mount: ./var/fe:/workspace
+
+  DEPLOY:
+    BE:
+      action: docker compose up -d be-builder
+      port: 3000 (configurable via BE_PORT env)
+      healthcheck: docker compose ps be-builder
+    FE:
+      action: docker compose up -d fe-builder
+      port: 80 (nginx default)
+      healthcheck: docker compose ps fe-builder
+    MD:
+      action: artifacts in ./var/mobile-build/output/ (no server)
+
+  VERIFY:
+    BE:
+      action: curl http://localhost:<BE_PORT>/health
+      expected: 200 OK
+      timeout: 30s
+    FE:
+      action: curl http://localhost/
+      expected: 200 OK, HTML response
+    MD:
+      action: verify build-report.json exists and is valid JSON
+      expected: status=COMPLETED
+
+Rules:
+  [DEP-01] ALL builds run inside Docker (R59-R66, R102).
+  [DEP-02] ALL images are locally built (R91) — :local suffix.
+  [DEP-03] ALL volumes under ./var/ (R92) — no named volumes.
+  [DEP-04] ALL services have resource limits (R60/R64).
+  [DEP-05] Deployment requires human approval (R37, R15).
+  [DEP-06] Swagger UI must be configured in test/dev/local (R93).
+  [DEP-07] BE healthcheck endpoint MUST exist at /health.
+  [DEP-08] FE must serve index.html at root.
+  [DEP-09] Mobile build artifacts are MOCK — clearly labeled.
+  [DEP-10] Deployment failures roll back to previous stage image.
+
+NetworkTopology:
+  sdd-internal (internal: true):
+    - sdd-sandbox
+    - fe-builder
+    - be-builder
+    - mobile-builder
+  External access:
+    - fe-builder:80 → host:80 (via compose port mapping)
+    - be-builder:3000 → host:3000 (via compose port mapping)
+    - mobile-builder: no external access
+
+State: +

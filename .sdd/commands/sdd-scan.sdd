@@ -21,6 +21,7 @@ Usage:
   /sdd-scan --severity <level>
   /sdd-scan --language <language>
   /sdd-scan --json
+  /sdd-scan --inject [--decoded]
 
 Options:
   --file        Scan a single file
@@ -28,6 +29,8 @@ Options:
   --severity    Filter by severity (CRITICAL, HIGH, MEDIUM, LOW)
   --language    Filter by language skill (go, python, etc.)
   --json        Output machine-readable JSON
+  --inject      Scan prompt text for injection patterns (PI-001 through PI-010)
+  --decoded     Also scan NFKC-normalized and hex/decoded payloads
 
 Mode: READ_ONLY
 
@@ -72,6 +75,8 @@ Rules:
   [SCN-04] Spec load failures MUST result in PASS with warning, not error.
   [SCN-05] Skill patterns MUST only activate for matching file extensions.
   [SCN-06] Scan results MUST be persisted to .sdd/runtime/scan-results/ for audit.
+  [SCN-07] /sdd-scan --inject MUST use PromptGuard (sdd-adapter/security/prompt-guard.ts).
+  [SCN-08] --inject results include PI-001 through PI-010 pattern IDs and response modes.
 
 Navigation:
    INDEX: @INDEX.sdd

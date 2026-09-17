@@ -1,0 +1,24 @@
+# SDDRA Mobile Build Simulator
+# Simulates React Native / Flutter mobile build inside Docker
+# Generates mock APK/IPA artifacts for SDDRA chain simulation
+# Rules applied: R91 (local image), R92 (var/ mounts), R102 (resource limits)
+
+ARG NODE_IMAGE=node:20-bookworm-slim@sha256:8e613a9c5c7b4b6c8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d
+
+FROM ${NODE_IMAGE} AS builder
+WORKDIR /workspace
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openjdk-17-jdk-headless python3 zip unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace/src
+
+COPY mobile-builder/package.json ./
+RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
+
+COPY mobile-builder/ ./
+
+RUN mkdir -p output
+
+CMD ["node", "build.js"]

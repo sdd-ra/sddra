@@ -1,0 +1,82 @@
+# Workflow: Mobile Build Simulation
+
+Spec: MobileBuild
+
+Purpose:
+  Defines the mobile build simulation workflow within SDDRA.
+  Since SDDRA is a specification framework (not a mobile app),
+  the "build" generates mock APK/IPA artifacts to validate
+  chain execution and demonstrate the MD branch of the
+  delivery chain (BC→BR→BD→DS→TK→BDD→MD→MD_TS→CR).
+
+Owns: workflow\mobile-build.sdd
+
+SimulationPipeline:
+  trigger: /sdd "simulate mobile build" or docker compose run mobile-builder
+  stages:
+    - PREPARE
+    - DEPENDENCIES
+    - COMPILE (simulated)
+    - BUNDLE (simulated)
+    - SIGN (simulated)
+    - OUTPUT
+
+  PREPARE:
+    action: Validate mobile profile in .sdd/project/profile.sdd
+    check: MD field must be set (React Native, Flutter, SwiftUI, KMP)
+    gate: If no MD profile → return error, no build
+
+  DEPENDENCIES:
+    action: npm ci inside mobile-builder container
+    mount: ./var/mobile-build:/workspace
+    check: package.json exists, node_modules installed
+
+  COMPILE:
+    action: Simulate native compilation
+    detail: |
+      React Native: generate mock .jsbundle files
+      Flutter: generate mock .app artifacts
+      SwiftUI: generate mock .ipa placeholder
+      KMP: generate platform-specific placeholders
+    note: NO actual SDK required — pure simulation
+
+  BUNDLE:
+    action: Bundle assets and resources
+    output: assets.zip in ./var/mobile-build/output/
+
+  SIGN:
+    action: Generate mock signature checksum
+    detail: SHA-256 hash of the unsigned artifact (not real signing)
+    note: Clearly labeled as "MOCK SIGNATURE — NOT CRYPTOGRAPHIC"
+
+  OUTPUT:
+    action: Generate build report and summary
+    files:
+      - app.android.apk (mock)
+      - app.ios.ipa (mock)
+      - bundle.<platform>.jsbundle (mock)
+      - assets.zip (mock)
+      - build-report.json (real, metadata only)
+      - summary.txt (human-readable)
+
+Rules:
+  [MB-01] Mobile build simulation runs EXCLUSIVELY in Docker (R102).
+  [MB-02] All artifacts in ./var/mobile-build/output/ (R92).
+  [MB-03] Every artifact MUST be labeled "MOCK BUILD" or "SIMULATION".
+  [MB-04] Build report is real metadata — artifact sizes, timestamps.
+  [MB-05] No Android SDK, Xcode, or native toolchains required.
+  [MB-06] Simulation MUST complete within 60 seconds.
+  [MB-07] Build report MUST be valid JSON.
+  [MB-08] If mobile profile is missing, return error — do NOT proceed.
+  [MB-09] Artifacts MUST be deleted per tmp discipline after use ([R96]).
+
+MDExecutionChain:
+  MD:
+    description: Mobile development branch in DL1 delivery chain
+    entry: BDD → MD (mobile scenarios derived from BDD)
+    exit: MD_TS → CR → AN
+    builder: mobile-builder (Docker service)
+    artifacts: ./var/mobile-build/output/
+    gate: Build report validation, NOT real binary verification
+
+State: +

@@ -308,3 +308,56 @@ export type TypedOutcomeCodes =
   | "POLICY_VIOLATION"
   | "TOOL_ERROR"
   | "UNSAFE";
+
+export enum DecisionType {
+  CONTINUE = "CONTINUE",
+  GATE = "GATE",
+  DECISION = "DECISION",
+  ERROR = "ERROR",
+  REVIEW = "REVIEW",
+}
+
+export interface PromptFinding {
+  patternId: string;
+  patternName: string;
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  LLevel: number;
+  response: "BLOCK" | "WARN" | "LOG";
+  matchedText: string;
+}
+
+export interface PromptInjectionDecision {
+  decision: "PASS" | "BLOCK" | "WARN" | "LOG";
+  matchedPatterns: PromptFinding[];
+  severity: "NONE" | "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  exitCode: number;
+  message: string;
+}
+
+export interface DecisionStep {
+  id: string;
+  label: string;
+  command: string;
+  description: string;
+  risk: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+}
+
+export interface DecisionPoint {
+  id: string;
+  type: DecisionType;
+  triggeredBy: string;
+  stage: string;
+  result: string;
+  recommendedNextSteps: DecisionStep[];
+  reviewOptions: {
+    approveAndProceed: string;
+    reviewAndModify: string;
+  };
+  metadata: {
+    timestamp: string;
+    sessionId: string;
+    taskId?: string;
+    decisionId?: string;
+    evidence?: string[];
+  };
+}

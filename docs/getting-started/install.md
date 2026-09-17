@@ -107,3 +107,108 @@ renames upstream can conflict.
 Path A/C: delete the directory (or revert the merge). Path B: remove
 the copied files from `~/.claude/commands/` and `~/.config/kilo/`.
 No system-wide state exists outside those locations.
+
+## Mobile Build Simulation
+
+The mobile build demonstrates the MD (mobile development) branch
+of the delivery chain inside Docker. It generates mock APK/IPA
+artifacts — no Android Studio or Xcode required.
+
+### Run Mobile Build
+
+```bash
+docker compose build mobile-builder
+docker compose run --rm mobile-builder
+```
+
+Expected: Mock APK (`app.android.apk`) and IPA (`app.ios.ipa`)
+artifacts generated in `var/mobile-build/output/`, plus a
+build report and summary. All artifacts labeled "MOCK BUILD".
+
+### Verify Mobile Artifacts
+
+```bash
+cat var/mobile-build/output/build-report.json
+cat var/mobile-build/output/summary.txt
+```
+
+### Mobile Build in the Chain
+
+The mobile build is part of the DL1 delivery chain:
+`BDD → MD → MD_TS → CR → AN`
+
+Execute via:
+```bash
+docker compose run --rm sdd-sandbox \
+  node /workspace/sdd-adapter/dist/commands.js /sdd "simulate mobile build"
+```
+
+## Frontend Deployment Workflow
+
+The frontend service (`fe-builder`) builds SPAs and serves
+them via nginx inside Docker.
+
+### Build Frontend
+
+```bash
+docker compose build fe-builder
+```
+
+The build takes an optional `FRAMEWORK` build arg:
+- `react` (default) — React/Next.js SPAs
+- `vue` — Vue.js SPAs
+- `angular` — Angular SPAs
+- `svelte` — Svelte SPAs
+- `nextjs` — Next.js applications
+
+### Deploy Frontend
+
+```bash
+docker compose up -d fe-builder
+curl http://localhost/
+```
+
+### Stage Frontend (for review)
+
+```bash
+docker tag sddra-fe-builder:local sddra-fe-builder:stage-$(date +%s)
+```
+
+## Backend Deployment Workflow
+
+The backend service (`be-builder`) is language-agnostic via
+build args, runs API servers inside Docker, and exposes a
+health endpoint for verification.
+
+### Build Backend
+
+```bash
+docker compose build be-builder --build-arg RUNTIME=node
+```
+
+Runtime options via `RUNTIME` build arg:
+- `node` (default) — Node.js/Express/NestJS
+- `python` — Python/FastAPI/Django
+- `go` — Go/Fiber/Gin
+- `java` — Java/Spring Boot
+- `dotnet` — .NET/ASP.NET
+
+### Deploy Backend
+
+```bash
+docker compose up -d be-builder
+curl http://localhost:3000/health
+```
+
+### Stage Backend (for review)
+
+```bash
+docker tag sddra-be-builder:local sddra-be-builder:stage-$(date +%s)
+```
+
+### Backend Health Check
+
+The BE service MUST expose `/health` endpoint returning 200:
+```bash
+docker compose run --rm be-builder curl -f http://localhost:3000/health
+```

@@ -1,6 +1,7 @@
 import fs from "fs";
 import { HookPayload, GateResult, ObsEvent, ProvenanceReport } from "./types";
 import { PatternsRuntime } from "./security/patterns-runtime";
+import { PromptGuard } from "./security/prompt-guard";
 import { emitObsEvent } from "./spec-loader";
 import { ProvenanceClient } from "./provenance-client";
 
@@ -8,6 +9,8 @@ const PROVENANCE_EXTENSIONS = new Set([
   ".md", ".txt", ".json", ".yaml", ".yml", ".py", ".ts", ".js",
   ".svg", ".pdf", ".docx", ".html", ".png", ".jpg", ".jpeg", ".webp",
 ]);
+
+const promptGuard = new PromptGuard();
 
 export class HookBridge {
   private patternsRuntime: PatternsRuntime;
@@ -21,6 +24,39 @@ export class HookBridge {
   async processHook(input: HookPayload): Promise<GateResult> {
     const toolName = input.tool_name || "";
     const correlationId = input.session_id || `session-${Date.now()}`;
+
+    if (toolName === "UserPromptSubmit") {
+      const promptContent = typeof input.tool_input?.content === "string"
+        ? input.tool_input.content
+        : "";
+      const guardResult = promptGuard.guard(promptContent);
+      if (guardResult.decision === "BLOCK") {
+        emitObsEvent("GATE", {
+          correlationId,
+          tool: "UserPromptSubmit",
+          decision: "BLOCK",
+          event: "OBS14 prompt_injection_blocked",
+          matchedPatterns: guardResult.matchedPatterns.map(f => f.patternId),
+          message: guardResult.message,
+        });
+        return {
+          decision: "BLOCK",
+          exitCode: 2,
+          message: guardResult.message,
+          findings: [],
+        };
+      }
+      if (guardResult.decision === "WARN") {
+        emitObsEvent("POLICY", {
+          correlationId,
+          tool: "UserPromptSubmit",
+          decision: "WARN",
+          event: "OBS15 prompt_injection_warned",
+          matchedPatterns: guardResult.matchedPatterns.map(f => f.patternId),
+          message: guardResult.message,
+        });
+      }
+    }
 
     if (!input.tool_input?.content) {
       emitObsEvent("TOOL", {

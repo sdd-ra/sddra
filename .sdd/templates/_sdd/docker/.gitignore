@@ -1,0 +1,3 @@
+# Docker template for project-level services
+# Place in project root and run: docker compose up -d
+# Follows SDDRA conventions: R91, R92, R102
