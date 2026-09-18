@@ -90,13 +90,13 @@ Tasks:
     title: Unified Design Intelligence module + self-test (92% pros) + Pros/Cons report
 
    TBD-2026-0918-001:
-     state: IN_PROGRESS
-     priority: P1
-     risk: LOW
-     depends: []
-     title: /sdd task status analysis chain — D1 complete, S1 in progress, awaiting approval for C1/R1/DEP1/AutoCompact
+      state: DONE
+      priority: P1
+      risk: LOW
+      depends: []
+      title: /sdd task status analysis chain — D1 complete, S1 in progress, awaiting approval for C1/R1/DEP1/AutoCompact
 
-   2026-0906-005:
+    2026-0906-005:
     state: IN_REVIEW
     priority: P2
     risk: LOW
