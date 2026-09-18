@@ -69,7 +69,7 @@ The SDDRA execution graph is defined in `.sdd/chains/graph.sdd`. It's a cyclic g
 #13  Document    -> generate docs/ with WHY + WHAT
 #14  LearnGate   -> evaluate learning gate outcome
 #15  Consolidate -> DROP | ARCHIVE | LINK | PROMOTE knowledge into .sdd/
-#16  Complete    -> mark task COMPLETED, update .specdd/task-context/
+#16  Complete    -> mark task COMPLETED, update projects/{project_name}/.specdd/task-context/
 ```
 
 ### Chain Variants:

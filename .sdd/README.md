@@ -71,7 +71,7 @@ TMP Memory            (raw observations before concept extraction — not persis
 |------|-------------|-----|----------------|
 | TMP | None (runtime) | End of session | Observation threshold |
 | Working | None (runtime) | End of task | Context sufficiency check |
-| Task | .specdd/task-context/ | Task lifecycle | End-of-task consolidation |
+| Task | projects/{project_name}/.specdd/task-context/ | Task lifecycle | End-of-task consolidation |
 | Project | .sdd/knowledge/ | Persistent | Human or automated review |
 | Long-Term | .sdd/concepts/, .sdd/references/ | Permanent | Deprecated only, never deleted |
 
