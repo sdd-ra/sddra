@@ -33,6 +33,6 @@ Status: COMPLETE (2026-09-18T12:48:46Z)
 | Task | State | Notes |
 |------|-------|-------|
 | TBD-2026-0918-001 | DONE | This analysis chain — all steps complete |
-| 2026-0906-005 | IN_REVIEW | Promotion packet — blocks |
+| 2026-0906-005 | DONE | Promotion packet — approved via /sdd-next --approve 2026-09-18T20:20:21Z |
 
 State: COMPLETE — /sdd chain fully executed per Behavior

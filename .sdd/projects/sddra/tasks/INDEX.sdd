@@ -97,11 +97,11 @@ Tasks:
       title: /sdd task status analysis chain — D1 complete, S1 in progress, awaiting approval for C1/R1/DEP1/AutoCompact
 
     2026-0906-005:
-    state: IN_REVIEW
+    state: DONE
     priority: P2
     risk: LOW
     depends: [2026-0906-004]
-    title: Design follow-ups — promotion analysis 2026-09-17: 12/26 CONDITIONAL PROMOTE, 14 HELD BACK; packet revised; human gate pending
+    title: Design follow-ups — promotion analysis 2026-09-17: 12/26 CONDITIONAL PROMOTE, 14 HELD BACK; packet revised; approved 2026-09-18T20:20:21Z
 
   2026-0907-001:
     state: DONE
