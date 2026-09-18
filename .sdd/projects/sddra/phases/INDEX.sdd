@@ -148,7 +148,7 @@ Phases:
       repo-cleanup-analysis.md (analysis only); 9 command stub
       descriptions fixed; docs/ EN suite (install 3-paths, architecture
       diagrams, how-it-works, contributing + philosophy, README
-      EN-first rewrite, MIT LICENSE); prompts/history/prompt-pairs.jsonl
+      EN-first rewrite, MIT LICENSE); projects/sddra/history/prompt-pairs.jsonl
       ([R104])
     date: 2026-09-14
 
@@ -228,20 +228,34 @@ Phases:
     date: 2026-09-15
     completed: 2026-09-16
 
-  Phase 159:
-    title: Architecture Migration Readiness Score
-    layer: S1+C1 (.sdd system + sdd-adapter)
-    status: COMPLETED
-    spec: @phase-159-migration-score.sdd
-    implemented: module compatibility manifest (deployment/
-      communication/database modes), weighted 5-factor score model
-      (READY/PREPARABLE/COUPLED/ROOT-BOUND bands), [MR1]-[MR5]
-      rules, C1 adapter: sdd-adapter/migration-score.ts
-      (ModuleManifest parser, score() 5-factor computation,
-      scoreFromManifest() with dependency graph integration,
-      MigrationResult output; runs in Docker [R102])
-    date: 2026-09-15
-    completed: 2026-09-16
+   Phase 159:
+     title: Architecture Migration Readiness Score
+     layer: S1+C1 (.sdd system + sdd-adapter)
+     status: COMPLETED
+     spec: @phase-159-migration-score.sdd
+     implemented: module compatibility manifest (deployment/
+       communication/database modes), weighted 5-factor score model
+       (READY/PREPARABLE/COUPLED/ROOT-BOUND bands), [MR1]-[MR5] rules, C1 adapter:
+       sdd-adapter/migration-score.ts (ModuleManifest parser,
+       score() 5-factor computation, scoreFromManifest() with dependency
+       graph integration, MigrationResult output; runs in Docker [R102])
+     date: 2026-09-15
+     completed: 2026-09-16
+
+   Phase 137:
+     title: Skill Testing & Knowledge Verification
+     layer: S1+C1 (.sdd system + sdd-adapter)
+     status: PROPOSED
+     spec: user-flagged requirement (skill dogruluk/aktual/duplicate/tetbiq avtomatik yoxlamasi)
+     implemented: (pending — awaiting /sdd chain S1 approval)
+     date: 2026-09-18
+     dependencies: Phase 159
+
+   Phase 156:
+     title: (not registered — verify or skip)
+     layer: S1 (.sdd system)
+     status: UNREGISTERED
+     spec: (verify if Phase 156 exists or was renumbered)
 
 Rules:
   [PH1] Every phase MUST be registered here — no unregistered phase work.
@@ -256,6 +270,7 @@ Navigation:
   Phase157: @phase-157-question-registry.sdd
   Phase158: @phase-158-architecture-linter.sdd
   Phase159: @phase-159-migration-score.sdd
+  Phase137: @phase-137-skill-testing.sdd (pending — awaiting spec creation)
   Tasks: @../tasks/INDEX.sdd
   Plans: @../../plans/current-plan.sdd
   Context: @../context/active.sdd

@@ -1,0 +1,43 @@
+# Phase 137: Skill Testing & Knowledge Verification
+
+Status: PROPOSED — awaiting /sdd chain approval
+Generated: 2026-09-18T12:33:30Z
+Source: D1 task status analysis — identified as P0 immediate commencement
+
+---
+
+## Purpose
+
+User-flagged next layer: skill dogruluk (correctness), aktual (actual/current),
+duplicate, and tetbiq avtomatik yoxlamasi (automatic verification).
+
+## Layer
+
+S1+C1 (.sdd system + sdd-adapter)
+
+## Dependencies
+
+Phase 159 (Architecture Migration Readiness Score) — COMPLETED
+
+## Proposed Scope
+
+1. Define skill correctness verification criteria
+2. Define skill currency/staleness detection rules
+3. Define duplicate skill detection and dedup protocol
+4. Define automatic verification pipeline
+5. Create spec: phases/phase-137-skill-testing.sdd
+6. Implement: sdd-adapter/skill-verify.ts (C1)
+
+## Open Questions
+
+- Does this subsume or complement /sdd-design (--discover/--evaluate/--review)?
+- What is the verification source of truth — .sdd specs or runtime behavior?
+- Staleness threshold: per-skill or global?
+
+## References
+
+- Related: DEC-2026-0915-001 (AI Engineering OS gap analysis — Phases 157-159)
+- Related: /sdd-design skill evaluation capabilities
+- Related: sdd-adapter/skill-validator.ts (existence check)
+
+State: PROPOSED — pending S1 approval

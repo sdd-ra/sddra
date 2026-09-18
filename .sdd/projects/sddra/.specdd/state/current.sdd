@@ -5,3 +5,9 @@ Per: .sdd/commands/sdd-next.sdd [SF1]
 
 Generated: 2026-09-18T08:23:00Z
 Status: initial stub
+
+LastChain: /sdd — task status analysis (2026-09-18)
+LastChainStep: S1 — in progress
+LastChainDoc: .sdd/projects/sddra/project/assessment.sdd
+LastChainGate: human_required — awaiting approval for C1
+LastChainTs: 2026-09-18T12:33:30Z
