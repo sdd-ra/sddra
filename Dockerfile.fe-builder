@@ -32,7 +32,7 @@ RUN if [ "$FRAMEWORK" = "react" ]; then \
       echo "Framework ${FRAMEWORK} builder template active — add source to fe-builder/"; \
     fi
 
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.31-alpine AS runner
 COPY --from=builder /workspace/dist /usr/share/nginx/html
 COPY fe-builder/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
