@@ -7,7 +7,7 @@ Rules applied: R91 (local image), R92 (var/ mounts), R102 (limits)
 
 syntax=docker/dockerfile:1
 
-ARG NODE_IMAGE=node:20-bookworm-slim@sha256:8e613a9c5c7b4b6c8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d
+ARG NODE_IMAGE=node:26-bookworm-slim@sha256:662933cf47f013bc8e4beb31a6116448427a82057ba7c42c97e4c5ba766504c2
 
 ARG APP_DIR=./project
 
