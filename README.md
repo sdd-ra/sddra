@@ -35,7 +35,7 @@ before code exists, so whole defect classes never happen.
 ## Quick start
 
 ```bash
-git clone https://github.com/<you>/sddra.git && cd sddra
+git clone https://github.com/sdd-ra/sddra.git && cd sddra
 docker compose build sdd-sandbox
 # then pick an install path — see docs/getting-started/install.md
 ```
