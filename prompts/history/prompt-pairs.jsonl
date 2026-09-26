@@ -460,3 +460,4 @@
 {"ts":"2026-09-26T21:34:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
 {"ts":"2026-09-26T21:48:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
 {"ts":"2026-09-26T21:57:38Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T22:02:43Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
