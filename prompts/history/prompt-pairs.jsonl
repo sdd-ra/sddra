@@ -381,3 +381,83 @@
 {"ts":"2026-09-17T18:05:57.241Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
 {"ts":"2026-09-17T18:05:57.243Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
 {"ts":"2026-09-17T18:05:57.245Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
+{"ts": "2026-09-26T18:39:44Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:02:41Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:04:05Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:04:06Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:04:07Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:04:08Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:04:09Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).", "ai_prompt": "/sdd-next --approve"}
+{"ts": "2026-09-26T19:07:24Z", "command": "/sdd-next", "customer_prompt": "Advance decision chain to next step (stateful /next).\n\nArguments: --approve\n\nOutput: human-readable Markdown per the spec's Output section.", "ai_prompt": "/sdd-next --approve"}
+{"ts":"2026-09-26T23:23:55.510Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T23:25:37.576Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
+{"ts":"2026-09-26T23:26:20.970Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T23:27:07.299Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
+{"ts":"2026-09-26T23:27:54.735Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T23:28:44.149Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
+{"ts":"2026-09-27T00:06:41.155Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
+{"ts":"2026-09-27T00:07:03.215Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:07:23.128Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:07:44.492Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:08:06.031Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:08:30.394Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:08:40.463Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:09:02.676Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:09:32.623Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:09:44.626Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:09:56.050Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:07.488Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:18.562Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:27.454Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:37.469Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:48.208Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:10:57.980Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:09.701Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:18.731Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:29.525Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:38.934Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:48.803Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:11:58.398Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:12:08.004Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:12:17.035Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:12:28.940Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:12:41.872Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:12:57.103Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:06.573Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:17.330Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:27.231Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:38.032Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:47.572Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:13:57.109Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:06.342Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:17.018Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:26.889Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:36.699Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:46.360Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:14:55.952Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:07.325Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:17.558Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:26.343Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:35.824Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:47.183Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:15:58.028Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:16:09.252Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:16:21.374Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:16:33.032Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:16:53.319Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:03.304Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:14.485Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:23.972Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:32.956Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:48.639Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:17:58.349Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:18:07.688Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:18:16.734Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:18:26.451Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:18:34.987Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:18:44.464Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-27T00:54:17.067Z","command":"/sdd","customer_prompt":"https://github.com/ruvnet/ruflo.git analzi et pros consularini sdd-ra ile analiz et. pros-larini sisteme getir","ai_prompt":"/sdd https://github.com/ruvnet/ruflo.git analyze pros/cons and integrate into SDD-RA"}
+{"ts":"2026-09-26T21:34:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T21:48:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T21:57:38Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T22:02:43Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}
