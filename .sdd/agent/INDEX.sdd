@@ -23,6 +23,7 @@ Navigation:
   Coordination: @coordination.sdd
   Conflicts: @conflicts.sdd
   Handoff: @handoff.sdd
+  SubagentLifecycle: @subagent-lifecycle.sdd
   WeakPointMap: @weak-point-map.sdd
   ContextEmission: @context-emission.sdd
 
@@ -43,10 +44,11 @@ ReadOrder:
   14 @handoff.sdd
   15 @ecc-bridge.sdd
   16 @supervisor.sdd
-  17 @security-rules.sdd
-  18 @weak-point-map.sdd
-  19 @context-emission.sdd
-  20 @prompts/INDEX.sdd
+  17 @subagent-lifecycle.sdd
+  18 @security-rules.sdd
+  19 @weak-point-map.sdd
+  20 @context-emission.sdd
+  21 @prompts/INDEX.sdd
 
 Modes:
   PLAN      — plan only, no execution

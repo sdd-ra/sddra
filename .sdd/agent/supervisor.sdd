@@ -85,6 +85,35 @@ SupervisorResponsibilities:
       - detect recurring failure patterns
       - optimize task decomposition
 
+  ChannelRouting:
+    definition: Route each micro-unit to a dispatch channel
+    algorithm:
+      1. Read unit parallel_ready + shared_state
+      2. Apply derivation: F iff parallel_ready && shared_state == none
+      3. Else route to Channel R (ordered, after depends_on DONE)
+      4. Record channel_routing[] in the run state ([DC4])
+    constraint: Channel F scope = current stage only ([SW1-1])
+
+  ReconcileGate:
+    definition: Pre-dispatch reconciliation of the sub-agent registry
+    lifecycle:
+      on: every /sdd-swarm invocation, before DISPATCH ([SW1-11])
+      action: read sub_agent_registry[]
+      action: verify parent_id ownership per entry ([SAL8])
+      action: re-verify or defect-catalog orphaned RUNNING entries
+      action: delete stale agent folders
+      output: clean registry or explicit waiver; dispatch blocked
+        until clean
+
+  CleanupVerification:
+    definition: Verify agent-folder cleanup before stage DONE
+    lifecycle:
+      on: stage DONE candidate ([SW1-13])
+      action: for each DONE + VERIFIED unit with no open attributed
+        defect, verify its agent folder was deleted ([SAL6])
+      action: catalog surviving folders as defects (DEF-XXX)
+      output: cleanup report appended to stage state
+
 NegativeKnowledge:
   definition: Track what does NOT work
   storage: .sdd/knowledge/negative-knowledge.sdd (or lessons/)
@@ -99,12 +128,25 @@ Rules:
   [SUP-03] Supervisor MUST escalate after 3 failed task assignments.
   [SUP-04] Supervisor MUST detect cycles in the task graph.
   [SUP-05] Supervisor MUST preserve negative knowledge from failed executions.
+  [SUP-06] Supervisor MUST run RECONCILE before every DISPATCH —
+        registry ownership check, orphan re-verify, stale-folder
+        cleanup; dispatch blocked until clean or waived ([SW1-11],
+        [SAL8]).
+  [SUP-07] Supervisor MUST verify agent-folder cleanup before
+        stage DONE — every DONE + VERIFIED unit with no open
+        attributed defect has its folder deleted ([SW1-13],
+        [SAL6]).
+  [SUP-08] Supervisor MUST route every unit through the derived
+        dispatch channel (R/F) and record channel_routing[]
+        ([DC1], [DC4]).
 
 Navigation:
   AgentIndex: @INDEX.sdd
   Roles: @roles.sdd
   Coordination: @coordination.sdd
   Handoff: @handoff.sdd
+  SubagentLifecycle: @subagent-lifecycle.sdd
+  DispatchChannels: @../workflow/dispatch-channels.sdd
   EccBridge: @ecc-bridge.sdd
   Chains: @../chains/INDEX.sdd
   Tasks: @../tasks/INDEX.sdd
@@ -112,3 +154,6 @@ Navigation:
   Runtime: @../runtime/INDEX.sdd
 
 State: +
+  (Phase 161 — added ChannelRouting, ReconcileGate,
+   CleanupVerification responsibilities + [SUP-06]-[SUP-08]
+   per DEC-2026-1011-002 D4)

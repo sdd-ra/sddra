@@ -59,6 +59,29 @@ MicroUnit:
       if a resource must be shared it is write-locked and units run
       sequentially.
 
+  channel: R | F
+    derivation: channel = F iff parallel_ready == true AND
+      shared_state == none, else R (bax dispatch-channels.sdd [DC2]).
+    Channel F = free parallelism inside the CURRENT stage only;
+    Channel R = dependency-ordered inside the CURRENT stage.
+    No channel crosses a stage boundary ([SW1-1], [DC1]).
+
+  agent:
+    assigned: <subagent id | none>
+    token_used: <int>            # recorded per unit ([I10] extension)
+    parent: <agent id | none>    # spawning agent, none for a directly
+                                 # dispatched unit
+    children: [<sub-agent ids>]  # sub-agents spawned when this unit was
+                                 # subdivided
+    folder: .specdd/swarm/{run_id}/agents/{agent_id}/
+      runtime instance record — context pack + outcome + evidence;
+      deleted only after DONE + VERIFIED ([SAL6], [R103])
+
+  self_delegation:
+    trigger: an agent that would dispatch a unit exceeding ANY budget
+      ([MU-1]) subdivides the unit and spawns sub-agents ITSELF
+      ([MU-8]) — depth cap 2 levels below the supervisor ([SW1-9]).
+
   impact:
     blast_radius: LOW | MEDIUM | HIGH | CRITICAL
     affected: <layers touched>
@@ -69,10 +92,6 @@ MicroUnit:
     defect path:  -> DEFECTED -> FOCUS -> VERIFIED -> DONE
     rule: DONE requires done_proof; DEFECTED routes the unit into the
       FOCUS loop (see swarm.sdd FocusLoop).
-
-  agent:
-    assigned: <subagent id | none>
-    token_used: <int>            # recorded per unit ([I10] extension)
 
   done_proof:
     artifact: <file(s) produced>
@@ -92,7 +111,16 @@ Rules:
         re-dispatches that unit with a narrow context pack (defect +
         unit + BEFORE/CHANGE/AFTER).
   [MU-6] Token usage is recorded per unit ([I10]); stage token_totals
-        aggregate unit tokens.
+         aggregate unit tokens.
+  [MU-7] Every unit carries a channel (R or F) derived as
+         channel = F iff parallel_ready && shared_state == none, else R
+         (bax dispatch-channels.sdd [DC2]).
+  [MU-8] An agent that receives an over-budget or decomposable unit
+         subdivides it and spawns sub-agents ITSELF; every sub-unit
+         keeps the MU budget (depth cap per [SW1-9]).
+  [MU-9] A parent agent NEVER edits a child agent's scope — single
+         writer per scope; cross-agent correction happens through a new
+         dispatch or the FOCUS loop ([MU-3], [MU-5]).
 
 Templates:
   Instance records live in .specdd/swarm/{run_id}/micro_units/ at
@@ -102,6 +130,8 @@ Navigation:
   SubtaskSchema: @../schemas/subtask.sdd
   MicroUnitSchema: @../schemas/micro-unit.sdd
   SwarmChain: @../chains/swarm.sdd
+  DispatchChannels: @dispatch-channels.sdd
+  SubAgentLifecycle: @../agent/subagent-lifecycle.sdd
   Supervisor: @../agent/supervisor.sdd
   Handoff: @../agent/handoff.sdd
   LoopProtection: @../tasks/LOOP-PROTECTION.sdd
@@ -111,3 +141,6 @@ State: +
   (Phase 160 — created as the parallel-executable unit contract for
    /sdd-swarm; a sized, single-step, single-file instance of the
    SUBTASK discipline with a hard token/file/line budget per DEC-2026-1011-001 D2)
+  (Phase 161 — extended per DEC-2026-1011-002 D2/D3: channel R|F
+   derivation, self-delegation, agent lineage (parent/children) and
+   runtime folder fields, [MU-7]-[MU-9])

@@ -1,0 +1,71 @@
+# Workflow: DISPATCH-CHANNELS
+
+Spec: DispatchChannels
+Purpose:
+  Define the dual dispatch channels for SW1 micro-units: Channel R
+  (Related/Ordered) and Channel F (Free). A deterministic routing rule
+  assigns each unit to exactly one channel at dispatch time. Channel F
+  is scoped to the current stage ONLY; no cross-stage free dispatch is
+  permitted ([SW1-1]). Every dispatch appends an entry to
+  channel_routing[] in the swarm run state.
+
+Owns: workflow/dispatch-channels.sdd
+
+Source: DEC-2026-1011-002 (D2), extends chains/swarm.sdd SWARMCycle DISPATCH
+
+DispatchChannels:
+
+  channel: R | F
+    R — Related/Ordered: units with depends_on run sequentially AFTER
+        their dependency reaches DONE.
+    F — Free: units with parallel_ready == true AND shared_state == none
+        dispatch concurrently; work-stealing across free slots within
+        the current stage.
+
+  routing_rule:
+    expression: channel = F iff (parallel_ready == true AND shared_state == none), else R
+    deterministic: yes
+    manual_assignment: SPEC VIOLATION ([DC1])
+
+  scope:
+    channel_F: current stage ONLY
+    cross_stage_dispatch: FLOW VIOLATION ([SW1-1], [DC3])
+    channel_R: current stage ONLY; stage order is immutable ([SW1-1])
+
+  state:
+    channel_routing[]:
+      fields: unit_id, channel, timestamp, reason
+      storage: .specdd/swarm/{run_id}/state.sdd (runtime-only, [R103])
+      semantics: append-only; one entry per dispatch ([DC4])
+
+  constraints:
+    shared_mutable_state: forces Channel R with write-locking ([MU-3], [DC2])
+    parallel_ready_false: forces Channel R regardless of shared_state
+    stage_boundary: no channel may dispatch a unit of another stage
+
+Rules:
+
+  [DC1] Channel derivation is deterministic per the routing rule —
+        manual channel assignment is a SPEC VIOLATION.
+  [DC2] Channel F requires parallel_ready=true AND shared_state=none;
+        any shared mutable state forces Channel R with write-locking
+        ([MU-3]).
+  [DC3] Channel F is scoped to the current stage — cross-stage free
+        dispatch is a FLOW VIOLATION ([SW1-1]).
+  [DC4] Every dispatch appends channel_routing[] (unit_id, channel,
+        timestamp, reason) to the run state; the log is append-only.
+
+Templates:
+  Dispatch records live in .specdd/swarm/{run_id}/state.sdd at
+  runtime (never committed, [R103]); creation uses this schema directly.
+
+Navigation:
+  SwarmChain: @../chains/swarm.sdd
+  MicroUnit: @micro-unit.sdd
+  MicroUnitSchema: @../schemas/micro-unit.sdd
+  Supervisor: @../agent/supervisor.sdd
+  Coordination: @../agent/coordination.sdd
+
+State: +
+  (Phase 161 — created per DEC-2026-1011-002 D2; defines the R/F dual
+   dispatch channels for SW1 micro-units on the SW1 swarm chain)

@@ -442,7 +442,8 @@ Navigation:
    WorkflowExecutionLoop: @workflow/execution-loop.sdd
    WorkflowLearningGate: @workflow/learning-gate.sdd
    WorkflowHumanDocsGate: @workflow/human-docs-gate.sdd
-   WorkflowPolicies: @workflow/policies.sdd
+    WorkflowPolicies: @workflow/policies.sdd
+    WorkflowDispatchChannels: @workflow/dispatch-channels.sdd
   ProjectWorkflow: @projects/{project_name}/workflow/INDEX.sdd
   ProjectWorkflowLifecycle: @projects/{project_name}/workflow/lifecycle.sdd
   ProjectWorkflowActive: @projects/{project_name}/workflow/active.sdd
@@ -496,8 +497,9 @@ Navigation:
    AgentConflicts: @agent/conflicts.sdd
    AgentHandoff: @agent/handoff.sdd
    AgentEccBridge: @agent/ecc-bridge.sdd
-   AgentSupervisor: @agent/supervisor.sdd
-   AgentSecurityRules: @agent/security-rules.sdd
+    AgentSupervisor: @agent/supervisor.sdd
+    AgentSecurityRules: @agent/security-rules.sdd
+    AgentSubagentLifecycle: @agent/subagent-lifecycle.sdd
   RuntimeWorkspace: @runtime/INDEX.sdd
   Discovery: @discovery/INDEX.sdd
   DiscoveryScanners: @discovery/scanners.sdd

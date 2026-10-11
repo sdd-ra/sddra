@@ -29,6 +29,12 @@ const tests = [
   { name: "integration-routing", file: "__tests__/integration-routing.test.ts" },
   { name: "delivery-runner", file: "__tests__/delivery-runner.test.ts" },
   { name: "commands-evolve", file: "__tests__/commands-evolve.test.ts" },
+  { name: "pyramid-orchestration", file: "__tests__/pyramid-orchestration.test.ts" },
+  { name: "ownership-guard", file: "__tests__/ownership-guard.test.ts" },
+  { name: "scope-guard", file: "__tests__/scope-guard.test.ts" },
+  { name: "prompt-guard", file: "__tests__/prompt-guard.test.ts" },
+  { name: "sync-engine", file: "__tests__/sync-engine.test.ts" },
+  { name: "trace-engine", file: "__tests__/trace-engine.test.ts" },
 ];
 
 let totalPass = 0;

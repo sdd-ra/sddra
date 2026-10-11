@@ -30,8 +30,9 @@ ReadOrder:
    19 @impl-knowledge-sharing.sdd (knowledge sharing workflow)
    20 @impl-intelligent-runtime.sdd (intelligent runtime workflow)
    21 @impl-backup-integrity.sdd (backup integrity workflow)
-   22 @impl-skill-auto-integration.sdd (skill auto-integration workflow)
-   23 @impl-example-prompt-to-code.sdd (example prompt-to-code workflow)
+    22 @impl-skill-auto-integration.sdd (skill auto-integration workflow)
+    23 @impl-example-prompt-to-code.sdd (example prompt-to-code workflow)
+    24 @dispatch-channels.sdd (dual dispatch channels R/F — Phase 161)
 
 Navigation:
   Engine:
@@ -60,6 +61,7 @@ Navigation:
     BackupIntegrity: @impl-backup-integrity.sdd
     SkillAutoIntegration: @impl-skill-auto-integration.sdd
     ExamplePromptToCode: @impl-example-prompt-to-code.sdd
+    DispatchChannels: @dispatch-channels.sdd
    External:
      Chains: @../chains/
      Tasks: @../tasks/

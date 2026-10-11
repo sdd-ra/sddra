@@ -42,6 +42,23 @@ Schema:
     parallel_ready: true | false
     shared_state: <none | [locked resources]>
 
+  channel: R | F
+      Dispatch channel (bax ../workflow/dispatch-channels.sdd).
+      Derived: F iff parallel_ready && shared_state == none,
+      else R. Never set manually ([DC1]).
+
+  parent_agent: <agent id | none>
+      Spawning agent (L1) that owns this unit; none for
+      supervisor-decomposed units.
+
+  child_agents: [<agent ids>]
+      L2 sub-agents spawned by self-delegation ([SAL2]);
+      depth cap 2 ([SAL1]).
+
+  folder: <runtime path | none>
+      .specdd/swarm/{run_id}/agents/{agent_id}/ — context
+      pack + outcome + evidence ([SAL5]).
+
   impact:
     blast_radius: LOW | MEDIUM | HIGH | CRITICAL
     affected: [<layers>]
@@ -79,6 +96,12 @@ Rules:
         FOCUS iteration increments focus_iterations.
   [MS8] impact.blast_radius MUST be set before TODO leaves (bax
         ../schemas/subtask.sdd [SB8]); CRITICAL blocks auto-merge.
+  [MS9] channel MUST be derived per dispatch-channels.sdd [DC1] —
+        manual assignment is a SPEC VIOLATION.
+  [MS10] parent_agent/child_agents MUST form a tree of depth
+        <= 2 ([SAL1]); children are recorded at spawn time.
+  [MS11] folder MUST be under .specdd/swarm/{run_id}/agents/
+        and is deleted per [SAL6] after DONE + VERIFIED.
 
 Templates:
   Runtime instances live in .specdd/swarm/{run_id}/micro_units/
@@ -88,7 +111,11 @@ Navigation:
   MicroUnitEntity: @../workflow/micro-unit.sdd
   SubtaskSchema: @subtask.sdd
   SwarmChain: @../chains/swarm.sdd
+  DispatchChannels: @../workflow/dispatch-channels.sdd
+  SubagentLifecycle: @../agent/subagent-lifecycle.sdd
 
 State: +
   (Phase 160 — schema for the D2-sized parallel unit; extends
    subtask.sdd with budget, parallelism, defect, and agent fields)
+  (Phase 161 — added channel, parent_agent, child_agents, folder
+   fields + [MS9]-[MS11] per DEC-2026-1011-002)

@@ -115,7 +115,7 @@ export class SyncEngine {
   }
 
   private requiresApproval(drift: DriftRecord): boolean {
-    if (drift.severity === "HIGH" || drift.severity === "MEDIUM" || drift.severity === "LOW") return true;
+    if (drift.severity === "HIGH" || drift.severity === "MEDIUM") return true;
     if (drift.classification === "BOTH_OUTDATED") return true;
     if (drift.confidence === "LOW") return true;
     return false;

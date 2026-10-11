@@ -91,6 +91,9 @@ Cargo.lock
 !.kilo/kilo.jsonc
 !.kilo/.gitignore
 
+# Swarm runtime state — never committed [R103]
+.specdd/
+
 # Docker bind-mount root [R92]
 var/
 

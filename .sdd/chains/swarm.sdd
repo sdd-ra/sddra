@@ -6,8 +6,10 @@ Parent: D0
 Purpose:
   The parallel micro-unit delivery chain with a defect-focus loop.
   Macro-sequential, micro-parallel. Each stage runs a SWARM cycle
-  (DECOMPOSE -> DISPATCH -> MERGE -> VERIFY -> DEFECT-CHECK -> FOCUS LOOP
-  -> Stage DONE). DL1 is untouched and immutable.
+  (RECONCILE -> DECOMPOSE -> DISPATCH -> MERGE -> VERIFY -> DEFECT-CHECK
+  -> FOCUS LOOP -> Stage DONE) inside a pyramid of recursive sub-agents
+  with dual dispatch channels (R ordered / F free). DL1 is untouched and
+  immutable.
 
 Owns: chains/swarm.sdd
 
@@ -58,26 +60,76 @@ ImmutabilityRules:
   [SW1-7] DL1 is untouched by SW1. SW1 is a separate chain with its own
           StepState; no changes to chains/delivery.sdd.
   [SW1-8] FLOW VERSIONING: persisted runs whose state carries no
-          flow_version are v1 runs and are DEPRECATED — /sdd-swarm MUST
-          re-initialize the run, never resume a v1 run.
+           flow_version are v1 runs and are DEPRECATED — /sdd-swarm MUST
+           re-initialize the run, never resume a v1 run.
+  [SW1-9] PYRAMID DEPTH CAP: spawn depth is capped at 2 levels below
+           the supervisor (L0 supervisor -> L1 stage-agent -> L2
+           sub-agent). An L2 agent spawns nothing (3+ supervisor levels
+           are an anti-pattern); over-budget work at L2 returns PARTIAL
+           with a subdivision note.
+  [SW1-10] Sub-agents follow the lifecycle in
+           ../agent/subagent-lifecycle.sdd: self-delegated spawn,
+           single-writer scope, typed outcome written to STATE, runtime
+           folder, state-driven triggers.
+  [SW1-11] RECONCILE runs before DISPATCH on every /sdd-swarm
+           invocation. New dispatch is BLOCKED until the
+           sub-agent registry is clean or the human explicitly waives.
+  [SW1-12] Dispatch channels are within-stage only: Channel F is free
+           parallelism inside the CURRENT stage; Channel R is
+           dependency-ordered inside the CURRENT stage. No channel
+           dispatches across a stage boundary ([SW1-1]).
+  [SW1-13] An agent folder is deleted only when its unit is DONE +
+           VERIFIED with no open attributed defect; reconciliation
+           prefers re-verify over destructive cleanup.
+  [SW1-14] All final test execution runs inside Docker ([R102], [W19])
+           — never on the host. This includes stage, full-system, and
+           E2E runs recorded as done_proof.
 
 SWARMCycle (per stage):
-  1. DECOMPOSE — stage scope -> micro-units (MU-XXX). Build dependency
-     DAG (no cycles); mark independent units PARALLEL_READY.
-  2. DISPATCH — supervisor dispatches PARALLEL_READY units to parallel
-     subagents (Task tool). Each agent reassembles context via the
-     handoff protocol — context is NOT copied (@agent/handoff.sdd).
-  3. MERGE — fan-in; conflicts detected and resolved ([P4]); failed
-     units isolated ([P5]).
-  4. VERIFY — stage test cases run inside Docker ([R102], [I23-I28]);
-     result recorded per unit.
-  5. DEFECT-CHECK — supervisor scans results: test failure, merge
-     conflict, quality finding -> defect catalog (DEF-XXX).
-  6. FOCUS LOOP — each defect attributed to exactly one MU-XXX; narrow
-     context re-dispatch + re-verify. Bounds: arm cap 10, error spiral
-     3, LOOP_SCORE >= 60 -> strategy change, >= 90 -> escalate
-     ([LP11-LP13], [SUP-03]).
-  7. Stage DONE -> next macro-stage.
+   0. RECONCILE — sub-agent chain check before any dispatch: read
+      sub_agent_registry[], verify parent_id ownership per entry,
+      re-verify or defect-catalog orphaned RUNNING entries, delete stale
+      folders. Dispatch is BLOCKED until the registry is clean or the
+      human waives (bax ../agent/subagent-lifecycle.sdd Reconciliation).
+   1. DECOMPOSE — stage scope -> micro-units (MU-XXX). Build dependency
+      DAG (no cycles); mark independent units PARALLEL_READY.
+   2. DISPATCH — each unit routes to exactly one dispatch channel
+      (bax ../workflow/dispatch-channels.sdd): channel = F iff
+      parallel_ready && shared_state == none, else R. Channel F units
+      dispatch concurrently within the CURRENT stage only (work-stealing
+      across free slots); Channel R units wait for their depends_on set
+      to reach DONE. The supervisor dispatches; each L1 agent subdivides
+      and spawns L2 sub-agents itself when a unit is over-budget
+      (bax ../agent/subagent-lifecycle.sdd). Each agent reassembles
+      context via the handoff protocol — context is NOT copied
+      (@agent/handoff.sdd).
+   3. MERGE — fan-in; conflicts detected and resolved ([P4]); failed
+      units isolated ([P5]).
+   4. VERIFY — stage test cases run inside Docker ([R102], [I23-I28]);
+      result recorded per unit.
+   5. DEFECT-CHECK — supervisor scans results: test failure, merge
+      conflict, quality finding -> defect catalog (DEF-XXX).
+   6. FOCUS LOOP — each defect attributed to exactly one MU-XXX; narrow
+      context re-dispatch + re-verify. Bounds: arm cap 10, error spiral
+      3, LOOP_SCORE >= 60 -> strategy change, >= 90 -> escalate
+      ([LP11-LP13], [SUP-03]).
+   7. Stage DONE -> close ladder check (CloseLadder below) -> next
+      macro-stage. A dependent unit of the next stage becomes
+      dispatchable only through this DONE transition — state-driven,
+      never message-driven.
+
+CloseLadder (DEC -> TASK -> SUBTASK -> AGENT fan-in):
+  level_1_subtask: a MICRO-UNIT (SUBTASK) closes on a typed SUCCESS
+    outcome plus done_proof ([MU-4]) — never on a natural-language claim.
+  level_2_task: a TASK closes when ALL of its micro-units are DONE, the
+    business-case analysis passes (BDD scenarios vs acceptance criteria),
+    and the stage tests pass inside Docker ([R102], [W19]).
+  level_3_dec: a DEC closes when all its tasks are DONE, the full-system
+    tests pass (E2E / E2E-TS / FULL), and business validation succeeds —
+    then the decision is closed and the next stage or decision becomes
+    dispatchable.
+  rule: no level skips a lower level — a MU that is not DONE keeps its
+    TASK open; a TASK that is not closed keeps its DEC open.
 
 FocusLoop:
   attribution: defect -> MU-XXX (one defect, one unit)
@@ -94,7 +146,16 @@ StepState (persisted per swarm run):
   storage: .specdd/swarm/{run_id}/state.sdd (runtime-only, [R103])
   fields: run_id, flow_version (2), current_stage, stage_states[],
     micro_units[], defects[], focus_iterations[], token_totals,
-    loop_guards, last_checkpoint
+    loop_guards, last_checkpoint,
+    sub_agent_registry[], channel_routing[], folders[]
+  sub_agent_registry[]: { agent_id, parent_id, mu_id, level,
+    spawned_at } — one entry per spawned agent; parent_id ownership is
+    verified at RECONCILE ([SW1-11]).
+  channel_routing[]: { mu_id, channel, reason, agent_id,
+    dispatched_at } — one entry per dispatch ([DC4]).
+  folders[]: { agent_id, path, status } — runtime agent folders under
+    .specdd/swarm/{run_id}/agents/{agent_id}/; deleted only after
+    DONE + VERIFIED ([SW1-13]).
   token_totals: <per-unit and per-stage aggregates ([I10] extension)>
 
 Retry: 3
@@ -104,6 +165,8 @@ Navigation:
   Stages: @../workflow/stages.sdd
   MicroUnit: @../workflow/micro-unit.sdd
   MicroUnitSchema: @../schemas/micro-unit.sdd
+  SubAgentLifecycle: @../agent/subagent-lifecycle.sdd
+  DispatchChannels: @../workflow/dispatch-channels.sdd
   Supervisor: @../agent/supervisor.sdd
   Handoff: @../agent/handoff.sdd
   LoopProtection: @../tasks/LOOP-PROTECTION.sdd
@@ -116,3 +179,7 @@ State: +
   (Phase 160 — created per DEC-2026-1011-001 D1; separate from the
    immutable DL1 delivery chain; 16-stage macro pipeline with
    per-stage SWARM cycle and defect-focus loop)
+  (Phase 161 — extended per DEC-2026-1011-002: RECONCILE step 0,
+   dual dispatch channels (R ordered / F free, within-stage only),
+   recursive sub-agent pyramid with depth cap 2, DEC->TASK->SUBTASK
+   close ladder, and [SW1-9]-[SW1-14])

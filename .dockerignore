@@ -1,6 +1,7 @@
 # SDDRA .dockerignore — keeps the sandbox image minimal and secret-free
 .git
 .gitignore
+!.gitignore
 var/
 tmp/
 .kilo/worktrees

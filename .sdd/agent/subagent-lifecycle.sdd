@@ -1,0 +1,96 @@
+# Agent Subagent Lifecycle
+
+Spec: SubagentLifecycle
+Purpose:
+  Define the sub-agent pyramid lifecycle for the SW1 swarm chain:
+  spawn depth cap, self-delegation, single-writer code ownership,
+  typed-outcome-to-STATE notification, runtime folders, cleanup
+  precondition, state-driven dispatch trigger, and the RECONCILE
+  gate that runs before every DISPATCH.
+
+Owns: agent/subagent-lifecycle.sdd
+
+Source: DEC-2026-1011-002 (D3), extends agent/supervisor.sdd + agent/coordination.sdd
+
+Levels:
+  L0: supervisor — orchestrates the task graph, never executes.
+  L1: stage-agent — dispatched per macro-stage; may spawn L2 children.
+  L2: sub-agent — executes one micro-unit; MUST NOT spawn further agents.
+  SPAWN DEPTH CAP = 2 levels below L0 (L0 -> L1 -> L2). L2 is terminal.
+
+Spawn:
+  Self-delegation: an L1 agent that receives an over-budget or
+  decomposable unit subdivides it and spawns L2 sub-agents ITSELF.
+  Every sub-unit keeps the full MICRO-UNIT budget (<=1 file, <=150
+  line diff, <=8k token pack, 1 subagent step). Subdivision re-runs
+  DECOMPOSE with finer granularity until the budget holds or the unit
+  is atomic.
+
+CodeOwnership:
+  Single-writer per scope: a sub-agent writes code inside its
+  path-locked scope. The parent MUST NEVER edit a child's locked
+  scope. Scope lock is per MU-XXX; concurrent parallel units never
+  share mutable state.
+
+Notification:
+  Typed outcome written to STATE only. Outcome vocabulary:
+    SUCCESS | PARTIAL | BLOCKED | NEEDS_CLARIFICATION |
+    POLICY_VIOLATION | TOOL_ERROR | UNSAFE
+  Agent-to-agent messaging is FORBIDDEN; a consumer reads STATE.
+
+Folder:
+  Path: .specdd/swarm/{run_id}/agents/{agent_id}/
+  Holds: context pack + outcome record + evidence artifacts.
+  Runtime-only; never committed ([R103]).
+
+Cleanup:
+  Folder deleted only when the unit is DONE + VERIFIED with zero
+  open attributed defects. Prefer re-verify over destructive
+  cleanup; a live RUNNING entry is never deleted on suspicion.
+
+Trigger:
+  Dependent units (depends_on) become dispatchable when their
+  dependency reaches DONE. This is a STATE transition, never a
+  message. Channel routing (R sequential / F concurrent) is derived
+  per dispatch-channels.sdd.
+
+Reconciliation:
+  Every /sdd-swarm invocation runs RECONCILE before DISPATCH:
+    1. read the sub-agent registry;
+    2. verify parent_id ownership per entry;
+    3. re-verify or defect-catalog orphaned RUNNING entries;
+    4. delete stale folders (DONE + VERIFIED + no open defect).
+  New dispatch is BLOCKED until the registry is clean or explicitly
+  waived. Re-verify is preferred over destructive cleanup.
+
+Rules:
+  [SAL1] Depth cap 2 — L2 sub-agents MUST NOT spawn further agents.
+  [SAL2] Spawning is self-delegation — an agent subdivides its OWN
+        over-budget unit and spawns its children itself.
+  [SAL3] Single-writer per scope — a parent MUST NOT edit a child's
+        locked scope.
+  [SAL4] Notification is typed-outcome-to-STATE only — agent-to-agent
+        messaging is forbidden.
+  [SAL5] Every agent has a runtime folder under
+        .specdd/swarm/{run_id}/agents/{agent_id}/ with context pack
+        + outcome + evidence.
+  [SAL6] Folder cleanup requires the unit DONE + VERIFIED + zero open
+        attributed defects.
+  [SAL7] Dependent units become dispatchable via STATE transition
+        (dependency DONE) — never via messages.
+  [SAL8] RECONCILE runs before every DISPATCH: registry ownership
+        check, orphan re-verify, stale-folder cleanup; dispatch
+        blocked until clean or explicitly waived.
+
+Navigation:
+  Supervisor: @supervisor.sdd
+  Coordination: @coordination.sdd
+  Handoff: @handoff.sdd
+  SwarmChain: @../chains/swarm.sdd
+  MicroUnit: @../workflow/micro-unit.sdd
+  State: @../workflow/state.sdd
+
+State: +
+  (Phase 161 — created per DEC-2026-1011-002 (D3) as T2 of the
+   pyramid agent orchestration plan; defines the L0/L1/L2 lifecycle
+   consumed by the SW1 RECONCILE gate and the close ladder.)

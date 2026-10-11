@@ -242,7 +242,55 @@ Files To Create: 5+
 
 ---
 
-## Current Sprint
+## Phase 161 — Pyramid Agent Orchestration
+
+Status: Implemented — pending human commit and DEC approval
+
+Goals:
+  Extend SW1 chain with dual dispatch channels, sub-agent lifecycle (spawn/notify/cleanup), RECONCILE gate, CloseLadder (MU→TASK→DEC), .specdd/ gitignore, tests, and governance records.
+
+Deliverables:
+  - `.sdd/workflow/dispatch-channels.sdd` — dual channels (R/F), within-stage scope, routing rules [DC1]-[DC4]
+  - `.sdd/agent/subagent-lifecycle.sdd` — levels L0/L1/L2, depth cap 2, self-delegation, typed outcomes, runtime folders, cleanup, reconciliation
+  - SW1 extensions in `.sdd/chains/swarm.sdd` — RECONCILE step, CloseLadder (MU/TASK/DEC), rules [SW1-9]-[SW1-14], StepState updates
+  - Micro-unit updates — `.sdd/workflow/micro-unit.sdd` (channel, parent/children/folder, [MU-7]-[MU-9]); `.sdd/schemas/micro-unit.sdd` (fields + [MS9]-[MS11])
+  - Supervisor updates — `.sdd/agent/supervisor.sdd` ([SUP-06],[SUP-07])
+  - Command updates — `.sdd/commands/sdd-swarm.sdd` (RECONCILE, initial load, rule refs)
+  - INDEX updates — `.sdd/workflow/INDEX.sdd`, `.sdd/agent/INDEX.sdd`, `.sdd/INDEX.sdd`
+  - `.gitignore` — add runtime/local-only roots (.specdd/, .sdd/codding/, .sdd/projects/sddra/history/, docs/assets/)
+  - `sdd-adapter/__tests__/pyramid-orchestration.test.ts` + register in `sdd-adapter/__tests__/run.ts`
+  - DEC-2026-1011-002 (`.sdd/projects/sddra/decisions/2026-1011-002-pyramid-agent-orchestration.md`)
+
+Tasks:
+  [x] T1 — `.sdd/workflow/dispatch-channels.sdd` (new spec, [DC1]-[DC4])
+  [x] T2 — `.sdd/agent/subagent-lifecycle.sdd` (new spec, [SAL1]-[SAL8])
+  [x] T3 — `.sdd/chains/swarm.sdd` (RECONCILE, CloseLadder, [SW1-9]-[SW1-14], StepState)
+  [x] T4 — `.sdd/workflow/micro-unit.sdd` (channel, lineage + folder, [MU-7]-[MU-9])
+  [x] T5 — `.sdd/schemas/micro-unit.sdd` (channel, parent_agent, child_agents, folder, [MS9]-[MS11])
+  [x] T6 — `.sdd/agent/supervisor.sdd` (ChannelRouting, ReconcileGate, CleanupVerification, [SUP-06]-[SUP-08])
+  [x] T7 — `.sdd/commands/sdd-swarm.sdd` (RECONCILE step, initial load, rule refs, [SWARM-08])
+  [x] T8 — INDEX updates (workflow, agent, root)
+  [x] T9 — `.gitignore` — `.specdd/` runtime state (see Blockers for the remaining roots)
+  [x] T10 — `pyramid-orchestration.test.ts` + Docker validation (32/32 test files pass)
+  [x] T11 — DEC-2026-1011-002 + this WORK-PLAN entry
+
+Validation:
+  - Docker: `docker compose build sdd-sandbox` + compile-first test flow
+    (ts-node is broken under TS7) → 32/32 test files pass, 0 failures;
+    `pyramid-orchestration` 71 assertions pass.
+  - `git check-ignore -v .specdd/` → `.gitignore:95:.specdd/`
+  - `/sdd-health`: command sync 0 drift, retired-name 0 hits; one
+    pre-existing CRITICAL mojibake in the untracked `.sdd/codding/`
+    build-artifact copy (predates this phase).
+
+Blockers:
+  - Human commit required: host `git add`/`commit` are permission-denied
+    for agents.
+  - DEC-2026-1011-002 gate is `human_required` — Approval still PENDING.
+  - `.sdd/codding/`, `sdd/projects/sddra/history/`, `docs/assets/` are
+    still untracked; only `.specdd/` was ignored (plan scope T9).
+
+## Progress Summary
 
 Focus: Phase 130-135 - Living Engineering System
 
@@ -294,7 +342,9 @@ Blockers:
 | 137. AI Bootstrap Protocol | Completed | 100% |
 | 138. AI Gatekeeper & Tool Governance | Completed | 100% |
 | 139. SDD Lifecycle & Garbage Collection | Completed | 100% |
+| 160. SW1 Swarm Chain (/sdd-swarm) | Completed | 100% |
+| 161. Pyramid Agent Orchestration (SW1 extension) | In Progress | spec drafting |
 
-Overall: 100% Complete (Phases 1-8, 120-139 complete, ECC integration complete)
+Overall: 100% Complete (Phases 1-8, 120-139, 160 complete, 161 in progress; ECC integration complete)
 
 State: +

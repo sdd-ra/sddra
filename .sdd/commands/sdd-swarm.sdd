@@ -29,11 +29,13 @@ Options:
 
 Mode: SUPERVISED
 
-InitialLoad (Phase 151 — EXPAND protocol):
+InitialLoad (Phase 151 — EXPAND protocol; Phase 161 additions):
   - .sdd/INDEX.sdd (routing only)
   - .sdd/chains/swarm.sdd (SW1 chain)
   - .sdd/workflow/step-keys.sdd (SW1 dictionary — SW1 group)
   - .sdd/workflow/micro-unit.sdd (MICRO-UNIT entity + budget rules)
+  - .sdd/workflow/dispatch-channels.sdd (dual dispatch channels R/F)
+  - .sdd/agent/subagent-lifecycle.sdd (sub-agent pyramid lifecycle)
   - .specdd/swarm/{run_id}/state.sdd (saved swarm state, [SF1])
   Stage specs and gate details load on EXPAND only.
 
@@ -46,17 +48,30 @@ StatefulExecution ([CMD6]):
   6. STOP
 
 SwarmCycle (per stage — execute ONE cycle step per invocation):
-  1. DECOMPOSE — stage scope -> micro-units (MU-XXX); build DAG;
-     mark PARALLEL_READY units
-  2. DISPATCH — supervisor dispatches PARALLEL_READY units to parallel
-     subagents; context reassembled via handoff (NOT copied)
-  3. MERGE — fan-in; conflicts detected and resolved; failed units isolated
-  4. VERIFY — stage tests run inside Docker ([R102]); result per unit
-  5. DEFECT-CHECK — scan results -> defect catalog (DEF-XXX -> MU-XXX)
-  6. FOCUS LOOP — narrow re-dispatch + re-verify per defect;
-     bounds: arm cap 10, error spiral 3, LOOP_SCORE >= 60 strategy
-     change, >= 90 escalate
-  7. Stage DONE -> next macro-stage
+  1. RECONCILE — sub-agent chain check before any dispatch
+     (bax ../agent/subagent-lifecycle.sdd Reconciliation):
+     read sub_agent_registry[], verify parent_id ownership per
+     entry, re-verify or defect-catalog orphaned RUNNING
+     entries, delete stale folders. New dispatch is BLOCKED
+     until the registry is clean or explicitly waived ([SW1-11]).
+  2. DECOMPOSE — stage scope -> micro-units (MU-XXX); build DAG;
+     mark PARALLEL_READY units; derive each unit's channel
+     (bax ../workflow/dispatch-channels.sdd [DC1]).
+  3. DISPATCH — supervisor dispatches units per channel:
+     Channel F units concurrently within the CURRENT stage
+     (work-stealing across free slots); Channel R units after
+     their depends_on set reaches DONE. Each L1 agent subdivides
+     and spawns L2 sub-agents itself when a unit is over-budget
+     ([SW1-9], [SW1-10]); context reassembled via handoff
+     (NOT copied).
+  4. MERGE — fan-in; conflicts detected and resolved; failed units isolated
+  5. VERIFY — stage tests run inside Docker ([R102], [SW1-14]); result per unit
+  6. DEFECT-CHECK — scan results -> defect catalog (DEF-XXX -> MU-XXX)
+  7. FOCUS LOOP — narrow re-dispatch + re-verify per defect;
+      bounds: arm cap 10, error spiral 3, LOOP_SCORE >= 60 strategy
+      change, >= 90 escalate
+  8. Stage DONE — close-ladder check (MU -> TASK -> DEC, bax
+      ../chains/swarm.sdd CloseLadder) -> next macro-stage
 
 FocusLoopBounds:
   arm_cap: 10            # max focus iterations per stage
@@ -92,6 +107,11 @@ Rules:
   [SWARM-05] All test execution runs inside Docker ([R102]).
   [SWARM-06] State is runtime-only, never committed ([R103]).
   [SWARM-07] UTF-8 only ([R99]); no AI signatures in commits ([R103]).
+  [SWARM-08] Pyramid rules [SW1-9]-[SW1-14] apply to every
+        dispatch: depth cap 2, lifecycle per
+        subagent-lifecycle.sdd, RECONCILE before DISPATCH,
+        within-stage channels only, folder cleanup after
+        DONE + VERIFIED, all final tests in Docker.
 
 Navigation:
   SwarmChain: @../chains/swarm.sdd
@@ -99,6 +119,8 @@ Navigation:
   Stages: @../workflow/stages.sdd
   MicroUnit: @../workflow/micro-unit.sdd
   MicroUnitSchema: @../schemas/micro-unit.sdd
+  DispatchChannels: @../workflow/dispatch-channels.sdd
+  SubAgentLifecycle: @../agent/subagent-lifecycle.sdd
   Supervisor: @../agent/supervisor.sdd
   Handoff: @../agent/handoff.sdd
   LoopProtection: @../tasks/LOOP-PROTECTION.sdd
@@ -112,3 +134,6 @@ State: +
    StatefulExecution over the 16-stage macro pipeline with per-stage
    SWARM cycle and defect-focus loop; --board is the combined
    parallel progress view closing G5.)
+  (Phase 161 — RECONCILE is cycle step 1; InitialLoad adds
+   dispatch-channels.sdd + subagent-lifecycle.sdd; [SWARM-08]
+   binds pyramid rules [SW1-9]-[SW1-14] per DEC-2026-1011-002)
