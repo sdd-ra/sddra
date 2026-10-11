@@ -155,6 +155,51 @@ Dictionary:
         Purpose: Final verification of the complete workflow.
         Stage: VR
 
+  SW1 keys — the 16-stage macro pipeline of the /sdd-swarm chain
+  (Phase 160, DEC-2026-1011-001). Macro-sequential, micro-parallel.
+  Not part of DL1; DL1 remains immutable.
+
+  UNIT   Unit
+        Purpose: Implement small business-logic units as micro-units
+                 (bax ../workflow/micro-unit.sdd — <=1 file, <=150
+                 line diff, <=8k token pack, 1 subagent step).
+        Stage: UNIT (SW1 stage)
+  UNIT-TS Unit Tests
+        Purpose: Test and validate each implemented unit.
+        Stage: UNIT_TS (SW1 stage)
+  E2E    End-to-End
+        Purpose: Implement end-to-end scenarios across integrated units.
+        Stage: E2E (SW1 stage)
+  E2E-TS End-to-End Tests
+        Purpose: Run and validate the end-to-end scenarios.
+        Stage: E2E_TS (SW1 stage)
+  FULL   Full System Integration
+        Purpose: Integrate everything into a full-system build.
+        Stage: FULL (SW1 stage)
+  RF-G   Refactor — Global
+        Purpose: GLOBAL refactor instance, runs ONCE after FULL over
+                 the whole system (not an in-branch RF).
+        Stage: RF-G = RF { scope: full-system }
+  FB     FindBug
+        Purpose: Defect discovery pass; attribute each defect to one
+                 MU-XXX for the FOCUS loop.
+        Stage: FB (SW1 stage)
+  REL    Release
+        Purpose: Release gate — final approval and deployment
+                 verification (bax ../gates/release.sdd). Terminal
+                 stage of SW1; requires human approval.
+        Stage: REL (SW1 stage)
+
+Mapping (key -> existing SDD stage):
+  UNIT -> UNIT (new SW1 stage)
+  UNIT-TS -> UNIT_TS (new SW1 stage)
+  E2E -> E2E (new SW1 stage)
+  E2E-TS -> E2E_TS (new SW1 stage)
+  FULL -> FULL (new SW1 stage)
+  RF-G -> RF { scope: full-system } (RF global instance)
+  FB -> FB (new SW1 stage)
+  REL -> REL (new SW1 stage)
+
 Mapping (key -> existing SDD stage):
   BC -> BC (new stage, stages.sdd business group)
   BR -> BR (new stage)
@@ -195,6 +240,14 @@ Mapping (key -> existing SDD stage):
   FTS -> TS { scope: cross-layer }
   AN -> AN (existing)
   VR -> VR (existing)
+  UNIT -> UNIT (new SW1 stage)
+  UNIT-TS -> UNIT_TS (new SW1 stage)
+  E2E -> E2E (new SW1 stage)
+  E2E-TS -> E2E_TS (new SW1 stage)
+  FULL -> FULL (new SW1 stage)
+  RF-G -> RF { scope: full-system } (RF global instance)
+  FB -> FB (new SW1 stage)
+  REL -> REL (new SW1 stage)
 
 CRScopedSemantics:
   definition: CR is ONE stage (peer review before merge). CR-XX keys are
@@ -207,13 +260,16 @@ CRScopedSemantics:
   rule: CR-XX includes the dependency diff check — any undeclared new
     dependency found in the diff fails the review (bax
     ../gates/dependency-gate.sdd).
-
 RFScopedSemantics:
   definition: RF is ONE stage (post-review refactor) executed with a
-    `scope:` parameter naming the branch artifact (BE, DB, API, FE, MD, DC).
+    `scope:` parameter naming the branch artifact (BE, DB, API, FE,
+    MD, DC). RF-G is the global instance (scope: full-system) executed
+    ONCE after FULL in the SW1 chain — same RF stage, not a new stage
+    family.
   rule: RF-XX keys are NOT new stages — same RF stage, scoped instance.
   rule: RF-XX runs only after its CR-XX has passed with change requests,
-        or is skipped if CR-XX passes clean.
+        or is skipped if CR-XX passes clean. RF-G runs only after FULL
+        and is never skipped.
   rule: XX-TS validates the branch only after RF-XX (if triggered) is
         done AND after its SC-XX has passed (v2 ordering).
 
@@ -248,6 +304,9 @@ Concepts:
            both resolve to stage instances.
   Ordering: v2 (Phase 155) — within each branch: XX -> CR-XX -> RF-XX ->
            SC-XX -> XX-TS; FTS after all branches; keys unchanged [SK1].
+  SW1 Ordering: the 16 SW1 stages are strictly sequential
+           (DB -> DB-TS -> ... -> REL); within a stage, micro-units are
+           parallel. SW1 is a separate chain from DL1 ([SW1-7]).
 
 Rules:
   [SK1] Short keys are CANONICAL — never redefined during execution.
@@ -259,6 +318,10 @@ Rules:
         references keys, never invents new ones.
   [SK6] Within-branch ordering is v2: SC-XX precedes XX-TS — a branch's
         tests never run before its security pass (Phase 155).
+  [SK7] SW1 keys are canonical within the /sdd-swarm chain only; they
+        do NOT redefine DL1 keys ([SW1-7]).
+  [SK8] RF-G is the global RF instance (scope: full-system); it is the
+        same RF stage, not a new stage family.
 
 Navigation:
   Stages: @stages.sdd
@@ -269,6 +332,9 @@ Navigation:
 
 State: +
   (Phase 155 v2: reordered per-branch dictionary to XX, CR-XX, RF-XX,
-   SC-XX, XX-TS — scoped security now precedes branch tests; added
-   SCScopedSemantics, FTSScopedSemantics, Concepts (Layer/Gate/Stage)
-   and FTS key; added [SK6]; CR-XX gained dependency diff check)
+    SC-XX, XX-TS — scoped security now precedes branch tests; added
+    SCScopedSemantics, FTSScopedSemantics, Concepts (Layer/Gate/Stage)
+    and FTS key; added [SK6]; CR-XX gained dependency diff check)
+  (Phase 160: added 8 SW1 keys — UNIT, UNIT-TS, E2E, E2E-TS, FULL,
+    RF-G, FB, REL — for the /sdd-swarm chain; RF-G mapped to
+    RF { scope: full-system }; added [SK7]/[SK8]; SW1 Ordering concept)

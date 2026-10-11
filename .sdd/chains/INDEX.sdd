@@ -22,6 +22,7 @@ Files:
   migration: @migration.sdd
   incident: @incident.sdd
   delivery: @delivery.sdd
+  swarm: @swarm.sdd
 
 Arms:
   prompt: @arms/prompt.sdd

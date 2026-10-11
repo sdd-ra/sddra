@@ -46,6 +46,16 @@ Checks:
   Projects purity (Phase 152): .sdd/projects/ holds ONLY real instances
     + the {project_name}/ template; foreign folders are WARN findings
     ([R105])
+  SW1 chain integrity (Phase 159): .sdd/chains/swarm.sdd exists and its
+    16-stage flow keys match .sdd/workflow/step-keys.sdd (SW1 group) and
+    .sdd/workflow/stages.sdd (UNIT/UNIT_TS/E2E/E2E_TS/FULL/RF-G/FB/REL);
+    missing stage or key is a WARN drift finding ([SW1-1])
+  Micro-unit sync (Phase 159): .sdd/workflow/micro-unit.sdd entity rules
+    are consistent with .sdd/schemas/micro-unit.sdd and the FocusLoop
+    bounds in .sdd/chains/swarm.sdd; mismatch is a WARN finding
+  Phantom command detection (Phase 159): scan .sdd/workflow/*.sdd for
+    /sdd-* command definitions that are NOT registered in
+    .sdd/commands/INDEX.sdd; each phantom is a WARN finding ([CMD8])
 
 Output:
   HEALTHY | DEGRADED | UNHEALTHY | FAILED
@@ -75,12 +85,21 @@ Rules:
               missing .claude/.kilo wrappers are WARN findings ([CMD8]).
   [HEALTH-09] Mojibake hits are CRITICAL findings; the report is UNHEALTHY
               until fixed ([R99]).
-  [HEALTH-10] Foreign folders under .sdd/projects/ are WARN findings
-              ([R105]); the {project_name}/ template dir is expected.
+[HEALTH-10] Foreign folders under .sdd/projects/ are WARN findings
+    ([R105]); the {project_name}/ template dir is expected.
+  [HEALTH-11] SW1 chain integrity: swarm.sdd flow keys must match
+    step-keys.sdd (SW1 group) and stages.sdd; missing stage or key is
+    a WARN finding ([SW1-1]).
+  [HEALTH-12] Micro-unit sync: micro-unit.sdd, micro-unit schema, and
+    swarm.sdd FocusLoop bounds must agree; mismatch is a WARN finding.
+  [HEALTH-13] Phantom command detection: any /sdd-* defined in
+    .sdd/workflow/*.sdd but missing from .sdd/commands/INDEX.sdd is a
+    WARN finding ([CMD8]); --fix rewrites them as REDIRECT notes.
 
 Navigation:
   INDEX: @INDEX.sdd
   ChainGraph: @../chains/graph.sdd
+  SwarmChain: @../chains/swarm.sdd
   References: @../references/INDEX.sdd
   Timeline: @../timeline/INDEX.sdd
   IntegrationRouting: @../runtime/integration-routing.sdd

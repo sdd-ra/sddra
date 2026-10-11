@@ -139,20 +139,16 @@ Track:
 
 ## Runtime Commands
 
-/sdd-run:
-  Execute chain from prompt
-  Usage: /sdd-run "prompt text"
+  [PHANTOM-REDIRECT] The commands below were never registered in
+  .sdd/commands/INDEX.sdd ([CMD8] drift). They are retained as
+  historical design notes only; invoke the real command instead.
 
-/sdd-status:
-  Show runtime status
-  Usage: /sdd-status
+  /sdd-run:      REDIRECT -> /sdd
+  /sdd-metrics:  REDIRECT -> /sdd-status
+  /sdd-optimize: REDIRECT -> /sdd-swarm
 
-/sdd-metrics:
-  Show runtime metrics
-  Usage: /sdd-metrics
-
-/sdd-optimize:
-  Optimize runtime performance
-  Usage: /sdd-optimize
+  /sdd-status:
+    Show runtime status
+    Usage: /sdd-status
 
 State: +

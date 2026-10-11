@@ -1,0 +1,94 @@
+# Schema: Micro-Unit
+
+Spec: Schema
+
+ID:
+  @micro-unit
+
+Purpose:
+  Machine-readable schema for the MICRO-UNIT entity — the smallest
+  parallel-executable unit of the SW1 swarm pipeline (bax
+  ../workflow/micro-unit.sdd). Extends schemas/subtask.sdd with the
+  hard D2 budget and the swarm lifecycle.
+
+Owns: schemas/micro-unit.sdd
+
+Schema:
+
+  mu_id: MU-<STAGE>-<NN>
+      example: MU-BE-03
+
+  stage: <SW1 stage key>
+      The owning macro-stage.
+
+  goal: <one line>
+
+  budget:
+    files: 1
+    line_diff: 150
+    token_pack: 8000
+    subagent_step: 1
+      HARD caps (D2). A unit exceeding ANY cap is recursively
+      subdivided before dispatch.
+
+  scope:
+    allowed: [<paths>]
+    allowed_actions: [code | tests | docs | config | refactor | research]
+    forbidden: [<prohibitions>]
+
+  depends_on: [MU-<id>]
+
+  parallelism:
+    parallel_ready: true | false
+    shared_state: <none | [locked resources]>
+
+  impact:
+    blast_radius: LOW | MEDIUM | HIGH | CRITICAL
+    affected: [<layers>]
+    review_route: <derived>
+
+  lifecycle:
+    TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
+    defect path: -> DEFECTED -> FOCUS -> VERIFIED -> DONE
+
+  agent:
+    assigned: <subagent id | none>
+    token_used: <int>
+
+  done_proof:
+    artifact: <file(s)>
+    validation: <test run | review id | scan id; NEVER "looks correct">
+
+  defect:
+    defect_id: DEF-<id> | none
+    focus_iterations: <int>
+      Attribution record: which defect triggered a FOCUS cycle on this
+      unit, and how many focus iterations it took.
+
+Rules:
+
+  [MS1] mu_id MUST be unique and stable across the run lifetime.
+  [MS2] goal MUST be a single objective — split otherwise.
+  [MS3] budget caps are HARD; subdivision is the only remedy.
+  [MS4] forbidden MUST be explicit — empty requires
+        "forbidden: none (scoped to allowed only)".
+  [MS5] lifecycle transitions follow the swarm state machine; no
+        direct TODO -> DONE.
+  [MS6] done_proof MUST exist before DONE (bax ../tasks/DONE-PROOF.sdd).
+  [MS7] defect.defect_id is set when the unit enters DEFECTED; each
+        FOCUS iteration increments focus_iterations.
+  [MS8] impact.blast_radius MUST be set before TODO leaves (bax
+        ../schemas/subtask.sdd [SB8]); CRITICAL blocks auto-merge.
+
+Templates:
+  Runtime instances live in .specdd/swarm/{run_id}/micro_units/
+  (never committed, [R103]).
+
+Navigation:
+  MicroUnitEntity: @../workflow/micro-unit.sdd
+  SubtaskSchema: @subtask.sdd
+  SwarmChain: @../chains/swarm.sdd
+
+State: +
+  (Phase 160 — schema for the D2-sized parallel unit; extends
+   subtask.sdd with budget, parallelism, defect, and agent fields)

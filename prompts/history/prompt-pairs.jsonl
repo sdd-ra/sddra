@@ -3,6 +3,7 @@
 {"ts":"2026-09-14T06:18:40.932Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
 {"ts":"2026-09-14T06:18:40.945Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
 {"ts":"2026-09-14T06:18:40.952Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
+{"ts":"2026-10-11T19:31:59Z","command":"/sdd-swarm","customer_prompt":"davam et","ai_prompt":"Continue SW1 chain implementation per plan 1791741894603-sdd-swarm-parallel-focus-loop.md: write /sdd-swarm command spec (Step 7), 3-way register wrappers + INDEX entry (Step 8), phantom command redirects in impl-parallel-execution.sdd and impl-intelligent-runtime.sdd (Step 9), fix broken refs in .sdd/INDEX.sdd @orchestrator/* and @workflow/intelligent-runtime.sdd (Step 10), extend /sdd-health drift checks for SW1 chain integrity, micro-unit sync, phantom command detection (Step 11), dry-run on sdd-adapter with injected defect + focus loop (Step 12), R104 prompt-pairs append + current.sdd update (Step 13), git commit with DEC/TASK refs (Step 14). [R95] [R99] [R102] [R103] [R104] [CMD6] [CMD7] [CMD8] [SW1-1..SW1-8] [MU-1..MU-6] [MS1..MS8]"}
 {"ts":"2026-09-14T06:18:40.959Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
 {"ts":"2026-09-14T06:18:40.965Z","command":"/sdd-intents","customer_prompt":"","ai_prompt":"/sdd-intents"}
 {"ts":"2026-09-14T06:18:40.972Z","command":"/sdd-unknown","customer_prompt":"","ai_prompt":"/sdd-unknown"}
@@ -374,8 +375,8 @@
 {"ts":"2026-09-16T16:11:05.408Z","command":"/sdd-marketplace","customer_prompt":"explode","ai_prompt":"/sdd-marketplace explode"}
 {"ts":"2026-09-16T16:11:19.299Z","command":"/sdd-evolve","customer_prompt":"evolve status goster","ai_prompt":"/sdd-evolve"}
 {"ts":"2026-09-16T16:11:19.301Z","command":"/sdd-evolve","customer_prompt":"report only","ai_prompt":"/sdd-evolve --report"}
-{ " t s " : " 2 0 2 6 - 0 9 - 1 6 T 1 6 : 4 8 : 3 0 Z " , " c o m m a n d " : " / s d d - r e s e a r c h " , " c u s t o m e r _ p r o m p t " : " a t   s d d - r e s e a r c h " , " a i _ p r o m p t " : " / s d d - r e s e a r c h   t o p i c :   g s t a c k   d e e p   a n a l y s i s   o r   d s h - p l u g i n   t o p i c   l o o p " }  
- {"ts":"2026-09-17T18:05:57.203Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
+{"ts": "2026-09-16T16:48:30Z", "command": "/sdd-research", "customer_prompt": "at sdd-research", "ai_prompt": "/sdd-research topic: gstack deep analysis or dsh-plugin topic loop"}
+{"ts":"2026-09-17T18:05:57.203Z","command":"/sdd-skills","customer_prompt":"","ai_prompt":"/sdd-skills"}
 {"ts":"2026-09-17T18:05:57.229Z","command":"/sdd-scan","customer_prompt":"","ai_prompt":"/sdd-scan"}
 {"ts":"2026-09-17T18:05:57.238Z","command":"/sdd-dependencies","customer_prompt":"","ai_prompt":"/sdd-dependencies"}
 {"ts":"2026-09-17T18:05:57.241Z","command":"/sdd-assumptions","customer_prompt":"","ai_prompt":"/sdd-assumptions"}
@@ -458,6 +459,7 @@
 {"ts":"2026-09-27T00:18:44.464Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
 {"ts":"2026-09-27T00:54:17.067Z","command":"/sdd","customer_prompt":"https://github.com/ruvnet/ruflo.git analzi et pros consularini sdd-ra ile analiz et. pros-larini sisteme getir","ai_prompt":"/sdd https://github.com/ruvnet/ruflo.git analyze pros/cons and integrate into SDD-RA"}
 {"ts":"2026-09-26T21:34:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
+{"ts":"2026-09-26T21:58:23Z","command":"/sdd","customer_prompt":"git statusu analiz edib commitleri ederdin","ai_prompt":"/sdd git status — analyze working-tree changes and recommend which to commit"}
 {"ts":"2026-09-26T21:48:14Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
 {"ts":"2026-09-26T21:57:38Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --approve"}
 {"ts":"2026-09-26T22:02:43Z","command":"/sdd-next","customer_prompt":"Advance decision chain to next step (stateful /next).","ai_prompt":"/sdd-next --auto"}

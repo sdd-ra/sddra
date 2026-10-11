@@ -98,17 +98,13 @@ Pipeline:
 
 ## Parallel Execution Commands
 
-/sdd-parallel:
-  Execute multiple prompts in parallel
-  Usage: /sdd-parallel "prompt-001" "prompt-002" "prompt-003"
+  [PHANTOM-REDIRECT] The commands below were never registered in
+  .sdd/commands/INDEX.sdd ([CMD8] drift). They are retained as
+  historical design notes only; invoke /sdd-swarm instead.
 
-/sdd-fanout:
-  Fan-out execution from current stage
-  Usage: /sdd-fanout --stage=C1 --tasks=BE,FE,MD
-
-/sdd-merge:
-  Merge parallel execution results
-  Usage: /sdd-merge --tasks=BE,FE,MD
+  /sdd-parallel: REDIRECT -> /sdd-swarm
+  /sdd-fanout:  REDIRECT -> /sdd-swarm --stage <key>
+  /sdd-merge:   REDIRECT -> /sdd-swarm (merge is SWARM cycle step 3)
 
 ## Parallel Execution Metrics
 

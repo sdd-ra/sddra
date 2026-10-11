@@ -374,6 +374,7 @@ Navigation:
   SkillCategories: @skills/
   Chains:     @chains/INDEX.sdd
   ChainDefs:  @chains/
+  SwarmChain: @chains/swarm.sdd
   Stages:     @stages/
   Security:   @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd
@@ -607,12 +608,12 @@ Navigation:
     SkillReorganization: @skills/meta/SKILL-REORGANIZATION.sdd
     FastPath: @chains/fast-path.sdd
    BugTracking: @projects/{project_name}/bugs/INDEX.sdd
-   IntelligentRuntime: @workflow/intelligent-runtime.sdd
+   IntelligentRuntime: @workflow/impl-intelligent-runtime.sdd
   HumanSkills: @projects/{project_name}/docs/skills/
-   Orchestrator: @orchestrator/INDEX.sdd
-   OrchestratorModes: @orchestrator/INDEX.sdd
-   OrchestratorPipeline: @orchestrator/INDEX.sdd
-   OrchestratorRouting: @orchestrator/routing.sdd
+   Orchestrator: @commands/INDEX.sdd
+   OrchestratorModes: @commands/INDEX.sdd
+   OrchestratorPipeline: @commands/INDEX.sdd
+   OrchestratorRouting: @commands/INDEX.sdd
   RuntimeAgent: @runtime/state.sdd
   RuntimeSession: @runtime/state.sdd
   RuntimeCurrent: @runtime/state.sdd

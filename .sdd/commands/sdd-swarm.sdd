@@ -1,0 +1,114 @@
+# /sdd-swarm
+
+Purpose:
+  Execute the SW1 chain — parallel micro-unit delivery with a
+  defect-focus loop. Macro-sequential, micro-parallel.
+
+Owns: commands\sdd-swarm.sdd
+Description:
+  Run the SW1 swarm pipeline: decompose each of the 16 stages into
+  micro-units, dispatch independent units to parallel subagents,
+  merge, verify, and loop on defects with a narrow focus pass.
+
+Usage:
+  /sdd-swarm
+  /sdd-swarm --stage <key>
+  /sdd-swarm --board
+  /sdd-swarm --focus MU-<id>
+  /sdd-swarm --status
+  /sdd-swarm --dry-run
+
+Options:
+  --stage <key>   Start from a specific SW1 stage (default: DB)
+  --board         Combined parallel progress view (all stages +
+                  micro-unit states + defect queue + focus iterations)
+  --focus MU-<id> Re-dispatch one unit in FOCUS mode with a narrow
+                  context pack (defect + unit + BEFORE/CHANGE/AFTER)
+  --status        Show current swarm run state
+  --dry-run       Plan the run without dispatching subagents
+
+Mode: SUPERVISED
+
+InitialLoad (Phase 151 — EXPAND protocol):
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/chains/swarm.sdd (SW1 chain)
+  - .sdd/workflow/step-keys.sdd (SW1 dictionary — SW1 group)
+  - .sdd/workflow/micro-unit.sdd (MICRO-UNIT entity + budget rules)
+  - .specdd/swarm/{run_id}/state.sdd (saved swarm state, [SF1])
+  Stage specs and gate details load on EXPAND only.
+
+StatefulExecution ([CMD6]):
+  1. DISCOVER — read saved swarm state; if none, initialize a new run
+  2. ANALYZE — locate current_stage and first incomplete micro-unit
+  3. EXECUTE ONLY the current SWARM cycle step for the current stage
+  4. VERIFY — DONE criteria per swarm.sdd [SW1-4]
+  5. SAVE STATE — update .specdd/swarm/{run_id}/state.sdd
+  6. STOP
+
+SwarmCycle (per stage — execute ONE cycle step per invocation):
+  1. DECOMPOSE — stage scope -> micro-units (MU-XXX); build DAG;
+     mark PARALLEL_READY units
+  2. DISPATCH — supervisor dispatches PARALLEL_READY units to parallel
+     subagents; context reassembled via handoff (NOT copied)
+  3. MERGE — fan-in; conflicts detected and resolved; failed units isolated
+  4. VERIFY — stage tests run inside Docker ([R102]); result per unit
+  5. DEFECT-CHECK — scan results -> defect catalog (DEF-XXX -> MU-XXX)
+  6. FOCUS LOOP — narrow re-dispatch + re-verify per defect;
+     bounds: arm cap 10, error spiral 3, LOOP_SCORE >= 60 strategy
+     change, >= 90 escalate
+  7. Stage DONE -> next macro-stage
+
+FocusLoopBounds:
+  arm_cap: 10            # max focus iterations per stage
+  error_spiral: 3        # 3 consecutive typed failures -> wrap/escalate
+  loop_score_high: 60    # strategy change required
+  loop_score_crit: 90    # escalate to human
+  rule: per LOOP-PROTECTION.sdd [LP11-LP13], [SP1]-[SP4], [SUP-03]
+
+Output:
+  Default:
+    [swarm_mode: cycle]
+    [run_id: <id>]  [flow_version: 2]  [current_stage: <key>]
+    [last_completed: <key>]  [first_incomplete: <key>]
+    [micro_units: <count by state>]  [defects: <count>]
+    [action: execute_one_cycle_step]
+    [result: <cycle outcome + DONE-evidence>]
+
+  --board:
+    Combined view — all 16 stages with state, per-stage micro-unit
+    counts by lifecycle state, defect queue (DEF-XXX -> MU-XXX),
+    focus iteration log, token_totals.
+
+  --status:
+    [run_id] [current_stage] [stage_states] [defects] [focus_iterations]
+    [token_totals] [loop_guards]
+
+Rules:
+  [SWARM-01] /sdd-swarm continues from saved state, never memory.
+  [SWARM-02] One SWARM cycle step per invocation — never execute a
+        future stage early (FLOW VIOLATION, [CMD6]).
+  [SWARM-03] DL1 is untouched; SW1 is a separate chain ([SW1-7]).
+  [SWARM-04] REL is terminal and requires human approval ([CMD3], [RS1]).
+  [SWARM-05] All test execution runs inside Docker ([R102]).
+  [SWARM-06] State is runtime-only, never committed ([R103]).
+  [SWARM-07] UTF-8 only ([R99]); no AI signatures in commits ([R103]).
+
+Navigation:
+  SwarmChain: @../chains/swarm.sdd
+  StepKeys: @../workflow/step-keys.sdd
+  Stages: @../workflow/stages.sdd
+  MicroUnit: @../workflow/micro-unit.sdd
+  MicroUnitSchema: @../schemas/micro-unit.sdd
+  Supervisor: @../agent/supervisor.sdd
+  Handoff: @../agent/handoff.sdd
+  LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  ReleaseGate: @../gates/release.sdd
+  DeliveryChain: @../chains/delivery.sdd
+  CommandsIndex: @INDEX.sdd
+
+State: +
+  (Phase 160 — created per DEC-2026-1011-001 D1; the SW1 chain driver.
+   StatefulExecution over the 16-stage macro pipeline with per-stage
+   SWARM cycle and defect-focus loop; --board is the combined
+   parallel progress view closing G5.)

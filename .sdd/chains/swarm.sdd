@@ -1,0 +1,118 @@
+# Chain: Swarm (SW1)
+
+ID: SW1
+Parent: D0
+
+Purpose:
+  The parallel micro-unit delivery chain with a defect-focus loop.
+  Macro-sequential, micro-parallel. Each stage runs a SWARM cycle
+  (DECOMPOSE -> DISPATCH -> MERGE -> VERIFY -> DEFECT-CHECK -> FOCUS LOOP
+  -> Stage DONE). DL1 is untouched and immutable.
+
+Owns: chains/swarm.sdd
+
+Flow:
+  DB -> DB-TS -> BE -> BE-TS -> API -> API-TS -> FE -> FE-TS ->
+  UNIT -> UNIT-TS -> E2E -> E2E-TS -> FULL -> RF-G -> FB -> REL
+
+FlowNotation:
+  short: DB -> DB-TS -> BE -> BE-TS -> API -> API-TS -> FE -> FE-TS ->
+    UNIT -> UNIT-TS -> E2E -> E2E-TS -> FULL -> RF-G -> FB -> REL
+  canonical_keys: 16 (bax ../workflow/step-keys.sdd SW1 group)
+
+Dependencies:
+  DB-TS  -> [DB]
+  BE     -> [DB-TS]
+  BE-TS  -> [BE]
+  API    -> [BE-TS]
+  API-TS -> [API]
+  FE     -> [API-TS]
+  FE-TS  -> [FE]
+  UNIT   -> [FE-TS]
+  UNIT-TS -> [UNIT]
+  E2E    -> [UNIT-TS]
+  E2E-TS -> [E2E]
+  FULL   -> [E2E-TS]
+  RF-G   -> [FULL]
+  FB     -> [RF-G]
+  REL    -> [FB]
+
+Parallelism:
+  Within each stage, independent micro-units (PARALLEL_READY, no shared
+  mutable state) are dispatched concurrently to subagents. Stages are
+  strictly sequential — a stage's micro-units must all be DONE before
+  the next stage starts. Human gates (REL approval) are NOT parallelized.
+
+ImmutabilityRules:
+  [SW1-1] The stage order is IMMUTABLE — no skipping, no reordering.
+  [SW1-2] RF-G is a GLOBAL RF instance: it runs once, after FULL, scoped
+          per RFScopedSemantics (stages.sdd). It is NOT an in-branch RF.
+  [SW1-3] Every /sdd-swarm invocation continues from SAVED STATE, never
+          from conversation memory.
+  [SW1-4] A stage is DONE only when: all its micro-units are DONE, the
+          stage's VERIFY passed, and no open defect remains unattributed.
+  [SW1-5] A blocking BUG stops the stage and the flow (bax
+          ../tasks/BUG-REGISTRY.sdd).
+  [SW1-6] REL is the terminal stage and requires human approval ([CMD3],
+          [RS1]) — it is never auto-skipped.
+  [SW1-7] DL1 is untouched by SW1. SW1 is a separate chain with its own
+          StepState; no changes to chains/delivery.sdd.
+  [SW1-8] FLOW VERSIONING: persisted runs whose state carries no
+          flow_version are v1 runs and are DEPRECATED — /sdd-swarm MUST
+          re-initialize the run, never resume a v1 run.
+
+SWARMCycle (per stage):
+  1. DECOMPOSE — stage scope -> micro-units (MU-XXX). Build dependency
+     DAG (no cycles); mark independent units PARALLEL_READY.
+  2. DISPATCH — supervisor dispatches PARALLEL_READY units to parallel
+     subagents (Task tool). Each agent reassembles context via the
+     handoff protocol — context is NOT copied (@agent/handoff.sdd).
+  3. MERGE — fan-in; conflicts detected and resolved ([P4]); failed
+     units isolated ([P5]).
+  4. VERIFY — stage test cases run inside Docker ([R102], [I23-I28]);
+     result recorded per unit.
+  5. DEFECT-CHECK — supervisor scans results: test failure, merge
+     conflict, quality finding -> defect catalog (DEF-XXX).
+  6. FOCUS LOOP — each defect attributed to exactly one MU-XXX; narrow
+     context re-dispatch + re-verify. Bounds: arm cap 10, error spiral
+     3, LOOP_SCORE >= 60 -> strategy change, >= 90 -> escalate
+     ([LP11-LP13], [SUP-03]).
+  7. Stage DONE -> next macro-stage.
+
+FocusLoop:
+  attribution: defect -> MU-XXX (one defect, one unit)
+  context_pack: defect + unit + BEFORE/CHANGE/AFTER (narrow, <= 8k tokens)
+  bounds:
+    arm_cap: 10          # max focus iterations per stage
+    error_spiral: 3      # 3 consecutive typed failures -> wrap/escalate
+    loop_score_high: 60  # strategy change required
+    loop_score_crit: 90  # escalate to human
+  record: focus_iterations[] appended to state with reason + evidence
+    delta per [SP4].
+
+StepState (persisted per swarm run):
+  storage: .specdd/swarm/{run_id}/state.sdd (runtime-only, [R103])
+  fields: run_id, flow_version (2), current_stage, stage_states[],
+    micro_units[], defects[], focus_iterations[], token_totals,
+    loop_guards, last_checkpoint
+  token_totals: <per-unit and per-stage aggregates ([I10] extension)>
+
+Retry: 3
+
+Navigation:
+  StepKeys: @../workflow/step-keys.sdd
+  Stages: @../workflow/stages.sdd
+  MicroUnit: @../workflow/micro-unit.sdd
+  MicroUnitSchema: @../schemas/micro-unit.sdd
+  Supervisor: @../agent/supervisor.sdd
+  Handoff: @../agent/handoff.sdd
+  LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+  ReleaseGate: @../gates/release.sdd
+  NextCommand: @../commands/sdd-swarm.sdd
+  DeliveryChain: @delivery.sdd
+
+State: +
+  (Phase 160 — created per DEC-2026-1011-001 D1; separate from the
+   immutable DL1 delivery chain; 16-stage macro pipeline with
+   per-stage SWARM cycle and defect-focus loop)

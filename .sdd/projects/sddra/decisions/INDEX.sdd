@@ -38,6 +38,7 @@ Recent Decisions:
   - DEC-2026-0914-003: External research adoptions — RA-1..RA-4, R109, CTX-CMD-05/06 (closed)
   - DEC-2026-0914-004: RIE + Skill Evolution Engine — /sdd-evolve, R110/R111 (closed)
   - DEC-2026-0915-001: AI Engineering OS 20-point gap analysis — Phases 157-159 + extensions (approved/implemented)
+  - DEC-2026-1011-001: /sdd-swarm + SW1 chain — parallel micro-unit delivery with defect-focus loop (proposed)
 
 Navigation:
   DEC20260913001: @2026-0913-001-security-first-signature-purge.md
@@ -51,6 +52,7 @@ Navigation:
   DEC20260914003: @2026-0914-003-research-adoptions.md
   DEC20260914004: @2026-0914-004-rie-evolution-engines.md
   DEC20260915001: @2026-0915-001-ai-eng-os-gap-analysis.md
+  DEC20261011001: @2026-1011-001-ai-swarm-micro-unit-delivery.md
 
 Navigation:
   Index: @INDEX.sdd

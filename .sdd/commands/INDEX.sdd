@@ -52,6 +52,7 @@ Commands:
   /sdd-compact: Compress context after task
   /sdd-clean: Clear context for next task
   /sdd-next: Advance decision chain to next step (--step: DL1 step mode — stateful /next; --subtask: unit mode — resolve next SUBTASK)
+  /sdd-swarm: Run the SW1 swarm pipeline - parallel micro-unit delivery with defect-focus loop
   /sdd-assumptions: Track and validate project assumptions
   /sdd-intents: Classify and route user intents through chain graph
   /sdd-skills: Discover and map skill ecosystem
@@ -74,6 +75,7 @@ Navigation:
   KnowledgeCommand: @sdd-knowledge.sdd
   ExplainCommand: @sdd-explain.sdd
   NextCommand: @sdd-next.sdd
+  SwarmCommand: @sdd-swarm.sdd
   UpdateCommand: @sdd-update.sdd
   PromptsCommand: @sdd-prompts.sdd
   PlanCommand: @sdd-plan.sdd

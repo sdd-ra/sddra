@@ -1,0 +1,113 @@
+# Workflow: MICRO-UNIT
+
+Spec: MicroUnit
+Purpose:
+  Define the MICRO-UNIT entity — the smallest parallel-executable unit of
+  the SW1 swarm pipeline. A micro-unit is a SUBTASK-sized contract with an
+  ADDITIONAL hard budget (D2): it MUST be executable by one subagent in one
+  step, with a bounded context pack. Budget-exceeded units are recursively
+  subdivided. Every unit is independently dispatchable, mergeable, and
+  defect-attributable.
+
+Owns: workflow/micro-unit.sdd
+
+Source: DEC-2026-1011-001 (D1-D3), extends schemas/subtask.sdd
+
+MicroUnit:
+
+  id: MU-<STAGE>-<NN>
+      example: MU-BE-03 (third unit of the BE stage)
+
+  parent_stage: <SW1 stage key>
+      The owning macro-stage (DB, BE, API, FE, UNIT, E2E, FULL, RF-G, FB, REL).
+
+  goal: <one line>
+      Single objective. If the goal needs "and", split into two units.
+
+  Budget (D2 — HARD, enforced before dispatch):
+    files:        <= 1            # exactly one file may be modified
+    line_diff:    <= 150          # total added+removed+context lines
+    token_pack:   <= 8000         # context pack tokens loaded for this unit
+    subagent_step: 1              # one Task tool invocation, no recursion
+    rule: a unit that exceeds ANY budget is RECURSIVELY SUBDIVIDED —
+      never dispatched over-budget. Subdivision re-runs DECOMPOSE with
+      finer granularity until the budget holds or the unit is atomic
+      (single function / single test / single doc section).
+
+  scope:
+    allowed:
+      - <paths the unit may touch>
+    allowed_actions:
+      - code | tests | docs | config | refactor | research
+    forbidden:
+      - <explicit prohibitions beyond allowed>
+    rule: forbidden MUST be explicit; empty forbidden requires
+      "forbidden: none (scoped to allowed only)".
+
+  depends_on:
+    - MU-<id>
+      Units of the SAME stage that must be DONE before this one.
+      Cross-stage dependencies live on the stage, not the unit.
+
+  parallelism:
+    parallel_ready: true | false
+      true when no depends_on and no shared mutable state with another
+      PARALLEL_READY unit. Only parallel_ready units are dispatched
+      concurrently (P1, P3).
+    shared_state: <none | list of locked resources>
+      Shared mutable state is FORBIDDEN between parallel units (P3);
+      if a resource must be shared it is write-locked and units run
+      sequentially.
+
+  impact:
+    blast_radius: LOW | MEDIUM | HIGH | CRITICAL
+    affected: <layers touched>
+    review_route: <derived per schemas/subtask.sdd [SB8]>
+
+  lifecycle:
+    TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
+    defect path:  -> DEFECTED -> FOCUS -> VERIFIED -> DONE
+    rule: DONE requires done_proof; DEFECTED routes the unit into the
+      FOCUS loop (see swarm.sdd FocusLoop).
+
+  agent:
+    assigned: <subagent id | none>
+    token_used: <int>            # recorded per unit ([I10] extension)
+
+  done_proof:
+    artifact: <file(s) produced>
+    validation: <test run / review id / scan id; NEVER "looks correct">
+
+Rules:
+
+  [MU-1] Budget is HARD — a unit exceeding ANY of the 4 budgets is
+        subdivided, never dispatched over-budget.
+  [MU-2] One file, one step, one subagent — no unit may touch more
+        than one file or require more than one Task invocation.
+  [MU-3] Parallel units MUST NOT share mutable state (P3); shared
+        resources are write-locked and serialized.
+  [MU-4] Every unit MUST carry a done_proof before DONE (bax
+        ../tasks/DONE-PROOF.sdd).
+  [MU-5] A defect is attributed to exactly one MU-XXX; the FOCUS loop
+        re-dispatches that unit with a narrow context pack (defect +
+        unit + BEFORE/CHANGE/AFTER).
+  [MU-6] Token usage is recorded per unit ([I10]); stage token_totals
+        aggregate unit tokens.
+
+Templates:
+  Instance records live in .specdd/swarm/{run_id}/micro_units/ at
+  runtime (never committed, [R103]); creation uses this schema directly.
+
+Navigation:
+  SubtaskSchema: @../schemas/subtask.sdd
+  MicroUnitSchema: @../schemas/micro-unit.sdd
+  SwarmChain: @../chains/swarm.sdd
+  Supervisor: @../agent/supervisor.sdd
+  Handoff: @../agent/handoff.sdd
+  LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+  ExecutionLoop: @../workflow/execution-loop.sdd
+
+State: +
+  (Phase 160 — created as the parallel-executable unit contract for
+   /sdd-swarm; a sized, single-step, single-file instance of the
+   SUBTASK discipline with a hard token/file/line budget per DEC-2026-1011-001 D2)

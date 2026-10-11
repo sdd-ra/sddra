@@ -274,12 +274,87 @@ Stages:
       Output:   business acceptance decision
       Activates: after all branch CR-XX pass, before manual check
 
-    CRU:    Code Requirement Unit
-      Purpose:  Validate implementation against code requirements and standards.
-      Owner:    QA
-      Input:    implementation, code standards, architecture decisions
-      Output:   code quality report, compliance decision
-      Activates: after BRU passes, before manual check
+CRU:    Code Requirement Unit
+       Purpose:  Validate implementation against code requirements and standards.
+       Owner:    QA
+       Input:    implementation, code standards, architecture decisions
+       Output:   code quality report, compliance decision
+       Activates: after BRU passes, before manual check
+
+   SW1 stages — the macro-sequential, micro-parallel pipeline of the
+   /sdd-swarm chain (Phase 160, DEC-2026-1011-001). These stages are
+   NOT part of DL1; DL1 remains immutable.
+
+     UNIT:   Unit (business-logic units)
+       Purpose:  Decompose the integrated system into small
+                 business-logic units and implement them as micro-units
+                 (bax ../workflow/micro-unit.sdd — <=1 file, <=150 line
+                 diff, <=8k token pack, 1 subagent step).
+       Owner:    SWARM
+       Input:    FE-TS results, integrated code
+       Output:   unit micro-units implemented and merged
+       Activates: after FE-TS, before UNIT-TS
+
+     UNIT_TS: Unit Test Suite
+       Purpose:  Test and validate each implemented unit.
+       Owner:    QA
+       Input:    UNIT micro-units
+       Output:   unit test report, coverage per unit
+       Activates: after UNIT, before E2E
+
+     E2E:    End-to-End
+       Purpose:  End-to-end scenarios across integrated units.
+       Owner:    SWARM
+       Input:    UNIT-TS results
+       Output:   E2E scenarios implemented as micro-units
+       Activates: after UNIT-TS, before E2E-TS
+
+     E2E_TS: End-to-End Test Suite
+       Purpose:  Run and validate the end-to-end scenarios.
+       Owner:    QA
+       Input:    E2E micro-units
+       Output:   E2E test report
+       Activates: after E2E, before FULL
+
+     FULL:   Full System Integration
+       Purpose:  Integrate everything into a full-system build and
+                 run the cross-layer Final Test Suite equivalent.
+       Owner:    SWARM
+       Input:    E2E-TS results
+       Output:   full integrated build
+       Activates: after E2E-TS, before RF-G
+
+     RF-G:   Refactor — Global
+       Purpose:  GLOBAL refactor instance (RFScopedSemantics). Runs
+                 ONCE after FULL, over the whole system — NOT an
+                 in-branch RF. Addresses cross-cutting CR findings.
+       Owner:    AR
+       Input:    FULL build, cross-cutting review report
+       Output:   refactored full system
+       Activates: after FULL, before FB
+       rule: RF-G is ONE stage executed with scope: full-system; it is
+             the global scoped instance per RFScopedSemantics — not a
+             new stage family, no stage explosion.
+
+     FB:     FindBug
+       Purpose:  Defect discovery pass — scan the refactored system for
+                 remaining defects and attribute each to one MU-XXX.
+       Owner:    SWARM
+       Input:    RF-G output
+       Output:   defect catalog (DEF-XXX -> MU-XXX attribution)
+       Activates: after RF-G, before REL
+       rule: defects route into the FOCUS loop (swarm.sdd FocusLoop);
+             a stage with open defects is never marked DONE.
+
+     REL:    Release
+       Purpose:  Release gate — final approval and deployment
+                 verification (bax ../gates/release.sdd).
+       Owner:    HUMAN + Release Manager
+       Input:    FB output (defect catalog empty or all defects resolved)
+       Output:   release decision (APPROVED / BLOCKED), deployment
+       Activates: after FB; REL is the terminal stage of SW1
+       rule: REL requires HUMAN approval ([CMD3], [RS1]); it is never
+             auto-skipped. APPROVED only when all required gates pass.
 
 
   CRScopedSemantics (Phase 151):
@@ -297,7 +372,9 @@ Stages:
   RFScopedSemantics (Phase 151):
     definition: RF is ONE stage. RF-DB, RF-BE, RF-API, RF-FE, RF-MD,
       RF-DC are the SAME stage executed with a `scope:` parameter naming
-      the branch artifact under refactor.
+      the branch artifact under refactor. RF-G is the GLOBAL instance
+      (scope: full-system), executed ONCE after FULL in the SW1 chain —
+      it is the same RF stage, not a new stage family.
     rule: scoped RF instances are NOT separate stages — no stage
       explosion.
     rule: RF-XX runs after its CR-XX raises change requests; if CR-XX
@@ -333,13 +410,13 @@ Phase124StateMapping:
   StateToStageMap:
     DISCOVERING    -> AN          (Analyze: scope, requirements, constraints)
     PLANNING       -> AR, BDD     (Architect: design, boundaries; BDD: acceptance criteria)
-    IMPLEMENTING   -> DB, BE, API, FE, MD, DC  (Engineering: database, backend, API, frontend, mobile, docs)
-    TESTING        -> DB_TS, BE_TS, FE_TS, MD_TS, DC_TS, SC (scoped), QA  (per-layer test suites + scoped security + aggregate QA)
+    IMPLEMENTING   -> DB, BE, API, FE, MD, DC, UNIT, E2E, FULL  (Engineering: database, backend, API, frontend, mobile, docs, units, e2e, full integration)
+    TESTING        -> DB_TS, BE_TS, FE_TS, MD_TS, DC_TS, UNIT_TS, E2E_TS, SC (scoped), QA  (per-layer test suites + scoped security + aggregate QA)
     FIXING         -> RF (scoped, post-CR change requests), or returns to TESTING (post-failure)  (Failure classification -> targeted fix/refactor -> retest)
-    REVIEWING      -> ARCH, CR, BRU, CRU  (Architecture review, code review, business/quality gates)
+    REVIEWING      -> ARCH, CR, BRU, CRU, RF-G, FB  (Architecture review, code review, business/quality gates, global refactor, find-bug)
     DOCUMENTING    -> D1          (Docs arm: human-readable documentation)
     LEARNING       -> Knowledge Gate  (Evaluate learning gate: NEW_KNOWLEDGE | EXISTING_UPDATED | ...)
-    COMPLETED      -> VR          (Final verification and acceptance)
+    COMPLETED      -> VR, REL          (Final verification and acceptance; SW1 terminates at REL)
     BLOCKED        -> (suspended)  (External dependency or decision pending)
     ESCALATED      -> (human)     (Autonomy ceiling reached; human intervention required)
 
@@ -381,8 +458,13 @@ State: +
     added missing DB_TS stage; fixed DC-TS -> DC_TS naming; filled
     StateToStageMap gaps (DC in IMPLEMENTING; DB_TS, DC_TS, SC in TESTING;
     RF in FIXING))
-   (Phase 155 v2: branch pipeline reordered to XX -> CR-XX -> RF-XX ->
-    SC-XX -> XX-TS — scoped security precedes branch tests; TK exit
-    criterion now requires DEPENDENCY_GATE approval of declared
-    dependencies; the Phase 151 line above is kept as HISTORY —
-    chains/delivery.sdd is the current ordering authority)
+(Phase 155 v2: branch pipeline reordered to XX -> CR-XX -> RF-XX ->
+     SC-XX -> XX-TS — scoped security precedes branch tests; TK exit
+     criterion now requires DEPENDENCY_GATE approval of declared
+     dependencies; the Phase 151 line above is kept as HISTORY —
+     chains/delivery.sdd is the current ordering authority)
+    (Phase 160: added 8 SW1 stages — UNIT, UNIT_TS, E2E, E2E_TS, FULL,
+     RF-G (global RF instance), FB, REL — for the /sdd-swarm chain;
+     RF-G added to RFScopedSemantics; StateToStageMap extended to
+     cover UNIT/E2E/FULL in IMPLEMENTING, UNIT_TS/E2E_TS in TESTING,
+     RF-G/FB in REVIEWING, REL in COMPLETED)

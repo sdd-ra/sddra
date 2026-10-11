@@ -4,23 +4,34 @@ Runtime state pointer.
 Per: .sdd/commands/sdd-next.sdd [SF1]
 
 Generated: 2026-09-18T08:23:00Z
-Updated: 2026-09-26T22:02:43Z
-Status: complete
+Updated: 2026-10-11T19:35:00Z
+Status: sw1_in_progress
 
-LastChain: /sdd-next --auto (2026-09-26)
-LastChainStep: DEC-2026-0915-001 approved/implemented; all 27 tasks DONE; no more decisions or cases
-LastChainDoc: workflow_complete (--auto, default mode)
-LastChainGate: none — workflow complete, no Decision Point pending
-LastChainTs: 2026-09-26T22:02:43Z
-RepeatNotice: repeated /sdd-next invocations (23:23, 23:25, 23:26, 23:27,
-  23:28, 00:06, 00:07, 00:08, 00:09, 00:18, 00:54, 21:23, 21:24, 21:34,
-  21:48, 21:57, 22:02) all return workflow_complete. No new Decision Point
-  exists; every invocation is a no-op. prompt-pairs.jsonl has grown to 463
-  lines from this loop alone. STOP re-invoking /sdd-next.
-  To make progress, raise a NEW DEC-<id> in decisions/ or advance Phase 137
-  (PROPOSED, awaiting S1 chain approval) via a separate path.
-LoopGuard: /sdd-next is NOT to be called again until a new decision file
-  exists in .sdd/projects/sddra/decisions/ or the user explicitly directs
-  a different command.
+LastChain: /sdd-swarm (2026-10-11)
+LastChainStep: SW1 chain implementation per DEC-2026-1011-001 — 14-step plan 1791741894603-sdd-swarm-parallel-focus-loop.md
+LastChainDoc: swarm-in-progress (--dry-run executed on sdd-adapter)
+LastChainGate: none — SW1 infrastructure built, dry-run validated; pending human review + commit
+LastChainTs: 2026-10-11T19:35:00Z
+
+SW1 artifacts (all written):
+  - .sdd/projects/sddra/decisions/2026-1011-001-ai-swarm-micro-unit-delivery.md
+  - .sdd/workflow/micro-unit.sdd (MICRO-UNIT entity, [MU-1..MU-6])
+  - .sdd/schemas/micro-unit.sdd (schema, [MS1..MS8])
+  - .sdd/chains/swarm.sdd (SW1 chain, SWARMCycle, FocusLoop, [SW1-1..SW1-8])
+  - .sdd/workflow/stages.sdd (8 new stages: UNIT/UNIT_TS/E2E/E2E_TS/FULL/RF-G/FB/REL)
+  - .sdd/workflow/step-keys.sdd (SW1 group keys, [SK6..SK8])
+  - .sdd/commands/sdd-swarm.sdd (spec, SUPERVISED mode)
+  - .claude/commands/sdd-swarm.md + .kilo/command/sdd-swarm.md (3-way registry)
+  - .sdd/commands/INDEX.sdd (/sdd-swarm entry)
+  - .sdd/workflow/impl-parallel-execution.sdd (phantom redirects)
+  - .sdd/workflow/impl-intelligent-runtime.sdd (phantom redirects)
+  - .sdd/INDEX.sdd (broken refs fixed)
+  - .sdd/commands/sdd-health.sdd (SW1 drift checks)
+  - .specdd/swarm/dry-run-sddra.md (dry-run artifact)
+
+LoopGuard: /sdd-next remains blocked until a new decision file exists in
+  .sdd/projects/sddra/decisions/ or the user explicitly directs a different
+  command. DEC-2026-1011-001 is the path forward; the implementing agent
+  must NOT re-invoke /sdd-next during SW1 work.
 
 Compaction: TASK tier — temporary observations dropped, validated insights retained, state persisted.

@@ -38,5 +38,5 @@ implementation:
   - README/docs/package/plugin manifests updated to sddra URLs
   - expansion "SDD & Reasoning Architecture" in all title surfaces
   - GitHub repo renamed to sddra (redirect preserved)
-  - local remote URL updated to RasimAghayev/sddra.git
+  - local remote URL updated to sdd-ra/sddra.git
 State: closed
