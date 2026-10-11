@@ -15,6 +15,7 @@ Deep system analysis and external tool evaluations.
 | [agent-reach-round2.md](agent-reach-round2.md) | Agent-Reach Round 2 — ops-UX adoptions (agent-mediated install, auth ladder, doctor prescriptions) |
 | [external-research-2026-09.md](external-research-2026-09.md) | External research round — SpecD/context engineering/LangGraph gap map; RA-1..RA-4 adoptions (dependsOn traversal, staleness fallback, human-authored routing rule, evidence citations) |
 | [repo-cleanup-analysis.md](repo-cleanup-analysis.md) | Repo cleanup inventory — stale-file keep/move/delete recommendations (analysis only) |
+| [git-status-analysis.md](git-status-analysis.md) | Git status analysis — 12 modified migration files, 3 untracked roots, commit plan (analysis only) |
 
 ## Related Documentation
 

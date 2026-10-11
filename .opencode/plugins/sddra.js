@@ -7,7 +7,7 @@ export default {
     email: 'contact@sddra.ai'
   },
   license: 'MIT',
-  repository: 'https://github.com/RasimAghayev/sddra',
+  repository: 'https://github.com/sdd-ra/sddra',
   keywords: [
     'sdd',
     'spec-driven',

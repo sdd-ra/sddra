@@ -15,17 +15,17 @@ function assert(condition: boolean, message: string): void {
 
 async function main(): Promise<void> {
   console.log("=== OwnershipGuard Tests ===\n");
-  const guard = new OwnershipGuard({ owner: "RasimAghayev", sddRoot: ".sdd" });
+  const guard = new OwnershipGuard({ owner: "sdd-ra", sddRoot: ".sdd" });
 
   console.log("canEdit - allows non-.sdd paths:");
   let r = guard.canEdit("projects/sddra/docs/readme.md", "write");
   assert(r.allowed === true, "non-.sdd path allowed");
 
   console.log("canEdit - allows .sdd/ writes when owner matches:");
-  process.env.SDD_OWNER = "RasimAghayev";
+  process.env.SDD_OWNER = "sdd-ra";
   r = guard.canEdit(".sdd/commands/sdd-health.sdd", "write");
   assert(r.allowed === true, "owner write allowed");
-  assert(r.owner === "RasimAghayev", "owner name correct");
+  assert(r.owner === "sdd-ra", "owner name correct");
 
   console.log("canEdit - blocks .sdd/ writes when owner does not match:");
   process.env.SDD_OWNER = "hacker";
@@ -33,15 +33,15 @@ async function main(): Promise<void> {
   assert(r.allowed === false, "non-owner write blocked");
   assert(r.reason !== undefined, "reason provided");
   assert(r.reason!.includes("Ownership violation"), "ownership violation in reason");
-  assert(r.reason!.includes("RasimAghayev"), "owner name in reason");
+  assert(r.reason!.includes("sdd-ra"), "owner name in reason");
 
   console.log("canEdit - allows when SDD_OWNER is explicitly owner:");
-  process.env.SDD_OWNER = "RasimAghayev";
+  process.env.SDD_OWNER = "sdd-ra";
   r = guard.canEdit(".sdd/INDEX.sdd", "write");
   assert(r.allowed === true, "owner write allowed");
 
   console.log("canEdit - reports correct action and target:");
-  process.env.SDD_OWNER = "RasimAghayev";
+  process.env.SDD_OWNER = "sdd-ra";
   r = guard.canEdit(".sdd/security/controls.sdd", "delete");
   assert(r.allowed === true, "owner delete allowed");
   assert(r.action === "delete", "action is delete");
@@ -63,7 +63,7 @@ async function main(): Promise<void> {
   assert(threw, "OwnershipViolationError was thrown");
 
   console.log("\ngetOwner - returns configured owner:");
-  assert(guard.getOwner() === "RasimAghayev", "getOwner returns configured owner");
+  assert(guard.getOwner() === "sdd-ra", "getOwner returns configured owner");
 
   console.log(`\n=== Results ===`);
   console.log(`Passed: ${passCount}, Failed: ${failCount}`);
