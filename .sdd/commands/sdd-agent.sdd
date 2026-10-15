@@ -1,0 +1,12 @@
+# /sdd-agent
+
+Purpose:
+  Gated generation of leaf, non-constitution agent definitions.
+
+Owns: commands/sdd-agent.sdd
+
+Usage:
+  /sdd-agent --name <name> --level L1|L2 [options]
+
+Mode: SUPERVISED
+State: +

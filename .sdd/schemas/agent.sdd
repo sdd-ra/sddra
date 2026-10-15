@@ -1,0 +1,8 @@
+# Agent Schema
+
+Spec: AgentSchema
+Version: 1.0
+Purpose:
+  Minimal schema for agent instances (non-constitution) to enable gated generation.
+
+State: +
