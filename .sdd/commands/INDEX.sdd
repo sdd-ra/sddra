@@ -55,6 +55,7 @@ Commands:
   /sdd-swarm: Run the SW1 swarm pipeline - parallel micro-unit delivery with defect-focus loop
   /sdd-assumptions: Track and validate project assumptions
   /sdd-intents: Classify and route user intents through chain graph
+  /sdd-map: Map prompts to tasks and subtasks (read-only)
   /sdd-skills: Discover and map skill ecosystem
   /sdd-scan: Run security pattern scans against code files
   /sdd-dependencies: Analyze and visualize dependency graph
@@ -91,6 +92,7 @@ Navigation:
   DecisionsCommand: @sdd-decisions.sdd
   AssumptionsCommand: @sdd-assumptions.sdd
   IntentsCommand: @sdd-intents.sdd
+  MapCommand: @sdd-map.sdd
   SkillsCommand: @sdd-skills.sdd
   ScanCommand: @sdd-scan.sdd
   DependenciesCommand: @sdd-dependencies.sdd

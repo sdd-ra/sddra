@@ -1,0 +1,75 @@
+# /sdd-map
+
+Purpose:
+  Map prompts to tasks and subtasks. Reads prompts from
+  prompts/inbox/ (or accepts --prompt), classifies each to a
+  chain arm via keyword matching, derives tasks (T-NNN) and
+  subtasks (DB, BE, API, FE, MD, DC, Test), and prints the
+  mapping in formatted output.
+
+Usage:
+  /sdd-map
+  /sdd-map --prompt "<text>"
+  /sdd-map --json
+
+Options:
+  --prompt <text>   Map a single inline prompt instead of inbox
+  --json            Output machine-readable JSON
+  --chain-arm <arm> Filter to a specific chain arm (P1|D1|S1|C1|R1|DEP1)
+
+Mode: READ_ONLY
+
+InitialLoad:
+  - .sdd/commands/INDEX.sdd (routing)
+  - .sdd/chains/selector.sdd (arm map)
+  - .sdd/chains/dl2-decision.sdd (P-TK/P-ST stages)
+  - .sdd/commands/sdd-intents.sdd (ChainArmMapping keywords)
+  - prompts/inbox/ (source prompts)
+
+ChainArmMapping (reused from sdd-intents.sdd):
+  "write / plan / design / document" -> D1 (Documentation)
+  "implement / code / build / develop" -> C1 (Code Generation)
+  "review / audit / test / verify" -> R1 (Review)
+  "deploy / release / publish" -> DEP1 (Deploy)
+  "analyze / explain / understand" -> P1 (Prompt Analysis)
+  "spec / define / model / schema" -> S1 (SDD Generation)
+
+SubtaskTypes:
+  DB, BE, API, FE, MD, DC, Test
+
+Output:
+  PROMPT-TASK MAP
+
+  Prompt: "<prompt text>"
+    Arm:  D1  |  Chain: D0->D1->D0
+    Tasks:
+      T-001: <generated task title>
+        Subtasks:
+          ST-001-01 [DB]  ...
+          ST-001-02 [BE]  ...
+          ST-001-03 [API] ...
+          ST-001-04 [FE]  ...
+          ST-001-05 [MD]  ...
+          ST-001-06 [DC]  ...
+          ST-001-07 [Test]...
+
+  Summary:
+    Prompts mapped:  N
+    Tasks generated:  N
+    Subtasks generated: N
+
+Rules:
+  [MAP-01] /sdd-map MUST NOT modify any file.
+  [MAP-02] Prompt classification MUST use keyword matching as primary signal.
+  [MAP-03] Task/subtask IDs are generated placeholders for mapping preview.
+  [MAP-04] Unmatched prompts get arm: UNKNOWN and require human review.
+
+Navigation:
+  INDEX: @INDEX.sdd
+  ChainGraph: @../chains/graph.sdd
+  DL2Chain: @../chains/dl2-decision.sdd
+  IntentsCommand: @sdd-intents.sdd
+  PromptsInbox: @../../prompts/inbox/
+  SpecLoader: @../../codding/sdd-adapter/spec-loader.ts
+
+State: +
