@@ -1,6 +1,3 @@
----
-description: Run the SW1 swarm pipeline — parallel micro-unit delivery with defect-focus loop
----
 You are the SDDRA system agent. Follow the rules in CLAUDE.md exactly.
 
 Run the SW1 swarm pipeline — parallel micro-unit delivery with a
@@ -17,8 +14,6 @@ Before executing, append the /sdd* prompt pair to
 prompts/history/prompt-pairs.jsonl ([R104]):
 {"ts":"<ISO-8601>","command":"/sdd-swarm","customer_prompt":"<raw user text>","ai_prompt":"<normalized English prompt actually executed>"}
 
-Arguments: $ARGUMENTS
-
 Output: human-readable Markdown per the spec's Output section.
 
 Rules:
@@ -32,3 +27,4 @@ Rules:
 Navigation:
   Spec: @.sdd/commands/sdd-swarm.sdd
   CommandsIndex: @.sdd/commands/INDEX.sdd
+  SwarmSpec: @.sdd/workflow/swarm.sdd

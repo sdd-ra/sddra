@@ -14,6 +14,7 @@ import { SkillImporter } from "./skill-importer";
 import { emitAgentsMd, emitClaudeMdPointer } from "./context-emitter";
 import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult, TypedOutcomeCodes, PromptInjectionDecision } from "./types";
 import { PromptGuard } from "./security/prompt-guard";
+import { PromptTaskMapper } from "./prompt-task-mapper";
 
 export interface CommandResult {
   command: string;
@@ -82,9 +83,11 @@ export class CommandRunner {
         return this.runDependenciesCommand(args);
       case "/sdd-assumptions":
         return this.runAssumptionsCommand(args);
+      case "/sdd-map":
+        return this.runPromptMapCommand(args, customerPrompt);
       case "/sdd-intents":
         return this.runIntentsCommand(args);
-     case "/sdd-purge":
+      case "/sdd-purge":
         return this.runPurgeCommand(args);
       case "/sdd-drift":
         return this.runDriftCommand(args);
@@ -530,6 +533,42 @@ export class CommandRunner {
    * SUPERVISED spec flow with human gates — never silently here
    * ([EVO-01], Phase 131 authority).
    */
+  private runPromptMapCommand(args: string[], customerPrompt?: string): CommandResult {
+    const mapper = new PromptTaskMapper(this.sddRoot, this.projectRoot);
+    let inlinePrompt: string | undefined;
+    const pIndex = args.indexOf('--prompt');
+    if (pIndex >= 0 && args[pIndex + 1]) {
+      inlinePrompt = args[pIndex + 1];
+    } else {
+      const eq = args.find(a => a.startsWith('--prompt='));
+      if (eq) inlinePrompt = eq.split('=')[1];
+    }
+    const jsonOut = args.includes('--json');
+    const chainArmFilter = (() => {
+      const ci = args.indexOf('--chain-arm');
+      if (ci >= 0 && args[ci + 1]) return args[ci + 1];
+      const eq = args.find(a => a.startsWith('--chain-arm='));
+      if (eq) return eq.split('=')[1];
+      return undefined;
+    })();
+
+    let mappings;
+    if (inlinePrompt) {
+      mappings = [mapper.mapPrompt(inlinePrompt, 0)];
+    } else {
+      mappings = mapper.mapInbox();
+    }
+    if (chainArmFilter) {
+      mappings = mappings.filter(m => m.chainArm === chainArmFilter.toUpperCase());
+    }
+    const output = jsonOut ? mapper.formatJson(mappings) : mapper.formatTree(mappings);
+    return {
+      command: '/sdd-map',
+      decision: 'PASS',
+      exitCode: 0,
+      output,
+    };
+  }
   private runEvolveCommand(args: string[]): CommandResult {
     const reportOnly = args.includes("--report");
     const lines: string[] = ["SKILL EVOLUTION STATUS", ""];
@@ -1586,3 +1625,5 @@ export class CommandRunner {
     };
   }
 }
+
+

@@ -26,6 +26,7 @@ const tests = [
   { name: "checkpoint-engine", file: "__tests__/checkpoint-engine.test.ts" },
   { name: "mcp-allowlist", file: "__tests__/mcp-allowlist.test.ts" },
   { name: "context-emitter", file: "__tests__/context-emitter.test.ts" },
+  { name: "commands-map", file: "__tests__/commands-map.test.ts" },
   { name: "integration-routing", file: "__tests__/integration-routing.test.ts" },
   { name: "delivery-runner", file: "__tests__/delivery-runner.test.ts" },
   { name: "commands-evolve", file: "__tests__/commands-evolve.test.ts" },

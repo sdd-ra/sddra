@@ -244,7 +244,7 @@ Files To Create: 5+
 
 ## Phase 161 — Pyramid Agent Orchestration
 
-Status: Implemented — pending human commit and DEC approval
+Status: Implemented — DEC-2026-1011-002 APPROVED (2026-10-11T21:51Z); pending human commit only (host git add/commit permission-denied for agents).
 
 Goals:
   Extend SW1 chain with dual dispatch channels, sub-agent lifecycle (spawn/notify/cleanup), RECONCILE gate, CloseLadder (MU→TASK→DEC), .specdd/ gitignore, tests, and governance records.
@@ -257,7 +257,10 @@ Deliverables:
   - Supervisor updates — `.sdd/agent/supervisor.sdd` ([SUP-06],[SUP-07])
   - Command updates — `.sdd/commands/sdd-swarm.sdd` (RECONCILE, initial load, rule refs)
   - INDEX updates — `.sdd/workflow/INDEX.sdd`, `.sdd/agent/INDEX.sdd`, `.sdd/INDEX.sdd`
-  - `.gitignore` — add runtime/local-only roots (.specdd/, .sdd/codding/, .sdd/projects/sddra/history/, docs/assets/)
+  - `.gitignore` — add `.specdd/` runtime state (Phase 161 T9 per DEC T9);
+    Phase 162 extends to `.sdd/codding/**/{node_modules,dist,output}`
+    + logs, `.sdd/projects/sddra/history/`, `docs/assets/` (T9 scope split
+    clarified: DEC = `.specdd/` only; Phase 162 = artifact patterns + 3 roots)
   - `sdd-adapter/__tests__/pyramid-orchestration.test.ts` + register in `sdd-adapter/__tests__/run.ts`
   - DEC-2026-1011-002 (`.sdd/projects/sddra/decisions/2026-1011-002-pyramid-agent-orchestration.md`)
 
@@ -286,9 +289,13 @@ Validation:
 Blockers:
   - Human commit required: host `git add`/`commit` are permission-denied
     for agents.
-  - DEC-2026-1011-002 gate is `human_required` — Approval still PENDING.
-  - `.sdd/codding/`, `sdd/projects/sddra/history/`, `docs/assets/` are
-    still untracked; only `.specdd/` was ignored (plan scope T9).
+  - DEC-2026-1011-002 gate was `human_required`; APPROVED by human
+    2026-10-11T21:51Z (decision record line 49). No DEC re-approval needed.
+  - `.gitignore` Phase 161 scope T9 = `.specdd/` only (DEC T9); Phase 162
+    extended it to `.sdd/codding/**/{node_modules,dist,output,*.log}`,
+    `.sdd/projects/sddra/history/`, `docs/assets/` (current `.gitignore`
+    lines 95, 98-101, 105, 108). Sources under `.sdd/codding/` remain
+    tracked per the temp-area marker.
 
 ## Phase 162 — Root Cleanup & Temp Area Relocation
 
