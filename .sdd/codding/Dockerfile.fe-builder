@@ -6,11 +6,6 @@
 
 ARG NODE_IMAGE=node:26-bookworm-slim@sha256:662933cf47f013bc8e4beb31a6116448427a82057ba7c42c97e4c5ba766504c2
 
-FROM ${NODE_IMAGE} AS deps
-WORKDIR /workspace
-COPY fe-builder/package.json ./
-RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
-
 FROM ${NODE_IMAGE} AS builder
 ARG FRAMEWORK=react
 ENV FRAMEWORK=${FRAMEWORK}
@@ -18,22 +13,21 @@ WORKDIR /workspace/src
 
 RUN mkdir -p /workspace/dist
 
-COPY fe-builder/package.json ./
-COPY --from=deps /workspace/node_modules ./node_modules
-COPY fe-builder/ ./
+COPY .sdd/codding/fe-builder/package.json ./package.json
+COPY .sdd/codding/fe-builder/ ./
 
 RUN if [ "$FRAMEWORK" = "react" ]; then \
-      npm run build 2>/dev/null || echo "Build skipped — no React project in fe-builder/"; \
+      npm run build 2>/dev/null || echo "Build skipped — no React project in .sdd/codding/fe-builder/"; \
     elif [ "$FRAMEWORK" = "vue" ]; then \
-      npm run build 2>/dev/null || echo "Build skipped — no Vue project in fe-builder/"; \
+      npm run build 2>/dev/null || echo "Build skipped — no Vue project in .sdd/codding/fe-builder/"; \
     elif [ "$FRAMEWORK" = "nextjs" ]; then \
-      npm run build 2>/dev/null || echo "Build skipped — no Next.js project in fe-builder/"; \
+      npm run build 2>/dev/null || echo "Build skipped — no Next.js project in .sdd/codding/fe-builder/"; \
     else \
-      echo "Framework ${FRAMEWORK} builder template active — add source to fe-builder/"; \
+      echo "Framework ${FRAMEWORK} builder template active — add source to .sdd/codding/fe-builder/"; \
     fi
 
 FROM nginx:1.31-alpine AS runner
 COPY --from=builder /workspace/dist /usr/share/nginx/html
-COPY fe-builder/nginx.conf /etc/nginx/conf.d/default.conf
+COPY .sdd/codding/fe-builder/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

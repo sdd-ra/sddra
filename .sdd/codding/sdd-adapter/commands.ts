@@ -655,17 +655,17 @@ export class CommandRunner {
 
     // [HEALTH-09] mojibake scan ([R99]) — UTF-8 read as CP1252 signatures
     const mojibakePatterns = [
-      "\u00E2\u20AC\u201D", // em-dash double-encoded (â€")
-      "\u00E2\u20AC\u201C", // variant closing
-      "\u00C4\u00B1",       // ı double-encoded (Ä±)
-      "\u00C4\u00B0",       // İ double-encoded (Ä°)
-      "\u00C5\u009E",       // Ş double-encoded
-      "\u00C5\u009F",       // ş double-encoded
-      "\u00C9\u2122",       // ə double-encoded (É™)
-      "\u00C3\u00BC",       // ü double-encoded
-      "\u00C3\u00B6",       // ö double-encoded
-      "\u00C3\u00A7",       // ç double-encoded
-      "\u00C3\u00A2",       // â double-encoded
+      "\u00E2\u20AC\u201D", // double-encoded signature [R99]
+      "\u00E2\u20AC\u201C", // double-encoded signature [R99]
+      "\u00C4\u00B1",       // double-encoded signature [R99]
+      "\u00C4\u00B0",       // double-encoded signature [R99]
+      "\u00C5\u009E",       // double-encoded signature [R99]
+      "\u00C5\u009F",       // double-encoded signature [R99]
+      "\u00C9\u2122",       // double-encoded signature [R99]
+      "\u00C3\u00BC",       // double-encoded signature [R99]
+      "\u00C3\u00B6",       // double-encoded signature [R99]
+      "\u00C3\u00A7",       // double-encoded signature [R99]
+      "\u00C3\u00A2",       // double-encoded signature [R99]
     ];
     let mojibakeHits = 0;
     const scanDirs = [this.sddRoot, ".claude/docs"];

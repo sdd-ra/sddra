@@ -282,7 +282,7 @@ export function loadSecuritySpecs(sddRoot?: string): {
     || process.env.SDD_ROOT
     || (process.env.SDD_TEST_PROJECT_ROOT
       ? path.join(process.env.SDD_TEST_PROJECT_ROOT, ".sdd")
-      : path.join(__dirname, "..", ".sdd"));
+      : path.join(__dirname, "..", "..", "..", ".sdd"));
 
   const controlsPath = path.join(root, "security", "controls.sdd");
   const levelsPath = path.join(root, "security", "levels.sdd");

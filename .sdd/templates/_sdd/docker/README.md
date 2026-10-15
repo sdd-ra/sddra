@@ -8,7 +8,7 @@ SDDRA conventions ([R91] local images, [R92] var/ mounts,
 
 ```bash
 docker compose run --rm sdd-sandbox \
-  node /workspace/sdd-adapter/dist/commands.js /sdd "docker init"
+  node /workspace/.sdd/codding/sdd-adapter/dist/commands.js /sdd "docker init"
 ```
 
 ## Template Structure

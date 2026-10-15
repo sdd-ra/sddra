@@ -33,7 +33,7 @@ Wire into `.claude/settings.local.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "npx ts-node sdd-adapter/hook-bridge.ts"
+            "command": "npx ts-node .sdd/codding/sdd-adapter/hook-bridge.ts"
           }
         ]
       }

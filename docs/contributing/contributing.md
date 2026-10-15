@@ -79,7 +79,7 @@ R1-R106).
 4. Update derived docs that digest rules (`.kilo/skills/sddra/SKILL.md`
    keeps a digest; update its list)
 5. If machine-checkable, add a check to `/sdd-health`
-   (sdd-adapter/commands.ts)
+   (.sdd/codding/sdd-adapter/commands.ts)
 
 ## Adding a skill
 
@@ -144,11 +144,11 @@ Run everything in the sandbox (never host toolchains, [R102]):
 
 ```bash
 docker compose build sdd-sandbox
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node node_modules/typescript/bin/tsc --outDir /var/sandbox/dist
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node node_modules/ts-node/dist/bin.js --transpile-only __tests__/run.ts
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node -e "...run('/sdd-health')..."
 ```
 

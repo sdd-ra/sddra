@@ -35,10 +35,8 @@ sddra.ai/
 │   ├── references/             # Reusable engineering knowledge
 │   ├── docs/                   # Human-readable docs (NEW: organized)
 │   ├── testing/                # Test scripts and validation
+│   ├── codding/sdd-adapter/    # TypeScript runtime implementation
 │   └── projects/sddra/         # THIS PROJECT instance
-├── sdd-adapter/                # TypeScript runtime implementation
-│   ├── src/                    # Source code
-│   └── tests/                  # Unit tests
 ├── prompts/                    # User intent inbox/archive
 ├── tmp/                        # External repos, analysis, research
 │   ├── agent-skills/           # Vercel agent-skills (cloned)

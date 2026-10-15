@@ -9,10 +9,10 @@ Purpose:
 
 SDDRA is a Specification-Driven Development engine with two main layers:
 1. **Machine Language** (`.sdd/`) — Immutable specifications, schemas, workflows
-2. **Runtime** (`sdd-adapter/`) — TypeScript implementation of the SDD runtime
+2. **Runtime** (`.sdd/codding/sdd-adapter/`) — TypeScript implementation of the SDD runtime
 
 The project follows a layered architecture where `.sdd/` files define
-the "what" and `sdd-adapter/` implements the "how".
+the "what" and `.sdd/codding/sdd-adapter/` implements the "how".
 
 ## Directory Breakdown
 
@@ -58,11 +58,11 @@ Self-evolution pipeline with candidates, challenges, proposals, approved.
 #### projects/sddra/
 **THIS PROJECT** — project-specific data, decisions, tasks, docs, stack.
 
-### sdd-adapter/ — Runtime Implementation
+### .sdd/codding/sdd-adapter/ — Runtime Implementation
 
 TypeScript implementation of the SDD runtime.
 
-#### src/
+#### Flat TypeScript modules
 - `commands.ts` — Command runner with implementations
 - `types.ts` — Type definitions for design/orchestration
 - `design-analyzer.ts` — Design evaluation engine
@@ -70,7 +70,12 @@ TypeScript implementation of the SDD runtime.
 - `hook-bridge.ts` — Hook integration for provenance
 - `provenance-client.ts` — HTTP client for watermarks-remover
 
-#### tests/
+#### security/
+- `patterns-runtime.ts` — Base and language-specific scan patterns
+- `prompt-guard.ts` — Prompt injection detection
+- `commit-gate.ts` — Pre-commit security checks
+
+#### __tests__/
 Unit tests for all runtime components.
 
 ### .claude/ — Claude Code Configuration
@@ -108,9 +113,9 @@ Cloned repositories and fetched resources for analysis:
 |-------|-----------|-------------|--------|
 | L0 | .sdd/protocol/ | Core protocol | COMPLETED |
 | L1 | .sdd/chains/, .sdd/tasks/ | Execution engine | COMPLETED |
-| L2 | .sdd/skills/, sdd-adapter/src/ | Skills + runtime | COMPLETED |
+| L2 | .sdd/skills/, .sdd/codding/sdd-adapter/ | Skills + runtime | COMPLETED |
 | L3 | .sdd/agent/, .sdd/gates/ | Security + quality | COMPLETED |
-| L4 | .sdd/runtime/, sdd-adapter/src/ | Runtime + MCP | IN_PROGRESS |
+| L4 | .sdd/runtime/, .sdd/codding/sdd-adapter/ | Runtime + MCP | IN_PROGRESS |
 | L5 | .sdd/evolution/, tmp/ | Evolution + external | PENDING |
 
 ## Feature Locations
@@ -118,9 +123,9 @@ Cloned repositories and fetched resources for analysis:
 | Feature | Location |
 |---------|----------|
 | AUTO workflow | .claude/sdd/workflow.yaml |
-| Command runtime | sdd-adapter/src/commands.ts |
-| Design analysis | sdd-adapter/src/design-analyzer.ts |
-| Provenance | sdd-adapter/src/provenance-client.ts |
+| Command runtime | .sdd/codding/sdd-adapter/commands.ts |
+| Design analysis | .sdd/codding/sdd-adapter/design-analyzer.ts |
+| Provenance | .sdd/codding/sdd-adapter/provenance-client.ts |
 | Agent roles | .sdd/agent/roles.sdd |
 | Security rules | .sdd/agent/security-rules.sdd |
 | Decision ledger | .sdd/decisions/INDEX.sdd |

@@ -94,6 +94,19 @@ Cargo.lock
 # Swarm runtime state — never committed [R103]
 .specdd/
 
+# Temp build area — disposable artifacts only, sources stay tracked
+.sdd/codding/**/node_modules/
+.sdd/codding/**/dist/
+.sdd/codding/**/output/
+.sdd/codding/**/*.log
+.sdd/codding/**/.npm/
+
+# Stale prompt-pairs duplicate — canonical copy lives at prompts/history/ [R104]
+.sdd/projects/sddra/history/
+
+# Unreferenced product asset (no README/docs reference — git-status-analysis)
+docs/assets/
+
 # Docker bind-mount root [R92]
 var/
 

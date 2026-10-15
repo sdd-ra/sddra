@@ -75,7 +75,7 @@ Rules:
   [SCN-04] Spec load failures MUST result in PASS with warning, not error.
   [SCN-05] Skill patterns MUST only activate for matching file extensions.
   [SCN-06] Scan results MUST be persisted to .sdd/runtime/scan-results/ for audit.
-  [SCN-07] /sdd-scan --inject MUST use PromptGuard (sdd-adapter/security/prompt-guard.ts).
+  [SCN-07] /sdd-scan --inject MUST use PromptGuard (.sdd/codding/sdd-adapter/security/prompt-guard.ts).
   [SCN-08] --inject results include PI-001 through PI-010 pattern IDs and response modes.
 
 Navigation:
@@ -84,8 +84,8 @@ Navigation:
    SecurityScanners: @../security/scanners.sdd
    SecurityThreats: @../security/threats.sdd
    SecurityLevels: @../security/levels.sdd
-   HookBridge: @../../../sdd-adapter/hook-bridge.ts
-   PatternsRuntime: @../../../sdd-adapter/security/patterns-runtime.ts
-   SpecLoader: @../../../sdd-adapter/spec-loader.ts
+   HookBridge: @../../../.sdd/codding/sdd-adapter/hook-bridge.ts
+   PatternsRuntime: @../../../.sdd/codding/sdd-adapter/security/patterns-runtime.ts
+   SpecLoader: @../../../.sdd/codding/sdd-adapter/spec-loader.ts
 
 State: +

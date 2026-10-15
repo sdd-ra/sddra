@@ -26,7 +26,7 @@ async function main() {
   assert(noTarget.output.includes("Usage:"), `Output includes usage hint`);
 
   console.log("\nTesting /sdd-purge on existing directory (offline — fail-open):");
-  const existingDir = path.join(projectRoot, "sdd-adapter", "__tests__");
+  const existingDir = path.join(projectRoot, ".sdd", "codding", "sdd-adapter", "__tests__");
   const dirResult = await runner.run("/sdd-purge", ["--directory", existingDir]);
   assert(dirResult.command === "/sdd-purge", `Command correct: ${dirResult.command}`);
   assert(dirResult.output.includes("PROVENANCE AUDIT"), `Output includes PROVENANCE AUDIT`);

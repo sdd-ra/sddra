@@ -20,16 +20,16 @@ registry, [R91]); all bind mounts live under `./var/` ([R92]).
 git clone https://github.com/<you>/sddra.git
 cd sddra
 docker compose build sdd-sandbox        # builds sddra-sandbox:local
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   npm ci                                 # dependencies (egress-allowlisted)
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node node_modules/typescript/bin/tsc --outDir /var/sandbox/dist
 ```
 
 Verify the installation:
 
 ```bash
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node -e "process.chdir('/workspace'); \
     const {CommandRunner} = require('/var/sandbox/dist/commands.js'); \
     new CommandRunner('.sdd', '/workspace').run('/sdd-health') \
@@ -100,7 +100,7 @@ renames upstream can conflict.
 - 30 `/sdd*` commands (`.kilo/command/`, `.claude/commands/`)
 - 5 Kilo skills (`.kilo/skills/sddra*`)
 - The `.sdd/` spec tree — rules R1-R106, chains, gates, registries
-- The sandboxed adapter runtime (`sdd-adapter/`)
+- The sandboxed adapter runtime (`.sdd/codding/sdd-adapter/`)
 
 ## Uninstall
 
@@ -140,7 +140,7 @@ The mobile build is part of the DL1 delivery chain:
 Execute via:
 ```bash
 docker compose run --rm sdd-sandbox \
-  node /workspace/sdd-adapter/dist/commands.js /sdd "simulate mobile build"
+  node /workspace/.sdd/codding/sdd-adapter/dist/commands.js /sdd "simulate mobile build"
 ```
 
 ## Frontend Deployment Workflow

@@ -6,7 +6,7 @@ Purpose:
 Current Architecture:
   Type: Modular Monolith
   Pattern: Specification-Driven Development (SDD)
-  Layers: Specification (.sdd/) + Runtime (sdd-adapter/)
+  Layers: Specification (.sdd/) + Runtime (.sdd/codding/sdd-adapter/)
 
 Key Decisions:
   - .sdd/ is source of truth

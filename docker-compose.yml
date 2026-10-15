@@ -46,7 +46,7 @@ services:
   fe-builder:
     build:
       context: .
-      dockerfile: Dockerfile.fe-builder
+      dockerfile: .sdd/codding/Dockerfile.fe-builder
       args:
         FRAMEWORK: react
     image: sddra-fe-builder:local
@@ -84,7 +84,7 @@ services:
   be-builder:
     build:
       context: .
-      dockerfile: Dockerfile.be-builder
+      dockerfile: .sdd/codding/Dockerfile.be-builder
       args:
         RUNTIME: node
     image: sddra-be-builder:local
@@ -123,7 +123,7 @@ services:
   mobile-builder:
     build:
       context: .
-      dockerfile: Dockerfile.mobile-builder
+      dockerfile: .sdd/codding/Dockerfile.mobile-builder
     image: sddra-mobile-builder:local
     init: true
     read_only: true

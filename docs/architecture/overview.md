@@ -13,7 +13,7 @@ SDDRA separates a repository into three languages, each with one job:
 |----------|----------|-----------|---------|
 | **Spec** | `.sdd/` | machines + architects | first (contracts) |
 | **Docs** | `docs/`, `.sdd/docs/` | humans | from specs |
-| **Code** | `sdd-adapter/`, product code | runtime | from specs |
+| **Code** | `.sdd/codding/sdd-adapter/`, product code | runtime | from specs |
 
 A change is legal only in that order: spec → docs → code.
 

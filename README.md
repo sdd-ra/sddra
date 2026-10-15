@@ -153,7 +153,7 @@ cheap ([R101]).
 
 ```
 .sdd/            specs — rules R1-R111, chains, gates, registries (source of truth)
-sdd-adapter/     TypeScript runtime executing the specs
+.sdd/codding/sdd-adapter/    TypeScript runtime executing the specs
 .claude/commands/ + .kilo/command/    /sdd* command wrappers
 .kilo/skills/    Kilo skill routing wrappers (R106)
 docs/            English documentation (this suite)

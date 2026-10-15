@@ -290,6 +290,60 @@ Blockers:
   - `.sdd/codding/`, `sdd/projects/sddra/history/`, `docs/assets/` are
     still untracked; only `.specdd/` was ignored (plan scope T9).
 
+## Phase 162 — Root Cleanup & Temp Area Relocation
+
+Status: Implemented — pending human commit
+
+Goals:
+  Keep the repo root free of working folders: builder scaffolding and the
+  TypeScript runtime move into `.sdd/codding/` (temp/template area), all
+  duplicates are resolved, and every path reference is rewritten.
+
+Decisions:
+  - Root `{be,fe,mobile}-builder/` + `Dockerfile.*-builder` were the LIVE
+    referenced sources; the `.sdd/codding/` copies were unreferenced
+    EOL-variant duplicates -> root copies relocated, duplicates deleted.
+  - `sdd-adapter/` (73 files, product runtime) relocated to
+    `.sdd/codding/sdd-adapter/`; root `Dockerfile` now ships it through
+    the single existing `COPY .sdd ./.sdd` (13 redundant COPY lines
+    removed) with `WORKDIR /workspace/.sdd/codding/sdd-adapter`.
+  - `.sdd/projects/sddra/history/prompt-pairs.jsonl` deleted as the stale
+    duplicate; canonical copy stays at `prompts/history/prompt-pairs.jsonl`
+    ([R104]). `docs/assets/logo.png` is unreferenced by README/docs ->
+    kept locally, ignored (per git-status-analysis decision).
+  - Builder Dockerfiles simplified so they actually build (be/fe were
+    unbuildable: shell redirection on COPY, missing sources).
+
+Deliverables:
+  - `.sdd/codding/` — be-builder, fe-builder, mobile-builder,
+    sdd-adapter, the 3 Dockerfiles, and a README marker stating the area
+    is temp/template (not product) with its harvesting rule
+  - `.gitignore` — `.sdd/codding/**/{node_modules,dist,output}` + logs,
+    `.sdd/projects/sddra/history/`, `docs/assets/`
+  - Path fixes — Dockerfile, docker-compose.yml (3 builder refs), docs
+    (contributing, install, quick-start, architecture, root README),
+    `.sdd/commands/sdd-{purge,scan}.sdd` `@`-refs, MAP/STRUCTURE/
+    architecture INDEX, `.claude/settings.local.json` live hooks,
+    `spec-loader.ts` `.sdd` fallback, `commands-purge.test.ts` literal
+  - `.sdd/codding/sdd-adapter/commands.ts` — mojibake glyphs removed from
+    the [HEALTH-09] detector comments (the gate self-triggered once the
+    adapter moved inside the `.sdd/` scan scope)
+
+Validation:
+  - `docker compose config` -> exit 0
+  - `docker compose build sdd-sandbox be-builder fe-builder mobile-builder`
+    -> all exit 0 (be/fe were unbuildable before)
+  - compile-first test flow -> 32/32 test files pass, 0 failures
+  - `/sdd-health` -> HEALTHY, exit 0 (0 mojibake, 0 command drift)
+  - `/sdd-drift` -> 0 drifts (spec-loader resolves `.sdd` from the new
+    adapter workdir)
+  - `git status` — only intended changes remain (no untracked noise
+    except `.sdd/codding/`, which holds the relocated sources to commit)
+
+Blockers:
+  - Human commit required: host `git add`/`commit` are permission-denied
+    for agents.
+
 ## Progress Summary
 
 Focus: Phase 130-135 - Living Engineering System

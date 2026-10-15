@@ -36,7 +36,7 @@ Expected: 4 services, all `:local` images, all under `sdd-internal` network.
 ## 3. Verify Installation
 
 ```bash
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node -e "process.chdir('/workspace'); \
     const {CommandRunner} = require('/var/sandbox/dist/commands.js'); \
     new CommandRunner('.sdd', '/workspace').run('/sdd-health') \
@@ -48,16 +48,16 @@ Expected: `Status: HEALTHY`, `EXIT: 0`
 ## 4. Install Dependencies and Build Adapter
 
 ```bash
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   npm ci
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   npx tsc --outDir /var/sandbox/dist
 ```
 
 ## 5. Run Security Scan (includes prompt injection check)
 
 ```bash
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node -e "process.chdir('/workspace'); \
     const {CommandRunner} = require('/var/sandbox/dist/commands.js'); \
     new CommandRunner('.sdd', '/workspace').run('/sdd-scan', ['--inject']) \
@@ -85,7 +85,7 @@ EOF
 Execute the chain:
 
 ```bash
-docker compose run --rm --workdir /workspace/sdd-adapter sdd-sandbox \
+docker compose run --rm --workdir /workspace/.sdd/codding/sdd-adapter sdd-sandbox \
   node -e "process.chdir('/workspace'); \
     const {CommandRunner} = require('/var/sandbox/dist/commands.js'); \
     new CommandRunner('.sdd', '/workspace').run('/sdd', ['build a task tracker']) \
@@ -145,7 +145,7 @@ Expected: All 4 services running with resource limits.
 - 30 `/sdd*` commands (`.kilo/command/`, `.claude/commands/`)
 - 5 Kilo skills (`.kilo/skills/sddra*`)
 - The `.sdd/` spec tree — rules R1-R111, chains, gates, registries
-- The sandboxed adapter runtime (`sdd-adapter/`)
+- The sandboxed adapter runtime (`.sdd/codding/sdd-adapter/`)
 - 4 Docker services (sandbox, FE, BE, mobile) — all containerized
 
 ## Uninstall

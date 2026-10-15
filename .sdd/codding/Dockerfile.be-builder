@@ -6,31 +6,13 @@
 
 ARG NODE_IMAGE=node:26-bookworm-slim@sha256:662933cf47f013bc8e4beb31a6116448427a82057ba7c42c97e4c5ba766504c2
 
-FROM ${NODE_IMAGE} AS deps-node
-WORKDIR /workspace
-COPY be-builder/package.json ./
-RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
-
-FROM ${NODE_IMAGE} AS deps-python
-WORKDIR /workspace
-COPY be-builder/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt 2>/dev/null || echo "No requirements.txt"
-
 FROM ${NODE_IMAGE} AS builder
 ARG RUNTIME=node
 ENV RUNTIME=${RUNTIME}
 WORKDIR /workspace
 
-COPY --from=deps-node /workspace/node_modules /workspace/node_modules 2>/dev/null || true
-COPY --from=deps-python /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages 2>/dev/null || true
-
-COPY be-builder/package.json ./package.json 2>/dev/null || true
-COPY be-builder/requirements.txt ./requirements.txt 2>/dev/null || true
-COPY be-builder/src ./src
-COPY be-builder/index.js ./index.js 2>/dev/null || true
-COPY be-builder/main.py ./main.py 2>/dev/null || true
-COPY be-builder/Cargo.toml ./Cargo.toml 2>/dev/null || true
-COPY be-builder/pom.xml ./pom.xml 2>/dev/null || true
+COPY .sdd/codding/be-builder/package.json ./package.json
+RUN npm install --ignore-scripts 2>/dev/null || true
 
 RUN if [ "$RUNTIME" = "node" ]; then \
       echo "Node backend builder active"; \
@@ -49,6 +31,5 @@ RUN if [ "$RUNTIME" = "node" ]; then \
 FROM ${NODE_IMAGE} AS runner
 WORKDIR /workspace
 COPY --from=builder /workspace /workspace
-RUN npm ci --ignore-scripts 2>/dev/null || true
 EXPOSE 3000
 CMD ["node", "index.js"]

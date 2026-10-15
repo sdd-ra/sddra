@@ -14,10 +14,10 @@ RUN apt-get update \
 
 WORKDIR /workspace/src
 
-COPY mobile-builder/package.json ./
+COPY .sdd/codding/mobile-builder/package.json ./
 RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
 
-COPY mobile-builder/ ./
+COPY .sdd/codding/mobile-builder/ ./
 
 RUN mkdir -p output
 

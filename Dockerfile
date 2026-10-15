@@ -9,7 +9,7 @@ ARG NODE_IMAGE=node:26-bookworm-slim@sha256:662933cf47f013bc8e4beb31a6116448427a
 # ---------- Stage 1: dependencies ----------
 FROM ${NODE_IMAGE} AS deps
 WORKDIR /workspace
-COPY sdd-adapter/package.json sdd-adapter/package-lock.json* ./
+COPY .sdd/codding/sdd-adapter/package.json .sdd/codding/sdd-adapter/package-lock.json* ./
 RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
 
 # ---------- Stage 2: runtime sandbox ----------
@@ -24,28 +24,15 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
-COPY --from=deps --chown=node:node /workspace/node_modules ./sdd-adapter/node_modules
-COPY --chown=node:node sdd-adapter/package.json sdd-adapter/tsconfig.json sdd-adapter/tsconfig.tests.json ./sdd-adapter/
-COPY --chown=node:node sdd-adapter/commands.ts sdd-adapter/context-budget.ts sdd-adapter/context-compiler.ts \
-    sdd-adapter/context-manifest.ts sdd-adapter/context-router.ts sdd-adapter/dependency-resolver.ts \
-    sdd-adapter/design-analyzer.ts sdd-adapter/drift-detector.ts sdd-adapter/evidence-binder.ts \
-    sdd-adapter/hook-bridge.ts sdd-adapter/memory-bridge.ts sdd-adapter/provenance-client.ts \
-    sdd-adapter/relevance-engine.ts sdd-adapter/skill-auto-invoker.ts sdd-adapter/skill-importer.ts \
-    sdd-adapter/skill-validator.ts sdd-adapter/spec-loader.ts sdd-adapter/sync-engine.ts \
-    sdd-adapter/trace-engine.ts sdd-adapter/types.ts \
-    sdd-adapter/checkpoint-engine.ts sdd-adapter/mcp-allowlist.ts sdd-adapter/context-emitter.ts \
-    sdd-adapter/integration-routing.ts sdd-adapter/delivery-runner.ts ./sdd-adapter/
-COPY --chown=node:node sdd-adapter/ownership-guard.ts sdd-adapter/scope-guard.ts ./sdd-adapter/
-COPY --chown=node:node sdd-adapter/security ./sdd-adapter/security
-COPY --chown=node:node sdd-adapter/__tests__ ./sdd-adapter/__tests__
 COPY --chown=node:node .sdd ./.sdd
+COPY --from=deps --chown=node:node /workspace/node_modules ./.sdd/codding/sdd-adapter/node_modules
 COPY --chown=node:node .gitignore ./
 COPY --chown=node:node .claude/commands ./.claude/commands
 COPY --chown=node:node .kilo/command ./.kilo/command
 
 USER node
 ENV NODE_ENV=sandbox
-WORKDIR /workspace/sdd-adapter
+WORKDIR /workspace/.sdd/codding/sdd-adapter
 
 HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
     CMD node -e "process.exit(0)"
