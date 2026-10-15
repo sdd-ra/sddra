@@ -1,0 +1,38 @@
+# Test Project: Validation of Full Flow
+
+Purpose:
+   Minimal project to validate the full SDDRA flow:
+   - Prompt → DL2 → decisions → tasks → subtasks
+   - SW1 parallel execution with test hierarchy
+   - Local Docker test runs
+   - CI workflow on PR
+
+Owns: projects/test-project/README.sdd
+
+ProjectStructure:
+   - tasks/INDEX.sdd
+   - subtasks/INDEX.sdd
+   - domains.sdd
+   - stack/
+   - skills/
+
+ValidationCriteria:
+   1. DL2 runs independently: /sdd-decide executes DL2 chain, produces decisions/tasks/subtasks
+   2. Handoff to DL1 works: DL1 receives Q/T/ST registry and continues
+   3. SW1 executes with test hierarchy: Subtask → Module → System tests run in Docker
+   4. Parallel agents: Max 6-10 agents (L0 + 2-4 L1 + 2-4 L2) work concurrently
+   5. Local tests pass: All test levels execute in Docker without host tools
+   6. CI optimized: PR only runs changed module tests; full suite on merge
+   7. Token budget: Coordinator limits context per agent (<8k tokens)
+   8. Human gates: 3 gates in DL2 (Q approval, stack approval, plan approval)
+
+Navigation:
+   DL2Chain: @../../chains/dl2-decision.sdd
+   SW1Chain: @../../chains/swarm.sdd
+   TestHierarchy: @../../workflow/test-hierarchy.sdd
+   LocalTestExecution: @../../workflow/local-test-execution.sdd
+   CIWorkflow: @../../.github/workflows/ci-change-impact.yml
+
+State: +
+   (Test project for validating SDDRA flow)
+   (Minimal structure to test end-to-end functionality)

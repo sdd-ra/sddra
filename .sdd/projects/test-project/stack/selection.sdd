@@ -1,0 +1,19 @@
+# Test Project: Tech Stack
+
+Purpose:
+   Technology stack selection for the test project.
+
+Owns: projects/test-project/stack/selection.sdd
+
+Stack:
+   Backend: Node.js with Express
+   Frontend: React with Vite
+   Mobile: React Native
+   Database: PostgreSQL
+   API: REST/JSON
+   Auth: JWT
+   Testing: Jest, Playwright
+
+State: +
+   (Tech stack for test project)
+   (Selected during P-AR stage of DL2 chain)

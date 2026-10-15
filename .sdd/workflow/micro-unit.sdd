@@ -15,87 +15,99 @@ Source: DEC-2026-1011-001 (D1-D3), extends schemas/subtask.sdd
 
 MicroUnit:
 
-  id: MU-<STAGE>-<NN>
-      example: MU-BE-03 (third unit of the BE stage)
+   id: MU-<STAGE>-<NN>
+       example: MU-BE-03 (third unit of the BE stage)
 
-  parent_stage: <SW1 stage key>
-      The owning macro-stage (DB, BE, API, FE, UNIT, E2E, FULL, RF-G, FB, REL).
+   decision_id: Q-<id>
+       Links to the business decision (Q-XX) that this unit serves
 
-  goal: <one line>
-      Single objective. If the goal needs "and", split into two units.
+   task_id: T-<id>
+       Links to the task (T-XX) that this unit serves
 
-  Budget (D2 — HARD, enforced before dispatch):
-    files:        <= 1            # exactly one file may be modified
-    line_diff:    <= 150          # total added+removed+context lines
-    token_pack:   <= 8000         # context pack tokens loaded for this unit
-    subagent_step: 1              # one Task tool invocation, no recursion
-    rule: a unit that exceeds ANY budget is RECURSIVELY SUBDIVIDED —
-      never dispatched over-budget. Subdivision re-runs DECOMPOSE with
-      finer granularity until the budget holds or the unit is atomic
-      (single function / single test / single doc section).
+   subtask_id: ST-<id>
+       Links to the subtask (ST-XX) that this unit serves
 
-  scope:
-    allowed:
-      - <paths the unit may touch>
-    allowed_actions:
-      - code | tests | docs | config | refactor | research
-    forbidden:
-      - <explicit prohibitions beyond allowed>
-    rule: forbidden MUST be explicit; empty forbidden requires
-      "forbidden: none (scoped to allowed only)".
+   test_level: SUBTASK | MODULE | SYSTEM
+       Test execution level: SUBTASK (after unit), MODULE (after all STs for module), SYSTEM (after all modules for decision)
 
-  depends_on:
-    - MU-<id>
-      Units of the SAME stage that must be DONE before this one.
-      Cross-stage dependencies live on the stage, not the unit.
+   parent_stage: <SW1 stage key>
+       The owning macro-stage (DB, BE, API, FE, UNIT, E2E, FULL, RF-G, FB, REL).
 
-  parallelism:
-    parallel_ready: true | false
-      true when no depends_on and no shared mutable state with another
-      PARALLEL_READY unit. Only parallel_ready units are dispatched
-      concurrently (P1, P3).
-    shared_state: <none | list of locked resources>
-      Shared mutable state is FORBIDDEN between parallel units (P3);
-      if a resource must be shared it is write-locked and units run
-      sequentially.
+   goal: <one line>
+       Single objective. If the goal needs "and", split into two units.
 
-  channel: R | F
-    derivation: channel = F iff parallel_ready == true AND
-      shared_state == none, else R (bax dispatch-channels.sdd [DC2]).
-    Channel F = free parallelism inside the CURRENT stage only;
-    Channel R = dependency-ordered inside the CURRENT stage.
-    No channel crosses a stage boundary ([SW1-1], [DC1]).
+   Budget (D2 — HARD, enforced before dispatch):
+     files:        <= 1            # exactly one file may be modified
+     line_diff:    <= 150          # total added+removed+context lines
+     token_pack:   <= 8000         # context pack tokens loaded for this unit
+     subagent_step: 1              # one Task tool invocation, no recursion
+     rule: a unit that exceeds ANY budget is RECURSIVELY SUBDIVIDED —
+       never dispatched over-budget. Subdivision re-runs DECOMPOSE with
+       finer granularity until the budget holds or the unit is atomic
+       (single function / single test / single doc section).
 
-  agent:
-    assigned: <subagent id | none>
-    token_used: <int>            # recorded per unit ([I10] extension)
-    parent: <agent id | none>    # spawning agent, none for a directly
-                                 # dispatched unit
-    children: [<sub-agent ids>]  # sub-agents spawned when this unit was
-                                 # subdivided
-    folder: .specdd/swarm/{run_id}/agents/{agent_id}/
-      runtime instance record — context pack + outcome + evidence;
-      deleted only after DONE + VERIFIED ([SAL6], [R103])
+   scope:
+     allowed:
+       - <paths the unit may touch>
+     allowed_actions:
+       - code | tests | docs | config | refactor | research
+     forbidden:
+       - <explicit prohibitions beyond allowed>
+     rule: forbidden MUST be explicit; empty forbidden requires
+       "forbidden: none (scoped to allowed only)".
 
-  self_delegation:
-    trigger: an agent that would dispatch a unit exceeding ANY budget
-      ([MU-1]) subdivides the unit and spawns sub-agents ITSELF
-      ([MU-8]) — depth cap 2 levels below the supervisor ([SW1-9]).
+   depends_on:
+     - MU-<id>
+       Units of the SAME stage that must be DONE before this one.
+       Cross-stage dependencies live on the stage, not the unit.
 
-  impact:
-    blast_radius: LOW | MEDIUM | HIGH | CRITICAL
-    affected: <layers touched>
-    review_route: <derived per schemas/subtask.sdd [SB8]>
+   parallelism:
+     parallel_ready: true | false
+       true when no depends_on and no shared mutable state with another
+       PARALLEL_READY unit. Only parallel_ready units are dispatched
+       concurrently (P1, P3).
+     shared_state: <none | list of locked resources>
+       Shared mutable state is FORBIDDEN between parallel units (P3);
+       if a resource must be shared it is write-locked and units run
+       sequentially.
 
-  lifecycle:
-    TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
-    defect path:  -> DEFECTED -> FOCUS -> VERIFIED -> DONE
-    rule: DONE requires done_proof; DEFECTED routes the unit into the
-      FOCUS loop (see swarm.sdd FocusLoop).
+   channel: R | F
+     derivation: channel = F iff parallel_ready == true AND
+       shared_state == none, else R (bax dispatch-channels.sdd [DC2]).
+     Channel F = free parallelism inside the CURRENT stage only;
+     Channel R = dependency-ordered inside the CURRENT stage.
+     No channel crosses a stage boundary ([SW1-1], [DC1]).
 
-  done_proof:
-    artifact: <file(s) produced>
-    validation: <test run / review id / scan id; NEVER "looks correct">
+   agent:
+     assigned: <subagent id | none>
+     token_used: <int>            # recorded per unit ([I10] extension)
+     parent: <agent id | none>    # spawning agent, none for a directly
+                                  # dispatched unit
+     children: [<sub-agent ids>]  # sub-agents spawned when this unit was
+                                  # subdivided
+     folder: .specdd/swarm/{run_id}/agents/{agent_id}/
+       runtime instance record — context pack + outcome + evidence;
+       deleted only after DONE + VERIFIED ([SAL6], [R103])
+
+   self_delegation:
+     trigger: an agent that would dispatch a unit exceeding ANY budget
+       ([MU-1]) subdivides the unit and spawns sub-agents ITSELF
+       ([MU-8]) — depth cap 2 levels below the supervisor ([SW1-9]).
+
+   impact:
+     blast_radius: LOW | MEDIUM | HIGH | CRITICAL
+     affected: <layers touched>
+     review_route: <derived per schemas/subtask.sdd [SB8]>
+
+   lifecycle:
+     TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
+     defect path:  -> DEFECTED -> FOCUS -> VERIFIED -> DONE
+     rule: DONE requires done_proof; DEFECTED routes the unit into the
+       FOCUS loop (see swarm.sdd FocusLoop).
+
+   done_proof:
+     artifact: <file(s) produced>
+     validation: <test run / review id / scan id; NEVER "looks correct">
 
 Rules:
 

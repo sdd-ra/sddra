@@ -1,0 +1,30 @@
+# Command: SDD Decide
+
+Purpose:
+   Invoke the DL2 decision decomposition chain to break down user prompts
+   into formal decisions, tasks, and subtasks with human approval gates.
+
+Owns: commands/sdd-decide.sdd
+
+Interface:
+   Input:  user_prompt (text)
+   Output: decision_registry, task_registry, subtask_registry, stack_selection
+   SideEffects: creates .specdd/dl2-handoff/{run_id}/handoff.sdd for DL1
+
+Steps:
+   1. Validate input - ensure user_prompt exists and is non-empty
+   2. Initialize DL2 chain state with user_prompt
+   3. Execute /next until DL2 chain completes or requires human input
+   4. On human gate (P-HG1, P-HG2, P-HG3): pause and await approval
+   5. On completion: generate handoff artifact and return to caller
+   6. On error: return error state with failure details
+
+Navigation:
+   Chain: @../chains/dl2-decision.sdd
+   StepExecutor: @../runtime/state.sdd
+   ArtifactWriter: @../runtime/handoff.sdd
+   HumanInterface: @../workflow/human-approval.sdd
+
+State: +
+   (Command wrapper for DL2 decision decomposition chain)
+   (Produces Q/T/ST registry for DL1 consumption)

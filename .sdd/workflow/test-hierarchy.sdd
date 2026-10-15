@@ -1,0 +1,63 @@
+# Workflow: Test Hierarchy
+
+Purpose:
+   Define three test execution levels (SUBTASK, MODULE, SYSTEM) that map
+   to the Q→T→ST hierarchy and provide increasing scope validation.
+   Each level has specific triggers, scopes, types, runners, and owners.
+
+Owns: workflow/test-hierarchy.sdd
+
+TestLevels:
+
+   SUBTASK level:
+     - Triggered: after each ST implementation
+     - Scope: single subtask's changed files
+     - Types: Unit (T0), Feature/Integration (T1/T3), API/Contract (T2)
+     - Runner: local Docker (builder service)
+     - Owner: implementer agent
+
+   MODULE level:
+     - Triggered: when all STs for a module are DONE
+     - Scope: entire module (all STs combined)
+     - Types: Integration, Component (T3), E2E (T4) within module
+     - Regression: previous module functionality
+     - Runner: local Docker
+     - Owner: QA agent + implementer
+
+   SYSTEM level:
+     - Triggered: when all modules for a decision are DONE
+     - Scope: cross-module business flows
+     - Types: E2E (T4), Performance (T5), Security (T6), Acceptance (T7)
+     - Runner: local Docker (full stack)
+     - Owner: QA + Business
+
+TestExecution:
+   SUBTASK test:
+     docker compose run --rm <builder> npm test -- --testPathPattern="<subtask_scope>"
+
+   MODULE test:
+     docker compose run --rm test-runner ./run-module-tests.sh <module_name>
+
+   SYSTEM test:
+     docker compose run --rm test-runner ./run-system-tests.sh <decision_id>
+
+Rules:
+   [TH1] Test levels MUST be executed in order: SUBTASK → MODULE → SYSTEM
+   [TH2] Each level MUST pass before advancing to the next level
+   [TH3] Test scope MUST match the declared level (no scope creep)
+   [TH4] All test execution MUST run inside Docker ([R102], [W19])
+   [TH5] Test results MUST be recorded in done_proof for aggregation
+
+Navigation:
+   MicroUnit: @../workflow/micro-unit.sdd
+   MicroUnitSchema: @../schemas/micro-unit.sdd
+   SwarmChain: @../chains/swarm.sdd
+   DockerCompose: @../../docker-compose.yml
+   TestRunner: @../codding/Dockerfile.test-runner
+   TestLevels: @../testing/t-levels.sdd
+   TestTypes: @../testing/types.sdd
+
+State: +
+   (Test hierarchy specification for Q→T→ST decomposition)
+   (Three levels: SUBTASK/MODULE/SYSTEM with increasing scope)
+   (All execution in Docker per [R102])

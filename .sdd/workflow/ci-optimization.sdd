@@ -1,0 +1,46 @@
+# Workflow: CI Optimization
+
+Purpose:
+   Specify CI/CD rules for optimizing test execution based on change impact.
+   Only changed modules tested on PRs; full system tests only on merge to
+   main/test/prod branches.
+
+Owns: workflow/ci-optimization.sdd
+
+CIRules:
+   - Only changed modules tested on PR
+   - Full system tests only on merge to test/prod
+   - Docker layer caching
+   - Concurrency limits
+   - Skip workflows for docs-only changes
+   - Security scans only when security-related files changed
+   - Performance tests on schedule and merge to main
+   - Acceptance tests on merge to test/prod
+
+TriggerConditions:
+   PR opened/synchronize/reopened:
+     - Run detect-changes job
+     - If modules changed: run module-tests job for each affected module
+     - If security files changed: run security-scan job
+   Push to main:
+     - Run full-integration job (E2E, performance, regression)
+   Push to test/prod:
+     - Run full-integration job + acceptance tests
+
+Optimizations:
+   - Docker layer caching: Use actions/cache for Docker layers
+   - Matrix testing: Parallel execution of module tests
+   - Concurrency limits: Limit concurrent jobs to prevent resource exhaustion
+   - Artifact caching: Cache test reports and coverage between jobs
+   - Early termination: Fail fast on critical failures
+
+Navigation:
+   GitHubActions: @../../.github/workflows/ci-change-impact.yml
+   DockerCompose: @../../docker-compose.yml
+   TestHierarchy: @../workflow/test-hierarchy.sdd
+   LocalTestExecution: @../workflow/local-test-execution.sdd
+
+State: +
+   (CI/CD optimization specification)
+   (Change-impact-based testing)
+   (Docker layer caching and concurrency limits)

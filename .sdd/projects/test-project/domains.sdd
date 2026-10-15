@@ -1,0 +1,18 @@
+# Test Project: Domains
+
+Purpose:
+   Domain model for the test project.
+
+Owns: projects/test-project/domains.sdd
+
+Domains:
+   # Domain entries would be defined based on the project
+   # Example: 
+   #   auth: 
+   #     entities: [user, session, token]
+   #     services: [login, logout, validate]
+   #     interfaces: [API, UI]
+
+State: +
+   (Domain model for test project)
+   (Defined based on project requirements)

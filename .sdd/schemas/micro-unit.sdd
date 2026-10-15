@@ -15,72 +15,84 @@ Owns: schemas/micro-unit.sdd
 
 Schema:
 
-  mu_id: MU-<STAGE>-<NN>
-      example: MU-BE-03
+   mu_id: MU-<STAGE>-<NN>
+       example: MU-BE-03
 
-  stage: <SW1 stage key>
-      The owning macro-stage.
+   decision_id: Q-<id>
+       Links to the business decision (Q-XX) that this unit serves
 
-  goal: <one line>
+   task_id: T-<id>
+       Links to the task (T-XX) that this unit serves
 
-  budget:
-    files: 1
-    line_diff: 150
-    token_pack: 8000
-    subagent_step: 1
-      HARD caps (D2). A unit exceeding ANY cap is recursively
-      subdivided before dispatch.
+   subtask_id: ST-<id>
+       Links to the subtask (ST-XX) that this unit serves
 
-  scope:
-    allowed: [<paths>]
-    allowed_actions: [code | tests | docs | config | refactor | research]
-    forbidden: [<prohibitions>]
+   test_level: SUBTASK | MODULE | SYSTEM
+       Test execution level: SUBTASK (after unit), MODULE (after all STs for module), SYSTEM (after all modules for decision)
 
-  depends_on: [MU-<id>]
+   stage: <SW1 stage key>
+       The owning macro-stage.
 
-  parallelism:
-    parallel_ready: true | false
-    shared_state: <none | [locked resources]>
+   goal: <one line>
 
-  channel: R | F
-      Dispatch channel (bax ../workflow/dispatch-channels.sdd).
-      Derived: F iff parallel_ready && shared_state == none,
-      else R. Never set manually ([DC1]).
+   budget:
+     files: 1
+     line_diff: 150
+     token_pack: 8000
+     subagent_step: 1
+       HARD caps (D2). A unit exceeding ANY cap is recursively
+       subdivided before dispatch.
 
-  parent_agent: <agent id | none>
-      Spawning agent (L1) that owns this unit; none for
-      supervisor-decomposed units.
+   scope:
+     allowed: [<paths>]
+     allowed_actions: [code | tests | docs | config | refactor | research]
+     forbidden: [<prohibitions>]
 
-  child_agents: [<agent ids>]
-      L2 sub-agents spawned by self-delegation ([SAL2]);
-      depth cap 2 ([SAL1]).
+   depends_on: [MU-<id>]
 
-  folder: <runtime path | none>
-      .specdd/swarm/{run_id}/agents/{agent_id}/ — context
-      pack + outcome + evidence ([SAL5]).
+   parallelism:
+     parallel_ready: true | false
+     shared_state: <none | [locked resources]>
 
-  impact:
-    blast_radius: LOW | MEDIUM | HIGH | CRITICAL
-    affected: [<layers>]
-    review_route: <derived>
+   channel: R | F
+       Dispatch channel (bax ../workflow/dispatch-channels.sdd).
+       Derived: F iff parallel_ready && shared_state == none,
+       else R. Never set manually ([DC1]).
 
-  lifecycle:
-    TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
-    defect path: -> DEFECTED -> FOCUS -> VERIFIED -> DONE
+   parent_agent: <agent id | none>
+       Spawning agent (L1) that owns this unit; none for
+       supervisor-decomposed units.
 
-  agent:
-    assigned: <subagent id | none>
-    token_used: <int>
+   child_agents: [<agent ids>]
+       L2 sub-agents spawned by self-delegation ([SAL2]);
+       depth cap 2 ([SAL1]).
 
-  done_proof:
-    artifact: <file(s)>
-    validation: <test run | review id | scan id; NEVER "looks correct">
+   folder: <runtime path | none>
+       .specdd/swarm/{run_id}/agents/{agent_id}/ — context
+       pack + outcome + evidence ([SAL5]).
 
-  defect:
-    defect_id: DEF-<id> | none
-    focus_iterations: <int>
-      Attribution record: which defect triggered a FOCUS cycle on this
-      unit, and how many focus iterations it took.
+   impact:
+     blast_radius: LOW | MEDIUM | HIGH | CRITICAL
+     affected: [<layers>]
+     review_route: <derived>
+
+   lifecycle:
+     TODO -> DISPATCHED -> IMPLEMENTING -> MERGED -> VERIFIED -> DONE
+     defect path: -> DEFECTED -> FOCUS -> VERIFIED -> DONE
+
+   agent:
+     assigned: <subagent id | none>
+     token_used: <int>
+
+   done_proof:
+     artifact: <file(s)>
+     validation: <test run | review id | scan id; NEVER "looks correct">
+
+   defect:
+     defect_id: DEF-<id> | none
+     focus_iterations: <int>
+       Attribution record: which defect triggered a FOCUS cycle on this
+       unit, and how many focus iterations it took.
 
 Rules:
 

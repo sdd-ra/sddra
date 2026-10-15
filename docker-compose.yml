@@ -43,117 +43,158 @@ services:
     networks:
       - sdd-internal
 
-  fe-builder:
-    build:
-      context: .
-      dockerfile: .sdd/codding/Dockerfile.fe-builder
-      args:
-        FRAMEWORK: react
-    image: sddra-fe-builder:local
-    init: true
-    read_only: true
-    user: "1000:1000"
-    working_dir: /workspace
-    environment:
-      - SANDBOX_RO=1
-    command: ["sh", "-c", "while true; do echo FE Builder running; sleep 60; done"]
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /tmp:size=256m,mode=1777
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 2g
-          pids: 512
-    mem_limit: 2g
-    memswap_limit: 2g
-    cpus: 2.0
-    pids_limit: 512
-    ulimits:
-      nofile:
-        soft: 1024
-        hard: 2048
-    volumes:
-      - ./var/fe:/workspace/dist
-      - ./var/fe/source:/workspace/src
-    networks:
-      - sdd-internal
+   fe-builder:
+     build:
+       context: .
+       dockerfile: .sdd/codding/Dockerfile.fe-builder
+       args:
+         FRAMEWORK: react
+     image: sddra-fe-builder:local
+     init: true
+     read_only: true
+     user: "1000:1000"
+     working_dir: /workspace
+     environment:
+       - SANDBOX_RO=1
+     command: ["sh", "-c", "while true; do echo FE Builder running; sleep 60; done"]
+     security_opt:
+       - no-new-privileges:true
+     tmpfs:
+       - /tmp:size=256m,mode=1777
+     deploy:
+       resources:
+         limits:
+           cpus: "2.0"
+           memory: 2g
+           pids: 512
+     mem_limit: 2g
+     memswap_limit: 2g
+     cpus: 2.0
+     pids_limit: 512
+     ulimits:
+       nofile:
+         soft: 1024
+         hard: 2048
+     volumes:
+       - ./var/fe:/workspace/dist
+       - ./var/fe/source:/workspace/src
+       - ./var/fe/test-reports:/workspace/test-reports
+     networks:
+       - sdd-internal
 
-  be-builder:
-    build:
-      context: .
-      dockerfile: .sdd/codding/Dockerfile.be-builder
-      args:
-        RUNTIME: node
-    image: sddra-be-builder:local
-    init: true
-    read_only: true
-    user: "1000:1000"
-    working_dir: /workspace
-    environment:
-      - SANDBOX_RO=1
-    command: ["sh", "-c", "while true; do echo BE Builder running; sleep 60; done"]
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /tmp:size=256m,mode:1777
-    deploy:
-      resources:
-        limits:
-          cpus: "4.0"
-          memory: 4g
-          pids: 1024
-    mem_limit: 4g
-    memswap_limit: 4g
-    cpus: 4.0
-    pids_limit: 1024
-    ulimits:
-      nofile:
-        soft: 1024
-        hard: 2048
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./var/be:/workspace
-    networks:
-      - sdd-internal
+   be-builder:
+     build:
+       context: .
+       dockerfile: .sdd/codding/Dockerfile.be-builder
+       args:
+         RUNTIME: node
+     image: sddra-be-builder:local
+     init: true
+     read_only: true
+     user: "1000:1000"
+     working_dir: /workspace
+     environment:
+       - SANDBOX_RO=1
+     command: ["sh", "-c", "while true; do echo BE Builder running; sleep 60; done"]
+     security_opt:
+       - no-new-privileges:true
+     tmpfs:
+       - /tmp:size=256m,mode:1777
+     deploy:
+       resources:
+         limits:
+           cpus: "4.0"
+           memory: 4g
+           pids: 1024
+     mem_limit: 4g
+     memswap_limit: 4g
+     cpus: 4.0
+     pids_limit: 1024
+     ulimits:
+       nofile:
+         soft: 1024
+         hard: 2048
+     ports:
+       - "3000:3000"
+     volumes:
+       - ./var/be:/workspace
+       - ./var/be/test-reports:/workspace/test-reports
+     networks:
+       - sdd-internal
 
-  mobile-builder:
-    build:
-      context: .
-      dockerfile: .sdd/codding/Dockerfile.mobile-builder
-    image: sddra-mobile-builder:local
-    init: true
-    read_only: true
-    user: "1000:1000"
-    working_dir: /workspace
-    environment:
-      - SANDBOX_RO=1
-    command: ["sh", "-c", "while true; do echo Mobile Builder running; sleep 60; done"]
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /tmp:size=512m,mode:1777
-    deploy:
-      resources:
-        limits:
-          cpus: "4.0"
-          memory: 8g
-          pids: 1024
-    mem_limit: 8g
-    memswap_limit: 8g
-    cpus: 4.0
-    pids_limit: 1024
-    ulimits:
-      nofile:
-        soft: 1024
-        hard: 2048
-    volumes:
-      - ./var/mobile-build:/workspace/output
-    networks:
-      - sdd-internal
+   mobile-builder:
+     build:
+       context: .
+       dockerfile: .sdd/codding/Dockerfile.mobile-builder
+     image: sddra-mobile-builder:local
+     init: true
+     read_only: true
+     user: "1000:1000"
+     working_dir: /workspace
+     environment:
+       - SANDBOX_RO=1
+     command: ["sh", "-c", "while true; do echo Mobile Builder running; sleep 60; done"]
+     security_opt:
+       - no-new-privileges:true
+     tmpfs:
+       - /tmp:size=512m,mode:1777
+     deploy:
+       resources:
+         limits:
+           cpus: "4.0"
+           memory: 8g
+           pids: 1024
+     mem_limit: 8g
+     memswap_limit: 8g
+     cpus: 4.0
+     pids_limit: 1024
+     ulimits:
+       nofile:
+         soft: 1024
+         hard: 2048
+     volumes:
+       - ./var/mobile-build:/workspace/output
+       - ./var/mobile-build/test-reports:/workspace/test-reports
+     networks:
+       - sdd-internal
+
+   test-runner:
+     build:
+       context: .
+       dockerfile: .sdd/codding/Dockerfile.test-runner
+     image: sddra-test-runner:local
+     init: true
+     read_only: true
+     user: "1000:1000"
+     working_dir: /workspace
+     environment:
+       - SANDBOX_RO=1
+     command: ["sh", "-c", "while true; do echo Test Runner running; sleep 60; done"]
+     security_opt:
+       - no-new-privileges:true
+     tmpfs:
+       - /tmp:size=512m,mode:1777
+     deploy:
+       resources:
+         limits:
+           cpus: "4.0"
+           memory: 4g
+           pids: 1024
+     mem_limit: 4g
+     memswap_limit: 4g
+     cpus: 4.0
+     pids_limit: 1024
+     ulimits:
+       nofile:
+         soft: 1024
+         hard: 2048
+     volumes:
+       - ./var/test-reports:/workspace/test-reports
+       - ./var/be:/workspace/be-output
+       - ./var/fe:/workspace/fe-output
+       - ./var/mobile-build:/workspace/mobile-output
+     networks:
+       - sdd-internal
 
 networks:
   sdd-internal:

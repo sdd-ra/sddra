@@ -1,0 +1,56 @@
+# Testing: Module Test
+
+Purpose:
+   Specify module test requirements including regression testing
+   for ensuring previous module functionality remains intact.
+
+Owns: testing/module-test.sdd
+
+ModuleTest:
+   purpose: Verify entire module functionality and prevent regressions
+   scope: All subtasks within a module combined
+   owner: QA agent + implementer agent
+   trigger: When all STs for a module are DONE
+   execution: local Docker (test-runner service)
+   frequency: Per module completion
+
+Requirements:
+   [MODULE1] Must test all STs in the module as an integrated unit
+   [MODULE2] Must include regression tests for previous module functionality
+   [MODULE3] Must run in Docker container ([R102])
+   [MODULE4] Must produce JUnit/XML test reports
+   [MODULE5] Must generate coverage reports when applicable
+   [MODULE6] Must fail if any ST in the module has regressions
+   [MODULE7] Must pass before SYSTEM level testing can begin
+
+TestTypes:
+   - Integration (T1): Verify STs work together
+   - Component (T3): Verify complete module in isolation
+   - E2E (T4): Verify user journeys within module scope
+   - Note: Unit tests (T0) run at SUBTASK level, not MODULE level
+
+RegressionTesting:
+   purpose: Ensure new changes don't break existing functionality
+   scope: Previously working module features
+   owner: QA agent
+   trigger: Module test execution
+   execution: local Docker (test-runner service)
+   
+   Requirements:
+     [REG1] Must test previously implemented STs
+     [REG2] Must compare against baseline behavior
+     [REG3] Must fail if regressions detected
+     [REG4] Must be automated and repeatable
+
+Navigation:
+   TestHierarchy: @../workflow/test-hierarchy.sdd
+   LocalTestExecution: @../workflow/local-test-execution.sdd
+   DockerCompose: @../../docker-compose.yml
+   TestRunner: @../codding/Dockerfile.test-runner
+   MicroUnit: @../workflow/micro-unit.sdd
+
+State: +
+   (Module test specification with regression requirements)
+   (Owner: QA + implementer)
+   (Execution: local Docker)
+   (Regression testing included)

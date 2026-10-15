@@ -1,20 +1,22 @@
-# Temp Area — Not Product
+# Working Area — Not Product Surface
 
-Build simulation and template scaffolding for the SDDRA Docker chain
-(R91 local images, R92 var/ mounts, R102 resource limits). Nothing here
-is product code.
+Everything under `.sdd/codding/` lives here so the repo root stays
+product-only. Two kinds of content share the directory:
 
-- `Dockerfile.{be,fe,mobile}-builder` — canonical builder images
-  (pinned node:26 / nginx:1.31, wired through `docker-compose.yml`).
-- `{be,fe,mobile}-builder/` — builder payloads. `mobile-builder` is a
-  mock build simulator (R102): it emits fake APK/IPA artifacts to
-  validate chain execution, never real binaries.
+- `sdd-adapter/` — the SDDRA runtime (TypeScript CommandRunner, engines,
+  tests). It IS product code; it lives here for root hygiene, not because
+  it is disposable.
+- `{be,fe,mobile}-builder/` + `Dockerfile.*-builder` — build simulation
+  and template scaffolding (R91 local images, R92 var/ mounts, R102
+  resource limits). Disposable; kept as the reference for a builder
+  stage in a new project.
 
-These files are kept because their setup is the reference for a new
-project's builder stage: when a project starts, copy the relevant
-builder, do not import it. Best practices are harvested from here.
-
-Temp means disposable: build output, `node_modules/`, `dist/`, `output/`
-and logs under this area are ignored and must never be committed
-([R103]). Layout and rules: `.sdd/workflow/deployment.sdd`,
+Location, ownership and the runtime layer split: `.sdd/projects/sddra/
+STRUCTURE.md` (§ sdd-adapter) and `.sdd/projects/sddra/architecture/
+INDEX.sdd`. Builder rules: `.sdd/workflow/deployment.sdd`,
 `.sdd/workflow/mobile-build.sdd`.
+
+Temp means disposable for the builder scaffolding: build output,
+`node_modules/`, `dist/`, `output/` and logs are gitignored and must
+never be committed ([R103]). The adapter's own artifacts are ignored the
+same way.

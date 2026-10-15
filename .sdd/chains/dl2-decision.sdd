@@ -1,0 +1,84 @@
+# Chain: Decision Decomposition
+
+ID: DL2
+Parent: D0
+
+Purpose:
+   New chain for business decision decomposition: prompt → formal decisions (Q) → stack selection → tasks (T) → subtasks (ST) → handoff to DL1.
+   Runs BEFORE DL1 to decompose user intent into actionable development units with human approval gates.
+
+Owns: chains/dl2-decision.sdd
+
+Flow:
+   P-AN → P-BC → P-QD → P-HG1 → P-AR → P-HG2 → P-TK → P-ST → P-HG3 → DL1
+
+   P-AN: Prompt Analysis - parse user prompt, extract entities, intents
+   P-BC: Business Case - formalize business problem, goals, scope
+   P-QD: Question Decomposition - break into formal decisions (Q-XX) with options/pros/cons
+   P-HG1: Human Gate - approve/reject/modify Qs (Q approval gate)
+   P-AR: Architecture & Stack Selection - tech stack selection with tradeoffs
+   P-HG2: Human Gate - approve stack (stack approval gate)
+   P-TK: Task Breakdown - each Q → one or more TASKs with ImpactMatrix
+   P-ST: Subtask Breakdown - each T → SUBTASKs (DB, BE, API, FE, MD, DC, Test)
+   P-HG3: Human Gate - approve task/subtask plan (plan approval gate)
+   DL1: Handoff to delivery chain (passes Q/T/ST registry to DL1)
+
+FlowNotation:
+   short: P-AN -> P-BC -> P-QD -> P-HG1 -> P-AR -> P-HG2 -> P-TK -> P-ST -> P-HG3 -> DL1
+   canonical_keys: 9 (P-AN, P-BC, P-QD, P-HG1, P-AR, P-HG2, P-TK, P-ST, P-HG3)
+
+Dependencies:
+   P-BC  -> [P-AN]
+   P-QD  -> [P-BC]
+   P-HG1 -> [P-QD]
+   P-AR  -> [P-HG1]
+   P-HG2 -> [P-AR]
+   P-TK  -> [P-HG2]
+   P-ST  -> [P-TK]
+   P-HG3 -> [P-ST]
+   DL1   -> [P-HG3]
+
+Parallelism:
+   No parallel execution within DL2 - stages are strictly sequential to ensure
+   proper decision decomposition and human approval flow.
+
+ImmutabilityRules:
+   [DL2-1] The flow is IMMUTABLE: no skipping steps, no reordering, no
+           executing future steps early. Human gate approvals are explicit
+           transitions - a rejected gate returns to previous step for revision.
+   [DL2-2] Every /next continues from the SAVED STATE — the last completed
+           step and the first incomplete step — never from conversation
+           memory (bax ../runtime/state.sdd checkpoints).
+   [DL2-3] A step is DONE only when: input exists, work completed, output
+           artifact exists, internally consistent, validation passed —
+           never on assumption (bax ../tasks/DONE-PROOF.sdd).
+   [DL2-4] A blocking BUG stops the current step and the flow — no
+           continuation until resolved (bax ../tasks/BUG-REGISTRY.sdd).
+   [DL2-5] Human gates require explicit approval - rejected gates trigger
+           revision loops to previous step.
+
+StepState (persisted per DL2 run):
+   storage: .specdd/dl2/{run_id}/state.sdd (runtime-only)
+   fields: run_id, current_step, completed_steps[], first_incomplete,
+           decision_registry{}, task_registry{}, subtask_registry{},
+           stack_selection{}, impact_matrix{}, last_checkpoint
+   resume: /next reads this state FIRST; completed steps are never
+           re-executed ([RT8-RT9] checkpoint discipline).
+
+Retry: 3
+
+Navigation:
+   StepKeys: @../workflow/step-keys.sdd
+   Stages: @../workflow/stages.sdd
+   Transitions: @../workflow/transitions.sdd
+   MicroUnit: @../workflow/micro-unit.sdd
+   MicroUnitSchema: @../schemas/micro-unit.sdd
+   TestHierarchy: @../workflow/test-hierarchy.sdd
+   Handoff: @../agent/handoff.sdd
+   NextCommand: @../commands/sdd-decide.sdd
+   DeliveryChain: @delivery.sdd
+
+State: +
+   (New chain for decision decomposition - runs before DL1)
+   (Human gates: Q approval, stack approval, plan approval)
+   (Outputs: decisions/, tasks/, subtasks/ indexes + DL1 handoff)

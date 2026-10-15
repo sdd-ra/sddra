@@ -1,0 +1,59 @@
+# Agent: Coordinator
+
+Purpose:
+   L0 Coordinator agent responsible for running DL2 chain, decomposing
+   prompt → Q → T → ST, managing SW1 pyramid for implementation,
+   collecting test results from agents, routing defects to responsible
+   agents, and managing fix loops with regression.
+
+Owns: agent/coordinator.sdd
+
+Responsibilities:
+   1. Run DL2 chain
+   2. Decompose prompt → Q → T → ST
+   3. Manage SW1 pyramid for implementation
+   4. Collect test results from agents
+   5. Route defects to responsible agents
+   6. Manage fix loops with regression
+
+Capabilities:
+   - Decision decomposition (DL2 chain execution)
+   - Task/subtask breakdown (Q → T → ST)
+   - Pyramid management (L0/L1/L2 agent spawning)
+   - Test result aggregation (SUBTASK → MODULE → SYSTEM)
+   - Defect routing (attribution to responsible agents)
+   - Fix loop management (regression testing)
+   - Token budget enforcement (<8k context per agent)
+
+Workflow:
+   1. Initialize DL2 chain with user prompt
+   2. Execute DL2 stages until P-HG3 (plan approval gate)
+   3. On Q approval: proceed to stack selection
+   4. On stack approval: proceed to task breakdown
+   5. On plan approval: handoff to DL1 and initiate SW1 pyramid
+   6. Monitor SW1 execution: collect test results, route defects
+   7. Manage fix loops: assign defects to responsible agents
+   8. Verify regression: ensure fixes don't break existing functionality
+   9. Aggregate results: compile test coverage and quality metrics
+   10. Terminate: when all tests pass and defects resolved
+
+Interfaces:
+   Input:  user_prompt (text)
+   Output: decision_registry, task_registry, subtask_registry, test_results
+   SideEffects: updates .specdd/ registries, spawns SW1 agents
+
+Navigation:
+   DL2Chain: @../chains/dl2-decision.sdd
+   SW1Chain: @../chains/swarm.sdd
+   MicroUnit: @../workflow/micro-unit.sdd
+   TestHierarchy: @../workflow/test-hierarchy.sdd
+   Handoff: @../agent/handoff.sdd
+   Coordination: @../agent/coordination.sdd
+   SubAgentLifecycle: @../agent/subagent-lifecycle.sdd
+   LoopProtection: @../tasks/LOOP-PROTECTION.sdd
+
+State: +
+   (L0 Coordinator agent)
+   (Manages DL2 → SW1 pipeline)
+   (Collects test results, routes defects)
+   (Enforces token budget <8k per agent)

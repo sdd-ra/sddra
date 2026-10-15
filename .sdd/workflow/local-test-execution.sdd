@@ -1,0 +1,43 @@
+# Workflow: Local Test Execution
+
+Purpose:
+   Specify how to execute tests locally in Docker containers for
+   SUBTASK, MODULE, and SYSTEM levels using the extended builders
+   and test-runner service.
+
+Owns: workflow/local-test-execution.sdd
+
+TestExecution:
+   Subtask test:
+     docker compose run --rm be-builder npm test -- --testPathPattern="<subtask_scope>"
+     docker compose run --rm fe-builder npm test -- --testPathPattern="<subtask_scope>"
+     docker compose run --rm mobile-builder npm test -- --testPathPattern="<subtask_scope>"
+
+   Module test:
+     docker compose run --rm test-runner ./run-module-tests.sh <module_name>
+
+   System test:
+     docker compose run --rm test-runner ./run-system-tests.sh <decision_id>
+
+ScriptLocations:
+   run-module-tests.sh: .sdd/codding/scripts/run-module-tests.sh
+   run-system-tests.sh: .sdd/codding/scripts/run-system-tests.sh
+
+Rules:
+   [LTE1] All test execution MUST run inside Docker ([R102], [W19])
+   [LTE2] Test scope MUST match the declared level
+   [LTE3] Test results MUST be captured in JUnit/XML format for aggregation
+   [LTE4] Coverage reports MUST be generated when applicable
+   [LTE5] Test failures MUST halt propagation to higher levels
+
+Navigation:
+   DockerCompose: @../../docker-compose.yml
+   TestRunner: @Dockerfile.test-runner
+   BuilderServices: @be-builder,@fe-builder,@mobile-builder
+   TestHierarchy: @../workflow/test-hierarchy.sdd
+   MicroUnit: @../workflow/micro-unit.sdd
+
+State: +
+   (Local Docker test execution specification)
+   (Subtask: builder services, Module/System: test-runner service)
+   (All execution in Docker per [R102])

@@ -372,9 +372,10 @@ Navigation:
   DomainGraph: @projects/{project_name}/graph/INDEX.sdd
   Skills:     @skills/INDEX.sdd
   SkillCategories: @skills/
-  Chains:     @chains/INDEX.sdd
-  ChainDefs:  @chains/
-  SwarmChain: @chains/swarm.sdd
+   Chains:     @chains/INDEX.sdd
+   ChainDefs:  @chains/
+   SwarmChain: @chains/swarm.sdd
+   DecisionChain: @chains/dl2-decision.sdd
   Stages:     @stages/
   Security:   @security/INDEX.sdd
   SecurityLevels: @security/levels.sdd

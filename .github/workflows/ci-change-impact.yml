@@ -1,0 +1,67 @@
+# GitHub Actions: Change-Impact-Based CI
+
+name: Change-Impact-Based CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.filter.outputs.modules }}
+      has-security: ${{ steps.filter.outputs.has-security }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            modules:
+              - 'projects/**/be/**'
+              - 'projects/**/fe/**'
+              - 'projects/**/api/**'
+              - 'projects/**/db/**'
+              - 'projects/**/md/**'
+            security:
+              - '**/security/**'
+              - '**/auth/**'
+
+  module-tests:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.modules != '[]'
+    strategy:
+      matrix:
+        module: ${{ fromJson(needs.detect-changes.outputs.modules) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run affected module's tests
+        run: |
+          echo "Running tests for module: ${{ matrix.module }}"
+          # In a real implementation, this would trigger SDDRA test execution
+          echo "Module tests would run here for ${{ matrix.module }}"
+
+  security-scan:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-security == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run security scans
+        run: |
+          echo "Running security scans for security-related changes"
+          # In a real implementation, this would trigger security scanning tools
+          echo "Security scans would run here"
+
+  full-integration:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run full integration suite
+        run: |
+          echo "Running full E2E, performance, regression tests on merge to main"
+          # In a real implementation, this would trigger full SDDRA system tests
+          echo "Full integration tests would run here"

@@ -2,33 +2,44 @@
 
 Spec: AgentHandoff
 Purpose:
-  Define how agents pass work to each other. Context is NOT copied;
-  it is reassembled by the receiving agent via the context compiler.
+   Define how agents pass work to each other. Context is NOT copied;
+   it is reassembled by the receiving agent via the context compiler.
 
 Owns: agents/handoff.sdd
 
 HandoffPackage:
-  @handoff.H22
-  done:
-    - domain
-    - service
-  pending:
-    - integration test
-  important:
-    - transaction boundary changed
-  risk: high
-  next: run integration verification
+   @handoff.H22
+   done:
+     - domain
+     - service
+   pending:
+     - integration test
+   important:
+     - transaction boundary changed
+   risk: high
+   next: run integration verification
+
+TestHandoff:
+   subtask_id: ST-XXX
+   test_level: SUBTASK|MODULE|SYSTEM
+   test_results: { passed, failed, coverage }
+   artifacts: [test_report.xml, coverage.json]
+   defects: [DEF-XXX]
+   next_actions: [FIX|REGRESSION|DONE]
 
 ContextPrinciple:
-  DO NOT: Agent A context → copy → Agent B
-  DO: TASK + STATE + REFERENCES + HANDOFF
-  Agent B reassembles context via context compiler
+   DO NOT: Agent A context → copy → Agent B
+   DO: TASK + STATE + REFERENCES + HANDOFF
+   Agent B reassembles context via context compiler
 
 ContextHandoffFields:
-  task: linked task ID
-  state: implementation milestone reached
-  references: @decision, @architecture, @skill IDs
-  proof: what passed/failed
-  unknown: [open questions for next agent]
+   task: linked task ID
+   state: implementation milestone reached
+   references: @decision, @architecture, @skill IDs
+   proof: what passed/failed
+   unknown: [open questions for next agent]
 
 State: +
+   (Added TestHandoff type for test result passing)
+   (Supports SUBTASK/MODULE/SYSTEM test levels)
+   (Includes results, artifacts, defects, and next actions)

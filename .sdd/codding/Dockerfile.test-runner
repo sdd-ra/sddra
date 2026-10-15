@@ -1,0 +1,43 @@
+# Dockerfile: Test Runner Multi-Framework
+FROM node:20-slim as base
+
+# Install dependencies for all test frameworks
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip \
+    openjdk-17-jdk \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.js testing frameworks
+RUN npm install -g \
+    jest@29 \
+    vitest@1 \
+    playwright@1 \
+    cypress@13 \
+    @vitest/coverage-c8 \
+    ck6@0 \
+    mocha@10 \
+    chai@5
+
+# Python testing frameworks
+RUN pip3 install \
+    pytest==8 \
+    pytest-cov==5 \
+    playwright==1 \
+    requests==2
+
+# Java testing frameworks
+# Maven and Gradle would typically be installed via package manager
+# but for simplicity we'll note they should be available
+
+# PHP testing frameworks
+RUN apt-get update && apt-get install -y php phpunit && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy test runner scripts
+COPY .sdd/workflow/local-test-execution.sdd ./local-test-execution.sdd
+COPY .sdd/workflow/test-hierarchy.sdd ./test-hierarchy.sdd
+
+# Default command
+CMD ["sh", "-c", "echo 'Test Runner ready'; sleep 3600"]
