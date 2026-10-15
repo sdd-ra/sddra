@@ -1,0 +1,45 @@
+# /sdd-clear
+
+Purpose:
+  Clear all SDD working context and start fresh for the next task —
+  delegating the final context wipe to the AI agent's NATIVE /clear.
+
+Owns: commands/sdd-clear.sdd
+
+Description:
+  Clear all context and start fresh for next task. Use when transitioning
+  between distinct tasks to prevent context pollution. Delegates to the
+  host agent's native clear command.
+
+Usage:
+  /sdd-clear
+  /sdd-clear --save-state
+  /sdd-clear --archive
+
+Options:
+  --save-state  Persist current task state before clearing
+  --archive     Archive context to history before clearing
+
+Mode: READ_ONLY (delegates wipe to native)
+
+InitialLoad:
+  - .sdd/INDEX.sdd (routing)
+  - .sdd/projects/sddra/context/active.sdd
+
+Output:
+  [tokens: cleared]
+  [state: fresh]
+  [history: archived|discarded]
+  [native: /clear delegated]
+
+Rules:
+  [CLEAR-01] /sdd-clear MUST NOT reimplement context wipe — delegate to native /clear.
+  [CLEAR-02] /sdd-clear MUST persist SDD state if requested.
+  [CLEAR-03] /sdd-clear MUST log the clear operation to history if archived.
+
+Navigation:
+  ChainGraph: @../chains/graph.sdd
+  Runtime: @../runtime/state.sdd
+  History: @../history/INDEX.sdd
+
+State: +

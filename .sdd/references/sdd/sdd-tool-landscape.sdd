@@ -1,0 +1,19 @@
+# SDD Tool Landscape
+
+Spec: SDDToolLandscape
+Purpose:
+  Synthesized comparison of SDD tools and frameworks, capturing learnings
+  from industry analysis for reference within SDDRA.
+
+Owns: references/sdd/sdd-tool-landscape.sdd
+
+Description:
+  Consolidates key findings about living specs, organizational memory,
+  verification practices, and tool capabilities relevant to SDDRA evolution.
+
+Navigation:
+  ReferencesIndex: @INDEX.sdd
+  ToolComparison: @tool-comparison.sdd
+  ECCFramework: @ecc-framework-overview.sdd
+
+State: +

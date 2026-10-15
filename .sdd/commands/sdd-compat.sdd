@@ -1,0 +1,35 @@
+# /sdd-compat
+
+Purpose:
+  Compatibility checker for SDDRA command wrappers across .sdd/, .claude/, .kilo/.
+
+Owns: commands/sdd-compat.sdd
+
+Description:
+  Check command registry consistency: ensure each command has all three
+  required wrappers and consistent metadata.
+
+Usage:
+  /sdd-compat
+  /sdd-compat --fix
+
+Options:
+  --fix  Attempt to sync missing wrappers
+
+Mode: READ_ONLY
+
+InitialLoad:
+  - .sdd/commands/INDEX.sdd
+
+Output:
+  Compatibility report with OK/MISSING/DRIFT status per command.
+
+Rules:
+  [COMPAT-01] All commands MUST be present in .sdd/commands/, .claude/commands/, .kilo/command/.
+  [COMPAT-02] Report must list discrepancies.
+  [COMPAT-03] --fix must not overwrite custom content without confirmation.
+
+Navigation:
+  CommandsIndex: @INDEX.sdd
+
+State: +
