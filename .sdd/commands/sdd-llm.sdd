@@ -1,0 +1,44 @@
+﻿# /sdd-llm
+
+Purpose:
+  Generate or query the LLM-native knowledge layer for SDDRA. Exports
+  .sdd/ into machine-readable artifacts (JSON/JSONL/maps/chunks) following
+  the llmstxt.org llms.txt standard, and (read-only) reports artifact state.
+
+Owns: commands\sdd-llm.sdd
+
+Usage:
+  /sdd-llm
+  /sdd-llm --export
+  /sdd-llm --pack <key>
+  /sdd-llm --query <text>
+  /sdd-llm --format md|json
+
+Options:
+  --export   (Re)generate .sdd/llm/ from canonical .sdd/
+  --pack     Return a minimal context pack for a goal key
+  --query    Free-text NL query over the exported corpus
+  --format   Output format (md|json, default md)
+
+Mode: READ_ONLY by default; --export performs deterministic generation
+(derived artifacts, not source edits).
+
+InitialLoad:
+  - .sdd/INDEX.sdd (routing only)
+  - .sdd/llm/context-pack.json (if present)
+  - .sdd/commands/INDEX.sdd
+
+Rules:
+  [LLM-01] /sdd-llm --export MUST be deterministic: same .sdd/ input -> same output.
+  [LLM-02] /sdd-llm MUST NOT modify canonical .sdd/ source files.
+  [LLM-03] Exported artifacts MUST be marked 'generated - do not hand-edit'.
+  [LLM-04] /sdd-llm MUST preserve traceability (file path + section + @refs).
+
+Navigation:
+  INDEX: @INDEX.sdd
+  LlmLayer: @../llm/README.md
+  LlmEntry: @../llm/llms.txt
+  ContextPack: @../llm/context-pack.json
+  Chunks: @../llm/chunks/
+
+State: +

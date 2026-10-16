@@ -1,4 +1,4 @@
-# Commands
+﻿# Commands
 
 Purpose:
   CLI commands for SDDRA system in Claude AI.
@@ -38,6 +38,7 @@ Commands:
   /sdd-update: Sync .sdd/ state from git repository
   /sdd-prompts: Automate prompt lifecycle (structure, inbox, archive)
   /sdd: Execute chain graph from prompt
+  /sdd-llm: Generate or query the LLM-native knowledge layer (export + read-only report)
   /sdd-analyze: Analyze .sdd/ structure
   /sdd-status: Show execution status
   /sdd-decisions: List decisions
@@ -105,5 +106,6 @@ Navigation:
   MarketplaceCommand: @sdd-marketplace.sdd
   ResearchCommand: @sdd-research.sdd
   EvolveCommand: @sdd-evolve.sdd
+  LlmCommand: @sdd-llm.sdd
 
 State: +

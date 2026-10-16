@@ -1,0 +1,1414 @@
+{
+  "skills": [
+    {
+      "id": "skills-INDEX",
+      "file": "skills/INDEX.sdd",
+      "purpose": "Skill Intelligence and Self-Evolution Engine. Skills are living\nengineering knowledge packages organized by technology and competency\nlayers (L1-L5). Each programming language has layered skills from\nfundamentals to architecture.",
+      "summary": "Skill Intelligence and Self-Evolution Engine"
+    },
+    {
+      "id": "skills-SKILL-EXECUTION",
+      "file": "skills/SKILL-EXECUTION.sdd",
+      "purpose": "Define how skills are executed autonomously. Skills are not just\nknowledge packages — they are executable units that can work\nindependently with clear input/output contracts.",
+      "summary": "Define how skills are executed autonomously"
+    },
+    {
+      "id": "skills-cross-cutting-INDEX",
+      "file": "skills/cross-cutting/INDEX.sdd",
+      "purpose": "Cross-cutting concerns that apply across all languages and frameworks.\nIncludes testing, security, architecture, and observability.",
+      "summary": "Cross-cutting concerns that apply across all languages and frameworks"
+    },
+    {
+      "id": "skills-cross-cutting-architecture-INDEX",
+      "file": "skills/cross-cutting/architecture/INDEX.sdd",
+      "purpose": "Architecture skills for system design and patterns.",
+      "summary": "Architecture skills for system design and patterns."
+    },
+    {
+      "id": "skills-cross-cutting-architecture-clean-architecture",
+      "file": "skills/cross-cutting/architecture/clean-architecture.sdd",
+      "purpose": "Clean Architecture",
+      "summary": "Clean Architecture"
+    },
+    {
+      "id": "skills-cross-cutting-architecture-ddd",
+      "file": "skills/cross-cutting/architecture/ddd.sdd",
+      "purpose": "Domain-Driven Design",
+      "summary": "Domain-Driven Design"
+    },
+    {
+      "id": "skills-cross-cutting-architecture-event-driven",
+      "file": "skills/cross-cutting/architecture/event-driven.sdd",
+      "purpose": "Event-Driven Architecture",
+      "summary": "Event-Driven Architecture"
+    },
+    {
+      "id": "skills-cross-cutting-architecture-microservices",
+      "file": "skills/cross-cutting/architecture/microservices.sdd",
+      "purpose": "Microservices Architecture",
+      "summary": "Microservices Architecture"
+    },
+    {
+      "id": "skills-cross-cutting-observability-INDEX",
+      "file": "skills/cross-cutting/observability/INDEX.sdd",
+      "purpose": "Observability skills for logging, metrics, tracing, health, and incident management.",
+      "summary": "Observability skills for logging, metrics, tracing, health, and incident management."
+    },
+    {
+      "id": "skills-cross-cutting-observability-alerting",
+      "file": "skills/cross-cutting/observability/alerting.sdd",
+      "purpose": "Alerting",
+      "summary": "Alerting"
+    },
+    {
+      "id": "skills-cross-cutting-observability-logging",
+      "file": "skills/cross-cutting/observability/logging.sdd",
+      "purpose": "Logging",
+      "summary": "Logging"
+    },
+    {
+      "id": "skills-cross-cutting-observability-metrics",
+      "file": "skills/cross-cutting/observability/metrics.sdd",
+      "purpose": "Metrics",
+      "summary": "Metrics"
+    },
+    {
+      "id": "skills-cross-cutting-observability-tracing",
+      "file": "skills/cross-cutting/observability/tracing.sdd",
+      "purpose": "Distributed Tracing",
+      "summary": "Distributed Tracing"
+    },
+    {
+      "id": "skills-cross-cutting-security-INDEX",
+      "file": "skills/cross-cutting/security/INDEX.sdd",
+      "purpose": "Security skills for authentication, authorization, and encryption.",
+      "summary": "Security skills for authentication, authorization, and encryption."
+    },
+    {
+      "id": "skills-cross-cutting-security-authentication",
+      "file": "skills/cross-cutting/security/authentication.sdd",
+      "purpose": "Authentication",
+      "summary": "Authentication"
+    },
+    {
+      "id": "skills-cross-cutting-security-authorization",
+      "file": "skills/cross-cutting/security/authorization.sdd",
+      "purpose": "Authorization",
+      "summary": "Authorization"
+    },
+    {
+      "id": "skills-cross-cutting-security-encryption",
+      "file": "skills/cross-cutting/security/encryption.sdd",
+      "purpose": "Encryption",
+      "summary": "Encryption"
+    },
+    {
+      "id": "skills-cross-cutting-testing-INDEX",
+      "file": "skills/cross-cutting/testing/INDEX.sdd",
+      "purpose": "Testing skills for all test types and methodologies.",
+      "summary": "Testing skills for all test types and methodologies."
+    },
+    {
+      "id": "skills-cross-cutting-testing-bdd",
+      "file": "skills/cross-cutting/testing/bdd.sdd",
+      "purpose": "BDD Testing",
+      "summary": "BDD Testing"
+    },
+    {
+      "id": "skills-cross-cutting-testing-e2e",
+      "file": "skills/cross-cutting/testing/e2e.sdd",
+      "purpose": "End-to-End Testing",
+      "summary": "End-to-End Testing"
+    },
+    {
+      "id": "skills-cross-cutting-testing-integration",
+      "file": "skills/cross-cutting/testing/integration.sdd",
+      "purpose": "Integration Testing",
+      "summary": "Integration Testing"
+    },
+    {
+      "id": "skills-cross-cutting-testing-performance",
+      "file": "skills/cross-cutting/testing/performance.sdd",
+      "purpose": "Performance Testing",
+      "summary": "Performance Testing"
+    },
+    {
+      "id": "skills-cross-cutting-testing-tdd",
+      "file": "skills/cross-cutting/testing/tdd.sdd",
+      "purpose": "TDD Testing",
+      "summary": "TDD Testing"
+    },
+    {
+      "id": "skills-databases-INDEX",
+      "file": "skills/databases/INDEX.sdd",
+      "purpose": "Database technology skills organized by technology and competency layers.",
+      "summary": "Database technology skills organized by technology and competency layers."
+    },
+    {
+      "id": "skills-databases-cassandra-INDEX",
+      "file": "skills/databases/cassandra/INDEX.sdd",
+      "purpose": "Apache Cassandra skills organized by competency layers.",
+      "summary": "Apache Cassandra skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-cassandra-L1-fundamentals",
+      "file": "skills/databases/cassandra/L1-fundamentals.sdd",
+      "purpose": "Cassandra Fundamentals",
+      "summary": "Cassandra Fundamentals"
+    },
+    {
+      "id": "skills-databases-elasticsearch-INDEX",
+      "file": "skills/databases/elasticsearch/INDEX.sdd",
+      "purpose": "Elasticsearch skills organized by competency layers.",
+      "summary": "Elasticsearch skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-elasticsearch-L1-fundamentals",
+      "file": "skills/databases/elasticsearch/L1-fundamentals.sdd",
+      "purpose": "Elasticsearch Fundamentals",
+      "summary": "Elasticsearch Fundamentals"
+    },
+    {
+      "id": "skills-databases-mongodb-INDEX",
+      "file": "skills/databases/mongodb/INDEX.sdd",
+      "purpose": "MongoDB skills organized by competency layers.",
+      "summary": "MongoDB skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-mongodb-L1-fundamentals",
+      "file": "skills/databases/mongodb/L1-fundamentals.sdd",
+      "purpose": "MongoDB Fundamentals",
+      "summary": "MongoDB Fundamentals"
+    },
+    {
+      "id": "skills-databases-mysql-INDEX",
+      "file": "skills/databases/mysql/INDEX.sdd",
+      "purpose": "MySQL skills organized by competency layers.",
+      "summary": "MySQL skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-mysql-L1-fundamentals",
+      "file": "skills/databases/mysql/L1-fundamentals.sdd",
+      "purpose": "MySQL Fundamentals",
+      "summary": "MySQL Fundamentals"
+    },
+    {
+      "id": "skills-databases-postgresql-INDEX",
+      "file": "skills/databases/postgresql/INDEX.sdd",
+      "purpose": "PostgreSQL skills organized by competency layers.",
+      "summary": "PostgreSQL skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-postgresql-L1-fundamentals",
+      "file": "skills/databases/postgresql/L1-fundamentals.sdd",
+      "purpose": "PostgreSQL Fundamentals",
+      "summary": "PostgreSQL Fundamentals"
+    },
+    {
+      "id": "skills-databases-postgresql-L2-advanced-queries",
+      "file": "skills/databases/postgresql/L2-advanced-queries.sdd",
+      "purpose": "PostgreSQL Advanced Queries",
+      "summary": "PostgreSQL Advanced Queries"
+    },
+    {
+      "id": "skills-databases-postgresql-L3-performance-tuning",
+      "file": "skills/databases/postgresql/L3-performance-tuning.sdd",
+      "purpose": "PostgreSQL Performance Tuning",
+      "summary": "PostgreSQL Performance Tuning"
+    },
+    {
+      "id": "skills-databases-postgresql-L4-enterprise-patterns",
+      "file": "skills/databases/postgresql/L4-enterprise-patterns.sdd",
+      "purpose": "PostgreSQL Enterprise Patterns",
+      "summary": "PostgreSQL Enterprise Patterns"
+    },
+    {
+      "id": "skills-databases-redis-INDEX",
+      "file": "skills/databases/redis/INDEX.sdd",
+      "purpose": "Redis skills organized by competency layers.",
+      "summary": "Redis skills organized by competency layers."
+    },
+    {
+      "id": "skills-databases-redis-L1-fundamentals",
+      "file": "skills/databases/redis/L1-fundamentals.sdd",
+      "purpose": "Redis Fundamentals",
+      "summary": "Redis Fundamentals"
+    },
+    {
+      "id": "skills-design-INDEX",
+      "file": "skills/design/INDEX.sdd",
+      "purpose": "Design skills for UI/UX, visual design, taste evaluation, heuristics,\naccessibility, and design system governance. Covers frontend and\nmobile design tasks.",
+      "summary": "Design skills for UI/UX, visual design, taste evaluation, heuristics,\naccessibility, and design system governance"
+    },
+    {
+      "id": "skills-design-accessibility",
+      "file": "skills/design/accessibility.sdd",
+      "purpose": "Ensure UI implementations meet WCAG 2.1 AA baseline and project\naccessibility requirements.",
+      "summary": "Ensure UI implementations meet WCAG 2.1 AA baseline and project\naccessibility requirements."
+    },
+    {
+      "id": "skills-design-design-heuristics",
+      "file": "skills/design/design-heuristics.sdd",
+      "purpose": "Apply Nielsen heuristics and domain-specific design rules to evaluate\nusability and interaction quality.",
+      "summary": "Apply Nielsen heuristics and domain-specific design rules to evaluate\nusability and interaction quality."
+    },
+    {
+      "id": "skills-design-design-review",
+      "file": "skills/design/design-review.sdd",
+      "purpose": "Holistic design review combining taste, heuristics, visual fidelity,\nUX patterns, accessibility, and design system compliance.",
+      "summary": "Holistic design review combining taste, heuristics, visual fidelity,\nUX patterns, accessibility, and design system compliance."
+    },
+    {
+      "id": "skills-design-design-system",
+      "file": "skills/design/design-system.sdd",
+      "purpose": "Govern design tokens, components, and patterns as a shared system.\nEnsure consistency across products and teams.",
+      "summary": "Govern design tokens, components, and patterns as a shared system"
+    },
+    {
+      "id": "skills-design-imported-INDEX",
+      "file": "skills/design/imported/INDEX.sdd",
+      "purpose": "Registry of design skills imported from external repositories.\nEach subdirectory preserves the original SKILL.md verbatim with a\nprovenance INDEX.sdd wrapper per CLAUDE.md import rules.",
+      "summary": "Registry of design skills imported from external repositories"
+    },
+    {
+      "id": "skills-design-imported-brutalist-skill-INDEX",
+      "file": "skills/design/imported/brutalist-skill/INDEX.sdd",
+      "purpose": "Brutalist design patterns and bold structure. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Brutalist design patterns and bold structure"
+    },
+    {
+      "id": "skills-design-imported-image-to-code-skill-INDEX",
+      "file": "skills/design/imported/image-to-code-skill/INDEX.sdd",
+      "purpose": "Converting design images to code. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Converting design images to code"
+    },
+    {
+      "id": "skills-design-imported-minimalist-skill-INDEX",
+      "file": "skills/design/imported/minimalist-skill/INDEX.sdd",
+      "purpose": "Minimalist design principles and restraint. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Minimalist design principles and restraint"
+    },
+    {
+      "id": "skills-design-imported-output-skill-INDEX",
+      "file": "skills/design/imported/output-skill/INDEX.sdd",
+      "purpose": "Design output quality and polish criteria. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Design output quality and polish criteria"
+    },
+    {
+      "id": "skills-design-imported-patterns-dev-extract",
+      "file": "skills/design/imported/patterns-dev-extract.sdd",
+      "purpose": "Machine-usable extract of the patterns.dev free book catalog (design,\nrendering, performance patterns for vanilla JS + React, incl. AI UI\nPatterns) for SDDRA design-skill reference and AI-agent frontend work.",
+      "summary": "Machine-usable extract of the patterns.dev free book catalog (design,\nrendering, performance patterns for vanilla JS + React, incl"
+    },
+    {
+      "id": "skills-design-imported-redesign-skill-INDEX",
+      "file": "skills/design/imported/redesign-skill/INDEX.sdd",
+      "purpose": "Systematic redesign of existing interfaces. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Systematic redesign of existing interfaces"
+    },
+    {
+      "id": "skills-design-imported-stitch-skill-INDEX",
+      "file": "skills/design/imported/stitch-skill/INDEX.sdd",
+      "purpose": "Design-to-code stitching workflow (SKILL.md + DESIGN.md). Imported design-reference skill from the taste-skill repo.",
+      "summary": "Design-to-code stitching workflow (SKILL.md + DESIGN.md)"
+    },
+    {
+      "id": "skills-design-imported-taste-skill-INDEX",
+      "file": "skills/design/imported/taste-skill/INDEX.sdd",
+      "purpose": "Core design taste evaluation and aesthetic judgment. Imported design-reference skill from the taste-skill repo.",
+      "summary": "Core design taste evaluation and aesthetic judgment"
+    },
+    {
+      "id": "skills-design-intelligence-INDEX",
+      "file": "skills/design/intelligence/INDEX.sdd",
+      "purpose": "The unified design module fixing the \"AI cannot design UI\" weakness\n(@agent.design weak point). Merges the researched mechanisms of Google\nStitch (DESIGN.md tokens), v0 (tokens-first, closed-loop verification),\nGalileo (4-stage pipeline), Relume (structure-first), Figma FirstDraft\n(curated vocabular",
+      "summary": "The unified design module fixing the \"AI cannot design UI\" weakness\n(@agent.design weak point)"
+    },
+    {
+      "id": "skills-design-intelligence-self-test",
+      "file": "skills/design/intelligence/self-test.sdd",
+      "purpose": "Real-task execution of the Unified Design Intelligence pipeline (T5 of\n{\"key\":\"Phase 148). Test subject\",\"value\":[\"page itself. Output feeds the Pros/Cons percentage report\",\"(@../../docs/analysis/design-system-proscons-report.md).\"]}",
+      "summary": "Real-task execution of the Unified Design Intelligence pipeline (T5 of\n{\"key\":\"Phase 148)"
+    },
+    {
+      "id": "skills-design-sources",
+      "file": "skills/design/sources.sdd",
+      "purpose": "Registry of design inspiration/pattern sources with extraction status.\nMakes the system AWARE which sources' design skills are obtained vs not,\n{\"key\":\"per user requirement (translated from the Azerbaijani directive\",\"value\":[\"\\\"the AI must know which sites' design skills are not yet obtained\\\";\",\"r",
+      "summary": "Registry of design inspiration/pattern sources with extraction status"
+    },
+    {
+      "id": "skills-design-taste-evaluation",
+      "file": "skills/design/taste-evaluation.sdd",
+      "purpose": "Evaluate design quality and aesthetic coherence. Detect \"slop\" —\ngeneric AI-generated design fingerprints — and enforce project-specific\ntaste boundaries.",
+      "summary": "Evaluate design quality and aesthetic coherence"
+    },
+    {
+      "id": "skills-design-ux-patterns",
+      "file": "skills/design/ux-patterns.sdd",
+      "purpose": "Catalog and evaluate common UX patterns. Ensure implementations use\nproven interaction patterns rather than inventing new ones.",
+      "summary": "Catalog and evaluate common UX patterns"
+    },
+    {
+      "id": "skills-design-visual-design",
+      "file": "skills/design/visual-design.sdd",
+      "purpose": "Evaluate visual hierarchy, composition, typography, color, and imagery.\nEnsure implementations match design intent.",
+      "summary": "Evaluate visual hierarchy, composition, typography, color, and imagery"
+    },
+    {
+      "id": "skills-design-web-design-guidelines-INDEX",
+      "file": "skills/design/web-design-guidelines/INDEX.sdd",
+      "purpose": "Web design guidelines skill. Covers UI/UX best practices, accessibility,\nvisual design rules, and responsive design patterns for modern web apps.",
+      "summary": "Web design guidelines skill"
+    },
+    {
+      "id": "skills-devops-INDEX",
+      "file": "skills/devops/INDEX.sdd",
+      "purpose": "DevOps skills for SDDRA system. These skills define how the system\nis built, tested, deployed, and maintained. All DevOps practices\nare encoded as immutable skills.",
+      "summary": "DevOps skills for SDDRA system"
+    },
+    {
+      "id": "skills-devops-ci-cd-INDEX",
+      "file": "skills/devops/ci-cd/INDEX.sdd",
+      "purpose": "CI/CD skills for SDDRA system. Defines how code is built,\ntested, and deployed automatically.",
+      "summary": "CI/CD skills for SDDRA system"
+    },
+    {
+      "id": "skills-devops-ci-cd-local-validation",
+      "file": "skills/devops/ci-cd/local-validation.sdd",
+      "purpose": "Define local validation checks that run before push.\nEnsures code quality and catches issues early.",
+      "summary": "Define local validation checks that run before push"
+    },
+    {
+      "id": "skills-devops-ci-cd-pipeline",
+      "file": "skills/devops/ci-cd/pipeline.sdd",
+      "purpose": "Define CI/CD pipeline for SDDRA system. Ensures every change\nis tested, validated, and deployed safely.",
+      "summary": "Define CI/CD pipeline for SDDRA system"
+    },
+    {
+      "id": "skills-devops-git-INDEX",
+      "file": "skills/devops/git/INDEX.sdd",
+      "purpose": "Git skills for SDDRA system. Defines how git is used,\nincluding branching, commits, and hooks.",
+      "summary": "Git skills for SDDRA system"
+    },
+    {
+      "id": "skills-devops-git-branching",
+      "file": "skills/devops/git/branching.sdd",
+      "purpose": "Define branching strategy for SDDRA system. Ensures consistent\nbranch naming, organization, and workflow.",
+      "summary": "Define branching strategy for SDDRA system"
+    },
+    {
+      "id": "skills-devops-git-hooks",
+      "file": "skills/devops/git/hooks.sdd",
+      "purpose": "Define git hooks for SDDRA system. Hooks enforce quality,\nsecurity, and consistency before commits and pushes.",
+      "summary": "Define git hooks for SDDRA system"
+    },
+    {
+      "id": "skills-devops-git-semantic-commits",
+      "file": "skills/devops/git/semantic-commits.sdd",
+      "purpose": "Enforce semantic commit messages across the SDDRA system.\n{\"key\":\"Every commit MUST follow the format\",\"value\":\"`<type>(<scope>): <subject>`\"}",
+      "summary": "Enforce semantic commit messages across the SDDRA system"
+    },
+    {
+      "id": "skills-devops-security-INDEX",
+      "file": "skills/devops/security/INDEX.sdd",
+      "purpose": "Security skills for SDDRA system. Defines security testing,\nscanning, and compliance requirements.",
+      "summary": "Security skills for SDDRA system"
+    },
+    {
+      "id": "skills-devops-security-testing",
+      "file": "skills/devops/security/testing.sdd",
+      "purpose": "Define security testing requirements for SDDRA system.\nEnsures all code is tested for security vulnerabilities.",
+      "summary": "Define security testing requirements for SDDRA system"
+    },
+    {
+      "id": "skills-devops-testing-INDEX",
+      "file": "skills/devops/testing/INDEX.sdd",
+      "purpose": "Testing skills for SDDRA system. Defines test automation,\ncoverage requirements, and testing standards.",
+      "summary": "Testing skills for SDDRA system"
+    },
+    {
+      "id": "skills-devops-testing-automation",
+      "file": "skills/devops/testing/automation.sdd",
+      "purpose": "Define test automation strategy for SDDRA system.\nEnsures all code changes are tested automatically.",
+      "summary": "Define test automation strategy for SDDRA system"
+    },
+    {
+      "id": "skills-devops-vercel-optimize-INDEX",
+      "file": "skills/devops/vercel-optimize/INDEX.sdd",
+      "purpose": "Vercel project optimization skill. Provides scanners, gates, and\nrecommendations for improving Vercel deployment performance, cost,\nand reliability.",
+      "summary": "Vercel project optimization skill"
+    },
+    {
+      "id": "skills-engineering-INDEX",
+      "file": "skills/engineering/INDEX.sdd",
+      "purpose": "Systems-engineering knowledge distilled from 2026 landscape research\n{\"key\":\"(rounds 2-3)\",\"value\":[\"hardening, MCP runtime. Each skill carries its research provenance.\"]}",
+      "summary": "Systems-engineering knowledge distilled from 2026 landscape research\n{\"key\":\"(rounds 2-3)\",\"value\":[\"hardening, MCP runtime"
+    },
+    {
+      "id": "skills-engineering-deep-research-pipeline",
+      "file": "skills/engineering/deep-research-pipeline.sdd",
+      "purpose": "Engineering skill for running disciplined research rounds — the\npipeline behind SDDRA's RS1 arm and /sdd-research. Use when planning\nany web research, literature scan, or technology evaluation.",
+      "summary": "Engineering skill for running disciplined research rounds — the\npipeline behind SDDRA's RS1 arm and /sdd-research"
+    },
+    {
+      "id": "skills-engineering-integration-routing",
+      "file": "skills/engineering/integration-routing.sdd",
+      "purpose": "Engineering skill for wiring external integrations (tools, channels,\nMCP servers, providers) with ordered backend routing, real health\nprobing, and credential boundaries. Use when adding or operating any\nexternal capability.",
+      "summary": "Engineering skill for wiring external integrations (tools, channels,\nMCP servers, providers) with ordered backend routing, real health\nprobing, and credential boundaries"
+    },
+    {
+      "id": "skills-engineering-mcp-runtime-ops",
+      "file": "skills/engineering/mcp-runtime-ops.sdd",
+      "purpose": "Engineering skill for operating MCP (Model Context Protocol) integrations\nsafely — activation, hash pinning, output DLP, sandboxing. Use when\nconnecting external tool servers to the SDDRA runtime.",
+      "summary": "Engineering skill for operating MCP (Model Context Protocol) integrations\nsafely — activation, hash pinning, output DLP, sandboxing"
+    },
+    {
+      "id": "skills-engineering-memory-architecture",
+      "file": "skills/engineering/memory-architecture.sdd",
+      "purpose": "Engineering skill for designing and operating agent memory systems —\nthe patterns behind SDDRA's 4-tier memory model. Use when reasoning\nabout memory storage, retrieval, consolidation, or governance.",
+      "summary": "Engineering skill for designing and operating agent memory systems —\nthe patterns behind SDDRA's 4-tier memory model"
+    },
+    {
+      "id": "skills-engineering-orchestration-hardening",
+      "file": "skills/engineering/orchestration-hardening.sdd",
+      "purpose": "Engineering skill for making multi-agent orchestration reliable — the\npatterns behind SDDRA's chain graph, checkpoints, interrupts, and loop\nprotection. Use when designing agent teams, failure handling, or\nresume-from-crash behavior.",
+      "summary": "Engineering skill for making multi-agent orchestration reliable — the\npatterns behind SDDRA's chain graph, checkpoints, interrupts, and loop\nprotection"
+    },
+    {
+      "id": "skills-evolution",
+      "file": "skills/evolution.sdd",
+      "purpose": "",
+      "summary": ""
+    },
+    {
+      "id": "skills-frameworks-INDEX",
+      "file": "skills/frameworks/INDEX.sdd",
+      "purpose": "Framework skills organized by framework and competency layers.",
+      "summary": "Framework skills organized by framework and competency layers."
+    },
+    {
+      "id": "skills-frameworks-angular-INDEX",
+      "file": "skills/frameworks/angular/INDEX.sdd",
+      "purpose": "Angular framework skills organized by competency layers.",
+      "summary": "Angular framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-angular-L1-fundamentals",
+      "file": "skills/frameworks/angular/L1-fundamentals.sdd",
+      "purpose": "Angular Fundamentals",
+      "summary": "Angular Fundamentals"
+    },
+    {
+      "id": "skills-frameworks-django-INDEX",
+      "file": "skills/frameworks/django/INDEX.sdd",
+      "purpose": "Django framework skills organized by competency layers.",
+      "summary": "Django framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-django-L1-fundamentals",
+      "file": "skills/frameworks/django/L1-fundamentals.sdd",
+      "purpose": "Django Framework",
+      "summary": "Django Framework"
+    },
+    {
+      "id": "skills-frameworks-dotnet-INDEX",
+      "file": "skills/frameworks/dotnet/INDEX.sdd",
+      "purpose": ".NET framework skills organized by competency layers.",
+      "summary": ".NET framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-dotnet-L1-fundamentals",
+      "file": "skills/frameworks/dotnet/L1-fundamentals.sdd",
+      "purpose": ".NET Framework",
+      "summary": ".NET Framework"
+    },
+    {
+      "id": "skills-frameworks-express-INDEX",
+      "file": "skills/frameworks/express/INDEX.sdd",
+      "purpose": "Express.js framework skills organized by competency layers.",
+      "summary": "Express.js framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-express-L1-fundamentals",
+      "file": "skills/frameworks/express/L1-fundamentals.sdd",
+      "purpose": "Express.js Framework",
+      "summary": "Express.js Framework"
+    },
+    {
+      "id": "skills-frameworks-fastapi-INDEX",
+      "file": "skills/frameworks/fastapi/INDEX.sdd",
+      "purpose": "FastAPI framework skills organized by competency layers.",
+      "summary": "FastAPI framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-fastapi-L1-fundamentals",
+      "file": "skills/frameworks/fastapi/L1-fundamentals.sdd",
+      "purpose": "FastAPI Framework",
+      "summary": "FastAPI Framework"
+    },
+    {
+      "id": "skills-frameworks-flutter-INDEX",
+      "file": "skills/frameworks/flutter/INDEX.sdd",
+      "purpose": "Flutter framework skills organized by competency layers.",
+      "summary": "Flutter framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-flutter-L1-fundamentals",
+      "file": "skills/frameworks/flutter/L1-fundamentals.sdd",
+      "purpose": "Flutter Framework",
+      "summary": "Flutter Framework"
+    },
+    {
+      "id": "skills-frameworks-flutter-L2-advanced-architecture",
+      "file": "skills/frameworks/flutter/L2-advanced-architecture.sdd",
+      "purpose": "Flutter Advanced Architecture",
+      "summary": "Flutter Advanced Architecture"
+    },
+    {
+      "id": "skills-frameworks-kotlin-multiplatform-INDEX",
+      "file": "skills/frameworks/kotlin-multiplatform/INDEX.sdd",
+      "purpose": "Kotlin Multiplatform framework skills organized by competency layers.",
+      "summary": "Kotlin Multiplatform framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-kotlin-multiplatform-L1-fundamentals",
+      "file": "skills/frameworks/kotlin-multiplatform/L1-fundamentals.sdd",
+      "purpose": "Kotlin Multiplatform",
+      "summary": "Kotlin Multiplatform"
+    },
+    {
+      "id": "skills-frameworks-laravel-INDEX",
+      "file": "skills/frameworks/laravel/INDEX.sdd",
+      "purpose": "Laravel framework skills organized by competency layers.",
+      "summary": "Laravel framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-laravel-L1-fundamentals",
+      "file": "skills/frameworks/laravel/L1-fundamentals.sdd",
+      "purpose": "Laravel Framework",
+      "summary": "Laravel Framework"
+    },
+    {
+      "id": "skills-frameworks-nestjs-INDEX",
+      "file": "skills/frameworks/nestjs/INDEX.sdd",
+      "purpose": "NestJS framework skills organized by competency layers.",
+      "summary": "NestJS framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-nestjs-L1-fundamentals",
+      "file": "skills/frameworks/nestjs/L1-fundamentals.sdd",
+      "purpose": "NestJS Framework",
+      "summary": "NestJS Framework"
+    },
+    {
+      "id": "skills-frameworks-nextjs-INDEX",
+      "file": "skills/frameworks/nextjs/INDEX.sdd",
+      "purpose": "Next.js framework skills organized by competency layers.",
+      "summary": "Next.js framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-nextjs-L1-fundamentals",
+      "file": "skills/frameworks/nextjs/L1-fundamentals.sdd",
+      "purpose": "Next.js Framework",
+      "summary": "Next.js Framework"
+    },
+    {
+      "id": "skills-frameworks-react-native-INDEX",
+      "file": "skills/frameworks/react-native/INDEX.sdd",
+      "purpose": "React Native framework skills organized by competency layers.",
+      "summary": "React Native framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-react-native-L1-fundamentals",
+      "file": "skills/frameworks/react-native/L1-fundamentals.sdd",
+      "purpose": "React Native",
+      "summary": "React Native"
+    },
+    {
+      "id": "skills-frameworks-react-INDEX",
+      "file": "skills/frameworks/react/INDEX.sdd",
+      "purpose": "React framework skills organized by competency layers.",
+      "summary": "React framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-react-L1-fundamentals",
+      "file": "skills/frameworks/react/L1-fundamentals.sdd",
+      "purpose": "React Fundamentals",
+      "summary": "React Fundamentals"
+    },
+    {
+      "id": "skills-frameworks-react-L2-hooks-patterns",
+      "file": "skills/frameworks/react/L2-hooks-patterns.sdd",
+      "purpose": "React Hooks Patterns",
+      "summary": "React Hooks Patterns"
+    },
+    {
+      "id": "skills-frameworks-react-L3-state-management",
+      "file": "skills/frameworks/react/L3-state-management.sdd",
+      "purpose": "React State Management",
+      "summary": "React State Management"
+    },
+    {
+      "id": "skills-frameworks-react-L4-advanced-architecture",
+      "file": "skills/frameworks/react/L4-advanced-architecture.sdd",
+      "purpose": "React Advanced Architecture",
+      "summary": "React Advanced Architecture"
+    },
+    {
+      "id": "skills-frameworks-spring-boot-INDEX",
+      "file": "skills/frameworks/spring-boot/INDEX.sdd",
+      "purpose": "Spring Boot framework skills organized by competency layers.",
+      "summary": "Spring Boot framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-spring-boot-L1-fundamentals",
+      "file": "skills/frameworks/spring-boot/L1-fundamentals.sdd",
+      "purpose": "Spring Boot Framework",
+      "summary": "Spring Boot Framework"
+    },
+    {
+      "id": "skills-frameworks-svelte-INDEX",
+      "file": "skills/frameworks/svelte/INDEX.sdd",
+      "purpose": "Svelte framework skills organized by competency layers.",
+      "summary": "Svelte framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-svelte-L1-fundamentals",
+      "file": "skills/frameworks/svelte/L1-fundamentals.sdd",
+      "purpose": "Svelte Framework",
+      "summary": "Svelte Framework"
+    },
+    {
+      "id": "skills-frameworks-swiftui-INDEX",
+      "file": "skills/frameworks/swiftui/INDEX.sdd",
+      "purpose": "SwiftUI framework skills organized by competency layers.",
+      "summary": "SwiftUI framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-swiftui-L1-fundamentals",
+      "file": "skills/frameworks/swiftui/L1-fundamentals.sdd",
+      "purpose": "SwiftUI",
+      "summary": "SwiftUI"
+    },
+    {
+      "id": "skills-frameworks-symfony-INDEX",
+      "file": "skills/frameworks/symfony/INDEX.sdd",
+      "purpose": "Symfony framework skills organized by competency layers.",
+      "summary": "Symfony framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-symfony-L1-fundamentals",
+      "file": "skills/frameworks/symfony/L1-fundamentals.sdd",
+      "purpose": "Symfony Framework",
+      "summary": "Symfony Framework"
+    },
+    {
+      "id": "skills-frameworks-vue-INDEX",
+      "file": "skills/frameworks/vue/INDEX.sdd",
+      "purpose": "Vue.js framework skills organized by competency layers.",
+      "summary": "Vue.js framework skills organized by competency layers."
+    },
+    {
+      "id": "skills-frameworks-vue-L1-fundamentals",
+      "file": "skills/frameworks/vue/L1-fundamentals.sdd",
+      "purpose": "Vue Fundamentals",
+      "summary": "Vue Fundamentals"
+    },
+    {
+      "id": "skills-frontend-INDEX",
+      "file": "skills/frontend/INDEX.sdd",
+      "purpose": "Frontend skills for SDDRA system. Covers React, Next.js, performance,\naccessibility, and modern frontend engineering practices.",
+      "summary": "Frontend skills for SDDRA system"
+    },
+    {
+      "id": "skills-frontend-react-best-practices-INDEX",
+      "file": "skills/frontend/react-best-practices/INDEX.sdd",
+      "purpose": "React and Next.js best practices skill. Contains 40+ rules covering\nrendering, state management, async patterns, bundle optimization,\nand server/client boundaries.",
+      "summary": "React and Next.js best practices skill"
+    },
+    {
+      "id": "skills-languages-INDEX",
+      "file": "skills/languages/INDEX.sdd",
+      "purpose": "Programming language skills organized by competency layers (L1-L5).\nEach language has layered skills from fundamentals to architecture.",
+      "summary": "Programming language skills organized by competency layers (L1-L5)"
+    },
+    {
+      "id": "skills-languages-cpp-INDEX",
+      "file": "skills/languages/cpp/INDEX.sdd",
+      "purpose": "C++ programming language skills organized by competency layers.",
+      "summary": "C++ programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-cpp-L1-fundamentals",
+      "file": "skills/languages/cpp/L1-fundamentals.sdd",
+      "purpose": "C++ Fundamentals",
+      "summary": "C++ Fundamentals"
+    },
+    {
+      "id": "skills-languages-cpp-L2-modern-patterns",
+      "file": "skills/languages/cpp/L2-modern-patterns.sdd",
+      "purpose": "C++ Modern Patterns",
+      "summary": "C++ Modern Patterns"
+    },
+    {
+      "id": "skills-languages-csharp-INDEX",
+      "file": "skills/languages/csharp/INDEX.sdd",
+      "purpose": "C# programming language skills organized by competency layers.",
+      "summary": "C# programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-csharp-L1-fundamentals",
+      "file": "skills/languages/csharp/L1-fundamentals.sdd",
+      "purpose": "C# Fundamentals",
+      "summary": "C# Fundamentals"
+    },
+    {
+      "id": "skills-languages-csharp-L2-enterprise-development",
+      "file": "skills/languages/csharp/L2-enterprise-development.sdd",
+      "purpose": "C# Enterprise Development",
+      "summary": "C# Enterprise Development"
+    },
+    {
+      "id": "skills-languages-csharp-L3-advanced-patterns",
+      "file": "skills/languages/csharp/L3-advanced-patterns.sdd",
+      "purpose": "C# Advanced Patterns",
+      "summary": "C# Advanced Patterns"
+    },
+    {
+      "id": "skills-languages-go-INDEX",
+      "file": "skills/languages/go/INDEX.sdd",
+      "purpose": "Go programming language skills organized by competency layers.",
+      "summary": "Go programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-go-L1-fundamentals",
+      "file": "skills/languages/go/L1-fundamentals.sdd",
+      "purpose": "Go Fundamentals",
+      "summary": "Go Fundamentals"
+    },
+    {
+      "id": "skills-languages-go-L2-patterns",
+      "file": "skills/languages/go/L2-patterns.sdd",
+      "purpose": "Go Advanced Patterns",
+      "summary": "Go Advanced Patterns"
+    },
+    {
+      "id": "skills-languages-go-L3-concurrency",
+      "file": "skills/languages/go/L3-concurrency.sdd",
+      "purpose": "Go Concurrency",
+      "summary": "Go Concurrency"
+    },
+    {
+      "id": "skills-languages-go-L4-microservices",
+      "file": "skills/languages/go/L4-microservices.sdd",
+      "purpose": "Go Microservices",
+      "summary": "Go Microservices"
+    },
+    {
+      "id": "skills-languages-go-L5-performance",
+      "file": "skills/languages/go/L5-performance.sdd",
+      "purpose": "Go Performance Optimization",
+      "summary": "Go Performance Optimization"
+    },
+    {
+      "id": "skills-languages-go-testing-INDEX",
+      "file": "skills/languages/go/testing/INDEX.sdd",
+      "purpose": "Go testing skills organized by test type.",
+      "summary": "Go testing skills organized by test type."
+    },
+    {
+      "id": "skills-languages-go-testing-L1-unit-testing",
+      "file": "skills/languages/go/testing/L1-unit-testing.sdd",
+      "purpose": "Go Unit Testing",
+      "summary": "Go Unit Testing"
+    },
+    {
+      "id": "skills-languages-go-testing-L2-integration-testing",
+      "file": "skills/languages/go/testing/L2-integration-testing.sdd",
+      "purpose": "Go Integration Testing",
+      "summary": "Go Integration Testing"
+    },
+    {
+      "id": "skills-languages-java-INDEX",
+      "file": "skills/languages/java/INDEX.sdd",
+      "purpose": "Java programming language skills organized by competency layers.",
+      "summary": "Java programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-java-L1-fundamentals",
+      "file": "skills/languages/java/L1-fundamentals.sdd",
+      "purpose": "Java Fundamentals",
+      "summary": "Java Fundamentals"
+    },
+    {
+      "id": "skills-languages-java-L2-spring-boot",
+      "file": "skills/languages/java/L2-spring-boot.sdd",
+      "purpose": "Java Spring Boot",
+      "summary": "Java Spring Boot"
+    },
+    {
+      "id": "skills-languages-java-L3-enterprise-patterns",
+      "file": "skills/languages/java/L3-enterprise-patterns.sdd",
+      "purpose": "Java Enterprise Patterns",
+      "summary": "Java Enterprise Patterns"
+    },
+    {
+      "id": "skills-languages-java-L4-microservices",
+      "file": "skills/languages/java/L4-microservices.sdd",
+      "purpose": "Java Microservices",
+      "summary": "Java Microservices"
+    },
+    {
+      "id": "skills-languages-java-L5-performance",
+      "file": "skills/languages/java/L5-performance.sdd",
+      "purpose": "Java Performance Tuning",
+      "summary": "Java Performance Tuning"
+    },
+    {
+      "id": "skills-languages-javascript-INDEX",
+      "file": "skills/languages/javascript/INDEX.sdd",
+      "purpose": "JavaScript language skills organized by competency layers.",
+      "summary": "JavaScript language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-javascript-L1-fundamentals",
+      "file": "skills/languages/javascript/L1-fundamentals.sdd",
+      "purpose": "JavaScript Fundamentals",
+      "summary": "JavaScript Fundamentals"
+    },
+    {
+      "id": "skills-languages-javascript-L2-async-programming",
+      "file": "skills/languages/javascript/L2-async-programming.sdd",
+      "purpose": "JavaScript Async Programming",
+      "summary": "JavaScript Async Programming"
+    },
+    {
+      "id": "skills-languages-javascript-L3-nodejs-backend",
+      "file": "skills/languages/javascript/L3-nodejs-backend.sdd",
+      "purpose": "JavaScript Node.js Backend",
+      "summary": "JavaScript Node.js Backend"
+    },
+    {
+      "id": "skills-languages-kotlin-INDEX",
+      "file": "skills/languages/kotlin/INDEX.sdd",
+      "purpose": "Kotlin programming language skills organized by competency layers.",
+      "summary": "Kotlin programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-kotlin-L1-fundamentals",
+      "file": "skills/languages/kotlin/L1-fundamentals.sdd",
+      "purpose": "Kotlin Fundamentals",
+      "summary": "Kotlin Fundamentals"
+    },
+    {
+      "id": "skills-languages-kotlin-L2-android-development",
+      "file": "skills/languages/kotlin/L2-android-development.sdd",
+      "purpose": "Kotlin Android Development",
+      "summary": "Kotlin Android Development"
+    },
+    {
+      "id": "skills-languages-php-INDEX",
+      "file": "skills/languages/php/INDEX.sdd",
+      "purpose": "PHP programming language skills organized by competency layers.",
+      "summary": "PHP programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-php-L1-fundamentals",
+      "file": "skills/languages/php/L1-fundamentals.sdd",
+      "purpose": "PHP Fundamentals",
+      "summary": "PHP Fundamentals"
+    },
+    {
+      "id": "skills-languages-php-L2-modern-development",
+      "file": "skills/languages/php/L2-modern-development.sdd",
+      "purpose": "PHP Modern Development",
+      "summary": "PHP Modern Development"
+    },
+    {
+      "id": "skills-languages-php-L3-enterprise-patterns",
+      "file": "skills/languages/php/L3-enterprise-patterns.sdd",
+      "purpose": "PHP Enterprise Patterns",
+      "summary": "PHP Enterprise Patterns"
+    },
+    {
+      "id": "skills-languages-python-INDEX",
+      "file": "skills/languages/python/INDEX.sdd",
+      "purpose": "Python programming language skills organized by competency layers.",
+      "summary": "Python programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-python-L1-fundamentals",
+      "file": "skills/languages/python/L1-fundamentals.sdd",
+      "purpose": "Python Fundamentals",
+      "summary": "Python Fundamentals"
+    },
+    {
+      "id": "skills-languages-python-L2-advanced-patterns",
+      "file": "skills/languages/python/L2-advanced-patterns.sdd",
+      "purpose": "Python Advanced Patterns",
+      "summary": "Python Advanced Patterns"
+    },
+    {
+      "id": "skills-languages-python-L3-async-programming",
+      "file": "skills/languages/python/L3-async-programming.sdd",
+      "purpose": "Python Async Programming",
+      "summary": "Python Async Programming"
+    },
+    {
+      "id": "skills-languages-python-L4-django-fastapi",
+      "file": "skills/languages/python/L4-django-fastapi.sdd",
+      "purpose": "Python Django / FastAPI",
+      "summary": "Python Django / FastAPI"
+    },
+    {
+      "id": "skills-languages-python-L5-data-engineering",
+      "file": "skills/languages/python/L5-data-engineering.sdd",
+      "purpose": "Python Data Engineering",
+      "summary": "Python Data Engineering"
+    },
+    {
+      "id": "skills-languages-ruby-INDEX",
+      "file": "skills/languages/ruby/INDEX.sdd",
+      "purpose": "Ruby programming language skills organized by competency layers.",
+      "summary": "Ruby programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-ruby-L1-fundamentals",
+      "file": "skills/languages/ruby/L1-fundamentals.sdd",
+      "purpose": "Ruby Fundamentals",
+      "summary": "Ruby Fundamentals"
+    },
+    {
+      "id": "skills-languages-ruby-L2-rails",
+      "file": "skills/languages/ruby/L2-rails.sdd",
+      "purpose": "Ruby on Rails",
+      "summary": "Ruby on Rails"
+    },
+    {
+      "id": "skills-languages-rust-INDEX",
+      "file": "skills/languages/rust/INDEX.sdd",
+      "purpose": "Rust programming language skills organized by competency layers.",
+      "summary": "Rust programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-rust-L1-fundamentals",
+      "file": "skills/languages/rust/L1-fundamentals.sdd",
+      "purpose": "Rust Fundamentals",
+      "summary": "Rust Fundamentals"
+    },
+    {
+      "id": "skills-languages-rust-L2-advanced-patterns",
+      "file": "skills/languages/rust/L2-advanced-patterns.sdd",
+      "purpose": "Rust Advanced Patterns",
+      "summary": "Rust Advanced Patterns"
+    },
+    {
+      "id": "skills-languages-rust-L3-async-concurrency",
+      "file": "skills/languages/rust/L3-async-concurrency.sdd",
+      "purpose": "Rust Async and Concurrency",
+      "summary": "Rust Async and Concurrency"
+    },
+    {
+      "id": "skills-languages-rust-L4-web-systems",
+      "file": "skills/languages/rust/L4-web-systems.sdd",
+      "purpose": "Rust Web and Systems",
+      "summary": "Rust Web and Systems"
+    },
+    {
+      "id": "skills-languages-rust-L5-embedded-kernel",
+      "file": "skills/languages/rust/L5-embedded-kernel.sdd",
+      "purpose": "Rust Embedded and Kernel",
+      "summary": "Rust Embedded and Kernel"
+    },
+    {
+      "id": "skills-languages-swift-INDEX",
+      "file": "skills/languages/swift/INDEX.sdd",
+      "purpose": "Swift programming language skills organized by competency layers.",
+      "summary": "Swift programming language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-swift-L1-fundamentals",
+      "file": "skills/languages/swift/L1-fundamentals.sdd",
+      "purpose": "Swift Fundamentals",
+      "summary": "Swift Fundamentals"
+    },
+    {
+      "id": "skills-languages-swift-L2-ios-development",
+      "file": "skills/languages/swift/L2-ios-development.sdd",
+      "purpose": "Swift iOS Development",
+      "summary": "Swift iOS Development"
+    },
+    {
+      "id": "skills-languages-typescript-INDEX",
+      "file": "skills/languages/typescript/INDEX.sdd",
+      "purpose": "TypeScript language skills organized by competency layers.",
+      "summary": "TypeScript language skills organized by competency layers."
+    },
+    {
+      "id": "skills-languages-typescript-L1-fundamentals",
+      "file": "skills/languages/typescript/L1-fundamentals.sdd",
+      "purpose": "TypeScript Fundamentals",
+      "summary": "TypeScript Fundamentals"
+    },
+    {
+      "id": "skills-languages-typescript-L2-advanced-types",
+      "file": "skills/languages/typescript/L2-advanced-types.sdd",
+      "purpose": "TypeScript Advanced Types",
+      "summary": "TypeScript Advanced Types"
+    },
+    {
+      "id": "skills-languages-typescript-L3-nodejs-backend",
+      "file": "skills/languages/typescript/L3-nodejs-backend.sdd",
+      "purpose": "TypeScript Node.js Backend",
+      "summary": "TypeScript Node.js Backend"
+    },
+    {
+      "id": "skills-languages-typescript-L4-enterprise-patterns",
+      "file": "skills/languages/typescript/L4-enterprise-patterns.sdd",
+      "purpose": "TypeScript Enterprise Patterns",
+      "summary": "TypeScript Enterprise Patterns"
+    },
+    {
+      "id": "skills-messaging-INDEX",
+      "file": "skills/messaging/INDEX.sdd",
+      "purpose": "Message broker and event streaming skills for distributed systems.",
+      "summary": "Message broker and event streaming skills for distributed systems."
+    },
+    {
+      "id": "skills-messaging-kafka-INDEX",
+      "file": "skills/messaging/kafka/INDEX.sdd",
+      "purpose": "Apache Kafka messaging skills organized by competency layers.",
+      "summary": "Apache Kafka messaging skills organized by competency layers."
+    },
+    {
+      "id": "skills-messaging-kafka-L1-fundamentals",
+      "file": "skills/messaging/kafka/L1-fundamentals.sdd",
+      "purpose": "Apache Kafka",
+      "summary": "Apache Kafka"
+    },
+    {
+      "id": "skills-messaging-nats-INDEX",
+      "file": "skills/messaging/nats/INDEX.sdd",
+      "purpose": "NATS messaging skills organized by competency layers.",
+      "summary": "NATS messaging skills organized by competency layers."
+    },
+    {
+      "id": "skills-messaging-nats-L1-fundamentals",
+      "file": "skills/messaging/nats/L1-fundamentals.sdd",
+      "purpose": "NATS",
+      "summary": "NATS"
+    },
+    {
+      "id": "skills-messaging-rabbitmq-INDEX",
+      "file": "skills/messaging/rabbitmq/INDEX.sdd",
+      "purpose": "RabbitMQ messaging skills organized by competency layers.",
+      "summary": "RabbitMQ messaging skills organized by competency layers."
+    },
+    {
+      "id": "skills-messaging-rabbitmq-L1-fundamentals",
+      "file": "skills/messaging/rabbitmq/L1-fundamentals.sdd",
+      "purpose": "RabbitMQ",
+      "summary": "RabbitMQ"
+    },
+    {
+      "id": "skills-meta-INDEX",
+      "file": "skills/meta/INDEX.sdd",
+      "purpose": "Meta-skills for the SDDRA system. These skills manage other skills —\ndiscovery, recommendation, gap analysis, and integration.",
+      "summary": "Meta-skills for the SDDRA system"
+    },
+    {
+      "id": "skills-meta-SKILL-DISCOVERY",
+      "file": "skills/meta/SKILL-DISCOVERY.sdd",
+      "purpose": "Automatically discover and analyze skills needed for a project.\nScans .sdd/skills/ registry, matches against project requirements,\nand identifies gaps. Suggests new skills when coverage is below 80%.",
+      "summary": "Automatically discover and analyze skills needed for a project"
+    },
+    {
+      "id": "skills-meta-SKILL-EXTERNAL-REFERENCES",
+      "file": "skills/meta/SKILL-EXTERNAL-REFERENCES.sdd",
+      "purpose": "External skill repositories and SDD research references.\nProvides catalog of known external skill ecosystems and\nauthoritative SDD resources for comparison and learning.",
+      "summary": "External skill repositories and SDD research references"
+    },
+    {
+      "id": "skills-meta-SKILL-GAP-ANALYSIS",
+      "file": "skills/meta/SKILL-GAP-ANALYSIS.sdd",
+      "purpose": "Analyze current skill coverage and identify gaps.\nCompares project requirements against available skills\nand generates actionable gap report.",
+      "summary": "Analyze current skill coverage and identify gaps"
+    },
+    {
+      "id": "skills-meta-SKILL-RECOMMENDATION",
+      "file": "skills/meta/SKILL-RECOMMENDATION.sdd",
+      "purpose": "Recommend skills to add to the project based on requirements.\nOnly recommends skills with >= 80% relevance to the project.\nCreates actionable plan for skill integration.",
+      "summary": "Recommend skills to add to the project based on requirements"
+    },
+    {
+      "id": "skills-meta-SKILL-REORGANIZATION",
+      "file": "skills/meta/SKILL-REORGANIZATION.sdd",
+      "purpose": "Safely reorganize .sdd/ directories in alphabetical order\nwhile maintaining all references and system integrity.",
+      "summary": "Safely reorganize .sdd/ directories in alphabetical order\nwhile maintaining all references and system integrity."
+    },
+    {
+      "id": "skills-meta-imported-INDEX",
+      "file": "skills/meta/imported/INDEX.sdd",
+      "purpose": "Registry of skills imported from external repositories. Each subdirectory\n{\"key\":\"is a skill adapted to .sdd format with mandatory provenance\",\"value\":[\"Source (repo URL), Origin (local path in tmp/), Imported (date),\"]}\n{\"key\":\"Format, Runtime. Per CLAUDE.md \\\"External skill import rules\\\"\",\"value\"",
+      "summary": "Registry of skills imported from external repositories"
+    },
+    {
+      "id": "skills-meta-imported-audit-INDEX",
+      "file": "skills/meta/imported/audit/INDEX.sdd",
+      "purpose": "Read-only audit workflows from khasky/awesome-agent-skills — design docs/ADRs\nand whole-project architecture audits with SHIP/FIX/BLOCK verdicts.",
+      "summary": "Read-only audit workflows from khasky/awesome-agent-skills — design docs/ADRs\nand whole-project architecture audits with SHIP/FIX/BLOCK verdicts."
+    },
+    {
+      "id": "skills-meta-imported-canvas-design-INDEX",
+      "file": "skills/meta/imported/canvas-design/INDEX.sdd",
+      "purpose": "Interactive HTML canvas art and visual composition skill. Guides creation\nof generative art, animations, and visual experiments using Canvas API.",
+      "summary": "Interactive HTML canvas art and visual composition skill"
+    },
+    {
+      "id": "skills-meta-imported-doc-coauthoring-INDEX",
+      "file": "skills/meta/imported/doc-coauthoring/INDEX.sdd",
+      "purpose": "Collaborative document drafting and co-authoring workflow. Guides\n{\"key\":\"multi-pass document development\",\"value\":\"outline, draft, review, revise.\"}",
+      "summary": "Collaborative document drafting and co-authoring workflow"
+    },
+    {
+      "id": "skills-meta-imported-frontend-design-INDEX",
+      "file": "skills/meta/imported/frontend-design/INDEX.sdd",
+      "purpose": "Frontend UI/UX design heuristics and visual craft. Guides building\npolished, distinctive web interfaces with strong visual hierarchy.",
+      "summary": "Frontend UI/UX design heuristics and visual craft"
+    },
+    {
+      "id": "skills-meta-imported-mcp-builder-INDEX",
+      "file": "skills/meta/imported/mcp-builder/INDEX.sdd",
+      "purpose": "Model Context Protocol (MCP) server scaffolding and tooling. Guides\n{\"key\":\"building MCP servers\",\"value\":\"tools, resources, prompts, transports, testing.\"}",
+      "summary": "Model Context Protocol (MCP) server scaffolding and tooling"
+    },
+    {
+      "id": "skills-meta-imported-orchestration-INDEX",
+      "file": "skills/meta/imported/orchestration/INDEX.sdd",
+      "purpose": "Orchestration + token-economy skills from BuilderIO/skills. Watchdog audits\nagent work, plan-arbiter compares competing plans, efficient-frontier routes\nmodel tiers, quick-recap forces end-of-work status signals.",
+      "summary": "Orchestration + token-economy skills from BuilderIO/skills"
+    },
+    {
+      "id": "skills-meta-imported-skill-creator-INDEX",
+      "file": "skills/meta/imported/skill-creator/INDEX.sdd",
+      "purpose": "Author, package, and evaluate agent skills per the agent-skills spec.\nGuides skill structure (SKILL.md frontmatter, references, scripts),\neval harness usage, and packaging.",
+      "summary": "Author, package, and evaluate agent skills per the agent-skills spec"
+    },
+    {
+      "id": "skills-meta-imported-skill-governance-INDEX",
+      "file": "skills/meta/imported/skill-governance/INDEX.sdd",
+      "purpose": "Skill-library governance meta-skills from artemrudenko/skill-governance-toolkit.\nEvaluate, audit, and port skills — the vetting layer SDDRA skills-meta lacked.",
+      "summary": "Skill-library governance meta-skills from artemrudenko/skill-governance-toolkit"
+    },
+    {
+      "id": "skills-meta-imported-theme-factory-INDEX",
+      "file": "skills/meta/imported/theme-factory/INDEX.sdd",
+      "purpose": "Design theme system with 10 curated themes (arctic-frost, botanical-garden,\ndesert-rose, forest-canopy, golden-hour, midnight-galaxy,\nmodern-minimalist, ocean-depths, sunset-boulevard, tech-innovation).\nGuides consistent visual theming for web projects.",
+      "summary": "Design theme system with 10 curated themes (arctic-frost, botanical-garden,\ndesert-rose, forest-canopy, golden-hour, midnight-galaxy,\nmodern-minimalist, ocean-depths, sunset-boulevard, tech-innovation)"
+    },
+    {
+      "id": "skills-meta-imported-webapp-testing-INDEX",
+      "file": "skills/meta/imported/webapp-testing/INDEX.sdd",
+      "purpose": "{\"key\":\"Playwright-based web app testing patterns\",\"value\":[\"logging, static HTML automation, and server-bound test helpers.\"]}",
+      "summary": "{\"key\":\"Playwright-based web app testing patterns\",\"value\":[\"logging, static HTML automation, and server-bound test helpers.\"]}"
+    },
+    {
+      "id": "skills-platforms-INDEX",
+      "file": "skills/platforms/INDEX.sdd",
+      "purpose": "Infrastructure and platform skills organized by technology and competency layers.",
+      "summary": "Infrastructure and platform skills organized by technology and competency layers."
+    },
+    {
+      "id": "skills-platforms-aws-INDEX",
+      "file": "skills/platforms/aws/INDEX.sdd",
+      "purpose": "AWS cloud skills organized by competency layers.",
+      "summary": "AWS cloud skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-aws-L1-fundamentals",
+      "file": "skills/platforms/aws/L1-fundamentals.sdd",
+      "purpose": "AWS Cloud Fundamentals",
+      "summary": "AWS Cloud Fundamentals"
+    },
+    {
+      "id": "skills-platforms-azure-INDEX",
+      "file": "skills/platforms/azure/INDEX.sdd",
+      "purpose": "Microsoft Azure skills organized by competency layers.",
+      "summary": "Microsoft Azure skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-azure-L1-fundamentals",
+      "file": "skills/platforms/azure/L1-fundamentals.sdd",
+      "purpose": "Azure Cloud",
+      "summary": "Azure Cloud"
+    },
+    {
+      "id": "skills-platforms-docker-INDEX",
+      "file": "skills/platforms/docker/INDEX.sdd",
+      "purpose": "Docker skills organized by competency layers.",
+      "summary": "Docker skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-docker-L1-fundamentals",
+      "file": "skills/platforms/docker/L1-fundamentals.sdd",
+      "purpose": "Docker Fundamentals",
+      "summary": "Docker Fundamentals"
+    },
+    {
+      "id": "skills-platforms-docker-L2-multi-stage-builds",
+      "file": "skills/platforms/docker/L2-multi-stage-builds.sdd",
+      "purpose": "Docker Multi-Stage Builds",
+      "summary": "Docker Multi-Stage Builds"
+    },
+    {
+      "id": "skills-platforms-docker-L3-kubernetes",
+      "file": "skills/platforms/docker/L3-kubernetes.sdd",
+      "purpose": "Docker Kubernetes Integration",
+      "summary": "Docker Kubernetes Integration"
+    },
+    {
+      "id": "skills-platforms-docker-L4-enterprise-registry",
+      "file": "skills/platforms/docker/L4-enterprise-registry.sdd",
+      "purpose": "Docker Enterprise Registry",
+      "summary": "Docker Enterprise Registry"
+    },
+    {
+      "id": "skills-platforms-gcp-INDEX",
+      "file": "skills/platforms/gcp/INDEX.sdd",
+      "purpose": "Google Cloud Platform skills organized by competency layers.",
+      "summary": "Google Cloud Platform skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-gcp-L1-fundamentals",
+      "file": "skills/platforms/gcp/L1-fundamentals.sdd",
+      "purpose": "Google Cloud Platform",
+      "summary": "Google Cloud Platform"
+    },
+    {
+      "id": "skills-platforms-kubernetes-INDEX",
+      "file": "skills/platforms/kubernetes/INDEX.sdd",
+      "purpose": "Kubernetes skills organized by competency layers.",
+      "summary": "Kubernetes skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-kubernetes-L1-fundamentals",
+      "file": "skills/platforms/kubernetes/L1-fundamentals.sdd",
+      "purpose": "Kubernetes Fundamentals",
+      "summary": "Kubernetes Fundamentals"
+    },
+    {
+      "id": "skills-platforms-terraform-INDEX",
+      "file": "skills/platforms/terraform/INDEX.sdd",
+      "purpose": "Terraform skills organized by competency layers.",
+      "summary": "Terraform skills organized by competency layers."
+    },
+    {
+      "id": "skills-platforms-terraform-L1-fundamentals",
+      "file": "skills/platforms/terraform/L1-fundamentals.sdd",
+      "purpose": "Terraform Fundamentals",
+      "summary": "Terraform Fundamentals"
+    },
+    {
+      "id": "skills-sdd-INDEX",
+      "file": "skills/sdd/INDEX.sdd",
+      "purpose": "SDDRA ecosystem-specific skills for integration, event processing,\nfield mapping, notification dispatch, scheduled sync, and gamification.\nGamification skills are derived from industry best practices\nand encode patterns for player profiles, rule engines, leaderboards,\npoints economy, and anti-cheat ",
+      "summary": "SDDRA ecosystem-specific skills for integration, event processing,\nfield mapping, notification dispatch, scheduled sync, and gamification"
+    },
+    {
+      "id": "skills-sdd-SKILL-EVENT-PROCESSOR",
+      "file": "skills/sdd/SKILL-EVENT-PROCESSOR.sdd",
+      "purpose": "Auto-generated purpose for SKILL-EVENT-PROCESSOR.",
+      "summary": "Auto-generated purpose for SKILL-EVENT-PROCESSOR."
+    },
+    {
+      "id": "skills-sdd-SKILL-FIELD-MAPPING",
+      "file": "skills/sdd/SKILL-FIELD-MAPPING.sdd",
+      "purpose": "Auto-generated purpose for SKILL-FIELD-MAPPING.",
+      "summary": "Auto-generated purpose for SKILL-FIELD-MAPPING."
+    },
+    {
+      "id": "skills-sdd-SKILL-GAMIFICATION-RULES",
+      "file": "skills/sdd/SKILL-GAMIFICATION-RULES.sdd",
+      "purpose": "Auto-generated purpose for SKILL-GAMIFICATION-RULES.",
+      "summary": "Auto-generated purpose for SKILL-GAMIFICATION-RULES."
+    },
+    {
+      "id": "skills-sdd-SKILL-INTEGRATION-MODULE",
+      "file": "skills/sdd/SKILL-INTEGRATION-MODULE.sdd",
+      "purpose": "Auto-generated purpose for SKILL-INTEGRATION-MODULE.",
+      "summary": "Auto-generated purpose for SKILL-INTEGRATION-MODULE."
+    },
+    {
+      "id": "skills-sdd-SKILL-LEADERBOARD",
+      "file": "skills/sdd/SKILL-LEADERBOARD.sdd",
+      "purpose": "Auto-generated purpose for SKILL-LEADERBOARD.",
+      "summary": "Auto-generated purpose for SKILL-LEADERBOARD."
+    },
+    {
+      "id": "skills-sdd-SKILL-NOTIFICATION",
+      "file": "skills/sdd/SKILL-NOTIFICATION.sdd",
+      "purpose": "Auto-generated purpose for SKILL-NOTIFICATION.",
+      "summary": "Auto-generated purpose for SKILL-NOTIFICATION."
+    },
+    {
+      "id": "skills-sdd-SKILL-PLAYER-PROFILE",
+      "file": "skills/sdd/SKILL-PLAYER-PROFILE.sdd",
+      "purpose": "Auto-generated purpose for SKILL-PLAYER-PROFILE.",
+      "summary": "Auto-generated purpose for SKILL-PLAYER-PROFILE."
+    },
+    {
+      "id": "skills-sdd-SKILL-SCHEDULED-SYNC",
+      "file": "skills/sdd/SKILL-SCHEDULED-SYNC.sdd",
+      "purpose": "Auto-generated purpose for SKILL-SCHEDULED-SYNC.",
+      "summary": "Auto-generated purpose for SKILL-SCHEDULED-SYNC."
+    },
+    {
+      "id": "skills-skills",
+      "file": "skills/skills.sdd",
+      "purpose": "Define engineering rules and implementation patterns organized by\ntechnology and competency layers. Skills tell AI HOW to do work,\nnot WHAT to do.",
+      "summary": "Define engineering rules and implementation patterns organized by\ntechnology and competency layers"
+    },
+    {
+      "id": "skills-spec-INDEX",
+      "file": "skills/spec/INDEX.sdd",
+      "purpose": "Specification for Anthropic agent skills format. Defines the structure,\nmetadata, and conventions for creating portable, executable skills.",
+      "summary": "Specification for Anthropic agent skills format"
+    },
+    {
+      "id": "skills-testing-INDEX",
+      "file": "skills/testing/INDEX.sdd",
+      "purpose": "Test execution and strategy skills for the SDDRA system.\nGoverns how AI selects, runs, and evaluates tests.",
+      "summary": "Test execution and strategy skills for the SDDRA system"
+    },
+    {
+      "id": "skills-testing-SKILL-TEST-STRATEGY",
+      "file": "skills/testing/SKILL-TEST-STRATEGY.sdd",
+      "purpose": "Define how the SDDRA system executes, evaluates, and maintains tests.\nThis skill governs test selection, execution workflow, and failure handling.\nIt is the single source of truth for AI-driven test execution.",
+      "summary": "Define how the SDDRA system executes, evaluates, and maintains tests"
+    },
+    {
+      "id": "skills-testing-playwright-cli-INDEX",
+      "file": "skills/testing/playwright-cli/INDEX.sdd",
+      "purpose": "Playwright browser automation CLI skill. Provides skills for web testing,\nelement interaction, request mocking, session management, and test generation.",
+      "summary": "Playwright browser automation CLI skill"
+    },
+    {
+      "id": "skills-writing-INDEX",
+      "file": "skills/writing/INDEX.sdd",
+      "purpose": "{\"key\":\"Text production and hygiene skills\",\"value\":[\"provenance-mark handling, and document co-authoring patterns.\"]}",
+      "summary": "{\"key\":\"Text production and hygiene skills\",\"value\":[\"provenance-mark handling, and document co-authoring patterns.\"]}"
+    },
+    {
+      "id": "skills-writing-clean-user-facing-text-INDEX",
+      "file": "skills/writing/clean-user-facing-text/INDEX.sdd",
+      "purpose": "{\"key\":\"Text hygiene skill\",\"value\":[\"natural-language prose while preserving facts, meaning, and the\",\"writer's voice. Covers articles, manuscripts, reports, documentation,\",\"emails, product copy, UI text, Markdown, HTML prose.\"]}",
+      "summary": "{\"key\":\"Text hygiene skill\",\"value\":[\"natural-language prose while preserving facts, meaning, and the\",\"writer's voice"
+    },
+    {
+      "id": "skills-writing-remove-ai-marks-INDEX",
+      "file": "skills/writing/remove-ai-marks/INDEX.sdd",
+      "purpose": "{\"key\":\"Multi-vendor AI provenance-mark removal skill\",\"value\":[\"statistical text watermarks via rewrite (Layer B), C2PA/EXIF/XMP/container\",\"metadata on PNG/JPEG/WebP/SVG/PDF/DOCX/ODT/HTML/MD. Thin-client skill —\",\"all deterministic cleaning runs in a separate Docker HTTP service.\"]}",
+      "summary": "{\"key\":\"Multi-vendor AI provenance-mark removal skill\",\"value\":[\"statistical text watermarks via rewrite (Layer B), C2PA/EXIF/XMP/container\",\"metadata on PNG/JPEG/WebP/SVG/PDF/DOCX/ODT/HTML/MD"
+    }
+  ]
+}

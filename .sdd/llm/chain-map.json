@@ -1,0 +1,149 @@
+{
+  "chains": [
+    {
+      "id": "chains-INDEX",
+      "file": "chains/INDEX.sdd",
+      "purpose": "Execution chains. Root D0 branches to arms; arms return to D0.\nEvery execution path is a branch of default."
+    },
+    {
+      "id": "chains-arms-code",
+      "file": "chains/arms/code.sdd",
+      "purpose": "Execute .sdd/project/ tasks to code. Minimal tokens."
+    },
+    {
+      "id": "chains-arms-deploy",
+      "file": "chains/arms/deploy.sdd",
+      "purpose": "Production deployment after approval. Minimal tokens."
+    },
+    {
+      "id": "chains-arms-docs",
+      "file": "chains/arms/docs.sdd",
+      "purpose": "Generate human docs from prompt. Minimal tokens."
+    },
+    {
+      "id": "chains-arms-prompt",
+      "file": "chains/arms/prompt.sdd",
+      "purpose": "Parse human prompt -> docs/. Minimal tokens."
+    },
+    {
+      "id": "chains-arms-research",
+      "file": "chains/arms/research.sdd",
+      "purpose": "The deep-research arm of the SDDRA chain graph. Formalizes the discipline\n{\"key\":\"already practiced in research rounds 1-3 (2026-09-06/07)\",\"value\":[\"citation-mandatory findings → tmp staging → Pareto decision gate →\",\".sdd/ integration → tmp deletion. Built from 2026 deep-research pipeline\",\"patter"
+    },
+    {
+      "id": "chains-arms-review",
+      "file": "chains/arms/review.sdd",
+      "purpose": "Human review gate after code execution. Minimal tokens."
+    },
+    {
+      "id": "chains-arms-sdd",
+      "file": "chains/arms/sdd.sdd",
+      "purpose": "Convert approved docs/ to .sdd/project/. Minimal tokens."
+    },
+    {
+      "id": "chains-bugfix",
+      "file": "chains/bugfix.sdd",
+      "purpose": "Fix bugs with regression testing and validation."
+    },
+    {
+      "id": "chains-chains",
+      "file": "chains/chains.sdd",
+      "purpose": "Execution chains for SDDRA. Root D0 branches to arms; arms return to D0.\n{\"key\":\"Chain definitions\",\"value\":\"@INDEX.sdd\"}\n{\"key\":\"Chain rules\",\"value\":\"@rules/chain-rules.sdd\"}"
+    },
+    {
+      "id": "chains-default",
+      "file": "chains/default.sdd",
+      "purpose": "Root chain. All arms return here after their branch."
+    },
+    {
+      "id": "chains-delivery",
+      "file": "chains/delivery.sdd",
+      "purpose": "The full business-to-verified delivery flow — the stateful, immutable\nworkflow that every delivery request follows. Business case is\nunderstood, requirements defined, business design shaped, decisions\nrecorded, tasks broken down, behavior specified; then implementation\nbranches execute in parallel, "
+    },
+    {
+      "id": "chains-dl2-decision",
+      "file": "chains/dl2-decision.sdd",
+      "purpose": "{\"key\":\"New chain for business decision decomposition\",\"value\":[\"Runs BEFORE DL1 to decompose user intent into actionable development units with human approval gates.\"]}"
+    },
+    {
+      "id": "chains-fast-path",
+      "file": "chains/fast-path.sdd",
+      "purpose": "Simplified execution path for low-risk tasks. Reduces overhead\nwhile maintaining safety."
+    },
+    {
+      "id": "chains-feature",
+      "file": "chains/feature.sdd",
+      "purpose": "Implement new features with full chain validation."
+    },
+    {
+      "id": "chains-graph",
+      "file": "chains/graph.sdd",
+      "purpose": "Execution graph for SDDRA. Every path branches from D0; arms return to D0."
+    },
+    {
+      "id": "chains-hotfix",
+      "file": "chains/hotfix.sdd",
+      "purpose": "Fix critical issues with minimal scope and fast validation."
+    },
+    {
+      "id": "chains-incident",
+      "file": "chains/incident.sdd",
+      "purpose": "Respond to production incidents with rapid diagnosis and fix."
+    },
+    {
+      "id": "chains-maintenance",
+      "file": "chains/maintenance.sdd",
+      "purpose": "Maintain and update existing systems with minimal disruption."
+    },
+    {
+      "id": "chains-migration",
+      "file": "chains/migration.sdd",
+      "purpose": "Auto-generated purpose for migration."
+    },
+    {
+      "id": "chains-refactor",
+      "file": "chains/refactor.sdd",
+      "purpose": "The real duplication/debt-to-verified-refactor flow. Duplication surfaced\nby CR-XX (duplication_findings[], [R100]) and component-registry scans\nroutes into this chain; each refactor is analyzed for impact, applied,\ntested, and verified. Replaces the auto-generated stub (Phase 152)."
+    },
+    {
+      "id": "chains-rules-chain-rules",
+      "file": "chains/rules/chain-rules.sdd",
+      "purpose": "Unbreakable laws for chain execution. Flows through every node."
+    },
+    {
+      "id": "chains-security",
+      "file": "chains/security.sdd",
+      "purpose": "Auto-generated purpose for security."
+    },
+    {
+      "id": "chains-selector",
+      "file": "chains/selector.sdd",
+      "purpose": "Map execution type to chain node ID."
+    },
+    {
+      "id": "chains-swarm",
+      "file": "chains/swarm.sdd",
+      "purpose": "The parallel micro-unit delivery chain with a defect-focus loop.\nMacro-sequential, micro-parallel. Each stage runs a SWARM cycle\n(RECONCILE -> DECOMPOSE -> DISPATCH -> MERGE -> VERIFY -> DEFECT-CHECK\n-> FOCUS LOOP -> Stage DONE) inside a pyramid of recursive sub-agents\nwith dual dispatch channels (R"
+    },
+    {
+      "id": "chains-test-runner",
+      "file": "chains/test-runner.sdd",
+      "purpose": "Test the chain graph system with minimal tokens."
+    },
+    {
+      "id": "chains-test-scenario",
+      "file": "chains/test-scenario.sdd",
+      "purpose": "Practical test of the chain graph system."
+    },
+    {
+      "id": "chains-tokens-INDEX",
+      "file": "chains/tokens/INDEX.sdd",
+      "purpose": "Record token usage per chain stage for cost control."
+    },
+    {
+      "id": "chains-tokens-calculator",
+      "file": "chains/tokens/calculator.sdd",
+      "purpose": "Estimate and record token usage per chain stage for cost control."
+    }
+  ]
+}

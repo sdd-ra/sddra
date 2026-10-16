@@ -1,4 +1,4 @@
-import fs from "fs";
+﻿import fs from "fs";
 import path from "path";
 import { HookBridge } from "./hook-bridge";
 import { ProvenanceClient } from "./provenance-client";
@@ -15,6 +15,7 @@ import { emitAgentsMd, emitClaudeMdPointer } from "./context-emitter";
 import { DriftRecord, SyncPlan, TraceChain, BudgetRisk, DesignEvaluation, AutoInvokeResult, TypedOutcomeCodes, PromptInjectionDecision } from "./types";
 import { PromptGuard } from "./security/prompt-guard";
 import { PromptTaskMapper } from "./prompt-task-mapper";
+import { runExport } from "./llm-export";
 
 export interface CommandResult {
   command: string;
@@ -22,7 +23,7 @@ export interface CommandResult {
   exitCode: number;
   output: string;
   findings?: Array<Record<string, unknown>>;
-  /** TypedOutcomeCodes (Phase 149 r3) — machine-readable outcome before escalation. */
+  /** TypedOutcomeCodes (Phase 149 r3) â€” machine-readable outcome before escalation. */
   outcome?: TypedOutcomeCodes;
   /** Structural interrupt payload for irreversible actions (Phase 131 L4). */
   interrupt?: {
@@ -30,7 +31,7 @@ export interface CommandResult {
     riskScore: number;
     reasoning: string;
   };
-  /** Prompt injection result (Phase 158 — prompt security). */
+  /** Prompt injection result (Phase 158 â€” prompt security). */
   injectionResult?: PromptInjectionDecision;
 }
 
@@ -60,7 +61,7 @@ export class CommandRunner {
         command: normalized,
         decision: "BLOCKED",
         exitCode: 2,
-        output: `BLOCKED: Prompt injection detected — ${injectionResult.message}. Execution halted.`,
+        output: `BLOCKED: Prompt injection detected â€” ${injectionResult.message}. Execution halted.`,
         injectionResult,
       };
     }
@@ -68,7 +69,7 @@ export class CommandRunner {
     // [R104] Every /sdd* invocation appends a prompt-pair record:
     // customer_prompt = RAW user text (any language, verbatim),
     // ai_prompt = the normalized best-practice English prompt actually
-    // executed — the agent's protocol translation of the intent (chain
+    // executed â€” the agent's protocol translation of the intent (chain
     // steps, DEC/TASK actions, provenance, language context). When the
     // agent supplies no aiPrompt, the mechanical command form is the
     // fallback. Recorded BEFORE execution so even failing/escaping runs
@@ -105,6 +106,8 @@ export class CommandRunner {
         return this.runEvolveCommand(args);
       case "/sdd-health":
         return this.runHealthCommand(args);
+      case "/sdd-llm":
+        return this.runLlmCommand(args);
       default:
         return {
         command: normalized,
@@ -120,10 +123,10 @@ export class CommandRunner {
     * [R104] Append a {ts, command, customer_prompt, ai_prompt} pair to
     * prompts/history/prompt-pairs.jsonl. customer_prompt is the raw user
     * text verbatim; ai_prompt is the normalized best-practice English
-    * prompt the agent actually executed — a full protocol translation
+    * prompt the agent actually executed â€” a full protocol translation
     * of the intent (chain steps, DEC/TASK actions, provenance, language
     * context), NOT a mechanical echo of the command. Fallbacks: absent
-    * aiPrompt → command + args form; absent customerPrompt → args joined.
+    * aiPrompt â†’ command + args form; absent customerPrompt â†’ args joined.
     * Never throws: history recording must not break command execution.
     */
   private appendPromptPair(
@@ -526,11 +529,11 @@ export class CommandRunner {
   }
 
   /**
-   * /sdd-evolve runtime — Skill Evolution & Update Engine status surface
+   * /sdd-evolve runtime â€” Skill Evolution & Update Engine status surface
    * (skills/evolution.sdd). READ-ONLY here: scans skill metadata
    * (last_verified/review_after), reports DUE skills, lists recent
    * Update Manifests. Actual EVOLVE research/delivery runs via the
-   * SUPERVISED spec flow with human gates — never silently here
+   * SUPERVISED spec flow with human gates â€” never silently here
    * ([EVO-01], Phase 131 authority).
    */
   private runPromptMapCommand(args: string[], customerPrompt?: string): CommandResult {
@@ -634,7 +637,7 @@ export class CommandRunner {
   }
 
   /**
-   * /sdd-health runtime — critical checks + Phase 152 additions:
+   * /sdd-health runtime â€” critical checks + Phase 152 additions:
    * 3-way command sync drift ([CMD8]), mojibake scan ([R99]),
    * projects-dir purity ([R105]). See .sdd/commands/sdd-health.sdd
    * [HEALTH-01..10].
@@ -692,7 +695,7 @@ export class CommandRunner {
     }
     lines.push(`  Command sync: ${specs.length} specs, ${syncDrift} drift`);
 
-    // [HEALTH-09] mojibake scan ([R99]) — UTF-8 read as CP1252 signatures
+    // [HEALTH-09] mojibake scan ([R99]) â€” UTF-8 read as CP1252 signatures
     const mojibakePatterns = [
       "\u00E2\u20AC\u201D", // double-encoded signature [R99]
       "\u00E2\u20AC\u201C", // double-encoded signature [R99]
@@ -753,7 +756,7 @@ export class CommandRunner {
     }
     lines.push("  Projects purity: checked");
 
-    // [HEALTH-11] retired-name scan ([R108]) — retired repository names
+    // [HEALTH-11] retired-name scan ([R108]) â€” retired repository names
     // are provenance pollution: CRITICAL in tree text files. Names are
     // assembled at runtime (never stored as contiguous literals) so
     // history-rewrite replace passes cannot degenerate the list into
@@ -773,7 +776,7 @@ export class CommandRunner {
           const full = path.join(d, entry.name);
           if (entry.isDirectory()) {
             // template/concept folders like templates/specdd are
-            // naming concepts, not repo identity — skip them
+            // naming concepts, not repo identity â€” skip them
             if (full.includes(path.join(this.sddRoot, "templates"))) continue;
             walkNames(full);
             continue;
@@ -1022,7 +1025,7 @@ export class CommandRunner {
     ];
 
     for (const plan of plans.slice(0, 20)) {
-      outputLines.push(`[${plan.operation}] ${plan.id} → Drift: ${plan.driftId}`);
+      outputLines.push(`[${plan.operation}] ${plan.id} â†’ Drift: ${plan.driftId}`);
       outputLines.push(`  Targets: ${plan.targetFiles.join(", ")}`);
       outputLines.push(`  Rationale: ${plan.rationale}`);
       outputLines.push(`  Approval: ${plan.requiresApproval ? "REQUIRED" : "not required"}`);
@@ -1040,10 +1043,10 @@ export class CommandRunner {
     }
 
     if (args.includes("--dry-run")) {
-      outputLines.unshift("DRY RUN — no changes will be made");
+      outputLines.unshift("DRY RUN â€” no changes will be made");
     }
 
-    // Phase 149 r1 — Context Emission regeneration [CE-01][CE-04]:
+    // Phase 149 r1 â€” Context Emission regeneration [CE-01][CE-04]:
     // AGENTS.md/CLAUDE.md are DERIVED from .sdd/INDEX.sdd;
     // /sdd-sync is the designated regeneration trigger.
     try {
@@ -1145,7 +1148,7 @@ export class CommandRunner {
     }
 
     if (chain.nodes.length === 0) {
-      outputLines.push("  (no trace links found — BREAK)");
+      outputLines.push("  (no trace links found â€” BREAK)");
     }
 
     return {
@@ -1426,7 +1429,7 @@ export class CommandRunner {
       if (registry.blocked.length > 0) {
         lines.push("BLOCKED SOURCES (non-importable):");
         for (const b of registry.blocked) {
-          lines.push(`  ${b.id} — ${b.reason}`);
+          lines.push(`  ${b.id} â€” ${b.reason}`);
         }
       }
       return { command: "/sdd-marketplace", decision: "PASS", exitCode: 0, output: lines.join("\n") };
@@ -1439,7 +1442,7 @@ export class CommandRunner {
           command: "/sdd-marketplace",
           decision: "PASS",
           exitCode: 0,
-          output: "Usage: /sdd-marketplace sync <source-id> — updates lastSync timestamp for a registered source",
+          output: "Usage: /sdd-marketplace sync <source-id> â€” updates lastSync timestamp for a registered source",
         };
       }
       const source = registry.sources.find((s: { id: string }) => s.id === sourceId);
@@ -1472,7 +1475,7 @@ export class CommandRunner {
           command: "/sdd-marketplace",
           decision: "PASS",
           exitCode: 0,
-          output: "Usage: /sdd-marketplace import <source-id> <skill-name> [domain] [group] — fetches SKILL.md, validates, imports with provenance",
+          output: "Usage: /sdd-marketplace import <source-id> <skill-name> [domain] [group] â€” fetches SKILL.md, validates, imports with provenance",
         };
       }
       if (registry.blocked.some((b: { id: string }) => b.id === sourceId)) {
@@ -1480,7 +1483,7 @@ export class CommandRunner {
           command: "/sdd-marketplace",
           decision: "BLOCK",
           exitCode: 2,
-          output: `Source ${sourceId} is in the blocked list — non-importable [IMP6].`,
+          output: `Source ${sourceId} is in the blocked list â€” non-importable [IMP6].`,
         };
       }
       const source = registry.sources.find((s: { id: string }) => s.id === sourceId);
@@ -1559,7 +1562,7 @@ export class CommandRunner {
 
       // Collect every INDEX.sdd under {category}/imported/ (any depth) plus
       // writing/{skill}/INDEX.sdd (imported skills without an imported/ level).
-      // Provenance marker: "Source: https://" — identifies imported wrappers.
+      // Provenance marker: "Source: https://" â€” identifies imported wrappers.
       const wrapperPaths: Array<{ label: string; file: string }> = [];
       const collectWrappers = (dir: string, label: string, depth: number) => {
         if (depth > 4) return;
@@ -1624,6 +1627,32 @@ export class CommandRunner {
       output: `Unknown subcommand: ${subcommand}. Usage: /sdd-marketplace list|sync|import|audit`,
     };
   }
+  private runLlmCommand(args: string[]): CommandResult {
+    const llmDir = path.join(this.sddRoot, "llm");
+    fs.mkdirSync(llmDir, { recursive: true });
+    const exportFlag = args.includes("--export");
+    if (exportFlag) {
+      const r = runExport(this.sddRoot, this.projectRoot);
+      return {
+        command: "/sdd-llm",
+        decision: "PASS",
+        exitCode: 0,
+        output: `LLM EXPORT COMPLETE\nfiles: ${r.filesProcessed}\nentities: ${r.entities}\nrelations: ${r.relations}\nchunks: ${r.chunks}\noutput: ${llmDir}`,
+      };
+    }
+    // read-only: report artifact presence
+    const present = fs.existsSync(llmDir)
+      ? fs.readdirSync(llmDir, { withFileTypes: true }).map((e) => (e.isDirectory() ? e.name + "/" : e.name)).join(", ")
+      : "(not generated)";
+    return {
+      command: "/sdd-llm",
+      decision: "PASS",
+      exitCode: 0,
+      output: `SDD-LLM\nMode: READ_ONLY\nArtifacts: ${present}\nRun /sdd-llm --export to (re)generate.`,
+    };
+  }
 }
+
+
 
 

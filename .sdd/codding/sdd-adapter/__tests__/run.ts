@@ -1,4 +1,4 @@
-import { spawn } from "child_process";
+﻿import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
 
@@ -23,6 +23,7 @@ const tests = [
   { name: "skill-importer", file: "__tests__/skill-importer.test.ts" },
   { name: "commands-marketplace", file: "__tests__/commands-marketplace.test.ts" },
   { name: "commands-health", file: "__tests__/commands-health.test.ts" },
+  { name: "llm-export", file: "__tests__/llm-export.test.ts" },
   { name: "checkpoint-engine", file: "__tests__/checkpoint-engine.test.ts" },
   { name: "mcp-allowlist", file: "__tests__/mcp-allowlist.test.ts" },
   { name: "context-emitter", file: "__tests__/context-emitter.test.ts" },

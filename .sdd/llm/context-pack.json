@@ -1,0 +1,35 @@
+{
+  "generated": "2026-10-16T17:52:19.124Z",
+  "version": "1.0",
+  "llmEntry": ".sdd/llm/llms.txt",
+  "artifacts": {
+    "llms": ".sdd/llm/llms.txt",
+    "llmsFull": ".sdd/llm/llms-full.txt",
+    "graph": ".sdd/llm/graph.json",
+    "entities": ".sdd/llm/entities.jsonl",
+    "relations": ".sdd/llm/relations.jsonl",
+    "chainMap": ".sdd/llm/chain-map.json",
+    "commandMap": ".sdd/llm/command-map.json",
+    "skillMap": ".sdd/llm/skill-map.json",
+    "rules": ".sdd/llm/rules.json",
+    "chunksDir": ".sdd/llm/chunks/"
+  },
+  "queries": {
+    "sdd-plan-minimal-context": [
+      ".sdd/INDEX.sdd",
+      ".sdd/PROJECT.sdd",
+      ".sdd/protocol/ROOT.sdd",
+      ".sdd/chains/graph.sdd",
+      ".sdd/commands/INDEX.sdd"
+    ]
+  },
+  "counts": {
+    "files": 830,
+    "entities": 830,
+    "relations": 1804,
+    "chunks": 9525,
+    "commands": 39,
+    "skills": 235,
+    "rules": 2622
+  }
+}

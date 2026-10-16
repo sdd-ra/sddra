@@ -1,0 +1,36 @@
+# SDDRA — Specification-Driven Development & Reasoning Architecture
+
+> SDDRA is a specification-driven development framework that makes AI agents
+> understand project structure, dependencies, and execution flow. It is not a
+> single product — it is a corpus of `.sdd` specs (custom DSL), a TypeScript
+> runtime adapter (`sdd-adapter`), and a chain-driven execution model that routes
+> prompts through docs → spec → code → review → deploy arms with human gates.
+> This file is the canonical LLM entry point. It is generated from `.sdd/` by
+> `/sdd-llm --export`. Do not hand-edit.
+
+## Optional
+
+- [SDDRA README](../README.md): project overview, install, quickstart
+- [SDD Analysis](./analysis/system-analysis.md): how the .sdd corpus is structured
+- [SDD Decisions](./decisions/INDEX.sdd): decision log (DEC-NNN)
+- [SDD Tasks](./projects/sddra/tasks/INDEX.sdd): task registry (TASK-NNN)
+- [SDD Phases](./projects/sddra/phases/INDEX.sdd): phase registry
+
+## Core
+
+- [SDD Index](./INDEX.sdd): primary entry point — route all reads through this
+- [SDD Project](./PROJECT.sdd): project model, directories, authority
+- [SDD Protocol](./protocol/ROOT.sdd): universal rules (PR1-PR9)
+- [SDD Graph Model](./graph/model.sdd): entity/relationship/traceability model
+- [SDD Chain Graph](./chains/graph.sdd): execution chain (D0 → arms → D0)
+- [SDD Commands Index](./commands/INDEX.sdd): all /sdd* commands
+- [SDD LLM Export](./llm/README.md): how LLMs and agents consume this layer
+- [SDD LLM Context Pack](./llm/context-pack.json): machine index for tools
+- [SDD LLM Entities](./llm/entities.jsonl): graph entities (JSONL)
+- [SDD LLM Relations](./llm/relations.jsonl): graph relations (JSONL)
+- [SDD LLM Graph](./llm/graph.json): compact graph view
+- [SDD LLM Chain Map](./llm/chain-map.json): chains/arms/stages
+- [SDD LLM Command Map](./llm/command-map.json): commands + usage + rules
+- [SDD LLM Skill Map](./llm/skill-map.json): skills L1-L5
+- [SDD LLM Rules](./llm/rules.json): extracted RXX rules
+- [SDD LLM Chunks](./llm/chunks/): embedding-ready chunks with metadata

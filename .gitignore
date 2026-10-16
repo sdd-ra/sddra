@@ -117,3 +117,6 @@ prompts/inbox/
 *.pid
 *.seed
 *.pid.lock
+
+# LLM layer: chunk artifacts are regenerable and huge - keep maps/llms.txt
+.sdd/llm/chunks/

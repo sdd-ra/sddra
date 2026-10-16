@@ -1,0 +1,355 @@
+{
+  "commands": [
+    {
+      "name": "/INDEX",
+      "file": "commands/INDEX.sdd",
+      "purpose": "CLI commands for SDDRA system in Claude AI.",
+      "mode": "",
+      "usage": "",
+      "rules": "[CMD1] All commands MUST have a single-line description.\n  [CMD2] Commands MUST NOT modify files unless mode is READ_WRITE.\n  [CMD3] Commands with side effects MUST require human approval.\n  [CMD4] Command output MUST be human-readable by default.\n  [CMD5] Commands MUST support --help for usage information.\n  [CMD6] StatefulExecution: EVERY command MUST run under the stateful\n         flow — DISCOVER -> ANALYZE -> LOCATE CURRENT STEP -> EXECUTE ONLY\n         CURRENT STEP -> VERIFY -> SAVE STATE -> STOP. A command that\n         would execute a future step early is a FLOW VIOLATION (BLOCKED\n         with reason). Project files + saved state are the source of\n         truth — conversation history is NOT. (Phase 151)\n  [CMD7] InitialLoad: every command auto-loads ONLY its declared\n          InitialLoad manifest + INDEX routing; deeper content is\n          EXPAND-only (bax ../context/cache.sdd PullBasedLoading).\n          Bulk .sdd/ load is FORBIDDEN. (Phase 151)\n  [CMD8] ThreeWayRegistry: every command is registered in ALL THREE\n          locations — .sdd/commands/<name>.sdd (spec),\n          .claude/commands/<name>.md (Claude Code wrapper),\n          .kilo/command/<name>.md (Kilo wrap",
+      "navigation": "Chains: @../chains/INDEX.sdd\n  Agent: @../agent/INDEX.sdd\n  Knowledge: @../concepts/KNOWLEDGE-MODEL.sdd\n  KnowledgeCommand: @sdd-knowledge.sdd\n  ExplainCommand: @sdd-explain.sdd\n  NextCommand: @sdd-next.sdd\n  SwarmCommand: @sdd-swarm.sdd\n  UpdateCommand: @sdd-update.sdd\n  PromptsCommand: @sdd-prompts.sdd\n  PlanCommand: @sdd-plan.sdd\n  AnalyzeCommand: @sdd-analyze.sdd\n  StatusCommand: @sdd-status.sdd\n  HealthCommand: @sdd-health.sdd\n  BackupCommand: @sdd-backup.sdd\n  RestoreCommand: @sdd-restore.sdd\n  ResumeCommand: @sdd-resume.sdd\n  MigrateCommand: @sdd-migrate.sdd\n  CompactCommand: @sdd-compact.sdd\n  ClearCommand: @sdd-clean.sdd\n  DecisionsCommand: @sdd-decisions.sdd\n  AssumptionsCommand: @sdd-assumptions.sdd\n  IntentsCommand: @sdd-intents.sdd\n  MapCommand: @sdd-map.sdd\n  SkillsCommand: @sdd-skills.sdd\n  ScanCommand: @sdd-scan.sdd\n  DependenciesCommand: @sdd-dependencies.sdd\n  PurgeCommand: @sdd-purge.sdd\n  DriftCommand: @sdd-drift.sdd\n  SyncCommand: @sdd-sync.sdd\n  TraceCommand: @sdd-trace.sdd\n  ContextCommand: @sdd-context.sdd\n  DesignCommand: @sdd-design.sdd\n  MarketplaceCommand: @sdd-marketplace.sdd\n  ResearchCommand: @sdd-research.sdd\n  EvolveCommand: @sdd-evolve.sdd\n  LlmCommand: @sdd-llm.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-agent",
+      "file": "commands/sdd-agent.sdd",
+      "purpose": "Gated generation of leaf, non-constitution agent definitions.\n\nOwns: commands/sdd-agent.sdd",
+      "mode": "",
+      "usage": "/sdd-agent --name <name> --level L1|L2 [options]\n\nMode: SUPERVISED\nState: +",
+      "rules": "",
+      "navigation": ""
+    },
+    {
+      "name": "/sdd-analyze",
+      "file": "commands/sdd-analyze.sdd",
+      "purpose": "Analyze and explain the .sdd/ system structure. Read-only � does not\n  modify any files. Performs integrated analysis across .sdd/ and .specdd/\n  runtime artifacts.\n\nOwns: commands\\sdd-analyze.sdd",
+      "mode": "",
+      "usage": "/sdd-analyze\n  /sdd-analyze --chains\n  /sdd-analyze --decisions\n  /sdd-analyze --project\n  /sdd-analyze --knowledge\n  /sdd-analyze --specdd\n  /sdd-analyze --all\n\nInitialLoad (Phase 151 � EXPAND protocol):\n  - .sdd/INDEX.sdd (routing only)\n  - the target area's INDEX only (chains/INDEX.sdd OR decisions/INDEX.sdd\n    OR projects/sddra/INDEX.sdd, per focus flag)\n  Deep specs load on EXPAND only � analysis goes layer by layer, not bulk.",
+      "rules": "[A1] /sdd-analyze MUST NOT modify any file � read-only operation.\n   [A2] /sdd-analyze MUST resolve all @references before reporting broken links.\n   [A3] /sdd-analyze MUST scan .specdd/ artifacts when --specdd or --all is used.\n   [A4] /sdd-analyze MUST validate flow-index acyclicity when --specdd is used.\n   [A5] /sdd-analyze MUST cross-reference fix-index with open tasks when --all is used.\n   [A6] /sdd-analyze MUST NOT expose secrets or credentials in output.\n   [A7] /sdd-analyze MUST report knowledge health metrics when --knowledge or --all is used.\n   [A8] /sdd-analyze MUST flag stale knowledge entries (>30 days without promotion).\n   [A9] /sdd-analyze output format is structured text � suitable for both human and AI consumption.\n   [A10] /sdd-analyze MUST report broken @references even in partial (--chains, --decisions) mode.\n   [A11] /sdd-analyze MUST report SDD specification health (State: + markers, Navigation sections).\n   [A12] /sdd-analyze MUST detect spec drift against ECC tool landscape references.\n\nState: +\n   (extended to scan .specdd/ runtime artifacts and knowledge health per PHASE 120-124)\n   (integrated analysis output covering .sdd/ specs, .specdd/ runtime, an",
+      "navigation": ""
+    },
+    {
+      "name": "/sdd-assumptions",
+      "file": "commands/sdd-assumptions.sdd",
+      "purpose": "Track, validate, and manage project assumptions. Makes the assumption\n  registry actionable by surfacing stale assumptions, unmapped assumptions,\n  and assumption-to-decision linkages.\n\nOwns: commands/sdd-assumptions.sdd",
+      "mode": "",
+      "usage": "/sdd-assumptions\n  /sdd-assumptions --stale\n  /sdd-assumptions --unmapped\n  /sdd-assumptions --validate\n  /sdd-assumptions --json",
+      "rules": "[ASM-01] /sdd-assumptions MUST NOT modify any file unless --validate is supplied.\n  [ASM-02] Stale assumptions MUST be flagged for human review.\n  [ASM-03] Unmapped assumptions MUST be linked to decisions or tasks or retired.\n  [ASM-04] Assumption status MUST be derived from evidence_count and last_checked date.\n  [ASM-05] --validate mode MUST require human approval before marking assumptions invalid.",
+      "navigation": "INDEX: @INDEX.sdd\n   Assumptions: @../assumptions/INDEX.sdd\n   Decisions: @../decisions/INDEX.sdd\n   Tasks: @../tasks/INDEX.sdd\n   Projects: @../projects/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-backup",
+      "file": "commands/sdd-backup.sdd",
+      "purpose": "Create timestamped backups of critical .sdd/ files with automatic rotation of old backups.\n\nOwns: commands\\sdd-backup.sdd",
+      "mode": "",
+      "usage": "/sdd-backup\n  /sdd-backup --name=<name>\n  /sdd-backup --list",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  RestoreCommand: @sdd-restore.sdd\n  Timeline: @../timeline/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-clean",
+      "file": "commands/sdd-clean.sdd",
+      "purpose": "Clear all SDD working context and start fresh for the next task —\n  delegating the final context wipe to the AI agent's NATIVE /clear (or\n  equivalent) so the agent's own memory management is never fought or\n  corrupted (Phase 152 rename: was sdd-clear / auto-generated stub).\n\nOwns: commands/sdd-clean.sdd",
+      "mode": "",
+      "usage": "/sdd-clean\n  /sdd-clean --save-state\n  /sdd-clean --archive",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  CompactCommand: @sdd-compact.sdd\n  MemoryModel: @../runtime/memory-model.sdd\n\nState: +\n   (Phase 152: renamed sdd-clear -> sdd-clean per user naming; behavior\n   now delegates the wipe to the host agent's native /clear)"
+    },
+    {
+      "name": "/sdd-clear",
+      "file": "commands/sdd-clear.sdd",
+      "purpose": "Clear all SDD working context and start fresh for the next task �\n  delegating the final context wipe to the AI agent's NATIVE /clear.\n\nOwns: commands/sdd-clear.sdd",
+      "mode": "",
+      "usage": "/sdd-clear\n  /sdd-clear --save-state\n  /sdd-clear --archive",
+      "rules": "[CLEAR-01] /sdd-clear MUST NOT reimplement context wipe � delegate to native /clear.\n  [CLEAR-02] /sdd-clear MUST persist SDD state if requested.\n  [CLEAR-03] /sdd-clear MUST log the clear operation to history if archived.",
+      "navigation": "ChainGraph: @../chains/graph.sdd\n  Runtime: @../runtime/state.sdd\n  History: @../history/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-compact",
+      "file": "commands/sdd-compact.sdd",
+      "purpose": "Compress the SDD working context to essential tokens — persisting SDD\n  state first, then delegating the actual context compaction to the AI\n  agent's NATIVE /compact so the agent's own summarization is used\n  instead of being fought or reimplemented (Phase 152).\n\nOwns: commands/sdd-compact.sdd",
+      "mode": "",
+      "usage": "/sdd-compact\n  /sdd-compact --keep-decisions\n  /sdd-compact --keep-references",
+      "rules": "",
+      "navigation": "MemoryModel: @../runtime/memory-model.sdd\n  MemoryConsolidation: @../runtime/memory-consolidation.sdd\n  CleanCommand: @sdd-clean.sdd\n\nState: +\n   (Phase 152: header fixed to /sdd-compact; behavior now persists SDD\n   state then delegates compaction to the host agent's native /compact)"
+    },
+    {
+      "name": "/sdd-compat",
+      "file": "commands/sdd-compat.sdd",
+      "purpose": "Compatibility checker for SDDRA command wrappers across .sdd/, .claude/, .kilo/.\n\nOwns: commands/sdd-compat.sdd",
+      "mode": "",
+      "usage": "/sdd-compat\n  /sdd-compat --fix",
+      "rules": "[COMPAT-01] All commands MUST be present in .sdd/commands/, .claude/commands/, .kilo/command/.\n  [COMPAT-02] Report must list discrepancies.\n  [COMPAT-03] --fix must not overwrite custom content without confirmation.",
+      "navigation": "CommandsIndex: @INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-context",
+      "file": "commands/sdd-context.sdd",
+      "purpose": "Compile, inspect, and validate context packs for tasks.\n\nOwns: commands/sdd-context.sdd",
+      "mode": "",
+      "usage": "/sdd-context --task T<id>\n  /sdd-context --intent \"<text>\"\n  /sdd-context --compile\n  /sdd-context --manifest C<id>\n  /sdd-context --validate C<id>\n  /sdd-context --budget <LOW|MEDIUM|HIGH|CRITICAL>\n  /sdd-context --explain C<id>",
+      "rules": "[CTX-CMD-01] /sdd-context MUST produce manifest for every compilation.\n  [CTX-CMD-02] /sdd-context MUST flag contradictions.\n  [CTX-CMD-03] /sdd-context MUST respect budget.\n  [CTX-CMD-04] /sdd-context MUST show exclusion reasons.\n  [CTX-CMD-05] Compilation MUST traverse declared spec dependencies\n                transitively from touched specs (dependsOnTraversal).\n  [CTX-CMD-06] Stale items MUST fall back to raw content + staleness\n                notice; stale structured metadata is never injected\n                silently (stalenessFallback).",
+      "navigation": "INDEX: @../../INDEX.sdd\n  Compiler: @../system/context/compiler.sdd\n  Router: @../system/context/router.sdd\n  Relevance: @../system/context/relevance.sdd\n  Budgets: @../system/context/budgets.sdd\n  Policies: @../system/context/policies.sdd\n  Manifests: @../system/context/manifests.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-decide",
+      "file": "commands/sdd-decide.sdd",
+      "purpose": "Invoke the DL2 decision decomposition chain to break down user prompts\n   into formal decisions, tasks, and subtasks with human approval gates.\n\nOwns: commands/sdd-decide.sdd",
+      "mode": "",
+      "usage": "",
+      "rules": "",
+      "navigation": "Chain: @../chains/dl2-decision.sdd\n   StepExecutor: @../runtime/state.sdd\n   ArtifactWriter: @../runtime/handoff.sdd\n   HumanInterface: @../workflow/human-approval.sdd\n\nState: +\n   (Command wrapper for DL2 decision decomposition chain)\n   (Produces Q/T/ST registry for DL1 consumption)"
+    },
+    {
+      "name": "/sdd-decisions",
+      "file": "commands/sdd-decisions.sdd",
+      "purpose": "List and explain decisions in the decision ledger (all or active).\n\nOwns: commands\\sdd-decisions.sdd",
+      "mode": "",
+      "usage": "/sdd-decisions\n  /sdd-decisions --active\n  /sdd-decisions --decision DEC-<ID>",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  Decisions: @../decisions/INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-dependencies",
+      "file": "commands/sdd-dependencies.sdd",
+      "purpose": "Analyze and visualize the project dependency graph. Detects cycles,\n  computes topological order, identifies critical path, and surfaces\n  circular or missing dependencies.\n\nOwns: commands/sdd-dependencies.sdd",
+      "mode": "",
+      "usage": "/sdd-dependencies\n  /sdd-dependencies --graph\n  /sdd-dependencies --cycles\n  /sdd-dependencies --critical-path\n  /sdd-dependencies --topological\n  /sdd-dependencies --export <format>\n  /sdd-dependencies --json",
+      "rules": "[DEP-01] /sdd-dependencies MUST NOT modify any files.\n  [DEP-02] Cycle detection MUST be performed on every invocation.\n  [DEP-03] Critical path MUST account for task duration estimates.\n  [DEP-04] Parallel capacity MUST show tasks with no dependencies between them.\n  [DEP-05] Export formats MUST be valid DOT or Mermaid syntax.\n  [DEP-06] Missing dependencies MUST be flagged as warnings.",
+      "navigation": "INDEX: @INDEX.sdd\n   DependenciesIndex: @../dependencies/INDEX.sdd\n   DependenciesGraph: @../dependencies/graph.sdd\n   DependenciesLocking: @../dependencies/locking.sdd\n   Tasks: @../tasks/INDEX.sdd\n   Projects: @../projects/INDEX.sdd\n   ExecutionPlan: @../plans/execution-plan.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-design",
+      "file": "commands/sdd-design.sdd",
+      "purpose": "Design analysis and skill invocation. Supports manual trigger and\n  automatic invocation based on task context.\n\nOwns: commands/sdd-design.sdd",
+      "mode": "",
+      "usage": "/sdd-design\n  /sdd-design --generate\n  /sdd-design --evaluate\n  /sdd-design --discover\n  /sdd-design --review <path>\n  /sdd-design --manual\n  /sdd-design --auto",
+      "rules": "[DSN-01] /sdd-design MUST NOT modify code in evaluate mode.\n  [DSN-02] /sdd-design MUST produce @design.* evaluation records.\n  [DSN-03] /sdd-design discover MUST recommend skills with >= 80% relevance.\n  [DSN-04] /sdd-design MUST integrate with skill auto-invocation.\n  [DSN-05] /sdd-design MUST respect DESIGN.md as source of truth.\n  [DSN-06] /sdd-design MUST check WCAG 2.1 AA baseline for accessibility.\n  [DSN-07] /sdd-design --generate MUST follow the intelligence pipeline\n           (design/intelligence/INDEX.sdd) — SlopGates both at tokens and\n           verify stages; freeform generation is BLOCKED.\n  [DSN-08] /sdd-design --generate MUST run drift enforcement on subsequent\n           related work ([DI9]).",
+      "navigation": "INDEX: @INDEX.sdd\n  DesignIntelligence: @../skills/design/intelligence/INDEX.sdd\n  DesignSources: @../skills/design/sources.sdd\n  DesignSkills: @../skills/design/INDEX.sdd\n  SkillDiscovery: @../skills/meta/SKILL-DISCOVERY.sdd\n  AutoInvoke: @../agent/skill-auto-invoke.sdd"
+    },
+    {
+      "name": "/sdd-drift",
+      "file": "commands/sdd-drift.sdd",
+      "purpose": "Detect drift between .sdd declarations and observed reality across\n  all drift types.\n\nOwns: commands/sdd-drift.sdd",
+      "mode": "",
+      "usage": "/sdd-drift\n  /sdd-drift --type <structural|behavioral|contract|database|security|configuration|documentation|terminology>\n  /sdd-drift --scope <project|module|file>\n  /sdd-drift --severity <HIGH|MEDIUM|LOW>\n  /sdd-drift --json",
+      "rules": "[DRF-01] /sdd-drift MUST classify every drift before reporting.\n  [DRF-02] /sdd-drift MUST include evidence for every finding.\n  [DRF-03] /sdd-drift MUST NOT silently ignore UNKNOWN drifts.\n  [DRF-04] /sdd-drift MUST respect source-of-truth declarations.",
+      "navigation": "INDEX: @INDEX.sdd\n  DriftSpec: @../lifecycle/drift.sdd\n  Queries: @../queries/drift-detection.sdd\n  SyncOps: @../queries/sync-operations.sdd\n  Evidence: @../lifecycle/evidence-binder.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-evolve",
+      "file": "commands/sdd-evolve.sdd",
+      "purpose": "Evolve the SDD knowledge/skill ecosystem: research current practices,\n  compare against existing skills, validate, deduplicate, and deliver\n  changes safely. (Git-state sync stays /sdd-update; UPDATE != GIT PULL.)\n\nOwns: commands/sdd-evolve.sdd",
+      "mode": "",
+      "usage": "/sdd-evolve\n  /sdd-evolve --deep\n  /sdd-evolve @<domain>\n  /sdd-evolve --report\n  /sdd-evolve --promote",
+      "rules": "[EVO-01] /sdd-evolve NEVER replaces a skill directly — every change\n           starts as a SKILL_EVOLUTION record (evidence-backed).\n  [EVO-02] Source hierarchy L0>L1>L2>L3>L4>L5 governs confidence;\n           L5-only (AI inference) changes are proposals, never updates.\n  [EVO-03] Skills past review_after are re-researched; fresh skills\n           are skipped (unless --deep).\n  [EVO-04] Deduplication runs before creation: canonical is chosen,\n           duplicates become aliases/references/deprecated — [SK13]\n           granularity, [R81] link over copy.\n  [EVO-05] Delivery respects trust mode: TRUST_0..TRUST_5 map to\n           Phase 131 authority levels; direct push requires L4-style\n           human approval for irreversible registry changes.\n  [EVO-06] Update Manifest (UPD-<n>) is mandatory for every run —\n           machine-readable audit trail ([R95] references it).\n  [EVO-07] NO_VALUE research outcome -> DISCARD (research does not\n           obligate skill creation) — recorded in research record.\n  [EVO-08] Routing files touched by evolution stay human-authored\n           ([R109]); evolution PROPOSES routing edits, never rewrites.\n\nMode: SUPERVISED",
+      "navigation": "INDEX: @../../INDEX.sdd\n  Engine: @../skills/evolution.sdd\n  Updates: @../updates/INDEX.sdd\n  RIE: @../references/engine.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-explain",
+      "file": "commands/sdd-explain.sdd",
+      "purpose": "Explainability-on-demand command. When a human requests an explanation\n  of a completed task, the AI produces a structured explanation covering\n  WHY the approach was chosen, WHAT changed, alternatives rejected,\n  references, and risks. This supports the \"AI + Human = simple\"\n  principle — humans get clarity without parsing 100 execution events.",
+      "mode": "",
+      "usage": "/sdd-explain TASK-<ID>\n    @explain TASK-<ID>",
+      "rules": "",
+      "navigation": "ExecutionLoop: @../workflow/execution-loop.sdd\n  ExecutionContract: @../tasks/EXECUTION-CONTRACT.sdd\n  LearningGate: @../workflow/learning-gate.sdd\n  DoneProof: @../tasks/DONE-PROOF.sdd\n  Decisions: @../decisions/INDEX.sdd\n  Concepts: @../concepts/INDEX.sdd\n  CommandsIndex: @INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-health",
+      "file": "commands/sdd-health.sdd",
+      "purpose": "Validate .sdd/ system integrity: critical files, references, command sync, mojibake, projects purity.\n\nOwns: commands\\sdd-health.sdd",
+      "mode": "",
+      "usage": "/sdd-health\n  /sdd-health --verbose\n  /sdd-health --fix",
+      "rules": "[HEALTH-01] /sdd-health MUST check critical file existence first.\n  [HEALTH-02] /sdd-health MUST verify all @references resolve.\n  [HEALTH-03] /sdd-health MUST validate chain graph cycle detection.\n  [HEALTH-04] /sdd-health MUST check temporal validity of snapshots.\n  [HEALTH-05] /sdd-health MUST probe external channels with real\n              execution (not existence) per [IR-02]; retries only for\n              transient statuses ([IR-05]).\n  [HEALTH-06] A channel probe failure degrades that channel's row —\n              it MUST NOT fail the whole health report ([IR-06]).\n  [HEALTH-07] Channel probe output MUST pass credential scrub before\n              rendering ([IR-07]).\n  [HEALTH-08] 3-way registry sync: spec/wrapper count mismatches and\n              missing .claude/.kilo wrappers are WARN findings ([CMD8]).\n  [HEALTH-09] Mojibake hits are CRITICAL findings; the report is UNHEALTHY\n              until fixed ([R99]).\n[HEALTH-10] Foreign folders under .sdd/projects/ are WARN findings\n    ([R105]); the {project_name}/ template dir is expected.\n  [HEALTH-11] SW1 chain integrity: swarm.sdd flow keys must match\n    step-keys.sdd (SW1 group) and stages.sdd; missing stage or key is\n ",
+      "navigation": "INDEX: @INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n  SwarmChain: @../chains/swarm.sdd\n  References: @../references/INDEX.sdd\n  Timeline: @../timeline/INDEX.sdd\n  IntegrationRouting: @../runtime/integration-routing.sdd\n\nState: +\n   (enhanced with evolution health checks per Phases 130-134)\n   (extended with channel health probing per Phase 150, Agent-Reach\n    probe/doctor patterns — MIT, cited in integration-routing.sdd)\n\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    },
+    {
+      "name": "/sdd-intents",
+      "file": "commands/sdd-intents.sdd",
+      "purpose": "Classify, track, and route user intents through the SDDRA chain graph.\n  Bridges the gap between raw prompts in prompts/inbox/ and executable\n  chain arms (P1, D1, S1, C1, R1, DEP1).\n\nOwns: commands/sdd-intents.sdd",
+      "mode": "",
+      "usage": "/sdd-intents\n  /sdd-intents --pipeline\n  /sdd-intents --classify\n  /sdd-intents --blockers\n  /sdd-intents --json",
+      "rules": "[INT-01] /sdd-intents MUST NOT modify any file unless --classify is supplied.\n  [INT-02] Intent classification MUST use keyword matching as primary signal.\n  [INT-03] Unclassified intents MUST be surfaced for human review.\n  [INT-04] Blocked intents MUST identify the blocking dependency or approval.\n  [INT-05] Completion rate MUST be calculated as classified / total pending.\n  [INT-06] --classify mode MUST require human approval before updating intent tags.",
+      "navigation": "INDEX: @INDEX.sdd\n   Intents: @../intents/INDEX.sdd\n   ChainGraph: @../chains/graph.sdd\n   PromptsInbox: @../../prompts/inbox/\n   PromptsActive: @../../prompts/active/\n   Projects: @../projects/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-knowledge",
+      "file": "commands/sdd-knowledge.sdd",
+      "purpose": "Report on the health and trustworthiness of the .sdd/ knowledge graph.\n  Extends /sdd-health with knowledge-specific diagnostics: trust coverage,\n  candidate pipeline, conflicts, gaps, unused references, and duplicate\n  concepts. Supports diff against a previous snapshot to track knowledge\n  evolution over time.\n\nOwns: commands/sdd-knowledge.sdd",
+      "mode": "",
+      "usage": "/sdd-knowledge\n  /sdd-knowledge --diff\n  /sdd-knowledge --diff <snapshot_file>\n  /sdd-knowledge --json\n  /sdd-knowledge --verbose",
+      "rules": "[KD1] The command MUST NOT auto-delete or auto-deprecate any\n        reference without explicit human confirmation.\n  [KD2] Trust levels MUST be derived from evidence_count, not\n        from reference popularity.\n  [KD3] Unused references older than 6 months MUST be flagged\n        for human review.\n  [KD4] Duplicate concepts MUST propose a merge target per\n        CANONICALIZATION.sdd merge protocol.\n  [KD5] Conflict pairs MUST be linked with a conflicts-with edge\n        in the knowledge graph.\n  [KD6] Diff snapshots MUST be stored in .sdd/runtime/knowledge-diff/.",
+      "navigation": "sdd-health: @../commands/sdd-health.sdd\n  References: @../references/INDEX.sdd\n  Knowledge Model: @../concepts/KNOWLEDGE-MODEL.sdd\n  Lifecycle: @../knowledge/KNOWLEDGE-LIFECYCLE.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-llm",
+      "file": "commands/sdd-llm.sdd",
+      "purpose": "Generate or query the LLM-native knowledge layer for SDDRA. Exports\n  .sdd/ into machine-readable artifacts (JSON/JSONL/maps/chunks) following\n  the llmstxt.org llms.txt standard, and (read-only) reports artifact state.\n\nOwns: commands\\sdd-llm.sdd",
+      "mode": "",
+      "usage": "/sdd-llm\n  /sdd-llm --export\n  /sdd-llm --pack <key>\n  /sdd-llm --query <text>\n  /sdd-llm --format md|json",
+      "rules": "[LLM-01] /sdd-llm --export MUST be deterministic: same .sdd/ input -> same output.\n  [LLM-02] /sdd-llm MUST NOT modify canonical .sdd/ source files.\n  [LLM-03] Exported artifacts MUST be marked 'generated - do not hand-edit'.\n  [LLM-04] /sdd-llm MUST preserve traceability (file path + section + @refs).",
+      "navigation": "INDEX: @INDEX.sdd\n  LlmLayer: @../llm/README.md\n  LlmEntry: @../llm/llms.txt\n  ContextPack: @../llm/context-pack.json\n  Chunks: @../llm/chunks/\n\nState: +"
+    },
+    {
+      "name": "/sdd-map",
+      "file": "commands/sdd-map.sdd",
+      "purpose": "Map prompts to tasks and subtasks. Reads prompts from\n  prompts/inbox/ (or accepts --prompt), classifies each to a\n  chain arm via keyword matching, derives tasks (T-NNN) and\n  subtasks (DB, BE, API, FE, MD, DC, Test), and prints the\n  mapping in formatted output.",
+      "mode": "",
+      "usage": "/sdd-map\n  /sdd-map --prompt \"<text>\"\n  /sdd-map --json",
+      "rules": "[MAP-01] /sdd-map MUST NOT modify any file.\n  [MAP-02] Prompt classification MUST use keyword matching as primary signal.\n  [MAP-03] Task/subtask IDs are generated placeholders for mapping preview.\n  [MAP-04] Unmatched prompts get arm: UNKNOWN and require human review.",
+      "navigation": "INDEX: @INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n  DL2Chain: @../chains/dl2-decision.sdd\n  IntentsCommand: @sdd-intents.sdd\n  PromptsInbox: @../../prompts/inbox/\n  SpecLoader: @../../codding/sdd-adapter/spec-loader.ts\n\nState: +"
+    },
+    {
+      "name": "/sdd-marketplace",
+      "file": "commands/sdd-marketplace.sdd",
+      "purpose": "External skill marketplace interface (Phase 146): list registered sources,\n  sync source state, import skills with validation + provenance, and audit\n  imported skills for provenance compliance.\n\nOwns: commands/sdd-marketplace.sdd",
+      "mode": "",
+      "usage": "/sdd-marketplace list\n  /sdd-marketplace sync <source-id>\n  /sdd-marketplace import <source-id> <skill-name> [domain] [group]\n  /sdd-marketplace audit",
+      "rules": "[MKT-01] Imports MUST pass license gate: MIT/Apache-2.0 only; source-available and unlicensed are BLOCKED [IMP6].\n  [MKT-02] Imports MUST carry provenance: Source/Origin/Imported/Format/License (CLAUDE.md import rules).\n  [MKT-03] Blocked sources (registry.blocked) MUST NOT be importable.\n  [MKT-04] Imported skills are CANDIDATES — human review required for ACTIVE [IMP4].\n  [MKT-05] New imports SHOULD pass skill-evaluate (governance) before CANDIDATE → ACTIVE [IMP7].\n  [MKT-06] Code-bearing imports declare Runtime and run in Docker only [IMP2, R59-R66].\n  [MKT-07] Audit findings use SHIP/FIX/BLOCK semantics mapping to PASS/WARN/BLOCK.",
+      "navigation": "INDEX: @INDEX.sdd\n  Registry: @../marketplace/registry.json\n  Phase146: @../projects/sddra/phases/phase-146-skill-marketplace.sdd\n  SkillGovernance: @../skills/meta/imported/skill-governance/INDEX.sdd\n  ImportedSkills: @../skills/meta/imported/INDEX.sdd\n  ExternalReferences: @../skills/meta/SKILL-EXTERNAL-REFERENCES.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-migrate",
+      "file": "commands/sdd-migrate.sdd",
+      "purpose": "Run pending migrations after .sdd/ schema or file-location updates.\n\nOwns: commands\\sdd-migrate.sdd",
+      "mode": "",
+      "usage": "/sdd-migrate\n  /sdd-migrate --list\n  /sdd-migrate --apply=<id>\n  /sdd-migrate --rollback=<id>",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  Timeline: @../timeline/migrations.sdd\n  Runtime: @../runtime/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-next",
+      "file": "commands/sdd-next.sdd",
+      "purpose": "Advance to the next decision step or case from completion-checked state.\n\nOwns: commands\\sdd-next.sdd",
+      "mode": "",
+      "usage": "/sdd-next\n  /sdd-next --step\n  /sdd-next --subtask\n  /sdd-next --decision DEC-<ID>\n  /sdd-next --case CASE-<ID>\n  /sdd-next --force\n  /sdd-next --approve [--id DP-<ID>]\n  /sdd-next --review [--id DP-<ID>]\n  /sdd-next --status",
+      "rules": "[NEXT-01] /sdd-next advances from saved state, never from memory.\n  [NEXT-02] --approve auto-advances CONTINUE and REVIEW types; pauses at GATE, DECISION, ERROR.\n  [NEXT-03] --review re-opens current stage; all context preserved.\n  [NEXT-04] --status lists all Decision Points: id, type, stage, result, timestamp.\n  [NEXT-05] Every Decision Point emitted by execution-runner.ts is visible via --status.\n  [NEXT-06] --approve --id DP-<ID> targets a specific Decision Point for approval.\n  [NEXT-07] --review --id DP-<ID> targets a specific Decision Point for review.\n  [NEXT-08] GATE type requires human confirmation even with --approve.\n  [NEXT-09] --approve at a GATE emits OBS18 with auto_approve:true.",
+      "navigation": "INDEX: @INDEX.sdd\n  DeliveryChain: @../chains/delivery.sdd\n  StepKeys: @../workflow/step-keys.sdd\n  TaskStateMachine: @../tasks/TASK-STATE-MACHINE.sdd\n  SubtaskStateMachine: @../tasks/SUBTASK-STATE-MACHINE.sdd\n  SubtaskSchema: @../schemas/subtask.sdd\n  StateTemplate: @../templates/specdd/state.template.sdd\n  BugRegistry: @../tasks/BUG-REGISTRY.sdd\n  RuntimeState: @../runtime/state.sdd\n\nState: +\n   (extended with step mode / immutable DL1 continuation per Phase 151)\n   (Phase 155: added --subtask unit mode with STATE read-first\n    pointer; subtask blocking mirrors BUG blocking; task completion\n    now requires ALL subtasks DONE)\n\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    },
+    {
+      "name": "/sdd-plan",
+      "file": "commands/sdd-plan.sdd",
+      "purpose": "Scan .sdd/ and prompts/ directories ONCE to generate an execution plan,\n  then serve it from cache. Idempotent: 100 invocations = 1 real scan\n  + 99 cache hits. Produces a trace-format plan matching the 16-step\n  SDDRA execution trace, plus today's work, history context, and\n  phase/layer position.\n\nOwns: commands/sdd-plan.sdd",
+      "mode": "",
+      "usage": "/sdd-plan\n  /sdd-plan --replan\n  /sdd-plan --chains\n  /sdd-plan --prompts\n  /sdd-plan --tasks\n  /sdd-plan --full",
+      "rules": "[PLAN-01] /sdd-plan MUST be idempotent: unchanged inputs → cache hit, no rescan.\n  [PLAN-02] /sdd-plan MUST resolve all @references via INDEX.sdd routing.\n  [PLAN-03] /sdd-plan MUST classify prompts to chain arms by keyword matching.\n  [PLAN-04] /sdd-plan MUST reference existing artifacts when available.\n  [PLAN-05] /sdd-plan MUST output in standard trace format #01-#16.\n  [PLAN-06] /sdd-plan MUST include next actionable step in output.\n  [PLAN-07] /sdd-plan MUST serve Today's Work, History, and Phase/Layer sections from cache.\n  [PLAN-08] Every regeneration MUST bump Revision and append to history.json.\n  [PLAN-09] Re-plan on user request is plan-local — no full rescan.\n  [PLAN-10] Cache writes are limited to: plan-cache.json, current-plan.sdd, history.json.",
+      "navigation": "PlanCache: @../../.claude/sdd/plan-cache.json\n  CurrentPlan: @../plans/current-plan.sdd\n  PhaseRegistry: @../projects/sddra/phases/INDEX.sdd\n  History: @../../.claude/sdd/history.json\n  ChainGraph: @../chains/graph.sdd\n  Decisions: @../decisions/INDEX.sdd\n  Tasks: @../tasks/INDEX.sdd\n  Projects: @../projects/INDEX.sdd\n  Prompts: @../../prompts/inbox/\n  KnowledgeModel: @../concepts/KNOWLEDGE-MODEL.sdd\n\nState: +\n\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    },
+    {
+      "name": "/sdd-prompts",
+      "file": "commands/sdd-prompts.sdd",
+      "purpose": "Automate prompt lifecycle: structure raw prompts, move to inbox,\n  formalize, and archive after human approval.",
+      "mode": "",
+      "usage": "/sdd-prompts\n  /sdd-prompts --scan\n  /sdd-prompts --structure\n  /sdd-prompts --inbox\n  /sdd-prompts --archive\n  /sdd-prompts --approve <prompt-id>",
+      "rules": "[PR-01] Unstructured prompts are auto-structured, never rejected.\n  [PR-02] Structured prompts move to inbox/ automatically.\n  [PR-03] Archive requires explicit human approval.\n  [PR-04] Prompts are NEVER deleted, only archived.\n  [PR-05] Duplicate detection runs before structuring.",
+      "navigation": "INDEX: @INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n  Tasks: @../tasks/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-purge",
+      "file": "commands/sdd-purge.sdd",
+      "purpose": "Audit and clean AI provenance marks from generated artifacts.\n  Bridges SDDRA to watermarks-remover service for Layer A (deterministic Unicode)\n  and Layer Files (C2PA, EXIF, XMP, doc-provenance) hygiene.\n\nOwns: commands/sdd-purge.sdd",
+      "mode": "",
+      "usage": "/sdd-purge\n  /sdd-purge --file <path>\n  /sdd-purge --directory <path>\n  /sdd-purge --inspect\n  /sdd-purge --layer <a|files|all>\n  /sdd-purge --json",
+      "rules": "[PRG-01] /sdd-purge MUST NOT modify files when --inspect is supplied.\n  [PRG-02] /sdd-purge MUST fail open if the watermarks-remover service is unreachable.\n  [PRG-03] Layer A and Layer Files findings MUST be treated as MEDIUM severity.\n  [PRG-04] /sdd-purge MUST only scan files with registered artifact extensions.\n  [PRG-05] Cleaned files MUST be written atomically; original preserved on failure.\n  [PRG-06] /sdd-purge MUST emit OBS21 provenance_clean or OBS22 provenance_detected events.",
+      "navigation": "INDEX: @INDEX.sdd\n   SecurityControls: @../security/controls.sdd\n   ProvenanceClient: @../../../.sdd/codding/sdd-adapter/provenance-client.ts\n   HookBridge: @../../../.sdd/codding/sdd-adapter/hook-bridge.ts\n   WatermarksRemover: https://github.com/guillaumemeyer/watermarks-remover\n\nState: +"
+    },
+    {
+      "name": "/sdd-research",
+      "file": "commands/sdd-research.sdd",
+      "purpose": "Deep research command — the RS1 chain arm entry point. Runs the research\n  protocol: scoped brief → parallel searches → citation-verified findings →\n  tmp staging → Pareto decision → integration → staging deletion.\n\nOwns: commands/sdd-research.sdd",
+      "mode": "",
+      "usage": "/sdd-research <topic>\n  /sdd-research <topic> --depth <1-3> --breadth <2-5>\n  /sdd-research --continue <slug>   (resume interrupted round from staging state)\n  /sdd-research --status           (list staged rounds)",
+      "rules": "[RES-01] /sdd-research MUST produce a DECISIONS.md gate before integration.\n  [RES-02] /sdd-research MUST NOT import non-MIT/Apache content (analysis only).\n  [RES-03] /sdd-research MUST delete staging after integration ([RS1-08]).\n  [RES-04] /sdd-research --continue MUST resume from audit trail, never rescan.\n  [RES-05] Budget (depth/breadth) MUST be fixed at Scope; overruns terminate.\n  [RES-06] Citation gates ([RS1-03], [RS1-04]) MUST pass before Write.",
+      "navigation": "INDEX: @INDEX.sdd\n  ResearchArm: @../chains/arms/research.sdd\n  ResearchProtocol: @../workflow/research-protocol.sdd\n  ResearcherRole: @../agent/roles.sdd\n  MarketplaceCommand: @sdd-marketplace.sdd (import path)\n  WeakPointMap: @../agent/weak-point-map.sdd\n\nState: +\n\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    },
+    {
+      "name": "/sdd-restore",
+      "file": "commands/sdd-restore.sdd",
+      "purpose": "Restore .sdd/ files from a previous backup (requires approval).\n\nOwns: commands\\sdd-restore.sdd",
+      "mode": "",
+      "usage": "/sdd-restore --latest\n  /sdd-restore --backup=<name>\n  /sdd-restore --list",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  BackupCommand: @sdd-backup.sdd\n  Timeline: @../timeline/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-resume",
+      "file": "commands/sdd-resume.sdd",
+      "purpose": "Resume a failed or interrupted chain execution from the last checkpoint, skipping completed stages.\n\nOwns: commands\\sdd-resume.sdd",
+      "mode": "",
+      "usage": "/sdd-resume\n  /sdd-resume --chain=<id>\n  /sdd-resume --checkpoint=<id>\n  /sdd-resume --list",
+      "rules": "",
+      "navigation": "INDEX: @INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n  Checkpoints: @../patterns/checkpoint-restore.sdd\n  BackupCommand: @sdd-backup.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-scan",
+      "file": "commands/sdd-scan.sdd",
+      "purpose": "Run security pattern scans against code files using the sdd-adapter\n  hook-bridge runtime. Surfaces CRITICAL/HIGH/MEDIUM/LOW findings\n  with severity, line numbers, and remediation guidance.\n\nOwns: commands/sdd-scan.sdd",
+      "mode": "",
+      "usage": "/sdd-scan\n  /sdd-scan --file <path>\n  /sdd-scan --directory <path>\n  /sdd-scan --severity <level>\n  /sdd-scan --language <language>\n  /sdd-scan --json\n  /sdd-scan --inject [--decoded]",
+      "rules": "[SCN-01] /sdd-scan MUST NOT modify any scanned files.\n  [SCN-02] Scan results MUST include pattern ID, severity, line number, and message.\n  [SCN-03] CRITICAL and HIGH findings MUST trigger BLOCK decision.\n  [SCN-04] Spec load failures MUST result in PASS with warning, not error.\n  [SCN-05] Skill patterns MUST only activate for matching file extensions.\n  [SCN-06] Scan results MUST be persisted to .sdd/runtime/scan-results/ for audit.\n  [SCN-07] /sdd-scan --inject MUST use PromptGuard (.sdd/codding/sdd-adapter/security/prompt-guard.ts).\n  [SCN-08] --inject results include PI-001 through PI-010 pattern IDs and response modes.",
+      "navigation": "INDEX: @INDEX.sdd\n   SecurityControls: @../security/controls.sdd\n   SecurityScanners: @../security/scanners.sdd\n   SecurityThreats: @../security/threats.sdd\n   SecurityLevels: @../security/levels.sdd\n   HookBridge: @../../../.sdd/codding/sdd-adapter/hook-bridge.ts\n   PatternsRuntime: @../../../.sdd/codding/sdd-adapter/security/patterns-runtime.ts\n   SpecLoader: @../../../.sdd/codding/sdd-adapter/spec-loader.ts\n\nState: +"
+    },
+    {
+      "name": "/sdd-skills",
+      "file": "commands/sdd-skills.sdd",
+      "purpose": "Discover, map, and recommend skills from the .sdd/skills/ ecosystem.\n  Makes the 80+ skill files queryable and connects them to pending tasks\n  and project context.\n\nOwns: commands/sdd-skills.sdd",
+      "mode": "",
+      "usage": "/sdd-skills\n  /sdd-skills --category <category>\n  /sdd-skills --language <language>\n  /sdd-skills --framework <framework>\n  /sdd-skills --recommend\n  /sdd-skills --coverage\n  /sdd-skills --json",
+      "rules": "[SKL-01] /sdd-skills MUST NOT modify any file.\n  [SKL-02] Skill listing MUST include competency level (L1-L5) when present.\n  [SKL-03] Recommendations MUST be derived from pending tasks and project decisions.\n  [SKL-04] Missing coverage MUST be flagged for human review.\n  [SKL-05] Skill categories MUST match .sdd/skills/ directory structure.",
+      "navigation": "INDEX: @INDEX.sdd\n   SkillsIndex: @../skills/INDEX.sdd\n   SkillsRoot: @../skills/\n   CrossCutting: @../skills/cross-cutting/INDEX.sdd\n   Tasks: @../tasks/INDEX.sdd\n   Decisions: @../decisions/INDEX.sdd\n   Projects: @../projects/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-status",
+      "file": "commands/sdd-status.sdd",
+      "purpose": "Show current execution status: token usage, decisions, tasks, pending approvals.\n\nOwns: commands\\sdd-status.sdd",
+      "mode": "",
+      "usage": "/sdd-status\n  /sdd-status --tokens\n  /sdd-status --decisions",
+      "rules": "[STATUS-01] /sdd-status MUST NOT modify any files — read-only operation.\n  [STATUS-02] /sdd-status MUST resolve @references via INDEX.sdd routing.\n  [STATUS-03] /sdd-status MUST display current execution context.",
+      "navigation": "ChainGraph: @../chains/graph.sdd\n  Decisions: @../decisions/INDEX.sdd\n  Tasks: @../tasks/INDEX.sdd\n  Runtime: @../runtime/state.sdd\n  Agent: @../agent/INDEX.sdd\n\nState: +\n   (enhanced with Navigation section and rules per ECC integration)"
+    },
+    {
+      "name": "/sdd-swarm",
+      "file": "commands/sdd-swarm.sdd",
+      "purpose": "Execute the SW1 chain — parallel micro-unit delivery with a\n  defect-focus loop. Macro-sequential, micro-parallel.\n\nOwns: commands\\sdd-swarm.sdd",
+      "mode": "",
+      "usage": "/sdd-swarm\n  /sdd-swarm --stage <key>\n  /sdd-swarm --board\n  /sdd-swarm --focus MU-<id>\n  /sdd-swarm --status\n  /sdd-swarm --dry-run",
+      "rules": "[SWARM-01] /sdd-swarm continues from saved state, never memory.\n  [SWARM-02] One SWARM cycle step per invocation — never execute a\n        future stage early (FLOW VIOLATION, [CMD6]).\n  [SWARM-03] DL1 is untouched; SW1 is a separate chain ([SW1-7]).\n  [SWARM-04] REL is terminal and requires human approval ([CMD3], [RS1]).\n  [SWARM-05] All test execution runs inside Docker ([R102]).\n  [SWARM-06] State is runtime-only, never committed ([R103]).\n  [SWARM-07] UTF-8 only ([R99]); no AI signatures in commits ([R103]).\n  [SWARM-08] Pyramid rules [SW1-9]-[SW1-14] apply to every\n        dispatch: depth cap 2, lifecycle per\n        subagent-lifecycle.sdd, RECONCILE before DISPATCH,\n        within-stage channels only, folder cleanup after\n        DONE + VERIFIED, all final tests in Docker.",
+      "navigation": "SwarmChain: @../chains/swarm.sdd\n  StepKeys: @../workflow/step-keys.sdd\n  Stages: @../workflow/stages.sdd\n  MicroUnit: @../workflow/micro-unit.sdd\n  MicroUnitSchema: @../schemas/micro-unit.sdd\n  DispatchChannels: @../workflow/dispatch-channels.sdd\n  SubAgentLifecycle: @../agent/subagent-lifecycle.sdd\n  Supervisor: @../agent/supervisor.sdd\n  Handoff: @../agent/handoff.sdd\n  LoopProtection: @../tasks/LOOP-PROTECTION.sdd\n  ExecutionLoop: @../workflow/execution-loop.sdd\n  ReleaseGate: @../gates/release.sdd\n  DeliveryChain: @../chains/delivery.sdd\n  CommandsIndex: @INDEX.sdd\n\nState: +\n  (Phase 160 — created per DEC-2026-1011-001 D1; the SW1 chain driver.\n   StatefulExecution over the 16-stage macro pipeline with per-stage\n   SWARM cycle and defect-focus loop; --board is the combined\n   parallel progress view closing G5.)\n  (Phase 161 — RECONCILE is cycle step 1; InitialLoad adds\n   dispatch-channels.sdd + subagent-lifecycle.sdd; [SWARM-08]\n   binds pyramid rules [SW1-9]-[SW1-14] per DEC-2026-1011-002)\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    },
+    {
+      "name": "/sdd-sync",
+      "file": "commands/sdd-sync.sdd",
+      "purpose": "Propose and execute sync operations for detected drift.\n\nOwns: commands/sdd-sync.sdd",
+      "mode": "",
+      "usage": "/sdd-sync\n  /sdd-sync --drift <D<id>>\n  /sdd-sync --auto-approve <low-risk-only>\n  /sdd-sync --dry-run",
+      "rules": "[SYN-01] /sdd-sync MUST require human approval for HIGH severity syncs.\n  [SYN-02] /sdd-sync MUST produce @decision.* for every SYNC_SDD operation.\n  [SYN-03] /sdd-sync MUST produce @task.* for every SYNC_CODE operation.\n  [SYN-04] /sdd-sync MUST produce @task.* for every SYNC_BOTH operation.\n  [SYN-05] /sdd-sync MUST NOT execute NO_CHANGE without explicit --force.",
+      "navigation": "INDEX: @INDEX.sdd\n  DriftSpec: @../lifecycle/drift.sdd\n  Queries: @../queries/sync-operations.sdd\n  Decisions: @../decisions/INDEX.sdd\n  Tasks: @../tasks/TASK-STATE-MACHINE.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-trace",
+      "file": "commands/sdd-trace.sdd",
+      "purpose": "Bidirectional traceability from requirement to proof and back.\n\nOwns: commands/sdd-trace.sdd",
+      "mode": "",
+      "usage": "/sdd-trace --forward <R<id>|D<id>|T<id>|C<id>|X<id>|P<id>>\n  /sdd-trace --reverse <file-path>\n  /sdd-trace --coverage",
+      "rules": "[TRC-01] /sdd-trace MUST show full chain or report BREAK.\n  [TRC-02] /sdd-trace MUST include confidence for inferred links.\n  [TRC-03] /sdd-trace coverage MUST count verified items only.",
+      "navigation": "INDEX: @INDEX.sdd\n  Queries: @../queries/traceability.sdd\n  EpistemicEntities: @../concepts/epistemic-entities.sdd\n  Decisions: @../decisions/INDEX.sdd\n\nState: +"
+    },
+    {
+      "name": "/sdd-update",
+      "file": "commands/sdd-update.sdd",
+      "purpose": "Synchronize .sdd/ state from git repository. Reads branch structure,\n  commit history, and file changes to auto-update SDD metadata.",
+      "mode": "",
+      "usage": "/sdd-update\n  /sdd-update --full\n  /sdd-update --diff\n  /sdd-update --modules\n  /sdd-update --tasks",
+      "rules": "[UPD-01] git state is source of truth for module/task completion.\n  [UPD-02] Orphaned .sdd entries are flagged, not deleted.\n  [UPD-03] Unrecorded code blocks Write|Edit hooks until documented.\n  [UPD-04] Auto-update runs in background, never blocks human workflow.\n  [UPD-05] Drift report is appended to .sdd/state/drift.log.sdd.\n\nState: +",
+      "navigation": ""
+    },
+    {
+      "name": "/sdd",
+      "file": "commands/sdd.sdd",
+      "purpose": "Execute the SDDRA chain from a prompt through docs, sdd, code, review, and deploy arms with human approval at each gate.\n\nOwns: commands\\sdd.sdd",
+      "mode": "",
+      "usage": "/sdd \"prompt text or path\"\n  /sdd --list\n  /sdd --status",
+      "rules": "- Do NOT generate project/ code directly\n  - Do NOT skip human gates\n  - Use INDEX.sdd, do not scan directories\n  - Use short IDs: P1, D1, S1, C1, R1, DEP1\n  - Compact at end of every task unless user overrides",
+      "navigation": "INDEX: @INDEX.sdd\n  ChainGraph: @../chains/graph.sdd\n  PlanCommand: @sdd-plan.sdd\n  KnowledgeCommand: @sdd-knowledge.sdd\n  CompactCommand: @sdd-compact.sdd\n\nState: +\n   (enhanced with Navigation section per ECC integration)\n\n# Reading discipline (reference)\nFollows CLAUDE.md Reading Strategy: goal-first, grep-before-read, \read(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal."
+    }
+  ]
+}
