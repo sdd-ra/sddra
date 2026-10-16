@@ -741,3 +741,6 @@ Note:
     /sdd-status, /sdd-decisions commands allow executing SDDRA from
     Claude CLI while respecting .sdd/ rules and human gates.
 
+
+## Reading discipline
+When exploring the spec tree, follow CLAUDE.md Reading Strategy (targeted read). Start from entry points, filter with grep before ead, and prefer ead(offset,limit) slices over full-file reads.

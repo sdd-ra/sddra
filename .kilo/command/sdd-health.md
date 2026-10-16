@@ -29,3 +29,9 @@ Rules:
 Navigation:
   Spec: @.sdd/commands/sdd-health.sdd
   CommandsIndex: @.sdd/commands/INDEX.sdd
+## Execution rule: Targeted investigation
+When investigating to answer the user's request:
+1) Define 1 concrete question
+2) Consult .sdd/INDEX.sdd`n3) grep for key terms/IDs with context
+4) ead only matching offset+limit ranges
+Do NOT read entire spec files unless justified by the stated question. Follow CLAUDE.md Reading Strategy.

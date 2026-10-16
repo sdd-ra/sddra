@@ -175,3 +175,6 @@ State: +
    (Phase 155: added --subtask unit mode with STATE read-first
     pointer; subtask blocking mirrors BUG blocking; task completion
     now requires ALL subtasks DONE)
+
+# Reading discipline (reference)
+Follows CLAUDE.md Reading Strategy: goal-first, grep-before-read, ead(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal.

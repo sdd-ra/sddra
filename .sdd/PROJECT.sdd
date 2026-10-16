@@ -376,11 +376,16 @@ Rules:
            (Project Fit); a reference can never auto-override project
            architecture/policy; source changes produce REF DELTA
            reports, never silent rule changes.
-    [R111] No-copy ingestion, provenance survives — reference
-           analysis works on tmp/ snapshots that are DELETED after
-           knowledge extraction ([R96]); raw assets/code/markup never
-           enter .sdd/ or product code; every derived pattern carries
-           a provenance record (source, captured date, evidence,
-           derived links) that survives snapshot deletion.
+     [R111] No-copy ingestion, provenance survives — reference
+            analysis works on tmp/ snapshots that are DELETED after
+            knowledge extraction ([R96]); raw assets/code/markup never
+            enter .sdd/ or product code; every derived pattern carries
+            a provenance record (source, captured date, evidence,
+            derived links) that survives snapshot deletion.
+     [R112] TARGETED_READ_REQUIRED
+            - Before reading any file > 250 lines, state a concrete goal.
+            - Prefer grep-first; use read with offset+limit over full read.
+            - For multi-file investigation, produce a Read Plan with candidates + planned reads + stop condition.
+            - Never read entire file unless no slice answers the goal and reason is recorded.
  
 State: +

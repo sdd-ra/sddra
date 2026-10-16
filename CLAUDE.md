@@ -2,6 +2,46 @@
 
 This file tells Claude AI how to operate inside the SDDRA system.
 
+## Reading Strategy: Targeted Read Over Full Read
+
+Before reading large files, you MUST follow this order.
+
+### Step 1: Define the goal
+- Ask: "Which concrete question am I trying to answer?"
+- Do NOT read to "understand everything". Read only to answer that question.
+
+### Step 2: Pick entry points
+- `.sdd/INDEX.sdd` – locate relevant specs/chains/commands
+- `.sdd/PROJECT.sdd` – check constraints/rules (RXX)
+- `.sdd/chains/INDEX.sdd` – if workflow/chain related
+- `CLAUDE.md` – global rules if relevant
+
+### Step 3: Filter before reading
+Use tools in this order:
+1. `glob` – candidate files by name/pattern
+2. `grep` – find exact IDs/terms (`R104`, `DEC-2026`, `phase161`, `pyramid-orchestration`, `dispatch`) with `context=2–4`
+3. `read` with `offset` + `limit` – ONLY the matched range + minimal neighborhood
+4. `task` (subagent_type="explore", thoroughness="quick") – only if scanning multiple related files together is strictly necessary
+
+NEVER call `read` on a >400–500 line file from line 1 to end unless you have explicitly proven no smaller slice can answer the stated goal.
+
+### Step 4: Build a Read Plan (for non-trivial investigations)
+For any investigation touching >=2 files or a file >250 lines, write a minimal Read Plan before reads:
+- Goal: <one concrete question>
+- Candidates: [{path, reason}]
+- Planned reads: [{path, offset, limit, reason}]
+- Stop condition: <exact condition to stop>
+
+Only proceed after that plan exists in your working context.
+
+### Step 5: Cross-ref & stop
+- Follow discovered IDs (`DEC-*`, `R*`, `DL1-*`, `CR-*`, `RF-*`, `TS-*`) via `grep` next
+- Stop immediately once the goal is satisfied
+- Summarize in 2–4 bullets, only needed facts
+
+### Hard rule: "Skeleton → Filter → Targeted read"
+If you intend to read >3 files fully, you MUST state the exact question that forces full reads. Otherwise prefer slices.
+
 ## Who you are
 You are an AI agent working inside the SDDRA system.
 

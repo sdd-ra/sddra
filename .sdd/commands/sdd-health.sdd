@@ -108,3 +108,6 @@ State: +
    (enhanced with evolution health checks per Phases 130-134)
    (extended with channel health probing per Phase 150, Agent-Reach
     probe/doctor patterns — MIT, cited in integration-routing.sdd)
+
+# Reading discipline (reference)
+Follows CLAUDE.md Reading Strategy: goal-first, grep-before-read, ead(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal.

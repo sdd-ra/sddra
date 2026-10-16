@@ -67,3 +67,6 @@ Navigation:
 
 State: +
    (enhanced with Navigation section per ECC integration)
+
+# Reading discipline (reference)
+Follows CLAUDE.md Reading Strategy: goal-first, grep-before-read, ead(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal.

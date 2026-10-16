@@ -37,3 +37,6 @@ Rules:
   chain: @rules/chain-rules.sdd
 
 State: +
+
+## Reading discipline
+When navigating chains, follow CLAUDE.md Reading Strategy (targeted read): consult INDEX first, filter with grep before ead, prefer ead(offset,limit) slices over full-file reads.

@@ -150,3 +150,5 @@ ScanScope:
 State: +
    (extended to scan .specdd/ runtime artifacts and knowledge health per PHASE 120-124)
    (integrated analysis output covering .sdd/ specs, .specdd/ runtime, and knowledge system)
+# Reading discipline (reference)
+Follows CLAUDE.md Reading Strategy: goal-first, grep-before-read, ead(offset,limit) slices, Read Plan when >=2 files or >250 lines, stop at goal.

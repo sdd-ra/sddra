@@ -29,3 +29,5 @@ Rules:
 Navigation:
   Spec: @.sdd/commands/sdd-assumptions.sdd
   CommandsIndex: @.sdd/commands/INDEX.sdd
+## Execution rule: Targeted investigation
+When investigating to answer the user's request: define concrete question ? consult .sdd/INDEX.sdd ? grep with context ? use ead(offset,limit) slices. Avoid reading entire spec files unless justified. Follow CLAUDE.md Reading Strategy.
